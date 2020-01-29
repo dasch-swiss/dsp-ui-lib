@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../../base-value.component';
 import {CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
@@ -8,7 +8,7 @@ import {FormBuilder, FormControl, Validators} from '@angular/forms';
   templateUrl: './text-value-as-string.component.html',
   styleUrls: ['./text-value-as-string.component.scss']
 })
-export class TextValueAsStringComponent extends BaseValueComponent implements OnInit {
+export class TextValueAsStringComponent extends BaseValueComponent implements OnInit, OnChanges {
 
   @Input() displayValue?: ReadTextValueAsString;
 
@@ -44,13 +44,25 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
   ngOnInit() {
 
-    this.valueFormControl = new FormControl(this.getInitValue(), Validators.required);
-    this.commentFormControl = new FormControl(this.getInitComment());
+    this.valueFormControl = new FormControl(null, Validators.required);
+    this.commentFormControl = new FormControl(null);
 
     this.form = this.fb.group({
       textValue: this.valueFormControl,
       comment: this.commentFormControl
     });
+
+    this.restoreDisplayValue();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    // if input displayValue is reset after initialization,
+    // call restoreDisplayValue
+    if (changes.displayValue !== undefined && !changes.displayValue.firstChange && this.form !== undefined) {
+      this.restoreDisplayValue();
+    }
+
   }
 
   getNewValue(): CreateTextValueAsString {
