@@ -9,6 +9,7 @@
 
 # dependencies
 /node_modules
+/.yalc
 
 # profiling files
 chrome-profiler-events*.json
