@@ -137,6 +137,28 @@ describe('TextValueAsStringComponent', () => {
 
     });
 
+    it('should restore the initially displayed value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(valueInputNativeElement.value).toEqual('test');
+
+      valueInputNativeElement.value = 'updated text';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      testHostComponent.stringValueComponent.reinitFormControl();
+
+      expect(valueInputNativeElement.value).toEqual('test');
+
+    });
+
     it('should reinit a new display value', () => {
 
       const newStr = new ReadTextValueAsString();
