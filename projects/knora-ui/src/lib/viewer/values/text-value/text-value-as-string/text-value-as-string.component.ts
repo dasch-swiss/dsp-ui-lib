@@ -62,7 +62,11 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     }
   }
 
-  getNewValue(): CreateTextValueAsString {
+  getNewValue(): CreateTextValueAsString | false {
+
+    if (this.mode !== 'create' || !this.form.valid) {
+      return false;
+    }
 
     const newTextValue = new CreateTextValueAsString();
 
@@ -74,7 +78,11 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
   }
 
-  getUpdatedValue(): UpdateTextValueAsString {
+  getUpdatedValue(): UpdateTextValueAsString | false {
+
+    if (this.mode !== 'update' || !this.form.valid) {
+      return false;
+    }
 
     const updatedTextValue = new UpdateTextValueAsString();
 

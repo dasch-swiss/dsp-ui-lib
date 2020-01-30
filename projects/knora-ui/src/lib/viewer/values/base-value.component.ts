@@ -19,7 +19,7 @@ export abstract class BaseValueComponent {
    */
   abstract reinitFormControl(): void;
 
-  abstract getNewValue(): CreateValue;
+  abstract getNewValue(): CreateValue | false;
 
-  abstract getUpdatedValue(): UpdateValue;
+  abstract getUpdatedValue(): UpdateValue | false;
 }

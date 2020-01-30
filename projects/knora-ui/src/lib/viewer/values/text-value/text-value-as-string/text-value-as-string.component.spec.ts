@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TextValueAsStringComponent} from './text-value-as-string.component';
 import {Component, DebugElement, OnInit, ViewChild} from '@angular/core';
-import {MockResource, ReadTextValueAsString} from '@knora/api';
+import {MockResource, ReadTextValueAsString, UpdateTextValueAsString, UpdateValue} from '@knora/api';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -26,9 +26,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
   ngOnInit() {
 
-    const testthing = MockResource.getTestthing();
-
-    testthing.subscribe(res => {
+    MockResource.getTestthing().subscribe(res => {
       const strVal: ReadTextValueAsString =
         res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
 
@@ -109,7 +107,33 @@ describe('TextValueAsStringComponent', () => {
 
       const updatedValue = testHostComponent.stringValueComponent.getUpdatedValue();
 
-      expect(updatedValue.text).toEqual('updated text');
+      expect(updatedValue instanceof UpdateTextValueAsString).toBeTruthy();
+
+      expect((updatedValue as UpdateTextValueAsString).text).toEqual('updated text');
+
+    });
+
+    it('should not return an invalid update value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(valueInputNativeElement.value).toEqual('test');
+
+      valueInputNativeElement.value = '';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.stringValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBeFalsy();
 
     });
 
