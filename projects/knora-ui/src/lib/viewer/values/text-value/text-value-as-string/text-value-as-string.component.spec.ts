@@ -4,7 +4,7 @@ import {TextValueAsStringComponent} from './text-value-as-string.component';
 import {Component, DebugElement, OnInit, ViewChild} from '@angular/core';
 import {MockResource, ReadTextValueAsString} from '@knora/api';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule, MatInputModule} from '@angular/material';
+import {MatInputModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
 
@@ -18,7 +18,7 @@ import {By} from '@angular/platform-browser';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('strVal', {static: false}) stringValue: TextValueAsStringComponent;
+  @ViewChild('strVal', {static: false}) stringValueComponent: TextValueAsStringComponent;
 
   displayStrVal: ReadTextValueAsString;
 
@@ -49,7 +49,8 @@ describe('TextValueAsStringComponent', () => {
         ReactiveFormsModule,
         MatInputModule,
         BrowserAnimationsModule
-      ]
+      ],
+      providers: []
     })
       .compileComponents();
   }));
@@ -58,6 +59,9 @@ describe('TextValueAsStringComponent', () => {
 
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
+    let valueComponentDe: DebugElement;
+    let valueInputDebugElement: DebugElement;
+    let valueInputNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
@@ -65,49 +69,62 @@ describe('TextValueAsStringComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.stringValueComponent).toBeTruthy();
+
+      const hostCompDe = testHostFixture.debugElement;
+      valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
-      expect(testHostComponent.stringValue).toBeTruthy();
 
-      expect(testHostComponent.displayStrVal.text).toEqual('test');
+      expect(testHostComponent.stringValueComponent.displayValue.text).toEqual('test');
 
-      expect(testHostComponent.stringValue.form.valid).toBeTruthy();
+      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
 
-      const hostCompDe = testHostFixture.debugElement;
+      expect(valueInputNativeElement.value).toEqual('test');
 
-      const integerVal = hostCompDe.query(By.directive(TextValueAsStringComponent));
-
-      const inputDebugElement: DebugElement = integerVal.query(By.css('input'));
-
-      const inputNativeElement = inputDebugElement.nativeElement;
-
-      expect(inputNativeElement.readOnly).toEqual(true);
-
-      expect(inputNativeElement.value).toEqual('test');
+      expect(valueInputNativeElement.readOnly).toEqual(true);
 
     });
 
-    it('reinit the display value', () => {
+    it('should make an existing value editable', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(valueInputNativeElement.value).toEqual('test');
+
+      valueInputNativeElement.value = 'updated text';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.stringValueComponent.getUpdatedValue();
+
+      expect(updatedValue.text).toEqual('updated text');
+
+    });
+
+    it('should reinit a new display value', () => {
 
       const newStr = new ReadTextValueAsString();
-      newStr.text = 'ahahahaha';
+
+      newStr.text = 'my updated text';
+      newStr.id = 'updatedId';
 
       testHostComponent.displayStrVal = newStr;
 
       testHostFixture.detectChanges();
 
-      const hostCompDe = testHostFixture.debugElement;
-
-      const integerVal = hostCompDe.query(By.directive(TextValueAsStringComponent));
-
-      const inputDebugElement: DebugElement = integerVal.query(By.css('input'));
-
-      const inputNativeElement = inputDebugElement.nativeElement;
-
-      expect(inputNativeElement.readOnly).toEqual(true);
-
-      expect(inputNativeElement.value).toEqual('ahahahaha');
+      expect(valueInputNativeElement.value).toEqual('my updated text');
 
     });
 

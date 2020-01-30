@@ -12,9 +12,6 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
   @Input() displayValue?: ReadTextValueAsString;
 
-  valueFormControl: FormControl;
-  commentFormControl: FormControl;
-
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
@@ -37,13 +34,14 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     }
   }
 
-  restoreDisplayValue(): void {
+  reinitFormControl(): void {
     this.valueFormControl.setValue(this.getInitValue());
     this.commentFormControl.setValue(this.getInitComment());
   }
 
   ngOnInit() {
 
+    // initialize form control elements
     this.valueFormControl = new FormControl(null, Validators.required);
     this.commentFormControl = new FormControl(null);
 
@@ -52,17 +50,16 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
       comment: this.commentFormControl
     });
 
-    this.restoreDisplayValue();
+    this.reinitFormControl();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    // if input displayValue is reset after initialization,
-    // call restoreDisplayValue
-    if (changes.displayValue !== undefined && !changes.displayValue.firstChange && this.form !== undefined) {
-      this.restoreDisplayValue();
+    // reinit value and comment in form controls when input displayValue changes
+    // at the first call of ngOnChanges, form control elements are not initialized yet
+    if (changes.displayValue !== undefined && this.valueFormControl !== undefined && this.commentFormControl !== undefined) {
+      this.reinitFormControl();
     }
-
   }
 
   getNewValue(): CreateTextValueAsString {

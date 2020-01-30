@@ -1,6 +1,6 @@
 import {Input} from '@angular/core';
 import {CreateValue, ReadValue, UpdateValue} from '@knora/api';
-import {FormGroup} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 
 export abstract class BaseValueComponent {
 
@@ -8,9 +8,16 @@ export abstract class BaseValueComponent {
 
   @Input() mode: 'read' | 'update' | 'create' | 'search';
 
+  valueFormControl: FormControl;
+  commentFormControl: FormControl;
+
   form: FormGroup;
 
-  abstract restoreDisplayValue(): void;
+  /**
+   * Reinits the form control elements
+   * with displayValue's value and value comment.
+   */
+  abstract reinitFormControl(): void;
 
   abstract getNewValue(): CreateValue;
 
