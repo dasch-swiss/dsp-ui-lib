@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {MockResource, ReadResource, ReadTextValueAsString} from '@knora/api';
+import {MockResource, ReadResource, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {TextValueAsStringComponent} from 'knora-ui/lib/viewer/values/text-value/text-value-as-string/text-value-as-string.component';
 
 @Component({
@@ -15,6 +15,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   testthing: ReadResource;
   testText: ReadTextValueAsString;
 
+  editModeActive = false;
+
   ngOnInit(): void {
     MockResource.getTestthing().subscribe(
       thing => {
@@ -26,7 +28,39 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // console.log(this);
+    // console.log(this.textComponent.form);
+  }
+
+  activateEditMode() {
+    this.editModeActive = true;
+    this.textComponent.mode = 'update';
+  }
+
+  save() {
+    this.editModeActive = false;
+    const updatedVal = this.textComponent.getUpdatedValue();
+
+    if (updatedVal instanceof UpdateTextValueAsString) {
+
+      this.textComponent.mode = 'read';
+
+      console.log('submitting updated value to Knora ', updatedVal);
+
+      const newVal = new ReadTextValueAsString();
+      newVal.id = 'newValId';
+      newVal.text = updatedVal.text;
+
+      this.testText = newVal;
+
+    } else {
+      console.log('invalid value');
+    }
+  }
+
+  cancel() {
+    this.textComponent.reinitFormControl();
+    this.textComponent.mode = 'read';
+    this.editModeActive = false;
   }
 
 }

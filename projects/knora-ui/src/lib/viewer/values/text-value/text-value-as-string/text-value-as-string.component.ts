@@ -1,5 +1,5 @@
 import {Component, Inject, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {BaseValueComponent} from '../../base-value.component';
+import {BaseValueComponent, valueChangedValidator} from '../../base-value.component';
 import {CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 
@@ -35,14 +35,18 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
   }
 
   reinitFormControl(): void {
-    this.valueFormControl.setValue(this.getInitValue());
+    const initialValue = this.getInitValue();
+    this.valueFormControl.setValue(initialValue);
+    this.valueFormControl.clearValidators();
+    this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue)]);
+    this.valueFormControl.updateValueAndValidity();
     this.commentFormControl.setValue(this.getInitComment());
   }
 
   ngOnInit() {
 
     // initialize form control elements
-    this.valueFormControl = new FormControl(null, Validators.required);
+    this.valueFormControl = new FormControl(null);
     this.commentFormControl = new FormControl(null);
 
     this.form = this.fb.group({
@@ -72,7 +76,9 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
     newTextValue.text = this.valueFormControl.value;
 
-    newTextValue.valueHasComment = this.commentFormControl.value;
+    if (this.commentFormControl.value !== null) {
+      newTextValue.valueHasComment = this.commentFormControl.value;
+    }
 
     return newTextValue;
 
@@ -90,7 +96,9 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
     updatedTextValue.text = this.valueFormControl.value;
 
-    updatedTextValue.valueHasComment = this.valueFormControl.value;
+    if (this.commentFormControl.value !== null) {
+      updatedTextValue.valueHasComment = this.commentFormControl.value;
+    }
 
     return updatedTextValue;
   }

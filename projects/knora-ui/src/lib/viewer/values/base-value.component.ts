@@ -1,6 +1,13 @@
 import {Input} from '@angular/core';
 import {CreateValue, ReadValue, UpdateValue} from '@knora/api';
-import {FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+
+export function valueChangedValidator(initValue: any): ValidatorFn {
+  return (control: AbstractControl): {[key: string]: any} | null => {
+    const invalid = initValue === control.value;
+    return invalid ? {valueNotChanged: {value: control.value}} : null;
+  };
+}
 
 export abstract class BaseValueComponent {
 
