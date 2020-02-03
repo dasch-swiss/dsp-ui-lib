@@ -95,6 +95,8 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
+      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+
       expect(valueInputNativeElement.value).toEqual('test');
 
       valueInputNativeElement.value = 'updated text';
@@ -121,6 +123,8 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
+      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+
       expect(valueInputNativeElement.value).toEqual('test');
 
       valueInputNativeElement.value = '';
@@ -145,6 +149,8 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
+      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+
       expect(valueInputNativeElement.value).toEqual('test');
 
       valueInputNativeElement.value = 'updated text';
@@ -157,9 +163,11 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.value).toEqual('test');
 
+      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+
     });
 
-    it('should reinit a new display value', () => {
+    it('should set a new display value', () => {
 
       const newStr = new ReadTextValueAsString();
 
@@ -171,6 +179,8 @@ describe('TextValueAsStringComponent', () => {
       testHostFixture.detectChanges();
 
       expect(valueInputNativeElement.value).toEqual('my updated text');
+
+      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
 
     });
 
