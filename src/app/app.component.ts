@@ -16,6 +16,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   testText: ReadTextValueAsString;
 
   editModeActive = false;
+  mode = 'read';
 
   ngOnInit(): void {
     MockResource.getTestthing().subscribe(
@@ -28,12 +29,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // console.log(this.textComponent.form);
+    console.log(this.textComponent.form);
   }
 
   activateEditMode() {
     this.editModeActive = true;
-    this.textComponent.mode = 'update';
+    this.mode = 'update';
   }
 
   save() {
@@ -42,7 +43,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     if (updatedVal instanceof UpdateTextValueAsString) {
 
-      this.textComponent.mode = 'read';
+      this.mode = 'read';
 
       console.log('submitting updated value to Knora ', updatedVal);
 
@@ -58,8 +59,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   cancel() {
-    this.textComponent.reinitFormControl();
-    this.textComponent.mode = 'read';
+    this.mode = 'read';
     this.editModeActive = false;
   }
 

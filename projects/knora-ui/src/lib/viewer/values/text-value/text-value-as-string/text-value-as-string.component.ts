@@ -34,13 +34,28 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     }
   }
 
-  reinitFormControl(): void {
+  resetFormControl(): void {
+
     const initialValue = this.getInitValue();
+    const initialComment = this.getInitComment();
+
+    console.log('reset value');
     this.valueFormControl.setValue(initialValue);
+    this.commentFormControl.setValue(initialComment);
+
     this.valueFormControl.clearValidators();
-    this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue)]);
+
+    // set validators depending on mode
+    if (this.mode === 'update') {
+      console.log('reset update validators');
+      this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue)]);
+    } else {
+      console.log('reset read validators');
+      this.valueFormControl.setValidators([Validators.required]);
+    }
+
     this.valueFormControl.updateValueAndValidity();
-    this.commentFormControl.setValue(this.getInitComment());
+
   }
 
   ngOnInit() {
@@ -54,15 +69,17 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
       comment: this.commentFormControl
     });
 
-    this.reinitFormControl();
+    this.resetFormControl();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    // reinit value and comment in form controls when input displayValue changes
+    console.log(changes);
+
+    // reinit values and validators in form controls when input displayValue or mode changes
     // at the first call of ngOnChanges, form control elements are not initialized yet
-    if (changes.displayValue !== undefined && this.valueFormControl !== undefined && this.commentFormControl !== undefined) {
-      this.reinitFormControl();
+    if (this.valueFormControl !== undefined && this.commentFormControl !== undefined) {
+      this.resetFormControl();
     }
   }
 

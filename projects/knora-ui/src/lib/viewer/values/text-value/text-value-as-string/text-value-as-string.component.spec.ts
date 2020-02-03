@@ -153,7 +153,7 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      testHostComponent.stringValueComponent.reinitFormControl();
+      testHostComponent.stringValueComponent.resetFormControl();
 
       expect(valueInputNativeElement.value).toEqual('test');
 

@@ -24,7 +24,7 @@ export abstract class BaseValueComponent {
    * Reinits the form control elements
    * with displayValue's value and value comment.
    */
-  abstract reinitFormControl(): void;
+  abstract resetFormControl(): void;
 
   abstract getNewValue(): CreateValue | false;
 

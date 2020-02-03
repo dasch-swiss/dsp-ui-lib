@@ -1,5 +1,5 @@
 <span *ngIf="testText">
-  <lib-text-value-as-string #text [mode]="'read'" [displayValue]="testText"></lib-text-value-as-string>
+  <lib-text-value-as-string #text [mode]="mode" [displayValue]="testText"></lib-text-value-as-string>
   <div>
     <button *ngIf="!editModeActive" (click)="activateEditMode()">edit</button>
     <button *ngIf="editModeActive" [disabled]="!textComponent.form.valid" (click)="save()">Save</button>
