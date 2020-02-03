@@ -16,7 +16,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     super();
   }
 
-  private getInitValue(): string | null {
+  getInitValue(): string | null {
 
     if (this.displayValue !== undefined) {
       return this.displayValue.text;
@@ -25,37 +25,13 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     }
   }
 
-  private getInitComment(): string | null {
+  getInitComment(): string | null {
 
     if (this.displayValue !== undefined && this.displayValue.valueHasComment !== undefined) {
       return this.displayValue.valueHasComment;
     } else {
       return null;
     }
-  }
-
-  resetFormControl(): void {
-
-    const initialValue = this.getInitValue();
-    const initialComment = this.getInitComment();
-
-    console.log('reset value');
-    this.valueFormControl.setValue(initialValue);
-    this.commentFormControl.setValue(initialComment);
-
-    this.valueFormControl.clearValidators();
-
-    // set validators depending on mode
-    if (this.mode === 'update') {
-      console.log('reset update validators');
-      this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue)]);
-    } else {
-      console.log('reset read/create validators');
-      this.valueFormControl.setValidators([Validators.required]);
-    }
-
-    this.valueFormControl.updateValueAndValidity();
-
   }
 
   ngOnInit() {
@@ -74,9 +50,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    console.log(changes);
-
-    // reinit values and validators in form controls when input displayValue or mode changes
+    // resets values and validators in form controls when input displayValue or mode changes
     // at the first call of ngOnChanges, form control elements are not initialized yet
     if (this.valueFormControl !== undefined && this.commentFormControl !== undefined) {
       this.resetFormControl();
