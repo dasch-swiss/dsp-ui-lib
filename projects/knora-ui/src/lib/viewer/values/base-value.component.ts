@@ -21,17 +21,28 @@ export abstract class BaseValueComponent {
   form: FormGroup;
 
   /**
-   * Gets the initially given value.
-   * Returns null if no value is given.
+   * Returns the initially given value set via displayValue.
+   * Returns null if no value was given.
    */
   abstract getInitValue(): any;
 
-  abstract getInitComment(): any;
+  /**
+   * Returns the initially given value comment set via displayValue.
+   * Returns null if no value comment was given.
+   */
+  getInitComment(): string | null {
+
+    if (this.displayValue !== undefined && this.displayValue.valueHasComment !== undefined) {
+      return this.displayValue.valueHasComment;
+    } else {
+      return null;
+    }
+  }
 
   /**
    * Resets the form control elements
    * with displayValue's value and value comment.
-   * Depending on the mode validators are reset.
+   * Depending on the mode, validators are reset.
    */
   resetFormControl(): void {
     const initialValue = this.getInitValue();
@@ -56,7 +67,15 @@ export abstract class BaseValueComponent {
 
   }
 
+  /**
+   * Returns a value that is to be created.
+   * Returns false if invalid.
+   */
   abstract getNewValue(): CreateValue | false;
 
+  /**
+   * Returns a value that is to be updated.
+   * Returns false if invalid.
+   */
   abstract getUpdatedValue(): UpdateValue | false;
 }

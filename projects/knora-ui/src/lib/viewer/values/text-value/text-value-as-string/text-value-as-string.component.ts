@@ -25,15 +25,6 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     }
   }
 
-  getInitComment(): string | null {
-
-    if (this.displayValue !== undefined && this.displayValue.valueHasComment !== undefined) {
-      return this.displayValue.valueHasComment;
-    } else {
-      return null;
-    }
-  }
-
   ngOnInit() {
 
     // initialize form control elements
