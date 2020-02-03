@@ -1,8 +1,14 @@
-<span *ngIf="testText">
-  <lib-text-value-as-string #text [mode]="mode" [displayValue]="testText"></lib-text-value-as-string>
+<div *ngIf="testText">
+  <lib-text-value-as-string #textEdit [mode]="editMode" [displayValue]="testText"></lib-text-value-as-string>
   <div>
     <button *ngIf="!editModeActive" (click)="activateEditMode()">edit</button>
-    <button *ngIf="editModeActive" [disabled]="!textComponent.form.valid" (click)="save()">Save</button>
-    <button *ngIf="editModeActive" (click)="cancel()">Cancel</button>
+    <button *ngIf="editModeActive" [disabled]="!textEditComponent.form.valid" (click)="saveEditValue()">Save</button>
+    <button *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>
   </div>
-</span>
+</div>
+
+<div>
+  <lib-text-value-as-string #textCreate [mode]="createMode" [displayValue]="createdVal"></lib-text-value-as-string>
+  <button [disabled]="!textCreateComponent?.form?.valid" (click)="saveCreateValue()">Save</button>
+  <button (click)="cancelCreateValue()">Cancel</button>
+</div>

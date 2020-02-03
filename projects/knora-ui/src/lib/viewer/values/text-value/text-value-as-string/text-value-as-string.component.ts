@@ -50,7 +50,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
       console.log('reset update validators');
       this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue)]);
     } else {
-      console.log('reset read validators');
+      console.log('reset read/create validators');
       this.valueFormControl.setValidators([Validators.required]);
     }
 

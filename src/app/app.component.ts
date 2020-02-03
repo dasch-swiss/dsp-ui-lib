@@ -1,5 +1,11 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {MockResource, ReadResource, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
+import {
+  CreateTextValueAsString,
+  MockResource,
+  ReadResource,
+  ReadTextValueAsString,
+  UpdateTextValueAsString
+} from '@knora/api';
 import {TextValueAsStringComponent} from 'knora-ui/lib/viewer/values/text-value/text-value-as-string/text-value-as-string.component';
 
 @Component({
@@ -8,7 +14,8 @@ import {TextValueAsStringComponent} from 'knora-ui/lib/viewer/values/text-value/
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  @ViewChild('text', {static: false}) textComponent: TextValueAsStringComponent;
+  @ViewChild('textEdit', {static: false}) textEditComponent: TextValueAsStringComponent;
+  @ViewChild('textCreate', {static: false}) textCreateComponent: TextValueAsStringComponent;
 
   title = 'knora-ui-ng-lib';
 
@@ -16,7 +23,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   testText: ReadTextValueAsString;
 
   editModeActive = false;
-  mode = 'read';
+  editMode = 'read';
+
+  createMode = 'create';
+  createdVal;
 
   ngOnInit(): void {
     MockResource.getTestthing().subscribe(
@@ -29,21 +39,23 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.textComponent.form);
+    console.log(this.textEditComponent);
+    console.log(this.textCreateComponent);
+
   }
 
   activateEditMode() {
     this.editModeActive = true;
-    this.mode = 'update';
+    this.editMode = 'update';
   }
 
-  save() {
+  saveEditValue() {
     this.editModeActive = false;
-    const updatedVal = this.textComponent.getUpdatedValue();
+    const updatedVal = this.textEditComponent.getUpdatedValue();
 
     if (updatedVal instanceof UpdateTextValueAsString) {
 
-      this.mode = 'read';
+      this.editMode = 'read';
 
       console.log('submitting updated value to Knora ', updatedVal);
 
@@ -58,9 +70,34 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  cancel() {
-    this.mode = 'read';
+  cancelEditValue() {
+    this.editMode = 'read';
     this.editModeActive = false;
+  }
+
+  saveCreateValue() {
+
+    const newVal = this.textCreateComponent.getNewValue();
+
+    if (newVal instanceof CreateTextValueAsString) {
+
+      const createdVal = new ReadTextValueAsString();
+      createdVal.id = 'newValId';
+      createdVal.text = newVal.text;
+
+      this.createdVal = createdVal;
+      this.createMode = 'read';
+    } else {
+      console.log('invalid value');
+    }
+
+    console.log();
+
+
+  }
+
+  cancelCreateValue() {
+    this.textCreateComponent.resetFormControl();
   }
 
 }
