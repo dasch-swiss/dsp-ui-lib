@@ -1,16 +1,19 @@
-import {Component, Inject, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent, valueChangedValidator} from '../../base-value.component';
 import {CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'lib-text-value-as-string',
   templateUrl: './text-value-as-string.component.html',
   styleUrls: ['./text-value-as-string.component.scss']
 })
-export class TextValueAsStringComponent extends BaseValueComponent implements OnInit, OnChanges {
+export class TextValueAsStringComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayValue?: ReadTextValueAsString;
+
+  valueChangesSubscription: Subscription;
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
@@ -29,7 +32,14 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
     // initialize form control elements
     this.valueFormControl = new FormControl(null);
+
     this.commentFormControl = new FormControl(null);
+
+    this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
+      data => {
+        this.valueFormControl.updateValueAndValidity();
+      }
+    );
 
     this.form = this.fb.group({
       textValue: this.valueFormControl,
@@ -45,6 +55,12 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     // at the first call of ngOnChanges, form control elements are not initialized yet
     if (this.valueFormControl !== undefined && this.commentFormControl !== undefined) {
       this.resetFormControl();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.valueChangesSubscription !== undefined) {
+      this.valueChangesSubscription.unsubscribe();
     }
   }
 

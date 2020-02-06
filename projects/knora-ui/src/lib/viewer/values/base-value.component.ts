@@ -5,23 +5,12 @@ import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '
 export function valueChangedValidator(initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
 
-    console.log(initValue, ', ', initComment, ', ', commentFormControl.value);
+    // console.log(initValue, ', ', initComment, ', ', commentFormControl.value);
 
     const invalid = initValue === control.value
       && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
 
     return invalid ? {valueNotChanged: {value: control.value}} : null;
-  };
-}
-
-export function commentValidator(valueControl: FormControl): ValidatorFn {
-  return (control: AbstractControl): {[key: string]: any} | null => {
-
-    valueControl.updateValueAndValidity();
-
-    const invalid = false;
-    return invalid ? {valueNotChanged: {value: control.value}} : null;
-
   };
 }
 
@@ -64,18 +53,15 @@ export abstract class BaseValueComponent {
     const initialValue = this.getInitValue();
     const initialComment = this.getInitComment();
 
-    console.log('reset value');
     this.valueFormControl.setValue(initialValue);
     this.commentFormControl.setValue(initialComment);
 
     this.valueFormControl.clearValidators();
-    this.commentFormControl.clearValidators();
 
     // set validators depending on mode
     if (this.mode === 'update') {
       console.log('reset update validators');
       this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue, initialComment, this.commentFormControl)]);
-      this.commentFormControl.setValidators([commentValidator(this.valueFormControl)]);
     } else {
       console.log('reset read/create validators');
       this.valueFormControl.setValidators([Validators.required]);
@@ -83,8 +69,6 @@ export abstract class BaseValueComponent {
     }
 
     this.valueFormControl.updateValueAndValidity();
-    this.commentFormControl.updateValueAndValidity();
-
   }
 
   /**

@@ -1,11 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {
-  CreateTextValueAsString,
-  MockResource,
-  ReadResource,
-  ReadTextValueAsString,
-  UpdateTextValueAsString
-} from '@knora/api';
+import {CreateTextValueAsString, MockResource, ReadResource, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {TextValueAsStringComponent} from 'knora-ui/lib/viewer/values/text-value/text-value-as-string/text-value-as-string.component';
 
 @Component({
@@ -39,8 +33,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.textEditComponent);
-    console.log(this.textCreateComponent);
+    // console.log(this);
+    // console.log(this.textEditComponent);
+    // console.log(this.textCreateComponent);
 
   }
 
@@ -57,7 +52,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
       this.editMode = 'read';
 
-      console.log('submitting updated value to Knora ', updatedVal);
+      // console.log('submitting updated value to Knora ', updatedVal);
 
       const newVal = new ReadTextValueAsString();
       newVal.id = 'newValId';
@@ -66,7 +61,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.testText = newVal;
 
     } else {
-      console.log('invalid value');
+      console.error('invalid value');
     }
   }
 
@@ -88,11 +83,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.createdVal = createdVal;
       this.createMode = 'read';
     } else {
-      console.log('invalid value');
+      console.error('invalid value');
     }
-
-    console.log();
-
 
   }
 
