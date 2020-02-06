@@ -2,10 +2,26 @@ import {Input} from '@angular/core';
 import {CreateValue, ReadValue, UpdateValue} from '@knora/api';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 
-export function valueChangedValidator(initValue: any): ValidatorFn {
+export function valueChangedValidator(initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
-    const invalid = initValue === control.value;
+
+    console.log(initValue, ', ', initComment, ', ', commentFormControl.value);
+
+    const invalid = initValue === control.value
+      && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+
     return invalid ? {valueNotChanged: {value: control.value}} : null;
+  };
+}
+
+export function commentValidator(valueControl: FormControl): ValidatorFn {
+  return (control: AbstractControl): {[key: string]: any} | null => {
+
+    valueControl.updateValueAndValidity();
+
+    const invalid = false;
+    return invalid ? {valueNotChanged: {value: control.value}} : null;
+
   };
 }
 
@@ -53,17 +69,21 @@ export abstract class BaseValueComponent {
     this.commentFormControl.setValue(initialComment);
 
     this.valueFormControl.clearValidators();
+    this.commentFormControl.clearValidators();
 
     // set validators depending on mode
     if (this.mode === 'update') {
       console.log('reset update validators');
-      this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue)]);
+      this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue, initialComment, this.commentFormControl)]);
+      this.commentFormControl.setValidators([commentValidator(this.valueFormControl)]);
     } else {
       console.log('reset read/create validators');
       this.valueFormControl.setValidators([Validators.required]);
+
     }
 
     this.valueFormControl.updateValueAndValidity();
+    this.commentFormControl.updateValueAndValidity();
 
   }
 
