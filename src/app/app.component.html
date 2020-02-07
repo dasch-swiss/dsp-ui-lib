@@ -1,6 +1,6 @@
 <div *ngIf="testText">
   <span>{{testText.propertyLabel}}: </span>
-  <lib-text-value-as-string #textEdit [mode]="editMode" [displayValue]="testText"></lib-text-value-as-string>
+  <lib-int-value #textEdit [mode]="editMode" [displayValue]="testText"></lib-int-value>
   <div>
     <button *ngIf="!editModeActive" (click)="activateEditMode()">edit</button>
     <button *ngIf="editModeActive" [disabled]="!textEditComponent.form.valid" (click)="saveEditValue()">Save</button>

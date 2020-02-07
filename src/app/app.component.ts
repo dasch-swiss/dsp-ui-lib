@@ -10,10 +10,12 @@ import {
   UpdateResource,
   UpdateTextValueAsString,
   UpdateValue,
-  WriteValueResponse
+  WriteValueResponse,
+  ReadIntValue
 } from '@knora/api';
 import {TextValueAsStringComponent} from 'knora-ui/lib/viewer/values/text-value/text-value-as-string/text-value-as-string.component';
 import {mergeMap} from 'rxjs/operators';
+import { IntValueComponent } from 'projects/knora-ui/src/lib/viewer/values/int-value/int-value.component';
 
 @Component({
   selector: 'app-root',
@@ -21,13 +23,13 @@ import {mergeMap} from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  @ViewChild('textEdit', {static: false}) textEditComponent: TextValueAsStringComponent;
+  @ViewChild('textEdit', {static: false}) textEditComponent: IntValueComponent;
   @ViewChild('textCreate', {static: false}) textCreateComponent: TextValueAsStringComponent;
 
   title = 'knora-ui-ng-lib';
 
   testthing: ReadResource;
-  testText: ReadTextValueAsString;
+  testText: ReadIntValue;
 
   editModeActive = false;
   editMode = 'read';
@@ -35,7 +37,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   createMode = 'create';
   createdVal;
 
-  knoraApiConnection;
+  knoraApiConnection: KnoraApiConnection;
 
   ngOnInit(): void {
     /*MockResource.getTestthing().subscribe(
@@ -58,7 +60,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     ).subscribe(
       (resource: ReadResource) => {
         this.testthing = resource;
-        this.testText = this.testthing.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
+        console.log(this.testthing);
+        this.testText = this.testthing.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger', ReadIntValue)[0];
       }
     );
 
@@ -80,12 +83,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.editModeActive = false;
     const updatedVal = this.textEditComponent.getUpdatedValue();
 
-    if (updatedVal instanceof UpdateTextValueAsString) {
+    if (updatedVal instanceof UpdateValue) {
 
       const updateRes = new UpdateResource();
       updateRes.id = this.testthing.id;
       updateRes.type = this.testthing.type;
-      updateRes.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText';
+      updateRes.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
       updateRes.value = updatedVal;
 
       this.knoraApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
@@ -96,7 +99,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       ).subscribe(
         (res2: ReadResource) => {
           console.log(res2);
-          this.testText = res2.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
+          this.testText = res2.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger', ReadIntValue)[0];
           this.editMode = 'read';
         }
       );

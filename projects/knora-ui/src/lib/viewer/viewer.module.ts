@@ -3,15 +3,16 @@ import {TextValueAsStringComponent} from './values/text-value/text-value-as-stri
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material';
 import {CommonModule} from '@angular/common';
+import { IntValueComponent } from './values/int-value/int-value.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule
   ],
-  exports: [TextValueAsStringComponent]
+  exports: [TextValueAsStringComponent, IntValueComponent]
 })
 export class ViewerModule {
 }
