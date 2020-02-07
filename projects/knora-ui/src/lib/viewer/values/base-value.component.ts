@@ -60,10 +60,10 @@ export abstract class BaseValueComponent {
 
     // set validators depending on mode
     if (this.mode === 'update') {
-      console.log('reset update validators');
+      // console.log('reset update validators');
       this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue, initialComment, this.commentFormControl)]);
     } else {
-      console.log('reset read/create validators');
+      // console.log('reset read/create validators');
       this.valueFormControl.setValidators([Validators.required]);
 
     }

@@ -1,4 +1,5 @@
 <div *ngIf="testText">
+  <span>{{testText.propertyLabel}}: </span>
   <lib-text-value-as-string #textEdit [mode]="editMode" [displayValue]="testText"></lib-text-value-as-string>
   <div>
     <button *ngIf="!editModeActive" (click)="activateEditMode()">edit</button>

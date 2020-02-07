@@ -74,7 +74,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
     newTextValue.text = this.valueFormControl.value;
 
-    if (this.commentFormControl.value !== null) {
+    if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newTextValue.valueHasComment = this.commentFormControl.value;
     }
 
@@ -94,7 +94,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
     updatedTextValue.text = this.valueFormControl.value;
 
-    if (this.commentFormControl.value !== null) {
+    if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedTextValue.valueHasComment = this.commentFormControl.value;
     }
 
