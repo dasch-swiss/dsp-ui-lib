@@ -16,15 +16,35 @@ export function valueChangedValidator(initValue: any, initComment: string, comme
 
 export abstract class BaseValueComponent {
 
+  /**
+   * Value to be displayed, if any.
+   */
   @Input() abstract displayValue?: ReadValue;
 
+  /**
+   * Sets the mode of the component.
+   */
   @Input() mode: 'read' | 'update' | 'create' | 'search';
 
-  valueFormControl: FormControl;
-  commentFormControl: FormControl;
+  /**
+   * FormControl element for the value.
+   */
+  abstract valueFormControl: FormControl;
 
-  form: FormGroup;
+  /**
+   * FormControl element for the comment on the value.
+   */
+  abstract commentFormControl: FormControl;
 
+  /**
+   * FormGroup that contains FormControl elements.
+   */
+  abstract form: FormGroup;
+
+  /**
+   * Custom validators for a specific value type.
+   * Can be initialized to an empty array if not needed.
+   */
   abstract customValidators: ValidatorFn[];
 
   /**

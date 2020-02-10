@@ -1,7 +1,7 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent, valueChangedValidator} from '../../base-value.component';
 import {CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
-import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -12,6 +12,11 @@ import {Subscription} from 'rxjs';
 export class TextValueAsStringComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayValue?: ReadTextValueAsString;
+
+  valueFormControl: FormControl;
+  commentFormControl: FormControl;
+
+  form: FormGroup;
 
   valueChangesSubscription: Subscription;
 
