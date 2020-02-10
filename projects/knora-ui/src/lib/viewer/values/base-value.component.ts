@@ -25,6 +25,8 @@ export abstract class BaseValueComponent {
 
   form: FormGroup;
 
+  abstract customValidators: ValidatorFn[];
+
   /**
    * Returns the initially given value set via displayValue.
    * Returns null if no value was given.
@@ -61,10 +63,10 @@ export abstract class BaseValueComponent {
     // set validators depending on mode
     if (this.mode === 'update') {
       // console.log('reset update validators');
-      this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue, initialComment, this.commentFormControl)]);
+      this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue, initialComment, this.commentFormControl)].concat(this.customValidators));
     } else {
       // console.log('reset read/create validators');
-      this.valueFormControl.setValidators([Validators.required]);
+      this.valueFormControl.setValidators([Validators.required].concat(this.customValidators));
 
     }
 

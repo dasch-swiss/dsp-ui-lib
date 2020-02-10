@@ -15,6 +15,8 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
   valueChangesSubscription: Subscription;
 
+  customValidators = [];
+
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }

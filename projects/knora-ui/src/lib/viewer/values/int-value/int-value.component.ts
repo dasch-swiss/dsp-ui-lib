@@ -2,7 +2,7 @@ import { Component, Inject, Input, OnInit, OnChanges, OnDestroy, SimpleChanges }
 import {BaseValueComponent, valueChangedValidator} from '../base-value.component';
 import { ReadIntValue, CreateIntValue, UpdateIntValue } from '@knora/api';
 import { Subscription } from 'rxjs';
-import { FormBuilder, FormControl } from '@angular/forms';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'lib-int-value',
@@ -14,6 +14,8 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
   @Input() displayValue?: ReadIntValue;
 
   valueChangesSubscription: Subscription;
+
+  customValidators = [Validators.pattern(/^-?\d+$/)]; // only allow for integer values (no fractions)
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
