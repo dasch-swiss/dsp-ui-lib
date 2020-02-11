@@ -1,6 +1,11 @@
 <div>
   <span [ngSwitch]="displayValue.type">
-    <lib-text-value-as-string #displayValue *ngSwitchCase="constants.TextValue" [mode]="mode" [displayValue]="displayValue"></lib-text-value-as-string>
-    <lib-int-value #displayValue *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></lib-int-value>
+    <lib-text-value-as-string #displayVal *ngSwitchCase="constants.TextValue" [mode]="mode" [displayValue]="displayValue"></lib-text-value-as-string>
+    <lib-int-value #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></lib-int-value>
   </span>
+</div>
+<div>
+  <button *ngIf="canModify && !editModeActive" (click)="activateEditMode()">edit</button>
+  <button *ngIf="editModeActive" [disabled]="!displayValueComponent.form.valid" (click)="saveEditValue()">Save</button>
+  <button *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>
 </div>

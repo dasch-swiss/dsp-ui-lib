@@ -77,7 +77,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
 
     newIntValue.int = this.valueFormControl.value;
 
-    if(this.commentFormControl.value !== null && this.commentFormControl.value !== ''){
+    if (this.commentFormControl.value !== null && this.commentFormControl.value !== ''){
       newIntValue.valueHasComment = this.commentFormControl.value;
     }
 
@@ -85,7 +85,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
   }
 
   getUpdatedValue(): UpdateIntValue | false {
-    if(this.mode !== 'update' || !this.form.valid){
+    if (this.mode !== 'update' || !this.form.valid){
       return false;
     }
 

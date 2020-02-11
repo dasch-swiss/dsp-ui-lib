@@ -1,15 +1,5 @@
-<div *ngIf="testText">
-  <span>{{testText.propertyLabel}}: </span>
-  <lib-int-value #textEdit [mode]="editMode" [displayValue]="testText"></lib-int-value>
-  <div>
-    <button *ngIf="!editModeActive" (click)="activateEditMode()">edit</button>
-    <button *ngIf="editModeActive" [disabled]="!textEditComponent.form.valid" (click)="saveEditValue()">Save</button>
-    <button *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>
-  </div>
+<div *ngIf="testValue">
+  <lib-display-edit [parentResource]="testthing" [displayValue]="testValue"></lib-display-edit>
 </div>
 
-<div>
-  <lib-text-value-as-string #textCreate [mode]="createMode" [displayValue]="createdVal"></lib-text-value-as-string>
-  <button [disabled]="!textCreateComponent?.form?.valid" (click)="saveCreateValue()">Save</button>
-  <button (click)="cancelCreateValue()">Cancel</button>
-</div>
+
