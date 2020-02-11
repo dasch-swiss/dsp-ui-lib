@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TextValueAsStringComponent} from './text-value-as-string.component';
 import {Component, DebugElement, OnInit, ViewChild} from '@angular/core';
-import {MockResource, ReadTextValueAsString, UpdateTextValueAsString, UpdateValue} from '@knora/api';
+import {MockResource, ReadTextValueAsString, UpdateTextValueAsString, UpdateValue, CreateTextValueAsString} from '@knora/api';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -38,11 +38,32 @@ class TestHostDisplayValueComponent implements OnInit {
   }
 }
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+  selector: `lib-host-2-component`,
+  template: `
+    <lib-text-value-as-string #strVal [mode]="mode"></lib-text-value-as-string>`
+})
+class TestHostCreateValueComponent implements OnInit {
+
+  @ViewChild('strVal', {static: false}) stringValueComponent: TextValueAsStringComponent;
+
+  mode: 'read' | 'update' | 'create' | 'search';
+
+  ngOnInit() {
+
+    this.mode = 'create';
+
+  }
+}
+
 describe('TextValueAsStringComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TestHostDisplayValueComponent, TextValueAsStringComponent],
+      declarations: [TestHostDisplayValueComponent, TextValueAsStringComponent, TestHostCreateValueComponent],
       imports: [
         ReactiveFormsModule,
         MatInputModule,
@@ -184,6 +205,79 @@ describe('TextValueAsStringComponent', () => {
 
     });
 
+  });
+
+  describe('create a text value without markup', () => {
+
+    let testHostComponent: TestHostCreateValueComponent;
+    let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+    let valueComponentDe: DebugElement;
+    let valueInputDebugElement: DebugElement;
+    let valueInputNativeElement;
+
+    beforeEach(() => {
+      testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.stringValueComponent).toBeTruthy();
+
+      const hostCompDe = testHostFixture.debugElement;
+      valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+    });
+
+    it('should create a value', () => {
+
+      expect(testHostComponent.stringValueComponent.displayValue).toEqual(undefined);
+
+      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      valueInputNativeElement.value = 'created text';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+
+      const newValue = testHostComponent.stringValueComponent.getNewValue();
+
+      expect(newValue instanceof CreateTextValueAsString).toBeTruthy();
+
+      expect((newValue as CreateTextValueAsString).text).toEqual('created text');
+    });
+
+    it('should reset form after cancellation', () => {
+      expect(testHostComponent.stringValueComponent.displayValue).toEqual(undefined);
+
+      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      valueInputNativeElement.value = 'created text';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.stringValueComponent.resetFormControl();
+
+      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('');
+
+    });
   });
 
 });
