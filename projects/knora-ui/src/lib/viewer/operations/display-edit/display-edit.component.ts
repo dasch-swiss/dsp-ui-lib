@@ -1,6 +1,7 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {
-  Constants, KnoraApiConfig, KnoraApiConnection,
+  Constants,
+  KnoraApiConnection,
   PermissionUtil,
   ReadResource,
   ReadValue,
@@ -10,6 +11,7 @@ import {
 } from '@knora/api';
 import {BaseValueComponent} from '../../values';
 import {mergeMap} from 'rxjs/operators';
+import {KnoraApiConnectionToken} from '../../../core';
 
 @Component({
   selector: 'lib-display-edit',
@@ -34,27 +36,18 @@ export class DisplayEditComponent implements OnInit {
 
   editModeActive = false;
 
-  knoraApiConnection;
-
-  constructor() {
+  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
   ngOnInit() {
 
-    // !!!!!!! Replace this with injection token
-    const config = new KnoraApiConfig('http', '0.0.0.0', 3333, undefined, undefined, true);
-    this.knoraApiConnection = new KnoraApiConnection(config);
+    this.mode = 'read';
 
-    this.knoraApiConnection.v2.auth.login('username', 'root', 'test').subscribe(
-      loginRes => {
-        this.mode = 'read';
+    // determine if user has modify permissions
+    const allPermissions = PermissionUtil.allUserPermissions(this.displayValue.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR');
 
-        // determine if user has modify permissions
-        const allPermissions = PermissionUtil.allUserPermissions(this.displayValue.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR');
+    this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
 
-        this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
-      }
-    );
   }
 
   activateEditMode() {
@@ -96,9 +89,6 @@ export class DisplayEditComponent implements OnInit {
     this.editModeActive = false;
     this.mode = 'read';
   }
-
-
-
 
 
 }

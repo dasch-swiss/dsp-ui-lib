@@ -1,7 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ApiResponseData, KnoraApiConfig, KnoraApiConnection, LoginResponse, ReadIntValue, ReadResource, ReadValue} from '@knora/api';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {ApiResponseData, KnoraApiConnection, LoginResponse, ReadIntValue, ReadResource, ReadValue} from '@knora/api';
 import {mergeMap} from 'rxjs/operators';
 import {DisplayEditComponent} from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
+import {KnoraApiConnectionToken} from 'knora-ui';
 
 @Component({
   selector: 'app-root',
@@ -16,12 +17,10 @@ export class AppComponent implements OnInit {
   testthing: ReadResource;
   testValue: ReadValue;
 
-  knoraApiConnection: KnoraApiConnection;
+  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+  }
 
   ngOnInit(): void {
-
-    const config = new KnoraApiConfig('http', '0.0.0.0', 3333, undefined, undefined, true);
-    this.knoraApiConnection = new KnoraApiConnection(config);
 
     this.knoraApiConnection.v2.auth.login('username', 'root', 'test').pipe(
       mergeMap(
