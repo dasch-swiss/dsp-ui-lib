@@ -204,6 +204,7 @@ describe('DisplayEditComponent', () => {
 
       testHostComponent.displayEditValueComponent.canModify = true;
       testHostComponent.displayEditValueComponent.editModeActive = true;
+      testHostComponent.displayEditValueComponent.mode = 'update';
 
       testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.clearValidators();
       testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.updateValueAndValidity();
@@ -226,6 +227,7 @@ describe('DisplayEditComponent', () => {
       expect(readValueSpy).toHaveBeenCalledWith(testHostComponent.readResource.id, testHostComponent.readValue.uuid);
 
       expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
+      expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
     }));
 
   });
