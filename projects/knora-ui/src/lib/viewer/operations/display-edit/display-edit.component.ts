@@ -11,7 +11,8 @@ import {
 } from '@knora/api';
 import {BaseValueComponent} from '../../values';
 import {mergeMap} from 'rxjs/operators';
-import {KnoraApiConnectionToken} from 'knora-ui';
+import {KnoraApiConnectionToken} from '../../../core';
+
 
 @Component({
   selector: 'lib-display-edit',
