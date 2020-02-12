@@ -83,18 +83,11 @@ describe('DisplayEditComponent', () => {
   let knoraApiConnection: KnoraApiConnection;
 
   let hostCompDe;
-  let displayEditComponentDe;
-  let editButtonDebugElement;
-  let editButtonNativeElement;
-  let saveButtonDebugElement;
-  let saveButtonNativeElement;
 
   beforeEach(async(() => {
 
     config = new KnoraApiConfig('http', '0.0.0.0', 3333, undefined, undefined, true);
     knoraApiConnection = new KnoraApiConnection(config);
-
-    // console.log(knoraApiConnection)
 
     TestBed.configureTestingModule({
       imports: [
@@ -127,26 +120,30 @@ describe('DisplayEditComponent', () => {
     expect(testHostComponent.displayEditValueComponent).toBeTruthy();
   });
 
-  it('should display an edit button if the user has the necessary permissions', () => {
-    expect(testHostComponent.displayEditValueComponent.canModify).toBeTruthy();
-  });
+  describe('change from display to edit mode', () => {
 
-  it('should switch to edit mode when the edit button is clicked', () => {
+    it('should display an edit button if the user has the necessary permissions', () => {
+      expect(testHostComponent.displayEditValueComponent.canModify).toBeTruthy();
+    });
 
-    displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
-    editButtonDebugElement = displayEditComponentDe.query(By.css('button.edit'));
-    editButtonNativeElement = editButtonDebugElement.nativeElement;
+    it('should switch to edit mode when the edit button is clicked', () => {
 
-    editButtonNativeElement.click();
-    testHostFixture.detectChanges();
+      const displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
+      const editButtonDebugElement = displayEditComponentDe.query(By.css('button.edit'));
+      const editButtonNativeElement = editButtonDebugElement.nativeElement;
 
-    expect(testHostComponent.displayEditValueComponent.editModeActive).toBeTruthy();
-    expect(testHostComponent.displayEditValueComponent.displayValueComponent.form.valid).toBeFalsy();
+      editButtonNativeElement.click();
+      testHostFixture.detectChanges();
 
-    saveButtonDebugElement = displayEditComponentDe.query(By.css('button.save'));
-    saveButtonNativeElement = saveButtonDebugElement.nativeElement;
+      expect(testHostComponent.displayEditValueComponent.editModeActive).toBeTruthy();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.form.valid).toBeFalsy();
 
-    expect(saveButtonNativeElement.disabled).toBeTruthy();
+      const saveButtonDebugElement = displayEditComponentDe.query(By.css('button.save'));
+      const saveButtonNativeElement = saveButtonDebugElement.nativeElement;
+
+      expect(saveButtonNativeElement.disabled).toBeTruthy();
+
+    });
 
   });
 });
