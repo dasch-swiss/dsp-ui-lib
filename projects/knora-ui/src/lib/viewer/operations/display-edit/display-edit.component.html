@@ -5,7 +5,7 @@
   </span>
 </div>
 <div>
-  <button *ngIf="canModify && !editModeActive" (click)="activateEditMode()">edit</button>
-  <button *ngIf="editModeActive" [disabled]="!displayValueComponent.form.valid" (click)="saveEditValue()">Save</button>
-  <button *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>
+  <button class="edit" *ngIf="canModify && !editModeActive" (click)="activateEditMode()">edit</button>
+  <button class="save" *ngIf="editModeActive" [disabled]="!displayValueComponent.form.valid" (click)="saveEditValue()">Save</button>
+  <button class="cancel" *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>
 </div>

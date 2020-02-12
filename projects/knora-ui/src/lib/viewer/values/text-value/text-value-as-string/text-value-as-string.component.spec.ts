@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TextValueAsStringComponent} from './text-value-as-string.component';
 import {Component, DebugElement, OnInit, ViewChild} from '@angular/core';
-import {MockResource, ReadTextValueAsString, UpdateTextValueAsString, UpdateValue, CreateTextValueAsString} from '@knora/api';
+import {CreateTextValueAsString, MockResource, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -60,7 +60,7 @@ class TestHostDisplayValueCommentComponent implements OnInit {
       const strVal: ReadTextValueAsString =
         res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
 
-      strVal.valueHasComment = "this is a comment";
+      strVal.valueHasComment = 'this is a comment';
       this.displayStrVal = strVal;
 
       this.mode = 'read';
@@ -96,8 +96,8 @@ describe('TextValueAsStringComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         TestHostDisplayValueComponent,
-        TestHostDisplayValueCommentComponent, 
-        TextValueAsStringComponent, 
+        TestHostDisplayValueCommentComponent,
+        TextValueAsStringComponent,
         TestHostCreateValueComponent],
       imports: [
         ReactiveFormsModule,
@@ -260,7 +260,7 @@ describe('TextValueAsStringComponent', () => {
       expect(testHostComponent.stringValueComponent).toBeTruthy();
 
       const hostCompDe = testHostFixture.debugElement;
-      
+
       valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
@@ -430,7 +430,7 @@ describe('TextValueAsStringComponent', () => {
       expect(testHostComponent.stringValueComponent).toBeTruthy();
 
       const hostCompDe = testHostFixture.debugElement;
-      
+
       valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
@@ -493,7 +493,7 @@ describe('TextValueAsStringComponent', () => {
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
-      commentInputNativeElement.value = "comment";
+      commentInputNativeElement.value = 'comment';
 
       commentInputNativeElement.dispatchEvent(new Event('input'));
 
@@ -514,8 +514,8 @@ describe('TextValueAsStringComponent', () => {
     });
 
     // value: no  comment:yes
-    it('should not allow a comment if a value does not exist', () => {  
-      commentInputNativeElement.value = "comment";
+    it('should not allow a comment if a value does not exist', () => {
+      commentInputNativeElement.value = 'comment';
 
       commentInputNativeElement.dispatchEvent(new Event('input'));
 
