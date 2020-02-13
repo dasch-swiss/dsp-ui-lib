@@ -147,6 +147,8 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
@@ -175,6 +177,8 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
@@ -200,6 +204,8 @@ describe('TextValueAsStringComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
@@ -452,6 +458,8 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       const newValue = testHostComponent.inputValueComponent.getNewValue();
@@ -471,6 +479,8 @@ describe('TextValueAsStringComponent', () => {
       commentInputNativeElement.dispatchEvent(new Event('input'));
 
       testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

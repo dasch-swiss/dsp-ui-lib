@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IntValueComponent } from './int-value.component';
-import { ReadIntValue, MockResource, UpdateValue, UpdateIntValue } from '@knora/api';
+import { ReadIntValue, MockResource, UpdateValue, UpdateIntValue, CreateIntValue } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
@@ -38,13 +38,34 @@ class TestHostDisplayValueComponent implements OnInit {
   }
 }
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+  template: `
+    <kui-int-value #inputVal [mode]="mode"></kui-int-value>`
+})
+class TestHostCreateValueComponent implements OnInit {
+
+  @ViewChild('inputVal', {static: false}) inputValueComponent: IntValueComponent;
+
+  mode: 'read' | 'update' | 'create' | 'search';
+
+  ngOnInit() {
+
+    this.mode = 'create';
+
+  }
+}
+
 describe('IntValueComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ 
         IntValueComponent,
-        TestHostDisplayValueComponent
+        TestHostDisplayValueComponent,
+        TestHostCreateValueComponent
        ],
        imports: [
         ReactiveFormsModule,
@@ -61,6 +82,8 @@ describe('IntValueComponent', () => {
     let valueComponentDe: DebugElement;
     let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
+    let commentInputDebugElement: DebugElement;
+    let commentInputNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
@@ -74,6 +97,9 @@ describe('IntValueComponent', () => {
       valueComponentDe = hostCompDe.query(By.directive(IntValueComponent));
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -117,6 +143,36 @@ describe('IntValueComponent', () => {
       expect(updatedValue instanceof UpdateIntValue).toBeTruthy();
 
       expect((updatedValue as UpdateIntValue).int).toEqual(20);
+
+    });
+
+    it('should validate an existing value with an added comment', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('1');
+
+      commentInputNativeElement.value = 'this is a comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateIntValue).toBeTruthy();
+
+      expect((updatedValue as UpdateIntValue).valueHasComment).toEqual('this is a comment');
 
     });
 
@@ -190,6 +246,85 @@ describe('IntValueComponent', () => {
       expect(valueInputNativeElement.value).toEqual('20');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+    });
+  });
+
+  describe('create an integer value', () => {
+
+    let testHostComponent: TestHostCreateValueComponent;
+    let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+    let valueComponentDe: DebugElement;
+    let valueInputDebugElement: DebugElement;
+    let valueInputNativeElement;
+    let commentInputDebugElement: DebugElement;
+    let commentInputNativeElement;
+
+    beforeEach(() => {
+      testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
+
+      const hostCompDe = testHostFixture.debugElement;
+
+      valueComponentDe = hostCompDe.query(By.directive(IntValueComponent));
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+
+      expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+      expect(valueInputNativeElement.value).toEqual('');
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+      expect(commentInputNativeElement.value).toEqual('');
+      expect(commentInputNativeElement.readOnly).toEqual(false);
+    });
+
+    it('should create a value', () => {
+      valueInputNativeElement.value = '20';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const newValue = testHostComponent.inputValueComponent.getNewValue();
+
+      expect(newValue instanceof CreateIntValue).toBeTruthy();
+
+      expect((newValue as CreateIntValue).int).toEqual(20);
+    });
+
+    it('should reset form after cancellation', () => {
+      valueInputNativeElement.value = '20';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      commentInputNativeElement.value = 'created comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('');
+
+      expect(commentInputNativeElement.value).toEqual('');
 
     });
   });
