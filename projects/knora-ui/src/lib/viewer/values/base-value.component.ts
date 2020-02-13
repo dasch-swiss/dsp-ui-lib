@@ -1,6 +1,7 @@
 import {Input} from '@angular/core';
 import {CreateValue, ReadValue, UpdateValue} from '@knora/api';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 export function valueChangedValidator(initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
@@ -42,6 +43,11 @@ export abstract class BaseValueComponent {
   abstract form: FormGroup;
 
   /**
+   * Subscription used for when the value changes.
+   */
+  abstract valueChangesSubscription: Subscription;
+
+  /**
    * Custom validators for a specific value type.
    * Can be initialized to an empty array if not needed.
    */
@@ -72,25 +78,37 @@ export abstract class BaseValueComponent {
    * Depending on the mode, validators are reset.
    */
   resetFormControl(): void {
-    const initialValue = this.getInitValue();
-    const initialComment = this.getInitComment();
+    if (this.valueFormControl !== undefined && this.commentFormControl !== undefined){
 
-    this.valueFormControl.setValue(initialValue);
-    this.commentFormControl.setValue(initialComment);
+      const initialValue = this.getInitValue();
+      const initialComment = this.getInitComment();
 
-    this.valueFormControl.clearValidators();
+      this.valueFormControl.setValue(initialValue);
+      this.commentFormControl.setValue(initialComment);
 
-    // set validators depending on mode
-    if (this.mode === 'update') {
-      // console.log('reset update validators');
-      this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue, initialComment, this.commentFormControl)].concat(this.customValidators));
-    } else {
-      // console.log('reset read/create validators');
-      this.valueFormControl.setValidators([Validators.required].concat(this.customValidators));
+      this.valueFormControl.clearValidators();
 
+      // set validators depending on mode
+      if (this.mode === 'update') {
+        // console.log('reset update validators');
+        this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue, initialComment, this.commentFormControl)].concat(this.customValidators));
+      } else {
+        // console.log('reset read/create validators');
+        this.valueFormControl.setValidators([Validators.required].concat(this.customValidators));
+
+      }
+
+      this.valueFormControl.updateValueAndValidity();
     }
+  }
 
-    this.valueFormControl.updateValueAndValidity();
+  /**
+   * Unsubscribes from the valueChangesSubscription
+   */
+  unsubscribeFromValueChanges(): void{
+    if (this.valueChangesSubscription !== undefined) {
+      this.valueChangesSubscription.unsubscribe();
+    }
   }
 
   /**

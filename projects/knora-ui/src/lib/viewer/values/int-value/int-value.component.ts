@@ -56,9 +56,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.valueFormControl !== undefined && this.commentFormControl !== undefined) {
-      this.resetFormControl();
-    }
+    this.resetFormControl();
   }
 
   // unsubscribe when the object is destroyed to prevent memory leaks
