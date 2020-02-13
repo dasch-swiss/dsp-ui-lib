@@ -55,7 +55,7 @@ describe('IntValueComponent', () => {
     .compileComponents();
   }));
   
-  fdescribe('display and edit an integer value', () => {
+  describe('display and edit an integer value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
@@ -81,6 +81,8 @@ describe('IntValueComponent', () => {
       expect(testHostComponent.inputValueComponent.displayValue.int).toEqual(1);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
       expect(valueInputNativeElement.value).toEqual('1');
 

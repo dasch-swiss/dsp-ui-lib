@@ -13,23 +13,23 @@ import {By} from '@angular/platform-browser';
  */
 @Component({
   template: `
-    <kui-text-value-as-string #strVal [displayValue]="displayStrVal" [mode]="mode"></kui-text-value-as-string>`
+    <kui-text-value-as-string #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-text-value-as-string>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('strVal', {static: false}) stringValueComponent: TextValueAsStringComponent;
+  @ViewChild('inputVal', {static: false}) inputValueComponent: TextValueAsStringComponent;
 
-  displayStrVal: ReadTextValueAsString;
+  displayInputVal: ReadTextValueAsString;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(res => {
-      const strVal: ReadTextValueAsString =
+      const inputVal: ReadTextValueAsString =
         res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
 
-      this.displayStrVal = strVal;
+      this.displayInputVal = inputVal;
 
       this.mode = 'read';
     });
@@ -42,24 +42,24 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-text-value-as-string #strVal [displayValue]="displayStrVal" [mode]="mode"></kui-text-value-as-string>`
+    <kui-text-value-as-string #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-text-value-as-string>`
 })
 class TestHostDisplayValueCommentComponent implements OnInit {
 
-  @ViewChild('strVal', {static: false}) stringValueComponent: TextValueAsStringComponent;
+  @ViewChild('inputVal', {static: false}) inputValueComponent: TextValueAsStringComponent;
 
-  displayStrVal: ReadTextValueAsString;
+  displayInputVal: ReadTextValueAsString;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(res => {
-      const strVal: ReadTextValueAsString =
-        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
+      const inputVal: ReadTextValueAsString =
+      res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
 
-      strVal.valueHasComment = 'this is a comment';
-      this.displayStrVal = strVal;
+      inputVal.valueHasComment = 'this is a comment';
+      this.displayInputVal = inputVal;
 
       this.mode = 'read';
     });
@@ -72,11 +72,11 @@ class TestHostDisplayValueCommentComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-text-value-as-string #strVal [mode]="mode"></kui-text-value-as-string>`
+    <kui-text-value-as-string #inputVal [mode]="mode"></kui-text-value-as-string>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('strVal', {static: false}) stringValueComponent: TextValueAsStringComponent;
+  @ViewChild('inputVal', {static: false}) inputValueComponent: TextValueAsStringComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
@@ -119,7 +119,7 @@ describe('TextValueAsStringComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
-      expect(testHostComponent.stringValueComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
 
       const hostCompDe = testHostFixture.debugElement;
       valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
@@ -129,9 +129,11 @@ describe('TextValueAsStringComponent', () => {
 
     it('should display an existing value', () => {
 
-      expect(testHostComponent.stringValueComponent.displayValue.text).toEqual('test');
+      expect(testHostComponent.inputValueComponent.displayValue.text).toEqual('test');
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
       expect(valueInputNativeElement.value).toEqual('test');
 
@@ -147,7 +149,7 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('test');
 
@@ -157,9 +159,9 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      const updatedValue = testHostComponent.stringValueComponent.getUpdatedValue();
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
       expect(updatedValue instanceof UpdateTextValueAsString).toBeTruthy();
 
@@ -175,7 +177,7 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('test');
 
@@ -185,9 +187,9 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      const updatedValue = testHostComponent.stringValueComponent.getUpdatedValue();
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
       expect(updatedValue).toBeFalsy();
 
@@ -201,7 +203,7 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('test');
 
@@ -211,11 +213,11 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      testHostComponent.stringValueComponent.resetFormControl();
+      testHostComponent.inputValueComponent.resetFormControl();
 
       expect(valueInputNativeElement.value).toEqual('test');
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
     });
 
@@ -226,13 +228,13 @@ describe('TextValueAsStringComponent', () => {
       newStr.text = 'my updated text';
       newStr.id = 'updatedId';
 
-      testHostComponent.displayStrVal = newStr;
+      testHostComponent.displayInputVal = newStr;
 
       testHostFixture.detectChanges();
 
       expect(valueInputNativeElement.value).toEqual('my updated text');
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
     });
 
@@ -254,7 +256,7 @@ describe('TextValueAsStringComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
-      expect(testHostComponent.stringValueComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
 
       const hostCompDe = testHostFixture.debugElement;
 
@@ -269,11 +271,11 @@ describe('TextValueAsStringComponent', () => {
 
     it('should display an existing value', () => {
 
-      expect(testHostComponent.stringValueComponent.displayValue.text).toEqual('test');
+      expect(testHostComponent.inputValueComponent.displayValue.text).toEqual('test');
 
-      expect(testHostComponent.stringValueComponent.displayValue.valueHasComment).toEqual('this is a comment');
+      expect(testHostComponent.inputValueComponent.displayValue.valueHasComment).toEqual('this is a comment');
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       expect(valueInputNativeElement.value).toEqual('test');
 
@@ -295,7 +297,7 @@ describe('TextValueAsStringComponent', () => {
 
       expect(commentInputNativeElement.readOnly).toEqual(false);
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('test');
 
@@ -311,9 +313,9 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      const updatedValue = testHostComponent.stringValueComponent.getUpdatedValue();
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
       expect(updatedValue instanceof UpdateTextValueAsString).toBeTruthy();
 
@@ -331,7 +333,7 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('test');
 
@@ -347,9 +349,9 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      const updatedValue = testHostComponent.stringValueComponent.getUpdatedValue();
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
       expect(updatedValue).toBeFalsy();
 
@@ -363,7 +365,7 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('test');
 
@@ -377,13 +379,13 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      testHostComponent.stringValueComponent.resetFormControl();
+      testHostComponent.inputValueComponent.resetFormControl();
 
       expect(valueInputNativeElement.value).toEqual('test');
 
       expect(commentInputNativeElement.value).toEqual('this is a comment');
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
     });
 
@@ -395,7 +397,7 @@ describe('TextValueAsStringComponent', () => {
       newStr.valueHasComment = 'my updated comment';
       newStr.id = 'updatedId';
 
-      testHostComponent.displayStrVal = newStr;
+      testHostComponent.displayInputVal = newStr;
 
       testHostFixture.detectChanges();
 
@@ -403,7 +405,7 @@ describe('TextValueAsStringComponent', () => {
 
       expect(commentInputNativeElement.value).toEqual('my updated comment');
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
     });
   });
@@ -424,7 +426,7 @@ describe('TextValueAsStringComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
-      expect(testHostComponent.stringValueComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
 
       const hostCompDe = testHostFixture.debugElement;
 
@@ -435,8 +437,8 @@ describe('TextValueAsStringComponent', () => {
       commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
-      expect(testHostComponent.stringValueComponent.displayValue).toEqual(undefined);
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
       expect(valueInputNativeElement.value).toEqual('');
       expect(valueInputNativeElement.readOnly).toEqual(false);
       expect(commentInputNativeElement.value).toEqual('');
@@ -450,9 +452,9 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      const newValue = testHostComponent.stringValueComponent.getNewValue();
+      const newValue = testHostComponent.inputValueComponent.getNewValue();
 
       expect(newValue instanceof CreateTextValueAsString).toBeTruthy();
 
@@ -470,11 +472,11 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      testHostComponent.stringValueComponent.resetFormControl();
+      testHostComponent.inputValueComponent.resetFormControl();
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('');
 
@@ -496,7 +498,7 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
     });
 
     // value: yes  comment:no
@@ -507,7 +509,7 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
     });
 
     // value: no  comment:yes
@@ -518,7 +520,7 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.stringValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
     });
 
     // *** End testing comments ***
