@@ -20,7 +20,8 @@ jobs:
     - run: git clone -b wip/121-mock-factory --single-branch --depth 1 https://github.com/dasch-swiss/knora-api-js-lib
     - run: cd knora-api-js-lib
     - run: npm install
-    - run: npm run build --if-present
-    - run: npm test
+    - run: npm run yalc-publish
+    #- run: npm run build --if-present
+    #- run: npm test
       env:
         CI: true
