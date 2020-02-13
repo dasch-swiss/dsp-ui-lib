@@ -1,0 +1,8 @@
+<span [formGroup]="form">
+    <mat-form-field class="large-field">
+        <input matInput [formControlName]="'intValue'" class="value" placeholder="Int value" type="number" [readonly]="mode === 'read'">
+    </mat-form-field>
+    <mat-form-field class="large-field">
+        <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
+    </mat-form-field>
+</span>
