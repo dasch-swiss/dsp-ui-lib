@@ -21,7 +21,7 @@ import {of} from 'rxjs';
 import {KnoraApiConnectionToken} from '../../../core';
 
 @Component({
-  selector: `lib-text-value-as-string`,
+  selector: `kui-text-value-as-string`,
   template: ``
 })
 class TestTextValueAsStringComponent {
@@ -32,7 +32,7 @@ class TestTextValueAsStringComponent {
 }
 
 @Component({
-  selector: `lib-int-value`,
+  selector: `kui-int-value`,
   template: ``
 })
 class TestIntValueComponent implements OnInit {
@@ -66,7 +66,7 @@ class TestIntValueComponent implements OnInit {
 @Component({
   selector: `lib-host-component`,
   template: `
-    <lib-display-edit #displayEditVal [parentResource]="readResource" [displayValue]="readValue"></lib-display-edit>`
+    <kui-display-edit #displayEditVal [parentResource]="readResource" [displayValue]="readValue"></kui-display-edit>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 

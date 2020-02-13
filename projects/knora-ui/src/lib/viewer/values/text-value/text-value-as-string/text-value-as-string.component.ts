@@ -5,7 +5,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'lib-text-value-as-string',
+  selector: 'kui-text-value-as-string',
   templateUrl: './text-value-as-string.component.html',
   styleUrls: ['./text-value-as-string.component.scss']
 })

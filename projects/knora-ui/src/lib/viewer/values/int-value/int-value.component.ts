@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
-  selector: 'lib-int-value',
+  selector: 'kui-int-value',
   templateUrl: './int-value.component.html',
   styleUrls: ['./int-value.component.scss']
 })

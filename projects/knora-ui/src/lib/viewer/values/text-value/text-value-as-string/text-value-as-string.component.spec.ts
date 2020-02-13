@@ -14,7 +14,7 @@ import {By} from '@angular/platform-browser';
 @Component({
   selector: `lib-host-component`,
   template: `
-    <lib-text-value-as-string #strVal [displayValue]="displayStrVal" [mode]="mode"></lib-text-value-as-string>`
+    <kui-text-value-as-string #strVal [displayValue]="displayStrVal" [mode]="mode"></kui-text-value-as-string>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -44,7 +44,7 @@ class TestHostDisplayValueComponent implements OnInit {
 @Component({
   selector: `lib-host-2-component`,
   template: `
-    <lib-text-value-as-string #strVal [displayValue]="displayStrVal" [mode]="mode"></lib-text-value-as-string>`
+    <kui-text-value-as-string #strVal [displayValue]="displayStrVal" [mode]="mode"></kui-text-value-as-string>`
 })
 class TestHostDisplayValueCommentComponent implements OnInit {
 
@@ -75,7 +75,7 @@ class TestHostDisplayValueCommentComponent implements OnInit {
 @Component({
   selector: `lib-host-3-component`,
   template: `
-    <lib-text-value-as-string #strVal [mode]="mode"></lib-text-value-as-string>`
+    <kui-text-value-as-string #strVal [mode]="mode"></kui-text-value-as-string>`
 })
 class TestHostCreateValueComponent implements OnInit {
 

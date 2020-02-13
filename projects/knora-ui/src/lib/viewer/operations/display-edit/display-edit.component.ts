@@ -15,7 +15,7 @@ import {KnoraApiConnectionToken} from '../../../core';
 
 
 @Component({
-  selector: 'lib-display-edit',
+  selector: 'kui-display-edit',
   templateUrl: './display-edit.component.html',
   styleUrls: ['./display-edit.component.scss']
 })

@@ -1,7 +1,7 @@
 <div>
   <span [ngSwitch]="displayValue.type">
-    <lib-text-value-as-string #displayVal *ngSwitchCase="constants.TextValue" [mode]="mode" [displayValue]="displayValue"></lib-text-value-as-string>
-    <lib-int-value #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></lib-int-value>
+    <kui-text-value-as-string #displayVal *ngSwitchCase="constants.TextValue" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-string>
+    <kui-int-value #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></kui-int-value>
   </span>
 </div>
 <div>
