@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IntValueComponent } from './int-value.component';
-import { ReadIntValue, MockResource } from '@knora/api';
+import { ReadIntValue, MockResource, UpdateValue, UpdateIntValue } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
@@ -87,6 +87,109 @@ describe('IntValueComponent', () => {
       expect(valueInputNativeElement.value).toEqual('1');
 
       expect(valueInputNativeElement.readOnly).toEqual(true);
+
+    });
+
+    it('should make an existing value editable', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('1');
+
+      valueInputNativeElement.value = '20';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateIntValue).toBeTruthy();
+
+      expect((updatedValue as UpdateIntValue).int).toEqual(20);
+
+    });
+
+    it('should not return an invalid update value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('1');
+
+      valueInputNativeElement.value = '1.5';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBeFalsy();
+
+    });
+
+    it('should restore the initially displayed value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('1');
+
+      valueInputNativeElement.value = '20';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(valueInputNativeElement.value).toEqual('1');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+    });
+
+    it('should set a new display value', () => {
+
+      const newInt = new ReadIntValue();
+
+      newInt.int = 20;
+      newInt.id = 'updatedId';
+
+      testHostComponent.displayInputVal = newInt;
+
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('20');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
     });
   });
