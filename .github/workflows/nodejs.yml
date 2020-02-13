@@ -21,7 +21,6 @@ jobs:
     - run: cd knora-api-js-lib && npm install yalc -g && npm install && npm run yalc-publish
     - run: yalc add @knora/api
     - run: npm install
-    - run: npm install puppeteer --only=dev
     - run: npm run test-lib
       env:
         CI: true
