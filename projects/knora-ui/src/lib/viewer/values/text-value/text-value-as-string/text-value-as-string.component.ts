@@ -60,15 +60,11 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
     // resets values and validators in form controls when input displayValue or mode changes
     // at the first call of ngOnChanges, form control elements are not initialized yet
-    if (this.valueFormControl !== undefined && this.commentFormControl !== undefined) {
-      this.resetFormControl();
-    }
+    this.resetFormControl();
   }
 
   ngOnDestroy(): void {
-    if (this.valueChangesSubscription !== undefined) {
-      this.valueChangesSubscription.unsubscribe();
-    }
+    this.unsubscribeFromValueChanges();
   }
 
   getNewValue(): CreateTextValueAsString | false {
