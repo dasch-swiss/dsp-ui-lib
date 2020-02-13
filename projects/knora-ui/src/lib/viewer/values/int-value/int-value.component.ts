@@ -61,9 +61,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
 
   // unsubscribe when the object is destroyed to prevent memory leaks
   ngOnDestroy(): void {
-    if (this.valueChangesSubscription !== undefined) {
-      this.valueChangesSubscription.unsubscribe();
-    }
+    this.unsubscribeFromValueChanges();
   }
 
   getNewValue(): CreateIntValue | false {
