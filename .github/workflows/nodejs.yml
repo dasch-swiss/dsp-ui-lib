@@ -22,6 +22,6 @@ jobs:
     - run: yalc add @knora/api
     - run: npm install
     - run: npm install puppeteer --only=dev
-    - run: npm run ng t --watch=false --browsers=ChromeHeadless --project knora-ui
+    - run: npm run test-lib
       env:
         CI: true
