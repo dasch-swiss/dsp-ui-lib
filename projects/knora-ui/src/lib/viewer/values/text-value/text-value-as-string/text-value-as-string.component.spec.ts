@@ -12,7 +12,6 @@ import {By} from '@angular/platform-browser';
  * Test host component to simulate parent component.
  */
 @Component({
-  selector: `lib-host-component`,
   template: `
     <kui-text-value-as-string #strVal [displayValue]="displayStrVal" [mode]="mode"></kui-text-value-as-string>`
 })
@@ -42,7 +41,6 @@ class TestHostDisplayValueComponent implements OnInit {
  * Test host component to simulate parent component.
  */
 @Component({
-  selector: `lib-host-2-component`,
   template: `
     <kui-text-value-as-string #strVal [displayValue]="displayStrVal" [mode]="mode"></kui-text-value-as-string>`
 })
@@ -73,7 +71,6 @@ class TestHostDisplayValueCommentComponent implements OnInit {
  * Test host component to simulate parent component.
  */
 @Component({
-  selector: `lib-host-3-component`,
   template: `
     <kui-text-value-as-string #strVal [mode]="mode"></kui-text-value-as-string>`
 })

@@ -1,7 +1,7 @@
-import { Component, Inject, Input, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import {BaseValueComponent, valueChangedValidator} from '../base-value.component';
-import { ReadIntValue, CreateIntValue, UpdateIntValue } from '@knora/api';
-import { Subscription } from 'rxjs';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {BaseValueComponent} from '../base-value.component';
+import {CreateIntValue, ReadIntValue, UpdateIntValue} from '@knora/api';
+import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -29,7 +29,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
   getInitValue(): number | null {
     if (this.displayValue !== undefined) {
       return this.displayValue.int;
-    } else{
+    } else {
       return null;
     }
   }
@@ -55,21 +55,21 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
     this.resetFormControl();
   }
 
-  ngOnChanges(changes: SimpleChanges): void{
-    if(this.valueFormControl !== undefined && this.commentFormControl !== undefined){
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.valueFormControl !== undefined && this.commentFormControl !== undefined) {
       this.resetFormControl();
     }
   }
 
   // unsubscribe when the object is destroyed to prevent memory leaks
-  ngOnDestroy(): void{
-    if (this.valueChangesSubscription !== undefined){
+  ngOnDestroy(): void {
+    if (this.valueChangesSubscription !== undefined) {
       this.valueChangesSubscription.unsubscribe();
     }
   }
 
   getNewValue(): CreateIntValue | false {
-    if(this.mode !== 'create' || !this.form.valid){
+    if (this.mode !== 'create' || !this.form.valid) {
       return false;
     }
 
@@ -77,7 +77,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
 
     newIntValue.int = this.valueFormControl.value;
 
-    if (this.commentFormControl.value !== null && this.commentFormControl.value !== ''){
+    if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newIntValue.valueHasComment = this.commentFormControl.value;
     }
 
@@ -85,7 +85,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
   }
 
   getUpdatedValue(): UpdateIntValue | false {
-    if (this.mode !== 'update' || !this.form.valid){
+    if (this.mode !== 'update' || !this.form.valid) {
       return false;
     }
 
@@ -96,7 +96,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
     updatedIntValue.int = this.valueFormControl.value;
 
     // add the submitted comment to updatedIntValue only if user has added a comment
-    if(this.commentFormControl.value !== null && this.commentFormControl.value !== ''){
+    if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedIntValue.valueHasComment = this.commentFormControl.value;
     }
 
