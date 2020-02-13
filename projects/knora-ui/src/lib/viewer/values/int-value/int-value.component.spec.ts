@@ -248,6 +248,14 @@ describe('IntValueComponent', () => {
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
     });
+
+    it('should unsubscribe when destroyed', () => {
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeFalsy();
+
+      testHostComponent.inputValueComponent.ngOnDestroy();
+
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeTruthy();
+    });
   });
 
   describe('create an integer value', () => {
