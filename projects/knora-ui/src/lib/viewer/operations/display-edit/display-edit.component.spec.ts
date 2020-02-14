@@ -11,7 +11,8 @@ import {
   ReadValue,
   UpdateIntValue,
   UpdateValue,
-  WriteValueResponse
+  WriteValueResponse,
+  UpdateDecimalValue
 } from '@knora/api';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -57,6 +58,35 @@ class TestIntValueComponent implements OnInit {
     updateIntVal.int = 1;
 
     return updateIntVal;
+  }
+}
+
+@Component({
+  selector: `kui-decimal-value`,
+  template: ``
+})
+class TestDecimalValueComponent implements OnInit {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+  form: object;
+
+  ngOnInit(): void {
+
+    this.form = new FormGroup({
+      test: new FormControl(null, [Validators.required])
+    });
+  }
+
+  getUpdatedValue(): UpdateValue {
+    const updateDecimalVal = new UpdateDecimalValue();
+
+    updateDecimalVal.id = this.displayValue.id;
+    updateDecimalVal.decimal = 1.5;
+
+    return updateDecimalVal;
   }
 }
 
@@ -116,7 +146,8 @@ describe('DisplayEditComponent', () => {
         DisplayEditComponent,
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
-        TestIntValueComponent
+        TestIntValueComponent,
+        TestDecimalValueComponent
       ],
       providers: [
         {
