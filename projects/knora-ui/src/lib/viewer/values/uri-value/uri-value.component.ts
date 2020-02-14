@@ -20,7 +20,8 @@ export class UriValueComponent extends BaseValueComponent implements OnInit {
 
   valueChangesSubscription: Subscription;
 
-  customValidators = [Validators.pattern(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)];
+  // possibly better to use the RegexUrl of the Utils class in knora-ui
+  customValidators = [Validators.pattern(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?$/)];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();

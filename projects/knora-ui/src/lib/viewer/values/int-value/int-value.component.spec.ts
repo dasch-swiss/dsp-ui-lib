@@ -66,7 +66,7 @@ describe('IntValueComponent', () => {
         IntValueComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent
-       ],
+      ],
        imports: [
         ReactiveFormsModule,
         MatInputModule,
