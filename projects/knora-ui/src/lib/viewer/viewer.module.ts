@@ -5,9 +5,10 @@ import {MatInputModule} from '@angular/material';
 import {CommonModule} from '@angular/common';
 import { IntValueComponent } from './values/int-value/int-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
+import { UriValueComponent } from './values/uri-value/uri-value.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, UriValueComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
