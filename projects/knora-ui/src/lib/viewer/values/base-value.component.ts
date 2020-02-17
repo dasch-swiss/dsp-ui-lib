@@ -1,19 +1,7 @@
 import {Input} from '@angular/core';
 import {CreateValue, ReadValue, UpdateValue} from '@knora/api';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
-import { Subscription } from 'rxjs';
-
-export function valueChangedValidator(initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn {
-  return (control: AbstractControl): {[key: string]: any} | null => {
-
-    // console.log(initValue, ', ', initComment, ', ', commentFormControl.value);
-
-    const invalid = initValue === control.value
-      && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
-
-    return invalid ? {valueNotChanged: {value: control.value}} : null;
-  };
-}
+import {Subscription} from 'rxjs';
 
 export abstract class BaseValueComponent {
 
@@ -53,6 +41,16 @@ export abstract class BaseValueComponent {
    */
   abstract customValidators: ValidatorFn[];
 
+  standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+
+      const invalid = initValue === control.value
+        && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+
+      return invalid ? {valueNotChanged: {value: control.value}} : null;
+    };
+  };
+
   /**
    * Returns the initially given value set via displayValue.
    * Returns null if no value was given.
@@ -78,7 +76,7 @@ export abstract class BaseValueComponent {
    * Depending on the mode, validators are reset.
    */
   resetFormControl(): void {
-    if (this.valueFormControl !== undefined && this.commentFormControl !== undefined){
+    if (this.valueFormControl !== undefined && this.commentFormControl !== undefined) {
 
       const initialValue = this.getInitValue();
       const initialComment = this.getInitComment();
@@ -91,7 +89,7 @@ export abstract class BaseValueComponent {
       // set validators depending on mode
       if (this.mode === 'update') {
         // console.log('reset update validators');
-        this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue, initialComment, this.commentFormControl)].concat(this.customValidators));
+        this.valueFormControl.setValidators([Validators.required, this.standardValidatorFunc(initialValue, initialComment, this.commentFormControl)].concat(this.customValidators));
       } else {
         // console.log('reset read/create validators');
         this.valueFormControl.setValidators([Validators.required].concat(this.customValidators));
@@ -105,7 +103,7 @@ export abstract class BaseValueComponent {
   /**
    * Unsubscribes from the valueChangesSubscription
    */
-  unsubscribeFromValueChanges(): void{
+  unsubscribeFromValueChanges(): void {
     if (this.valueChangesSubscription !== undefined) {
       this.valueChangesSubscription.unsubscribe();
     }

@@ -60,6 +60,17 @@ class TestIntValueComponent implements OnInit {
   }
 }
 
+@Component({
+  selector: `kui-interval-value`,
+  template: ``
+})
+class TestIntervalValueComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
 /**
  * Test host component to simulate parent component.
  */
@@ -116,7 +127,8 @@ describe('DisplayEditComponent', () => {
         DisplayEditComponent,
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
-        TestIntValueComponent
+        TestIntValueComponent,
+        TestIntervalValueComponent
       ],
       providers: [
         {

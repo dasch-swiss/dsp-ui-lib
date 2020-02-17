@@ -7,7 +7,7 @@ import {MockResource, ReadIntervalValue, ReadIntValue} from "@knora/api";
 import {ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatInputModule} from "@angular/material/input";
-import {IntervalInputComponent} from "./invertal-input/interval-input.component";
+import {IntervalInputComponent} from "./interval-input/interval-input.component";
 
 /**
  * Test host component to simulate parent component.
