@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   title = 'knora-ui-ng-lib';
 
   testthing: ReadResource;
-  testValue: ReadValue;
+  linkValue: ReadValue;
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
       (resource: ReadResource) => {
         this.testthing = resource;
         console.log(this.testthing);
-        this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText')[0];
+        this.linkValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue')[0];
       }
     );
 

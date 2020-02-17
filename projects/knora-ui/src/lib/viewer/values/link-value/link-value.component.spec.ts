@@ -105,6 +105,7 @@ describe('LinkValueComponent', () => {
     it('should display an existing value', () => {
 
       expect(testHostComponent.inputValueComponent.displayValue.linkedResourceIri).toMatch('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect(testHostComponent.inputValueComponent.displayValue.propertyLabel).toMatch('Ein anderes Ding');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
