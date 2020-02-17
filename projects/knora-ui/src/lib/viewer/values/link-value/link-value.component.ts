@@ -88,7 +88,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
 
     updatedLinkValue.linkedResourceIri = this.valueFormControl.value;
 
-    // add the submitted comment to updatedIntValue only if user has added a comment
+    // add the submitted comment to updatedLinkValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedLinkValue.valueHasComment = this.commentFormControl.value;
     }
