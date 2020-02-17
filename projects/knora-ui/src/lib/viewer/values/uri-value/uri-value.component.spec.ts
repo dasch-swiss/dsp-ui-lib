@@ -39,6 +39,26 @@ class TestHostDisplayValueComponent implements OnInit {
   }
 }
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+  template: `
+    <kui-uri-value #inputVal [mode]="mode"></kui-uri-value>`
+})
+class TestHostCreateValueComponent implements OnInit {
+
+  @ViewChild('inputVal', {static: false}) inputValueComponent: UriValueComponent;
+
+  mode: 'read' | 'update' | 'create' | 'search';
+
+  ngOnInit() {
+
+    this.mode = 'create';
+
+  }
+}
+
 describe('UriValueComponent', () => {
   let component: UriValueComponent;
   let fixture: ComponentFixture<UriValueComponent>;
@@ -47,7 +67,8 @@ describe('UriValueComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ 
         UriValueComponent,
-        TestHostDisplayValueComponent
+        TestHostDisplayValueComponent,
+        TestHostCreateValueComponent
       ],
       imports: [
         ReactiveFormsModule,
@@ -58,7 +79,7 @@ describe('UriValueComponent', () => {
     .compileComponents();
   }));
 
-  fdescribe('display and edit a Uri value', () => {
+  describe('display and edit a Uri value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
@@ -98,5 +119,224 @@ describe('UriValueComponent', () => {
 
     });
 
+    it('should make an existing value editable', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
+
+      valueInputNativeElement.value = 'http://www.reddit.com';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateUriValue).toBeTruthy();
+
+      expect((updatedValue as UpdateUriValue).uri).toEqual('http://www.reddit.com');
+
+    });
+
+    it('should validate an existing value with an added comment', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
+
+      commentInputNativeElement.value = 'this is a comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateUriValue).toBeTruthy();
+
+      expect((updatedValue as UpdateUriValue).valueHasComment).toEqual('this is a comment');
+
+    });
+
+    it('should not return an invalid update value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
+
+      valueInputNativeElement.value = 'http://www.google.';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBeFalsy();
+
+    });
+
+    it('should restore the initially displayed value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
+
+      valueInputNativeElement.value = 'http://www.reddit.com';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+    });
+
+    it('should set a new display value', () => {
+
+      const newInt = new ReadUriValue();
+
+      newInt.uri = 'http://www.reddit.com';
+      newInt.id = 'updatedId';
+
+      testHostComponent.displayInputVal = newInt;
+
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('http://www.reddit.com');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+    });
+
+    it('should unsubscribe when destroyed', () => {
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeFalsy();
+
+      testHostComponent.inputValueComponent.ngOnDestroy();
+
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeTruthy();
+    });
+  });
+
+  describe('create an integer value', () => {
+
+    let testHostComponent: TestHostCreateValueComponent;
+    let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+    let valueComponentDe: DebugElement;
+    let valueInputDebugElement: DebugElement;
+    let valueInputNativeElement;
+    let commentInputDebugElement: DebugElement;
+    let commentInputNativeElement;
+
+    beforeEach(() => {
+      testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
+
+      const hostCompDe = testHostFixture.debugElement;
+
+      valueComponentDe = hostCompDe.query(By.directive(UriValueComponent));
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+
+      expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+      expect(valueInputNativeElement.value).toEqual('');
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+      expect(commentInputNativeElement.value).toEqual('');
+      expect(commentInputNativeElement.readOnly).toEqual(false);
+    });
+
+    it('should create a value', () => {
+      valueInputNativeElement.value = 'http://www.reddit.com';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const newValue = testHostComponent.inputValueComponent.getNewValue();
+
+      expect(newValue instanceof CreateUriValue).toBeTruthy();
+
+      expect((newValue as CreateUriValue).uri).toEqual('http://www.reddit.com');
+    });
+
+    it('should reset form after cancellation', () => {
+      valueInputNativeElement.value = 'http://www.reddit.com';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      commentInputNativeElement.value = 'created comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('');
+
+      expect(commentInputNativeElement.value).toEqual('');
+
+    });
   });
 });

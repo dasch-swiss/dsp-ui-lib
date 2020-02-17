@@ -9,7 +9,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
   templateUrl: './uri-value.component.html',
   styleUrls: ['./uri-value.component.scss']
 })
-export class UriValueComponent extends BaseValueComponent implements OnInit {
+export class UriValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayValue?: ReadUriValue;
 
@@ -39,7 +39,7 @@ export class UriValueComponent extends BaseValueComponent implements OnInit {
     this.valueFormControl = new FormControl(null);
     this.commentFormControl = new FormControl(null);
 
-    this.valueChangesSubscription = this.valueFormControl.valueChanges.subscribe(
+    this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
       data => {
         this.valueFormControl.updateValueAndValidity();
       }

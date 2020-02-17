@@ -1,6 +1,6 @@
 <span [formGroup]="form">
     <mat-form-field class="large-field">
-        <input matInput [formControlName]="'uriValue'" class="value" placeholder="Uri value" type="url" pattern="https://.*" [readonly]="mode === 'read'">
+        <input matInput [formControlName]="'uriValue'" class="value" placeholder="Uri value" type="url" [readonly]="mode === 'read'">
     </mat-form-field>
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
