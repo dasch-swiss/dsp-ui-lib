@@ -77,7 +77,7 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
   @Input()
   get value(): Interval | null {
     let n = this.form.value;
-    if (n.start && n.end && n.start < n.end) {
+    if (n.start && n.end) {
       return new Interval(n.start, n.end);
     }
     return null;

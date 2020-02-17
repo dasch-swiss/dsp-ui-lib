@@ -65,6 +65,6 @@ describe('IntervalValueComponent', () => {
   });
 
   it('should create', () => {
-    console.log(testHostComponent.inputValueComponent);
+    // console.log(testHostComponent.inputValueComponent);
   });
 });
