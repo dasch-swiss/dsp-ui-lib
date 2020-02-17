@@ -5,27 +5,27 @@ import {Subject} from "rxjs";
 import {FocusMonitor} from "@angular/cdk/a11y";
 import {coerceBooleanProperty} from "@angular/cdk/coercion";
 
-class Interval {
+export class Interval {
 
   constructor(public start: number, public end: number) {
   }
 }
 
 @Component({
-  selector: 'kui-invertal-input',
-  templateUrl: './invertal-input.component.html',
-  styleUrls: ['./invertal-input.component.scss'],
-  providers: [{provide: MatFormFieldControl, useExisting: InvertalInputComponent}],
+  selector: 'kui-interval-input',
+  templateUrl: './interval-input.component.html',
+  styleUrls: ['./interval-input.component.scss'],
+  providers: [{provide: MatFormFieldControl, useExisting: IntervalInputComponent}],
 })
-export class InvertalInputComponent implements ControlValueAccessor, MatFormFieldControl<Interval>, OnDestroy {
+export class IntervalInputComponent implements ControlValueAccessor, MatFormFieldControl<Interval>, OnDestroy {
   static nextId = 0;
 
   form: FormGroup;
   stateChanges = new Subject<void>();
-  @HostBinding() id = `kui-invertal-input-${InvertalInputComponent.nextId++}`;
+  @HostBinding() id = `kui-interval-input-${IntervalInputComponent.nextId++}`;
   focused = false;
   errorState = false;
-  controlType = 'kui-invertal-input';
+  controlType = 'kui-interval-input';
   onChange = (_: any) => {};
   onTouched = () => {};
 

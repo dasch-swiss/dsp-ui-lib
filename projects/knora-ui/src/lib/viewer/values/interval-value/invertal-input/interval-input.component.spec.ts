@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InvertalInputComponent } from './invertal-input.component';
+import { IntervalInputComponent } from './interval-input.component';
 
 describe('InvertalInputComponent', () => {
-  let component: InvertalInputComponent;
-  let fixture: ComponentFixture<InvertalInputComponent>;
+  let component: IntervalInputComponent;
+  let fixture: ComponentFixture<IntervalInputComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InvertalInputComponent ]
+      declarations: [ IntervalInputComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InvertalInputComponent);
+    fixture = TestBed.createComponent(IntervalInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,15 +1,9 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from "../base-value.component";
-import {
-  CreateIntervalValue,
-  CreateIntValue,
-  ReadIntervalValue,
-  ReadIntValue,
-  UpdateIntervalValue,
-  UpdateIntValue
-} from "@knora/api";
+import {CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue} from "@knora/api";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {Subscription} from "rxjs";
+import {Interval} from "./invertal-input/interval-input.component";
 
 @Component({
   selector: 'kui-interval-value',
@@ -33,12 +27,9 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
     super();
   }
 
-  getInitValue(): object | null {
+  getInitValue(): Interval | null {
     if (this.displayValue !== undefined) {
-      return {
-        start: this.displayValue.start,
-        end: this.displayValue.end
-      };
+      return new Interval(this.displayValue.start, this.displayValue.end);
     } else {
       return null;
     }
@@ -58,7 +49,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
     );
 
     this.form = this.fb.group({
-      intValue: this.valueFormControl,
+      intervalValue: this.valueFormControl,
       comment: this.commentFormControl
     });
 
@@ -81,7 +72,8 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
 
     const newIntervalValue = new CreateIntervalValue();
 
-    newIntervalValue.start = this.valueFormControl.value;
+    newIntervalValue.start = this.valueFormControl.value.start;
+    newIntervalValue.end = this.valueFormControl.value.end;
 
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newIntervalValue.valueHasComment = this.commentFormControl.value;
@@ -99,7 +91,8 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
 
     updatedIntervalValue.id = this.displayValue.id;
 
-    updatedIntervalValue.start = this.valueFormControl.value;
+    updatedIntervalValue.start = this.valueFormControl.value.start;
+    updatedIntervalValue.end = this.valueFormControl.value.end;
 
     // add the submitted comment to updatedIntValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
