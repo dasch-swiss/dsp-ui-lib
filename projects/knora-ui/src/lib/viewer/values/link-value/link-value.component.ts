@@ -19,6 +19,8 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   form: FormGroup;
 
   valueChangesSubscription: Subscription;
+
+  customValidators = [Validators.pattern(/^-?\d+$/)];
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
