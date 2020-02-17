@@ -102,7 +102,7 @@ describe('IntValueComponent', () => {
       commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 
-    fit('should display an existing value', () => {
+    it('should display an existing value', () => {
 
       expect(testHostComponent.inputValueComponent.displayValue.int).toEqual(1);
 

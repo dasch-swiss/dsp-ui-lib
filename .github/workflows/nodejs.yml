@@ -21,8 +21,8 @@ jobs:
     - run: cd knora-api-js-lib && npm install yalc -g && npm install && npm run yalc-publish
     - run: yalc add @knora/api
     - run: npm install
-    - run: ./find-ignored-tests.sh
     - run: npm run test-lib
+    - run: ./find-ignored-tests.sh
     - run: npm run build-lib
       env:
         CI: true
