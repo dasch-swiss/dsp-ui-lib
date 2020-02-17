@@ -30,7 +30,16 @@ class TestTextValueAsStringComponent {
 
   @Input() displayValue;
 }
+@Component({
+  selector: `kui-link-value`,
+  template: ``
+})
+class TestLinkValueComponent {
 
+  @Input() mode;
+
+  @Input() displayValue;
+}
 @Component({
   selector: `kui-int-value`,
   template: ``
@@ -116,7 +125,8 @@ describe('DisplayEditComponent', () => {
         DisplayEditComponent,
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
-        TestIntValueComponent
+        TestIntValueComponent,
+        TestLinkValueComponent
       ],
       providers: [
         {

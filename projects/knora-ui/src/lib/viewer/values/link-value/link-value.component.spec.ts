@@ -79,39 +79,16 @@ describe('LinkValueComponent', () => {
   describe('display and edit a link value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
-    let valueComponentDe: DebugElement;
-    let valueInputDebugElement: DebugElement;
-    let valueInputNativeElement;
-    let commentInputDebugElement: DebugElement;
-    let commentInputNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
       testHostComponent = testHostFixture.componentInstance;
       testHostFixture.detectChanges();
-
-      expect(testHostComponent).toBeTruthy();
-      expect(testHostComponent.inputValueComponent).toBeTruthy();
-
-      const hostCompDe = testHostFixture.debugElement;
-      valueComponentDe = hostCompDe.query(By.directive(LinkValueComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
-
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
 
       expect(testHostComponent.inputValueComponent.displayValue.linkedResourceIri).toMatch('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
-      expect(testHostComponent.inputValueComponent.displayValue.propertyLabel).toMatch('Ein anderes Ding');
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
-
-      expect(testHostComponent.inputValueComponent.mode).toEqual('read');
-
-      expect(valueInputNativeElement.readOnly).toEqual(true);
 
     });
   });
