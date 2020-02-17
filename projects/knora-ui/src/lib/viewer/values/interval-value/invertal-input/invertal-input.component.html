@@ -1,6 +1,6 @@
 <div [formGroup]="form" class="interval-input-container">
   <input class="interval-input-element" formControlName="start" type="number" aria-label="start" (input)="_handleInput()">
   <span class="interval-input-spacer">&ndash;</span>
-  <input class="interval-input-element" formControlName="end" size="3" aria-label="end" (input)="_handleInput()">
+  <input class="interval-input-element" formControlName="end" type="number" aria-label="end" (input)="_handleInput()">
   <span class="interval-input-spacer">&ndash;</span>
 </div>
