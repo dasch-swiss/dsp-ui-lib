@@ -1,1 +1,9 @@
-<p>boolean-value works!</p>
+<span [formGroup]="form">
+    <mat-checkbox [formControlName]="'booleanValue'" class="value boolValue" [disabled]="mode === 'read'">
+        {{displayValue.bool}}
+    </mat-checkbox>
+    <br>
+    <mat-form-field class="large-field">
+        <textarea matInput [formControlName]="'comment'" class="comment boolComment" placeholder="Comment" type="text" [readonly]="mode === 'read'"></textarea>
+    </mat-form-field>
+</span>

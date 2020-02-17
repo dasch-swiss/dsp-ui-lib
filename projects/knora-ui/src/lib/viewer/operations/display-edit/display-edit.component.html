@@ -2,6 +2,7 @@
   <span [ngSwitch]="displayValue.type">
     <kui-text-value-as-string #displayVal *ngSwitchCase="constants.TextValue" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-string>
     <kui-int-value #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></kui-int-value>
+    <kui-boolean-value #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]="displayValue"></kui-boolean-value>
   </span>
 </div>
 <div>
