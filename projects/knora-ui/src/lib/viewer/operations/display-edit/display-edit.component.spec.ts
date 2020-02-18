@@ -60,6 +60,26 @@ class TestIntValueComponent implements OnInit {
   }
 }
 
+@Component({
+  selector: `kui-boolean-value`,
+  template: ``
+})
+class TestBooleanValueComponent implements OnInit {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+  form: object;
+
+  ngOnInit(): void {
+
+    this.form = new FormGroup({
+      test: new FormControl(null, [Validators.required])
+    });
+  }
+}
+
 /**
  * Test host component to simulate parent component.
  */
@@ -116,7 +136,8 @@ describe('DisplayEditComponent', () => {
         DisplayEditComponent,
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
-        TestIntValueComponent
+        TestIntValueComponent,
+        TestBooleanValueComponent
       ],
       providers: [
         {
