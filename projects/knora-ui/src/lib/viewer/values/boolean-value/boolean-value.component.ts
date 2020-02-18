@@ -99,4 +99,9 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     return updatedBooleanValue;
   }
 
+  // update dynamically the checkbox label according to the checked status
+  onChecked(displayValue: ReadBooleanValue) {
+    displayValue.bool = !displayValue.bool;
+  }
+
 }
