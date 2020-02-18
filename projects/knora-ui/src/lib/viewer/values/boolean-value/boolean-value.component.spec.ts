@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule, MatInputModule } from '@angular/material';
 import { BooleanValueComponent } from './boolean-value.component';
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
-import { ReadBooleanValue, MockResource } from '@knora/api';
+import { ReadBooleanValue, MockResource, UpdateBooleanValue } from '@knora/api';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -78,6 +78,8 @@ describe('BooleanValueComponent', () => {
     let valueComponentDe: DebugElement;
     let valueBooleanDebugElement: DebugElement;
     let valueBooleanNativeElement;
+    let checkboxEl;
+    let checkboxLabel;
     let commentBooleanDebugElement: DebugElement;
     let commentBooleanNativeElement;
 
@@ -93,6 +95,8 @@ describe('BooleanValueComponent', () => {
       valueComponentDe = hostCompDe.query(By.directive(BooleanValueComponent));
       valueBooleanDebugElement = valueComponentDe.query(By.css('mat-checkbox'));
       valueBooleanNativeElement = valueBooleanDebugElement.nativeElement;
+      checkboxEl = valueBooleanDebugElement.query(By.css('input[type="checkbox"]')).nativeElement;
+      checkboxLabel = valueBooleanDebugElement.query(By.css('span[class="mat-checkbox-label"]')).nativeElement;
 
       commentBooleanDebugElement = valueComponentDe.query(By.css('input.comment'));
       commentBooleanNativeElement = commentBooleanDebugElement.nativeElement;
@@ -106,12 +110,45 @@ describe('BooleanValueComponent', () => {
 
       expect(testHostComponent.booleanValueComponent.mode).toEqual('read');
 
-      const checkboxEl = valueBooleanDebugElement.query(By.css('input[type="checkbox"]')).nativeElement;
       expect(checkboxEl.disabled).toBe(true);
       expect(checkboxEl.checked).toBe(true);
 
-      const checkboxLabel = valueBooleanDebugElement.query(By.css('span[class="mat-checkbox-label"]')).nativeElement;
       expect(checkboxLabel.innerText).toEqual('true');
+    });
+
+    it('should make an existing value editable', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.booleanValueComponent.mode).toEqual('update');
+
+      expect(checkboxEl.disabled).toBe(false);
+
+      expect(testHostComponent.booleanValueComponent.form.valid).toBeFalsy();
+
+      expect(checkboxEl.checked).toBe(true);
+
+      expect(checkboxLabel.innerText).toEqual('true');
+
+      checkboxEl.click();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.booleanValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.booleanValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateBooleanValue).toBeTruthy();
+
+      // todo: fix expect((updatedValue instanceof UpdateBooleanValue).valueOf()).toBe(false);
+
+      expect(checkboxEl.checked).toBe(false);
+
+      expect(checkboxEl.disabled).toBe(false);
+
+      expect(checkboxLabel.innerText).toEqual('false');
     });
 
   });
