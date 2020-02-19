@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {IntervalValueComponent} from './interval-value.component';
 import {Component, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
-import {MockResource, ReadIntervalValue} from '@knora/api';
+import {MockResource, ReadIntervalValue, UpdateIntervalValue} from '@knora/api';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
@@ -55,6 +55,10 @@ class TestIntervalInputComponent implements ControlValueAccessor, MatFormFieldCo
   }
 
   setDescribedByIds(ids: string[]): void {
+  }
+
+  _handleInput(): void {
+    this.onChange(this.value);
   }
 
 }
@@ -126,9 +130,51 @@ describe('IntervalValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.readonly).toEqual(true);
+
       expect(testHostComponent.inputValueComponent.intervalInputComponent.value.start).toEqual(0);
 
       expect(testHostComponent.inputValueComponent.intervalInputComponent.value.end).toEqual(216000);
+
+    });
+
+    it('should make an existing value editable', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.start).toEqual(0);
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.end).toEqual(216000);
+
+      // simulate user input
+      const newInterval = {
+        start: 100,
+        end: 200
+      };
+
+      testHostComponent.inputValueComponent.intervalInputComponent.value = newInterval;
+      testHostComponent.inputValueComponent.intervalInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateIntervalValue).toBeTruthy();
+
+      expect((updatedValue as UpdateIntervalValue).start).toEqual(100);
+      expect((updatedValue as UpdateIntervalValue).end).toEqual(200);
 
     });
 
