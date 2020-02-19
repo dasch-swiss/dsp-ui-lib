@@ -72,7 +72,7 @@ describe('BooleanValueComponent', () => {
     .compileComponents();
   }));
 
-  describe('display and edit a boolean value', () => {
+  fdescribe('display and edit a boolean value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
@@ -142,13 +142,80 @@ describe('BooleanValueComponent', () => {
 
       expect(updatedValue instanceof UpdateBooleanValue).toBeTruthy();
 
-      // todo: fix expect((updatedValue instanceof UpdateBooleanValue).valueOf()).toBe(false);
+      expect((updatedValue as UpdateBooleanValue).bool).toBe(false);
 
       expect(checkboxEl.checked).toBe(false);
 
       expect(checkboxEl.disabled).toBe(false);
 
       expect(checkboxLabel.innerText).toEqual('false');
+    });
+
+    it('should validate an existing value with an added comment', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.booleanValueComponent.mode).toEqual('update');
+
+      expect(checkboxEl.disabled).toBe(false);
+
+      expect(testHostComponent.booleanValueComponent.form.valid).toBeFalsy();
+
+      expect(checkboxEl.checked).toBe(true);
+
+      expect(checkboxLabel.innerText).toEqual('true');
+
+      commentBooleanNativeElement.value = 'this is a comment';
+
+      commentBooleanNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.booleanValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.booleanValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateBooleanValue).toBeTruthy();
+
+      expect((updatedValue as UpdateBooleanValue).valueHasComment).toEqual('this is a comment');
+    });
+
+    fit('should restore the initially displayed value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.booleanValueComponent.mode).toEqual('update');
+
+      expect(checkboxEl.disabled).toBe(false);
+
+      expect(testHostComponent.booleanValueComponent.form.valid).toBeFalsy();
+
+      expect(checkboxEl.checked).toBe(true);
+
+      expect(checkboxLabel.innerText).toEqual('true');
+
+      checkboxEl.click();
+
+      testHostFixture.detectChanges();
+
+      expect(checkboxEl.checked).toBe(false);
+
+      expect(checkboxLabel.innerText).toEqual('false');
+
+      testHostComponent.booleanValueComponent.resetFormControl();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.booleanValueComponent.form.valid).toBeFalsy();
+
+      expect(checkboxEl.checked).toBe(true);
+
+      expect(checkboxLabel.innerText).toEqual('true');
+
     });
 
   });
