@@ -1,6 +1,6 @@
 <span [formGroup]="form">
-    <mat-checkbox [formControlName]="'booleanValue'" class="value boolValue" [disabled]="mode === 'read'" (change)="onChecked(displayValue)">
-        {{displayValue.bool}}
+    <mat-checkbox [formControlName]="'booleanValue'" class="value boolValue" (change)="onChecked($event)">
+        {{booleanLabel}}
     </mat-checkbox>
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'comment'" class="comment boolComment" placeholder="Comment" type="text" [readonly]="mode === 'read'">

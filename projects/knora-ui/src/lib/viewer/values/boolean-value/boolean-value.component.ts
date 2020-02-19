@@ -3,6 +3,7 @@ import { BaseValueComponent } from '../base-value.component';
 import { ReadBooleanValue, CreateBooleanValue, UpdateBooleanValue } from '@knora/api';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { MatCheckboxChange } from '@angular/material/typings';
 
 @Component({
   selector: 'kui-boolean-value',
@@ -22,12 +23,15 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
 
   customValidators = [];
 
+  booleanLabel: string;
+
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
 
   getInitValue(): boolean | null {
     if (this.displayValue !== undefined) {
+      console.log('getInitValue', this.displayValue.bool);
       return this.displayValue.bool;
     } else {
       return null;
@@ -52,6 +56,20 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     });
 
     this.resetFormControl();
+  }
+
+  resetFormControl(): void {
+    super.resetFormControl();
+
+    if (this.valueFormControl !== undefined) {
+      this.booleanLabel = this.getInitValue().toString();
+      if (this.mode === 'read') {
+        this.valueFormControl.disable();
+      } else {
+        this.valueFormControl.enable();
+      }
+    }
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -100,8 +118,8 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
   }
 
   // update dynamically the checkbox label according to the checked status
-  onChecked(displayValue: ReadBooleanValue) {
-    displayValue.bool = !displayValue.bool;
+  onChecked(changeEvent: MatCheckboxChange) {
+    this.booleanLabel = changeEvent.checked.toString();
   }
 
 }
