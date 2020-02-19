@@ -1,7 +1,5 @@
-span {
-  opacity: 0;
-  transition: opacity 200ms;
+.interval-input-container {
 }
-:host.floating span {
-  opacity: 1;
+
+.interval-input-element {
 }

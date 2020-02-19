@@ -1,16 +1,24 @@
 import {Component, ElementRef, HostBinding, Input, OnDestroy, Optional, Self} from '@angular/core';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {ControlValueAccessor, FormBuilder, FormGroup, NgControl} from '@angular/forms';
-import {Subject} from "rxjs";
-import {FocusMonitor} from "@angular/cdk/a11y";
-import {coerceBooleanProperty} from "@angular/cdk/coercion";
+import {Subject} from 'rxjs';
+import {FocusMonitor} from '@angular/cdk/a11y';
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
 
+/**
+ * Represents an interval consisting.
+ */
 export class Interval {
 
+  /**
+   * @param start interval's start.
+   * @param end interval's end.
+   */
   constructor(public start: number, public end: number) {
   }
 }
 
+// https://material.angular.io/guide/creating-a-custom-form-field-control
 @Component({
   selector: 'kui-interval-input',
   templateUrl: './interval-input.component.html',
@@ -29,9 +37,12 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
   onChange = (_: any) => {};
   onTouched = () => {};
 
+  @Input() intervalStartLabel = 'start';
+  @Input() intervalEndLabel = 'end';
+
   get empty() {
-    let n = this.form.value;
-    return !n.area && !n.exchange && !n.subscriber;
+    const userInput = this.form.value;
+    return !userInput.start && !userInput.end;
   }
 
   @HostBinding('class.floating')
@@ -43,29 +54,37 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
   get required() {
     return this._required;
   }
+
   set required(req) {
     this._required = coerceBooleanProperty(req);
     this.stateChanges.next();
   }
+
   private _required = false;
 
   @Input()
-  get disabled(): boolean { return this._disabled; }
+  get disabled(): boolean {
+    return this._disabled;
+  }
+
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
     this._disabled ? this.form.disable() : this.form.enable();
     this.stateChanges.next();
   }
+
   private _disabled = false;
 
   @Input()
   get placeholder() {
     return this._placeholder;
   }
+
   set placeholder(plh) {
     this._placeholder = plh;
     this.stateChanges.next();
   }
+
   private _placeholder: string;
 
   @Input() readonly = false;
@@ -142,8 +161,5 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
   _handleInput(): void {
     this.onChange(this.value);
   }
-
-  // static ngAcceptInputType_disabled: boolean | string | null | undefined;
-  // static ngAcceptInputType_required: boolean | string | null | undefined;
 
 }
