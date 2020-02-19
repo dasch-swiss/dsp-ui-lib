@@ -77,6 +77,7 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
   @Input()
   get value(): Interval | null {
     let n = this.form.value;
+    // console.log('getter ', n);
     if (n.start && n.end) {
       return new Interval(n.start, n.end);
     }
@@ -85,6 +86,7 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
 
   set value(interval: Interval | null) {
     interval = interval || new Interval(0, 1);
+    // console.log('setter ', interval);
     this.form.setValue({start: interval.start, end: interval.end});
     this.stateChanges.next();
   }
@@ -95,8 +97,8 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
               private elRef: ElementRef<HTMLElement>) {
 
     this.form = fb.group({
-      start: '',
-      end: '',
+      start: null,
+      end: null,
     });
 
     fm.monitor(elRef.nativeElement, true).subscribe(origin => {
@@ -136,10 +138,10 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
   }
 
   _handleInput(): void {
-    this.onChange(this.form.value);
+    this.onChange(this.value);
   }
 
-  //static ngAcceptInputType_disabled: boolean | string | null | undefined;
-  //static ngAcceptInputType_required: boolean | string | null | undefined;
+  // static ngAcceptInputType_disabled: boolean | string | null | undefined;
+  // static ngAcceptInputType_required: boolean | string | null | undefined;
 
 }

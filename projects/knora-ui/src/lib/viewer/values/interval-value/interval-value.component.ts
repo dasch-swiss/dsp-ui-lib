@@ -1,9 +1,9 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {BaseValueComponent} from "../base-value.component";
 import {CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue} from "@knora/api";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from "@angular/forms";
 import {Subscription} from "rxjs";
-import {Interval} from "./interval-input/interval-input.component";
+import {Interval, IntervalInputComponent} from './interval-input/interval-input.component';
 
 @Component({
   selector: 'kui-interval-value',
@@ -11,6 +11,8 @@ import {Interval} from "./interval-input/interval-input.component";
   styleUrls: ['./interval-value.component.scss']
 })
 export class IntervalValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
+
+  @ViewChild('intervalInput', {static: false}) intervalInputComponent: IntervalInputComponent;
 
   @Input() displayValue?: ReadIntervalValue;
 
@@ -30,7 +32,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
   standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
     return (control: AbstractControl): { [key: string]: any } | null => {
 
-      const invalid = (initValue.start === control.value.start && initValue.end === control.value.end)
+      const invalid = (control.value !== null && initValue.start === control.value.start && initValue.end === control.value.end)
         && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
 
       return invalid ? {valueNotChanged: {value: control.value}} : null;

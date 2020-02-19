@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {
   Constants,
   KnoraApiConnection,
@@ -19,7 +19,7 @@ import {KnoraApiConnectionToken} from '../../../core';
   templateUrl: './display-edit.component.html',
   styleUrls: ['./display-edit.component.scss']
 })
-export class DisplayEditComponent implements OnInit {
+export class DisplayEditComponent implements OnInit, AfterViewInit {
 
   @ViewChild('displayVal', {static: false}) displayValueComponent: BaseValueComponent;
 
@@ -49,6 +49,10 @@ export class DisplayEditComponent implements OnInit {
 
     this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
 
+  }
+
+  ngAfterViewInit(): void {
+    // console.log(this.displayValueComponent);
   }
 
   activateEditMode() {
