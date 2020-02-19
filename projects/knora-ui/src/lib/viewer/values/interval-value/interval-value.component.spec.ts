@@ -221,5 +221,67 @@ describe('IntervalValueComponent', () => {
 
     });
 
+    it('should not return an invalid update value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      testHostComponent.inputValueComponent.intervalInputComponent.value = null;
+      testHostComponent.inputValueComponent.intervalInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBeFalsy();
+
+    });
+
+    it('should restore the initially displayed value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      // simulate user input
+      const newInterval = {
+        start: 100,
+        end: 200
+      };
+
+      testHostComponent.inputValueComponent.intervalInputComponent.value = newInterval;
+      testHostComponent.inputValueComponent.intervalInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value.start).toEqual(100);
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value.end).toEqual(200);
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.start).toEqual(0);
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.end).toEqual(216000);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+    });
+
   });
 });
