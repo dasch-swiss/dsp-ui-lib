@@ -78,10 +78,10 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
 
   @Input()
   get value(): Interval | null {
-    let n = this.form.value;
-    // console.log('getter ', n);
-    if (n.start && n.end) {
-      return new Interval(n.start, n.end);
+    const userInput = this.form.value;
+    // console.log('getter ', userInput);
+    if (userInput.start !== null && userInput.end !== null) {
+      return new Interval(userInput.start, userInput.end);
     }
     return null;
   }
