@@ -68,14 +68,43 @@ describe('InvertalInputComponent', () => {
     startInputDebugElement = intervalInputComponentDe.query(By.css('input.start'));
     startInputNativeElement = startInputDebugElement.nativeElement;
     endInputDebugElement = intervalInputComponentDe.query(By.css('input.end'));
-    endInputNativeElement = startInputDebugElement.nativeElement;
+    endInputNativeElement = endInputDebugElement.nativeElement;
   });
 
   it('should initialize the interval correctly', () => {
-    expect(testHostComponent.intervalInputComponent).toBeTruthy();
 
     expect(startInputNativeElement.value).toEqual('1');
-    expect(endInputNativeElement.value).toEqual('1');
+    expect(endInputNativeElement.value).toEqual('2');
+
+  });
+
+  it('should propagate changes made by the user', () => {
+
+    startInputNativeElement.value = '3';
+    startInputNativeElement.dispatchEvent(new Event('input'));
+
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.form.controls.interval).toBeTruthy();
+    expect(testHostComponent.form.controls.interval.value.start).toEqual(3);
+    expect(testHostComponent.form.controls.interval.value.end).toEqual(2);
+
+    endInputNativeElement.value = '35';
+    endInputNativeElement.dispatchEvent(new Event('input'));
+
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.form.controls.interval).toBeTruthy();
+    expect(testHostComponent.form.controls.interval.value.start).toEqual(3);
+    expect(testHostComponent.form.controls.interval.value.end).toEqual(35);
+
+  });
+
+  it('should initialize the interval with an empty value', () => {
+
+    testHostComponent.form.controls.interval.setValue(null);
+    expect(startInputNativeElement.value).toEqual('0');
+    expect(endInputNativeElement.value).toEqual('0');
 
   });
 });

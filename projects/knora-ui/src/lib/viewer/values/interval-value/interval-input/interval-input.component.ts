@@ -87,7 +87,7 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
   }
 
   set value(interval: Interval | null) {
-    interval = interval || new Interval(0, 1);
+    interval = interval || new Interval(0, 0);
     // console.log('setter ', interval);
     this.form.setValue({start: interval.start, end: interval.end});
     this.stateChanges.next();
