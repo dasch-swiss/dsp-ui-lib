@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {IntervalValueComponent} from './interval-value.component';
-import {Component, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, DebugElement, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
 import {MockResource, ReadIntervalValue, UpdateIntervalValue} from '@knora/api';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -9,6 +9,7 @@ import {MatInputModule} from '@angular/material/input';
 import {Interval} from './interval-input/interval-input.component';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
+import {By} from '@angular/platform-browser';
 
 @Component({
   selector: `kui-interval-input`,
@@ -94,8 +95,6 @@ class TestHostDisplayValueComponent implements OnInit {
 
 
 describe('IntervalValueComponent', () => {
-  let testHostComponent: TestHostDisplayValueComponent;
-  let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -110,6 +109,12 @@ describe('IntervalValueComponent', () => {
   }));
 
   describe('display and edit an interval value', () => {
+    let testHostComponent: TestHostDisplayValueComponent;
+    let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
+
+    let valueComponentDe: DebugElement;
+    let commentInputDebugElement: DebugElement;
+    let commentInputNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
@@ -118,6 +123,12 @@ describe('IntervalValueComponent', () => {
 
       expect(testHostComponent).toBeTruthy();
       expect(testHostComponent.inputValueComponent).toBeTruthy();
+
+      const hostCompDe = testHostFixture.debugElement;
+
+      valueComponentDe = hostCompDe.query(By.directive(IntervalValueComponent));
+      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -175,6 +186,38 @@ describe('IntervalValueComponent', () => {
 
       expect((updatedValue as UpdateIntervalValue).start).toEqual(100);
       expect((updatedValue as UpdateIntervalValue).end).toEqual(200);
+
+    });
+
+    it('should validate an existing value with an added comment', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.displayValue.start).toEqual(0);
+
+      expect(testHostComponent.inputValueComponent.displayValue.end).toEqual(216000);
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      commentInputNativeElement.value = 'this is a comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateIntervalValue).toBeTruthy();
+
+      expect((updatedValue as UpdateIntervalValue).valueHasComment).toEqual('this is a comment');
 
     });
 
