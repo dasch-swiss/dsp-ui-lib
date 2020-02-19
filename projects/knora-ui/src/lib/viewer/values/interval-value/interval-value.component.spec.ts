@@ -283,5 +283,33 @@ describe('IntervalValueComponent', () => {
 
     });
 
+    it('should set a new display value', () => {
+
+      const newInterval = new ReadIntervalValue();
+
+      newInterval.start = 300;
+      newInterval.end = 500;
+      newInterval.id = 'updatedId';
+
+      testHostComponent.displayInputVal = newInterval;
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.start).toEqual(300);
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.end).toEqual(500);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+    });
+
+    it('should unsubscribe when destroyed', () => {
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeFalsy();
+
+      testHostComponent.inputValueComponent.ngOnDestroy();
+
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeTruthy();
+    });
+
   });
 });
