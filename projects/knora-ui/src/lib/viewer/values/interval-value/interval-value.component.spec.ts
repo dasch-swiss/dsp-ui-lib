@@ -357,6 +357,9 @@ describe('IntervalValueComponent', () => {
     });
 
     it('should create a value', () => {
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.value).toEqual(null);
+
       // simulate user input
       const newInterval = {
         start: 100,
@@ -378,6 +381,38 @@ describe('IntervalValueComponent', () => {
 
       expect((newValue as CreateIntervalValue).start).toEqual(100);
       expect((newValue as CreateIntervalValue).end).toEqual(200);
+    });
+
+    it('should reset form after cancellation', () => {
+      // simulate user input
+      const newInterval = {
+        start: 100,
+        end: 200
+      };
+
+      testHostComponent.inputValueComponent.intervalInputComponent.value = newInterval;
+      testHostComponent.inputValueComponent.intervalInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      commentInputNativeElement.value = 'created comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.value).toEqual(null);
+
+      expect(commentInputNativeElement.value).toEqual('');
+
     });
 
   });
