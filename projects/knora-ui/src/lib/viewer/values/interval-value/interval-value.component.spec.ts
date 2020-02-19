@@ -2,7 +2,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {IntervalValueComponent} from './interval-value.component';
 import {Component, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
-import {IntValueComponent} from '../int-value/int-value.component';
 import {MockResource, ReadIntervalValue} from '@knora/api';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -69,7 +68,7 @@ class TestIntervalInputComponent implements ControlValueAccessor, MatFormFieldCo
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: IntValueComponent;
+  @ViewChild('inputVal', {static: false}) inputValueComponent: IntervalValueComponent;
 
   displayInputVal: ReadIntervalValue;
 
@@ -106,16 +105,32 @@ describe('IntervalValueComponent', () => {
       .compileComponents();
   }));
 
-  beforeEach(() => {
-    testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
-    testHostComponent = testHostFixture.componentInstance;
-    testHostFixture.detectChanges();
+  describe('display and edit an interval value', () => {
 
-    expect(testHostComponent).toBeTruthy();
-    expect(testHostComponent.inputValueComponent).toBeTruthy();
-  });
+    beforeEach(() => {
+      testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostFixture.detectChanges();
 
-  it('should create', () => {
-    console.log(testHostComponent.inputValueComponent);
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
+    });
+
+    it('should display an existing value', () => {
+
+      expect(testHostComponent.inputValueComponent.displayValue.start).toEqual(0);
+
+      expect(testHostComponent.inputValueComponent.displayValue.end).toEqual(216000);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.start).toEqual(0);
+
+      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.end).toEqual(216000);
+
+    });
+
   });
 });
