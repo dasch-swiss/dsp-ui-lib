@@ -18,7 +18,7 @@ import { By } from '@angular/platform-browser';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: IntValueComponent;
+  @ViewChild('inputVal', { static: false }) inputValueComponent: IntValueComponent;
 
   displayInputVal: ReadIntValue;
 
@@ -47,7 +47,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: IntValueComponent;
+  @ViewChild('inputVal', { static: false }) inputValueComponent: IntValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
@@ -62,20 +62,20 @@ describe('IntValueComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         IntValueComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent
-       ],
-       imports: [
+      ],
+      imports: [
         ReactiveFormsModule,
         MatInputModule,
         BrowserAnimationsModule
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
-  
+
   describe('display and edit an integer value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;

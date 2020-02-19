@@ -23,15 +23,12 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
 
   customValidators = [];
 
-  booleanLabel: string;
-
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
 
   getInitValue(): boolean | null {
     if (this.displayValue !== undefined) {
-      console.log('getInitValue', this.displayValue.bool);
       return this.displayValue.bool;
     } else {
       return null;
@@ -58,20 +55,6 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     this.resetFormControl();
   }
 
-  resetFormControl(): void {
-    super.resetFormControl();
-
-    if (this.valueFormControl !== undefined) {
-      this.booleanLabel = this.getInitValue().toString();
-      if (this.mode === 'read') {
-        this.valueFormControl.disable();
-      } else {
-        this.valueFormControl.enable();
-      }
-    }
-
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     this.resetFormControl();
   }
@@ -80,6 +63,19 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
   ngOnDestroy(): void {
     this.unsubscribeFromValueChanges();
   }
+
+  resetFormControl(): void {
+    super.resetFormControl();
+
+    if (this.valueFormControl !== undefined) {
+      if (this.mode === 'read') {
+        this.valueFormControl.disable();
+      } else {
+        this.valueFormControl.enable();
+      }
+    }
+  }
+
 
   getNewValue(): CreateBooleanValue | false {
     if (this.mode !== 'create' || !this.form.valid) {
@@ -115,11 +111,6 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     }
 
     return updatedBooleanValue;
-  }
-
-  // update dynamically the checkbox label according to the checked status
-  onChecked(changeEvent: MatCheckboxChange) {
-    this.booleanLabel = changeEvent.checked.toString();
   }
 
 }
