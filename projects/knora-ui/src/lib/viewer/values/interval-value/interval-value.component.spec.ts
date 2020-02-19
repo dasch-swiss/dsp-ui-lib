@@ -1,13 +1,64 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {IntervalValueComponent} from './interval-value.component';
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {IntValueComponent} from "../int-value/int-value.component";
-import {MockResource, ReadIntervalValue, ReadIntValue} from "@knora/api";
-import {ReactiveFormsModule} from "@angular/forms";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {MatInputModule} from "@angular/material/input";
-import {IntervalInputComponent} from "./interval-input/interval-input.component";
+import {Component, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
+import {IntValueComponent} from '../int-value/int-value.component';
+import {MockResource, ReadIntervalValue} from '@knora/api';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatInputModule} from '@angular/material/input';
+import {Interval} from './interval-input/interval-input.component';
+import {MatFormFieldControl} from '@angular/material/form-field';
+import {Subject} from 'rxjs';
+
+@Component({
+  selector: `kui-interval-input`,
+  template: ``,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => TestIntervalInputComponent),
+    },
+    {provide: MatFormFieldControl, useExisting: TestIntervalInputComponent}
+  ]
+})
+class TestIntervalInputComponent implements ControlValueAccessor, MatFormFieldControl<any> {
+
+  @Input() readonly = false;
+  @Input() value;
+  @Input() disabled: boolean;
+  @Input() empty: boolean;
+  @Input() placeholder: string;
+  @Input() required: boolean;
+  @Input() shouldLabelFloat: boolean;
+
+  errorState = false;
+  focused = false;
+  id = 'testid';
+  ngControl: NgControl | null;
+  onChange = (_: any) => {
+  };
+  stateChanges = new Subject<void>();
+
+  writeValue(interval: Interval | null): void {
+    this.value = interval;
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+  }
+
+  onContainerClick(event: MouseEvent): void {
+  }
+
+  setDescribedByIds(ids: string[]): void {
+  }
+
+}
 
 /**
  * Test host component to simulate parent component.
@@ -45,14 +96,14 @@ describe('IntervalValueComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IntervalValueComponent, TestHostDisplayValueComponent, IntervalInputComponent ],
+      declarations: [IntervalValueComponent, TestHostDisplayValueComponent, TestIntervalInputComponent],
       imports: [
         ReactiveFormsModule,
         MatInputModule,
         BrowserAnimationsModule
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -65,6 +116,6 @@ describe('IntervalValueComponent', () => {
   });
 
   it('should create', () => {
-    // console.log(testHostComponent.inputValueComponent);
+    console.log(testHostComponent.inputValueComponent);
   });
 });
