@@ -25,7 +25,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
   ngOnInit() {
     MockResource.getTestthing().subscribe(res => {
-      const booleanVal: ReadBooleanValue = 
+      const booleanVal: ReadBooleanValue =
         res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasBoolean', ReadBooleanValue)[0];
 
       this.displayBooleanVal = booleanVal;
@@ -72,7 +72,7 @@ describe('BooleanValueComponent', () => {
     .compileComponents();
   }));
 
-  fdescribe('display and edit a boolean value', () => {
+  describe('display and edit a boolean value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
@@ -182,7 +182,7 @@ describe('BooleanValueComponent', () => {
       expect((updatedValue as UpdateBooleanValue).valueHasComment).toEqual('this is a comment');
     });
 
-    fit('should restore the initially displayed value', () => {
+    it('should restore the initially displayed value', () => {
 
       testHostComponent.mode = 'update';
 
@@ -216,6 +216,33 @@ describe('BooleanValueComponent', () => {
 
       expect(checkboxLabel.innerText).toEqual('true');
 
+    });
+
+    it('should set a new display value', () => {
+
+      const newBool = new ReadBooleanValue();
+
+      newBool.bool = false;
+      newBool.id = 'updatedId';
+
+      testHostComponent.displayBooleanVal = newBool;
+
+      testHostFixture.detectChanges();
+
+      expect(checkboxEl.checked).toBe(false);
+
+      expect(checkboxLabel.innerText).toEqual('false');
+
+      expect(testHostComponent.booleanValueComponent.form.valid).toBeTruthy();
+
+    });
+
+    it('should unsubscribe when destroyed', () => {
+      expect(testHostComponent.booleanValueComponent.valueChangesSubscription.closed).toBeFalsy();
+
+      testHostComponent.booleanValueComponent.ngOnDestroy();
+
+      expect(testHostComponent.booleanValueComponent.valueChangesSubscription.closed).toBeTruthy();
     });
 
   });
