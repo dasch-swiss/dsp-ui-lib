@@ -1,6 +1,13 @@
 <span [formGroup]="form">
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'textValue'" class="value" placeholder="Text value" type="text" [readonly]="mode === 'read'">
+        <mat-hint>Enter a text value</mat-hint>
+        <mat-error *ngIf="valueFormControl.hasError('required')">
+        A value is required
+        </mat-error>
+        <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
+        Value must be different
+        </mat-error>
     </mat-form-field>
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
