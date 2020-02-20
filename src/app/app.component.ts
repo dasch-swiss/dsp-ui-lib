@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     ).subscribe(
       (resource: ReadResource) => {
         this.testthing = resource;
-        console.log(this.testthing);
+        // console.log(this.testthing);
         this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInterval')[0];
       }
     );
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this);
+    // console.log(this);
   }
 
 
