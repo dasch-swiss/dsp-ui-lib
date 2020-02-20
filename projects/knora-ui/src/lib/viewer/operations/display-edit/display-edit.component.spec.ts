@@ -1,9 +1,8 @@
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DisplayEditComponent} from './display-edit.component';
 import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {
-  KnoraApiConfig,
   KnoraApiConnection,
   MockResource,
   ReadIntValue,
@@ -107,9 +106,6 @@ class TestHostDisplayValueComponent implements OnInit {
 
   mode: 'read' | 'update' | 'create' | 'search';
 
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
-  }
-
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(res => {
@@ -130,13 +126,14 @@ class TestHostDisplayValueComponent implements OnInit {
 describe('DisplayEditComponent', () => {
   let testHostComponent: TestHostDisplayValueComponent;
   let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
-  let config: KnoraApiConfig;
-  let knoraApiConnection: KnoraApiConnection;
 
   beforeEach(async(() => {
 
-    config = new KnoraApiConfig('http', '0.0.0.0', 3333, undefined, undefined, true);
-    knoraApiConnection = new KnoraApiConnection(config);
+    const valuesSpyObj = {
+      v2: {
+        values: jasmine.createSpyObj('values', ['updateValue', 'getValue'])
+      }
+    };
 
     TestBed.configureTestingModule({
       imports: [
@@ -152,11 +149,12 @@ describe('DisplayEditComponent', () => {
       providers: [
         {
           provide: KnoraApiConnectionToken,
-          useValue: knoraApiConnection
+          useValue: valuesSpyObj
         }
       ]
     })
       .compileComponents();
+
   }));
 
   describe('change from display to edit mode', () => {
@@ -197,11 +195,11 @@ describe('DisplayEditComponent', () => {
 
     });
 
-    it('should save a new version of a value', inject([KnoraApiConnectionToken], (knoraApiCon) => {
+    it('should save a new version of a value', () => {
 
-      const updateValueSpy = spyOn(knoraApiCon.v2.values, 'updateValue');
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
 
-      updateValueSpy.and.callFake(
+      valuesSpy.v2.values.updateValue.and.callFake(
         () => {
 
           const response = new WriteValueResponse();
@@ -213,9 +211,7 @@ describe('DisplayEditComponent', () => {
         }
       );
 
-      const readValueSpy = spyOn(knoraApiCon.v2.values, 'getValue');
-
-      readValueSpy.and.callFake(
+      valuesSpy.v2.values.getValue.and.callFake(
         () => {
 
           const updatedVal = new ReadIntValue();
@@ -252,14 +248,14 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       // expect(updateValueSpy).toHaveBeenCalledWith();
-      expect(updateValueSpy).toHaveBeenCalledTimes(1);
+      expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledTimes(1);
 
-      expect(readValueSpy).toHaveBeenCalledTimes(1);
-      expect(readValueSpy).toHaveBeenCalledWith(testHostComponent.readResource.id, testHostComponent.readValue.uuid);
+      expect(valuesSpy.v2.values.getValue).toHaveBeenCalledTimes(1);
+      expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id, testHostComponent.readValue.uuid);
 
       expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
       expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
-    }));
+    });
 
   });
 });
