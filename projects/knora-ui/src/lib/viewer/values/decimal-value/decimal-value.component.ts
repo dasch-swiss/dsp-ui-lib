@@ -1,18 +1,17 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
-import {CreateIntValue, ReadIntValue, UpdateIntValue} from '@knora/api';
+import {CreateDecimalValue, ReadDecimalValue, UpdateDecimalValue} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {CustomRegex} from '../custom-regex';
 
 @Component({
-  selector: 'kui-int-value',
-  templateUrl: './int-value.component.html',
-  styleUrls: ['./int-value.component.scss']
+  selector: 'kui-decimal-value',
+  templateUrl: './decimal-value.component.html',
+  styleUrls: ['./decimal-value.component.scss']
 })
-export class IntValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
-
-  @Input() displayValue?: ReadIntValue;
+export class DecimalValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
+  
+  @Input() displayValue?: ReadDecimalValue;
 
   valueFormControl: FormControl;
   commentFormControl: FormControl;
@@ -21,15 +20,15 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
 
   valueChangesSubscription: Subscription;
 
-  customValidators = [Validators.pattern(CustomRegex.INT_REGEX)]; // only allow for integer values (no fractions)
-
+  customValidators = [];
+  
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
-  }
-
-  getInitValue(): number | null {
+   }
+  
+   getInitValue(): number | null {
     if (this.displayValue !== undefined) {
-      return this.displayValue.int;
+      return this.displayValue.decimal;
     } else {
       return null;
     }
@@ -49,7 +48,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
     );
 
     this.form = this.fb.group({
-      intValue: this.valueFormControl,
+      decimalValue: this.valueFormControl,
       comment: this.commentFormControl
     });
 
@@ -65,39 +64,39 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
     this.unsubscribeFromValueChanges();
   }
 
-  getNewValue(): CreateIntValue | false {
+  getNewValue(): CreateDecimalValue | false {
     if (this.mode !== 'create' || !this.form.valid) {
       return false;
     }
 
-    const newIntValue = new CreateIntValue();
+    const newDecimalValue = new CreateDecimalValue();
 
-    newIntValue.int = this.valueFormControl.value;
+    newDecimalValue.decimal = this.valueFormControl.value;
 
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
-      newIntValue.valueHasComment = this.commentFormControl.value;
+      newDecimalValue.valueHasComment = this.commentFormControl.value;
     }
 
-    return newIntValue;
+    return newDecimalValue;
   }
 
-  getUpdatedValue(): UpdateIntValue | false {
+  getUpdatedValue(): UpdateDecimalValue | false {
     if (this.mode !== 'update' || !this.form.valid) {
       return false;
     }
 
-    const updatedIntValue = new UpdateIntValue();
+    const updatedDecimalValue = new UpdateDecimalValue();
 
-    updatedIntValue.id = this.displayValue.id;
+    updatedDecimalValue.id = this.displayValue.id;
 
-    updatedIntValue.int = this.valueFormControl.value;
+    updatedDecimalValue.decimal = this.valueFormControl.value;
 
     // add the submitted comment to updatedIntValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
-      updatedIntValue.valueHasComment = this.commentFormControl.value;
+      updatedDecimalValue.valueHasComment = this.commentFormControl.value;
     }
 
-    return updatedIntValue;
+    return updatedDecimalValue;
   }
 
 }

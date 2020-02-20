@@ -6,15 +6,16 @@ import {CommonModule} from '@angular/common';
 import { IntValueComponent } from './values/int-value/int-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { UriValueComponent } from './values/uri-value/uri-value.component';
+import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, UriValueComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent, UriValueComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule
   ],
-  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent]
+  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent, UriValueComponent]
 })
 export class ViewerModule {
 }
