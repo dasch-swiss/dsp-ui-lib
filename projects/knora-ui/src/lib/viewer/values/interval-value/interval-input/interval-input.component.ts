@@ -1,6 +1,6 @@
 import {Component, ElementRef, HostBinding, Input, OnDestroy, Optional, Self} from '@angular/core';
 import {MatFormFieldControl} from '@angular/material/form-field';
-import {ControlValueAccessor, FormBuilder, FormGroup, NgControl} from '@angular/forms';
+import {ControlValueAccessor, FormBuilder, FormGroup, NgControl, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
@@ -118,8 +118,8 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
               private elRef: ElementRef<HTMLElement>) {
 
     this.form = fb.group({
-      start: null,
-      end: null,
+      start: [null, Validators.required],
+      end: [null, Validators.required]
     });
 
     fm.monitor(elRef.nativeElement, true).subscribe(origin => {

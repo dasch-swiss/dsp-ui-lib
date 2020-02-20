@@ -1,5 +1,5 @@
-import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {ApiResponseData, KnoraApiConnection, LoginResponse, ReadIntValue, ReadResource, ReadValue} from '@knora/api';
+import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {ApiResponseData, KnoraApiConnection, LoginResponse, ReadResource, ReadValue} from '@knora/api';
 import {mergeMap} from 'rxjs/operators';
 import {DisplayEditComponent} from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
 import {KnoraApiConnectionToken} from 'knora-ui';
@@ -9,7 +9,7 @@ import {KnoraApiConnectionToken} from 'knora-ui';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('displayEdit', {static: false}) displayEditComponent: DisplayEditComponent;
 
   title = 'knora-ui-ng-lib';
@@ -36,6 +36,10 @@ export class AppComponent implements OnInit {
       }
     );
 
+  }
+
+  ngAfterViewInit(): void {
+    console.log(this);
   }
 
 
