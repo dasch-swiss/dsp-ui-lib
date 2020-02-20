@@ -62,7 +62,7 @@ describe('IntValueComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         IntValueComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent
@@ -75,7 +75,7 @@ describe('IntValueComponent', () => {
     })
     .compileComponents();
   }));
-  
+
   describe('display and edit an integer value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
