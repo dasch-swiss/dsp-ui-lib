@@ -20,7 +20,7 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
 
   valueChangesSubscription: Subscription;
 
-  customValidators = [Validators.pattern(/^-?[0-9]+[.]{1}[0-9]+$/)]; // only allow decimal values
+  customValidators = [];
   
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();

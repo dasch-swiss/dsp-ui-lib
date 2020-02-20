@@ -14,7 +14,7 @@ import { DecimalValueComponent } from './values/decimal-value/decimal-value.comp
     ReactiveFormsModule,
     MatInputModule
   ],
-  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent]
+  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent]
 })
 export class ViewerModule {
 }

@@ -190,7 +190,7 @@ describe('DecimalValueComponent', () => {
 
       expect(valueInputNativeElement.value).toEqual('1.5');
 
-      valueInputNativeElement.value = '1';
+      valueInputNativeElement.value = '.';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
