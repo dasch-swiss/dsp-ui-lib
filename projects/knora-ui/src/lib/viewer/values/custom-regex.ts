@@ -3,6 +3,6 @@
 
 export class CustomRegex{
 
-    public static readonly INT_REGEX = RegExp(/^-?\d+$/);
+    public static readonly INT_REGEX = /^-?\d+$/;
     
 }
