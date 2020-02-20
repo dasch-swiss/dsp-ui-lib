@@ -70,12 +70,12 @@ export class DisplayEditComponent implements OnInit {
 
       this.knoraApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
         mergeMap((res: WriteValueResponse) => {
-          console.log(res);
+          // console.log(res);
           return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, this.displayValue.uuid);
         })
       ).subscribe(
         (res2: ReadResource) => {
-          console.log(res2);
+          // console.log(res2);
           this.displayValue = res2.getValues(this.displayValue.property)[0];
           this.mode = 'read';
         }

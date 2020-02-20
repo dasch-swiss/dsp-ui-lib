@@ -76,9 +76,6 @@ class TestHostDisplayValueComponent implements OnInit {
 
   mode: 'read' | 'update' | 'create' | 'search';
 
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
-  }
-
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(res => {
