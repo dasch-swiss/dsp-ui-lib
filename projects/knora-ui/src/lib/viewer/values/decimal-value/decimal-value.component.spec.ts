@@ -258,7 +258,7 @@ describe('DecimalValueComponent', () => {
     });
   });
 
-  describe('create a decimaö value', () => {
+  describe('create a decimal value', () => {
 
     let testHostComponent: TestHostCreateValueComponent;
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
