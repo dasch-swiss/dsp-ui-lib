@@ -3,6 +3,7 @@ import {BaseValueComponent} from '../base-value.component';
 import {CreateIntValue, ReadIntValue, UpdateIntValue} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {CustomRegex} from '../custom-regex';
 
 @Component({
   selector: 'kui-int-value',
@@ -20,7 +21,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
 
   valueChangesSubscription: Subscription;
 
-  customValidators = [Validators.pattern(/^-?\d+$/)]; // only allow for integer values (no fractions)
+  customValidators = [Validators.pattern(CustomRegex.INT_REGEX)]; // only allow for integer values (no fractions)
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
