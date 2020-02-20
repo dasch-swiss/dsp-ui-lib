@@ -6,9 +6,10 @@ import {CommonModule} from '@angular/common';
 import { IntValueComponent } from './values/int-value/int-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
+import { ColorValueComponent } from './values/color-value/color-value.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent, ColorValueComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
