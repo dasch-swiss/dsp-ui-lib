@@ -6,6 +6,7 @@ import {Component, DebugElement, OnInit, ViewChild} from '@angular/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
+import {MatInputModule} from '@angular/material';
 
 /**
  * Test host component to simulate parent component.
@@ -50,7 +51,7 @@ describe('InvertalInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatFormFieldModule, BrowserAnimationsModule],
+      imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
       declarations: [IntervalInputComponent, TestHostComponent]
     })
       .compileComponents();
@@ -121,8 +122,8 @@ describe('InvertalInputComponent', () => {
   it('should initialize the interval with an empty value', () => {
 
     testHostComponent.form.controls.interval.setValue(null);
-    expect(startInputNativeElement.value).toEqual('0');
-    expect(endInputNativeElement.value).toEqual('0');
+    expect(startInputNativeElement.value).toEqual('');
+    expect(endInputNativeElement.value).toEqual('');
 
   });
 

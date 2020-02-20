@@ -1,9 +1,10 @@
 import {Component, ElementRef, HostBinding, Input, OnDestroy, Optional, Self} from '@angular/core';
 import {MatFormFieldControl} from '@angular/material/form-field';
-import {ControlValueAccessor, FormBuilder, FormGroup, NgControl, Validators} from '@angular/forms';
+import {ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {ErrorStateMatcher} from '@angular/material';
 
 /**
  * Represents an interval consisting.
@@ -15,6 +16,14 @@ export class Interval {
    * @param end interval's end.
    */
   constructor(public start: number, public end: number) {
+  }
+}
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class IntervalInputErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
 }
 
@@ -34,6 +43,7 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
   focused = false;
   errorState = false;
   controlType = 'kui-interval-input';
+  matcher = new IntervalInputErrorStateMatcher();
   onChange = (_: any) => {};
   onTouched = () => {};
 
@@ -106,9 +116,13 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
   }
 
   set value(interval: Interval | null) {
-    interval = interval || new Interval(0, 0);
+    // interval = interval || new Interval(0, 0);
     // console.log('setter ', interval);
-    this.form.setValue({start: interval.start, end: interval.end});
+    if (interval !== null) {
+      this.form.setValue({start: interval.start, end: interval.end});
+    } else {
+      this.form.setValue({start: null, end: null});
+    }
     this.stateChanges.next();
   }
 

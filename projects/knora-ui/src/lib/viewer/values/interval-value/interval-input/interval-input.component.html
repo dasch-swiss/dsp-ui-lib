@@ -1,4 +1,14 @@
 <div [formGroup]="form" class="interval-input-container">
-  <span>{{intervalStartLabel}}:&nbsp;</span><input class="interval-input-element start" formControlName="start" type="number" aria-label="start" [readonly]="readonly" (input)="_handleInput()">
-  <span>{{intervalEndLabel}}:&nbsp;</span><input class="interval-input-element end" formControlName="end" type="number" aria-label="end" [readonly]="readonly" (input)="_handleInput()">
+  <mat-form-field>
+    <input matInput class="interval-input-element start" [formControlName]="'start'" type="number" aria-label="start" [readonly]="readonly" (input)="_handleInput()" [placeholder]="intervalStartLabel" [errorStateMatcher]="matcher">
+    <mat-error *ngIf="form.controls.start.hasError('required')">
+      Start is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput class="interval-input-element end" [formControlName]="'end'" type="number" aria-label="end" [readonly]="readonly" (input)="_handleInput()" [placeholder]="intervalEndLabel" [errorStateMatcher]="matcher">
+    <mat-error *ngIf="form.controls.end.hasError('required')">
+      End is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
 </div>
