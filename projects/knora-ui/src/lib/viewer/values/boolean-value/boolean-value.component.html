@@ -1,7 +1,8 @@
 <span [formGroup]="form">
-    <mat-checkbox [formControlName]="'booleanValue'" class="value boolValue">
+    <mat-checkbox [formControlName]="'booleanValue'" class="value boolValue" (change)="onChecked($event)">
+        {{booleanLabel}}
     </mat-checkbox>
-    <mat-form-field class="large-field">
+    <mat-form-field class="large-field comment-field">
         <input matInput [formControlName]="'comment'" class="comment boolComment" placeholder="Comment" type="text"
             [readonly]="mode === 'read'">
     </mat-form-field>

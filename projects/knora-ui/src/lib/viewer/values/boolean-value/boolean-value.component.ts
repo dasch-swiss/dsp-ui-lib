@@ -1,9 +1,9 @@
-import { Component, OnInit, OnChanges, OnDestroy, Input, Inject, SimpleChanges } from '@angular/core';
-import { BaseValueComponent } from '../base-value.component';
-import { ReadBooleanValue, CreateBooleanValue, UpdateBooleanValue } from '@knora/api';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/typings';
+import { CreateBooleanValue, ReadBooleanValue, UpdateBooleanValue } from '@knora/api';
+import { Subscription } from 'rxjs';
+import { BaseValueComponent } from '../base-value.component';
 
 @Component({
   selector: 'kui-boolean-value',
@@ -22,6 +22,8 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
   valueChangesSubscription: Subscription;
 
   customValidators = [];
+
+  booleanLabel: string;
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
@@ -55,6 +57,21 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     this.resetFormControl();
   }
 
+  // override the resetFormControl() from the base component to deal with the disabled state and the checkbox label
+  resetFormControl(): void {
+    super.resetFormControl();
+
+    if (this.valueFormControl !== undefined) {
+      this.booleanLabel = this.valueFormControl.value ? 'true' : 'false';
+      if (this.mode === 'read') {
+        this.valueFormControl.disable();
+      } else {
+        this.valueFormControl.enable();
+      }
+    }
+
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.resetFormControl();
   }
@@ -63,19 +80,6 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
   ngOnDestroy(): void {
     this.unsubscribeFromValueChanges();
   }
-
-  resetFormControl(): void {
-    super.resetFormControl();
-
-    if (this.valueFormControl !== undefined) {
-      if (this.mode === 'read') {
-        this.valueFormControl.disable();
-      } else {
-        this.valueFormControl.enable();
-      }
-    }
-  }
-
 
   getNewValue(): CreateBooleanValue | false {
     if (this.mode !== 'create' || !this.form.valid) {
@@ -111,6 +115,11 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     }
 
     return updatedBooleanValue;
+  }
+
+  // update dynamically the checkbox label according to the checked status
+  onChecked(changeEvent: MatCheckboxChange) {
+    this.booleanLabel = changeEvent.checked.toString();
   }
 
 }

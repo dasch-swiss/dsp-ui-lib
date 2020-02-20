@@ -79,6 +79,7 @@ describe('BooleanValueComponent', () => {
     let valueBooleanDebugElement: DebugElement;
     let valueBooleanNativeElement;
     let checkboxEl;
+    let checkboxLabel;
     let commentBooleanDebugElement: DebugElement;
     let commentBooleanNativeElement;
 
@@ -95,6 +96,7 @@ describe('BooleanValueComponent', () => {
       valueBooleanDebugElement = valueComponentDe.query(By.css('mat-checkbox'));
       valueBooleanNativeElement = valueBooleanDebugElement.nativeElement;
       checkboxEl = valueBooleanDebugElement.query(By.css('input[type="checkbox"]')).nativeElement;
+      checkboxLabel = valueBooleanDebugElement.query(By.css('span[class="mat-checkbox-label"]')).nativeElement;
 
       commentBooleanDebugElement = valueComponentDe.query(By.css('input.comment'));
       commentBooleanNativeElement = commentBooleanDebugElement.nativeElement;
@@ -110,6 +112,8 @@ describe('BooleanValueComponent', () => {
 
       expect(checkboxEl.disabled).toBe(true);
       expect(checkboxEl.checked).toBe(true);
+
+      expect(checkboxLabel.innerText).toEqual('true');
     });
 
     it('should make an existing value editable', () => {
@@ -126,6 +130,8 @@ describe('BooleanValueComponent', () => {
 
       expect(checkboxEl.checked).toBe(true);
 
+      expect(checkboxLabel.innerText).toEqual('true');
+
       checkboxEl.click();
 
       testHostFixture.detectChanges();
@@ -141,6 +147,8 @@ describe('BooleanValueComponent', () => {
       expect(checkboxEl.checked).toBe(false);
 
       expect(checkboxEl.disabled).toBe(false);
+
+      expect(checkboxLabel.innerText).toEqual('false');
     });
 
     it('should validate an existing value with an added comment', () => {
@@ -156,6 +164,8 @@ describe('BooleanValueComponent', () => {
       expect(testHostComponent.booleanValueComponent.form.valid).toBeFalsy();
 
       expect(checkboxEl.checked).toBe(true);
+
+      expect(checkboxLabel.innerText).toEqual('true');
 
       commentBooleanNativeElement.value = 'this is a comment';
 
@@ -186,11 +196,15 @@ describe('BooleanValueComponent', () => {
 
       expect(checkboxEl.checked).toBe(true);
 
+      expect(checkboxLabel.innerText).toEqual('true');
+
       checkboxEl.click();
 
       testHostFixture.detectChanges();
 
       expect(checkboxEl.checked).toBe(false);
+
+      expect(checkboxLabel.innerText).toEqual('false');
 
       testHostComponent.booleanValueComponent.resetFormControl();
 
@@ -199,6 +213,8 @@ describe('BooleanValueComponent', () => {
       expect(testHostComponent.booleanValueComponent.form.valid).toBeFalsy();
 
       expect(checkboxEl.checked).toBe(true);
+
+      expect(checkboxLabel.innerText).toEqual('true');
     });
 
     it('should set a new display value', () => {
@@ -235,6 +251,7 @@ describe('BooleanValueComponent', () => {
     let valueBooleanDebugElement: DebugElement;
     let valueBooleanNativeElement;
     let checkboxEl;
+    let checkboxLabel;
     let commentBooleanDebugElement: DebugElement;
     let commentBooleanNativeElement;
 
@@ -253,6 +270,7 @@ describe('BooleanValueComponent', () => {
       valueBooleanDebugElement = valueComponentDe.query(By.css('mat-checkbox'));
       valueBooleanNativeElement = valueBooleanDebugElement.nativeElement;
       checkboxEl = valueBooleanDebugElement.query(By.css('input[type="checkbox"]')).nativeElement;
+      checkboxLabel = valueBooleanDebugElement.query(By.css('span[class="mat-checkbox-label"]')).nativeElement;
       commentBooleanDebugElement = valueComponentDe.query(By.css('input.comment'));
       commentBooleanNativeElement = commentBooleanDebugElement.nativeElement;
 
@@ -260,11 +278,14 @@ describe('BooleanValueComponent', () => {
       expect(testHostComponent.booleanValueComponent.form.valid).toBeFalsy();
       expect(checkboxEl.disabled).toBe(false);
       expect(checkboxEl.checked).toBe(false);
+      expect(checkboxLabel.innerText).toEqual('false');
       expect(commentBooleanNativeElement.value).toEqual('');
       expect(commentBooleanNativeElement.readOnly).toEqual(false);
     });
 
     it('should create a value', () => {
+
+      console.log('valueBooleanDebugElement', valueBooleanDebugElement);
 
       checkboxEl.click();
 
