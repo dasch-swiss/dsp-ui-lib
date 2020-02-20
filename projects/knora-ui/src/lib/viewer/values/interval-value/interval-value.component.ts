@@ -1,9 +1,18 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {BaseValueComponent} from "../base-value.component";
-import {CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue} from "@knora/api";
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from "@angular/forms";
-import {Subscription} from "rxjs";
+import {BaseValueComponent} from '../base-value.component';
+import {CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue} from '@knora/api';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn} from '@angular/forms';
+import {Subscription} from 'rxjs';
 import {Interval, IntervalInputComponent} from './interval-input/interval-input.component';
+import {ErrorStateMatcher} from '@angular/material';
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class IntervalErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'kui-interval-value',
@@ -25,11 +34,14 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
 
   customValidators = [];
 
+  matcher = new IntervalErrorStateMatcher();
+
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
 
-  standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
+  standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn
+    = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
     return (control: AbstractControl): { [key: string]: any } | null => {
 
       const invalid = (control.value !== null && initValue.start === control.value.start && initValue.end === control.value.end)

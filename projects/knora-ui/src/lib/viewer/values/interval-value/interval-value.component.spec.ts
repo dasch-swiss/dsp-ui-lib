@@ -10,6 +10,7 @@ import {Interval} from './interval-input/interval-input.component';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
 import {By} from '@angular/platform-browser';
+import {ErrorStateMatcher} from '@angular/material';
 
 @Component({
   selector: `kui-interval-input`,
@@ -32,6 +33,7 @@ class TestIntervalInputComponent implements ControlValueAccessor, MatFormFieldCo
   @Input() placeholder: string;
   @Input() required: boolean;
   @Input() shouldLabelFloat: boolean;
+  @Input() errorStateMatcher: ErrorStateMatcher;
 
   errorState = false;
   focused = false;

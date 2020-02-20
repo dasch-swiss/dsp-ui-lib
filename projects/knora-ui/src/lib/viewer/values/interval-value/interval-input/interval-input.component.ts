@@ -1,10 +1,10 @@
-import {Component, ElementRef, HostBinding, Input, OnDestroy, Optional, Self} from '@angular/core';
+import {Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self} from '@angular/core';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {ErrorStateMatcher} from '@angular/material';
+import {CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, mixinErrorState} from '@angular/material/core';
 
 /**
  * Represents an interval consisting.
@@ -27,6 +27,15 @@ export class IntervalInputErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
+class MatInputBase {
+  constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
+              public _parentForm: NgForm,
+              public _parentFormGroup: FormGroupDirective,
+              public ngControl: NgControl) {}
+}
+const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
+  mixinErrorState(MatInputBase);
+
 // https://material.angular.io/guide/creating-a-custom-form-field-control
 @Component({
   selector: 'kui-interval-input',
@@ -34,7 +43,7 @@ export class IntervalInputErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./interval-input.component.scss'],
   providers: [{provide: MatFormFieldControl, useExisting: IntervalInputComponent}],
 })
-export class IntervalInputComponent implements ControlValueAccessor, MatFormFieldControl<Interval>, OnDestroy {
+export class IntervalInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<Interval>, DoCheck, CanUpdateErrorState, OnDestroy {
   static nextId = 0;
 
   form: FormGroup;
@@ -126,10 +135,17 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
     this.stateChanges.next();
   }
 
+  @Input() errorStateMatcher: ErrorStateMatcher;
+
   constructor(fb: FormBuilder,
               @Optional() @Self() public ngControl: NgControl,
               private fm: FocusMonitor,
-              private elRef: ElementRef<HTMLElement>) {
+              private elRef: ElementRef<HTMLElement>,
+              @Optional() _parentForm: NgForm,
+              @Optional() _parentFormGroup: FormGroupDirective,
+              _defaultErrorStateMatcher: ErrorStateMatcher) {
+
+    super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
     this.form = fb.group({
       start: [null, Validators.required],
@@ -143,6 +159,12 @@ export class IntervalInputComponent implements ControlValueAccessor, MatFormFiel
 
     if (this.ngControl != null) {
       this.ngControl.valueAccessor = this;
+    }
+  }
+
+  ngDoCheck() {
+    if (this.ngControl) {
+      this.updateErrorState();
     }
   }
 

@@ -1,6 +1,9 @@
 <span [formGroup]="form">
     <mat-form-field class="large-field">
-      <kui-interval-input #intervalInput [formControlName]="'intervalValue'" class="value" placeholder="Interval value" [readonly]="mode === 'read'"></kui-interval-input>
+      <kui-interval-input #intervalInput [formControlName]="'intervalValue'" class="value" placeholder="Interval value" [readonly]="mode === 'read'" [errorStateMatcher]="matcher"></kui-interval-input>
+      <mat-error *ngIf="form.controls.intervalValue.hasError('valueNotChanged')">
+        Change value
+      </mat-error>
     </mat-form-field>
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
