@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {ApiResponseData, KnoraApiConnection, LoginResponse, ReadIntValue, ReadResource, ReadValue} from '@knora/api';
+import {ApiResponseData, KnoraApiConnection, LoginResponse, ReadIntValue, ReadLinkValue, ReadResource, ReadValue} from '@knora/api';
 import {mergeMap} from 'rxjs/operators';
 import {DisplayEditComponent} from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
 import {KnoraApiConnectionToken} from 'knora-ui';
@@ -31,8 +31,8 @@ export class AppComponent implements OnInit {
     ).subscribe(
       (resource: ReadResource) => {
         this.testthing = resource;
-        console.log(this.testthing);
         this.linkValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue')[0];
+        console.log(this.linkValue);
       }
     );
 

@@ -4,7 +4,7 @@ import { LinkValueComponent } from './link-value.component';
 import { ReadLinkValue, MockResource, UpdateValue, UpdateLinkValue, CreateLinkValue } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
@@ -69,7 +69,7 @@ describe('LinkValueComponent', () => {
        ],
        imports: [
         ReactiveFormsModule,
-        MatInputModule,
+        MatAutocompleteModule,
         BrowserAnimationsModule
       ],
     })

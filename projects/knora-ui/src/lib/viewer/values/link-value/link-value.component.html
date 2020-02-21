@@ -1,5 +1,14 @@
 <span [formGroup]="form">
-    <mat-form-field>
-      <input type="text" matInput [formControl]="valueFormControl">
+  <mat-form-field class="example-full-width">
+        <input [formControlName]="'linkValue'" type="text" placeholder="Link value" aria-label="resource" matInput [matAutocomplete]="auto">
+
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of options" [value]="option">
+              {{option}}
+          </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="large-field">
+        <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
     </mat-form-field>
 </span>
