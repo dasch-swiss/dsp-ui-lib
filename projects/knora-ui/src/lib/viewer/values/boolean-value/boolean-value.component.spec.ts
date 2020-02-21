@@ -285,8 +285,6 @@ describe('BooleanValueComponent', () => {
 
     it('should create a value', () => {
 
-      console.log('valueBooleanDebugElement', valueBooleanDebugElement);
-
       checkboxEl.click();
 
       testHostFixture.detectChanges();
