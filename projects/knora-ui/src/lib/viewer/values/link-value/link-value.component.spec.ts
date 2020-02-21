@@ -4,6 +4,7 @@ import { LinkValueComponent } from './link-value.component';
 import { ReadLinkValue, MockResource, UpdateValue, UpdateLinkValue, CreateLinkValue } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { $ } from 'protractor';
@@ -69,6 +70,7 @@ describe('LinkValueComponent', () => {
        ],
        imports: [
         ReactiveFormsModule,
+        MatInputModule,
         MatAutocompleteModule,
         BrowserAnimationsModule
       ],
@@ -88,7 +90,7 @@ describe('LinkValueComponent', () => {
 
     it('should display an existing value', () => {
 
-      expect(testHostComponent.inputValueComponent.displayValue.linkedResourceIri).toMatch('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect(testHostComponent.displayInputVal.linkedResourceIri).toMatch('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
 
     });
   });

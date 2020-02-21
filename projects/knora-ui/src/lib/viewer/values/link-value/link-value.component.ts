@@ -30,7 +30,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    *
    * @param label to be searched
    */
-  // searchByLabel(searchTerm: string) {
+  //   searchByLabel(searchTerm: string) {
   //
   //   // at least 3 characters are required
   //   if (searchTerm.length >= 3) {
@@ -110,7 +110,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
 
     updatedLinkValue.id = this.displayValue.id;
 
-    updatedLinkValue.linkedResourceIri = this.commentFormControl.value;
+    updatedLinkValue.linkedResourceIri = this.valueFormControl.value;
 
     // add the submitted comment to updatedLinkValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
