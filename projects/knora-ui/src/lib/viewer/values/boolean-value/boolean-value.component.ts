@@ -62,7 +62,7 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     super.resetFormControl();
 
     if (this.valueFormControl !== undefined) {
-      this.booleanLabel = this.valueFormControl.value ? 'true' : 'false';
+      this.setBoolLabel();
       if (this.mode === 'read') {
         this.valueFormControl.disable();
       } else {
@@ -118,8 +118,13 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
   }
 
   // update dynamically the checkbox label according to the checked status
-  onChecked(changeEvent: MatCheckboxChange) {
-    this.booleanLabel = changeEvent.checked.toString();
+  onChecked() {
+    this.setBoolLabel();
+  }
+
+  private setBoolLabel(): string {
+    this.booleanLabel = this.valueFormControl.value ? 'true' : 'false';
+    return this.booleanLabel;
   }
 
 }
