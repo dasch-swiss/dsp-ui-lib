@@ -118,7 +118,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
     updatedIntervalValue.start = this.valueFormControl.value.start;
     updatedIntervalValue.end = this.valueFormControl.value.end;
 
-    // add the submitted comment to updatedIntValue only if user has added a comment
+    // add the submitted comment to updatedIntervalValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedIntervalValue.valueHasComment = this.commentFormControl.value;
     }

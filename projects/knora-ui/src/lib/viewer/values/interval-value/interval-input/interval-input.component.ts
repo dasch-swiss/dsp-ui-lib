@@ -117,7 +117,6 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
   @Input()
   get value(): Interval | null {
     const userInput = this.form.value;
-    // console.log('getter ', userInput);
     if (userInput.start !== null && userInput.end !== null) {
       return new Interval(userInput.start, userInput.end);
     }
@@ -125,8 +124,6 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
   }
 
   set value(interval: Interval | null) {
-    // interval = interval || new Interval(0, 0);
-    // console.log('setter ', interval);
     if (interval !== null) {
       this.form.setValue({start: interval.start, end: interval.end});
     } else {

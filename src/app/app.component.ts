@@ -9,7 +9,7 @@ import {KnoraApiConnectionToken} from 'knora-ui';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   @ViewChild('displayEdit', {static: false}) displayEditComponent: DisplayEditComponent;
 
   title = 'knora-ui-ng-lib';
@@ -37,10 +37,5 @@ export class AppComponent implements OnInit, AfterViewInit {
     );
 
   }
-
-  ngAfterViewInit(): void {
-    // console.log(this);
-  }
-
 
 }
