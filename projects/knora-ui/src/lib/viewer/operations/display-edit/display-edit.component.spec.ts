@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DisplayEditComponent} from './display-edit.component';
-import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import { DisplayEditComponent } from './display-edit.component';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import {
   KnoraApiConnection,
   MockResource,
@@ -14,11 +14,11 @@ import {
   UpdateDecimalValue
 } from '@knora/api';
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {By} from '@angular/platform-browser';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {of} from 'rxjs';
-import {KnoraApiConnectionToken} from '../../../core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { of } from 'rxjs';
+import { KnoraApiConnectionToken } from '../../../core';
 
 @Component({
   selector: `kui-text-value-as-string`,
@@ -72,10 +72,10 @@ class TestIntValueComponent implements OnInit {
 }
 
 @Component({
-  selector: `kui-decimal-value`,
+  selector: `kui-boolean-value`,
   template: ``
 })
-class TestDecimalValueComponent implements OnInit {
+class TestBooleanValueComponent implements OnInit {
 
   @Input() mode;
 
@@ -84,7 +84,24 @@ class TestDecimalValueComponent implements OnInit {
   form: object;
 
   ngOnInit(): void {
+    this.form = new FormGroup({
+      test: new FormControl(null, [Validators.required])
+    });
+  }
+}
 
+@Component({
+  selector: `kui-decimal-value`,
+  template: ``
+})
+class TestDecimalValueComponent implements OnInit {
+  @Input() mode;
+
+  @Input() displayValue;
+
+  form: object;
+
+  ngOnInit(): void {
     this.form = new FormGroup({
       test: new FormControl(null, [Validators.required])
     });
@@ -110,7 +127,7 @@ class TestDecimalValueComponent implements OnInit {
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('displayEditVal', {static: false}) displayEditValueComponent: DisplayEditComponent;
+  @ViewChild('displayEditVal', { static: false }) displayEditValueComponent: DisplayEditComponent;
 
   readResource: ReadResource;
   readValue: ReadValue;
@@ -155,6 +172,7 @@ describe('DisplayEditComponent', () => {
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
         TestIntValueComponent,
+        TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent
       ],
