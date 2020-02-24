@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IntValueComponent } from './int-value.component';
-import { ReadIntValue, MockResource, UpdateValue, UpdateIntValue, CreateIntValue } from '@knora/api';
+import { UriValueComponent } from './uri-value.component';
+import { ReadUriValue, MockResource, UpdateValue, UpdateUriValue, CreateUriValue } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
@@ -9,26 +9,27 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
 
+
 /**
  * Test host component to simulate parent component.
  */
 @Component({
   template: `
-    <kui-int-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-int-value>`
+    <kui-uri-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-uri-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: IntValueComponent;
+  @ViewChild('inputVal', {static: false}) inputValueComponent: UriValueComponent;
 
-  displayInputVal: ReadIntValue;
+  displayInputVal: ReadUriValue;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(res => {
-      const inputVal: ReadIntValue =
-        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger', ReadIntValue)[0];
+      const inputVal: ReadUriValue =
+        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasUri', ReadUriValue)[0];
 
       this.displayInputVal = inputVal;
 
@@ -43,11 +44,11 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-int-value #inputVal [mode]="mode"></kui-int-value>`
+    <kui-uri-value #inputVal [mode]="mode"></kui-uri-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: IntValueComponent;
+  @ViewChild('inputVal', {static: false}) inputValueComponent: UriValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
@@ -58,16 +59,18 @@ class TestHostCreateValueComponent implements OnInit {
   }
 }
 
-describe('IntValueComponent', () => {
+describe('UriValueComponent', () => {
+  let component: UriValueComponent;
+  let fixture: ComponentFixture<UriValueComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        IntValueComponent,
+      declarations: [ 
+        UriValueComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent
       ],
-       imports: [
+      imports: [
         ReactiveFormsModule,
         MatInputModule,
         BrowserAnimationsModule
@@ -76,7 +79,7 @@ describe('IntValueComponent', () => {
     .compileComponents();
   }));
 
-  describe('display and edit an integer value', () => {
+  describe('display and edit a Uri value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
@@ -94,7 +97,7 @@ describe('IntValueComponent', () => {
       expect(testHostComponent.inputValueComponent).toBeTruthy();
 
       const hostCompDe = testHostFixture.debugElement;
-      valueComponentDe = hostCompDe.query(By.directive(IntValueComponent));
+      valueComponentDe = hostCompDe.query(By.directive(UriValueComponent));
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
@@ -104,13 +107,13 @@ describe('IntValueComponent', () => {
 
     it('should display an existing value', () => {
 
-      expect(testHostComponent.inputValueComponent.displayValue.int).toEqual(1);
+      expect(testHostComponent.inputValueComponent.displayValue.uri).toEqual('http://www.google.ch');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
 
       expect(valueInputNativeElement.readOnly).toEqual(true);
 
@@ -128,9 +131,9 @@ describe('IntValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
 
-      valueInputNativeElement.value = '20';
+      valueInputNativeElement.value = 'http://www.reddit.com';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
@@ -140,9 +143,9 @@ describe('IntValueComponent', () => {
 
       const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
-      expect(updatedValue instanceof UpdateIntValue).toBeTruthy();
+      expect(updatedValue instanceof UpdateUriValue).toBeTruthy();
 
-      expect((updatedValue as UpdateIntValue).int).toEqual(20);
+      expect((updatedValue as UpdateUriValue).uri).toEqual('http://www.reddit.com');
 
     });
 
@@ -158,7 +161,7 @@ describe('IntValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
 
       commentInputNativeElement.value = 'this is a comment';
 
@@ -170,9 +173,9 @@ describe('IntValueComponent', () => {
 
       const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
-      expect(updatedValue instanceof UpdateIntValue).toBeTruthy();
+      expect(updatedValue instanceof UpdateUriValue).toBeTruthy();
 
-      expect((updatedValue as UpdateIntValue).valueHasComment).toEqual('this is a comment');
+      expect((updatedValue as UpdateUriValue).valueHasComment).toEqual('this is a comment');
 
     });
 
@@ -188,9 +191,9 @@ describe('IntValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
 
-      valueInputNativeElement.value = '1.5';
+      valueInputNativeElement.value = 'http://www.google.';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
@@ -216,9 +219,9 @@ describe('IntValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
 
-      valueInputNativeElement.value = '20';
+      valueInputNativeElement.value = 'http://www.reddit.com';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
@@ -226,7 +229,7 @@ describe('IntValueComponent', () => {
 
       testHostComponent.inputValueComponent.resetFormControl();
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -234,16 +237,16 @@ describe('IntValueComponent', () => {
 
     it('should set a new display value', () => {
 
-      const newInt = new ReadIntValue();
+      const newUri = new ReadUriValue();
 
-      newInt.int = 20;
-      newInt.id = 'updatedId';
+      newUri.uri = 'http://www.reddit.com';
+      newUri.id = 'updatedId';
 
-      testHostComponent.displayInputVal = newInt;
+      testHostComponent.displayInputVal = newUri;
 
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('20');
+      expect(valueInputNativeElement.value).toEqual('http://www.reddit.com');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -258,7 +261,7 @@ describe('IntValueComponent', () => {
     });
   });
 
-  describe('create an integer value', () => {
+  describe('create a URI value', () => {
 
     let testHostComponent: TestHostCreateValueComponent;
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
@@ -278,7 +281,7 @@ describe('IntValueComponent', () => {
 
       const hostCompDe = testHostFixture.debugElement;
 
-      valueComponentDe = hostCompDe.query(By.directive(IntValueComponent));
+      valueComponentDe = hostCompDe.query(By.directive(UriValueComponent));
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
@@ -294,7 +297,7 @@ describe('IntValueComponent', () => {
     });
 
     it('should create a value', () => {
-      valueInputNativeElement.value = '20';
+      valueInputNativeElement.value = 'http://www.reddit.com';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
@@ -306,13 +309,13 @@ describe('IntValueComponent', () => {
 
       const newValue = testHostComponent.inputValueComponent.getNewValue();
 
-      expect(newValue instanceof CreateIntValue).toBeTruthy();
+      expect(newValue instanceof CreateUriValue).toBeTruthy();
 
-      expect((newValue as CreateIntValue).int).toEqual(20);
+      expect((newValue as CreateUriValue).uri).toEqual('http://www.reddit.com');
     });
 
     it('should reset form after cancellation', () => {
-      valueInputNativeElement.value = '20';
+      valueInputNativeElement.value = 'http://www.reddit.com';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 

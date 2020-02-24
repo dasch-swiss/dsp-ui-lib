@@ -10,7 +10,8 @@ import {
   ReadValue,
   UpdateIntValue,
   UpdateValue,
-  WriteValueResponse
+  WriteValueResponse,
+  UpdateDecimalValue
 } from '@knora/api';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -24,6 +25,17 @@ import {KnoraApiConnectionToken} from '../../../core';
   template: ``
 })
 class TestTextValueAsStringComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
+@Component({
+  selector: `kui-uri-value`,
+  template: ``
+})
+class TestUriValueComponent {
 
   @Input() mode;
 
@@ -68,7 +80,38 @@ class TestIntervalValueComponent {
   @Input() mode;
 
   @Input() displayValue;
+
 }
+
+@Component({
+  selector: `kui-decimal-value`,
+  template: ``
+})
+class TestDecimalValueComponent implements OnInit {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+  form: object;
+
+  ngOnInit(): void {
+
+    this.form = new FormGroup({
+      test: new FormControl(null, [Validators.required])
+    });
+  }
+
+  getUpdatedValue(): UpdateValue {
+    const updateDecimalVal = new UpdateDecimalValue();
+
+    updateDecimalVal.id = this.displayValue.id;
+    updateDecimalVal.decimal = 1.5;
+
+    return updateDecimalVal;
+  }
+}
+
 
 /**
  * Test host component to simulate parent component.
@@ -125,7 +168,9 @@ describe('DisplayEditComponent', () => {
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
         TestIntValueComponent,
-        TestIntervalValueComponent
+        TestIntervalValueComponent,
+        TestUriValueComponent,
+        TestDecimalValueComponent
       ],
       providers: [
         {
