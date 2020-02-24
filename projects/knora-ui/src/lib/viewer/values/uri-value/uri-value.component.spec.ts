@@ -237,12 +237,12 @@ describe('UriValueComponent', () => {
 
     it('should set a new display value', () => {
 
-      const newInt = new ReadUriValue();
+      const newUri = new ReadUriValue();
 
-      newInt.uri = 'http://www.reddit.com';
-      newInt.id = 'updatedId';
+      newUri.uri = 'http://www.reddit.com';
+      newUri.id = 'updatedId';
 
-      testHostComponent.displayInputVal = newInt;
+      testHostComponent.displayInputVal = newUri;
 
       testHostFixture.detectChanges();
 
@@ -261,7 +261,7 @@ describe('UriValueComponent', () => {
     });
   });
 
-  describe('create an integer value', () => {
+  describe('create a URI value', () => {
 
     let testHostComponent: TestHostCreateValueComponent;
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
