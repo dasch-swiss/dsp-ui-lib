@@ -9,16 +9,18 @@ import { DisplayEditComponent } from './operations/display-edit/display-edit.com
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
 import { UriValueComponent } from './values/uri-value/uri-value.component';
+import {IntervalValueComponent} from './values/interval-value/interval-value.component';
+import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
     MatCheckboxModule
   ],
-  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent]
+  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent]
 })
 export class ViewerModule {
 }
