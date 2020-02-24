@@ -36,6 +36,17 @@ class TestTextValueAsStringComponent {
   template: ``
 })
 class TestTimeValueComponent {
+  
+  @Input() mode;
+
+  @Input() displayValue;
+})
+
+@Component({
+  selector: `kui-uri-value`,
+  template: ``
+})
+class TestUriValueComponent {
 
   @Input() mode;
 
@@ -155,8 +166,9 @@ describe('DisplayEditComponent', () => {
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
         TestIntValueComponent,
-        TestDecimalValueComponent,
         TestTimeValueComponent
+        TestUriValueComponent,
+        TestDecimalValueComponent
       ],
       providers: [
         {
