@@ -8,9 +8,10 @@ import {DisplayEditComponent} from './operations/display-edit/display-edit.compo
 import {UriValueComponent} from './values/uri-value/uri-value.component';
 import {DecimalValueComponent} from './values/decimal-value/decimal-value.component';
 import {IntervalValueComponent} from './values/interval-value/interval-value.component';
+import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
