@@ -53,7 +53,7 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
       comment: this.commentFormControl
     });
 
-    this.resetFormControl();
+    this.resetFormControl(true);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

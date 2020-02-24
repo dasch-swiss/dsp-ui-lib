@@ -2,6 +2,7 @@ import {Input} from '@angular/core';
 import {CreateValue, ReadValue, UpdateValue} from '@knora/api';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 export function valueChangedValidator(initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
@@ -77,11 +78,18 @@ export abstract class BaseValueComponent {
    * with displayValue's value and value comment.
    * Depending on the mode, validators are reset.
    */
-  resetFormControl(): void {
+  resetFormControl(shouldConvert?: boolean): void {
     if (this.valueFormControl !== undefined && this.commentFormControl !== undefined){
 
-      const initialValue = this.getInitValue();
+      let initialValue = this.getInitValue();
       const initialComment = this.getInitComment();
+
+      console.log('initial value: ' + initialValue);
+
+      if(shouldConvert){
+        initialValue = this.convertToTimeStamp(initialValue);
+        console.log('Coverted string: ' + initialValue);
+      }
 
       this.valueFormControl.setValue(initialValue);
       this.commentFormControl.setValue(initialComment);
@@ -100,6 +108,12 @@ export abstract class BaseValueComponent {
 
       this.valueFormControl.updateValueAndValidity();
     }
+  }
+
+  convertToTimeStamp(strToConvert: string): string | null {
+    const datePipe = new DatePipe('en-US');
+    const convertedStr = datePipe.transform(strToConvert, "HH:mm");
+    return convertedStr;
   }
 
   /**

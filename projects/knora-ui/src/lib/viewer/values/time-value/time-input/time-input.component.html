@@ -1,8 +1,0 @@
-<div [formGroup]="form" class="time-input-container">
-    <mat-form-field>
-      <input matInput class="time-input-element" [formControlName]="'timestamp'" type="string" aria-label="time" [readonly]="readonly" (input)="_handleInput()" [placeholder]="timeLabel" [errorStateMatcher]="matcher">
-      <mat-error *ngIf="form.controls.start.hasError('required')">
-        Start is <strong>required</strong>
-      </mat-error>
-    </mat-form-field>
-  </div>
