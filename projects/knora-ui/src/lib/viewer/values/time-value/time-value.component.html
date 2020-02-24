@@ -1,0 +1,7 @@
+<span [formGroup]="form">
+    <ngx-timepicker-field [formControlName]="'timeValue'" [format]="24" [defaultTime]="'23:11'"></ngx-timepicker-field>
+    <mat-form-field class="large-field">
+        <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
+    </mat-form-field>
+</span>
+

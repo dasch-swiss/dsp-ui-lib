@@ -6,15 +6,18 @@ import {CommonModule} from '@angular/common';
 import { IntValueComponent } from './values/int-value/int-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { TimeValueComponent } from './values/time-value/time-value.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent, TimeValueComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatInputModule
+    MatInputModule,
+    NgxMaterialTimepickerModule
   ],
-  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent]
+  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, DecimalValueComponent, TimeValueComponent]
 })
 export class ViewerModule {
 }
