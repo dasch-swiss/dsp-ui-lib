@@ -1,17 +1,16 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DisplayEditComponent} from './display-edit.component';
-import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {
-  KnoraApiConnection,
   MockResource,
   ReadIntValue,
   ReadResource,
   ReadValue,
+  UpdateDecimalValue,
   UpdateIntValue,
   UpdateValue,
-  WriteValueResponse,
-  UpdateDecimalValue
+  WriteValueResponse
 } from '@knora/api';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -72,6 +71,25 @@ class TestIntValueComponent implements OnInit {
 }
 
 @Component({
+  selector: `kui-boolean-value`,
+  template: ``
+})
+class TestBooleanValueComponent implements OnInit {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+  form: object;
+
+  ngOnInit(): void {
+    this.form = new FormGroup({
+      test: new FormControl(null, [Validators.required])
+    });
+  }
+}
+
+@Component({
   selector: `kui-interval-value`,
   template: ``
 })
@@ -88,7 +106,6 @@ class TestIntervalValueComponent {
   template: ``
 })
 class TestDecimalValueComponent implements OnInit {
-
   @Input() mode;
 
   @Input() displayValue;
@@ -96,7 +113,6 @@ class TestDecimalValueComponent implements OnInit {
   form: object;
 
   ngOnInit(): void {
-
     this.form = new FormGroup({
       test: new FormControl(null, [Validators.required])
     });
@@ -169,6 +185,7 @@ describe('DisplayEditComponent', () => {
         TestTextValueAsStringComponent,
         TestIntValueComponent,
         TestIntervalValueComponent,
+        TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent
       ],
