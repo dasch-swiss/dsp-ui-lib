@@ -11,8 +11,15 @@ import {ignoreElements} from 'rxjs/operators';
   styleUrls: ['./link-value.component.scss']
 })
 export class LinkValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
-
+  private _restrictToResourceClass: string;
   @Input() displayValue?: ReadLinkValue;
+  set restrictResourceClass(value: string) {
+    this._restrictToResourceClass = value;
+  }
+
+  get restrictResourceClass() {
+    return this._restrictToResourceClass;
+  }
   options: ReadResource[];
   valueFormControl: FormControl;
   commentFormControl: FormControl;
@@ -32,21 +39,21 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    *
    * @param label to be searched
    */
-  //   searchByLabel(searchTerm: string) {
-  //
-  //   // at least 3 characters are required
-  //   if (searchTerm.length >= 3) {
-  //     this.knoraApiConnection.v2.search.doSearchByLabel(searchTerm, 0, { limitToResourceClass: this._restrictToResourceClass }).subscribe(
-  //       (response: ReadResource[]) => {
-  //         this.resources = response;
-  //       });
-  //   } else {
-  //     // clear selection
-  //     this.resources = undefined;
-  //
-  //   }
-  //
-  // }
+    searchByLabel(searchTerm: string): ReadResource[] {
+      // at least 3 characters are required
+      if (searchTerm.length >= 3) {
+
+        this.knoraApiConnection.v2.search.doSearchByLabel(searchTerm, 0, {limitToResourceClass: this._restrictToResourceClass} ).subscribe(
+          (response: ReadResource[]) => {
+            this.options = response;
+          });
+      } else {
+        // clear selection
+        this.options = undefined;
+
+      }
+      return this.options;
+  }
 
   // show the label of the linked resource
   getInitValue(): ReadResource | null {
@@ -62,24 +69,26 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
 
     if (this.valueFormControl !== undefined) {
       if (this.mode === 'read') {
+
         const initialValue = this.getInitValue();
         const initialComment = this.getInitComment();
-
+        console.log('initialLinkValue')
+        console.log(initialValue)
         this.valueFormControl.setValue(initialValue.label);
         this.commentFormControl.setValue(initialComment);
 
         this.valueFormControl.clearValidators();
       } else {
-        console.log(this.mode)
-        // this.valueFormControl.valueChanges.subscribe((data) => {
-        //   this.options = this.searchByLabel(data.resource);
-        // });
+        this.valueFormControl.setValue('');
+        this.valueChangesSubscription = this.valueFormControl.valueChanges.subscribe(data => {
+          this.options = this.searchByLabel(data);
+        });
+        this.valueFormControl.clearValidators();
       }
     }
   }
 
   ngOnInit() {
-    console.log('here')
     // initialize form control elements
     this.valueFormControl = new FormControl(null);
 
@@ -97,7 +106,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
       comment: this.commentFormControl
     });
     this.options = [this.getInitValue()];
-    console.log(this.options);
     this.resetFormControl();
   }
 
@@ -115,7 +123,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     }
     const newLinkValue = new CreateLinkValue();
     // check that resource with given label exists
-    newLinkValue.linkedResourceIri = this.valueFormControl.value;
+    newLinkValue.linkedResourceIri = this.displayValue.linkedResourceIri;
 
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newLinkValue.valueHasComment = this.commentFormControl.value;
@@ -128,12 +136,14 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     if (this.mode !== 'update' || !this.form.valid) {
       return false;
     }
-
+    console.log('update mode')
     const updatedLinkValue = new UpdateLinkValue();
-
+    console.log('display value')
+    console.log(this.displayValue)
+    console.log('valueFromControl')
+    console.log(this.valueFormControl)
     updatedLinkValue.id = this.displayValue.id;
-
-    updatedLinkValue.linkedResourceIri = this.valueFormControl.value;
+    updatedLinkValue.linkedResourceIri = this.displayValue.linkedResourceIri;
 
     // add the submitted comment to updatedLinkValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
@@ -142,14 +152,15 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
 
     return updatedLinkValue;
   }
-  // onOptionChange(option: ReadResource) {
-  //   this.setLinkValue(option);
-  // }
-  //
-  // private setLinkValue(option: ReadResource) {
-  //   console.log('here')
-  //   this.options = [option];
-  //   this.displayValue.linkedResourceIri = option.id;
-  //   this.displayValue.linkedResource = option;
-  // }
+  onOptionChange(option: ReadResource) {
+      this.setLinkValue(option);
+  }
+
+  private setLinkValue(option: ReadResource) {
+    console.log('selected option')
+    this.valueFormControl.setValue(option.label);
+    this.options = [option];
+    this.displayValue.id = option.id;
+    this.displayValue.linkedResource = option;
+  }
 }
