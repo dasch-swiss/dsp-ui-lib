@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IntValueComponent } from './int-value.component';
-import { ReadIntValue, MockResource, UpdateValue, UpdateIntValue, CreateIntValue } from '@knora/api';
+import { DecimalValueComponent } from './decimal-value.component';
+import { ReadDecimalValue, MockResource, UpdateValue, UpdateDecimalValue, CreateDecimalValue } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
@@ -14,21 +14,21 @@ import { By } from '@angular/platform-browser';
  */
 @Component({
   template: `
-    <kui-int-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-int-value>`
+    <kui-decimal-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-decimal-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', { static: false }) inputValueComponent: IntValueComponent;
+  @ViewChild('inputVal', {static: false}) inputValueComponent: DecimalValueComponent;
 
-  displayInputVal: ReadIntValue;
+  displayInputVal: ReadDecimalValue;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(res => {
-      const inputVal: ReadIntValue =
-        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger', ReadIntValue)[0];
+      const inputVal: ReadDecimalValue =
+        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal', ReadDecimalValue)[0];
 
       this.displayInputVal = inputVal;
 
@@ -43,11 +43,11 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-int-value #inputVal [mode]="mode"></kui-int-value>`
+    <kui-decimal-value #inputVal [mode]="mode"></kui-decimal-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', { static: false }) inputValueComponent: IntValueComponent;
+  @ViewChild('inputVal', {static: false}) inputValueComponent: DecimalValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
@@ -58,25 +58,25 @@ class TestHostCreateValueComponent implements OnInit {
   }
 }
 
-describe('IntValueComponent', () => {
+describe('DecimalValueComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        IntValueComponent,
+      declarations: [ 
+        DecimalValueComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent
-      ],
+       ],
        imports: [
         ReactiveFormsModule,
         MatInputModule,
         BrowserAnimationsModule
       ],
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
-  describe('display and edit an integer value', () => {
+  describe('display and edit a decimal value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
@@ -94,7 +94,7 @@ describe('IntValueComponent', () => {
       expect(testHostComponent.inputValueComponent).toBeTruthy();
 
       const hostCompDe = testHostFixture.debugElement;
-      valueComponentDe = hostCompDe.query(By.directive(IntValueComponent));
+      valueComponentDe = hostCompDe.query(By.directive(DecimalValueComponent));
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
@@ -104,13 +104,13 @@ describe('IntValueComponent', () => {
 
     it('should display an existing value', () => {
 
-      expect(testHostComponent.inputValueComponent.displayValue.int).toEqual(1);
+      expect(testHostComponent.inputValueComponent.displayValue.decimal).toEqual(1.5);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('1.5');
 
       expect(valueInputNativeElement.readOnly).toEqual(true);
 
@@ -128,9 +128,9 @@ describe('IntValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('1.5');
 
-      valueInputNativeElement.value = '20';
+      valueInputNativeElement.value = '40.09';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
@@ -140,9 +140,9 @@ describe('IntValueComponent', () => {
 
       const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
-      expect(updatedValue instanceof UpdateIntValue).toBeTruthy();
+      expect(updatedValue instanceof UpdateDecimalValue).toBeTruthy();
 
-      expect((updatedValue as UpdateIntValue).int).toEqual(20);
+      expect((updatedValue as UpdateDecimalValue).decimal).toEqual(40.09);
 
     });
 
@@ -158,7 +158,7 @@ describe('IntValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('1.5');
 
       commentInputNativeElement.value = 'this is a comment';
 
@@ -170,9 +170,9 @@ describe('IntValueComponent', () => {
 
       const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
-      expect(updatedValue instanceof UpdateIntValue).toBeTruthy();
+      expect(updatedValue instanceof UpdateDecimalValue).toBeTruthy();
 
-      expect((updatedValue as UpdateIntValue).valueHasComment).toEqual('this is a comment');
+      expect((updatedValue as UpdateDecimalValue).valueHasComment).toEqual('this is a comment');
 
     });
 
@@ -188,9 +188,9 @@ describe('IntValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('1.5');
 
-      valueInputNativeElement.value = '1.5';
+      valueInputNativeElement.value = '.';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
@@ -216,9 +216,9 @@ describe('IntValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('1.5');
 
-      valueInputNativeElement.value = '20';
+      valueInputNativeElement.value = '40.09';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
@@ -226,7 +226,7 @@ describe('IntValueComponent', () => {
 
       testHostComponent.inputValueComponent.resetFormControl();
 
-      expect(valueInputNativeElement.value).toEqual('1');
+      expect(valueInputNativeElement.value).toEqual('1.5');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -234,16 +234,16 @@ describe('IntValueComponent', () => {
 
     it('should set a new display value', () => {
 
-      const newInt = new ReadIntValue();
+      const newDecimal = new ReadDecimalValue();
 
-      newInt.int = 20;
-      newInt.id = 'updatedId';
+      newDecimal.decimal = 40.09;
+      newDecimal.id = 'updatedId';
 
-      testHostComponent.displayInputVal = newInt;
+      testHostComponent.displayInputVal = newDecimal;
 
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('20');
+      expect(valueInputNativeElement.value).toEqual('40.09');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -258,7 +258,7 @@ describe('IntValueComponent', () => {
     });
   });
 
-  describe('create an integer value', () => {
+  describe('create a decimal value', () => {
 
     let testHostComponent: TestHostCreateValueComponent;
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
@@ -278,7 +278,7 @@ describe('IntValueComponent', () => {
 
       const hostCompDe = testHostFixture.debugElement;
 
-      valueComponentDe = hostCompDe.query(By.directive(IntValueComponent));
+      valueComponentDe = hostCompDe.query(By.directive(DecimalValueComponent));
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
@@ -294,7 +294,7 @@ describe('IntValueComponent', () => {
     });
 
     it('should create a value', () => {
-      valueInputNativeElement.value = '20';
+      valueInputNativeElement.value = '40.09';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
@@ -306,13 +306,13 @@ describe('IntValueComponent', () => {
 
       const newValue = testHostComponent.inputValueComponent.getNewValue();
 
-      expect(newValue instanceof CreateIntValue).toBeTruthy();
+      expect(newValue instanceof CreateDecimalValue).toBeTruthy();
 
-      expect((newValue as CreateIntValue).int).toEqual(20);
+      expect((newValue as CreateDecimalValue).decimal).toEqual(40.09);
     });
 
     it('should reset form after cancellation', () => {
-      valueInputNativeElement.value = '20';
+      valueInputNativeElement.value = '40.09';
 
       valueInputNativeElement.dispatchEvent(new Event('input'));
 
