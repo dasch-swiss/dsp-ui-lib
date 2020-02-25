@@ -21,7 +21,7 @@ import {IntervalInputComponent} from './values/interval-value/interval-input/int
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
     MatCheckboxModule
   ],
   exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, LinkValueComponent, BooleanValueComponent,
