@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, ElementRef} from '@angular/core';
 import {BaseValueComponent} from '../../base-value.component';
 import {CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -12,6 +12,7 @@ import {Subscription} from 'rxjs';
 export class TextValueAsStringComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayValue?: ReadTextValueAsString;
+  @ViewChild('inputValue', {static: false}) inputValueRef: ElementRef;
 
   valueFormControl: FormControl;
   commentFormControl: FormControl;
@@ -57,7 +58,10 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
+    // if user is not in readonly mode, focus on the value input field
+    if(this.mode != 'read'){
+      this.inputValueRef.nativeElement.focus();
+    }
     // resets values and validators in form controls when input displayValue or mode changes
     // at the first call of ngOnChanges, form control elements are not initialized yet
     this.resetFormControl();

@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, ElementRef} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import {CreateUriValue, ReadUriValue, UpdateUriValue} from '@knora/api';
 import {Subscription} from 'rxjs';
@@ -13,6 +13,7 @@ import {CustomRegex} from '../custom-regex';
 export class UriValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayValue?: ReadUriValue;
+  @ViewChild('inputValue', {static: false}) inputValueRef: ElementRef;
 
   valueFormControl: FormControl;
   commentFormControl: FormControl;
@@ -54,6 +55,9 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if(this.mode != 'read'){
+      this.inputValueRef.nativeElement.focus();
+    }
     this.resetFormControl();
   }
 

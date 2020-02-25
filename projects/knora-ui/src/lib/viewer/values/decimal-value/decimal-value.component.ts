@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, ElementRef} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import {CreateDecimalValue, ReadDecimalValue, UpdateDecimalValue} from '@knora/api';
 import {Subscription} from 'rxjs';
@@ -12,6 +12,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 export class DecimalValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
   
   @Input() displayValue?: ReadDecimalValue;
+  @ViewChild('inputValue', {static: false}) inputValueRef: ElementRef;
 
   valueFormControl: FormControl;
   commentFormControl: FormControl;
@@ -56,6 +57,9 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if(this.mode != 'read'){
+      this.inputValueRef.nativeElement.focus();
+    }
     this.resetFormControl();
   }
 

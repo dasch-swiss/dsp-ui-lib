@@ -1,6 +1,6 @@
 <span [formGroup]="form">
     <mat-form-field class="large-field">
-        <input matInput [formControlName]="'intValue'" class="value" placeholder="Int value" type="number" [readonly]="mode === 'read'">
+        <input matInput #inputValue [formControlName]="'intValue'" class="value" placeholder="Int value" type="number" [readonly]="mode === 'read'">
         <mat-hint>Enter an integer value</mat-hint>
         <mat-error *ngIf="valueFormControl.hasError('required')">
         A value is required

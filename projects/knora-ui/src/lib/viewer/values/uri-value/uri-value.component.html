@@ -1,6 +1,16 @@
 <span [formGroup]="form">
     <mat-form-field class="large-field">
-        <input matInput [formControlName]="'uriValue'" class="value" placeholder="Uri value" type="url" [readonly]="mode === 'read'">
+        <input matInput #inputValue [formControlName]="'uriValue'" class="value" placeholder="Uri value" type="url" [readonly]="mode === 'read'">
+        <mat-hint>Enter a URI</mat-hint>
+        <mat-error *ngIf="valueFormControl.hasError('required')">
+        A value is required
+        </mat-error>
+        <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
+        Value must be different
+        </mat-error>
+        <mat-error *ngIf="valueFormControl.hasError('pattern')">
+        Please enter a valid URI
+        </mat-error>
     </mat-form-field>
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
