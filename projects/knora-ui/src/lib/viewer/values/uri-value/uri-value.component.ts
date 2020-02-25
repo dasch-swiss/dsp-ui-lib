@@ -55,7 +55,7 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(this.mode != 'read'){
+    if(this.mode != 'read'  && this.inputValueRef !== undefined){
       this.inputValueRef.nativeElement.focus();
     }
     this.resetFormControl();
