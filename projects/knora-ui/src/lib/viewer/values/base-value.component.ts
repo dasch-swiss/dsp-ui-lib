@@ -4,18 +4,6 @@ import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 
-export function valueChangedValidator(initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn {
-  return (control: AbstractControl): {[key: string]: any} | null => {
-
-    // console.log(initValue, ', ', initComment, ', ', commentFormControl.value);
-
-    const invalid = initValue === control.value
-      && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
-
-    return invalid ? {valueNotChanged: {value: control.value}} : null;
-  };
-}
-
 export abstract class BaseValueComponent {
 
   /**
@@ -53,6 +41,16 @@ export abstract class BaseValueComponent {
    * Can be initialized to an empty array if not needed.
    */
   abstract customValidators: ValidatorFn[];
+
+  standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+
+      const invalid = initValue === control.value
+        && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+
+      return invalid ? {valueNotChanged: {value: control.value}} : null;
+    };
+  };
 
   /**
    * Returns the initially given value set via displayValue.
@@ -99,7 +97,7 @@ export abstract class BaseValueComponent {
       // set validators depending on mode
       if (this.mode === 'update') {
         // console.log('reset update validators');
-        this.valueFormControl.setValidators([Validators.required, valueChangedValidator(initialValue, initialComment, this.commentFormControl)].concat(this.customValidators));
+        this.valueFormControl.setValidators([Validators.required, this.standardValidatorFunc(initialValue, initialComment, this.commentFormControl)].concat(this.customValidators));
       } else {
         // console.log('reset read/create validators');
         this.valueFormControl.setValidators([Validators.required].concat(this.customValidators));
@@ -119,7 +117,7 @@ export abstract class BaseValueComponent {
   /**
    * Unsubscribes from the valueChangesSubscription
    */
-  unsubscribeFromValueChanges(): void{
+  unsubscribeFromValueChanges(): void {
     if (this.valueChangesSubscription !== undefined) {
       this.valueChangesSubscription.unsubscribe();
     }
