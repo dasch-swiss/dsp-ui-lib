@@ -1,3 +1,11 @@
+<!--<div *ngIf="testthing">
+  <span *ngFor="let prop of this.properties">
+    <span>{{testthing.properties[prop][0].propertyLabel}}</span>
+    <span *ngFor="let value of testthing.properties[prop]">
+      <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="value"></kui-display-edit>
+    </span>
+  </span>
+</div>-->
 <div *ngIf="testValue">
   <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="testValue"></kui-display-edit>
 </div>
