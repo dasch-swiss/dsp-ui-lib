@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   title = 'knora-ui-ng-lib';
 
   testthing: ReadResource;
-  linkValue: ReadValue;
+  testValue: ReadValue;
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }

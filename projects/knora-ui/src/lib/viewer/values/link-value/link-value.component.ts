@@ -1,9 +1,10 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
-import {CreateLinkValue, ReadLinkValue, UpdateLinkValue} from '@knora/api';
+import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiConnection} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-
+import {KnoraApiConnectionToken} from '../../../core';
+import {ignoreElements} from 'rxjs/operators';
 @Component({
   selector: 'kui-link-value',
   templateUrl: './link-value.component.html',
@@ -12,7 +13,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 export class LinkValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayValue?: ReadLinkValue;
-  options: [string];
+  options: ReadResource[];
   valueFormControl: FormControl;
   commentFormControl: FormControl;
   form: FormGroup;
@@ -20,7 +21,8 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   valueChangesSubscription: Subscription;
   // label cannot contain logical operations of lucene index
   customValidators = [Validators.pattern(/^-?\d+$/)];
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+
+  constructor(@Inject(FormBuilder) private fb: FormBuilder, @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
     super();
   }
 
@@ -47,11 +49,32 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   // }
 
   // show the label of the linked resource
-  getInitValue(): string | null {
+  getInitValue(): ReadResource | null {
     if (this.displayValue !== undefined) {
-      return this.displayValue.linkedResource.label;
+      return this.displayValue.linkedResource;
     } else {
       return null;
+    }
+  }
+  // override the resetFormControl() from the base component to deal with initial link value label
+  resetFormControl(): void {
+    super.resetFormControl();
+
+    if (this.valueFormControl !== undefined) {
+      if (this.mode === 'read') {
+        const initialValue = this.getInitValue();
+        const initialComment = this.getInitComment();
+
+        this.valueFormControl.setValue(initialValue.label);
+        this.commentFormControl.setValue(initialComment);
+
+        this.valueFormControl.clearValidators();
+      } else {
+        console.log(this.mode)
+        // this.valueFormControl.valueChanges.subscribe((data) => {
+        //   this.options = this.searchByLabel(data.resource);
+        // });
+      }
     }
   }
 
@@ -119,5 +142,14 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
 
     return updatedLinkValue;
   }
-
+  // onOptionChange(option: ReadResource) {
+  //   this.setLinkValue(option);
+  // }
+  //
+  // private setLinkValue(option: ReadResource) {
+  //   console.log('here')
+  //   this.options = [option];
+  //   this.displayValue.linkedResourceIri = option.id;
+  //   this.displayValue.linkedResource = option;
+  // }
 }
