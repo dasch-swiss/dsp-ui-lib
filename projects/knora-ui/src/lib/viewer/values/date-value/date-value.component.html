@@ -1,8 +1,8 @@
 <span [formGroup]="form">
-    <mat-form-field class="large-field"><kuiJDNDatepicker><input matInput [matDatepicker]="picker">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker></kuiJDNDatepicker>
+    <mat-form-field class="large-field">
+      <kui-date-input [formControlName]="'dateValue'" class="value" placeholder="Date value" [readonly]="mode === 'read'" [errorStateMatcher]="matcher"></kui-date-input>
     </mat-form-field>
+    <br>
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
     </mat-form-field>

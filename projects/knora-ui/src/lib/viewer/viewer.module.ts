@@ -15,9 +15,10 @@ import {DateValueComponent} from './values/date-value/date-value.component';
 import {MatDatepickerModule} from '@angular/material';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
 import { JDNDatepickerDirective } from './values/date-value/jdn-datepicker-directive/jdndatepicker.directive';
+import { DateInputComponent } from './values/date-value/date-input/date-input.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent, DateValueComponent, JDNDatepickerDirective],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent, DateValueComponent, JDNDatepickerDirective, DateInputComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

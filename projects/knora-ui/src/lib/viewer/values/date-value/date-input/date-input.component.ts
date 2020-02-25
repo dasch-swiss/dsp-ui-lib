@@ -1,26 +1,18 @@
 import {Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self} from '@angular/core';
-import {MatFormFieldControl} from '@angular/material/form-field';
 import {ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators} from '@angular/forms';
-import {Subject} from 'rxjs';
-import {FocusMonitor} from '@angular/cdk/a11y';
-import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {MatFormFieldControl} from '@angular/material/form-field';
+import {KnoraDate, KnoraPeriod} from '@knora/api';
 import {CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, mixinErrorState} from '@angular/material/core';
-
-/**
- * Represents an interval consisting.
- */
-export class Interval {
-
-  /**
-   * @param start interval's start.
-   * @param end interval's end.
-   */
-  constructor(public start: number, public end: number) {
-  }
-}
+import {Subject} from 'rxjs';
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {FocusMonitor} from '@angular/cdk/a11y';
+import {JDNConvertibleCalendarModule} from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
+import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
+import CalendarPeriod = JDNConvertibleCalendarModule.CalendarPeriod;
+import {CalendarDate} from 'jdnconvertiblecalendar';
 
 /** Error when invalid control is dirty, touched, or submitted. */
-export class IntervalInputErrorStateMatcher implements ErrorStateMatcher {
+export class DateInputErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
     return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
@@ -36,28 +28,26 @@ class MatInputBase {
 const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
   mixinErrorState(MatInputBase);
 
-// https://material.angular.io/guide/creating-a-custom-form-field-control
 @Component({
-  selector: 'kui-interval-input',
-  templateUrl: './interval-input.component.html',
-  styleUrls: ['./interval-input.component.scss'],
-  providers: [{provide: MatFormFieldControl, useExisting: IntervalInputComponent}]
+  selector: 'kui-date-input',
+  templateUrl: './date-input.component.html',
+  styleUrls: ['./date-input.component.scss'],
+  providers: [{provide: MatFormFieldControl, useExisting: DateInputComponent}]
 })
-export class IntervalInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<Interval>, DoCheck, CanUpdateErrorState, OnDestroy {
+export class DateInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<KnoraDate | KnoraPeriod>, DoCheck, CanUpdateErrorState, OnDestroy {
+
   static nextId = 0;
 
   form: FormGroup;
   stateChanges = new Subject<void>();
-  @HostBinding() id = `kui-interval-input-${IntervalInputComponent.nextId++}`;
+  @HostBinding() id = `kui-date-input-${DateInputComponent.nextId++}`;
   focused = false;
   errorState = false;
-  controlType = 'kui-interval-input';
-  matcher = new IntervalInputErrorStateMatcher();
+  controlType = 'kui-date-input';
+  matcher = new DateInputErrorStateMatcher();
+
   onChange = (_: any) => {};
   onTouched = () => {};
-
-  @Input() intervalStartLabel = 'start';
-  @Input() intervalEndLabel = 'end';
 
   get empty() {
     const userInput = this.form.value;
@@ -115,19 +105,30 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
   }
 
   @Input()
-  get value(): Interval | null {
+  get value(): KnoraDate | KnoraPeriod | null {
     const userInput = this.form.value;
-    if (userInput.start !== null && userInput.end !== null) {
-      return new Interval(userInput.start, userInput.end);
+    if (userInput.datestring !== null) {
+      return new KnoraDate('GREGORIAN', 'CE', 20, 1, 1);
     }
     return null;
   }
 
-  set value(interval: Interval | null) {
-    if (interval !== null) {
-      this.form.setValue({start: interval.start, end: interval.end});
+  set value(date: KnoraDate | KnoraPeriod |  null) {
+    console.log(date);
+    if (date !== null) {
+      if (date instanceof KnoraDate) {
+        console.log('single date');
+        // single date
+        // set correct calendar
+        const calendarDate = new CalendarDate(date.year, date.month, date.day);
+        this.form.setValue({date: new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate))});
+      } else {
+        // period
+        console.log('period');
+        this.form.setValue({date: null});
+      }
     } else {
-      this.form.setValue({start: null, end: null});
+      this.form.setValue({date: null});
     }
     this.stateChanges.next();
   }
@@ -144,10 +145,12 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
+
+
     this.form = fb.group({
-      start: [null, Validators.required],
-      end: [null, Validators.required]
+      date: [null, Validators.required]
     });
+
 
     fm.monitor(elRef.nativeElement, true).subscribe(origin => {
       this.focused = !!origin;
@@ -175,8 +178,8 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
     }
   }
 
-  writeValue(interval: Interval | null): void {
-    this.value = interval;
+  writeValue(date: KnoraDate | KnoraPeriod | null): void {
+    this.value = date;
   }
 
   registerOnChange(fn: any): void {

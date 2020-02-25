@@ -10,7 +10,6 @@ import {JDNConvertibleCalendarDateAdapter} from 'jdnconvertiblecalendardateadapt
 export class JDNDatepickerDirective {
 
   constructor(private adapter: DateAdapter<JDNConvertibleCalendar>) {
-    console.log(this.adapter)
   }
 
 }

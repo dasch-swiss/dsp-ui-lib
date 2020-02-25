@@ -9,10 +9,19 @@ import {
   UpdateDateValue,
   UpdateIntValue
 } from '@knora/api';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {CustomRegex} from '../custom-regex';
 import {BaseValueComponent} from '../base-value.component';
+import {ErrorStateMatcher} from '@angular/material';
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class IntervalErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'kui-date-value',
@@ -31,6 +40,8 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
   valueChangesSubscription: Subscription;
 
   customValidators = [];
+
+  matcher = new IntervalErrorStateMatcher();
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
