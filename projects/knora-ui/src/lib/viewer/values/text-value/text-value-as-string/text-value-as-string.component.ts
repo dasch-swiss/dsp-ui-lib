@@ -1,5 +1,5 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {BaseValueComponent, valueChangedValidator} from '../../base-value.component';
+import {BaseValueComponent} from '../../base-value.component';
 import {CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';

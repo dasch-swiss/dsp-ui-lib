@@ -10,16 +10,18 @@ import { BooleanValueComponent } from './values/boolean-value/boolean-value.comp
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
 import { ColorValueComponent } from './values/color-value/color-value.component';
 import { UriValueComponent } from './values/uri-value/uri-value.component';
+import {IntervalValueComponent} from './values/interval-value/interval-value.component';
+import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, ColorValueComponent, DecimalValueComponent, UriValueComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, ColorValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
     MatCheckboxModule
   ],
-  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, ColorValueComponent, DecimalValueComponent, UriValueComponent]
+  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, ColorValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent]
 })
 export class ViewerModule {
 }
