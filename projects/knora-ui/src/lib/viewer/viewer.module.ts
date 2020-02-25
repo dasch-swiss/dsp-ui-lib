@@ -13,6 +13,8 @@ import { DecimalValueComponent } from './values/decimal-value/decimal-value.comp
 import { ColorValueComponent } from './values/color-value/color-value.component';
 import { UriValueComponent } from './values/uri-value/uri-value.component';
 // import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
+import { IntervalValueComponent } from './values/interval-value/interval-value.component';
+import { IntervalInputComponent } from './values/interval-value/interval-input/interval-input.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { UriValueComponent } from './values/uri-value/uri-value.component';
     BooleanValueComponent,
     ColorValueComponent,
     DecimalValueComponent,
-    UriValueComponent
+    UriValueComponent,
+    IntervalValueComponent,
+    IntervalInputComponent
     // ColorPickerComponent
   ],
   imports: [
@@ -39,7 +43,8 @@ import { UriValueComponent } from './values/uri-value/uri-value.component';
     BooleanValueComponent,
     ColorValueComponent,
     DecimalValueComponent,
-    UriValueComponent
+    UriValueComponent,
+    IntervalValueComponent
   ]
 })
 export class ViewerModule {

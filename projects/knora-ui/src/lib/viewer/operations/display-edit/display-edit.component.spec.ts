@@ -1,17 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DisplayEditComponent } from './display-edit.component';
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
-  KnoraApiConnection,
   MockResource,
   ReadIntValue,
   ReadResource,
   ReadValue,
+  UpdateDecimalValue,
   UpdateIntValue,
   UpdateValue,
-  WriteValueResponse,
-  UpdateDecimalValue
+  WriteValueResponse
 } from '@knora/api';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -88,6 +87,18 @@ class TestBooleanValueComponent implements OnInit {
       test: new FormControl(null, [Validators.required])
     });
   }
+}
+
+@Component({
+  selector: `kui-interval-value`,
+  template: ``
+})
+class TestIntervalValueComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
 }
 
 @Component({
@@ -183,6 +194,7 @@ describe('DisplayEditComponent', () => {
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
         TestIntValueComponent,
+        TestIntervalValueComponent,
         TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent,
