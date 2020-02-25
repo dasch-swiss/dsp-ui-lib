@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ReadColorValue, CreateColorValue, UpdateColorValue } from '@knora/api';
+import { CreateColorValue, ReadColorValue, UpdateColorValue } from '@knora/api';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 
@@ -56,6 +56,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
     this.resetFormControl();
   }
 
@@ -98,5 +99,14 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
     return updatedColorValue;
   }
+
+  // update dynamically the input label according to the picked color
+  onColorChanged(updatedValue: any) {
+    if (updatedValue) {
+      this.displayValue.color = updatedValue;
+      this.form.get('colorValue').setValue(updatedValue);
+    }
+  }
+
 
 }

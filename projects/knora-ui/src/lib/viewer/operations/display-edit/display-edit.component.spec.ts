@@ -117,6 +117,17 @@ class TestDecimalValueComponent implements OnInit {
   }
 }
 
+@Component({
+  selector: `kui-color-value`,
+  template: ``
+})
+class TestColorValueComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
 /**
  * Test host component to simulate parent component.
  */
@@ -174,7 +185,8 @@ describe('DisplayEditComponent', () => {
         TestIntValueComponent,
         TestBooleanValueComponent,
         TestUriValueComponent,
-        TestDecimalValueComponent
+        TestDecimalValueComponent,
+        TestColorValueComponent
       ],
       providers: [
         {
