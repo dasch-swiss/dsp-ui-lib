@@ -1,17 +1,16 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DisplayEditComponent} from './display-edit.component';
-import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {
-  KnoraApiConnection,
   MockResource,
   ReadIntValue,
   ReadResource,
   ReadValue,
+  UpdateDecimalValue,
   UpdateIntValue,
   UpdateValue,
-  WriteValueResponse,
-  UpdateDecimalValue
+  WriteValueResponse
 } from '@knora/api';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -25,6 +24,17 @@ import {KnoraApiConnectionToken} from '../../../core';
   template: ``
 })
 class TestTextValueAsStringComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
+@Component({
+  selector: `kui-uri-value`,
+  template: ``
+})
+class TestUriValueComponent {
 
   @Input() mode;
 
@@ -61,10 +71,10 @@ class TestIntValueComponent implements OnInit {
 }
 
 @Component({
-  selector: `kui-decimal-value`,
+  selector: `kui-boolean-value`,
   template: ``
 })
-class TestDecimalValueComponent implements OnInit {
+class TestBooleanValueComponent implements OnInit {
 
   @Input() mode;
 
@@ -73,7 +83,36 @@ class TestDecimalValueComponent implements OnInit {
   form: object;
 
   ngOnInit(): void {
+    this.form = new FormGroup({
+      test: new FormControl(null, [Validators.required])
+    });
+  }
+}
 
+@Component({
+  selector: `kui-interval-value`,
+  template: ``
+})
+class TestIntervalValueComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+}
+
+@Component({
+  selector: `kui-decimal-value`,
+  template: ``
+})
+class TestDecimalValueComponent implements OnInit {
+  @Input() mode;
+
+  @Input() displayValue;
+
+  form: object;
+
+  ngOnInit(): void {
     this.form = new FormGroup({
       test: new FormControl(null, [Validators.required])
     });
@@ -88,6 +127,7 @@ class TestDecimalValueComponent implements OnInit {
     return updateDecimalVal;
   }
 }
+
 
 /**
  * Test host component to simulate parent component.
@@ -144,6 +184,9 @@ describe('DisplayEditComponent', () => {
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
         TestIntValueComponent,
+        TestIntervalValueComponent,
+        TestBooleanValueComponent,
+        TestUriValueComponent,
         TestDecimalValueComponent
       ],
       providers: [
