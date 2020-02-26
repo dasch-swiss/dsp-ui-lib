@@ -12,7 +12,6 @@ import { BooleanValueComponent } from './values/boolean-value/boolean-value.comp
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
 import { ColorValueComponent } from './values/color-value/color-value.component';
 import { UriValueComponent } from './values/uri-value/uri-value.component';
-// import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
 import { IntervalValueComponent } from './values/interval-value/interval-value.component';
 import { IntervalInputComponent } from './values/interval-value/interval-input/interval-input.component';
 
@@ -27,7 +26,6 @@ import { IntervalInputComponent } from './values/interval-value/interval-input/i
     UriValueComponent,
     IntervalValueComponent,
     IntervalInputComponent
-    // ColorPickerComponent
   ],
   imports: [
     CommonModule,

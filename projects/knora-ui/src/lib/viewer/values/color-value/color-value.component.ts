@@ -1,8 +1,9 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreateColorValue, ReadColorValue, UpdateColorValue } from '@knora/api';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
+import { CustomRegex } from '../custom-regex';
 
 @Component({
   selector: 'kui-color-value',
@@ -20,8 +21,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
   valueChangesSubscription: Subscription;
 
-  // example: customValidators = [Validators.pattern(CustomRegex.INT_REGEX)];
-  customValidators = [];
+  customValidators = [Validators.pattern(CustomRegex.COLOR_REGEX)];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
@@ -56,7 +56,6 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
     this.resetFormControl();
   }
 
@@ -100,10 +99,14 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     return updatedColorValue;
   }
 
-  // update dynamically the input label according to the picked color
+  // update dynamically the background-color and the input label according to the picked color
   onColorChanged(updatedValue: any) {
     if (updatedValue) {
+      // background color of the input
       this.displayValue.color = updatedValue;
+      // label
+      this.displayValue.strval = updatedValue;
+      // input inner text (not visible)
       this.form.get('colorValue').setValue(updatedValue);
     }
   }

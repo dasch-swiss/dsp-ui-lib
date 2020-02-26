@@ -1,12 +1,12 @@
 <span [formGroup]="form">
-    <mat-form-field class="large-field">
-        <!-- <kui-color-picker #colorPicker [colorValue]="displayValue.color" [colorLabel]="displayValue.strval" [formControl]="ctrl"
-        [readonly]="mode === 'read'">
-        </kui-color-picker> -->
-        <input #colorInput matInput [formControlName]="'colorValue'" [(colorPicker)]="displayValue.color"
-            (colorPickerChange)="onColorChanged($event)" [style.background]="displayValue.color"
-            [readonly]="mode === 'read'" [cpDisabled]="mode === 'read'" [cpOutputFormat]="'hex'" />
+    <mat-form-field class="large-field color-field">
+        <input #colorInput matInput class="value" placeholder="Color value" type="text" [formControlName]="'colorValue'"
+            (colorPickerChange)="onColorChanged($event)" [(colorPicker)]="displayValue.color"
+            [style.color]="displayValue.color" [readonly]="mode === 'read'" [cpDisabled]="mode === 'read'"
+            [cpOutputFormat]="'hex'" [style.background]="displayValue.color" />
     </mat-form-field>
+    <span class="colorLabel">{{displayValue.strval}}</span>
+    <br>
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text"
             [readonly]="mode === 'read'">
