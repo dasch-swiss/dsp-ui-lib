@@ -4,6 +4,11 @@
     "@knora/api": {
       "signature": "d13352b37d1c81a041bdcbd0e77d7b23",
       "file": true
+    },
+    "jdnconvertiblecalendardateadapter": {
+      "signature": "73c2e9dc367482a2aebc91e7215366b3",
+      "file": true,
+      "replaced": "^0.0.10"
     }
   }
 }

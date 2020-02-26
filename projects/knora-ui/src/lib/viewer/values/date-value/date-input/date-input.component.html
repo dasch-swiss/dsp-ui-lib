@@ -1,12 +1,16 @@
 <div [formGroup]="form" class="interval-input-container">
   <mat-form-field>
+    <kuiJDNDatepicker>
       <input matInput [matDatepicker]="picker1" [formControlName]="'dateStart'" (dateChange)="_handleInput()">
       <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1></mat-datepicker>
+    </kuiJDNDatepicker>
   </mat-form-field>
   <mat-form-field *ngIf="period">
-    <input matInput [matDatepicker]="picker2" [formControlName]="'dateEnd'" (dateChange)="_handleInput()">
-    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-    <mat-datepicker #picker2></mat-datepicker>
+    <kuiJDNDatepicker>
+      <input matInput [matDatepicker]="picker2" [formControlName]="'dateEnd'" (dateChange)="_handleInput()">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </kuiJDNDatepicker>
   </mat-form-field>
 </div>
