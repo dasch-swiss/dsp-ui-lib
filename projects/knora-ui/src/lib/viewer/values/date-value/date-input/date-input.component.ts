@@ -7,9 +7,9 @@ import {Subject} from 'rxjs';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {JDNConvertibleCalendarModule} from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
+import {CalendarDate} from 'jdnconvertiblecalendar';
 import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
 import CalendarPeriod = JDNConvertibleCalendarModule.CalendarPeriod;
-import {CalendarDate} from 'jdnconvertiblecalendar';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class DateInputErrorStateMatcher implements ErrorStateMatcher {
@@ -23,8 +23,10 @@ class MatInputBase {
   constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
               public _parentForm: NgForm,
               public _parentFormGroup: FormGroupDirective,
-              public ngControl: NgControl) {}
+              public ngControl: NgControl) {
+  }
 }
+
 const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
   mixinErrorState(MatInputBase);
 
@@ -46,8 +48,12 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
   controlType = 'kui-date-input';
   matcher = new DateInputErrorStateMatcher();
 
-  onChange = (_: any) => {};
-  onTouched = () => {};
+  period: boolean;
+
+  onChange = (_: any) => {
+  };
+  onTouched = () => {
+  };
 
   get empty() {
     const userInput = this.form.value;
@@ -107,25 +113,53 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
   @Input()
   get value(): KnoraDate | KnoraPeriod | null {
     const userInput = this.form.value;
-    if (userInput.date !== null) {
-      return new KnoraDate(userInput.date.calendarName.toUpperCase(), 'CE', userInput.date.calendarStart.year, userInput.date.calendarStart.month, userInput.date.calendarStart.day);
+    if (!this.period) {
+      // single date
+      if (userInput.dateStart !== null) {
+        return new KnoraDate(userInput.dateStart.calendarName.toUpperCase(), 'CE', userInput.dateStart.calendarStart.year, userInput.dateStart.calendarStart.month, userInput.dateStart.calendarStart.day);
+      } else {
+        return null;
+      }
+    } else {
+      // period
+      if (userInput.dateStart !== null && userInput.dateEnd !== null) {
+        const start = new KnoraDate(userInput.dateStart.calendarName.toUpperCase(), 'CE', userInput.dateStart.calendarStart.year, userInput.dateStart.calendarStart.month, userInput.dateStart.calendarStart.day);
+        const end = new KnoraDate(userInput.dateEnd.calendarName.toUpperCase(), 'CE', userInput.dateEnd.calendarStart.year, userInput.dateEnd.calendarStart.month, userInput.dateEnd.calendarStart.day);
+        return new KnoraPeriod(start, end);
+      } else {
+        return null;
+      }
     }
-    return null;
   }
 
-  set value(date: KnoraDate | KnoraPeriod |  null) {
+  set value(date: KnoraDate | KnoraPeriod | null) {
     if (date !== null) {
       if (date instanceof KnoraDate) {
         // single date
         // TODO: set correct calendar
         const calendarDate = new CalendarDate(date.year, date.month, date.day);
-        this.form.setValue({date: new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate))});
+        this.form.setValue({
+          dateStart: new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate)),
+          dateEnd: null
+        });
+        this.period = false;
       } else {
         // period
-        this.form.setValue({date: null});
+        const period = (date as KnoraPeriod);
+        const calendarDateStart = new CalendarDate(period.start.year, period.start.month, period.start.day);
+        const calendarDateEnd = new CalendarDate(period.end.year, period.end.month, period.end.day);
+
+        this.form.setValue({
+          dateStart: new GregorianCalendarDate(new CalendarPeriod(calendarDateStart, calendarDateStart)),
+          dateEnd: new GregorianCalendarDate(new CalendarPeriod(calendarDateEnd, calendarDateEnd))
+        });
+
+        this.period = true;
       }
     } else {
-      this.form.setValue({date: null});
+      this.form.setValue({dateStart: null, dateEnd: null});
+
+      this.period = false;
     }
     this.stateChanges.next();
   }
@@ -143,9 +177,9 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
 
-
     this.form = fb.group({
-      date: [null, Validators.required]
+      dateStart: [null, Validators.required],
+      dateEnd: [null]
     });
 
 

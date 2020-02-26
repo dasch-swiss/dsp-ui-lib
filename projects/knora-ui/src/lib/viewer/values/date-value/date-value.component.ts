@@ -100,17 +100,43 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     updatedDateValue.id = this.displayValue.id;
 
-    console.log(this.valueFormControl.value)
+    console.log(this.valueFormControl.value);
 
-    updatedDateValue.calendar = (this.valueFormControl.value as KnoraDate).calendar;
-    updatedDateValue.startEra = (this.valueFormControl.value as KnoraDate).era;
-    updatedDateValue.startDay = (this.valueFormControl.value as KnoraDate).day;
-    updatedDateValue.startMonth = (this.valueFormControl.value as KnoraDate).month;
-    updatedDateValue.startYear = (this.valueFormControl.value as KnoraDate).year;
-    updatedDateValue.endEra = updatedDateValue.startEra;
-    updatedDateValue.endDay = updatedDateValue.startDay;
-    updatedDateValue.endMonth = updatedDateValue.startMonth;
-    updatedDateValue.endYear = updatedDateValue.startYear;
+    const dateOrPeriod = this.valueFormControl.value;
+
+    if (dateOrPeriod instanceof KnoraDate) {
+
+      updatedDateValue.calendar = dateOrPeriod.calendar;
+      updatedDateValue.startEra = dateOrPeriod.era;
+      updatedDateValue.startDay = dateOrPeriod.day;
+      updatedDateValue.startMonth = dateOrPeriod.month;
+      updatedDateValue.startYear = dateOrPeriod.year;
+
+      // TODO: handle precision correctly
+
+      updatedDateValue.endEra = updatedDateValue.startEra;
+      updatedDateValue.endDay = updatedDateValue.startDay;
+      updatedDateValue.endMonth = updatedDateValue.startMonth;
+      updatedDateValue.endYear = updatedDateValue.startYear;
+
+    } else if (dateOrPeriod instanceof KnoraPeriod) {
+
+      updatedDateValue.calendar = dateOrPeriod.start.calendar;
+
+      updatedDateValue.startEra = dateOrPeriod.start.era;
+      updatedDateValue.startDay = dateOrPeriod.start.day;
+      updatedDateValue.startMonth = dateOrPeriod.start.month;
+      updatedDateValue.startYear = dateOrPeriod.start.year;
+
+      updatedDateValue.endEra = dateOrPeriod.end.era;
+      updatedDateValue.endDay = dateOrPeriod.end.day;
+      updatedDateValue.endMonth = dateOrPeriod.end.month;
+      updatedDateValue.endYear = dateOrPeriod.start.year;
+
+    } else {
+      return false;
+    }
+
 
     // add the submitted comment to updatedIntValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {

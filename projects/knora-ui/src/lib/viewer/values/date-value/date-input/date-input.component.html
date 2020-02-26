@@ -1,7 +1,12 @@
 <div [formGroup]="form" class="interval-input-container">
   <mat-form-field>
-      <input matInput [matDatepicker]="picker" [formControlName]="'date'" (dateChange)="_handleInput()">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <input matInput [matDatepicker]="picker1" [formControlName]="'dateStart'" (dateChange)="_handleInput()">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field *ngIf="period">
+    <input matInput [matDatepicker]="picker2" [formControlName]="'dateEnd'" (dateChange)="_handleInput()">
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
   </mat-form-field>
 </div>
