@@ -1,17 +1,7 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {
-  CreateDateValue,
-  CreateIntValue,
-  KnoraDate,
-  KnoraPeriod,
-  ReadDateValue,
-  ReadIntValue,
-  UpdateDateValue,
-  UpdateIntValue
-} from '@knora/api';
-import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue} from '@knora/api';
+import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm} from '@angular/forms';
 import {Subscription} from 'rxjs';
-import {CustomRegex} from '../custom-regex';
 import {BaseValueComponent} from '../base-value.component';
 import {ErrorStateMatcher} from '@angular/material';
 
@@ -110,7 +100,17 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     updatedDateValue.id = this.displayValue.id;
 
-    // updatedDateValue.int = this.valueFormControl.value;
+    console.log(this.valueFormControl.value)
+
+    updatedDateValue.calendar = (this.valueFormControl.value as KnoraDate).calendar;
+    updatedDateValue.startEra = (this.valueFormControl.value as KnoraDate).era;
+    updatedDateValue.startDay = (this.valueFormControl.value as KnoraDate).day;
+    updatedDateValue.startMonth = (this.valueFormControl.value as KnoraDate).month;
+    updatedDateValue.startYear = (this.valueFormControl.value as KnoraDate).year;
+    updatedDateValue.endEra = updatedDateValue.startEra;
+    updatedDateValue.endDay = updatedDateValue.startDay;
+    updatedDateValue.endMonth = updatedDateValue.startMonth;
+    updatedDateValue.endYear = updatedDateValue.startYear;
 
     // add the submitted comment to updatedIntValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {

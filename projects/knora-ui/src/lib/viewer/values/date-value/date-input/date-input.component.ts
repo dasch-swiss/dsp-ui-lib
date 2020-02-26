@@ -107,24 +107,21 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
   @Input()
   get value(): KnoraDate | KnoraPeriod | null {
     const userInput = this.form.value;
-    if (userInput.datestring !== null) {
-      return new KnoraDate('GREGORIAN', 'CE', 20, 1, 1);
+    if (userInput.date !== null) {
+      return new KnoraDate(userInput.date.calendarName.toUpperCase(), 'CE', userInput.date.calendarStart.year, userInput.date.calendarStart.month, userInput.date.calendarStart.day);
     }
     return null;
   }
 
   set value(date: KnoraDate | KnoraPeriod |  null) {
-    console.log(date);
     if (date !== null) {
       if (date instanceof KnoraDate) {
-        console.log('single date');
         // single date
-        // set correct calendar
+        // TODO: set correct calendar
         const calendarDate = new CalendarDate(date.year, date.month, date.day);
         this.form.setValue({date: new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate))});
       } else {
         // period
-        console.log('period');
         this.form.setValue({date: null});
       }
     } else {
