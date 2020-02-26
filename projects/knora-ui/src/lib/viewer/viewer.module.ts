@@ -11,16 +11,23 @@ import { DecimalValueComponent } from './values/decimal-value/decimal-value.comp
 import { UriValueComponent } from './values/uri-value/uri-value.component';
 import {IntervalValueComponent} from './values/interval-value/interval-value.component';
 import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
+import { TimeValueComponent } from './values/time-value/time-value.component';
+import { TimeInputComponent } from './values/time-value/time-input/time-input.component';
+import {MatDatepickerModule} from '@angular/material';
+import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
+import { JDNDatepickerDirective } from './values/time-value/jdn-datepicker-directive/jdndatepicker.directive';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent, TimeValueComponent, TimeInputComponent, JDNDatepickerDirective],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatJDNConvertibleCalendarDateAdapterModule
   ],
-  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent]
+  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, TimeValueComponent]
 })
 export class ViewerModule {
 }
