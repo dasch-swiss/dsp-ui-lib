@@ -1,11 +1,11 @@
 <span [formGroup]="form">
     <mat-form-field class="large-field color-field">
         <input #colorInput matInput class="value" placeholder="Color value" type="text" [formControlName]="'colorValue'"
-            (colorPickerChange)="onColorChanged($event)" [(colorPicker)]="displayValue.color"
-            [style.color]="displayValue.color" [readonly]="mode === 'read'" [cpDisabled]="mode === 'read'"
-            [cpOutputFormat]="'hex'" [style.background]="displayValue.color" />
+            (colorPickerChange)="onColorChanged($event)" [(colorPicker)]="colorValue" [style.color]="colorValue"
+            [readonly]="mode === 'read'" [cpDisabled]="mode === 'read'" [cpOutputFormat]="'hex'"
+            [style.background]="colorValue" />
     </mat-form-field>
-    <span class="colorLabel">{{displayValue.strval}}</span>
+    <span class="colorLabel">{{colorLabel}}</span>
     <br>
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text"

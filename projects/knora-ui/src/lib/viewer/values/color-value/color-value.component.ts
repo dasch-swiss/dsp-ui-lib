@@ -13,6 +13,8 @@ import { CustomRegex } from '../custom-regex';
 export class ColorValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayValue?: ReadColorValue;
+  colorValue: string;
+  colorLabel: string;
 
   valueFormControl: FormControl;
   commentFormControl: FormControl;
@@ -35,7 +37,20 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     }
   }
 
+  getInitLabel(): string | null {
+    if (this.displayValue !== undefined) {
+      return this.displayValue.strval;
+    } else {
+      return null;
+    }
+  }
+
   ngOnInit() {
+
+    // set color value and label
+    this.colorValue = this.displayValue.color;
+    this.colorLabel = this.displayValue.strval;
+
     // initialize form control elements
     this.valueFormControl = new FormControl(null);
     this.commentFormControl = new FormControl(null);
@@ -62,6 +77,16 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   // unsubscribe when the object is destroyed to prevent memory leaks
   ngOnDestroy(): void {
     this.unsubscribeFromValueChanges();
+  }
+
+  // override the resetFormControl() from the base component to deal with the disabled state and the checkbox label
+  resetFormControl(): void {
+    super.resetFormControl();
+
+    if (this.displayValue !== undefined) {
+      this.colorValue = this.getInitValue();
+      this.colorLabel = this.getInitLabel();
+    }
   }
 
   getNewValue(): CreateColorValue | false {
@@ -100,16 +125,12 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   }
 
   // update dynamically the background-color and the input label according to the picked color
-  onColorChanged(updatedValue: any) {
+  onColorChanged(updatedValue: any): void {
     if (updatedValue) {
-      // background color of the input
-      this.displayValue.color = updatedValue;
-      // label
-      this.displayValue.strval = updatedValue;
-      // input inner text (not visible)
+      this.colorValue = updatedValue;
+      this.colorLabel = updatedValue;
       this.form.get('colorValue').setValue(updatedValue);
     }
   }
-
 
 }
