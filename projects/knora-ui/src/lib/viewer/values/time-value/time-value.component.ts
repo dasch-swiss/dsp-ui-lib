@@ -23,8 +23,9 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
   commentFormControl: FormControl;
   date: string;
   time: string;
-  knoraDate: KnoraDate;
-  convertedControlDate: KnoraDate;
+  initKnoraDate: KnoraDate; // used to display the initial value which will be an instance of KnoraDate
+  convertedControlDate: KnoraDate; // used to check the validity of the initial KnoraDate
+  updateDate: Date; // used in order to easily convert a Javascript Date object into a timestamp string using .toISOString()
 
   form: FormGroup;
 
@@ -49,28 +50,11 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
                                                   control.value.date.calendarStart.month,
                                                   control.value.date.calendarStart.day);
       }
-
-      // console.log('initValue.date: ', initValue.date);
-      // console.log('convertedControlDate: ', this.convertedControlDate)
-      // console.log('control.value.date: ', control.value.date);
-      // console.log('initValue.time: ', initValue.time);
-      // console.log('control.value.time: ', control.value.time);
-
-      // console.log('check 1: ', control.value !== null);
-      // console.log('check 2: ', this.convertedControlDate !== undefined);
-      // console.log('check 2: ', (initValue.date === this.convertedControlDate || initValue.date === control.value.date));
-      // console.log('check 3: ', initValue.time === control.value.time);
-      // console.log('check 4: ', (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === '')));
-      // console.log('initValue.date === this.convertedControlDate: ', initValue.date === this.convertedControlDate);
-      // console.log('initValue.date === control.value.date: ', initValue.date === control.value.date);
-      // console.log('objects are equal: ', _.isEqual(initValue.date, this.convertedControlDate));
       
       const invalid = (control.value !== null &&
                        (_.isEqual(initValue.date, this.convertedControlDate) || initValue.date === control.value.date) && 
                        initValue.time === control.value.time) && 
                        (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
-
-      // console.log('invalid: ', invalid);
 
       return invalid ? {valueNotChanged: {value: control.value}} : null;
     };
@@ -78,17 +62,18 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
 
   getInitValue(): DateTime | null {
     if (this.displayValue !== undefined) {
+      
       const datePipe = new DatePipe('en-US');
       this.date = datePipe.transform(this.displayValue.time, "d.M.y");
       this.time = datePipe.transform(this.displayValue.time, "HH:mm");
       
-      this.knoraDate = new KnoraDate("Gregorian",
-                                     "AD",
-                                     Number(datePipe.transform(this.displayValue.time, "y")),
-                                     Number(datePipe.transform(this.displayValue.time, "M")),
-                                     Number(datePipe.transform(this.displayValue.time, "d")));
+      this.initKnoraDate = new KnoraDate("Gregorian",
+                                          "AD",
+                                          Number(datePipe.transform(this.displayValue.time, "y")),
+                                          Number(datePipe.transform(this.displayValue.time, "M")),
+                                          Number(datePipe.transform(this.displayValue.time, "d")));
 
-      return new DateTime(this.knoraDate, this.time);
+      return new DateTime(this.initKnoraDate, this.time);
     } else {
       return null;
     }
@@ -147,28 +132,29 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
 
     updatedTimeValue.id = this.displayValue.id;
 
+    // when the first value is displayed on page load, it will be an instance of KnoraDate
+    if(this.valueFormControl.value.date instanceof KnoraDate){
+      this.updateDate = new Date(this.valueFormControl.value.date.year,
+                                (this.valueFormControl.value.date.month - 1),
+                                this.valueFormControl.value.date.day
+      );
+    } else { // when the user submits a new value, it will be an instance of GregorianCalendarDate
+      this.updateDate = new Date(this.valueFormControl.value.date.calendarStart.year,
+                                (this.valueFormControl.value.date.calendarStart.month - 1),
+                                this.valueFormControl.value.date.calendarStart.day
+      );
+    }
+
+    // split the time entry in two to separate the hours and the minutes
     let splitTime = this.valueFormControl.value.time.split(":");
 
-    // console.log('year: ', this.valueFormControl.value.date.calendarStart.year);
-    // console.log('month: ', this.valueFormControl.value.date.calendarStart.month);
-    // console.log('day: ', this.valueFormControl.value.date.calendarStart.day);
-    // console.log('hour: ', splitTime[0]);
-    // console.log('minutes: ', splitTime[1]);
+    // add the hours and minutes to the updateDate
+    this.updateDate.setHours(splitTime[0], splitTime[1]);
 
-    const formattedDate = new Date(this.valueFormControl.value.date.calendarStart.year,
-                                   (this.valueFormControl.value.date.calendarStart.month - 1),
-                                   this.valueFormControl.value.date.calendarStart.day,
-                                   splitTime[0],
-                                   splitTime[1]
-    );
+    // convert the updateDate to a timestamp so that knora will accept it
+    updatedTimeValue.time = this.updateDate.toISOString();
 
-    // console.log('formatted date: ', formattedDate);
-    // console.log('updated date: ', this.valueFormControl.value.date);
-    // console.log('updated time: ', this.valueFormControl.value.time);
-
-    updatedTimeValue.time = formattedDate.toISOString();
-
-    // add the submitted comment to updatedIntervalValue only if user has added a comment
+    // add the submitted comment to updatedTimeValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedTimeValue.valueHasComment = this.commentFormControl.value;
     }
