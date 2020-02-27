@@ -1,7 +1,7 @@
 import { Component, HostBinding, Input, Optional, Self, ElementRef, DoCheck, OnDestroy } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ErrorStateMatcher, CanUpdateErrorStateCtor, mixinErrorState, MatFormFieldControl, CanUpdateErrorState, MatCalendar } from '@angular/material';
-import { FormControl, FormGroupDirective, NgForm, NgControl, FormGroup, FormBuilder, Validators, ControlValueAccessor } from '@angular/forms';
+import { FormControl, FormGroupDirective, NgForm, NgControl, FormGroup, FormBuilder, Validators, ControlValueAccessor, ValidatorFn } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor } from '@angular/cdk/a11y';
@@ -10,6 +10,7 @@ import {JDNConvertibleCalendarModule} from 'jdnconvertiblecalendar/dist/src/JDNC
 import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
 import CalendarPeriod = JDNConvertibleCalendarModule.CalendarPeriod;
 import {CalendarDate} from 'jdnconvertiblecalendar';
+import { CustomRegex } from '../../custom-regex';
 
 /**
  * Represents a DateTime consisting of a date and a time.
@@ -63,6 +64,10 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
   @Input() dateLabel = 'date';
   @Input() timeLabel = 'time';
+
+  timeValidator = [Validators.pattern(CustomRegex.TIME_REGEX)];
+  dateFormControl: FormControl;
+  timeFormControl: FormControl;
 
   get empty() {
     const userInput = this.form.value;
@@ -123,7 +128,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   get value(): DateTime | null {
     const userInput = this.form.value;
     if (userInput.date !== null && userInput.time !== null) {
-      console.log('userInput.date', userInput.date);
+      //console.log('userInput.date', userInput.date);
       return new DateTime(userInput.date, userInput.time);
     }
     return null;
@@ -135,7 +140,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
         const calendarDate = new CalendarDate(datetime.date.year, datetime.date.month, datetime.date.day);
         const gcd = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
         this.form.setValue({date: gcd, time: datetime.time});
-        console.log('datetime.date set: ', calendarDate);
+        //console.log('datetime.date set: ', calendarDate);
       } else {
         this.form.setValue({date: null, time: null});
       }
@@ -157,9 +162,10 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
+    this.timeFormControl = new FormControl(null, this.timeValidator)
     this.form = fb.group({
       date: [null, Validators.required],
-      time: [null, Validators.required]
+      time: this.timeFormControl
     });
 
     fm.monitor(elRef.nativeElement, true).subscribe(origin => {

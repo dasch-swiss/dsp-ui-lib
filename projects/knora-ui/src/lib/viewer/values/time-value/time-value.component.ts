@@ -2,13 +2,11 @@ import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, Simp
 import { TimeInputComponent, DateTime } from './time-input/time-input.component';
 import { ReadTimeValue, CreateTimeValue, UpdateTimeValue, KnoraDate } from '@knora/api';
 import { BaseValueComponent } from '..';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { IntervalErrorStateMatcher } from '../interval-value/interval-value.component';
-import { stringify } from 'querystring';
-import { DatePipe, formatDate } from '@angular/common';
-import { MAT_DATE_LOCALE } from '@angular/material';
-import { format } from 'url';
+import { DatePipe } from '@angular/common';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'kui-time-value',
@@ -26,6 +24,7 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
   date: string;
   time: string;
   knoraDate: KnoraDate;
+  convertedControlDate: KnoraDate;
 
   form: FormGroup;
 
@@ -38,6 +37,44 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
+
+  standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn
+    = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+
+      if(control.value.date !== null && !(control.value.date instanceof KnoraDate)){
+        this.convertedControlDate = new KnoraDate("Gregorian",
+                                                  "AD",
+                                                  control.value.date.calendarStart.year,
+                                                  control.value.date.calendarStart.month,
+                                                  control.value.date.calendarStart.day);
+      }
+
+      // console.log('initValue.date: ', initValue.date);
+      // console.log('convertedControlDate: ', this.convertedControlDate)
+      // console.log('control.value.date: ', control.value.date);
+      // console.log('initValue.time: ', initValue.time);
+      // console.log('control.value.time: ', control.value.time);
+
+      // console.log('check 1: ', control.value !== null);
+      // console.log('check 2: ', this.convertedControlDate !== undefined);
+      // console.log('check 2: ', (initValue.date === this.convertedControlDate || initValue.date === control.value.date));
+      // console.log('check 3: ', initValue.time === control.value.time);
+      // console.log('check 4: ', (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === '')));
+      // console.log('initValue.date === this.convertedControlDate: ', initValue.date === this.convertedControlDate);
+      // console.log('initValue.date === control.value.date: ', initValue.date === control.value.date);
+      // console.log('objects are equal: ', _.isEqual(initValue.date, this.convertedControlDate));
+      
+      const invalid = (control.value !== null &&
+                       (_.isEqual(initValue.date, this.convertedControlDate) || initValue.date === control.value.date) && 
+                       initValue.time === control.value.time) && 
+                       (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+
+      // console.log('invalid: ', invalid);
+
+      return invalid ? {valueNotChanged: {value: control.value}} : null;
+    };
+  };
 
   getInitValue(): DateTime | null {
     if (this.displayValue !== undefined) {
@@ -72,7 +109,7 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
 
     this.form = this.fb.group({
       timeValue: this.valueFormControl,
-      comment: this.commentFormControl
+      comment: this.commentFormControl,
     });
 
     this.resetFormControl();
@@ -112,11 +149,11 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
 
     let splitTime = this.valueFormControl.value.time.split(":");
 
-    console.log('year: ', this.valueFormControl.value.date.calendarStart.year);
-    console.log('month: ', this.valueFormControl.value.date.calendarStart.month);
-    console.log('day: ', this.valueFormControl.value.date.calendarStart.day);
-    console.log('hour: ', splitTime[0]);
-    console.log('minutes: ', splitTime[1]);
+    // console.log('year: ', this.valueFormControl.value.date.calendarStart.year);
+    // console.log('month: ', this.valueFormControl.value.date.calendarStart.month);
+    // console.log('day: ', this.valueFormControl.value.date.calendarStart.day);
+    // console.log('hour: ', splitTime[0]);
+    // console.log('minutes: ', splitTime[1]);
 
     const formattedDate = new Date(this.valueFormControl.value.date.calendarStart.year,
                                    (this.valueFormControl.value.date.calendarStart.month - 1),
@@ -125,9 +162,9 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
                                    splitTime[1]
     );
 
-    console.log('formatted date: ', formattedDate);
-    console.log('updated date: ', this.valueFormControl.value.date);
-    console.log('updated time: ', this.valueFormControl.value.time);
+    // console.log('formatted date: ', formattedDate);
+    // console.log('updated date: ', this.valueFormControl.value.date);
+    // console.log('updated time: ', this.valueFormControl.value.time);
 
     updatedTimeValue.time = formattedDate.toISOString();
 

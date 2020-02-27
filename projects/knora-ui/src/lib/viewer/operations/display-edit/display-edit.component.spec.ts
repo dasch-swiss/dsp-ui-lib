@@ -128,6 +128,17 @@ class TestDecimalValueComponent implements OnInit {
   }
 }
 
+@Component({
+  selector: `kui-time-value`,
+  template: ``
+})
+class TestTimeValueComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+}
 
 /**
  * Test host component to simulate parent component.
@@ -187,7 +198,8 @@ describe('DisplayEditComponent', () => {
         TestIntervalValueComponent,
         TestBooleanValueComponent,
         TestUriValueComponent,
-        TestDecimalValueComponent
+        TestDecimalValueComponent,
+        TestTimeValueComponent
       ],
       providers: [
         {
