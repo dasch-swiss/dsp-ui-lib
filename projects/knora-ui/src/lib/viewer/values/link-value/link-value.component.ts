@@ -24,6 +24,8 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   valueFormControl: FormControl;
   commentFormControl: FormControl;
   form: FormGroup;
+  linkedResource: ReadResource;
+  linkedResourceIRI: string;
 
   valueChangesSubscription: Subscription;
   // label cannot contain logical operations of lucene index
@@ -72,8 +74,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
 
         const initialValue = this.getInitValue();
         const initialComment = this.getInitComment();
-        console.log('initialLinkValue')
-        console.log(initialValue)
         this.valueFormControl.setValue(initialValue.label);
         this.commentFormControl.setValue(initialComment);
 
@@ -105,7 +105,9 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
       linkValue: this.valueFormControl,
       comment: this.commentFormControl
     });
-    this.options = [this.getInitValue()];
+    this.options = [this.displayValue.linkedResource];
+    console.log('initial display value')
+    console.log(this.displayValue)
     this.resetFormControl();
   }
 
@@ -123,7 +125,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     }
     const newLinkValue = new CreateLinkValue();
     // check that resource with given label exists
-    newLinkValue.linkedResourceIri = this.displayValue.linkedResourceIri;
+    newLinkValue.linkedResourceIri = this.linkedResourceIRI;
 
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newLinkValue.valueHasComment = this.commentFormControl.value;
@@ -138,13 +140,10 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     }
     console.log('update mode')
     const updatedLinkValue = new UpdateLinkValue();
-    console.log('display value')
-    console.log(this.displayValue)
-    console.log('valueFromControl')
-    console.log(this.valueFormControl)
     updatedLinkValue.id = this.displayValue.id;
-    updatedLinkValue.linkedResourceIri = this.displayValue.linkedResourceIri;
-
+    updatedLinkValue.linkedResourceIri = this.linkedResourceIRI;
+    console.log('updated link value');
+    console.log(updatedLinkValue);
     // add the submitted comment to updatedLinkValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedLinkValue.valueHasComment = this.commentFormControl.value;
@@ -159,8 +158,9 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   private setLinkValue(option: ReadResource) {
     console.log('selected option')
     this.valueFormControl.setValue(option.label);
-    this.options = [option];
-    this.displayValue.id = option.id;
-    this.displayValue.linkedResource = option;
+    console.log('chosen option')
+    console.log(option)
+    this.linkedResourceIRI = option.id;
+    this.linkedResource = option;
   }
 }
