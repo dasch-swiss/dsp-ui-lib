@@ -29,7 +29,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
 
   valueChangesSubscription: Subscription;
   // label cannot contain logical operations of lucene index
-  customValidators = [Validators.pattern(/^-?\d+$/)];
+  customValidators = [];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder, @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
     super();
