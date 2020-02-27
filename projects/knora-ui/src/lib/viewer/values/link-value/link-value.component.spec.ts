@@ -111,7 +111,6 @@ describe('LinkValueComponent', () => {
 
       valueComponentDe = hostCompDe.query(By.directive(LinkValueComponent));
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      console.log(valueInputDebugElement)
       // valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
@@ -127,9 +126,10 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
-      //
-      // expect(valueInputNativeElement.value).toEqual('Sierra');
-      //
+
+      expect(testHostComponent.displayInputVal.linkedResource.label).toEqual('Sierra');
+      expect(testHostComponent.displayInputVal.linkedResource.type).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+
       // expect(valueInputNativeElement.readOnly).toEqual(true);
 
     });
