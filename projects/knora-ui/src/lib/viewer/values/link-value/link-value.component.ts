@@ -106,8 +106,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
       comment: this.commentFormControl
     });
     this.options = [this.displayValue.linkedResource];
-    console.log('initial display value')
-    console.log(this.displayValue)
     this.resetFormControl();
   }
 
@@ -138,12 +136,9 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     if (this.mode !== 'update' || !this.form.valid) {
       return false;
     }
-    console.log('update mode')
     const updatedLinkValue = new UpdateLinkValue();
     updatedLinkValue.id = this.displayValue.id;
     updatedLinkValue.linkedResourceIri = this.linkedResourceIRI;
-    console.log('updated link value');
-    console.log(updatedLinkValue);
     // add the submitted comment to updatedLinkValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedLinkValue.valueHasComment = this.commentFormControl.value;
@@ -156,10 +151,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   }
 
   private setLinkValue(option: ReadResource) {
-    console.log('selected option')
     this.valueFormControl.setValue(option.label);
-    console.log('chosen option')
-    console.log(option)
     this.linkedResourceIRI = option.id;
     this.linkedResource = option;
   }

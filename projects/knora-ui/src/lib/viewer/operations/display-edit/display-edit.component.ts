@@ -69,16 +69,11 @@ export class DisplayEditComponent implements OnInit {
       updateRes.value = updatedVal;
       this.knoraApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
         mergeMap((res: WriteValueResponse) => {
-          const uuid = res.id.split('/').pop()
-          console.log(res)
-          return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, uuid);
+          return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
         })
       ).subscribe(
         (res2: ReadResource) => {
-          console.log(res2);
           this.displayValue = res2.getValues(this.displayValue.property)[0];
-          console.log('display val after update')
-          console.log(this.displayValue)
           this.mode = 'read';
         }
       );
