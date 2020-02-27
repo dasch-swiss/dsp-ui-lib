@@ -4,7 +4,7 @@ import {
   KnoraApiConnection,
   PermissionUtil,
   ReadResource,
-  ReadValue,
+  ReadValue, UpdateLinkValue,
   UpdateResource,
   UpdateValue,
   WriteValueResponse
@@ -67,16 +67,18 @@ export class DisplayEditComponent implements OnInit {
       updateRes.type = this.parentResource.type;
       updateRes.property = this.displayValue.property;
       updateRes.value = updatedVal;
-
       this.knoraApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
         mergeMap((res: WriteValueResponse) => {
-          // console.log(res);
-          return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, this.displayValue.uuid);
+          const uuid = res.id.split('/').pop()
+          console.log(res)
+          return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, uuid);
         })
       ).subscribe(
         (res2: ReadResource) => {
-          // console.log(res2);
+          console.log(res2);
           this.displayValue = res2.getValues(this.displayValue.property)[0];
+          console.log('display val after update')
+          console.log(this.displayValue)
           this.mode = 'read';
         }
       );
