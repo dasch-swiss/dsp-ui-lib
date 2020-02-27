@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {KnoraApiConnectionToken} from '../../../core';
 import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
 
@@ -62,6 +63,11 @@ class TestHostCreateValueComponent implements OnInit {
 describe('LinkValueComponent', () => {
 
   beforeEach(async(() => {
+    const valuesSpyObj = {
+      v2: {
+        values: jasmine.createSpyObj('values', ['updateValue', 'getValue'])
+      }
+    };
     TestBed.configureTestingModule({
       declarations: [
         LinkValueComponent,
@@ -74,6 +80,12 @@ describe('LinkValueComponent', () => {
         MatAutocompleteModule,
         BrowserAnimationsModule
       ],
+      providers: [
+        {
+          provide: KnoraApiConnectionToken,
+          useValue: valuesSpyObj
+        }
+      ]
     })
     .compileComponents();
   }));
@@ -91,6 +103,14 @@ describe('LinkValueComponent', () => {
     it('should display an existing value', () => {
 
       expect(testHostComponent.displayInputVal.linkedResourceIri).toMatch('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+
+      // expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+      //
+      // expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+      //
+      // expect(valueInputNativeElement.value).toEqual('Sierra');
+      //
+      // expect(valueInputNativeElement.readOnly).toEqual(true);
 
     });
   });
