@@ -304,7 +304,8 @@ describe('DisplayEditComponent', () => {
       expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledTimes(1);
 
       expect(valuesSpy.v2.values.getValue).toHaveBeenCalledTimes(1);
-      expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id, testHostComponent.readValue.uuid);
+      expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id,
+        testHostComponent.displayEditValueComponent.displayValue.uuid);
 
       expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
       expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
