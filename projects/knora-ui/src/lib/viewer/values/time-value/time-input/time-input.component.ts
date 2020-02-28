@@ -1,7 +1,6 @@
 import { Component, HostBinding, Input, Optional, Self, ElementRef, DoCheck, OnDestroy } from '@angular/core';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { ErrorStateMatcher, CanUpdateErrorStateCtor, mixinErrorState, MatFormFieldControl, CanUpdateErrorState, MatCalendar } from '@angular/material';
-import { FormControl, FormGroupDirective, NgForm, NgControl, FormGroup, FormBuilder, Validators, ControlValueAccessor, ValidatorFn } from '@angular/forms';
+import { ErrorStateMatcher, CanUpdateErrorStateCtor, mixinErrorState, MatFormFieldControl, CanUpdateErrorState } from '@angular/material';
+import { FormControl, FormGroupDirective, NgForm, NgControl, FormGroup, FormBuilder, Validators, ControlValueAccessor } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor } from '@angular/cdk/a11y';
@@ -129,7 +128,6 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   get value(): DateTime | null {
     const userInput = this.form.value;
     if (userInput.date !== null && userInput.time !== null) {
-      //console.log('userInput.date', userInput.date);
       return new DateTime(userInput.date, userInput.time);
     }
     return null;
@@ -141,7 +139,6 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
         const calendarDate = new CalendarDate(datetime.date.year, datetime.date.month, datetime.date.day);
         const gcd = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
         this.form.setValue({date: gcd, time: datetime.time});
-        //console.log('datetime.date set: ', calendarDate);
       } else {
         this.form.setValue({date: null, time: null});
       }
@@ -163,12 +160,10 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-    //this.dateFormControl = new FormControl({value: null, disabled: true});
     this.dateFormControl = new FormControl(null);
     this.dateFormControl.setValidators([Validators.required]);
     
-    this.timeFormControl = new FormControl(null);
-    this.timeFormControl.setValidators([Validators.required].concat(this.timeValidator));
+    this.timeFormControl = new FormControl({value: null, Validators: [Validators.required, this.timeValidator]});
 
     this.form = fb.group({
       date: this.dateFormControl,

@@ -76,7 +76,6 @@ export abstract class BaseValueComponent {
    * Depending on the mode, validators are reset.
    */
   resetFormControl(): void {
-    console.log('resetFormControl called');
     if (this.valueFormControl !== undefined && this.commentFormControl !== undefined) {
 
       const initialValue = this.getInitValue();

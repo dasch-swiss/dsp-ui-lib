@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges, LOCALE_ID } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges } from '@angular/core';
 import { TimeInputComponent, DateTime } from './time-input/time-input.component';
 import { ReadTimeValue, CreateTimeValue, UpdateTimeValue, KnoraDate } from '@knora/api';
 import { BaseValueComponent } from '..';
@@ -43,7 +43,7 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
   standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn
     = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
     return (control: AbstractControl): { [key: string]: any } | null => {
-
+      
       if(control.value.date !== null && !(control.value.date instanceof KnoraDate)){
         this.convertedControlDate = new KnoraDate("Gregorian",
                                                   "AD",
@@ -51,11 +51,11 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
                                                   control.value.date.calendarStart.month,
                                                   control.value.date.calendarStart.day);
       }
-      
+
       const invalid = (control.value !== null &&
-                       (_.isEqual(initValue.date, this.convertedControlDate) || initValue.date === control.value.date) && 
-                       initValue.time === control.value.time) || control.value.time.match(CustomRegex.TIME_REGEX) == null &&
-                       (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+                       (_.isEqual(initValue.date, this.convertedControlDate) || initValue.date === control.value.date) &&
+                       (initValue.time === control.value.time || control.value.time.match(CustomRegex.TIME_REGEX) == null) &&
+                       (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === '')));
 
       return invalid ? {valueNotChanged: {value: control.value}} : null;
     };
