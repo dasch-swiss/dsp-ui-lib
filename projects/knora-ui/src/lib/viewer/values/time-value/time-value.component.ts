@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { IntervalErrorStateMatcher } from '../interval-value/interval-value.component';
 import { DatePipe } from '@angular/common';
 import * as _ from 'lodash';
+import { CustomRegex } from '../custom-regex';
 
 @Component({
   selector: 'kui-time-value',
@@ -53,7 +54,7 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
       
       const invalid = (control.value !== null &&
                        (_.isEqual(initValue.date, this.convertedControlDate) || initValue.date === control.value.date) && 
-                       initValue.time === control.value.time) && 
+                       initValue.time === control.value.time) || control.value.time.match(CustomRegex.TIME_REGEX) == null &&
                        (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
 
       return invalid ? {valueNotChanged: {value: control.value}} : null;

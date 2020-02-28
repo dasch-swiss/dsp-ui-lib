@@ -65,8 +65,9 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   @Input() dateLabel = 'date';
   @Input() timeLabel = 'time';
 
-  timeValidator = [Validators.pattern(CustomRegex.TIME_REGEX)];
   dateFormControl: FormControl;
+
+  timeValidator = [Validators.pattern(CustomRegex.TIME_REGEX)];
   timeFormControl: FormControl;
 
   get empty() {
@@ -162,9 +163,15 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-    this.timeFormControl = new FormControl(null, this.timeValidator)
+    //this.dateFormControl = new FormControl({value: null, disabled: true});
+    this.dateFormControl = new FormControl(null);
+    this.dateFormControl.setValidators([Validators.required]);
+    
+    this.timeFormControl = new FormControl(null);
+    this.timeFormControl.setValidators([Validators.required].concat(this.timeValidator));
+
     this.form = fb.group({
-      date: [null, Validators.required],
+      date: this.dateFormControl,
       time: this.timeFormControl
     });
 
