@@ -1,0 +1,7 @@
+<mat-form-field appearance="outline" [floatLabel]="'always'">
+    <!-- <mat-label>{{ colorLabel }}</mat-label> -->
+    <input matInput [formControlName]="'color'" [placeholder]="colorLabel" [(colorPicker)]="value.color"
+        (colorPickerChange)="_handleInput()" [cpOutputFormat]="'hex'" />
+</mat-form-field>
+
+<!-- [style.background]="colorInput" [style.color]="colorInput" -->

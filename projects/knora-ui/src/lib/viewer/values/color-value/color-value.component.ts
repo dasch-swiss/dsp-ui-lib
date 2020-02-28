@@ -1,9 +1,9 @@
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CreateColorValue, ReadColorValue, UpdateColorValue } from '@knora/api';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
-import { CustomRegex } from '../custom-regex';
+import { ColorPickerComponent } from './color-picker/color-picker.component';
 
 @Component({
   selector: 'kui-color-value',
@@ -12,9 +12,11 @@ import { CustomRegex } from '../custom-regex';
 })
 export class ColorValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
+  @ViewChild('colorInput', { static: false }) colorPickerComponent: ColorPickerComponent;
+
   @Input() displayValue?: ReadColorValue;
-  colorValue: string;
-  colorLabel: string;
+  /* colorValue: string;
+  colorLabel: string; */
 
   valueFormControl: FormControl;
   commentFormControl: FormControl;
@@ -23,7 +25,8 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
   valueChangesSubscription: Subscription;
 
-  customValidators = [Validators.pattern(CustomRegex.COLOR_REGEX)];
+  // customValidators = [Validators.pattern(CustomRegex.COLOR_REGEX)];
+  customValidators = [];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
@@ -48,8 +51,8 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   ngOnInit() {
 
     // set color value and label
-    this.colorValue = this.displayValue.color;
-    this.colorLabel = this.displayValue.strval;
+    /* this.colorValue = this.displayValue.color;
+    this.colorLabel = this.displayValue.strval; */
 
     // initialize form control elements
     this.valueFormControl = new FormControl(null);
@@ -80,14 +83,14 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   }
 
   // override the resetFormControl() from the base component to deal with the disabled state and the checkbox label
-  resetFormControl(): void {
+  /* resetFormControl(): void {
     super.resetFormControl();
 
     if (this.displayValue !== undefined) {
       this.colorValue = this.getInitValue();
       this.colorLabel = this.getInitLabel();
     }
-  }
+  } */
 
   getNewValue(): CreateColorValue | false {
     if (this.mode !== 'create' || !this.form.valid) {
@@ -125,12 +128,12 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   }
 
   // update dynamically the background-color and the input label according to the picked color
-  onColorChanged(updatedValue: any): void {
+  /* onColorChanged(updatedValue: any): void {
     if (updatedValue) {
       this.colorValue = updatedValue;
       this.colorLabel = updatedValue;
       this.form.get('colorValue').setValue(updatedValue);
     }
-  }
+  } */
 
 }
