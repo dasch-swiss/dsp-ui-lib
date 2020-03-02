@@ -166,7 +166,7 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
       
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("10:45");
 
     });
   });
