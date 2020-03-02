@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {KnoraApiConnectionToken} from '../../../core';
 import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
+import {UpdateIntervalValue} from '../../../../../../../.yalc/@knora/api';
 
 /**
  * Test host component to simulate parent component.
@@ -95,7 +96,8 @@ describe('LinkValueComponent', () => {
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
     let valueInputDebugElement: DebugElement;
-    // let valueInputNativeElement;
+    let valueInputNativeElement;
+    let matAutoCompleteElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -110,9 +112,11 @@ describe('LinkValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(LinkValueComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      // valueInputNativeElement = valueInputDebugElement.nativeElement;
+      valueInputNativeElement = valueComponentDe.query(By.css('input')).nativeElement
+      // console.log(valueInputNativeElement)
+      matAutoCompleteElement = valueComponentDe.query(By.css('mat-autocomplete')).nativeElement
 
+      // console.log(matAutoCompleteElement.querySelectorAll('mat-option').length)
       commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
@@ -128,10 +132,11 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
       expect(testHostComponent.displayInputVal.linkedResource.label).toEqual('Sierra');
+      expect(testHostComponent.inputValueComponent.form.value.linkValue).toEqual('Sierra');
       expect(testHostComponent.displayInputVal.linkedResource.type).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
-
-      // expect(valueInputNativeElement.readOnly).toEqual(true);
+      expect(valueInputNativeElement.readOnly).toEqual(true);
 
     });
+
   });
 });
