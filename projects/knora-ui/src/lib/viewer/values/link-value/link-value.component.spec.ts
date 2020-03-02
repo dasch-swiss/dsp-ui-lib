@@ -10,7 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {KnoraApiConnectionToken} from '../../../core';
 import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
-import {UpdateIntervalValue} from '../../../../../../../.yalc/@knora/api';
+import {of} from 'rxjs';
 
 /**
  * Test host component to simulate parent component.
@@ -95,9 +95,7 @@ describe('LinkValueComponent', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
-    let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
-    let matAutoCompleteElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -112,11 +110,8 @@ describe('LinkValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(LinkValueComponent));
-      valueInputNativeElement = valueComponentDe.query(By.css('input')).nativeElement
-      // console.log(valueInputNativeElement)
-      matAutoCompleteElement = valueComponentDe.query(By.css('mat-autocomplete')).nativeElement
+      valueInputNativeElement = valueComponentDe.query(By.css('input')).nativeElement;
 
-      // console.log(matAutoCompleteElement.querySelectorAll('mat-option').length)
       commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
@@ -133,10 +128,53 @@ describe('LinkValueComponent', () => {
 
       expect(testHostComponent.displayInputVal.linkedResource.label).toEqual('Sierra');
       expect(testHostComponent.inputValueComponent.form.value.linkValue).toEqual('Sierra');
+      expect(testHostComponent.inputValueComponent.options.length).toEqual(1);
       expect(testHostComponent.displayInputVal.linkedResource.type).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
       expect(valueInputNativeElement.readOnly).toEqual(true);
 
     });
+    it('should make an link value editable giving drop down menu', () => {
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
 
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.form.value.linkValue).toEqual('');
+      expect(testHostComponent.inputValueComponent.options.length).toEqual(1);
+
+    });
+    it('should validate an existing value with an added comment', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      commentInputNativeElement.value = 'this is a comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateLinkValue).toBeTruthy();
+
+      expect((updatedValue as UpdateLinkValue).valueHasComment).toEqual('this is a comment');
+
+    });
   });
 });
