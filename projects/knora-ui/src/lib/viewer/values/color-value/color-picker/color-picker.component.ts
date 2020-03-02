@@ -190,8 +190,10 @@ export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, 
     }
   }
 
-  writeValue(color: ColorPicker | null): void {
-    this.value = color;
+  writeValue(colorValue: ColorPicker | null): void {
+    this.value = colorValue;
+    this.colorVal = colorValue.color;
+    this.colorLabel = colorValue.color;
   }
 
   registerOnChange(fn: any): void {
