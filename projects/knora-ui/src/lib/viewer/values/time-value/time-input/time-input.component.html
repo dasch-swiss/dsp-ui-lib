@@ -1,6 +1,6 @@
 <div [formGroup]="form" class="time-input-container">
     <mat-form-field>
-        <input matInput [matDatepicker]="picker" [formControlName]="'date'" (dateChange)="_handleInput()" readonly>
+        <input matInput class="time-input-element date" [matDatepicker]="picker" [formControlName]="'date'" (dateChange)="_handleInput()" readonly>
         <mat-datepicker-toggle *ngIf="!readonly" matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-error *ngIf="form.controls.date.hasError('valueNotChanged')">
