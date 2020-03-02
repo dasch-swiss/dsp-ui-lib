@@ -1,7 +1,8 @@
-<mat-form-field appearance="outline" [floatLabel]="'always'">
-    <!-- <mat-label>{{ colorLabel }}</mat-label> -->
-    <input matInput [formControlName]="'color'" [placeholder]="colorLabel" [(colorPicker)]="value.color"
-        (colorPickerChange)="_handleInput()" [cpOutputFormat]="'hex'" />
-</mat-form-field>
-
-<!-- [style.background]="colorInput" [style.color]="colorInput" -->
+<div [formGroup]="colorForm" class="color-picker-container">
+    <mat-form-field appearance="outline" [floatLabel]="'always'">
+        <mat-label>{{ colorLabel }}</mat-label>
+        <input matInput [formControlName]="'color'" [placeholder]="colorLabel" [(colorPicker)]="colorVal"
+            [style.background]="colorVal" [style.color]="colorVal" (colorPickerChange)="_handleInput(colorVal)"
+            [cpOutputFormat]="'hex'" [cpDisabled]="readonly" [cpDisableInput]="true" />
+    </mat-form-field>
+</div>

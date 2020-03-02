@@ -1,6 +1,6 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self } from '@angular/core';
+import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher, MatFormFieldControl, mixinErrorState, CanUpdateErrorState, CanUpdateErrorStateCtor } from '@angular/material';
 import { Subject } from 'rxjs';
@@ -45,7 +45,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
     { provide: MatFormFieldControl, useExisting: ColorPickerComponent }
   ]
 })
-export class ColorPickerComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<ColorPicker>, DoCheck, CanUpdateErrorState, OnDestroy {
+export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, ControlValueAccessor, MatFormFieldControl<ColorPicker>, DoCheck, CanUpdateErrorState, OnDestroy {
 
   static nextId = 0;
 
@@ -55,15 +55,16 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
 
   @Input() readonly = false;
 
-  @Input() colorLabel = 'color';
-
   @Input() errorStateMatcher: ErrorStateMatcher;
 
   @HostBinding() id = `kui-color-picker-${ColorPickerComponent.nextId++}`;
 
   @HostBinding('attr.aria-describedby') describedBy = '';
 
-  form: FormGroup;
+  colorVal: string;
+  colorLabel: string;
+  colorForm: FormGroup;
+  colorValueFormControl: FormControl;
   stateChanges = new Subject<void>();
   focused = false;
   errorState = false;
@@ -75,7 +76,7 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
   onTouched = () => { };
 
   get empty() {
-    const colorInput = this.form.value;
+    const colorInput = this.colorForm.value;
     return !colorInput.color;
   }
 
@@ -101,7 +102,7 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
 
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
-    this._disabled ? this.form.disable() : this.form.enable();
+    this._disabled ? this.colorForm.disable() : this.colorForm.enable();
     this.stateChanges.next();
   }
 
@@ -121,10 +122,8 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
 
   @Input()
   get value(): ColorPicker | null {
-    const colorValue = this.form.value;
-    console.log('colorValue', colorValue);
+    const colorValue = this.colorForm.value;
     if (colorValue !== null) {
-      console.log('colorValue.color 1', colorValue);
       return new ColorPicker(colorValue.color);
     }
     return null;
@@ -132,9 +131,9 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
 
   set value(colorValue: ColorPicker | null) {
     if (colorValue !== null) {
-      this.form.setValue({ color: colorValue.color });
+      this.colorForm.setValue({ color: colorValue.color });
     } else {
-      this.form.setValue({ color: null });
+      this.colorForm.setValue({ color: null });
     }
     this.stateChanges.next();
   }
@@ -150,8 +149,9 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-    this.form = fb.group({
-      color: [null, this.colorValidator]
+    this.colorValueFormControl = new FormControl({ value: null, Validators: [Validators.required, this.colorValueFormControl] });
+    this.colorForm = fb.group({
+      color: this.colorValueFormControl
     });
 
     fm.monitor(elRef.nativeElement, true).subscribe(origin => {
@@ -161,6 +161,16 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
 
     if (this.ngControl != null) {
       this.ngControl.valueAccessor = this;
+    }
+  }
+
+  ngOnInit() {
+    if (this.value !== null) {
+      this.colorVal = this.value.color;
+      this.colorLabel = this.value.color;
+    } else {
+      this.colorVal = '#2047aa';
+      this.colorLabel = '#2047aa';
     }
   }
 
@@ -181,7 +191,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
   }
 
   writeValue(color: ColorPicker | null): void {
-    console.log('value', this.value);
     this.value = color;
   }
 
@@ -197,7 +206,10 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
     this.disabled = isDisabled;
   }
 
-  _handleInput(): void {
+  _handleInput(updatedValue: string) {
+    this.colorVal = updatedValue;
+    this.colorLabel = updatedValue;
+    this.colorValueFormControl.setValue(updatedValue);
     this.onChange(this.value);
   }
 

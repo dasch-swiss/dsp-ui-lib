@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CreateColorValue, ReadColorValue, UpdateColorValue } from '@knora/api';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
-import { ColorPickerComponent } from './color-picker/color-picker.component';
+import { ColorPickerComponent, ColorPicker } from './color-picker/color-picker.component';
 
 @Component({
   selector: 'kui-color-value',
@@ -15,8 +15,6 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   @ViewChild('colorInput', { static: false }) colorPickerComponent: ColorPickerComponent;
 
   @Input() displayValue?: ReadColorValue;
-  /* colorValue: string;
-  colorLabel: string; */
 
   valueFormControl: FormControl;
   commentFormControl: FormControl;
@@ -25,34 +23,21 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
   valueChangesSubscription: Subscription;
 
-  // customValidators = [Validators.pattern(CustomRegex.COLOR_REGEX)];
   customValidators = [];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
 
-  getInitValue(): string | null {
+  getInitValue(): ColorPicker | null {
     if (this.displayValue !== undefined) {
-      return this.displayValue.color;
-    } else {
-      return null;
-    }
-  }
-
-  getInitLabel(): string | null {
-    if (this.displayValue !== undefined) {
-      return this.displayValue.strval;
+      return new ColorPicker(this.displayValue.color);
     } else {
       return null;
     }
   }
 
   ngOnInit() {
-
-    // set color value and label
-    /* this.colorValue = this.displayValue.color;
-    this.colorLabel = this.displayValue.strval; */
 
     // initialize form control elements
     this.valueFormControl = new FormControl(null);
@@ -82,16 +67,6 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     this.unsubscribeFromValueChanges();
   }
 
-  // override the resetFormControl() from the base component to deal with the disabled state and the checkbox label
-  /* resetFormControl(): void {
-    super.resetFormControl();
-
-    if (this.displayValue !== undefined) {
-      this.colorValue = this.getInitValue();
-      this.colorLabel = this.getInitLabel();
-    }
-  } */
-
   getNewValue(): CreateColorValue | false {
     if (this.mode !== 'create' || !this.form.valid) {
       return false;
@@ -99,7 +74,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
     const newColorValue = new CreateColorValue();
 
-    newColorValue.color = this.valueFormControl.value;
+    newColorValue.color = this.valueFormControl.value.color;
 
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newColorValue.valueHasComment = this.commentFormControl.value;
@@ -117,7 +92,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
     updatedColorValue.id = this.displayValue.id;
 
-    updatedColorValue.color = this.valueFormControl.value;
+    updatedColorValue.color = this.valueFormControl.value.color;
 
     // add the submitted comment to updatedIntValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
@@ -126,14 +101,5 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
     return updatedColorValue;
   }
-
-  // update dynamically the background-color and the input label according to the picked color
-  /* onColorChanged(updatedValue: any): void {
-    if (updatedValue) {
-      this.colorValue = updatedValue;
-      this.colorLabel = updatedValue;
-      this.form.get('colorValue').setValue(updatedValue);
-    }
-  } */
 
 }
