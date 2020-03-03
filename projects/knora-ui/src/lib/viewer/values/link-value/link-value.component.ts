@@ -34,7 +34,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    * @param label to be searched
    */
     searchByLabel(searchTerm: string): ReadResource[] {
-      // this.restrictToResourceClass = this.displayValue.linkedResource.type
+      this.restrictToResourceClass = this.displayValue.linkedResource.type;
       // at least 3 characters are required
       if (searchTerm.length >= 3) {
 
