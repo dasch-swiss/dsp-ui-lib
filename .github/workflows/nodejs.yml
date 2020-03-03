@@ -22,6 +22,8 @@ jobs:
     - run: yalc add @knora/api
     - run: npm install
     - run: npm run test-lib
+    - env:
+        TZ: Europe/Amsterdam
     - run: ./find-ignored-tests.sh
     - run: npm run build-lib
       env:
