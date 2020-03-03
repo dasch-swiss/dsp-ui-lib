@@ -4,23 +4,15 @@ import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiC
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core';
-import {ignoreElements} from 'rxjs/operators';
 @Component({
   selector: 'kui-link-value',
   templateUrl: './link-value.component.html',
   styleUrls: ['./link-value.component.scss']
 })
 export class LinkValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
-  private _restrictToResourceClass: string;
   @Input() displayValue?: ReadLinkValue;
-  set restrictResourceClass(value: string) {
-    this._restrictToResourceClass = value;
-  }
-
-  get restrictResourceClass() {
-    return this._restrictToResourceClass;
-  }
   options: ReadResource[];
+  restrictToResourceClass: string;
   valueFormControl: FormControl;
   commentFormControl: FormControl;
   form: FormGroup;
@@ -42,10 +34,11 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    * @param label to be searched
    */
     searchByLabel(searchTerm: string): ReadResource[] {
+      // this.restrictToResourceClass = this.displayValue.linkedResource.type
       // at least 3 characters are required
       if (searchTerm.length >= 3) {
 
-        this.knoraApiConnection.v2.search.doSearchByLabel(searchTerm, 0, {limitToResourceClass: this._restrictToResourceClass} ).subscribe(
+        this.knoraApiConnection.v2.search.doSearchByLabel(searchTerm, 0, {limitToResourceClass: this.restrictToResourceClass} ).subscribe(
           (response: ReadResource[]) => {
             this.options = response;
           });
@@ -150,7 +143,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
       this.setLinkValue(option);
   }
 
-  private setLinkValue(option: ReadResource) {
+  setLinkValue(option: ReadResource) {
     this.valueFormControl.setValue(option.label);
     this.linkedResourceIRI = option.id;
     this.linkedResource = option;

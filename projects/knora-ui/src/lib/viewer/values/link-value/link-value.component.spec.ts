@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LinkValueComponent } from './link-value.component';
-import { ReadLinkValue, MockResource, UpdateValue, UpdateLinkValue, CreateLinkValue } from '@knora/api';
+import { ReadLinkValue, MockResource, UpdateValue, UpdateLinkValue, CreateLinkValue, ReadResource } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
@@ -66,7 +66,8 @@ describe('LinkValueComponent', () => {
   beforeEach(async(() => {
     const valuesSpyObj = {
       v2: {
-        values: jasmine.createSpyObj('values', ['updateValue', 'getValue'])
+        values: jasmine.createSpyObj('values', ['updateValue', 'getValue']),
+        search: jasmine.createSpyObj('search', ['doSearchByLabel']),
       }
     };
     TestBed.configureTestingModule({
@@ -133,8 +134,7 @@ describe('LinkValueComponent', () => {
       expect(valueInputNativeElement.readOnly).toEqual(true);
 
     });
-    it('should make an link value editable giving drop down menu', () => {
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+    it('should make a link value editable', () => {
 
       testHostComponent.mode = 'update';
 
@@ -149,6 +149,26 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.options.length).toEqual(1);
 
     });
+    it('should search for resources by their label', () => {
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+        () => {
+          const res = new ReadResource();
+          res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
+          res.label = 'hidden thing';
+          return of([res]);
+        }
+      );
+
+      testHostComponent.inputValueComponent.searchByLabel('thing');
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.options.length).toEqual(1);
+
+      expect(testHostComponent.inputValueComponent.options[0].id).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
+    });
+
     it('should validate an existing value with an added comment', () => {
 
       testHostComponent.mode = 'update';
@@ -175,6 +195,16 @@ describe('LinkValueComponent', () => {
 
       expect((updatedValue as UpdateLinkValue).valueHasComment).toEqual('this is a comment');
 
+    });
+    it('should return a selected resource', () => {
+
+      const res = new ReadResource();
+      res.id = 'http://rdfh.ch/0001/a-blue-thing';
+      testHostComponent.inputValueComponent.setLinkValue(res);
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.linkedResourceIRI).toEqual('http://rdfh.ch/0001/a-blue-thing');
     });
   });
 });
