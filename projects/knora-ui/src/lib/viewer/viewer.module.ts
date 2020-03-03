@@ -6,6 +6,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {CommonModule} from '@angular/common';
 import { IntValueComponent } from './values/int-value/int-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
+import { ListValueComponent } from './values/list-value/list-value.component';
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
 import { UriValueComponent } from './values/uri-value/uri-value.component';
@@ -13,14 +14,16 @@ import {IntervalValueComponent} from './values/interval-value/interval-value.com
 import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent,
+                  UriValueComponent, IntervalValueComponent, IntervalInputComponent, ListValueComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
     MatCheckboxModule
   ],
-  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent]
+  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent,
+              UriValueComponent, IntervalValueComponent, ListValueComponent]
 })
 export class ViewerModule {
 }

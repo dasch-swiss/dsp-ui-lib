@@ -29,7 +29,16 @@ class TestTextValueAsStringComponent {
 
   @Input() displayValue;
 }
+@Component({
+  selector: `kui-list-value`,
+  template: ``
+})
+class TestListValueComponent {
 
+  @Input() mode;
+
+  @Input() displayValue;
+}
 @Component({
   selector: `kui-uri-value`,
   template: ``
@@ -185,6 +194,7 @@ describe('DisplayEditComponent', () => {
         TestTextValueAsStringComponent,
         TestIntValueComponent,
         TestIntervalValueComponent,
+        TestListValueComponent,
         TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent
