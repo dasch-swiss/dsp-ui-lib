@@ -139,7 +139,6 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
         const calendarDate = new CalendarDate(datetime.date.year, datetime.date.month, datetime.date.day);
         const gcd = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
         this.form.setValue({date: gcd, time: datetime.time});
-        console.log('this.form.get("date").value ', this.form.get('date').value);
       } else {
         this.form.setValue({date: null, time: null});
       }

@@ -114,7 +114,7 @@ class TestHostCreateValueComponent implements OnInit {
   }
 }
 
-describe('TimeValueComponent', () => {
+fdescribe('TimeValueComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TimeValueComponent, TestHostDisplayValueComponent, TestTimeInputComponent, TestHostCreateValueComponent],
@@ -166,8 +166,197 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
       
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("10:45");
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
 
+    });
+
+    it('should make an existing value editable', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(8);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
+
+      // simulate user input
+      const newDateTime = {
+        date: new KnoraDate("Gregorian", "AD", 1776, 7, 4),
+        time: "22:01"
+      };
+
+      testHostComponent.inputValueComponent.timeInputComponent.value = newDateTime;
+      testHostComponent.inputValueComponent.timeInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateTimeValue).toBeTruthy();
+
+      //expect((updatedValue as UpdateTimeValue).date.year).toEqual(100);
+      expect((updatedValue as UpdateTimeValue).time).toEqual("1776-07-04T21:26:52.000Z");
+
+    });
+
+    it('should validate an existing value with an added comment', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(8);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      commentInputNativeElement.value = 'this is a comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateTimeValue).toBeTruthy();
+
+      expect((updatedValue as UpdateTimeValue).valueHasComment).toEqual('this is a comment');
+
+    });
+
+    it('should not return an invalid update value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      testHostComponent.inputValueComponent.timeInputComponent.value.date = null;
+      testHostComponent.inputValueComponent.timeInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBeFalsy();
+
+    });
+
+    it('should restore the initially displayed value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(8);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
+
+      // simulate user input
+      const newDateTime = {
+        date: new KnoraDate("Gregorian", "AD", 1776, 7, 4),
+        time: "22:01"
+      };
+
+      testHostComponent.inputValueComponent.timeInputComponent.value = newDateTime;
+      testHostComponent.inputValueComponent.timeInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(1776);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(7);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(4);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("22:01");
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(8);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+    });
+
+    it('should set a new display value', () => {
+
+      const newTime = new ReadTimeValue();
+
+      newTime.time = "1776-07-04T00:00:00.000Z";
+      newTime.id = 'updatedId';
+
+      testHostComponent.displayInputVal = newTime;
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(1776);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(7);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(4);
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("00:34");
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+    });
+
+    it('should unsubscribe when destroyed', () => {
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeFalsy();
+
+      testHostComponent.inputValueComponent.ngOnDestroy();
+
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeTruthy();
     });
   });
 });

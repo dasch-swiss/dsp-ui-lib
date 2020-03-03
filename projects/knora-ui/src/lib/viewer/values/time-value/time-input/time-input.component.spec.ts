@@ -8,6 +8,7 @@ import { MatFormFieldModule, MatInputModule, MatNativeDateModule } from '@angula
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { MatDatepickerModule } from '@angular/material/datepicker'
+import { GregorianCalendarDate, CalendarPeriod, CalendarDate, JulianCalendarDate, JDNConvertibleCalendar } from 'jdnconvertiblecalendar';
 
 
 /**
@@ -37,8 +38,6 @@ class TestHostComponent implements OnInit {
     this.form = this.fb.group({
       time: [new DateTime(new KnoraDate("Gregorian", "AD", 1993, 10, 10), "11:45")]
     });
-
-    console.log('form.time: ',this.form.get('time').value);
 
   }
 }
@@ -74,12 +73,9 @@ describe('TimeInputComponent', () => {
     datetimeInputComponentDe = hostCompDe.query(By.directive(TimeInputComponent));
 
     dateInputDebugElement = datetimeInputComponentDe.query(By.css('input.date'));
-    console.log('dateInputDebugElement: ', dateInputDebugElement);
     dateInputNativeElement = dateInputDebugElement.nativeElement;
-    //console.log('dateInputNativeElement: ', dateInputNativeElement);
 
     timeInputDebugElement = datetimeInputComponentDe.query(By.css('input.time'));
-    //console.log('timeInputDebugElement: ', timeInputDebugElement);
     timeInputNativeElement = timeInputDebugElement.nativeElement;
 
     expect(dateInputNativeElement.readOnly).toBeFalsy;
@@ -88,35 +84,26 @@ describe('TimeInputComponent', () => {
 
   it('should initialize the DateTime correctly', () => {
 
-    //dateInputNativeElement.value = "10-10-1993";
+    const knoraDate = testHostComponent.timeInputComponent.value.date as unknown as GregorianCalendarDate;
+    expect(knoraDate.toCalendarPeriod().periodStart.year).toEqual(1993);
+    expect(knoraDate.toCalendarPeriod().periodStart.month).toEqual(10);
+    expect(knoraDate.toCalendarPeriod().periodStart.day).toEqual(10);
 
-    //console.log('dateInputNativeElement.value: ', dateInputNativeElement.value);
-    //console.log('timeInputNativeElement.value: ', timeInputNativeElement.value);
-    //expect(dateInputNativeElement.value).toEqual("10-10-1993");
     expect(timeInputNativeElement.value).toEqual('11:45');
 
   });
 
   it('should propagate changes made by the user', () => {
+    
+    testHostComponent.form.setValue({time: new DateTime(new KnoraDate("Gregorian", "AD", 1970, 1, 2), "11:53")});
 
-    dateInputNativeElement.value = '11-12-1993';
-    dateInputNativeElement.dispatchEvent(new Event('dateChange'));
-
-    testHostFixture.detectChanges();
-
-    expect(testHostComponent.form.controls.time).toBeTruthy();
-    // expect(testHostComponent.form.controls.time.value.date.year).toEqual(1993);
-    // expect(testHostComponent.form.controls.time.value.date.month).toEqual(12);
-    // expect(testHostComponent.form.controls.time.value.date.day).toEqual(11);
-    expect(testHostComponent.form.controls.time.value.time).toEqual('11:45');
-
-    timeInputNativeElement.value = '10:35';
-    timeInputNativeElement.dispatchEvent(new Event('input'));
-
-    testHostFixture.detectChanges();
+    const knoraDate = testHostComponent.timeInputComponent.value.date as unknown as GregorianCalendarDate;
+    expect(knoraDate.toCalendarPeriod().periodStart.year).toEqual(1970);
+    expect(knoraDate.toCalendarPeriod().periodStart.month).toEqual(1);
+    expect(knoraDate.toCalendarPeriod().periodStart.day).toEqual(2);
 
     expect(testHostComponent.form.controls.time.value).toBeTruthy();
-    expect(testHostComponent.form.controls.time.value.time).toEqual('10:35');
+    expect(testHostComponent.form.controls.time.value.time).toEqual('11:53');
 
   });
 });

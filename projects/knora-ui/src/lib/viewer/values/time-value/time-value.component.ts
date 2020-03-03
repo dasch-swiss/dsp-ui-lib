@@ -67,7 +67,7 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
       const datePipe = new DatePipe('en-US');
       this.date = datePipe.transform(this.displayValue.time, "d.M.y");
       this.time = datePipe.transform(this.displayValue.time, "HH:mm");
-      
+
       this.initKnoraDate = new KnoraDate("Gregorian",
                                           "AD",
                                           Number(datePipe.transform(this.displayValue.time, "y")),
