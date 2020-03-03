@@ -1,9 +1,18 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm } from '@angular/forms';
 import { CreateColorValue, ReadColorValue, UpdateColorValue } from '@knora/api';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { ColorPickerComponent, ColorPicker } from './color-picker/color-picker.component';
+import { ErrorStateMatcher } from '@angular/material';
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class ColorErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'kui-color-value',
@@ -18,12 +27,10 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
   valueFormControl: FormControl;
   commentFormControl: FormControl;
-
   form: FormGroup;
-
   valueChangesSubscription: Subscription;
-
   customValidators = [];
+  matcher = new ColorErrorStateMatcher();
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();

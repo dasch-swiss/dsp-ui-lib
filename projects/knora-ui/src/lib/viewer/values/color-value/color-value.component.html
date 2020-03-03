@@ -3,6 +3,9 @@
         <kui-color-picker #colorInput [formControlName]="'colorValue'" class="value" placeholder="Color value"
             [readonly]="mode === 'read'">
         </kui-color-picker>
+        <mat-error *ngIf="form.controls.colorValue.hasError('valueNotChanged')">
+            Color value must be changed.
+        </mat-error>
     </mat-form-field>
     <br>
     <mat-form-field class="large-field">

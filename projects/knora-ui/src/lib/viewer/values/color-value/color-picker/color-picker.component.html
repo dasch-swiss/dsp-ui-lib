@@ -1,8 +1,12 @@
 <div [formGroup]="colorForm" class="color-picker-container">
     <mat-form-field appearance="outline" [floatLabel]="'always'">
         <mat-label>{{ colorLabel }}</mat-label>
-        <input matInput [formControlName]="'color'" [placeholder]="colorLabel" [(colorPicker)]="colorVal"
-            [style.background]="colorVal" [style.color]="colorVal" (colorPickerChange)="_handleInput(colorVal)"
-            [cpOutputFormat]="'hex'" [cpDisabled]="readonly" [cpDisableInput]="true" />
+        <input matInput class="color-picker-input color" [formControlName]="'color'" [placeholder]="colorLabel"
+            [(colorPicker)]="colorVal" [style.background]="colorVal" [style.color]="colorVal"
+            (colorPickerChange)="_handleInput(colorVal)" [cpOutputFormat]="'hex'" [cpDisabled]="readonly"
+            [cpDisableInput]="true" />
+        <mat-error *ngIf="colorForm.controls.color.hasError('required')">
+            Color is <strong>required</strong>
+        </mat-error>
     </mat-form-field>
 </div>

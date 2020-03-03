@@ -19,7 +19,7 @@ export class ColorPicker {
 }
 
 /** Error when invalid control is dirty, touched, or submitted. */
-export class TimeInputErrorStateMatcher implements ErrorStateMatcher {
+export class ColorPickerErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
     return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
@@ -69,7 +69,7 @@ export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, 
   focused = false;
   errorState = false;
   controlType = 'kui-color-picker';
-  matcher = new TimeInputErrorStateMatcher();
+  matcher = new ColorPickerErrorStateMatcher();
   colorValidator = [Validators.pattern(CustomRegex.COLOR_REGEX)];
 
   onChange = (_: any) => { };
@@ -168,9 +168,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, 
     if (this.value !== null) {
       this.colorVal = this.value.color;
       this.colorLabel = this.value.color;
-    } else {
-      this.colorVal = '#2047aa';
-      this.colorLabel = '#2047aa';
     }
   }
 
