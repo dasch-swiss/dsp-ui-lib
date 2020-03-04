@@ -1,20 +1,20 @@
+import { Component, DebugElement, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ColorValueComponent } from './color-value.component';
-import { MatFormFieldModule, MatFormFieldControl } from '@angular/material/form-field';
-import { ColorPickerComponent, ColorPicker } from './color-picker/color-picker.component';
-import { ReactiveFormsModule, NG_VALUE_ACCESSOR, ControlValueAccessor, NgControl } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { ColorPickerModule } from 'ngx-color-picker';
-import { Component, forwardRef, Input, ViewChild, OnInit, DebugElement } from '@angular/core';
+import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
-import { Subject } from 'rxjs';
-import { ReadColorValue, MockResource, UpdateColorValue } from '@knora/api';
+import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MockResource, ReadColorValue, UpdateColorValue } from '@knora/api';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { Subject } from 'rxjs';
+import { ColorPicker, ColorPickerComponent } from './color-picker/color-picker.component';
+import { ColorValueComponent } from './color-value.component';
+
 
 @Component({
-  selector: `kui-test-color-picker`,
+  selector: `kui-test-color-picker`, // change selector to avoid conflict with ColorPickerComponent selector
   template: ``,
   providers: [
     {
