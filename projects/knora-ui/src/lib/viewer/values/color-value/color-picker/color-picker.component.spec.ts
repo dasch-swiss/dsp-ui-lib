@@ -98,24 +98,4 @@ describe('ColorPickerComponent', () => {
     expect(testHostComponent.form.controls.colorValue.value.color).toEqual('');
   });
 
-  /* it('should initialize the color with an empty value', () => {
-
-    console.log('value1', colorInputNativeElement.value);
-
-    testHostComponent.form.controls.colorValue.setValue(null);
-
-    console.log('value2', colorInputNativeElement.value);
-
-    expect(colorInputNativeElement.value.colorValue).toEqual('');
-
-  }); */
-
-  /* fit('should be readonly when the readonly input is set to true', () => {
-    testHostComponent.readonly = true;
-
-    testHostFixture.detectChanges();
-
-    expect(colorInputNativeElement.readOnly).toBe(true);
-  }); */
-
 });
