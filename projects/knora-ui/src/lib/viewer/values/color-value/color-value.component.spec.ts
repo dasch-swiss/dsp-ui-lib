@@ -6,7 +6,7 @@ import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-
 import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MockResource, ReadColorValue, UpdateColorValue } from '@knora/api';
+import { MockResource, ReadColorValue, UpdateColorValue, CreateColorValue } from '@knora/api';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { Subject } from 'rxjs';
 import { ColorPicker, ColorPickerComponent } from './color-picker/color-picker.component';
@@ -101,16 +101,15 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-color-value #colorVal [mode]="mode"></kui-color-value>`
+    <kui-color-value #inputVal [mode]="mode"></kui-color-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('colorVal', { static: false }) colorValueComponent: ColorValueComponent;
+  @ViewChild('inputVal', { static: false }) inputValueComponent: ColorValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
   ngOnInit() {
-
     this.mode = 'create';
   }
 }
@@ -243,7 +242,7 @@ describe('ColorValueComponent', () => {
     it('should not return an invalid update value', () => {
 
       // simulate user input
-      const newColor = { color: '!34hu5609jfng' };
+      const newColor = { color: '54iu45po' };
 
       testHostComponent.mode = 'update';
 
@@ -262,11 +261,11 @@ describe('ColorValueComponent', () => {
 
       expect(testHostComponent.colorValueComponent.mode).toEqual('update');
 
-      /* expect(testHostComponent.colorValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.colorValueComponent.form.valid).toBeFalsy();
 
       const updatedValue = testHostComponent.colorValueComponent.getUpdatedValue();
 
-      expect(updatedValue).toBeFalsy(); */
+      expect(updatedValue).toBeFalsy();
 
     });
 

@@ -15,7 +15,7 @@ import { By } from '@angular/platform-browser';
   template: `
     <div [formGroup]="form">
       <mat-form-field>
-        <kui-color-picker #colorInput [formControlName]="'colorValue'" [readonly]="readonly"></kui-color-picker>
+        <kui-color-picker #colorInput [formControlName]="'colorValue'" readonly></kui-color-picker>
       </mat-form-field>
     </div>`
 })
@@ -69,7 +69,7 @@ describe('ColorPickerComponent', () => {
     colorInputDebugElement = colorPickerComponentDe.query(By.css('input.color'));
     colorInputNativeElement = colorInputDebugElement.nativeElement;
 
-    expect(colorInputNativeElement.readOnly).toBe(false);
+    expect(colorInputNativeElement.readOnly).toBe(true);
   });
 
   it('should initialize the color correctly', () => {
