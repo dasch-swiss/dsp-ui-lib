@@ -3,6 +3,7 @@ import {TextValueAsStringComponent} from './values/text-value/text-value-as-stri
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatMenuModule} from '@angular/material/menu';
 import {CommonModule} from '@angular/common';
 import { IntValueComponent } from './values/int-value/int-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
@@ -20,7 +21,8 @@ import {IntervalInputComponent} from './values/interval-value/interval-input/int
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatMenuModule
   ],
   exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent,
               UriValueComponent, IntervalValueComponent, ListValueComponent]

@@ -62,7 +62,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
   }
 
   getNewValue(): CreateListValue | false {
-    if(this.mode !== 'create' || !this.form.valid) {
+    if (this.mode !== 'create' || !this.form.valid) {
       return false;
     }
 
@@ -70,7 +70,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
     newListValue.listNode = this.valueFormControl.value;
 
-    if(this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
+    if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newListValue.valueHasComment = this.commentFormControl.value;
     }
 
@@ -78,7 +78,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
   }
 
   getUpdatedValue(): UpdateListValue | false {
-    if(this.mode !== 'update' || !this.form.valid) {
+    if (this.mode !== 'update' || !this.form.valid) {
       return false;
     }
 
@@ -88,7 +88,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
     updatedListValue.listNode = this.valueFormControl.value;
 
-    if(this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
+    if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedListValue.valueHasComment = this.commentFormControl.value;
     }
 
