@@ -146,7 +146,7 @@ describe('TimeValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(TimeValueComponent));
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 
@@ -378,7 +378,7 @@ describe('TimeValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(TimeValueComponent));
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 

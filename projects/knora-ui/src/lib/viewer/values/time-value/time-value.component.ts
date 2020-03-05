@@ -1,4 +1,6 @@
-import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges, NgZone } from '@angular/core';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { take } from 'rxjs/operators';
 import { TimeInputComponent, DateTime } from './time-input/time-input.component';
 import { ReadTimeValue, CreateTimeValue, UpdateTimeValue, KnoraDate } from '@knora/api';
 import { BaseValueComponent } from '..';
@@ -17,6 +19,7 @@ import { CustomRegex } from '../custom-regex';
 export class TimeValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('timeInput', {static: false}) timeInputComponent: TimeInputComponent;
+  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadTimeValue;
 
@@ -36,7 +39,7 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
 
   matcher = new IntervalErrorStateMatcher();
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+  constructor(@Inject(FormBuilder) private fb: FormBuilder, private _ngZone: NgZone) {
     super();
   }
 
@@ -187,5 +190,9 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
     return updatedTimeValue;
   }
 
-
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable.pipe(take(1))
+        .subscribe(() => this.autosize.resizeToFitContent(true));
+  }
 }
