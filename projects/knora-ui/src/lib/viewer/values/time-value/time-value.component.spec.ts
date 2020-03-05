@@ -358,4 +358,86 @@ describe('TimeValueComponent', () => {
       expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeTruthy();
     });
   });
+
+  describe('create a time value', () => {
+    let testHostComponent: TestHostCreateValueComponent;
+    let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+
+    let valueComponentDe: DebugElement;
+    let commentInputDebugElement: DebugElement;
+    let commentInputNativeElement;
+
+    beforeEach(() => {
+      testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
+
+      const hostCompDe = testHostFixture.debugElement;
+
+      valueComponentDe = hostCompDe.query(By.directive(TimeValueComponent));
+      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+    });
+
+    it('should create a value', () => {
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual(null);
+
+      // simulate user input
+      const newDateTime = {
+        date: new KnoraDate("Gregorian", "AD", 2019, 1, 1),
+        time: "12:00"
+      };
+
+      testHostComponent.inputValueComponent.timeInputComponent.value = newDateTime;
+      testHostComponent.inputValueComponent.timeInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const newValue = testHostComponent.inputValueComponent.getNewValue();
+
+      expect(newValue instanceof CreateTimeValue).toBeTruthy();
+
+      expect((newValue as CreateTimeValue).time).toEqual("2019-01-01T11:00:00.000Z");
+    });
+
+    it('should reset form after cancellation', () => {
+      // simulate user input
+      const newDateTime = {
+        date: new KnoraDate("Gregorian", "AD", 2019, 1, 1),
+        time: "12:00"
+      };
+
+      testHostComponent.inputValueComponent.timeInputComponent.value = newDateTime;
+      testHostComponent.inputValueComponent.timeInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      commentInputNativeElement.value = 'created comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual(null);
+
+      expect(commentInputNativeElement.value).toEqual('');
+
+    });
+  });
 });

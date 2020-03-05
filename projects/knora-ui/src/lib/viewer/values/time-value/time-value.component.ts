@@ -117,6 +117,33 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
 
     const newTimeValue = new CreateTimeValue();
 
+    console.log('value: ', this.valueFormControl.value);
+
+    // split the time entry in two to separate the hours and the minutes
+    let splitTime = this.valueFormControl.value.time.split(":");
+
+    // when the first value is displayed on page load, it will be an instance of KnoraDate
+    if(this.valueFormControl.value.date instanceof KnoraDate){
+      this.updateDate = new Date(this.valueFormControl.value.date.year,
+                                (this.valueFormControl.value.date.month - 1),
+                                this.valueFormControl.value.date.day,
+                                splitTime[0],
+                                splitTime[1]
+      );
+    } else { // when the user submits a new value, it will be an instance of GregorianCalendarDate
+      this.updateDate = new Date(this.valueFormControl.value.date.calendarStart.year,
+                                (this.valueFormControl.value.date.calendarStart.month - 1),
+                                this.valueFormControl.value.date.calendarStart.day,
+                                splitTime[0],
+                                splitTime[1]
+      );
+    }
+
+    // convert the updateDate to a timestamp so that knora will accept it
+    newTimeValue.time = this.updateDate.toISOString();
+
+    console.log('new time value: ', newTimeValue.time);
+
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newTimeValue.valueHasComment = this.commentFormControl.value;
     }
