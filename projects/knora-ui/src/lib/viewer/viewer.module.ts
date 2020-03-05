@@ -8,6 +8,7 @@ import {CommonModule} from '@angular/common';
 import { IntValueComponent } from './values/int-value/int-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { ListValueComponent } from './values/list-value/list-value.component';
+import { ListDisplayComponent } from './values/list-value/list-display/list-display.component';
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
 import { UriValueComponent } from './values/uri-value/uri-value.component';
@@ -16,7 +17,7 @@ import {IntervalInputComponent} from './values/interval-value/interval-input/int
 
 @NgModule({
   declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent,
-                  UriValueComponent, IntervalValueComponent, IntervalInputComponent, ListValueComponent],
+                  UriValueComponent, IntervalValueComponent, IntervalInputComponent, ListValueComponent, ListDisplayComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -25,7 +26,7 @@ import {IntervalInputComponent} from './values/interval-value/interval-input/int
     MatMenuModule
   ],
   exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent,
-              UriValueComponent, IntervalValueComponent, ListValueComponent]
+              UriValueComponent, IntervalValueComponent, ListValueComponent, ListDisplayComponent]
 })
 export class ViewerModule {
 }

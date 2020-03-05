@@ -1,9 +1,12 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
-import {CreateListValue, ReadListValue, UpdateListValue} from '@knora/api';
+import {CreateListValue, ReadListValue, UpdateListValue, ListNodeV2, KnoraApiConnection, ApiResponseError} from '@knora/api';
+import { MatMenuTrigger } from '@angular/material/menu';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomRegex} from '../custom-regex';
+import {KnoraApiConnectionToken} from '../../../core';
+
 
 @Component({
   selector: 'kui-list-value',
@@ -13,17 +16,22 @@ import {CustomRegex} from '../custom-regex';
 export class ListValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayValue?: ReadListValue;
-  options: string[];
   valueFormControl: FormControl;
   commentFormControl: FormControl;
+  listRootNode: ListNodeV2;
+
+  // active node
+  selectedNode: ListNodeV2;
 
   form: FormGroup;
 
   valueChangesSubscription: Subscription;
+  @ViewChild(MatMenuTrigger, { static: false }) menuTrigger: MatMenuTrigger;
 
   customValidators = [];
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+  constructor(@Inject(FormBuilder) private fb: FormBuilder,
+              @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
     super();
    }
 
@@ -34,7 +42,6 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
       return null;
     }
    }
-
   // override the resetFormControl() from the base component to deal with initial link value label
   resetFormControl(): void {
     super.resetFormControl();
@@ -47,12 +54,40 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
         this.valueFormControl.clearValidators();
       } else {
         this.valueFormControl.setValue('');
-        // this.valueChangesSubscription = this.valueFormControl.valueChanges.subscribe(data => {
-        //   this.options = this.searchByLabel(data);
-        // });
+        const rootNodeIri = this.displayValue.listNode;
+
+        this.getRootNode(rootNodeIri);
+        console.log('display value');
+        console.log(this.displayValue)
+        console.log('RootNode')
+        console.log(this.listRootNode)
         this.valueFormControl.clearValidators();
       }
     }
+  }
+
+  getRootNode(rootNodeIri): void {
+    this.knoraApiConnection.v2.listNodeCache.getNode(rootNodeIri).subscribe(
+      (response: ListNodeV2) => {
+        const nodeOfListValue = response;
+        if (nodeOfListValue.isRootNode){
+          this.listRootNode = nodeOfListValue;
+        } else {
+          const hasRootNodeIRI = nodeOfListValue.hasRootNode;
+          this.knoraApiConnection.v2.listNodeCache.getNode(hasRootNodeIRI).subscribe(
+            (response2: ListNodeV2) => {
+              console.log('getting parent node')
+              this.listRootNode = response2;
+              console.log(this.listRootNode);
+            }, (error: ApiResponseError) => {
+              console.error(error);
+            });
+          }
+      },
+      (error: ApiResponseError) => {
+        console.error(error);
+      }
+    );
   }
   ngOnInit() {
     this.valueFormControl = new FormControl(null);
@@ -63,7 +98,6 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
         this.valueFormControl.updateValueAndValidity();
       }
     );
-    console.log(this.displayValue)
     this.form = this.fb.group({
       listValue: this.valueFormControl,
       comment: this.commentFormControl
@@ -112,6 +146,11 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
     }
 
     return updatedListValue;
+  }
+  getSelectedNode(item: ListNodeV2) {
+    this.menuTrigger.closeMenu();
+    this.selectedNode = item;
+    this.valueFormControl.setValue(item.id);
   }
 
 }

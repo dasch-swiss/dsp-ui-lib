@@ -1,15 +1,35 @@
-<span [formGroup]="form">
-   <mat-form-field class="example-full-width listValue-field">
-        <input [formControlName]="'listValue'" type="text" placeholder="List value" aria-label="resource" matInput [matMenuTriggerFor]="menu" [readonly]="mode === 'read'">
+<span *ngIf="mode === 'update' && listRootNode !== undefined">
+    <button class="md-button" mat-stroked-button [matMenuTriggerFor]="mainMenu" type="button" placeholder="List value">
+        <span *ngIf="!selectedNode">Select list value</span>
+        <span *ngIf="selectedNode">{{selectedNode.label}}</span>
+    </button>
 
-        <mat-menu #menu="matMenu">
-          <button *ngFor="let option of options" [value]="option" mat-menu-item>
-              {{option?.label}}
-          </button>
-        </mat-menu>
-    </mat-form-field>
-    <mat-form-field class="large-field comment-field">
+    <mat-menu #mainMenu="matMenu" [overlapTrigger]="false">
+        <span *ngFor="let child of listRootNode.children">
+            <span *ngIf="child.children && child.children.length > 0">
+                <button mat-menu-item (click)="getSelectedNode(child)"
+                        type="button">
+                    {{child.label}}
+                </button>
+                <list-display #menu [children]="child.children" (selectedNode)="getSelectedNode($event)">
+                </list-display>
+            </span>
+
+            <span *ngIf="!child.children || child.children.length === 0">
+                <button mat-menu-item (click)="getSelectedNode(child)" type="button">
+                    {{child.label}}
+                </button>
+            </span>
+        </span>
+    </mat-menu>
+</span>
+
+<span [formGroup]="form">
+  <mat-form-field class="large-field listValue-field" *ngIf="mode === 'read'">
+        <input [formControlName]="'listValue'" type="text" placeholder="List value" matInput [readonly]="mode === 'read'">
+  </mat-form-field>
+  <mat-form-field class="large-field comment-field">
         <input matInput [formControlName]="'comment'" class="comment listComment" placeholder="Comment" type="text"
                [readonly]="mode === 'read'">
-    </mat-form-field>
+  </mat-form-field>
 </span>
