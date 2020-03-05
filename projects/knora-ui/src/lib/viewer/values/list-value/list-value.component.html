@@ -1,6 +1,12 @@
 <span [formGroup]="form">
-    <mat-form-field class="large-field">
-        <input matInput [formControlName]="'listValue'" class="value" placeholder="List value" type="number" [readonly]="mode === 'read'">
+   <mat-form-field class="example-full-width listValue-field">
+        <input [formControlName]="'listValue'" type="text" placeholder="List value" aria-label="resource" matInput [matMenuTriggerFor]="menu" [readonly]="mode === 'read'">
+
+        <mat-menu #menu="matMenu">
+          <button *ngFor="let option of options" [value]="option" mat-menu-item>
+              {{option?.label}}
+          </button>
+        </mat-menu>
     </mat-form-field>
     <mat-form-field class="large-field comment-field">
         <input matInput [formControlName]="'comment'" class="comment listComment" placeholder="Comment" type="text"

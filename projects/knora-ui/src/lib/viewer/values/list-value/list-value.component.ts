@@ -13,7 +13,7 @@ import {CustomRegex} from '../custom-regex';
 export class ListValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayValue?: ReadListValue;
-
+  options: string[];
   valueFormControl: FormControl;
   commentFormControl: FormControl;
 
@@ -35,6 +35,25 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
     }
    }
 
+  // override the resetFormControl() from the base component to deal with initial link value label
+  resetFormControl(): void {
+    super.resetFormControl();
+
+    if (this.valueFormControl !== undefined) {
+      if (this.mode === 'read') {
+        this.valueFormControl.setValue(this.getInitValue());
+        this.commentFormControl.setValue(this.getInitComment());
+
+        this.valueFormControl.clearValidators();
+      } else {
+        this.valueFormControl.setValue('');
+        // this.valueChangesSubscription = this.valueFormControl.valueChanges.subscribe(data => {
+        //   this.options = this.searchByLabel(data);
+        // });
+        this.valueFormControl.clearValidators();
+      }
+    }
+  }
   ngOnInit() {
     this.valueFormControl = new FormControl(null);
     this.commentFormControl = new FormControl(null);
@@ -44,7 +63,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
         this.valueFormControl.updateValueAndValidity();
       }
     );
-
+    console.log(this.displayValue)
     this.form = this.fb.group({
       listValue: this.valueFormControl,
       comment: this.commentFormControl
