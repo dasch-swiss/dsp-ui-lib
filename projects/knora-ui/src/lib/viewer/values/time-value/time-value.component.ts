@@ -117,8 +117,6 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
 
     const newTimeValue = new CreateTimeValue();
 
-    console.log('value: ', this.valueFormControl.value);
-
     // split the time entry in two to separate the hours and the minutes
     let splitTime = this.valueFormControl.value.time.split(":");
 
@@ -141,8 +139,6 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
 
     // convert the updateDate to a timestamp so that knora will accept it
     newTimeValue.time = this.updateDate.toISOString();
-
-    console.log('new time value: ', newTimeValue.time);
 
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newTimeValue.valueHasComment = this.commentFormControl.value;
