@@ -171,7 +171,6 @@ fdescribe('TimeValueComponent', () => {
     });
 
     it('should make an existing value editable', () => {
-
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
@@ -192,11 +191,12 @@ fdescribe('TimeValueComponent', () => {
 
       // simulate user input
       const newDateTime = {
-        date: new KnoraDate("Gregorian", "AD", 1776, 7, 4),
-        time: "22:01"
+        date: new KnoraDate("Gregorian", "AD", 2019, 7, 4),
+        time: "22:00"
       };
 
       testHostComponent.inputValueComponent.timeInputComponent.value = newDateTime;
+
       testHostComponent.inputValueComponent.timeInputComponent._handleInput();
 
       testHostFixture.detectChanges();
@@ -209,8 +209,7 @@ fdescribe('TimeValueComponent', () => {
 
       expect(updatedValue instanceof UpdateTimeValue).toBeTruthy();
 
-      //expect((updatedValue as UpdateTimeValue).date.year).toEqual(100);
-      expect((updatedValue as UpdateTimeValue).time).toEqual("1776-07-04T21:26:52.000Z");
+      expect((updatedValue as UpdateTimeValue).time).toEqual("2019-07-04T20:00:00.000Z");
 
     });
 
@@ -297,8 +296,8 @@ fdescribe('TimeValueComponent', () => {
 
       // simulate user input
       const newDateTime = {
-        date: new KnoraDate("Gregorian", "AD", 1776, 7, 4),
-        time: "22:01"
+        date: new KnoraDate("Gregorian", "AD", 2019, 7, 4),
+        time: "22:00"
       };
 
       testHostComponent.inputValueComponent.timeInputComponent.value = newDateTime;
@@ -306,13 +305,13 @@ fdescribe('TimeValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(1776);
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(7);
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(4);
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("22:01");
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("22:00");
 
       testHostComponent.inputValueComponent.resetFormControl();
 
@@ -332,20 +331,20 @@ fdescribe('TimeValueComponent', () => {
 
       const newTime = new ReadTimeValue();
 
-      newTime.time = "1776-07-04T00:00:00.000Z";
+      newTime.time = "2019-07-04T00:00:00.000Z";
       newTime.id = 'updatedId';
 
       testHostComponent.displayInputVal = newTime;
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(1776);
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(7);
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(4);
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("00:34");
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("02:00");
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
