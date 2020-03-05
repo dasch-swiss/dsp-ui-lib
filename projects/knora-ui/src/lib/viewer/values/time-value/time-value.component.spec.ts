@@ -114,7 +114,7 @@ class TestHostCreateValueComponent implements OnInit {
   }
 }
 
-fdescribe('TimeValueComponent', () => {
+describe('TimeValueComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TimeValueComponent, TestHostDisplayValueComponent, TestTimeInputComponent, TestHostCreateValueComponent],

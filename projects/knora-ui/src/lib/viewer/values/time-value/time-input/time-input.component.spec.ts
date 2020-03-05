@@ -42,7 +42,7 @@ class TestHostComponent implements OnInit {
   }
 }
 
-fdescribe('TimeInputComponent', () => {
+describe('TimeInputComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
