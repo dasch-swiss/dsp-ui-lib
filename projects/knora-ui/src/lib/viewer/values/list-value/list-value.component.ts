@@ -57,28 +57,22 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
         const rootNodeIri = this.displayValue.listNode;
 
         this.getRootNode(rootNodeIri);
-        console.log('display value');
-        console.log(this.displayValue)
-        console.log('RootNode')
-        console.log(this.listRootNode)
         this.valueFormControl.clearValidators();
       }
     }
   }
 
   getRootNode(rootNodeIri): void {
-    this.knoraApiConnection.v2.listNodeCache.getNode(rootNodeIri).subscribe(
+    this.knoraApiConnection.v2.list.getNode(rootNodeIri).subscribe(
       (response: ListNodeV2) => {
         const nodeOfListValue = response;
-        if (nodeOfListValue.isRootNode){
+        if (nodeOfListValue.isRootNode) {
           this.listRootNode = nodeOfListValue;
         } else {
           const hasRootNodeIRI = nodeOfListValue.hasRootNode;
-          this.knoraApiConnection.v2.listNodeCache.getNode(hasRootNodeIRI).subscribe(
+          this.knoraApiConnection.v2.list.getList(hasRootNodeIRI).subscribe(
             (response2: ListNodeV2) => {
-              console.log('getting parent node')
               this.listRootNode = response2;
-              console.log(this.listRootNode);
             }, (error: ApiResponseError) => {
               console.error(error);
             });
