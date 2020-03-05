@@ -15,7 +15,7 @@ import { By } from '@angular/platform-browser';
   template: `
     <div [formGroup]="form">
       <mat-form-field>
-        <kui-color-picker #colorInput [formControlName]="'colorValue'" readonly></kui-color-picker>
+        <kui-color-picker #colorInput [formControlName]="'colorValue'" [readonly]="mode === 'read'"></kui-color-picker>
       </mat-form-field>
     </div>`
 })

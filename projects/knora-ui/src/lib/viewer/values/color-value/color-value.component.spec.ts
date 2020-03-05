@@ -14,7 +14,7 @@ import { ColorValueComponent } from './color-value.component';
 
 
 @Component({
-  selector: `kui-test-color-picker`, // change selector to avoid conflict with ColorPickerComponent selector
+  selector: `kui-color-picker`, // change selector to avoid conflict with ColorPickerComponent selector
   template: ``,
   providers: [
     {
@@ -101,11 +101,11 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-color-value #inputVal [mode]="mode"></kui-color-value>`
+    <kui-color-value #colorValue [mode]="mode"></kui-color-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', { static: false }) inputValueComponent: ColorValueComponent;
+  @ViewChild('colorValue', { static: false }) colorValueComponent: ColorValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
@@ -113,6 +113,7 @@ class TestHostCreateValueComponent implements OnInit {
     this.mode = 'create';
   }
 }
+
 
 describe('ColorValueComponent', () => {
 
@@ -127,7 +128,6 @@ describe('ColorValueComponent', () => {
       ],
       declarations: [
         ColorValueComponent,
-        ColorPickerComponent,
         TestColorPickerComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent
@@ -136,7 +136,7 @@ describe('ColorValueComponent', () => {
       .compileComponents();
   }));
 
-  describe('display and edit an color value', () => {
+  describe('display and edit a color value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
@@ -324,6 +324,89 @@ describe('ColorValueComponent', () => {
       testHostComponent.colorValueComponent.ngOnDestroy();
 
       expect(testHostComponent.colorValueComponent.valueChangesSubscription.closed).toBeTruthy();
+    });
+
+  });
+
+  describe('create a color value', () => {
+
+    let testHostComponent: TestHostCreateValueComponent;
+    let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+
+    let valueComponentDe: DebugElement;
+    let commentInputDebugElement: DebugElement;
+    let commentInputNativeElement;
+
+    beforeEach(() => {
+      testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.colorValueComponent).toBeTruthy();
+
+      const hostCompDe = testHostFixture.debugElement;
+
+      valueComponentDe = hostCompDe.query(By.directive(ColorValueComponent));
+      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+    });
+
+    it('should create a value', () => {
+
+      expect(testHostComponent.colorValueComponent.colorPickerComponent.value).toEqual(null);
+
+      // simulate user input
+      const newColor = {
+        color: '#m5m5m5'
+      };
+
+      testHostComponent.colorValueComponent.colorPickerComponent.value = newColor;
+      testHostComponent.colorValueComponent.colorPickerComponent._handleInput(newColor.color);
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.colorValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.colorValueComponent.form.valid).toBeTruthy();
+
+      const newValue = testHostComponent.colorValueComponent.getNewValue();
+
+      expect(newValue instanceof CreateColorValue).toBeTruthy();
+
+      expect((newValue as CreateColorValue).color).toEqual('#m5m5m5');
+
+    });
+
+    it('should reset form after cancellation', () => {
+      // simulate user input
+      const newColor = {
+        color: '#f8f8f8'
+      };
+
+      testHostComponent.colorValueComponent.colorPickerComponent.value = newColor;
+      testHostComponent.colorValueComponent.colorPickerComponent._handleInput(newColor.color);
+
+      testHostFixture.detectChanges();
+
+      commentInputNativeElement.value = 'created comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.colorValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.colorValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.colorValueComponent.resetFormControl();
+
+      expect(testHostComponent.colorValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.colorValueComponent.colorPickerComponent.value).toEqual(null);
+
+      expect(commentInputNativeElement.value).toEqual('');
+
     });
 
   });
