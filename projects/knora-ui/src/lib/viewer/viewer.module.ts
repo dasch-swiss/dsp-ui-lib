@@ -8,7 +8,7 @@ import {CommonModule} from '@angular/common';
 import { IntValueComponent } from './values/int-value/int-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { ListValueComponent } from './values/list-value/list-value.component';
-import { ListDisplayComponent } from './values/list-value/list-display/list-display.component';
+import { SublistValueComponent } from './values/list-value/subList-value/sublist-value.component';
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
 import { UriValueComponent } from './values/uri-value/uri-value.component';
@@ -16,8 +16,17 @@ import {IntervalValueComponent} from './values/interval-value/interval-value.com
 import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent,
-                  UriValueComponent, IntervalValueComponent, IntervalInputComponent, ListValueComponent, ListDisplayComponent],
+  declarations: [
+    TextValueAsStringComponent,
+    IntValueComponent,
+    DisplayEditComponent,
+    BooleanValueComponent,
+    DecimalValueComponent,
+    UriValueComponent,
+    IntervalValueComponent,
+    IntervalInputComponent,
+    ListValueComponent,
+    SublistValueComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -25,8 +34,16 @@ import {IntervalInputComponent} from './values/interval-value/interval-input/int
     MatCheckboxModule,
     MatMenuModule
   ],
-  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent,
-              UriValueComponent, IntervalValueComponent, ListValueComponent, ListDisplayComponent]
+  exports: [
+    TextValueAsStringComponent,
+    IntValueComponent,
+    DisplayEditComponent,
+    BooleanValueComponent,
+    DecimalValueComponent,
+    UriValueComponent,
+    IntervalValueComponent,
+    ListValueComponent,
+    SublistValueComponent]
 })
 export class ViewerModule {
 }
