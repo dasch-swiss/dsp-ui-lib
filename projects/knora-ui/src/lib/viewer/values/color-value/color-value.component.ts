@@ -41,8 +41,8 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
       return (control: AbstractControl): { [key: string]: any } | null => {
 
-        const invalid = (control.value !== null && (initValue.color === control.value.color || control.value.color.match(CustomRegex.COLOR_REGEX) == null))
-          && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+        const invalid = (control.value !== null && (initValue.color === control.value.color || control.value.color.match(CustomRegex.COLOR_REGEX) == null)
+          && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === '')));
 
         return invalid ? { valueNotChanged: { value: control.value } } : null;
       };
