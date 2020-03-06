@@ -98,4 +98,12 @@ describe('ColorPickerComponent', () => {
     expect(testHostComponent.form.controls.colorValue.value.color).toEqual('');
   });
 
+  it('should be readonly when the readonly input is set to true', () => {
+    testHostComponent.readonly = true;
+
+    testHostFixture.detectChanges();
+
+    expect(colorInputNativeElement.readOnly).toBe(true);
+  });
+
 });
