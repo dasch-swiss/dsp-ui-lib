@@ -14,7 +14,7 @@ import { ColorValueComponent } from './color-value.component';
 
 
 @Component({
-  selector: `kui-color-picker`, // change selector to avoid conflict with ColorPickerComponent selector
+  selector: `kui-color-picker`,
   template: ``,
   providers: [
     {
@@ -269,7 +269,7 @@ describe('ColorValueComponent', () => {
 
     });
 
-    it('should restore the initially displayed value', () => {
+    it('should restore the initial displayed value', () => {
 
       testHostComponent.mode = 'update';
 
