@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges, NgZone } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges, NgZone, ViewEncapsulation } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { take } from 'rxjs/operators';
 import { TimeInputComponent, DateTime } from './time-input/time-input.component';
@@ -14,7 +14,8 @@ import { CustomRegex } from '../custom-regex';
 @Component({
   selector: 'kui-time-value',
   templateUrl: './time-value.component.html',
-  styleUrls: ['./time-value.component.scss']
+  styleUrls: ['./time-value.component.scss'],
+  encapsulation : ViewEncapsulation.None
 })
 export class TimeValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 

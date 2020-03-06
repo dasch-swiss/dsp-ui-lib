@@ -1,3 +1,51 @@
-::ng-deep .parent-value-component .mat-form-field {
+.value-component,
+.crud-buttons {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.value-component {
+    width: 45%;
+}
+
+.crud-buttons {
+    width: 20%;
+}
+
+:host .parent-value-component ::ng-deep .mat-form-field {
     vertical-align: top;
+}
+
+:host ::ng-deep .child-value-component {
+    width: 30%;
+}
+
+:host ::ng-deep .value-component-comment{
+    margin-left: 2%;
+    width: 65%;
+}
+
+.edit,
+.save,
+.cancel {
+    cursor: pointer;
+    margin: 1% 1% 0% 0%;
+    border: none;
+}
+
+.edit {
+    color: #4287f5;
+}
+
+.save {
+    color: #000000;
+}
+
+.save:disabled {
+    color: #adadad;
+    cursor: default;
+}
+
+.cancel {
+    color: #f54242;
 }
