@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, Optional, Self, ElementRef, DoCheck, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, Input, Optional, Self, ElementRef, DoCheck, OnDestroy } from '@angular/core';
 import { ErrorStateMatcher, CanUpdateErrorStateCtor, mixinErrorState, MatFormFieldControl, CanUpdateErrorState } from '@angular/material';
 import { FormControl, FormGroupDirective, NgForm, NgControl, FormGroup, FormBuilder, Validators, ControlValueAccessor } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -45,8 +45,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
   selector: 'kui-time-input',
   templateUrl: './time-input.component.html',
   styleUrls: ['./time-input.component.scss'],
-  providers: [{provide: MatFormFieldControl, useExisting: TimeInputComponent}],
-  encapsulation : ViewEncapsulation.None
+  providers: [{provide: MatFormFieldControl, useExisting: TimeInputComponent}]
 })
 export class TimeInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<DateTime>, DoCheck, CanUpdateErrorState, OnDestroy{
 
