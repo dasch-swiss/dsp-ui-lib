@@ -3,15 +3,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ListValueComponent } from './list-value.component';
 import { SublistValueComponent } from './subList-value/sublist-value.component';
-import { ReadListValue, MockResource, UpdateValue, UpdateListValue, CreateListValue, ReadResource } from '@knora/api';
+import { ReadListValue, MockResource, ListNodeV2, UpdateValue, UpdateListValue, CreateListValue, ReadResource } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
-import { MatMenuModule} from '@angular/material/menu';
+import {MatMenuModule, MatMenuTrigger} from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {KnoraApiConnectionToken} from '../../../core';
+import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
-
+import {of} from 'rxjs';
 /**
  * Test host component to simulate parent component.
  */
@@ -65,7 +66,8 @@ describe('ListValueComponent', () => {
   beforeEach(async(() => {
     const valuesSpyObj = {
       v2: {
-        values: jasmine.createSpyObj('values', ['updateValue', 'getValue'])
+        values: jasmine.createSpyObj('values', ['updateValue', 'getValue', 'setValue']),
+        list: jasmine.createSpyObj('list', ['getNode', 'getList'])
       }
     };
     TestBed.configureTestingModule({
@@ -129,5 +131,92 @@ describe('ListValueComponent', () => {
       expect(valueInputNativeElement.readOnly).toEqual(true);
 
     });
+    it('should make a list value editable', () => {
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      valuesSpy.v2.list.getNode.and.callFake(
+        () => {
+          const res = new ListNodeV2();
+          res.id = 'http://rdfh.ch/lists/0001/treeList01';
+          res.isRootNode = false;
+          res.hasRootNode = 'http://rdfh.ch/lists/0001/treeList';
+          return of([res]);
+        }
+      );
+      valuesSpy.v2.list.getList.and.callFake(
+        () => {
+          const res = new ListNodeV2();
+          res.id = 'http://rdfh.ch/lists/0001/treeList';
+          res.label = 'Listenwurzel';
+          res.isRootNode = true;
+          return of([res]);
+        }
+      );
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+      expect(testHostComponent.inputValueComponent.form.value.listValue).toEqual('');
+      expect(valuesSpy.v2.list.getList).toHaveBeenCalledTimes(1);
+      expect(valuesSpy.v2.list.getNode).toHaveBeenCalledTimes(1);
+      expect(valuesSpy.v2.list.getNode).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList01');
+      // expect(valuesSpy.v2.list.getList).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList');
+    });
+    it('should validate an existing value with an added comment', () => {
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      valuesSpy.v2.list.getNode.and.callFake(
+        () => {
+          const res = new ListNodeV2();
+          res.id = 'http://rdfh.ch/lists/0001/treeList01';
+          res.isRootNode = false;
+          res.hasRootNode = 'http://rdfh.ch/lists/0001/treeList';
+          return of([res]);
+        }
+      );
+      valuesSpy.v2.list.getList.and.callFake(
+        () => {
+          const res = new ListNodeV2();
+          res.id = 'http://rdfh.ch/lists/0001/treeList';
+          res.label = 'Listenwurzel';
+          res.isRootNode = true;
+          return of([res]);
+        }
+      );
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      commentInputNativeElement.value = 'this is a comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateListValue).toBeTruthy();
+
+      expect((updatedValue as UpdateListValue).valueHasComment).toEqual('this is a comment');
+
+    });
+    // it('should get the selected list node', () => {
+    //   const testList = new ListNodeV2();
+    //   testList.id = 'http://rdfh.ch/lists/0001/treeList/01';
+    //   testList.label = 'tree list slash';
+    //
+    //   let menuTrigger: MatMenuTrigger;
+    //   testHostComponent.inputValueComponent.getSelectedNode(testList);
+    //
+    //   const expectedListNode = 'http://rdfh.ch/lists/0001/treeList/01';
+    //   testHostFixture.detectChanges();
+    //   expect(testHostComponent.inputValueComponent.displayValue.id).toEqual(expectedListNode);
+    //
+    // });
   });
 });
