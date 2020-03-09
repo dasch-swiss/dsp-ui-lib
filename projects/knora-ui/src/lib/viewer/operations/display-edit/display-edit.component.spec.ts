@@ -128,6 +128,18 @@ class TestDecimalValueComponent implements OnInit {
   }
 }
 
+@Component({
+  selector: `kui-geoname-value`,
+  template: ``
+})
+class TestGeonameValueComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+}
+
 
 /**
  * Test host component to simulate parent component.
@@ -187,7 +199,8 @@ describe('DisplayEditComponent', () => {
         TestIntervalValueComponent,
         TestBooleanValueComponent,
         TestUriValueComponent,
-        TestDecimalValueComponent
+        TestDecimalValueComponent,
+        TestGeonameValueComponent
       ],
       providers: [
         {

@@ -11,16 +11,17 @@ import { DecimalValueComponent } from './values/decimal-value/decimal-value.comp
 import { UriValueComponent } from './values/uri-value/uri-value.component';
 import {IntervalValueComponent} from './values/interval-value/interval-value.component';
 import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
+import { GeonameValueComponent } from './values/geoname-value/geoname-value.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent, GeonameValueComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
     MatCheckboxModule
   ],
-  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent]
+  exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, GeonameValueComponent]
 })
 export class ViewerModule {
 }
