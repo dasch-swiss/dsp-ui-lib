@@ -2,16 +2,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ListValueComponent } from './list-value.component';
+import { SublistValueComponent } from './subList-value/sublist-value.component';
 import { ReadListValue, MockResource, UpdateValue, UpdateListValue, CreateListValue, ReadResource } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule} from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {KnoraApiConnectionToken} from '../../../core';
-import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
-import {of} from 'rxjs';
 
 /**
  * Test host component to simulate parent component.
@@ -33,7 +32,6 @@ class TestHostDisplayValueComponent implements OnInit {
     MockResource.getTestthing().subscribe(res => {
       const inputVal: ReadListValue =
         res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasListItem', ReadListValue)[0];
-
       this.displayInputVal = inputVal;
 
       this.mode = 'read';
@@ -67,13 +65,13 @@ describe('ListValueComponent', () => {
   beforeEach(async(() => {
     const valuesSpyObj = {
       v2: {
-        values: jasmine.createSpyObj('values', ['updateValue', 'getValue']),
-        search: jasmine.createSpyObj('search', ['doSearchByLabel']),
+        values: jasmine.createSpyObj('values', ['updateValue', 'getValue'])
       }
     };
     TestBed.configureTestingModule({
       declarations: [
         ListValueComponent,
+        SublistValueComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent
       ],
@@ -116,6 +114,19 @@ describe('ListValueComponent', () => {
 
       commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
+
+    });
+    it('should display an existing value', () => {
+
+      expect(testHostComponent.inputValueComponent.displayValue.listNode).toMatch('http://rdfh.ch/lists/0001/treeList01');
+      expect(testHostComponent.inputValueComponent.displayValue.listNodeLabel).toMatch('Tree list node 01');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+
+      expect(testHostComponent.inputValueComponent.form.value.listValue).toEqual('Tree list node 01');
+      expect(valueInputNativeElement.readOnly).toEqual(true);
 
     });
   });
