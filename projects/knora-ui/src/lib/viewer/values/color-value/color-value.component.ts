@@ -1,9 +1,9 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, AbstractControl, Validators } from '@angular/forms';
 import { CreateColorValue, ReadColorValue, UpdateColorValue } from '@knora/api';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
-import { ColorPickerComponent, ColorPicker } from './color-picker/color-picker.component';
+import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { ErrorStateMatcher } from '@angular/material';
 import { CustomRegex } from '../custom-regex';
 
@@ -30,6 +30,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   commentFormControl: FormControl;
   form: FormGroup;
   valueChangesSubscription: Subscription;
+  // todo - to use: customValidators = [Validators.pattern(CustomRegex.COLOR_REGEX)];
   customValidators = [];
   matcher = new ColorErrorStateMatcher();
 
@@ -37,20 +38,9 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     super();
   }
 
-  standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn
-    = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
-      return (control: AbstractControl): { [key: string]: any } | null => {
-
-        const invalid = (control.value !== null && (initValue.color === control.value.color || control.value.color.match(CustomRegex.COLOR_REGEX) == null)
-          && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === '')));
-
-        return invalid ? { valueNotChanged: { value: control.value } } : null;
-      };
-    }
-
-  getInitValue(): ColorPicker | null {
+  getInitValue(): string | null {
     if (this.displayValue !== undefined) {
-      return new ColorPicker(this.displayValue.color);
+      return this.displayValue.color;
     } else {
       return null;
     }

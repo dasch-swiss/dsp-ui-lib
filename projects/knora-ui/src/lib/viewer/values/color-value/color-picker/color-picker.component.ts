@@ -1,22 +1,11 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self, OnInit } from '@angular/core';
+import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators } from '@angular/forms';
-import { ErrorStateMatcher, MatFormFieldControl, mixinErrorState, CanUpdateErrorState, CanUpdateErrorStateCtor } from '@angular/material';
+import { CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, MatFormFieldControl, mixinErrorState } from '@angular/material';
 import { Subject } from 'rxjs';
 import { CustomRegex } from '../../custom-regex';
 
-/**
- * Represents a DateTime consisting of a date and a time.
- */
-export class ColorPicker {
-
-  /**
-   * @param color string
-   */
-  constructor(public color: string) {
-  }
-}
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class ColorPickerErrorStateMatcher implements ErrorStateMatcher {
@@ -45,7 +34,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
     { provide: MatFormFieldControl, useExisting: ColorPickerComponent }
   ]
 })
-export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, ControlValueAccessor, MatFormFieldControl<ColorPicker>, DoCheck, CanUpdateErrorState, OnDestroy {
+export class ColorPickerComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<string>, DoCheck, CanUpdateErrorState, OnDestroy {
 
   static nextId = 0;
 
@@ -62,7 +51,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, 
   @HostBinding('attr.aria-describedby') describedBy = '';
 
   colorVal: string;
-  colorLabel: string;
   colorForm: FormGroup;
   colorValueFormControl: FormControl;
   stateChanges = new Subject<void>();
@@ -70,7 +58,7 @@ export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, 
   errorState = false;
   controlType = 'kui-color-picker';
   matcher = new ColorPickerErrorStateMatcher();
-  colorValidator = [Validators.pattern(CustomRegex.COLOR_REGEX)];
+  colorValidator = [Validators.pattern(CustomRegex.COLOR_REGEX)]; // should be used in color-value.component
 
   onChange = (_: any) => { };
   onTouched = () => { };
@@ -121,17 +109,17 @@ export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, 
   }
 
   @Input()
-  get value(): ColorPicker | null {
+  get value(): string | null {
     const colorValue = this.colorForm.value;
     if (colorValue !== null) {
-      return new ColorPicker(colorValue.color);
+      return colorValue;
     }
     return null;
   }
 
-  set value(colorValue: ColorPicker | null) {
+  set value(colorValue: string | null) {
     if (colorValue !== null) {
-      this.colorForm.setValue({ color: colorValue.color });
+      this.colorForm.setValue({ color: colorValue });
     } else {
       this.colorForm.setValue({ color: null });
     }
@@ -149,7 +137,8 @@ export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, 
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-    this.colorValueFormControl = new FormControl({ value: null, Validators: [Validators.required, this.colorValueFormControl] });
+    // define colorValueFormControl to manipulate the form value in _handleInput()
+    this.colorValueFormControl = new FormControl({ value: null, Validators: [Validators.required, this.colorValidator] });
     this.colorForm = fb.group({
       color: this.colorValueFormControl
     });
@@ -161,13 +150,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, 
 
     if (this.ngControl != null) {
       this.ngControl.valueAccessor = this;
-    }
-  }
-
-  ngOnInit() {
-    if (this.value !== null) {
-      this.colorVal = this.value.color;
-      this.colorLabel = this.value.color;
     }
   }
 
@@ -187,10 +169,9 @@ export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, 
     }
   }
 
-  writeValue(colorValue: ColorPicker | null): void {
+  writeValue(colorValue: string | null): void {
     this.value = colorValue;
-    this.colorVal = colorValue.color;
-    this.colorLabel = colorValue.color;
+    this.colorVal = colorValue;
   }
 
   registerOnChange(fn: any): void {
@@ -207,7 +188,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements OnInit, 
 
   _handleInput(updatedValue: string) {
     this.colorVal = updatedValue;
-    this.colorLabel = updatedValue;
     this.colorValueFormControl.setValue(updatedValue);
     this.onChange(this.value);
   }
