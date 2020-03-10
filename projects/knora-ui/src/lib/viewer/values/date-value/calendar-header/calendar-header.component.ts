@@ -1,0 +1,80 @@
+/** Custom header component containing a calendar format switcher */
+import {JDNConvertibleCalendarDateAdapter} from 'jdnconvertiblecalendardateadapter';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {JDNConvertibleCalendar} from 'jdnconvertiblecalendar';
+import {MatCalendar, MatDatepickerContent} from '@angular/material/datepicker';
+import {DateAdapter} from '@angular/material/core';
+import {Component, Host, Inject, OnInit} from '@angular/core';
+
+@Component({
+  selector: 'kui-calendar-header',
+  template: `
+    <mat-select placeholder="Calendar" class="kui-calendar-header" [formControl]="form.controls['calendar']">
+      <mat-option *ngFor="let cal of supportedCalendarFormats" [value]="cal">{{cal}}</mat-option>
+    </mat-select>
+    <mat-calendar-header></mat-calendar-header>
+  `,
+  styleUrls: ['./calendar-header.component.scss']
+})
+export class CalendarHeaderComponent<D> implements OnInit {
+  constructor(@Host() private _calendar: MatCalendar<JDNConvertibleCalendar>,
+              private _dateAdapter: DateAdapter<JDNConvertibleCalendar>,
+              private _datepickerContent: MatDatepickerContent<JDNConvertibleCalendar>,
+              @Inject(FormBuilder) private fb: FormBuilder) {
+  }
+
+  form: FormGroup;
+
+  // a list of supported calendars (Gregorian and Julian)
+  supportedCalendarFormats = ['Gregorian', 'Julian'];
+
+  // the currently active calendar
+  activeFormat;
+
+  ngOnInit() {
+
+    // get the currently active calendar format from the date adapter
+    if (this._dateAdapter instanceof JDNConvertibleCalendarDateAdapter) {
+      this.activeFormat = this._dateAdapter.activeCalendar;
+    } else {
+      console.log('date adapter is expected to be an instance of JDNConvertibleCalendarDateAdapter');
+    }
+
+    // build a form for the calendar format selection
+    this.form = this.fb.group({
+      calendar: [this.activeFormat, Validators.required]
+    });
+
+    // do the conversion when the user selects another calendar format
+    this.form.valueChanges.subscribe((data) => {
+      // pass the target calendar format to the conversion method
+      this.convertDate(data.calendar);
+    });
+
+  }
+
+  /**
+   * Converts the date into the target format.
+   *
+   * @param calendar the target calendar format.
+   */
+  convertDate(calendar: 'Gregorian' | 'Julian') {
+
+    if (this._dateAdapter instanceof JDNConvertibleCalendarDateAdapter) {
+
+      // convert the date into the target calendar format
+      const convertedDate = this._dateAdapter.convertCalendar(this._calendar.activeDate, calendar);
+
+      // set the new date
+      this._calendar.activeDate = convertedDate;
+
+      // select the new date in the datepicker UI
+      this._datepickerContent.datepicker.select(convertedDate);
+
+      // update view after calendar format conversion
+      this._calendar.updateTodaysDate();
+    } else {
+      console.log('date adapter is expected to be an instance of JDNConvertibleCalendarDateAdapter');
+    }
+  }
+}

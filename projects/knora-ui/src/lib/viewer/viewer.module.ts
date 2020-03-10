@@ -16,17 +16,23 @@ import {MatDatepickerModule} from '@angular/material';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
 import {JDNDatepickerDirective} from './values/date-value/jdn-datepicker-directive/jdndatepicker.directive';
 import {DateInputComponent} from './values/date-value/date-input/date-input.component';
+import { CalendarHeaderComponent } from './values/date-value/calendar-header/calendar-header.component';
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent, DateValueComponent, JDNDatepickerDirective, DateInputComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent, DateValueComponent, JDNDatepickerDirective, DateInputComponent, CalendarHeaderComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
     MatCheckboxModule,
+    MatOptionModule,
+    MatSelectModule,
     MatDatepickerModule,
     MatJDNConvertibleCalendarDateAdapterModule
   ],
+  entryComponents: [CalendarHeaderComponent],
   exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, DateValueComponent, JDNDatepickerDirective]
 })
 export class ViewerModule {

@@ -7,9 +7,10 @@ import {Subject} from 'rxjs';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {JDNConvertibleCalendarModule} from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
-import {CalendarDate} from 'jdnconvertiblecalendar';
+import {CalendarDate, JulianCalendarDate} from 'jdnconvertiblecalendar';
 import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
 import CalendarPeriod = JDNConvertibleCalendarModule.CalendarPeriod;
+import {CalendarHeaderComponent} from '../calendar-header/calendar-header.component';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class DateInputErrorStateMatcher implements ErrorStateMatcher {
@@ -48,6 +49,7 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
   controlType = 'kui-date-input';
   matcher = new DateInputErrorStateMatcher();
 
+  calendarHeaderComponent = CalendarHeaderComponent;
   period: boolean;
   startCalendarName = 'Gregorian';
   endCalendarName?;
@@ -140,12 +142,19 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
         // single date
         // TODO: set correct calendar
         const calendarDate = new CalendarDate(date.year, date.month, date.day);
+        let startDate;
 
         // determine calendar
-
+        if (date.calendar === 'GREGORIAN') {
+          startDate = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
+        } else if (date.calendar === 'JULIAN') {
+          startDate = new JulianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
+        } else {
+          throw new Error('Unsupported calendar: ' + date.calendar);
+        }
 
         this.form.setValue({
-          dateStart: new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate)),
+          dateStart: startDate,
           dateEnd: null
         });
         this.period = false;
