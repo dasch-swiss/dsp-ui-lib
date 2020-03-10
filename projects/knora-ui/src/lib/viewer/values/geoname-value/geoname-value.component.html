@@ -2,6 +2,8 @@
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'geonameValue'" class="value" placeholder="Geoname value" type="text" [readonly]="mode === 'read'">
     </mat-form-field>
+    <button (click)="openInfo()">Info</button>
+    <br>
     <mat-form-field class="large-field">
         <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
     </mat-form-field>

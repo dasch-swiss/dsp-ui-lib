@@ -103,7 +103,7 @@ describe('GeonameValueComponent', () => {
 
     it('should display an existing value', () => {
 
-      expect(testHostComponent.inputValueComponent.displayValue.geoname).toEqual("2661604");
+      expect(testHostComponent.inputValueComponent.displayValue.geoname).toEqual('2661604');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -112,6 +112,196 @@ describe('GeonameValueComponent', () => {
       expect(valueInputNativeElement.value).toEqual('2661604');
 
       expect(valueInputNativeElement.readOnly).toEqual(true);
+
+    });
+
+    it('should make an existing value editable', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('2661604');
+
+      valueInputNativeElement.value = '5401678';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateGeonameValue).toBeTruthy();
+
+      expect((updatedValue as UpdateGeonameValue).geoname).toEqual('5401678');
+
+    });
+
+    it('should not return an invalid update value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('2661604');
+
+      valueInputNativeElement.value = '';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBeFalsy();
+
+    });
+
+    it('should restore the initially displayed value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('2661604');
+
+      valueInputNativeElement.value = '5401678';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(valueInputNativeElement.value).toEqual('2661604');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+    });
+
+    it('should set a new display value', () => {
+
+      const newStr = new ReadGeonameValue();
+
+      newStr.geoname = '5401678';
+      newStr.id = 'updatedId';
+
+      testHostComponent.displayInputVal = newStr;
+
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('5401678');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+    });
+
+    it('should unsubscribe when destroyed', () => {
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeFalsy();
+
+      testHostComponent.inputValueComponent.ngOnDestroy();
+
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeTruthy();
+    });
+  });
+
+  describe('create a geoname value', () => {
+
+    let testHostComponent: TestHostCreateValueComponent;
+    let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+    let valueComponentDe: DebugElement;
+    let valueInputDebugElement: DebugElement;
+    let valueInputNativeElement;
+    let commentInputDebugElement: DebugElement;
+    let commentInputNativeElement;
+
+    beforeEach(() => {
+      testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
+
+      const hostCompDe = testHostFixture.debugElement;
+
+      valueComponentDe = hostCompDe.query(By.directive(GeonameValueComponent));
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+
+      expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+      expect(valueInputNativeElement.value).toEqual('');
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+      expect(commentInputNativeElement.value).toEqual('');
+      expect(commentInputNativeElement.readOnly).toEqual(false);
+    });
+
+    it('should create a value', () => {
+      valueInputNativeElement.value = '5401678';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const newValue = testHostComponent.inputValueComponent.getNewValue();
+
+      expect(newValue instanceof CreateGeonameValue).toBeTruthy();
+
+      expect((newValue as CreateGeonameValue).geoname).toEqual('5401678');
+    });
+
+    it('should reset form after cancellation', () => {
+      valueInputNativeElement.value = '5401678';
+
+      valueInputNativeElement.dispatchEvent(new Event('input'));
+
+      commentInputNativeElement.value = 'created comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(valueInputNativeElement.value).toEqual('');
+
+      expect(commentInputNativeElement.value).toEqual('');
 
     });
   });

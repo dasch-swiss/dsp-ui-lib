@@ -103,4 +103,11 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
     return updatedGeonameValue;
   }
 
+  openInfo() {
+    if (this.displayValue.geoname){
+      let url = "https://www.geonames.org/" + this.displayValue.geoname;
+      window.open(url, "_blank");
+    }
+  }
+
 }
