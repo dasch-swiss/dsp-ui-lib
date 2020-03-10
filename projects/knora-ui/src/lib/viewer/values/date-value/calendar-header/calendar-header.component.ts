@@ -29,20 +29,20 @@ export class CalendarHeaderComponent<D> implements OnInit {
   supportedCalendarFormats = ['Gregorian', 'Julian'];
 
   // the currently active calendar
-  activeFormat;
+  activeCal;
 
   ngOnInit() {
 
     // get the currently active calendar format from the date adapter
     if (this._dateAdapter instanceof JDNConvertibleCalendarDateAdapter) {
-      this.activeFormat = this._dateAdapter.activeCalendar;
+      this.activeCal = this._dateAdapter.activeCalendar;
     } else {
       console.log('date adapter is expected to be an instance of JDNConvertibleCalendarDateAdapter');
     }
 
     // build a form for the calendar format selection
     this.form = this.fb.group({
-      calendar: [this.activeFormat, Validators.required]
+      calendar: [this.activeCal, Validators.required]
     });
 
     // do the conversion when the user selects another calendar format
