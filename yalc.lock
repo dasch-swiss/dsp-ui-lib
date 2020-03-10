@@ -6,7 +6,7 @@
       "file": true
     },
     "jdnconvertiblecalendardateadapter": {
-      "signature": "73c2e9dc367482a2aebc91e7215366b3",
+      "signature": "bf9fbb4f18b1687cfade543bd6dc4eeb",
       "file": true,
       "replaced": "^0.0.10"
     }

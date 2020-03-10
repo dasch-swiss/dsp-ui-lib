@@ -49,6 +49,8 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
   matcher = new DateInputErrorStateMatcher();
 
   period: boolean;
+  startCalendarName = 'Gregorian';
+  endCalendarName?;
 
   onChange = (_: any) => {
   };
@@ -138,11 +140,17 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
         // single date
         // TODO: set correct calendar
         const calendarDate = new CalendarDate(date.year, date.month, date.day);
+
+        // determine calendar
+
+
         this.form.setValue({
           dateStart: new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate)),
           dateEnd: null
         });
         this.period = false;
+        this.startCalendarName = this.form.controls.dateStart.value.calendarName;
+        this.endCalendarName = undefined;
       } else {
         // period
         const period = (date as KnoraPeriod);
@@ -155,11 +163,15 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
         });
 
         this.period = true;
+        this.startCalendarName = this.form.controls.dateStart.value.calendarName;
+        this.endCalendarName = this.form.controls.dateEnd.value.calendarName;
       }
     } else {
       this.form.setValue({dateStart: null, dateEnd: null});
 
       this.period = false;
+      this.startCalendarName = 'Gregorian';
+      this.endCalendarName = undefined;
     }
     this.stateChanges.next();
   }
