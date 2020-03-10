@@ -50,7 +50,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
 
   @HostBinding('attr.aria-describedby') describedBy = '';
 
-  colorVal: string;
   colorForm: FormGroup;
   colorValueFormControl: FormControl;
   stateChanges = new Subject<void>();
@@ -58,7 +57,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
   errorState = false;
   controlType = 'kui-color-picker';
   matcher = new ColorPickerErrorStateMatcher();
-  colorValidator = [Validators.pattern(CustomRegex.COLOR_REGEX)]; // should be used in color-value.component
 
   onChange = (_: any) => { };
   onTouched = () => { };
@@ -112,7 +110,7 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
   get value(): string | null {
     const colorValue = this.colorForm.value;
     if (colorValue !== null) {
-      return colorValue;
+      return colorValue.color;
     }
     return null;
   }
@@ -138,9 +136,9 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
     // define colorValueFormControl to manipulate the form value in _handleInput()
-    this.colorValueFormControl = new FormControl({ value: null, Validators: [Validators.required, this.colorValidator] });
+    // this.colorValueFormControl = new FormControl({ value: null, Validators: [Validators.required, this.colorValidator] });
     this.colorForm = fb.group({
-      color: this.colorValueFormControl
+      color: [null, Validators.required]
     });
 
     fm.monitor(elRef.nativeElement, true).subscribe(origin => {
@@ -171,7 +169,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
 
   writeValue(colorValue: string | null): void {
     this.value = colorValue;
-    this.colorVal = colorValue;
   }
 
   registerOnChange(fn: any): void {
@@ -186,9 +183,7 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
     this.disabled = isDisabled;
   }
 
-  _handleInput(updatedValue: string) {
-    this.colorVal = updatedValue;
-    this.colorValueFormControl.setValue(updatedValue);
+  _handleInput() {
     this.onChange(this.value);
   }
 

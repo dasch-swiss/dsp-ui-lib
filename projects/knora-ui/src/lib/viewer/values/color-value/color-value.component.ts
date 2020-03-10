@@ -30,8 +30,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   commentFormControl: FormControl;
   form: FormGroup;
   valueChangesSubscription: Subscription;
-  // todo - to use: customValidators = [Validators.pattern(CustomRegex.COLOR_REGEX)];
-  customValidators = [];
+  customValidators = [Validators.pattern(CustomRegex.COLOR_REGEX)];
   matcher = new ColorErrorStateMatcher();
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
@@ -88,6 +87,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newColorValue.valueHasComment = this.commentFormControl.value;
     }
+
 
     return newColorValue;
   }

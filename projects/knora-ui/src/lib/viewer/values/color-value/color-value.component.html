@@ -6,6 +6,9 @@
         <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
             Please change the value.
         </mat-error>
+        <mat-error *ngIf="valueFormControl.hasError('pattern')">
+            Please enter a hex color value.
+        </mat-error>
     </mat-form-field>
     <br>
     <mat-form-field class="large-field">

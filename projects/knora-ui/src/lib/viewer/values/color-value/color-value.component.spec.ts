@@ -190,7 +190,7 @@ describe('ColorValueComponent', () => {
       const newColor = '#b1b1b1';
 
       testHostComponent.colorValueComponent.colorPickerComponent.value = newColor;
-      testHostComponent.colorValueComponent.colorPickerComponent._handleInput(newColor);
+      testHostComponent.colorValueComponent.colorPickerComponent._handleInput();
 
       testHostFixture.detectChanges();
 
@@ -199,8 +199,6 @@ describe('ColorValueComponent', () => {
       expect(testHostComponent.colorValueComponent.form.valid).toBeTruthy();
 
       const updatedValue = testHostComponent.colorValueComponent.getUpdatedValue();
-
-      console.log('testHostComponent.colorValueComponent', testHostComponent.colorValueComponent);
 
       expect(updatedValue instanceof UpdateColorValue).toBeTruthy();
 
@@ -254,7 +252,7 @@ describe('ColorValueComponent', () => {
       expect(testHostComponent.colorValueComponent.form.valid).toBeFalsy();
 
       testHostComponent.colorValueComponent.colorPickerComponent.value = null;
-      testHostComponent.colorValueComponent.colorPickerComponent._handleInput(newColor);
+      testHostComponent.colorValueComponent.colorPickerComponent._handleInput();
 
       testHostFixture.detectChanges();
 
@@ -284,7 +282,7 @@ describe('ColorValueComponent', () => {
       const newColor = '#g7g7g7';
 
       testHostComponent.colorValueComponent.colorPickerComponent.value = newColor;
-      testHostComponent.colorValueComponent.colorPickerComponent._handleInput(newColor);
+      testHostComponent.colorValueComponent.colorPickerComponent._handleInput();
 
       testHostFixture.detectChanges();
 
@@ -357,7 +355,7 @@ describe('ColorValueComponent', () => {
       const newColor = '#m5m5m5';
 
       testHostComponent.colorValueComponent.colorPickerComponent.value = newColor;
-      testHostComponent.colorValueComponent.colorPickerComponent._handleInput(newColor);
+      testHostComponent.colorValueComponent.colorPickerComponent._handleInput();
 
       testHostFixture.detectChanges();
 
@@ -378,7 +376,7 @@ describe('ColorValueComponent', () => {
       const newColor = '#f8f8f8';
 
       testHostComponent.colorValueComponent.colorPickerComponent.value = newColor;
-      testHostComponent.colorValueComponent.colorPickerComponent._handleInput(newColor);
+      testHostComponent.colorValueComponent.colorPickerComponent._handleInput();
 
       testHostFixture.detectChanges();
 

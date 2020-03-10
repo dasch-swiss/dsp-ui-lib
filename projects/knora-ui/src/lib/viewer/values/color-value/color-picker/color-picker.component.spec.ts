@@ -84,7 +84,7 @@ describe('ColorPickerComponent', () => {
     testHostFixture.detectChanges();
 
     expect(testHostComponent.form.controls.colorValue).toBeTruthy();
-    expect(testHostComponent.form.controls.colorValue.value.color).toEqual('#f1f1f1');
+    expect(testHostComponent.form.controls.colorValue.value).toEqual('#f1f1f1');
 
   });
 
@@ -95,7 +95,7 @@ describe('ColorPickerComponent', () => {
 
     testHostFixture.detectChanges();
 
-    expect(testHostComponent.form.controls.colorValue.value.color).toEqual('');
+    expect(testHostComponent.form.controls.colorValue.value).toEqual('');
   });
 
   it('should be readonly when the readonly input is set to true', () => {

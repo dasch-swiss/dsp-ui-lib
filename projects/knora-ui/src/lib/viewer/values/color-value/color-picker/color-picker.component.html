@@ -1,10 +1,10 @@
 <div [formGroup]="colorForm" class="color-picker-container">
     <mat-form-field appearance="outline" [floatLabel]="'always'">
-        <mat-label>{{ colorVal }}</mat-label>
+        <mat-label>{{ value }}</mat-label>
         <!-- check the ngx-color-picker doc to know more about the options -->
-        <input matInput class="color-picker-input color" [formControlName]="'color'" [placeholder]="colorVal"
-            [(colorPicker)]="colorVal" [style.background]="colorVal" [style.color]="colorVal"
-            (colorPickerChange)="_handleInput(colorVal)" [cpOutputFormat]="'hex'" [cpFallbackColor]="'#ff0000'"
+        <input matInput class="color-picker-input color" [formControlName]="'color'" [placeholder]="value"
+            [(colorPicker)]="value" [style.background]="value" [style.color]="value"
+            (colorPickerChange)="_handleInput()" [cpOutputFormat]="'hex'" [cpFallbackColor]="'#ff0000'"
             [cpDisabled]="readonly" [errorStateMatcher]="matcher" readonly />
         <mat-error *ngIf="colorForm.controls.color.hasError('required')">
             Color is <strong>required</strong>
