@@ -50,7 +50,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
       if (this.mode === 'read') {
         this.valueFormControl.setValue(this.getInitValue());
         this.commentFormControl.setValue(this.getInitComment());
-
+        this.selectedNode = undefined;
         this.valueFormControl.clearValidators();
       } else {
         this.valueFormControl.setValue('');
@@ -86,7 +86,6 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
   ngOnInit() {
     this.valueFormControl = new FormControl(null);
     this.commentFormControl = new FormControl(null);
-
     this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
       data => {
         this.valueFormControl.updateValueAndValidity();
