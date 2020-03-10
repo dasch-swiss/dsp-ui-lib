@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ColorPicker, ColorPickerComponent } from './color-picker.component';
+import { ColorPickerComponent } from './color-picker.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -33,7 +33,7 @@ class TestHostComponent implements OnInit {
   ngOnInit(): void {
 
     this.form = this.fb.group({
-      colorValue: [new ColorPicker('#901453')]
+      colorValue: '#901453'
     });
 
   }

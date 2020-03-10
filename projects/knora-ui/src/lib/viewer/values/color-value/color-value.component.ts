@@ -83,7 +83,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
     const newColorValue = new CreateColorValue();
 
-    newColorValue.color = this.valueFormControl.value.color;
+    newColorValue.color = this.valueFormControl.value;
 
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newColorValue.valueHasComment = this.commentFormControl.value;
@@ -101,7 +101,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
     updatedColorValue.id = this.displayValue.id;
 
-    updatedColorValue.color = this.valueFormControl.value.color;
+    updatedColorValue.color = this.valueFormControl.value;
 
     // add the submitted comment to updatedIntValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
