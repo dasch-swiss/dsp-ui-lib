@@ -110,7 +110,9 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
     const newListValue = new CreateListValue();
 
+
     newListValue.listNode = this.valueFormControl.value;
+
 
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newListValue.valueHasComment = this.commentFormControl.value;

@@ -1,16 +1,13 @@
-
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ListValueComponent } from './list-value.component';
 import { SublistValueComponent } from './subList-value/sublist-value.component';
-import { ReadListValue, MockResource, ListNodeV2, UpdateValue, UpdateListValue, CreateListValue, ReadResource } from '@knora/api';
+import { ReadListValue, MockResource, ListNodeV2, UpdateListValue} from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
 import {MatMenuModule, MatMenuTrigger} from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {KnoraApiConnectionToken} from '../../../core';
-import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
 import {of} from 'rxjs';
 /**
@@ -154,15 +151,23 @@ describe('ListValueComponent', () => {
       testHostComponent.mode = 'update';
       testHostFixture.detectChanges();
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
       expect(valuesSpy.v2.list.getList).toHaveBeenCalledTimes(1);
+
       expect(valuesSpy.v2.list.getNode).toHaveBeenCalledTimes(1);
+
       expect(valuesSpy.v2.list.getNode).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList01');
+
       const openListButtonDe = valueComponentDe.query(By.css('button'));
+
       expect(openListButtonDe.nativeElement.textContent.trim()).toBe('Select list value' );
+
       expect( testHostComponent.inputValueComponent.selectedNode).toBe(undefined);
+
       const openListButtonEle: HTMLElement = openListButtonDe.nativeElement;
       openListButtonEle.click();
       testHostFixture.detectChanges();
+
       testHostComponent.inputValueComponent.menuTrigger.openMenu();
     });
     it('should validate an existing value with an added comment', () => {

@@ -1,4 +1,4 @@
-<span *ngIf="(mode === 'update'|| mode === 'create' )&& listRootNode !== undefined">
+<span *ngIf="mode !== 'read' && listRootNode !== undefined">
     <button class="md-button" mat-stroked-button [matMenuTriggerFor]="mainMenu" type="button" placeholder="List value">
         <span *ngIf="!selectedNode">Select list value</span>
         <span *ngIf="selectedNode">{{selectedNode.label}}</span>
