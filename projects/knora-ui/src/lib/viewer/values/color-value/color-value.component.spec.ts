@@ -266,7 +266,7 @@ describe('ColorValueComponent', () => {
 
     });
 
-    it('should restore the initial displayed value', () => {
+    it('should restore the initially displayed value', () => {
 
       testHostComponent.mode = 'update';
 
@@ -352,7 +352,7 @@ describe('ColorValueComponent', () => {
       expect(testHostComponent.colorValueComponent.colorPickerComponent.value).toEqual(null);
 
       // simulate user input
-      const newColor = '#m5m5m5';
+      const newColor = '#f5f5f5';
 
       testHostComponent.colorValueComponent.colorPickerComponent.value = newColor;
       testHostComponent.colorValueComponent.colorPickerComponent._handleInput();
@@ -367,7 +367,7 @@ describe('ColorValueComponent', () => {
 
       expect(newValue instanceof CreateColorValue).toBeTruthy();
 
-      expect((newValue as CreateColorValue).color).toEqual('#m5m5m5');
+      expect((newValue as CreateColorValue).color).toEqual('#f5f5f5');
 
     });
 
