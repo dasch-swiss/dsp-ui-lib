@@ -26,7 +26,7 @@
 
 <span [formGroup]="form">
   <mat-form-field class="large-field listValue-field" *ngIf="mode === 'read'">
-        <input [formControlName]="'listValue'" type="text" placeholder="List value" matInput [readonly]="mode === 'read'">
+        <input [formControlName]="'listValue'" type="text" placeholder="List value" matInput [readonly]="true">
   </mat-form-field>
   <mat-form-field class="large-field comment-field">
         <input matInput [formControlName]="'comment'" class="comment listComment" placeholder="Comment" type="text"

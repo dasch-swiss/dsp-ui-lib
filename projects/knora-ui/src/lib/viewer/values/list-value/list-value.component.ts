@@ -3,8 +3,7 @@ import {BaseValueComponent} from '../base-value.component';
 import {CreateListValue, ReadListValue, UpdateListValue, ListNodeV2, KnoraApiConnection, ApiResponseError} from '@knora/api';
 import { MatMenuTrigger } from '@angular/material/menu';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {CustomRegex} from '../custom-regex';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core';
 
 
