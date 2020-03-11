@@ -15,7 +15,7 @@ import { By } from '@angular/platform-browser';
   template: `
     <div [formGroup]="form">
       <mat-form-field>
-        <kui-color-picker #colorInput [formControlName]="'colorValue'" [readonly]="mode === 'read'"></kui-color-picker>
+        <kui-color-picker #colorInput [formControlName]="'colorValue'" [readonly]="readonly"></kui-color-picker>
       </mat-form-field>
     </div>`
 })
@@ -98,12 +98,13 @@ describe('ColorPickerComponent', () => {
     expect(testHostComponent.form.controls.colorValue.value).toEqual('');
   });
 
-  it('should be readonly when the readonly input is set to true', () => {
+  fit('should be disabled when the readonly input is set to true', () => {
     testHostComponent.readonly = true;
 
     testHostFixture.detectChanges();
 
     expect(colorInputNativeElement.readOnly).toBe(true);
+    expect(colorInputNativeElement.getAttribute('ng-reflect-cp-disabled')).toEqual('true');
   });
 
 });
