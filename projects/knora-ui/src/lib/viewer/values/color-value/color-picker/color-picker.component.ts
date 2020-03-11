@@ -51,7 +51,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
   @HostBinding('attr.aria-describedby') describedBy = '';
 
   colorForm: FormGroup;
-  colorValueFormControl: FormControl;
   stateChanges = new Subject<void>();
   focused = false;
   errorState = false;
@@ -135,8 +134,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-    // define colorValueFormControl to manipulate the form value in _handleInput()
-    // this.colorValueFormControl = new FormControl({ value: null, Validators: [Validators.required, this.colorValidator] });
     this.colorForm = fb.group({
       color: [null, Validators.required]
     });
