@@ -70,6 +70,7 @@ describe('ColorPickerComponent', () => {
     colorInputNativeElement = colorInputDebugElement.nativeElement;
 
     expect(colorInputNativeElement.readOnly).toBe(true);
+    expect(colorInputNativeElement.getAttribute('ng-reflect-cp-disabled')).toEqual('false');
   });
 
   it('should initialize the color correctly', () => {
@@ -98,7 +99,7 @@ describe('ColorPickerComponent', () => {
     expect(testHostComponent.form.controls.colorValue.value).toEqual('');
   });
 
-  fit('should be disabled when the readonly input is set to true', () => {
+  it('should be disabled when the readonly input is set to true', () => {
     testHostComponent.readonly = true;
 
     testHostFixture.detectChanges();
