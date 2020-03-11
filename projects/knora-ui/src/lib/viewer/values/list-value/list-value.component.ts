@@ -50,12 +50,10 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
       if (this.mode === 'read') {
         this.valueFormControl.setValue(this.getInitValue());
         this.commentFormControl.setValue(this.getInitComment());
-        this.selectedNode = undefined;
         this.valueFormControl.clearValidators();
       } else {
         this.valueFormControl.setValue('');
         const rootNodeIri = this.displayValue.listNode;
-
         this.getRootNode(rootNodeIri);
         this.valueFormControl.clearValidators();
       }
@@ -131,9 +129,11 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
     const updatedListValue = new UpdateListValue();
 
     updatedListValue.id = this.displayValue.id;
-
-    updatedListValue.listNode = this.valueFormControl.value;
-
+    if (this.selectedNode) {
+      updatedListValue.listNode = this.selectedNode.id;
+    } else {
+      updatedListValue.listNode = this.displayValue.listNode;
+    }
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedListValue.valueHasComment = this.commentFormControl.value;
     }
