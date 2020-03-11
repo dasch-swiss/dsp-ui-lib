@@ -51,7 +51,6 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
         this.commentFormControl.setValue(this.getInitComment());
         this.valueFormControl.clearValidators();
       } else {
-        this.valueFormControl.setValue('');
         const rootNodeIri = this.displayValue.listNode;
         this.getRootNode(rootNodeIri);
         this.valueFormControl.clearValidators();

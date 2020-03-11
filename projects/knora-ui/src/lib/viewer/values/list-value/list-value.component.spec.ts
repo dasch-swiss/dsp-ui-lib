@@ -131,7 +131,7 @@ describe('ListValueComponent', () => {
       expect(valueInputNativeElement.readOnly).toEqual(true);
 
     });
-    it('should make a list value editable', () => {
+    it('should make list value editable as button', () => {
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
       valuesSpy.v2.list.getNode.and.callFake(
         () => {
@@ -152,14 +152,18 @@ describe('ListValueComponent', () => {
         }
       );
       testHostComponent.mode = 'update';
-
       testHostFixture.detectChanges();
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-      expect(testHostComponent.inputValueComponent.form.value.listValue).toEqual('');
       expect(valuesSpy.v2.list.getList).toHaveBeenCalledTimes(1);
       expect(valuesSpy.v2.list.getNode).toHaveBeenCalledTimes(1);
       expect(valuesSpy.v2.list.getNode).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList01');
-      // expect(valuesSpy.v2.list.getList).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList');
+      const openListButtonDe = valueComponentDe.query(By.css('button'));
+      expect(openListButtonDe.nativeElement.textContent.trim()).toBe('Select list value' );
+      expect( testHostComponent.inputValueComponent.selectedNode).toBe(undefined);
+      const openListButtonEle: HTMLElement = openListButtonDe.nativeElement;
+      openListButtonEle.click();
+      testHostFixture.detectChanges();
+      testHostComponent.inputValueComponent.menuTrigger.openMenu();
     });
     it('should validate an existing value with an added comment', () => {
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
@@ -188,8 +192,6 @@ describe('ListValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
       commentInputNativeElement.value = 'this is a comment';
 
       commentInputNativeElement.dispatchEvent(new Event('input'));
@@ -205,18 +207,5 @@ describe('ListValueComponent', () => {
       expect((updatedValue as UpdateListValue).valueHasComment).toEqual('this is a comment');
 
     });
-    // it('should get the selected list node', () => {
-    //   const testList = new ListNodeV2();
-    //   testList.id = 'http://rdfh.ch/lists/0001/treeList/01';
-    //   testList.label = 'tree list slash';
-    //
-    //   let menuTrigger: MatMenuTrigger;
-    //   testHostComponent.inputValueComponent.getSelectedNode(testList);
-    //
-    //   const expectedListNode = 'http://rdfh.ch/lists/0001/treeList/01';
-    //   testHostFixture.detectChanges();
-    //   expect(testHostComponent.inputValueComponent.displayValue.id).toEqual(expectedListNode);
-    //
-    // });
   });
 });
