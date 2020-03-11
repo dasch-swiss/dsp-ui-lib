@@ -11,9 +11,10 @@ import { DecimalValueComponent } from './values/decimal-value/decimal-value.comp
 import { UriValueComponent } from './values/uri-value/uri-value.component';
 import {IntervalValueComponent} from './values/interval-value/interval-value.component';
 import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
+import { TextValueAsHtmlComponent } from './values/text-value/text-value-as-html/text-value-as-html.component';
 
 @NgModule({
-  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent],
+  declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent, TextValueAsHtmlComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
