@@ -117,31 +117,15 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   get value(): string | null {
     const userInput = this.form.value;
     if (userInput.date !== null && userInput.time !== null) {
-      let splitTime = userInput.time.split(":");
-      const updateDate = new Date(userInput.date.calendarStart.year,
-                                 (userInput.date.calendarStart.month - 1),
-                                 userInput.date.calendarStart.day,
-                                 splitTime[0],
-                                 splitTime[1]
-      );
-
-      // return converted Date obj as a string without the milliseconds
-      return updateDate.toISOString().split('.')[0]+"Z";
+      return this.userInputToTimestamp(userInput);
     }
     return null;
   }
 
-  set value(datetime: string | null) {
-    if (datetime !== null) {
-      const calendarDate = new CalendarDate(Number(this.datePipe.transform(datetime, "y")),
-                                            Number(this.datePipe.transform(datetime, "M")),
-                                            Number(this.datePipe.transform(datetime, "d")));
-
-      const gcd = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
-
-      const timeVal = this.datePipe.transform(datetime, "HH:mm");
-
-      this.form.setValue({date: gcd, time: timeVal});
+  set value(timestamp: string | null) {
+    if (timestamp !== null) {
+      const dateTime = this.convertTimestampToDateTime(timestamp);
+      this.form.setValue({date: dateTime[0], time: dateTime[1]});
     } else {
       this.form.setValue({date: null, time: null});
     }
@@ -214,6 +198,34 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
   _handleInput(): void {
     this.onChange(this.value);
+  }
+
+  // return converted Date obj as a string without the milliseconds
+  userInputToTimestamp(userInput: any): string {
+    let splitTime = userInput.time.split(":");
+    const updateDate = new Date(userInput.date.calendarStart.year,
+                                (userInput.date.calendarStart.month - 1),
+                                userInput.date.calendarStart.day,
+                                splitTime[0],
+                                splitTime[1]
+    );
+
+    return updateDate.toISOString().split('.')[0]+"Z";
+  }
+
+  // converts and returns a unix timestamp string as an array consisting of a GregorianCalendarDate and a string
+  convertTimestampToDateTime(timestamp: string): { gcd: GregorianCalendarDate, time: string }[] {
+    const calendarDate = new CalendarDate(Number(this.datePipe.transform(timestamp, "y")),
+                                          Number(this.datePipe.transform(timestamp, "M")),
+                                          Number(this.datePipe.transform(timestamp, "d")));
+
+    const gcd = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
+
+    let timeVal = this.datePipe.transform(timestamp, "HH:mm");
+
+    let dateTime = new Array<any>(gcd, timeVal);
+
+    return dateTime;
   }
 
 }
