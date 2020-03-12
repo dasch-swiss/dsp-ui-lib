@@ -25,8 +25,16 @@ class MatInputBase {
               public _parentFormGroup: FormGroupDirective,
               public ngControl: NgControl) {}
 }
-const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
-  mixinErrorState(MatInputBase);
+const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase = mixinErrorState(MatInputBase);
+
+export class DateTime {
+  /**
+   * @param date DateTime's date.
+   * @param time DateTime's time.
+   */
+  constructor(public date: GregorianCalendarDate, public time: string) {
+  }
+}
 
 @Component({
   selector: 'kui-time-input',
@@ -52,8 +60,6 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   @Input() timeLabel = 'time';
 
   dateFormControl: FormControl;
-
-  timeValidator = [Validators.pattern(CustomRegex.TIME_REGEX)];
   timeFormControl: FormControl;
 
   datePipe = new DatePipe('en-US');
@@ -115,8 +121,8 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
   @Input()
   get value(): string | null {
-    const userInput = this.form.value;
-    if (userInput.date !== null && userInput.time !== null) {
+    const userInput = new DateTime(this.form.value.date, this.form.value.time);
+    if (userInput.date !== null && userInput.time !== null && userInput.time !== '') {
       return this.userInputToTimestamp(userInput);
     }
     return null;
@@ -125,7 +131,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   set value(timestamp: string | null) {
     if (timestamp !== null) {
       const dateTime = this.convertTimestampToDateTime(timestamp);
-      this.form.setValue({date: dateTime[0], time: dateTime[1]});
+      this.form.setValue({date: dateTime.date, time: dateTime.time});
     } else {
       this.form.setValue({date: null, time: null});
     }
@@ -144,10 +150,9 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-    this.dateFormControl = new FormControl(null);
-    this.dateFormControl.setValidators([Validators.required]);
+    this.dateFormControl = new FormControl({value: null, Validators: [Validators.required]});
     
-    this.timeFormControl = new FormControl({value: null, Validators: [Validators.required, this.timeValidator]});
+    this.timeFormControl = new FormControl({value: null, Validators: [Validators.required, Validators.pattern(CustomRegex.TIME_REGEX)]});
 
     this.form = fb.group({
       date: this.dateFormControl,
@@ -202,6 +207,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
   // return converted Date obj as a string without the milliseconds
   userInputToTimestamp(userInput: any): string {
+    console.log('userInput: ', userInput);
     let splitTime = userInput.time.split(":");
     const updateDate = new Date(userInput.date.calendarStart.year,
                                 (userInput.date.calendarStart.month - 1),
@@ -214,16 +220,16 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   }
 
   // converts and returns a unix timestamp string as an array consisting of a GregorianCalendarDate and a string
-  convertTimestampToDateTime(timestamp: string): { gcd: GregorianCalendarDate, time: string }[] {
+  convertTimestampToDateTime(timestamp: string): DateTime {
     const calendarDate = new CalendarDate(Number(this.datePipe.transform(timestamp, "y")),
                                           Number(this.datePipe.transform(timestamp, "M")),
                                           Number(this.datePipe.transform(timestamp, "d")));
 
-    const gcd = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
+    const date = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
 
-    let timeVal = this.datePipe.transform(timestamp, "HH:mm");
+    let time = this.datePipe.transform(timestamp, "HH:mm");
 
-    let dateTime = new Array<any>(gcd, timeVal);
+    let dateTime = new DateTime(date, time);
 
     return dateTime;
   }

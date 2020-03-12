@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimeInputComponent } from './time-input.component';
+import { TimeInputComponent, DateTime } from './time-input.component';
 import { KnoraDate } from '@knora/api';
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -99,6 +99,29 @@ describe('TimeInputComponent', () => {
 
     expect(testHostComponent.form.controls.time.value).toBeTruthy();
     expect(timeInputNativeElement.value).toEqual('17:00');
+
+  });
+
+  it('should return a timestamp from userInputToTimestamp()', () => {
+    const calendarDate = new CalendarDate(1993, 10, 10);
+    const gcd = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
+    const userInput = new DateTime(gcd, "12:00");
+
+    const timestamp = testHostComponent.timeInputComponent.userInputToTimestamp(userInput);
+
+    expect(timestamp).toEqual('1993-10-10T11:00:00Z');
+  });
+
+  it('should return a DateTime from convertTimestampToDateTime()', () => {
+    const timestamp = '1993-10-10T11:00:00Z';
+
+    const dateTime = testHostComponent.timeInputComponent.convertTimestampToDateTime(timestamp);
+
+    expect(dateTime.date.toCalendarPeriod().periodStart.year).toEqual(1993);
+    expect(dateTime.date.toCalendarPeriod().periodStart.month).toEqual(10);
+    expect(dateTime.date.toCalendarPeriod().periodStart.day).toEqual(10);
+
+    expect (dateTime.time).toEqual('12:00');
 
   });
 });

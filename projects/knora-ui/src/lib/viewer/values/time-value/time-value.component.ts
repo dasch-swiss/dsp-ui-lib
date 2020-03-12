@@ -36,19 +36,6 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
     super();
   }
 
-  standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn
-    = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-
-      const invalid = initValue === control.value &&
-                      control.value.split(':').pop().split(';')[0].match(CustomRegex.TIME_REGEX) == null &&
-                      (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
-
-      return invalid ? {valueNotChanged: {value: control.value}} : null;
-    };
-  };
-
-
   getInitValue(): string | null {
     if (this.displayValue !== undefined) {
       return this.displayValue.time;
