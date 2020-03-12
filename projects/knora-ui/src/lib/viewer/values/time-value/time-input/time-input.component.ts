@@ -83,7 +83,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
     this._required = coerceBooleanProperty(req);
     this.stateChanges.next();
   }
-  
+
   private _required = false;
 
   @Input()
@@ -121,6 +121,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
   @Input()
   get value(): string | null {
+    console.log(this.form)
     const userInput = new DateTime(this.form.value.date, this.form.value.time);
     if (userInput.date !== null && userInput.time !== null && userInput.time !== '' && userInput.time.match(CustomRegex.TIME_REGEX) !== null) {
       return this.userInputToTimestamp(userInput);
@@ -146,13 +147,13 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
               private elRef: ElementRef<HTMLElement>,
               @Optional() _parentForm: NgForm,
               @Optional() _parentFormGroup: FormGroupDirective,
-              _defaultErrorStateMatcher: ErrorStateMatcher) { 
+              _defaultErrorStateMatcher: ErrorStateMatcher) {
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-    this.dateFormControl = new FormControl({value: null, Validators: [Validators.required]});
-    
-    this.timeFormControl = new FormControl({value: null, Validators: [Validators.required, Validators.pattern(CustomRegex.TIME_REGEX)]});
+    this.dateFormControl = new FormControl(null, [Validators.required]);
+
+    this.timeFormControl = new FormControl(null,  [Validators.required, Validators.pattern(CustomRegex.TIME_REGEX)]);
 
     this.form = fb.group({
       date: this.dateFormControl,
