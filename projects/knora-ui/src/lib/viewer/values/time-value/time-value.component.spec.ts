@@ -331,7 +331,7 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual(null);
 
-      testHostComponent.inputValueComponent.timeInputComponent.value = "2019-01-01T11:00:00.000Z";
+      testHostComponent.inputValueComponent.timeInputComponent.value = '2019-01-01T11:00:00.000Z';
       testHostComponent.inputValueComponent.timeInputComponent._handleInput();
 
       testHostFixture.detectChanges();
@@ -344,7 +344,7 @@ describe('TimeValueComponent', () => {
 
       expect(newValue instanceof CreateTimeValue).toBeTruthy();
 
-      expect((newValue as CreateTimeValue).time).toEqual("2019-01-01T11:00:00.000Z");
+      expect((newValue as CreateTimeValue).time).toEqual('2019-01-01T11:00:00.000Z');
     });
 
     it('should reset form after cancellation', () => {

@@ -122,7 +122,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   @Input()
   get value(): string | null {
     const userInput = new DateTime(this.form.value.date, this.form.value.time);
-    if (userInput.date !== null && userInput.time !== null && userInput.time !== '') {
+    if (userInput.date !== null && userInput.time !== null && userInput.time !== '' && userInput.time.match(CustomRegex.TIME_REGEX) !== null) {
       return this.userInputToTimestamp(userInput);
     }
     return null;
@@ -207,7 +207,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
   // return converted Date obj as a string without the milliseconds
   userInputToTimestamp(userInput: DateTime): string {
-    let splitTime = userInput.time.split(":");
+    const splitTime = userInput.time.split(':');
     const updateDate = new Date(userInput.date.toCalendarPeriod().periodStart.year,
                                 (userInput.date.toCalendarPeriod().periodStart.month - 1),
                                 userInput.date.toCalendarPeriod().periodStart.day,
@@ -215,20 +215,20 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
                                 Number(splitTime[1])
     );
 
-    return updateDate.toISOString().split('.')[0]+"Z";
+    return updateDate.toISOString().split('.')[0]+'Z';
   }
 
   // converts and returns a unix timestamp string as an array consisting of a GregorianCalendarDate and a string
   convertTimestampToDateTime(timestamp: string): DateTime {
-    const calendarDate = new CalendarDate(Number(this.datePipe.transform(timestamp, "y")),
-                                          Number(this.datePipe.transform(timestamp, "M")),
-                                          Number(this.datePipe.transform(timestamp, "d")));
+    const calendarDate = new CalendarDate(Number(this.datePipe.transform(timestamp, 'y')),
+                                          Number(this.datePipe.transform(timestamp, 'M')),
+                                          Number(this.datePipe.transform(timestamp, 'd')));
 
     const date = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
 
-    let time = this.datePipe.transform(timestamp, "HH:mm");
+    const time = this.datePipe.transform(timestamp, 'HH:mm');
 
-    let dateTime = new DateTime(date, time);
+    const dateTime = new DateTime(date, time);
 
     return dateTime;
   }
