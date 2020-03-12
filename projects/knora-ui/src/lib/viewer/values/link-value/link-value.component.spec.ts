@@ -1,7 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LinkValueComponent } from './link-value.component';
-import { ReadLinkValue, MockResource, UpdateValue, UpdateLinkValue, CreateLinkValue, ReadResource } from '@knora/api';
+import {
+  ReadLinkValue,
+  MockResource,
+  UpdateValue,
+  UpdateLinkValue,
+  CreateLinkValue,
+  ReadResource,
+  UpdateBooleanValue,
+  ReadBooleanValue
+} from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
@@ -128,7 +137,6 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
       expect(testHostComponent.displayInputVal.linkedResource.label).toEqual('Sierra');
-      expect(testHostComponent.inputValueComponent.form.value.linkValue).toEqual('Sierra');
       expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
       expect(testHostComponent.displayInputVal.linkedResource.type).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
       expect(valueInputNativeElement.readOnly).toEqual(true);
@@ -200,11 +208,12 @@ describe('LinkValueComponent', () => {
 
       const res = new ReadResource();
       res.id = 'http://rdfh.ch/0001/a-blue-thing';
-      testHostComponent.inputValueComponent.setLinkValue(res);
+      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.linkedResourceIRI).toEqual('http://rdfh.ch/0001/a-blue-thing');
+      expect(testHostComponent.inputValueComponent.form.value.linkValue.id).toEqual('http://rdfh.ch/0001/a-blue-thing');
     });
+
   });
 });
