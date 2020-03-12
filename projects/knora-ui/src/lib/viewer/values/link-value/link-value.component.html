@@ -2,9 +2,9 @@
   <mat-form-field class="example-full-width linkValue-field">
         <input [formControlName]="'linkValue'" type="text" placeholder="Link value" aria-label="resource" matInput [matAutocomplete]="auto" [readonly]="mode === 'read'">
 
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of options" [value]="option" (click) = "onOptionChange(option)">
-              {{option?.label}}
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayResource">
+          <mat-option *ngFor="let res of resources" [value]="res">
+              {{res?.label}}
           </mat-option>
         </mat-autocomplete>
     </mat-form-field>

@@ -129,7 +129,7 @@ describe('LinkValueComponent', () => {
 
       expect(testHostComponent.displayInputVal.linkedResource.label).toEqual('Sierra');
       expect(testHostComponent.inputValueComponent.form.value.linkValue).toEqual('Sierra');
-      expect(testHostComponent.inputValueComponent.options.length).toEqual(1);
+      expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
       expect(testHostComponent.displayInputVal.linkedResource.type).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
       expect(valueInputNativeElement.readOnly).toEqual(true);
 
@@ -146,7 +146,7 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(testHostComponent.inputValueComponent.form.value.linkValue).toEqual('');
-      expect(testHostComponent.inputValueComponent.options.length).toEqual(1);
+      expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
 
     });
     it('should search for resources by their label', () => {
@@ -164,9 +164,9 @@ describe('LinkValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.options.length).toEqual(1);
+      expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
 
-      expect(testHostComponent.inputValueComponent.options[0].id).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
+      expect(testHostComponent.inputValueComponent.resources[0].id).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
     });
 
     it('should validate an existing value with an added comment', () => {
