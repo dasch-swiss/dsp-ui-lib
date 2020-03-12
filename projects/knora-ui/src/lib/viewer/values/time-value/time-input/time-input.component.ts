@@ -206,14 +206,13 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   }
 
   // return converted Date obj as a string without the milliseconds
-  userInputToTimestamp(userInput: any): string {
-    console.log('userInput: ', userInput);
+  userInputToTimestamp(userInput: DateTime): string {
     let splitTime = userInput.time.split(":");
-    const updateDate = new Date(userInput.date.calendarStart.year,
-                                (userInput.date.calendarStart.month - 1),
-                                userInput.date.calendarStart.day,
-                                splitTime[0],
-                                splitTime[1]
+    const updateDate = new Date(userInput.date.toCalendarPeriod().periodStart.year,
+                                (userInput.date.toCalendarPeriod().periodStart.month - 1),
+                                userInput.date.toCalendarPeriod().periodStart.day,
+                                Number(splitTime[0]),
+                                Number(splitTime[1])
     );
 
     return updateDate.toISOString().split('.')[0]+"Z";
