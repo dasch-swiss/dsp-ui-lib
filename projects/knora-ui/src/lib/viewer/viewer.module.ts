@@ -16,7 +16,6 @@ import { TimeInputComponent } from './values/time-value/time-input/time-input.co
 import {MatDatepickerModule} from '@angular/material';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
 import { JDNDatepickerDirective } from './values/time-value/jdn-datepicker-directive/jdndatepicker.directive';
-import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, IntervalInputComponent, TimeValueComponent, TimeInputComponent, JDNDatepickerDirective],
@@ -26,8 +25,7 @@ import {MatIconModule} from '@angular/material/icon';
     MatInputModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatJDNConvertibleCalendarDateAdapterModule,
-    MatIconModule
+    MatJDNConvertibleCalendarDateAdapterModule
   ],
   exports: [TextValueAsStringComponent, IntValueComponent, DisplayEditComponent, BooleanValueComponent, DecimalValueComponent, UriValueComponent, IntervalValueComponent, TimeValueComponent]
 })

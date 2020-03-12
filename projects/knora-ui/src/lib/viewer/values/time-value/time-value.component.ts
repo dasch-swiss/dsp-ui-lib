@@ -1,13 +1,11 @@
 import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges, NgZone } from '@angular/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { take } from 'rxjs/operators';
 import { TimeInputComponent } from './time-input/time-input.component';
 import { ReadTimeValue, CreateTimeValue, UpdateTimeValue } from '@knora/api';
 import { BaseValueComponent } from '..';
-import { FormControl, FormGroup, FormBuilder, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { IntervalErrorStateMatcher } from '../interval-value/interval-value.component';
-import { CustomRegex } from '../custom-regex';
 
 @Component({
   selector: 'kui-time-value',
@@ -106,11 +104,5 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
     }
 
     return updatedTimeValue;
-  }
-
-  triggerResize() {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this._ngZone.onStable.pipe(take(1))
-        .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 }

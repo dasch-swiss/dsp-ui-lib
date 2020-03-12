@@ -1,10 +1,10 @@
 <div [formGroup]="form" class="time-input-container">
-    <mat-form-field class="child-input-component">
+    <mat-form-field>
         <input matInput class="time-input-element date" [matDatepicker]="picker" [formControlName]="'date'" (dateChange)="_handleInput()" readonly>
         <mat-datepicker-toggle *ngIf="!readonly" matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <mat-form-field class="child-input-component">
+    <mat-form-field>
         <input matInput class="time-input-element time" [formControlName]="'time'" type="time" aria-label="time" [readonly]="readonly" (input)="_handleInput()" [placeholder]="timeLabel" [errorStateMatcher]="matcher">
         <mat-error *ngIf="form.controls.time.hasError('required')">
             A time is <strong>required</strong>
