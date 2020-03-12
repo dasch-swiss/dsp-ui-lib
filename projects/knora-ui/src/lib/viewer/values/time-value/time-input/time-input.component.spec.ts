@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DateTime, TimeInputComponent } from './time-input.component';
+import { TimeInputComponent } from './time-input.component';
 import { KnoraDate } from '@knora/api';
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -36,7 +36,7 @@ class TestHostComponent implements OnInit {
   ngOnInit(): void {
 
     this.form = this.fb.group({
-      time: [new DateTime(new KnoraDate("Gregorian", "AD", 1993, 10, 10), "11:45")]
+      time: '2019-07-01T12:00:00Z'
     });
 
   }
@@ -82,28 +82,23 @@ describe('TimeInputComponent', () => {
     expect(timeInputNativeElement.readOnly).toBeFalsy;
   });
 
-  it('should initialize the DateTime correctly', () => {
+  it('should initialize the date correctly', () => {
 
-    const knoraDate = testHostComponent.timeInputComponent.value.date as unknown as GregorianCalendarDate;
-    expect(knoraDate.toCalendarPeriod().periodStart.year).toEqual(1993);
-    expect(knoraDate.toCalendarPeriod().periodStart.month).toEqual(10);
-    expect(knoraDate.toCalendarPeriod().periodStart.day).toEqual(10);
+    expect(testHostComponent.timeInputComponent.value).toEqual('2019-07-01T12:00:00Z');
 
-    expect(timeInputNativeElement.value).toEqual('11:45');
-
+    //expect(dateInputNativeElement.value).toEqual('01-07-2019');
+    
+    expect(timeInputNativeElement.value).toEqual('14:00');
   });
 
   it('should propagate changes made by the user', () => {
     
-    testHostComponent.form.setValue({time: new DateTime(new KnoraDate("Gregorian", "AD", 1970, 1, 2), "11:53")});
+    testHostComponent.form.setValue({time: '2020-08-11T15:00:00Z'});
 
-    const knoraDate = testHostComponent.timeInputComponent.value.date as unknown as GregorianCalendarDate;
-    expect(knoraDate.toCalendarPeriod().periodStart.year).toEqual(1970);
-    expect(knoraDate.toCalendarPeriod().periodStart.month).toEqual(1);
-    expect(knoraDate.toCalendarPeriod().periodStart.day).toEqual(2);
+    expect(testHostComponent.timeInputComponent.value).toEqual('2020-08-11T15:00:00Z');
 
     expect(testHostComponent.form.controls.time.value).toBeTruthy();
-    expect(testHostComponent.form.controls.time.value.time).toEqual('11:53');
+    expect(timeInputNativeElement.value).toEqual('17:00');
 
   });
 });

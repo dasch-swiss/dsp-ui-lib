@@ -4,25 +4,12 @@ import { FormControl, FormGroupDirective, NgForm, NgControl, FormGroup, FormBuil
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { KnoraDate } from '@knora/api';
 import {JDNConvertibleCalendarModule} from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
 import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
 import CalendarPeriod = JDNConvertibleCalendarModule.CalendarPeriod;
 import {CalendarDate} from 'jdnconvertiblecalendar';
 import { CustomRegex } from '../../custom-regex';
-
-/**
- * Represents a DateTime consisting of a date and a time.
- */
-export class DateTime {
-
-  /**
-   * @param date DateTime's date.
-   * @param time DateTime's time.
-   */
-  constructor(public date: KnoraDate, public time: string) {
-  }
-}
+import { DatePipe } from '@angular/common';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class TimeInputErrorStateMatcher implements ErrorStateMatcher {
@@ -47,7 +34,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
   styleUrls: ['./time-input.component.scss'],
   providers: [{provide: MatFormFieldControl, useExisting: TimeInputComponent}]
 })
-export class TimeInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<DateTime>, DoCheck, CanUpdateErrorState, OnDestroy{
+export class TimeInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<string>, DoCheck, CanUpdateErrorState, OnDestroy{
 
   static nextId = 0;
 
@@ -68,6 +55,8 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
   timeValidator = [Validators.pattern(CustomRegex.TIME_REGEX)];
   timeFormControl: FormControl;
+
+  datePipe = new DatePipe('en-US');
 
   get empty() {
     const userInput = this.form.value;
@@ -125,23 +114,34 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   }
 
   @Input()
-  get value(): DateTime | null {
+  get value(): string | null {
     const userInput = this.form.value;
     if (userInput.date !== null && userInput.time !== null) {
-      return new DateTime(userInput.date, userInput.time);
+      let splitTime = userInput.time.split(":");
+      const updateDate = new Date(userInput.date.calendarStart.year,
+                                 (userInput.date.calendarStart.month - 1),
+                                 userInput.date.calendarStart.day,
+                                 splitTime[0],
+                                 splitTime[1]
+      );
+
+      // return converted Date obj as a string without the milliseconds
+      return updateDate.toISOString().split('.')[0]+"Z";
     }
     return null;
   }
 
-  set value(datetime: DateTime | null) {
+  set value(datetime: string | null) {
     if (datetime !== null) {
-      if(datetime.date instanceof KnoraDate){
-        const calendarDate = new CalendarDate(datetime.date.year, datetime.date.month, datetime.date.day);
-        const gcd = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
-        this.form.setValue({date: gcd, time: datetime.time});
-      } else {
-        this.form.setValue({date: null, time: null});
-      }
+      const calendarDate = new CalendarDate(Number(this.datePipe.transform(datetime, "y")),
+                                            Number(this.datePipe.transform(datetime, "M")),
+                                            Number(this.datePipe.transform(datetime, "d")));
+
+      const gcd = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
+
+      const timeVal = this.datePipe.transform(datetime, "HH:mm");
+
+      this.form.setValue({date: gcd, time: timeVal});
     } else {
       this.form.setValue({date: null, time: null});
     }
@@ -196,7 +196,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
     }
   }
 
-  writeValue(datetime: DateTime | null): void {
+  writeValue(datetime: string | null): void {
     this.value = datetime;
   }
 

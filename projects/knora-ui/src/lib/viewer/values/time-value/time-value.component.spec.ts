@@ -6,7 +6,6 @@ import {CreateTimeValue, MockResource, ReadTimeValue, UpdateTimeValue, KnoraDate
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
-import {DateTime} from './time-input/time-input.component';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
 import {By} from '@angular/platform-browser';
@@ -43,7 +42,7 @@ class TestTimeInputComponent implements ControlValueAccessor, MatFormFieldContro
   };
   stateChanges = new Subject<void>();
 
-  writeValue(dateTime: DateTime | null): void {
+  writeValue(dateTime: string | null): void {
     this.value = dateTime;
   }
 
@@ -152,7 +151,7 @@ describe('TimeValueComponent', () => {
 
     it('should display an existing value', () => {
 
-      expect(testHostComponent.inputValueComponent.displayValue.time).toEqual("2019-08-30T10:45:20.173572Z");
+      expect(testHostComponent.inputValueComponent.displayValue.time).toEqual('2019-08-30T10:45:20.173572Z');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -160,13 +159,7 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(true);      
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(8);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
-      
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-08-30T10:45:20.173572Z');
 
     });
 
@@ -181,21 +174,9 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-08-30T10:45:20.173572Z');
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(8);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
-
-      // simulate user input
-      const newDateTime = {
-        date: new KnoraDate("Gregorian", "AD", 2019, 7, 4),
-        time: "22:00"
-      };
-
-      testHostComponent.inputValueComponent.timeInputComponent.value = newDateTime;
+      testHostComponent.inputValueComponent.timeInputComponent.value = '2019-06-30T00:00:00Z';
 
       testHostComponent.inputValueComponent.timeInputComponent._handleInput();
 
@@ -209,7 +190,7 @@ describe('TimeValueComponent', () => {
 
       expect(updatedValue instanceof UpdateTimeValue).toBeTruthy();
 
-      expect((updatedValue as UpdateTimeValue).time).toEqual("2019-07-04T20:00:00.000Z");
+      expect((updatedValue as UpdateTimeValue).time).toEqual('2019-06-30T00:00:00Z');
 
     });
 
@@ -221,13 +202,7 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(8);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-08-30T10:45:20.173572Z');
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(false);
 
@@ -261,7 +236,7 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      testHostComponent.inputValueComponent.timeInputComponent.value.date = null;
+      testHostComponent.inputValueComponent.timeInputComponent.value = '';
       testHostComponent.inputValueComponent.timeInputComponent._handleInput();
 
       testHostFixture.detectChanges();
@@ -286,42 +261,18 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-08-30T10:45:20.173572Z');
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(8);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
-
-      // simulate user input
-      const newDateTime = {
-        date: new KnoraDate("Gregorian", "AD", 2019, 7, 4),
-        time: "22:00"
-      };
-
-      testHostComponent.inputValueComponent.timeInputComponent.value = newDateTime;
+      testHostComponent.inputValueComponent.timeInputComponent.value = '2019-06-30T00:00:00Z';
       testHostComponent.inputValueComponent.timeInputComponent._handleInput();
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(7);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(4);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("22:00");
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-06-30T00:00:00Z');
 
       testHostComponent.inputValueComponent.resetFormControl();
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(8);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(30);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("12:45");
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-08-30T10:45:20.173572Z');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -338,13 +289,7 @@ describe('TimeValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.year).toEqual(2019);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.month).toEqual(7);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.date.day).toEqual(4);
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value.time).toEqual("02:00");
+      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-07-04T00:00:00.000Z');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -386,13 +331,7 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual(null);
 
-      // simulate user input
-      const newDateTime = {
-        date: new KnoraDate("Gregorian", "AD", 2019, 1, 1),
-        time: "12:00"
-      };
-
-      testHostComponent.inputValueComponent.timeInputComponent.value = newDateTime;
+      testHostComponent.inputValueComponent.timeInputComponent.value = "2019-01-01T11:00:00.000Z";
       testHostComponent.inputValueComponent.timeInputComponent._handleInput();
 
       testHostFixture.detectChanges();
@@ -409,13 +348,8 @@ describe('TimeValueComponent', () => {
     });
 
     it('should reset form after cancellation', () => {
-      // simulate user input
-      const newDateTime = {
-        date: new KnoraDate("Gregorian", "AD", 2019, 1, 1),
-        time: "12:00"
-      };
 
-      testHostComponent.inputValueComponent.timeInputComponent.value = newDateTime;
+      testHostComponent.inputValueComponent.timeInputComponent.value = '2019-06-30T00:00:00Z';
       testHostComponent.inputValueComponent.timeInputComponent._handleInput();
 
       testHostFixture.detectChanges();
