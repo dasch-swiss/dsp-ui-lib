@@ -4,12 +4,10 @@ import { LinkValueComponent } from './link-value.component';
 import {
   ReadLinkValue,
   MockResource,
-  UpdateValue,
   UpdateLinkValue,
   CreateLinkValue,
   ReadResource,
-  UpdateBooleanValue,
-  ReadBooleanValue
+  IResourceClassAndPropertyDefinitions
 } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -17,7 +15,6 @@ import { MatInputModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {KnoraApiConnectionToken} from '../../../core';
-import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
 import {of} from 'rxjs';
 
@@ -137,7 +134,6 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
       expect(testHostComponent.displayInputVal.linkedResource.label).toEqual('Sierra');
-      expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
       expect(testHostComponent.displayInputVal.linkedResource.type).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
       expect(valueInputNativeElement.readOnly).toEqual(true);
 
@@ -154,7 +150,6 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(testHostComponent.inputValueComponent.form.value.linkValue).toEqual('');
-      expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
 
     });
     it('should search for resources by their label', () => {
@@ -171,7 +166,7 @@ describe('LinkValueComponent', () => {
       testHostComponent.inputValueComponent.searchByLabel('thing');
 
       testHostFixture.detectChanges();
-
+      expect(valuesSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('thing', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'});
       expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
 
       expect(testHostComponent.inputValueComponent.resources[0].id).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
@@ -215,5 +210,75 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.form.value.linkValue.id).toEqual('http://rdfh.ch/0001/a-blue-thing');
     });
 
+  });
+
+  describe('create a new link value', () => {
+    let testHostComponent: TestHostCreateValueComponent;
+    let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+
+    let valueComponentDe: DebugElement;
+    let commentInputDebugElement: DebugElement;
+    let commentInputNativeElement;
+
+    beforeEach(() => {
+      testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
+
+      const hostCompDe = testHostFixture.debugElement;
+
+      valueComponentDe = hostCompDe.query(By.directive(LinkValueComponent));
+      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+    });
+    it('should create a value', () => {
+      // expect(testHostComponent.inputValueComponent.valueFormControl).toEqual(null);
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+      // simulate user input
+      const res = new ReadResource();
+      res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
+      res.label = 'hidden thing';
+      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const newValue = testHostComponent.inputValueComponent.getNewValue();
+
+      expect(newValue instanceof CreateLinkValue).toBeTruthy();
+
+      expect((newValue as CreateLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
+
+    });
+    it('should reset form after cancellation', () => {
+      // simulate user input
+      const res = new ReadResource();
+      res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
+      res.label = 'hidden thing';
+      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+
+      testHostFixture.detectChanges();
+
+      commentInputNativeElement.value = 'created comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual('');
+
+      expect(commentInputNativeElement.value).toEqual('');
+
+    });
   });
 });

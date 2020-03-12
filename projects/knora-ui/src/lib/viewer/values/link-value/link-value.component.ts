@@ -1,8 +1,8 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
-import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiConnection} from '@knora/api';
+import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiConnection, IResourceClassAndPropertyDefinitions} from '@knora/api';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core';
 @Component({
   selector: 'kui-link-value',
@@ -11,6 +11,7 @@ import {KnoraApiConnectionToken} from '../../../core';
 })
 export class LinkValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayValue?: ReadLinkValue;
+  // @Input() propertyDesc?: IResourceClassAndPropertyDefinitions;
   resources: ReadResource[];
   restrictToResourceClass: string;
   valueFormControl: FormControl;
@@ -46,7 +47,8 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    * @param label to be searched
    */
   searchByLabel(searchTerm: string): ReadResource[] {
-    this.restrictToResourceClass = this.displayValue.linkedResource.type;
+    // todo: change the statement below once the function is added to knora-api.js.lib to get link property defintion
+    this.restrictToResourceClass = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
     // at least 3 characters are required
     if (searchTerm.length >= 3) {
 
@@ -65,11 +67,25 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   // show the label of the linked resource
   getInitValue(): ReadResource | null {
     if (this.displayValue !== undefined) {
+
+      // console.log(this.displayValue);
+      // console.log(this.propertyDesc.properties[this.displayValue.property]);
       return this.displayValue.linkedResource;
     } else {
       return null;
     }
   }
+
+  standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+
+      const invalid = (!(control.value instanceof ReadResource) || initValue.id === control.value.id)
+        && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+
+      return invalid ? {valueNotChanged: {value: control.value}} : null;
+    };
+  };
+
   // override the resetFormControl() from the base component to deal with initial link value label
   resetFormControl(): void {
     super.resetFormControl();
@@ -81,7 +97,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
         const initialComment = this.getInitComment();
         this.valueFormControl.setValue(initialValue);
         this.commentFormControl.setValue(initialComment);
-
         this.valueFormControl.clearValidators();
       } else {
         this.valueFormControl.setValue('');
@@ -105,12 +120,10 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
         this.valueFormControl.updateValueAndValidity();
       }
     );
-
     this.form = this.fb.group({
       linkValue: this.valueFormControl,
       comment: this.commentFormControl
     });
-    this.resources = [this.displayValue.linkedResource];
     this.resetFormControl();
   }
 
@@ -149,6 +162,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     if (this.valueFormControl.value !== null && this.valueFormControl.value !== '') {
       updatedLinkValue.linkedResourceIri = this.valueFormControl.value.id;
     } else {
+      // if user just updated comment value keep the old link value
       updatedLinkValue.linkedResourceIri = this.displayValue.linkedResourceIri;
     }
     // add the submitted comment to updatedLinkValue only if user has added a comment
