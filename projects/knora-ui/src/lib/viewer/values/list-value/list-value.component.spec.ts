@@ -194,4 +194,46 @@ describe('ListValueComponent', () => {
 
     });
   });
+  describe('create a list value', () => {
+    let testHostComponent: TestHostCreateValueComponent;
+    let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+    let valueComponentDe: DebugElement;
+    let valueInputNativeElement;
+    let commentInputDebugElement: DebugElement;
+    let commentInputNativeElement;
+
+    it('should create a value', () => {
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      valuesSpy.v2.list.getList.and.callFake(
+        () => {
+          const res = new ListNodeV2();
+          res.id = 'http://rdfh.ch/lists/0001/treeList';
+          res.label = 'Listenwurzel';
+          res.isRootNode = true;
+          return of([res]);
+        }
+      );
+
+      testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostComponent.mode = 'create';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+      const hostCompDe = testHostFixture.debugElement;
+
+      valueComponentDe = hostCompDe.query(By.directive(ListValueComponent));
+      valueInputNativeElement = valueComponentDe.query(By.css('input')).nativeElement;
+
+      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+
+    });
+    // it('should create a value', () => {
+    //
+    // });
+  });
 });
