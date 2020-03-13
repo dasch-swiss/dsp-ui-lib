@@ -6,7 +6,7 @@ import {
   MockResource,
   ReadIntValue,
   ReadResource,
-  ReadValue,
+  ReadValue, ResourcePropertyDefinition,
   UpdateDecimalValue,
   UpdateIntValue,
   UpdateValue,
@@ -38,6 +38,7 @@ class TestListValueComponent {
   @Input() mode;
 
   @Input() displayValue;
+  @Input() propertyDef;
 }
 @Component({
   selector: `kui-uri-value`,

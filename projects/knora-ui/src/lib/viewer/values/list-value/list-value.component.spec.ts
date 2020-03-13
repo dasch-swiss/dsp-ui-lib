@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListValueComponent } from './list-value.component';
 import { SublistValueComponent } from './subList-value/sublist-value.component';
-import { ReadListValue, MockResource, ListNodeV2, UpdateListValue} from '@knora/api';
+import {ReadListValue, MockResource, ListNodeV2, UpdateListValue, CreateListValue, ResourcePropertyDefinition} from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
-import {MatMenuModule, MatMenuTrigger} from '@angular/material/menu';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {KnoraApiConnectionToken} from '../../../core';
 import { By } from '@angular/platform-browser';
@@ -15,26 +15,26 @@ import {of} from 'rxjs';
  */
 @Component({
   template: `
-    <kui-list-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-list-value>`
+    <kui-list-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [propertyDef]="propertyDef"></kui-list-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
   @ViewChild('inputVal', {static: false}) inputValueComponent: ListValueComponent;
 
   displayInputVal: ReadListValue;
+  propertyDef: ResourcePropertyDefinition;
 
   mode: 'read' | 'update' | 'create' | 'search';
-
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(res => {
       const inputVal: ReadListValue =
         res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasListItem', ReadListValue)[0];
       this.displayInputVal = inputVal;
-
       this.mode = 'read';
     });
-
+    this.propertyDef = new ResourcePropertyDefinition();
+    this.propertyDef.guiAttributes.push('hlist=<http://rdfh.ch/lists/0001/treeList>');
   }
 }
 
@@ -43,18 +43,19 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-list-value #inputVal [mode]="mode"></kui-list-value>`
+    <kui-list-value #inputVal [mode]="mode" [propertyDef]="propertyDef"></kui-list-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
   @ViewChild('inputVal', {static: false}) inputValueComponent: ListValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
+  propertyDef: ResourcePropertyDefinition;
 
   ngOnInit() {
-
     this.mode = 'create';
-
+    this.propertyDef = new ResourcePropertyDefinition();
+    this.propertyDef.guiAttributes.push('hlist=<http://rdfh.ch/lists/0001/treeList>');
   }
 }
 
@@ -64,7 +65,7 @@ describe('ListValueComponent', () => {
     const valuesSpyObj = {
       v2: {
         values: jasmine.createSpyObj('values', ['updateValue', 'getValue', 'setValue']),
-        list: jasmine.createSpyObj('list', ['getNode', 'getList'])
+        list: jasmine.createSpyObj('list', ['getList'])
       }
     };
     TestBed.configureTestingModule({
@@ -130,15 +131,6 @@ describe('ListValueComponent', () => {
     });
     it('should make list value editable as button', () => {
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
-      valuesSpy.v2.list.getNode.and.callFake(
-        () => {
-          const res = new ListNodeV2();
-          res.id = 'http://rdfh.ch/lists/0001/treeList01';
-          res.isRootNode = false;
-          res.hasRootNode = 'http://rdfh.ch/lists/0001/treeList';
-          return of([res]);
-        }
-      );
       valuesSpy.v2.list.getList.and.callFake(
         () => {
           const res = new ListNodeV2();
@@ -153,10 +145,8 @@ describe('ListValueComponent', () => {
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(valuesSpy.v2.list.getList).toHaveBeenCalledTimes(1);
-
-      expect(valuesSpy.v2.list.getNode).toHaveBeenCalledTimes(1);
-
-      expect(valuesSpy.v2.list.getNode).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList01');
+      expect(valuesSpy.v2.list.getList).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList')
+      expect(testHostComponent.inputValueComponent.listRootNode.children.length).toEqual(1);
 
       const openListButtonDe = valueComponentDe.query(By.css('button'));
 
@@ -172,15 +162,6 @@ describe('ListValueComponent', () => {
     });
     it('should validate an existing value with an added comment', () => {
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
-      valuesSpy.v2.list.getNode.and.callFake(
-        () => {
-          const res = new ListNodeV2();
-          res.id = 'http://rdfh.ch/lists/0001/treeList01';
-          res.isRootNode = false;
-          res.hasRootNode = 'http://rdfh.ch/lists/0001/treeList';
-          return of([res]);
-        }
-      );
       valuesSpy.v2.list.getList.and.callFake(
         () => {
           const res = new ListNodeV2();

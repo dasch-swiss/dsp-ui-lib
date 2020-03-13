@@ -1,11 +1,17 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
-import {CreateListValue, ReadListValue, UpdateListValue, ListNodeV2, KnoraApiConnection, ApiResponseError} from '@knora/api';
+import {
+  CreateListValue,
+  ReadListValue,
+  UpdateListValue,
+  ListNodeV2,
+  KnoraApiConnection,
+  ApiResponseError, ResourcePropertyDefinition
+} from '@knora/api';
 import { MatMenuTrigger } from '@angular/material/menu';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core';
-
 
 @Component({
   selector: 'kui-list-value',
@@ -15,10 +21,10 @@ import {KnoraApiConnectionToken} from '../../../core';
 export class ListValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() displayValue?: ReadListValue;
+  @Input() propertyDef: ResourcePropertyDefinition;
   valueFormControl: FormControl;
   commentFormControl: FormControl;
   listRootNode: ListNodeV2;
-
   // active node
   selectedNode: ListNodeV2;
 
@@ -46,39 +52,23 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
     super.resetFormControl();
 
     if (this.valueFormControl !== undefined) {
-      if (this.mode === 'read') {
-        this.valueFormControl.setValue(this.getInitValue());
-        this.commentFormControl.setValue(this.getInitComment());
-        this.valueFormControl.clearValidators();
-      } else {
-        const rootNodeIri = this.displayValue.listNode;
-        this.getRootNode(rootNodeIri);
-        this.valueFormControl.clearValidators();
+      if (this.mode !== 'read') {
+        this.listRootNode = new ListNodeV2();
+        const rootNodeIris = this.propertyDef.guiAttributes;
+        for (let rootNodeIri of rootNodeIris) {
+          // get rid of the "hlist"
+          const trimmedRootNodeIRI = rootNodeIri.substr(7, rootNodeIri.length - (1 + 7));
+          this.knoraApiConnection.v2.list.getList(trimmedRootNodeIRI).subscribe(
+            (response2: ListNodeV2) => {
+              this.listRootNode.children.push(response2);
+            }, (error: ApiResponseError) => {
+              console.error(error);
+            });
+        }
       }
     }
   }
 
-  getRootNode(rootNodeIri): void {
-    this.knoraApiConnection.v2.list.getNode(rootNodeIri).subscribe(
-      (response: ListNodeV2) => {
-        const nodeOfListValue = response;
-        if (nodeOfListValue.isRootNode) {
-          this.listRootNode = nodeOfListValue;
-        } else {
-          const hasRootNodeIRI = nodeOfListValue.hasRootNode;
-          this.knoraApiConnection.v2.list.getList(hasRootNodeIRI).subscribe(
-            (response2: ListNodeV2) => {
-              this.listRootNode = response2;
-            }, (error: ApiResponseError) => {
-              console.error(error);
-            });
-          }
-      },
-      (error: ApiResponseError) => {
-        console.error(error);
-      }
-    );
-  }
   ngOnInit() {
     this.valueFormControl = new FormControl(null);
     this.commentFormControl = new FormControl(null);
