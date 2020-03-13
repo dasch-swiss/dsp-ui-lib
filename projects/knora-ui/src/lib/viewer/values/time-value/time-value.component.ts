@@ -1,11 +1,9 @@
 import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges, NgZone } from '@angular/core';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { TimeInputComponent } from './time-input/time-input.component';
+import { TimeInputComponent, TimeInputErrorStateMatcher } from './time-input/time-input.component';
 import { ReadTimeValue, CreateTimeValue, UpdateTimeValue } from '@knora/api';
 import { BaseValueComponent } from '..';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { IntervalErrorStateMatcher } from '../interval-value/interval-value.component';
 
 @Component({
   selector: 'kui-time-value',
@@ -15,7 +13,6 @@ import { IntervalErrorStateMatcher } from '../interval-value/interval-value.comp
 export class TimeValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('timeInput', {static: false}) timeInputComponent: TimeInputComponent;
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadTimeValue;
 
@@ -28,9 +25,9 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
 
   customValidators = [];
 
-  matcher = new IntervalErrorStateMatcher();
+  matcher = new TimeInputErrorStateMatcher();
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder, private _ngZone: NgZone) {
+  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
 
