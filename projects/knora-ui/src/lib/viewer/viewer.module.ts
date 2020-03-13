@@ -33,6 +33,7 @@ import { ColorPickerComponent } from './values/color-value/color-picker/color-pi
                  TimeValueComponent,
                  TimeInputComponent,
                  JDNDatepickerDirective,
+                 ColorValueComponent,
                  ColorPickerComponent],
   imports: [
     CommonModule,

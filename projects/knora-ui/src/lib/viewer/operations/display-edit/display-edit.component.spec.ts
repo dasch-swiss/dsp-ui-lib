@@ -197,7 +197,6 @@ describe('DisplayEditComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
-        MatIconModule
       ],
       declarations: [
         DisplayEditComponent,
@@ -208,7 +207,7 @@ describe('DisplayEditComponent', () => {
         TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent,
-        TestTimeValueComponent
+        TestTimeValueComponent,
         TestColorValueComponent
       ],
       providers: [
