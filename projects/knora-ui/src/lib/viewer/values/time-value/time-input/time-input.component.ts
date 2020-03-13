@@ -121,9 +121,8 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
   @Input()
   get value(): string | null {
-    console.log(this.form)
-    const userInput = new DateTime(this.form.value.date, this.form.value.time);
     if (this.form.valid) {
+      const userInput = new DateTime(this.form.value.date, this.form.value.time);
       return this.userInputToTimestamp(userInput);
     }
     return null;

@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimeInputComponent, DateTime } from './time-input.component';
-import { KnoraDate } from '@knora/api';
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatInputModule, MatNativeDateModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { MatDatepickerModule } from '@angular/material/datepicker'
-import { GregorianCalendarDate, CalendarPeriod, CalendarDate, JulianCalendarDate, JDNConvertibleCalendar } from 'jdnconvertiblecalendar';
+import { GregorianCalendarDate, CalendarPeriod, CalendarDate } from 'jdnconvertiblecalendar';
+import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 
 
 /**
@@ -42,7 +42,7 @@ class TestHostComponent implements OnInit {
   }
 }
 
-fdescribe('TimeInputComponent', () => {
+describe('TimeInputComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
@@ -54,7 +54,7 @@ fdescribe('TimeInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, BrowserAnimationsModule],
+      imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatJDNConvertibleCalendarDateAdapterModule, BrowserAnimationsModule],
       declarations: [TimeInputComponent, TestHostComponent]
     })
       .compileComponents();
@@ -82,21 +82,30 @@ fdescribe('TimeInputComponent', () => {
     expect(timeInputNativeElement.readOnly).toBeFalsy;
   });
 
-  fit('should initialize the date correctly', () => {
+  it('should initialize the date correctly', () => {
     expect(dateInputNativeElement.value).toEqual('06-08-2019');
     
     expect(timeInputNativeElement.value).toEqual('14:00');
   });
 
   it('should propagate changes made by the user', () => {
-    
-    testHostComponent.form.setValue({time: '2020-08-11T15:00:00Z'});
+    testHostComponent.form.controls.time.setValue('1993-10-10T11:00:00Z');
 
-    expect(testHostComponent.timeInputComponent.value).toEqual('2020-08-11T15:00:00Z');
+    dateInputNativeElement.dispatchEvent(new Event('input'));
 
-    expect(testHostComponent.form.controls.time.value).toBeTruthy();
-    expect(timeInputNativeElement.value).toEqual('17:00');
+    testHostFixture.detectChanges();
 
+    expect(testHostComponent.form.controls.time).toBeTruthy();
+    expect(testHostComponent.form.controls.time.value).toEqual('1993-10-10T11:00:00Z');
+
+    timeInputNativeElement.value = '17:00';
+
+    timeInputNativeElement.dispatchEvent(new Event('input'));
+
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.form.controls.time).toBeTruthy();
+    expect(testHostComponent.form.controls.time.value).toEqual('1993-10-10T16:00:00Z');
   });
 
   it('should return a timestamp from userInputToTimestamp()', () => {
