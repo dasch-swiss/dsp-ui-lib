@@ -1,7 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListValueComponent } from './list-value.component';
 import { SublistValueComponent } from './subList-value/sublist-value.component';
-import {ReadListValue, MockResource, ListNodeV2, UpdateListValue, CreateListValue, ResourcePropertyDefinition} from '@knora/api';
+import {
+  ReadListValue,
+  MockResource,
+  ListNodeV2,
+  UpdateListValue,
+  CreateListValue,
+  ResourcePropertyDefinition,
+  CreateColorValue
+} from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
@@ -201,8 +209,7 @@ describe('ListValueComponent', () => {
     let valueInputNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
-
-    it('should create a value', () => {
+    beforeEach(() => {
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
       valuesSpy.v2.list.getList.and.callFake(
         () => {
@@ -223,6 +230,7 @@ describe('ListValueComponent', () => {
       expect(testHostComponent).toBeTruthy();
       expect(testHostComponent.inputValueComponent).toBeTruthy();
       expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+      expect(valuesSpy.v2.list.getList.calls.count()).toEqual(1);
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(ListValueComponent));
@@ -232,8 +240,44 @@ describe('ListValueComponent', () => {
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
     });
-    // it('should create a value', () => {
-    //
-    // });
+    it('should create a value', () => {
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+      testHostComponent.inputValueComponent.valueFormControl.setValue('http://rdfh.ch/lists/0001/treeList01');
+      testHostFixture.detectChanges();
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+      const newValue = testHostComponent.inputValueComponent.getNewValue();
+
+      expect(newValue instanceof CreateListValue).toBeTruthy();
+
+      expect((newValue as CreateListValue).listNode).toEqual('http://rdfh.ch/lists/0001/treeList01');
+    });
+
+    fit('should reset form after cancellation', () => {
+      // simulate user input
+      const newList = 'http://rdfh.ch/lists/0001/treeList01';
+
+      testHostComponent.inputValueComponent.valueFormControl.setValue(newList);
+
+      testHostFixture.detectChanges();
+
+      commentInputNativeElement.value = 'created comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual(null);
+
+      expect(commentInputNativeElement.value).toEqual('');
+
+    });
   });
 });
