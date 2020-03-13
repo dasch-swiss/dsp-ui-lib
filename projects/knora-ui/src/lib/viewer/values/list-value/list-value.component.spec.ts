@@ -252,7 +252,7 @@ describe('ListValueComponent', () => {
       expect((newValue as CreateListValue).listNode).toEqual('http://rdfh.ch/lists/0001/treeList01');
     });
 
-    fit('should reset form after cancellation', () => {
+    it('should reset form after cancellation', () => {
       // simulate user input
       const newList = 'http://rdfh.ch/lists/0001/treeList01';
 
