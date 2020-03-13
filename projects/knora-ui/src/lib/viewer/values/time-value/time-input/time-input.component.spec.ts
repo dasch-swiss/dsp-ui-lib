@@ -36,13 +36,13 @@ class TestHostComponent implements OnInit {
   ngOnInit(): void {
 
     this.form = this.fb.group({
-      time: '2019-07-01T12:00:00Z'
+      time: '2019-08-06T12:00:00Z'
     });
 
   }
 }
 
-describe('TimeInputComponent', () => {
+fdescribe('TimeInputComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
 
@@ -82,11 +82,8 @@ describe('TimeInputComponent', () => {
     expect(timeInputNativeElement.readOnly).toBeFalsy;
   });
 
-  it('should initialize the date correctly', () => {
-
-    expect(testHostComponent.timeInputComponent.value).toEqual('2019-07-01T12:00:00Z');
-
-    //expect(dateInputNativeElement.value).toEqual('01-07-2019');
+  fit('should initialize the date correctly', () => {
+    expect(dateInputNativeElement.value).toEqual('06-08-2019');
     
     expect(timeInputNativeElement.value).toEqual('14:00');
   });

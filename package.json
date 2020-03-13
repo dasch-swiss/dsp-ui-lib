@@ -24,7 +24,6 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "@knora/api": "file:.yalc/@knora/api",
-    "@types/lodash": "^4.14.149",
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.10",
     "rxjs": "~6.4.0",
