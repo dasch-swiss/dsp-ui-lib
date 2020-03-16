@@ -129,11 +129,20 @@ class TestDecimalValueComponent implements OnInit {
 }
 
 @Component({
+  selector: `kui-time-value`,
+  template: ``
+})
+class TestTimeValueComponent {
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
+@Component({
   selector: `kui-color-value`,
   template: ``
 })
 class TestColorValueComponent {
-
   @Input() mode;
 
   @Input() displayValue;
@@ -187,7 +196,7 @@ describe('DisplayEditComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
       ],
       declarations: [
         DisplayEditComponent,
@@ -198,6 +207,7 @@ describe('DisplayEditComponent', () => {
         TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent,
+        TestTimeValueComponent,
         TestColorValueComponent
       ],
       providers: [

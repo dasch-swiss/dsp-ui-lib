@@ -1,0 +1,12 @@
+<span [formGroup]="form" class="time-host-component">
+    <mat-form-field class="large-field">
+      <kui-time-input #timeInput [formControlName]="'timeValue'" class="value" placeholder="Time value" [readonly]="mode === 'read'" [errorStateMatcher]="matcher"></kui-time-input>
+      <mat-error *ngIf="form.controls.timeValue.hasError('valueNotChanged')">
+        Please change the value
+      </mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="large-field">
+      <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
+  </mat-form-field>
+</span>
