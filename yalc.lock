@@ -2,13 +2,8 @@
   "version": "v1",
   "packages": {
     "@knora/api": {
-      "signature": "d13352b37d1c81a041bdcbd0e77d7b23",
+      "signature": "3208f93884cf4115a1c97ef116855f3f",
       "file": true
-    },
-    "jdnconvertiblecalendardateadapter": {
-      "signature": "bf9fbb4f18b1687cfade543bd6dc4eeb",
-      "file": true,
-      "replaced": "^0.0.10"
     }
   }
 }
