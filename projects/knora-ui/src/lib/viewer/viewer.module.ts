@@ -15,6 +15,8 @@ import { UriValueComponent } from './values/uri-value/uri-value.component';
 import { IntervalValueComponent } from './values/interval-value/interval-value.component';
 import { IntervalInputComponent } from './values/interval-value/interval-input/interval-input.component';
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
+import { PropertyViewComponent } from './views/property-view/property-view.component';
+import { ResourceViewComponent } from './views/resource-view/resource-view.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { ColorPickerComponent } from './values/color-value/color-picker/color-pi
     UriValueComponent,
     IntervalValueComponent,
     IntervalInputComponent,
-    ColorPickerComponent
+    ColorPickerComponent,
+    PropertyViewComponent,
+    ResourceViewComponent
   ],
   imports: [
     CommonModule,
