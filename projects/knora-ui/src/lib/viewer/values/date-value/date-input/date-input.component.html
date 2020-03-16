@@ -1,16 +1,16 @@
 <div [formGroup]="form" class="interval-input-container">
   <mat-form-field>
-    <kui-jdn-datepicker-complex [activeCalendar]="startCalendarName">
+    <kui-jdn-datepicker [activeCalendar]="startCalendarName">
       <input matInput [matDatepicker]="picker1" [formControlName]="'dateStart'" (dateChange)="_handleInput()">
       <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1 [calendarHeaderComponent]="calendarHeaderComponent"></mat-datepicker>
-    </kui-jdn-datepicker-complex>
+    </kui-jdn-datepicker>
   </mat-form-field>
   <mat-form-field *ngIf="period">
-    <kui-jdn-datepicker-complex [activeCalendar]="endCalendarName">
+    <kui-jdn-datepicker [activeCalendar]="endCalendarName">
       <input matInput [matDatepicker]="picker2" [formControlName]="'dateEnd'" (dateChange)="_handleInput()">
       <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
       <mat-datepicker #picker2 [calendarHeaderComponent]="calendarHeaderComponent"></mat-datepicker>
-    </kui-jdn-datepicker-complex>
+    </kui-jdn-datepicker>
   </mat-form-field>
 </div>

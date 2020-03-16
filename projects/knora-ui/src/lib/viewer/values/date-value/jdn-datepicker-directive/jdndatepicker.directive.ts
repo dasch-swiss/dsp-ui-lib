@@ -10,17 +10,17 @@ export function makeCalendarToken() {
 }
 
 @Directive({
-  selector: 'kui-jdn-datepicker-complex',
+  selector: 'kui-jdn-datepicker',
   providers: [
     {provide: DateAdapter, useClass: JDNConvertibleCalendarDateAdapter, deps: [MAT_DATE_LOCALE, ACTIVE_CALENDAR]},
     {provide: ACTIVE_CALENDAR, useFactory: makeCalendarToken}
   ]
 })
-export class JDNDatepickerDirectiveComplex implements OnChanges {
+export class JDNDatepickerDirective implements OnChanges {
 
   @Input() activeCalendar: 'Gregorian' | 'Julian' | 'Islamic';
 
-  constructor(@Host() dateInput: DateInputComponent, @Inject(ACTIVE_CALENDAR) private activeCalendarToken, private adapter: DateAdapter<JDNConvertibleCalendar>) {
+  constructor(@Inject(ACTIVE_CALENDAR) private activeCalendarToken, private adapter: DateAdapter<JDNConvertibleCalendar>) {
   }
 
   ngOnChanges(): void {

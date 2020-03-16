@@ -18,14 +18,13 @@ import {TimeValueComponent} from './values/time-value/time-value.component';
 import {TimeInputComponent} from './values/time-value/time-input/time-input.component';
 import {MatDatepickerModule} from '@angular/material';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
-import {JDNDatepickerDirective} from './values/time-value/jdn-datepicker-directive/jdndatepicker.directive';
 import {ColorPickerComponent} from './values/color-value/color-picker/color-picker.component';
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {DateValueComponent} from "./values/date-value/date-value.component";
 import {CalendarHeaderComponent} from "./values/date-value/calendar-header/calendar-header.component";
 import {DateInputComponent} from "./values/date-value/date-input/date-input.component";
-import {JDNDatepickerDirectiveComplex} from "./values/date-value/jdn-datepicker-directive/jdndatepicker.directive";
+import {JDNDatepickerDirective} from "./values/date-value/jdn-datepicker-directive/jdndatepicker.directive";
 
 @NgModule({
   declarations: [
@@ -39,11 +38,10 @@ import {JDNDatepickerDirectiveComplex} from "./values/date-value/jdn-datepicker-
     IntervalInputComponent,
     TimeValueComponent,
     TimeInputComponent,
-    JDNDatepickerDirective,
     ColorValueComponent,
     ColorPickerComponent,
     DateValueComponent,
-    JDNDatepickerDirectiveComplex,
+    JDNDatepickerDirective,
     DateInputComponent,
     CalendarHeaderComponent
   ],
@@ -68,7 +66,8 @@ import {JDNDatepickerDirectiveComplex} from "./values/date-value/jdn-datepicker-
     DecimalValueComponent,
     UriValueComponent,
     IntervalValueComponent,
-    TimeValueComponent
+    TimeValueComponent,
+    DateValueComponent
   ]
 
 })
