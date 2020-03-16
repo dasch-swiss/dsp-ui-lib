@@ -24,7 +24,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {DateValueComponent} from "./values/date-value/date-value.component";
 import {CalendarHeaderComponent} from "./values/date-value/calendar-header/calendar-header.component";
 import {DateInputComponent} from "./values/date-value/date-input/date-input.component";
-import {JDNDatepickerDirective} from "./values/date-value/jdn-datepicker-directive/jdndatepicker.directive";
+import {JDNDatepickerDirective} from "./values/jdn-datepicker-directive/jdndatepicker.directive";
 
 @NgModule({
   declarations: [

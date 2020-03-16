@@ -9,7 +9,7 @@ import {By} from '@angular/platform-browser';
 import {MatDatepickerModule} from '@angular/material/datepicker'
 import {GregorianCalendarDate, CalendarPeriod, CalendarDate} from 'jdnconvertiblecalendar';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
-import {JDNDatepickerDirective} from "../../date-value/jdn-datepicker-directive/jdndatepicker.directive";
+import {JDNDatepickerDirective} from "../../jdn-datepicker-directive/jdndatepicker.directive";
 
 
 /**
