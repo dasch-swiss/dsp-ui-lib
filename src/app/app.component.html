@@ -1,18 +1,1 @@
-<h2 class="label">
-  {{resource?.resourceClassLabel}}
-</h2>
-<p>{{resource?.resourceClassComment}}</p>
-
-<div *ngFor="let prop of propArray">
-  <div *ngIf="prop.values">
-
-    <h4 class="label">
-      {{prop.propDef.label}}
-    </h4>
-
-    <div *ngFor="let val of prop.values">
-      <kui-display-edit #displayEdit [parentResource]="resource" [displayValue]="val"></kui-display-edit>
-    </div>
-
-  </div>
-</div>
+<kui-resource-view [iri]="iri"></kui-resource-view>

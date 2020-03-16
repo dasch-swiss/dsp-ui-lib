@@ -1,1 +1,9 @@
-<p>resource-view works!</p>
+<div class="resource-view" *ngIf="resource">
+    <h2 class="label">
+        {{resource?.resourceClassLabel}}
+    </h2>
+    <p>{{resource?.resourceClassComment}}</p>
+
+    <!-- kui-property-view -->
+    <kui-property-view [resource]="resource" [propArray]="propArray"></kui-property-view>
+</div>

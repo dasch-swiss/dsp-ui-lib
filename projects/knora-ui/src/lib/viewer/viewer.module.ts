@@ -48,7 +48,8 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
     ColorValueComponent,
     DecimalValueComponent,
     UriValueComponent,
-    IntervalValueComponent
+    IntervalValueComponent,
+    ResourceViewComponent
   ]
 })
 export class ViewerModule {
