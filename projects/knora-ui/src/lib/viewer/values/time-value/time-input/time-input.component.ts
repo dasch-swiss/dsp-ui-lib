@@ -122,16 +122,26 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   @Input()
   get value(): string | null {
     if (this.form.valid) {
-      const userInput = new DateTime(this.form.value.date, this.form.value.time);
-      return this.userInputToTimestamp(userInput);
+      try {
+        const userInput = new DateTime(this.form.value.date, this.form.value.time);
+        return this.userInputToTimestamp(userInput);
+      }
+      catch {
+        return null;
+      }
     }
     return null;
   }
 
   set value(timestamp: string | null) {
     if (timestamp !== null) {
-      const dateTime = this.convertTimestampToDateTime(timestamp);
-      this.form.setValue({date: dateTime.date, time: dateTime.time});
+      try {
+        const dateTime = this.convertTimestampToDateTime(timestamp);
+        this.form.setValue({date: dateTime.date, time: dateTime.time});
+      }
+      catch {
+        this.form.setValue({date: null, time: null});
+      }
     } else {
       this.form.setValue({date: null, time: null});
     }
@@ -208,6 +218,8 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   // return converted Date obj as a string without the milliseconds
   userInputToTimestamp(userInput: DateTime): string {
     const splitTime = userInput.time.split(':');
+
+    // In a Javascript Date, the month is 0-based so we need to subtract 1
     const updateDate = new Date(userInput.date.toCalendarPeriod().periodStart.year,
                                 (userInput.date.toCalendarPeriod().periodStart.month - 1),
                                 userInput.date.toCalendarPeriod().periodStart.day,
