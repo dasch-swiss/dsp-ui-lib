@@ -5,8 +5,8 @@
             {{prop.propDef.label}}
         </h4>
 
-        <div *ngFor="let val of prop.values">
-            <kui-display-edit #displayEdit [parentResource]="resource" [displayValue]="val"></kui-display-edit>
+        <div *ngFor="let value of prop.values">
+            <kui-display-edit #displayEdit [parentResource]="resource" [displayValue]="value"></kui-display-edit>
         </div>
 
     </div>

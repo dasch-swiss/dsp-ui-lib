@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResourceViewComponent } from './resource-view.component';
+import { PropertyViewComponent } from '../property-view/property-view.component';
 
 describe('ResourceViewComponent', () => {
   let component: ResourceViewComponent;
@@ -8,9 +9,9 @@ describe('ResourceViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResourceViewComponent ]
+      declarations: [ResourceViewComponent, PropertyViewComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
