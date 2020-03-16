@@ -18,6 +18,7 @@ import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { KnoraApiConnectionToken } from '../../../core';
+import { MatIconModule } from '@angular/material';
 
 @Component({
   selector: `kui-text-value-as-string`,
@@ -197,6 +198,7 @@ describe('DisplayEditComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
+        MatIconModule,
       ],
       declarations: [
         DisplayEditComponent,

@@ -20,6 +20,7 @@ import {MatDatepickerModule} from '@angular/material';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
 import { JDNDatepickerDirective } from './values/time-value/jdn-datepicker-directive/jdndatepicker.directive';
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [TextValueAsStringComponent,
@@ -41,6 +42,7 @@ import { ColorPickerComponent } from './values/color-value/color-picker/color-pi
     MatInputModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatIconModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     ColorPickerModule
   ],

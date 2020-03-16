@@ -1,5 +1,5 @@
 <span [formGroup]="form">
-    <mat-form-field class="large-field color-field">
+    <mat-form-field class="large-field color-field child-value-component">
         <kui-color-picker #colorInput [formControlName]="'colorValue'" class="value" placeholder="Color value"
             [readonly]="mode === 'read'" [errorStateMatcher]="matcher">
         </kui-color-picker>
@@ -10,9 +10,18 @@
             Please enter a hex color value.
         </mat-error>
     </mat-form-field>
-    <br>
-    <mat-form-field class="large-field">
-        <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text"
-            [readonly]="mode === 'read'">
-    </mat-form-field>
+    <mat-form-field class="large-field value-component-comment">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="6"
+                  [formControlName]="'comment'"
+                  class="comment"
+                  placeholder="Comment"
+                  type="text"
+                  [readonly]="mode === 'read'"
+                  spellcheck="false">
+          </textarea>
+      </mat-form-field>
 </span>

@@ -98,7 +98,7 @@ describe('BooleanValueComponent', () => {
       checkboxEl = valueBooleanDebugElement.query(By.css('input[type="checkbox"]')).nativeElement;
       checkboxLabel = valueBooleanDebugElement.query(By.css('span[class="mat-checkbox-label"]')).nativeElement;
 
-      commentBooleanDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentBooleanDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentBooleanNativeElement = commentBooleanDebugElement.nativeElement;
     });
 
@@ -271,7 +271,7 @@ describe('BooleanValueComponent', () => {
       valueBooleanNativeElement = valueBooleanDebugElement.nativeElement;
       checkboxEl = valueBooleanDebugElement.query(By.css('input[type="checkbox"]')).nativeElement;
       checkboxLabel = valueBooleanDebugElement.query(By.css('span[class="mat-checkbox-label"]')).nativeElement;
-      commentBooleanDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentBooleanDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentBooleanNativeElement = commentBooleanDebugElement.nativeElement;
 
       expect(testHostComponent.booleanValueComponent.displayValue).toEqual(undefined);
