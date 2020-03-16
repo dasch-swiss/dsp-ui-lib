@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CalendarHeaderComponent } from './calendar-header.component';
+import {JDNConvertibleCalendarDateAdapter} from "jdnconvertiblecalendardateadapter";
 
 describe('CalendarHeaderComponent', () => {
-  let component: CalendarHeaderComponent;
-  let fixture: ComponentFixture<CalendarHeaderComponent>;
+  let component: CalendarHeaderComponent<JDNConvertibleCalendarDateAdapter>;
+  let fixture: ComponentFixture<CalendarHeaderComponent<JDNConvertibleCalendarDateAdapter>>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

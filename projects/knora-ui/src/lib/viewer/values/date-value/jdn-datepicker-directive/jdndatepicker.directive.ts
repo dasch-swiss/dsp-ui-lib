@@ -10,13 +10,13 @@ export function makeCalendarToken() {
 }
 
 @Directive({
-  selector: 'kui-jdn-datepicker',
+  selector: 'kui-jdn-datepicker-complex',
   providers: [
     {provide: DateAdapter, useClass: JDNConvertibleCalendarDateAdapter, deps: [MAT_DATE_LOCALE, ACTIVE_CALENDAR]},
     {provide: ACTIVE_CALENDAR, useFactory: makeCalendarToken}
   ]
 })
-export class JDNDatepickerDirective implements OnChanges {
+export class JDNDatepickerDirectiveComplex implements OnChanges {
 
   @Input() activeCalendar: 'Gregorian' | 'Julian' | 'Islamic';
 
