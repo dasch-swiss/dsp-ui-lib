@@ -148,6 +148,16 @@ class TestColorValueComponent {
   @Input() displayValue;
 }
 
+@Component({
+  selector: `kui-date-value`,
+  template: ``
+})
+class TestDateValueComponent {
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
 /**
  * Test host component to simulate parent component.
  */
@@ -208,7 +218,8 @@ describe('DisplayEditComponent', () => {
         TestUriValueComponent,
         TestDecimalValueComponent,
         TestTimeValueComponent,
-        TestColorValueComponent
+        TestColorValueComponent,
+        TestDateValueComponent
       ],
       providers: [
         {
