@@ -7,8 +7,9 @@ import {DateAdapter, MatOptionModule} from "@angular/material/core";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {MatCalendar, MatDatepickerContent} from "@angular/material/datepicker";
 import {BehaviorSubject} from "rxjs";
-import {Component} from "@angular/core";
+import {Component, DebugElement} from "@angular/core";
 import {By} from "@angular/platform-browser";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @Component({
   selector: `mat-calendar-header`,
@@ -28,7 +29,8 @@ describe('CalendarHeaderComponent', () => {
       imports: [
         ReactiveFormsModule,
         MatSelectModule,
-        MatOptionModule
+        MatOptionModule,
+        BrowserAnimationsModule
       ],
       declarations: [CalendarHeaderComponent, TestMatCalendarHeaderComponent],
       providers: [
@@ -51,20 +53,34 @@ describe('CalendarHeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set Gregorian as the active calendar in the selection', fakeAsync(() => {
+  it('should init the selected value and options correctly', fakeAsync(() => {
 
     expect(component.formControl.value).toEqual('Gregorian');
 
     // https://github.com/angular/components/blob/941b5a3529727f583b76068835e07e412e69f4f7/src/material/select/select.spec.ts#L1674-L1692
     component.formControl = new FormControl('Gregorian');
     fixture.detectChanges();
-    flush();
 
     const compDe = fixture.debugElement;
 
-    const selectDebugElement = compDe.query(By.css('.mat-select-value'));
+    const selectValueDebugElement = compDe.query(By.css('.mat-select-value'));
 
-    expect(selectDebugElement.nativeElement.textContent).toEqual('Gregorian');
+    const selectDebugElement = compDe.query(By.css('.mat-select'));
+
+    expect(selectValueDebugElement.nativeElement.textContent).toEqual('Gregorian');
+
+    const trigger = compDe.query(By.css('.mat-select-trigger')).nativeElement;
+    trigger.click();
+    fixture.detectChanges();
+    flush();
+
+    const options: DebugElement[] = selectDebugElement.queryAll(By.css('mat-option'));
+
+    expect(options.length).toEqual(2);
+
+    expect(options[0].nativeElement.innerText).toEqual('Gregorian');
+
+    expect(options[1].nativeElement.innerText).toEqual('Julian');
 
   }));
 
