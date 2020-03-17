@@ -4,7 +4,8 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {JDNConvertibleCalendar} from 'jdnconvertiblecalendar';
 import {MatCalendar, MatDatepickerContent} from '@angular/material/datepicker';
 import {DateAdapter} from '@angular/material/core';
-import {Component, Host, Inject, OnInit} from '@angular/core';
+import {Component, Host, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'kui-calendar-header',
@@ -16,7 +17,7 @@ import {Component, Host, Inject, OnInit} from '@angular/core';
   `,
   styleUrls: ['./calendar-header.component.scss']
 })
-export class CalendarHeaderComponent<D> implements OnInit {
+export class CalendarHeaderComponent<D> implements OnInit, OnDestroy {
   constructor(@Host() private _calendar: MatCalendar<JDNConvertibleCalendar>,
               private _dateAdapter: DateAdapter<JDNConvertibleCalendar>,
               private _datepickerContent: MatDatepickerContent<JDNConvertibleCalendar>,
@@ -25,6 +26,7 @@ export class CalendarHeaderComponent<D> implements OnInit {
 
   form: FormGroup;
   formControl: FormControl;
+  valueChangesSubscription: Subscription;
 
   // a list of supported calendars (Gregorian and Julian)
   supportedCalendars = ['Gregorian', 'Julian'];
@@ -48,11 +50,17 @@ export class CalendarHeaderComponent<D> implements OnInit {
     });
 
     // do the conversion when the user selects another calendar format
-    this.form.valueChanges.subscribe((data) => {
+    this.valueChangesSubscription = this.form.valueChanges.subscribe((data) => {
       // pass the target calendar format to the conversion method
       this.convertDate(data.calendar);
     });
 
+  }
+
+  ngOnDestroy(): void {
+    if (this.valueChangesSubscription !== undefined) {
+      this.valueChangesSubscription.unsubscribe();
+    }
   }
 
   /**

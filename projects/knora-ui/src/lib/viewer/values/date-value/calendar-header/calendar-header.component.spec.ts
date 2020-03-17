@@ -1,19 +1,18 @@
-import {async, ComponentFixture, fakeAsync, flush, inject, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, flush, TestBed} from '@angular/core/testing';
 
 import {CalendarHeaderComponent} from './calendar-header.component';
-import {ACTIVE_CALENDAR, JDNConvertibleCalendarDateAdapter} from "jdnconvertiblecalendardateadapter";
-import {MatSelectModule} from "@angular/material/select";
-import {DateAdapter, MatOptionModule} from "@angular/material/core";
-import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {MatCalendar, MatDatepickerContent} from "@angular/material/datepicker";
-import {BehaviorSubject} from "rxjs";
-import {Component, DebugElement} from "@angular/core";
-import {By} from "@angular/platform-browser";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {MAT_JDN_DATE_FORMATS} from "jdnconvertiblecalendardateadapter/lib/jdnconvertible-calendar-date-formats";
-import {JDNConvertibleCalendarModule} from "jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar";
+import {ACTIVE_CALENDAR, JDNConvertibleCalendarDateAdapter} from 'jdnconvertiblecalendardateadapter';
+import {MatSelectModule} from '@angular/material/select';
+import {DateAdapter, MatOptionModule} from '@angular/material/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {MatCalendar, MatDatepickerContent} from '@angular/material/datepicker';
+import {BehaviorSubject} from 'rxjs';
+import {Component, DebugElement} from '@angular/core';
+import {By} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {JDNConvertibleCalendarModule} from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
+import {CalendarDate, CalendarPeriod, JulianCalendarDate} from 'jdnconvertiblecalendar';
 import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
-import {CalendarDate, CalendarPeriod, JulianCalendarDate} from "jdnconvertiblecalendar";
 
 @Component({
   selector: `mat-calendar-header`,
@@ -40,7 +39,8 @@ describe('CalendarHeaderComponent', () => {
         {
           provide: MatCalendar, useValue: {
             activeDate: new GregorianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 3, 17), new CalendarDate(2020, 3, 17))),
-            updateTodaysDate: () => {}
+            updateTodaysDate: () => {
+            }
           }
         },
         {provide: DateAdapter, useClass: JDNConvertibleCalendarDateAdapter},
@@ -127,6 +127,16 @@ describe('CalendarHeaderComponent', () => {
     expect(datepickerContentSpy).toHaveBeenCalledTimes(1);
 
     expect(matCalendarSpy).toHaveBeenCalledTimes(1);
+
+  });
+
+  it('should unsubscribe from value changes subscription when the component is destroyed', () => {
+
+    expect(component.valueChangesSubscription.closed).toEqual(false);
+
+    component.ngOnDestroy();
+
+    expect(component.valueChangesSubscription.closed).toEqual(true);
 
   });
 
