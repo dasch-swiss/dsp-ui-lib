@@ -4,7 +4,7 @@ import {
   KnoraApiConnection,
   PermissionUtil,
   ReadResource,
-  ReadValue, UpdateLinkValue,
+  ReadValue,
   UpdateResource,
   UpdateValue,
   WriteValueResponse

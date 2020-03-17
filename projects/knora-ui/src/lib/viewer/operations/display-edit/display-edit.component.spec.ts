@@ -38,6 +38,7 @@ class TestLinkValueComponent {
   @Input() mode;
 
   @Input() displayValue;
+  @Input() parentResource;
 }
 @Component({
   selector: `kui-uri-value`,

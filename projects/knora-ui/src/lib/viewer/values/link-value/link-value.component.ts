@@ -1,6 +1,6 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
-import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiConnection, IResourceClassAndPropertyDefinitions} from '@knora/api';
+import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiConnection} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core';
@@ -11,7 +11,7 @@ import {KnoraApiConnectionToken} from '../../../core';
 })
 export class LinkValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayValue?: ReadLinkValue;
-  // @Input() propertyDesc?: IResourceClassAndPropertyDefinitions;
+  @Input() parentResource: ReadResource;
   resources: ReadResource[];
   restrictToResourceClass: string;
   valueFormControl: FormControl;
@@ -47,8 +47,10 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    * @param label to be searched
    */
   searchByLabel(searchTerm: string): ReadResource[] {
-    // todo: change the statement below once the function is added to knora-api.js.lib to get link property defintion
-    this.restrictToResourceClass = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
+    const linkType = this.parentResource.getLinkPropertyIriFromLinkValuePropertyIri(this.displayValue.property);
+    if (typeof linkType === 'string') {
+      this.restrictToResourceClass = this.parentResource.entityInfo.properties[linkType].objectType;
+    }
     // at least 3 characters are required
     if (searchTerm.length >= 3) {
 
@@ -67,9 +69,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   // show the label of the linked resource
   getInitValue(): ReadResource | null {
     if (this.displayValue !== undefined) {
-
-      // console.log(this.displayValue);
-      // console.log(this.propertyDesc.properties[this.displayValue.property]);
       return this.displayValue.linkedResource;
     } else {
       return null;
@@ -91,7 +90,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     super.resetFormControl();
 
     if (this.valueFormControl !== undefined) {
-      if (this.mode === 'read') {
+      if (this.mode !== 'read') {
 
         const initialValue = this.getInitValue();
         const initialComment = this.getInitComment();
@@ -109,6 +108,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   }
 
   ngOnInit() {
+
     // initialize form control elements
     this.valueFormControl = new FormControl(null);
 
