@@ -90,7 +90,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     super.resetFormControl();
 
     if (this.valueFormControl !== undefined) {
-      if (this.mode !== 'read') {
+      if (this.mode === 'read') {
 
         const initialValue = this.getInitValue();
         const initialComment = this.getInitComment();
