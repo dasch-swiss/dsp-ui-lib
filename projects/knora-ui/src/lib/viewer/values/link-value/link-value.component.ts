@@ -12,6 +12,7 @@ import {KnoraApiConnectionToken} from '../../../core';
 export class LinkValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayValue?: ReadLinkValue;
   @Input() parentResource: ReadResource;
+  @Input() propType: string;
   resources: ReadResource[];
   restrictToResourceClass: string;
   valueFormControl: FormControl;
@@ -47,7 +48,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    * @param label to be searched
    */
   searchByLabel(searchTerm: string): ReadResource[] {
-    const linkType = this.parentResource.getLinkPropertyIriFromLinkValuePropertyIri(this.displayValue.property);
+    const linkType = this.parentResource.getLinkPropertyIriFromLinkValuePropertyIri(this.propType);
     if (typeof linkType === 'string') {
       this.restrictToResourceClass = this.parentResource.entityInfo.properties[linkType].objectType;
     }

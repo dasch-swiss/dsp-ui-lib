@@ -22,7 +22,7 @@ import {of} from 'rxjs';
  */
 @Component({
   template: `
-    <kui-link-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [parentResource]="parentResource"></kui-link-value>`
+    <kui-link-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [parentResource]="parentResource" [propType]="propType"></kui-link-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -30,7 +30,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
   displayInputVal: ReadLinkValue;
   parentResource: ReadResource;
-
+  propType: string;
   mode: 'read' | 'update' | 'create' | 'search';
 
   ngOnInit() {
@@ -40,6 +40,7 @@ class TestHostDisplayValueComponent implements OnInit {
         res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue)[0];
 
       this.displayInputVal = inputVal;
+      this.propType = this.displayInputVal.property;
       this.parentResource = res[0];
       this.mode = 'read';
     });
@@ -52,18 +53,22 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-link-value #inputVal [mode]="mode" ></kui-link-value>`
+    <kui-link-value #inputVal [mode]="mode" [parentResource]="parentResource" [propType]="propType"></kui-link-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
   @ViewChild('inputVal', {static: false}) inputValueComponent: LinkValueComponent;
-
+  parentResource: ReadResource;
+  propType: string;
   mode: 'read' | 'update' | 'create' | 'search';
 
   ngOnInit() {
 
-    this.mode = 'create';
-
+    MockResource.getTestthing().subscribe(res => {
+      this.propType = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue';
+      this.parentResource = res[0];
+      this.mode = 'create';
+    });
   }
 }
 
