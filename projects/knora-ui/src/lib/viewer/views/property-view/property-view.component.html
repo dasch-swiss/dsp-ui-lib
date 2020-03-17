@@ -6,7 +6,10 @@
         </h4>
 
         <div *ngFor="let value of prop.values">
-            <kui-display-edit #displayEdit [parentResource]="resource" [displayValue]="value"></kui-display-edit>
+            <div *ngIf="value">
+                <kui-display-edit #displayEdit [parentResource]="parentResource" [displayValue]="value">
+                </kui-display-edit>
+            </div>
         </div>
 
     </div>

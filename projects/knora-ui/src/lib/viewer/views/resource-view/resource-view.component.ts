@@ -43,7 +43,7 @@ export class ResourceViewComponent implements OnInit, OnChanges {
   /**
    * Get a read resource sequence with ontology information and incoming resources.
    *
-   * @param iri Resource iri
+   * @param resource Resource
    */
   getResource(iri: string): void {
 
@@ -51,6 +51,7 @@ export class ResourceViewComponent implements OnInit, OnChanges {
       (response: ReadResource) => {
         this.resource = response;
 
+        // get list of all properties
         const propsList: IHasProperty[] = this.resource.entityInfo.classes[this.resource.type].propertiesList;
 
         let i = 0;
@@ -59,7 +60,7 @@ export class ResourceViewComponent implements OnInit, OnChanges {
 
           if (this.resource.entityInfo.properties[index] &&
             this.resource.entityInfo.properties[index] instanceof ResourcePropertyDefinition) {
-
+            // filter all properties by type ResourcePropertyDefinition
             const propInfoAndValues: PropertyInfoValues = {
               guiDef: prop,
               propDef: this.resource.entityInfo.properties[index],
@@ -70,13 +71,14 @@ export class ResourceViewComponent implements OnInit, OnChanges {
 
           } else if (this.resource.entityInfo.properties[index] &&
             this.resource.entityInfo.properties[index] instanceof SystemPropertyDefinition) {
-
+            // filter all properties by type SystemPropertyDefinition
             const systemPropInfo = this.resource.entityInfo.properties[index];
 
             this.systemPropArray.push(systemPropInfo);
 
           } else {
-            console.error('invalid property: ', this.resource.entityInfo.properties[index]);
+            // all other properties that are not a ResourcePropertyDefinition or SystemPropertyDefinition
+            console.log('other property: ', this.resource.entityInfo.properties[index] + ' ' + index);
           }
 
           i++;
