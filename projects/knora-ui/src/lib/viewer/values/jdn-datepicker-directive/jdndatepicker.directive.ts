@@ -6,6 +6,7 @@ import {DateInputComponent} from '../date-value/date-input/date-input.component'
 import {BehaviorSubject} from 'rxjs';
 
 export function makeCalendarToken() {
+  console.log('factory')
   return new BehaviorSubject('Gregorian');
 }
 
@@ -37,7 +38,7 @@ export class JDNDatepickerDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes, this.activeCalendarToken.getValue())
+    // console.log(changes, this.activeCalendarToken);
     this.activeCalendarToken.next(this.activeCalendar);
   }
 
