@@ -16,8 +16,13 @@ import { BooleanValueComponent } from './values/boolean-value/boolean-value.comp
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
 import { ColorValueComponent } from './values/color-value/color-value.component';
 import { UriValueComponent } from './values/uri-value/uri-value.component';
-import { IntervalValueComponent } from './values/interval-value/interval-value.component';
-import { IntervalInputComponent } from './values/interval-value/interval-input/interval-input.component';
+import {IntervalValueComponent} from './values/interval-value/interval-value.component';
+import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
+import { TimeValueComponent } from './values/time-value/time-value.component';
+import { TimeInputComponent } from './values/time-value/time-input/time-input.component';
+import {MatDatepickerModule} from '@angular/material';
+import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
+import { JDNDatepickerDirective } from './values/time-value/jdn-datepicker-directive/jdndatepicker.directive';
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
 
 @NgModule({
@@ -32,18 +37,22 @@ import { ColorPickerComponent } from './values/color-value/color-picker/color-pi
     UriValueComponent,
     IntervalValueComponent,
     IntervalInputComponent,
+    TimeValueComponent,
+    TimeInputComponent,
     ListValueComponent,
     SublistValueComponent
   ],
-  imports: [
+  imports : [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
     MatCheckboxModule,
     MatMenuModule,
+    MatDatepickerModule,
+    MatJDNConvertibleCalendarDateAdapterModule,
     ColorPickerModule
-  ],
-  exports: [
+    ],
+  exports : [
     TextValueAsStringComponent,
     IntValueComponent,
     DisplayEditComponent,
@@ -54,6 +63,7 @@ import { ColorPickerComponent } from './values/color-value/color-picker/color-pi
     ListValueComponent,
     SublistValueComponent,
     ColorValueComponent,
+    TimeValueComponent
   ]
 })
 export class ViewerModule {
