@@ -1,15 +1,21 @@
 import {Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self} from '@angular/core';
-import {ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators} from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  NgControl,
+  NgForm,
+  Validators
+} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {KnoraDate, KnoraPeriod} from '@knora/api';
 import {CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, mixinErrorState} from '@angular/material/core';
 import {Subject} from 'rxjs';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {FocusMonitor} from '@angular/cdk/a11y';
-import {JDNConvertibleCalendarModule} from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
-import {CalendarDate, JulianCalendarDate} from 'jdnconvertiblecalendar';
-import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
-import CalendarPeriod = JDNConvertibleCalendarModule.CalendarPeriod;
+import {CalendarDate, CalendarPeriod, GregorianCalendarDate, JulianCalendarDate} from 'jdnconvertiblecalendar';
 import {CalendarHeaderComponent} from '../calendar-header/calendar-header.component';
 
 /** Error when invalid control is dirty, touched, or submitted. */
