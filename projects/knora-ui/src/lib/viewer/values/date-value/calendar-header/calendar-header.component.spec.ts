@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, flush, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, flush, inject, TestBed} from '@angular/core/testing';
 
 import {CalendarHeaderComponent} from './calendar-header.component';
 import {ACTIVE_CALENDAR, JDNConvertibleCalendarDateAdapter} from "jdnconvertiblecalendardateadapter";
@@ -10,6 +10,10 @@ import {BehaviorSubject} from "rxjs";
 import {Component, DebugElement} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MAT_JDN_DATE_FORMATS} from "jdnconvertiblecalendardateadapter/lib/jdnconvertible-calendar-date-formats";
+import {JDNConvertibleCalendarModule} from "jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar";
+import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
+import {CalendarDate, CalendarPeriod, JulianCalendarDate} from "jdnconvertiblecalendar";
 
 @Component({
   selector: `mat-calendar-header`,
@@ -23,7 +27,6 @@ describe('CalendarHeaderComponent', () => {
   let component: CalendarHeaderComponent<JDNConvertibleCalendarDateAdapter>;
   let fixture: ComponentFixture<CalendarHeaderComponent<JDNConvertibleCalendarDateAdapter>>;
 
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -34,10 +37,22 @@ describe('CalendarHeaderComponent', () => {
       ],
       declarations: [CalendarHeaderComponent, TestMatCalendarHeaderComponent],
       providers: [
-        {provide: MatCalendar, useValue: {}},
+        {
+          provide: MatCalendar, useValue: {
+            activeDate: new GregorianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 3, 17), new CalendarDate(2020, 3, 17))),
+            updateTodaysDate: () => {}
+          }
+        },
         {provide: DateAdapter, useClass: JDNConvertibleCalendarDateAdapter},
         {provide: ACTIVE_CALENDAR, useValue: new BehaviorSubject('Gregorian')},
-        {provide: MatDatepickerContent, useValue: {}}
+        {
+          provide: MatDatepickerContent, useValue: {
+            datepicker: {
+              select: () => {
+              }
+            }
+          }
+        }
       ]
     })
       .compileComponents();
@@ -83,5 +98,36 @@ describe('CalendarHeaderComponent', () => {
     expect(options[1].nativeElement.innerText).toEqual('Julian');
 
   }));
+
+  it('should perform a calendar conversion when the selection is changed', () => {
+
+    const dateAdapter = TestBed.get(DateAdapter);
+
+    const dateAdapterSpy = spyOn(dateAdapter, 'convertCalendar').and.callFake(
+      (date, calendar) => {
+        return new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 3, 4), new CalendarDate(2020, 3, 4)));
+      });
+
+    const matCal = TestBed.get(MatCalendar);
+
+    const matCalendarSpy = spyOn(matCal, 'updateTodaysDate').and.stub();
+
+    const datepickerContent = TestBed.get(MatDatepickerContent);
+
+    const datepickerContentSpy = spyOn(datepickerContent.datepicker, 'select').and.stub();
+
+    component.formControl.setValue('Julian');
+
+    expect(dateAdapterSpy).toHaveBeenCalledTimes(1);
+
+    expect(dateAdapterSpy).toHaveBeenCalledWith(new GregorianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 3, 17), new CalendarDate(2020, 3, 17))), 'Julian');
+
+    expect(matCal.activeDate).toEqual(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 3, 4), new CalendarDate(2020, 3, 4))));
+
+    expect(datepickerContentSpy).toHaveBeenCalledTimes(1);
+
+    expect(matCalendarSpy).toHaveBeenCalledTimes(1);
+
+  });
 
 });
