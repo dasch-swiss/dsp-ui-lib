@@ -1,3 +1,13 @@
+<div class="property-header">
+  <h4 class="label">
+    {{displayValue.propertyLabel}}
+  </h4>
+  <button mat-button
+          class="info"
+          title="info">
+          <mat-icon>info</mat-icon>
+  </button>
+</div>
 <div class="value-component">
   <span [ngSwitch]="displayValue.type">
     <kui-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="constants.TextValue" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-string>

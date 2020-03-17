@@ -1,3 +1,13 @@
+.property-header .label,
+.property-header .info {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.property-header .label {
+    margin: 0em;
+}
+
 .value-component,
 .crud-buttons {
     display: inline-block;
@@ -17,14 +27,18 @@
     display: block;
 }
 
+.info,
 .edit,
 .save,
 .cancel {
     cursor: pointer;
-    margin: 1% 1% 0% 0%;
     border: none;
+    padding: 0em;
+    margin-left: 1em;
+    outline: none;
 }
 
+.info,
 .edit {
     color: #4287f5;
 }

@@ -1,5 +1,8 @@
-.interval-input-container {
+.child-input-component {
+    display: inline-block;
+    vertical-align: bottom;
 }
 
-.interval-input-element {
+.child-input-component:nth-child(2) {
+    padding-left: 2%;
 }
