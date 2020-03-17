@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
       )
     ).subscribe(
       (response: ReadResource) => {
+        console.log('response', response);
         this.iri = response.id;
       }
     );

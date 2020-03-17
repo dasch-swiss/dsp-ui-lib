@@ -5,5 +5,8 @@
     <p>{{resource?.resourceClassComment}}</p>
 
     <!-- kui-property-view -->
-    <kui-property-view [resource]="resource" [propArray]="propArray"></kui-property-view>
+    <div *ngIf="propArray.length !== 0; else noProperty">
+        <kui-property-view [resource]="resource" [propArray]="propArray"></kui-property-view>
+    </div>
+    <ng-template #noProperty>The resource {{resource?.resourceClassLabel}} has no defined properties.</ng-template>
 </div>
