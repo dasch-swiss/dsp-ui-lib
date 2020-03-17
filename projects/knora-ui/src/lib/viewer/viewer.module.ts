@@ -39,6 +39,7 @@ import { ColorPickerComponent } from './values/color-value/color-picker/color-pi
     IntervalInputComponent,
     TimeValueComponent,
     TimeInputComponent,
+    JDNDatepickerDirective,,
     ListValueComponent,
     SublistValueComponent
   ],
