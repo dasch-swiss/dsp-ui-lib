@@ -1,7 +1,7 @@
 .value-component,
 .crud-buttons {
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 .value-component {
@@ -12,17 +12,9 @@
     width: 20%;
 }
 
-:host .parent-value-component ::ng-deep .mat-form-field {
-    vertical-align: top;
-}
-
-:host ::ng-deep .child-value-component {
-    width: 30%;
-}
-
-:host ::ng-deep .value-component-comment{
-    margin-left: 2%;
-    width: 65%;
+:host ::ng-deep .child-value-component,
+:host ::ng-deep .value-component-comment {
+    display: block;
 }
 
 .edit,
@@ -47,5 +39,5 @@
 }
 
 .cancel {
-    color: #f54242;
+    color: #000000;
 }
