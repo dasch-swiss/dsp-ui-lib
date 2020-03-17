@@ -10,24 +10,13 @@ import { mergeMap } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
 
-  iri: string; // resource iri
+  resourceIri: string;
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
   ngOnInit(): void {
-
-    this.knoraApiConnection.v2.auth.login('username', 'root', 'test').pipe(
-      mergeMap(
-        (loginResponse: ApiResponseData<LoginResponse>) => {
-          return this.knoraApiConnection.v2.res.getResource('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
-        }
-      )
-    ).subscribe(
-      (response: ReadResource) => {
-        console.log('response', response);
-        this.iri = response.id;
-      }
-    );
+    this.resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
   }
+
 }

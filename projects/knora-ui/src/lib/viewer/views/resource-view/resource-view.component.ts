@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnChanges, OnInit } from '@angular/core';
-import { IHasProperty, KnoraApiConnection, PropertyDefinition, ReadResource, ReadValue, ResourcePropertyDefinition, ApiResponseError } from '@knora/api';
+import { IHasProperty, KnoraApiConnection, PropertyDefinition, ReadResource, ReadValue, ResourcePropertyDefinition, ApiResponseError, Constants, SystemPropertyDefinition } from '@knora/api';
 import { KnoraApiConnectionToken } from '../../../core/core.module';
 
 
@@ -9,6 +9,7 @@ export interface PropertyInfoValues {
   propDef: PropertyDefinition;
   values: ReadValue[];
 }
+
 
 @Component({
   selector: 'kui-resource-view',
@@ -22,21 +23,20 @@ export class ResourceViewComponent implements OnInit, OnChanges {
    *
    * @param [iri] Resource iri
    */
-  @Input() iri?: string;
+  @Input() iri: string;
 
   resource: ReadResource;
 
   propArray: PropertyInfoValues[] = [];
 
+  systemPropArray: PropertyDefinition[] = [];
+
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
 
   ngOnInit() {
-    console.log('iri on init', this.iri);
-    // this.getResource(this.iri);
   }
 
   ngOnChanges() {
-    console.log('iri on changes', this.iri);
     this.getResource(this.iri);
   }
 
@@ -46,6 +46,7 @@ export class ResourceViewComponent implements OnInit, OnChanges {
    * @param iri Resource iri
    */
   getResource(iri: string): void {
+
     this.knoraApiConnection.v2.res.getResource(iri).subscribe(
       (response: ReadResource) => {
         this.resource = response;
@@ -66,9 +67,18 @@ export class ResourceViewComponent implements OnInit, OnChanges {
             };
 
             this.propArray.push(propInfoAndValues);
+
+          } else if (this.resource.entityInfo.properties[index] &&
+            this.resource.entityInfo.properties[index] instanceof SystemPropertyDefinition) {
+
+            const systemPropInfo = this.resource.entityInfo.properties[index];
+
+            this.systemPropArray.push(systemPropInfo);
+
           } else {
-            console.error('Error');
+            console.error('invalid property: ', this.resource.entityInfo.properties[index]);
           }
+
           i++;
         }
 

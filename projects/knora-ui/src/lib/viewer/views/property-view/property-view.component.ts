@@ -29,6 +29,7 @@ export class PropertyViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }
