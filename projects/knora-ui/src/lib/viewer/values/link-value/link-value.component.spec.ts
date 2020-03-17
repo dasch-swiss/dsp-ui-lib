@@ -224,15 +224,7 @@ describe('LinkValueComponent', () => {
     let commentInputNativeElement;
 
     beforeEach(() => {
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
-      valuesSpy.v2.search.doSearchByLabel.and.callFake(
-        () => {
-          const res = new ReadResource();
-          res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
-          res.label = 'hidden thing';
-          return of([res]);
-        }
-      );
+
       testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
       testHostComponent = testHostFixture.componentInstance;
       testHostFixture.detectChanges();
@@ -247,15 +239,30 @@ describe('LinkValueComponent', () => {
       commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
     it('should create a value', () => {
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+        () => {
+          const res = new ReadResource();
+          res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
+          res.label = 'hidden thing';
+          return of([res]);
+        }
+      );
       // expect(testHostComponent.inputValueComponent.valueFormControl).toEqual(null);
       expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      testHostComponent.inputValueComponent.searchByLabel('thing');
+
+      testHostFixture.detectChanges();
+      expect(valuesSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('thing', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'});
+      expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
       // simulate user input
       const res = new ReadResource();
       res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
       res.label = 'hidden thing';
       testHostComponent.inputValueComponent.valueFormControl.setValue(res);
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       const newValue = testHostComponent.inputValueComponent.getNewValue();
 
@@ -264,33 +271,33 @@ describe('LinkValueComponent', () => {
       expect((newValue as CreateLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
 
     });
-    // it('should reset form after cancellation', () => {
-    //   // simulate user input
-    //   const res = new ReadResource();
-    //   res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
-    //   res.label = 'hidden thing';
-    //   testHostComponent.inputValueComponent.valueFormControl.setValue(res);
-    //
-    //   testHostFixture.detectChanges();
-    //
-    //   commentInputNativeElement.value = 'created comment';
-    //
-    //   commentInputNativeElement.dispatchEvent(new Event('input'));
-    //
-    //   testHostFixture.detectChanges();
-    //
-    //   expect(testHostComponent.inputValueComponent.mode).toEqual('create');
-    //
-    //   expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
-    //
-    //   testHostComponent.inputValueComponent.resetFormControl();
-    //
-    //   expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-    //
-    //   expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual('');
-    //
-    //   expect(commentInputNativeElement.value).toEqual('');
-    //
-    // });
+    it('should reset form after cancellation', () => {
+      // simulate user input
+      const res = new ReadResource();
+      res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
+      res.label = 'hidden thing';
+      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+
+      testHostFixture.detectChanges();
+
+      commentInputNativeElement.value = 'created comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual('');
+
+      expect(commentInputNativeElement.value).toEqual('');
+
+    });
   });
 });
