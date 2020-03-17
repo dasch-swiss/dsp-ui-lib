@@ -51,8 +51,8 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
 
   calendarHeaderComponent = CalendarHeaderComponent;
   period: boolean;
-  startCalendarName = 'Gregorian';
-  endCalendarName?;
+  startDateControl: FormControl;
+  endDateControl: FormControl;
 
   onChange = (_: any) => {
   };
@@ -157,9 +157,9 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
           dateStart: startDate,
           dateEnd: null
         });
+
         this.period = false;
-        this.startCalendarName = this.form.controls.dateStart.value.calendarName;
-        this.endCalendarName = undefined;
+
       } else {
         // period
         const period = (date as KnoraPeriod);
@@ -172,15 +172,11 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
         });
 
         this.period = true;
-        this.startCalendarName = this.form.controls.dateStart.value.calendarName;
-        this.endCalendarName = this.form.controls.dateEnd.value.calendarName;
       }
     } else {
       this.form.setValue({dateStart: null, dateEnd: null});
 
       this.period = false;
-      this.startCalendarName = 'Gregorian';
-      this.endCalendarName = undefined;
     }
     this.stateChanges.next();
   }
@@ -197,10 +193,12 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
+    this.startDateControl = new FormControl(null, Validators.required);
+    this.endDateControl = new FormControl(null);
 
     this.form = fb.group({
-      dateStart: [null, Validators.required],
-      dateEnd: [null]
+      dateStart: this.startDateControl,
+      dateEnd: this.endDateControl
     });
 
 

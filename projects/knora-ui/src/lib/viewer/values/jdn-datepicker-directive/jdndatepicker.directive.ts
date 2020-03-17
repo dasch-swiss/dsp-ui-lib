@@ -1,4 +1,4 @@
-import {Directive, Host, Inject, Input, OnChanges} from '@angular/core';
+import {Directive, Host, Inject, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {DateAdapter, MAT_DATE_LOCALE} from '@angular/material';
 import {JDNConvertibleCalendar} from 'jdnconvertiblecalendar';
 import {ACTIVE_CALENDAR, JDNConvertibleCalendarDateAdapter} from 'jdnconvertiblecalendardateadapter';
@@ -18,12 +18,26 @@ export function makeCalendarToken() {
 })
 export class JDNDatepickerDirective implements OnChanges {
 
-  @Input() activeCalendar: 'Gregorian' | 'Julian' | 'Islamic';
+  private _activeCalendar: 'Gregorian' | 'Julian' | 'Islamic';
+
+  @Input()
+  set activeCalendar(value: 'Gregorian' | 'Julian' | 'Islamic' | null) {
+    if (value !== null && value !== undefined) {
+      this._activeCalendar = value;
+    } else {
+      this._activeCalendar = 'Gregorian';
+    }
+  }
+
+  get activeCalendar() {
+    return this._activeCalendar;
+  }
 
   constructor(@Inject(ACTIVE_CALENDAR) private activeCalendarToken, private adapter: DateAdapter<JDNConvertibleCalendar>) {
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes, this.activeCalendarToken.getValue())
     this.activeCalendarToken.next(this.activeCalendar);
   }
 

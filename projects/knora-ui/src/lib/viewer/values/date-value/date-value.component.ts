@@ -100,8 +100,6 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     updatedDateValue.id = this.displayValue.id;
 
-    console.log(this.valueFormControl.value);
-
     const dateOrPeriod = this.valueFormControl.value;
 
     if (dateOrPeriod instanceof KnoraDate) {
