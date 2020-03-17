@@ -1,4 +1,4 @@
-import {Directive, Host, Inject, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Directive, Host, Inject, Input, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
 import {DateAdapter, MAT_DATE_LOCALE} from '@angular/material';
 import {JDNConvertibleCalendar} from 'jdnconvertiblecalendar';
 import {ACTIVE_CALENDAR, JDNConvertibleCalendarDateAdapter} from 'jdnconvertiblecalendardateadapter';
@@ -6,7 +6,6 @@ import {DateInputComponent} from '../date-value/date-input/date-input.component'
 import {BehaviorSubject} from 'rxjs';
 
 export function makeCalendarToken() {
-  console.log('factory')
   return new BehaviorSubject('Gregorian');
 }
 
@@ -17,7 +16,7 @@ export function makeCalendarToken() {
     {provide: ACTIVE_CALENDAR, useFactory: makeCalendarToken}
   ]
 })
-export class JDNDatepickerDirective implements OnChanges {
+export class JDNDatepickerDirective implements OnChanges, OnDestroy {
 
   private _activeCalendar: 'Gregorian' | 'Julian' | 'Islamic';
 
@@ -38,8 +37,11 @@ export class JDNDatepickerDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log(changes, this.activeCalendarToken);
     this.activeCalendarToken.next(this.activeCalendar);
+  }
+
+  ngOnDestroy(): void {
+    this.activeCalendarToken.complete();
   }
 
 }

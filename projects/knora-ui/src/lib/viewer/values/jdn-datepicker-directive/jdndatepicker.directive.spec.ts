@@ -30,16 +30,16 @@ describe('JDNDatepickerDirective', () => {
 
   let testBehaviourSubject;
   let setNextCalSpy;
-  let setSubscribeSpy;
+  let setCompleteSpy;
 
   let testBehaviourSubjSpy;
 
   beforeEach(async(() => {
 
-    testBehaviourSubject = jasmine.createSpyObj('ACTIVE_CALENDAR', ['next', 'getValue', 'subscribe']);
+    testBehaviourSubject = jasmine.createSpyObj('ACTIVE_CALENDAR', ['next', 'complete']);
 
     setNextCalSpy = testBehaviourSubject.next.and.stub();
-    setSubscribeSpy = testBehaviourSubject.subscribe.and.stub();
+    setCompleteSpy = testBehaviourSubject.complete.and.stub();
 
     TestBed.configureTestingModule({
       declarations: [
@@ -91,5 +91,25 @@ describe('JDNDatepickerDirective', () => {
 
   });
 
+  it('should set the calendar to Gregorian when called with null', () => {
+    testHostComponent.activeCalendar = null;
+    testHostFixture.detectChanges();
+
+    expect(testBehaviourSubjSpy.next).toHaveBeenCalledTimes(2);
+
+    expect(testBehaviourSubjSpy.next.calls.all()[0].args).toEqual(['Gregorian']);
+    expect(testBehaviourSubjSpy.next.calls.all()[1].args).toEqual(['Gregorian']);
+
+  });
+
+  it('should complete the BehaviourSubject when destroyed', () => {
+
+    expect(setCompleteSpy).toHaveBeenCalledTimes(0);
+
+    testHostComponent.jdnDir.ngOnDestroy();
+
+    expect(setCompleteSpy).toHaveBeenCalledTimes(1);
+
+  });
 
 });
