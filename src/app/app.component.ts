@@ -32,7 +32,6 @@ export class AppComponent implements OnInit {
       (resource: ReadResource) => {
         this.testthing = resource;
         this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue')[0];
-
       }
     );
 

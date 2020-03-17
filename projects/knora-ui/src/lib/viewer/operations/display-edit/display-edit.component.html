@@ -15,8 +15,9 @@
     </kui-color-value>
     <kui-interval-value #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]="displayValue">
     </kui-interval-value>
+    <kui-time-value #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="displayValue">
+    </kui-time-value>
     <kui-link-value #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"></kui-link-value>
-    
   </span>
 </div>
 <div>

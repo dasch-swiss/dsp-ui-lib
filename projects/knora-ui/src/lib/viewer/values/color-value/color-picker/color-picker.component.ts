@@ -4,8 +4,6 @@ import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional
 import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators } from '@angular/forms';
 import { CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, MatFormFieldControl, mixinErrorState } from '@angular/material';
 import { Subject } from 'rxjs';
-import { CustomRegex } from '../../custom-regex';
-
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class ColorPickerErrorStateMatcher implements ErrorStateMatcher {
