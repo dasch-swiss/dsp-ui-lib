@@ -2,7 +2,7 @@
     <mat-checkbox [formControlName]="'booleanValue'" class="value boolValue child-value-component" (change)="onChecked()">
         {{booleanLabel}}
     </mat-checkbox>
-    <mat-form-field class="large-field value-component-comment">
+    <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
         <textarea matInput
                   cdkTextareaAutosize
                   #autosize="cdkTextareaAutosize"

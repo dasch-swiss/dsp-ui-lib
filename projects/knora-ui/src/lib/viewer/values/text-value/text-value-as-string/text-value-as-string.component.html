@@ -2,7 +2,7 @@
     <mat-form-field class="large-field child-value-component">
         <input matInput [formControlName]="'textValue'" class="value" placeholder="Text value" type="text" [readonly]="mode === 'read'">
     </mat-form-field>
-    <mat-form-field class="large-field value-component-comment" *ngIf="mode.toString() !== 'read' || (form.controls.comment.value !== '' && form.controls.comment.value !== null)">
+    <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
         <textarea matInput
                   cdkTextareaAutosize
                   #autosize="cdkTextareaAutosize"

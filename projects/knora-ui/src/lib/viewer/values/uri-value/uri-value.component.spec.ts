@@ -60,9 +60,6 @@ class TestHostCreateValueComponent implements OnInit {
 }
 
 describe('UriValueComponent', () => {
-  let component: UriValueComponent;
-  let fixture: ComponentFixture<UriValueComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ 
@@ -100,9 +97,6 @@ describe('UriValueComponent', () => {
       valueComponentDe = hostCompDe.query(By.directive(UriValueComponent));
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
-
-      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -154,6 +148,9 @@ describe('UriValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 

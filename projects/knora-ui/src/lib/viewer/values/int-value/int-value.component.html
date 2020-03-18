@@ -2,7 +2,7 @@
     <mat-form-field class="large-field child-value-component">
         <input matInput [formControlName]="'intValue'" class="value" placeholder="Int value" type="number" [readonly]="mode === 'read'">
     </mat-form-field>
-    <mat-form-field class="large-field value-component-comment">
+    <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
         <textarea matInput
                   cdkTextareaAutosize
                   #autosize="cdkTextareaAutosize"

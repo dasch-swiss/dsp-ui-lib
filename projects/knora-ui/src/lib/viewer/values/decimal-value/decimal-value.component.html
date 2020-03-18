@@ -2,7 +2,7 @@
     <mat-form-field class="large-field child-value-component">
         <input matInput [formControlName]="'decimalValue'" class="value" placeholder="Decimal value" type="number" [readonly]="mode === 'read'">
     </mat-form-field>
-    <mat-form-field class="large-field value-component-comment">
+    <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
         <textarea matInput
                   cdkTextareaAutosize
                   #autosize="cdkTextareaAutosize"

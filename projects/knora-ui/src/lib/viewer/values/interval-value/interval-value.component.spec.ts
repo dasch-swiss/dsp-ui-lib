@@ -148,8 +148,7 @@ describe('IntervalValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(IntervalValueComponent));
-      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
+      
     });
 
     it('should display an existing value', () => {
@@ -215,6 +214,9 @@ describe('IntervalValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 

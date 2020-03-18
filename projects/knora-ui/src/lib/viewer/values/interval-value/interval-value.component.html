@@ -5,7 +5,7 @@
         Change value
       </mat-error>
     </mat-form-field>
-    <mat-form-field class="large-field value-component-comment">
+    <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
       <textarea matInput
                 cdkTextareaAutosize
                 #autosize="cdkTextareaAutosize"

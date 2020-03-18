@@ -271,6 +271,7 @@ describe('TextValueAsStringComponent', () => {
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      console.log('commentBooleanDebugElement: ', commentInputDebugElement);
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
     });
