@@ -34,7 +34,7 @@
 }
 
 .crud-buttons {
-    grid-row-start: 2;
+    grid-row-start: 1;
     grid-row-end: auto;
     grid-column-start: 2;
     grid-column-end: 3;
@@ -50,6 +50,17 @@
 :host ::ng-deep .child-value-component,
 :host ::ng-deep .value-component-comment {
     display: block;
+}
+
+:host ::ng-deep .parent-component-wrapper .value-component-comment {
+    margin-top: -2em;
+}
+
+:host ::ng-deep .custom-error-message {
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 12px;
+    margin-top: -1em;
+    padding-bottom: 1em;
 }
 
 .info,

@@ -16,7 +16,7 @@
                   spellcheck="false">
         </textarea>
     </mat-form-field>
-    <mat-error *ngIf="form.controls.textValue.hasError('valueNotChanged')">
+    <mat-error class="custom-error-message" *ngIf="form.controls.textValue.hasError('valueNotChanged')">
         Please change the value
     </mat-error>
 </span>
