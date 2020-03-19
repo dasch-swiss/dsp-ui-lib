@@ -56,6 +56,10 @@
     margin-top: -2em;
 }
 
+:host ::ng-deep .parent-value-component .child-value-component .mat-form-field-wrapper .mat-form-field-infix {
+    border-top: 0em solid transparent;
+}
+
 :host ::ng-deep .custom-error-message {
     font-family: Roboto,"Helvetica Neue",sans-serif;
     font-size: 12px;
