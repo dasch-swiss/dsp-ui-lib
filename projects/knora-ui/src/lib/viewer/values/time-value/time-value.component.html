@@ -1,5 +1,5 @@
 <span [formGroup]="form">
-    <mat-form-field class="large-field child-value-component">
+    <mat-form-field class="large-field child-value-component" floatLabel="never">
       <kui-time-input #timeInput [formControlName]="'timeValue'" class="value" [readonly]="mode === 'read'" [errorStateMatcher]="matcher"></kui-time-input>
       <mat-error class="custom-error-message" *ngIf="form.controls.timeValue.hasError('valueNotChanged')">
         Please change the value
