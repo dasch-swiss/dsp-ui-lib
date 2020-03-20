@@ -69,6 +69,6 @@ describe('DateInputComponent', () => {
 
   it('should create', () => {
     expect(testHostComponent).toBeTruthy();
-    console.log(testHostComponent.dateInputComponent);
+    // console.log(testHostComponent.dateInputComponent);
   });
 });

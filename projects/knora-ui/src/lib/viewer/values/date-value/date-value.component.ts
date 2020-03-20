@@ -115,6 +115,50 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     this.unsubscribeFromValueChanges();
   }
 
+  /**
+   * Given a value and a period or Date, populates the value.
+   *
+   * @param value the value to be populated.
+   * @param dateOrPeriod the date or period to read from.
+   */
+  populateValue(value: UpdateDateValue | CreateDateValue, dateOrPeriod: KnoraDate | KnoraPeriod) {
+
+    if (dateOrPeriod instanceof KnoraDate) {
+
+      value.calendar = dateOrPeriod.calendar;
+      value.startEra = dateOrPeriod.era;
+      value.startDay = dateOrPeriod.day;
+      value.startMonth = dateOrPeriod.month;
+      value.startYear = dateOrPeriod.year;
+
+      // TODO: handle precision correctly
+
+      value.endEra = value.startEra;
+      value.endDay = value.startDay;
+      value.endMonth = value.startMonth;
+      value.endYear = value.startYear;
+
+    } else if (dateOrPeriod instanceof KnoraPeriod) {
+
+      value.calendar = dateOrPeriod.start.calendar;
+
+      // TODO: handle precision correctly
+
+      value.startEra = dateOrPeriod.start.era;
+      value.startDay = dateOrPeriod.start.day;
+      value.startMonth = dateOrPeriod.start.month;
+      value.startYear = dateOrPeriod.start.year;
+
+      // TODO: handle precision correctly
+
+      value.endEra = dateOrPeriod.end.era;
+      value.endDay = dateOrPeriod.end.day;
+      value.endMonth = dateOrPeriod.end.month;
+      value.endYear = dateOrPeriod.start.year;
+
+    }
+  }
+
   getNewValue(): CreateDateValue | false {
     if (this.mode !== 'create' || !this.form.valid) {
       return false;
@@ -122,7 +166,9 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     const newDateValue = new CreateDateValue();
 
-    // newDateValue.int = this.valueFormControl.value;
+    const dateOrPeriod = this.valueFormControl.value;
+
+    this.populateValue(newDateValue, dateOrPeriod);
 
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       newDateValue.valueHasComment = this.commentFormControl.value;
@@ -142,39 +188,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     const dateOrPeriod = this.valueFormControl.value;
 
-    if (dateOrPeriod instanceof KnoraDate) {
-
-      updatedDateValue.calendar = dateOrPeriod.calendar;
-      updatedDateValue.startEra = dateOrPeriod.era;
-      updatedDateValue.startDay = dateOrPeriod.day;
-      updatedDateValue.startMonth = dateOrPeriod.month;
-      updatedDateValue.startYear = dateOrPeriod.year;
-
-      // TODO: handle precision correctly
-
-      updatedDateValue.endEra = updatedDateValue.startEra;
-      updatedDateValue.endDay = updatedDateValue.startDay;
-      updatedDateValue.endMonth = updatedDateValue.startMonth;
-      updatedDateValue.endYear = updatedDateValue.startYear;
-
-    } else if (dateOrPeriod instanceof KnoraPeriod) {
-
-      updatedDateValue.calendar = dateOrPeriod.start.calendar;
-
-      updatedDateValue.startEra = dateOrPeriod.start.era;
-      updatedDateValue.startDay = dateOrPeriod.start.day;
-      updatedDateValue.startMonth = dateOrPeriod.start.month;
-      updatedDateValue.startYear = dateOrPeriod.start.year;
-
-      updatedDateValue.endEra = dateOrPeriod.end.era;
-      updatedDateValue.endDay = dateOrPeriod.end.day;
-      updatedDateValue.endMonth = dateOrPeriod.end.month;
-      updatedDateValue.endYear = dateOrPeriod.start.year;
-
-    } else {
-      return false;
-    }
-
+    this.populateValue(updatedDateValue, dateOrPeriod);
 
     // add the submitted comment to updatedIntValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
