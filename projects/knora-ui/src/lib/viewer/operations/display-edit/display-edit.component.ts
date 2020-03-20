@@ -37,6 +37,8 @@ export class DisplayEditComponent implements OnInit {
 
   editModeActive = false;
 
+  shouldShowCommentToggle: boolean;
+
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
@@ -49,11 +51,13 @@ export class DisplayEditComponent implements OnInit {
 
     this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
 
+    this.checkCommentToggleVisibility();
   }
 
   activateEditMode() {
     this.editModeActive = true;
     this.mode = 'update';
+    this.checkCommentToggleVisibility();
   }
 
   saveEditValue() {
@@ -78,6 +82,8 @@ export class DisplayEditComponent implements OnInit {
           // console.log(res2);
           this.displayValue = res2.getValues(this.displayValue.property)[0];
           this.mode = 'read';
+          this.displayValueComponent.updateCommentVisibility();
+          this.checkCommentToggleVisibility();
         }
       );
 
@@ -89,7 +95,16 @@ export class DisplayEditComponent implements OnInit {
   cancelEditValue() {
     this.editModeActive = false;
     this.mode = 'read';
+    this.displayValueComponent.updateCommentVisibility();
+    this.checkCommentToggleVisibility();
   }
 
+  toggleComment() {
+    this.displayValueComponent.toggleCommentVisibility();
+  }
+
+  checkCommentToggleVisibility() {
+    this.shouldShowCommentToggle = (this.mode === 'read' && this.displayValue.valueHasComment !== '' && this.displayValue.valueHasComment !== undefined);
+  }
 
 }

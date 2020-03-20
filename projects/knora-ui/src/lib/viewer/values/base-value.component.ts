@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 
 export abstract class BaseValueComponent {
 
-  shouldShowComment: boolean;
+  shouldShowComment = false;
 
   /**
    * Value to be displayed, if any.
@@ -113,12 +113,17 @@ export abstract class BaseValueComponent {
   }
 
   /**
-   * Checks if the comment should be displayed
-   * Comment is displayed in READ mode only if there is a value
-   * Comment is always displayed in UPDATE or CREATE mode
+   * Display comment field if in UPDATE or CREATE mode
    */
   updateCommentVisibility(): void {
-    this.shouldShowComment = (this.mode !== 'read' || (this.form.controls.comment.value !== '' && this.form.controls.comment.value !== null));
+    this.shouldShowComment = this.mode !== 'read' ? true : false;
+  }
+
+  /**
+   * Toggles visibility of the comment field regardless of the mode
+   */
+  toggleCommentVisibility(): void {
+    this.shouldShowComment = !this.shouldShowComment;
   }
 
   /**
