@@ -1,6 +1,14 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue} from '@knora/api';
-import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  NgForm,
+  ValidatorFn
+} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {BaseValueComponent} from '../base-value.component';
 import {ErrorStateMatcher} from '@angular/material';
@@ -29,6 +37,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
   valueChangesSubscription: Subscription;
 
+  // TODO: check that both dates have the same calendar in case of a KnoraPeriod
   customValidators = [];
 
   matcher = new IntervalErrorStateMatcher();
@@ -36,6 +45,37 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
+
+  /**
+   * Returns true if both dates are the same.
+   *
+   * @param date1 date for comparison with date2
+   * @param date2 date for comparison with date 1
+   */
+  sameDate(date1: KnoraDate, date2: KnoraDate): boolean {
+    return (date1.calendar === date2.calendar && date1.year === date2.year && date1.month === date2.month && date1.day === date2.day);
+  }
+
+  standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn
+    = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+
+      let sameValue: boolean;
+      if (initValue instanceof KnoraDate && control.value instanceof KnoraDate) {
+        sameValue = this.sameDate(initValue, control.value);
+      } else if (initValue instanceof KnoraPeriod && control.value instanceof KnoraPeriod) {
+        sameValue = this.sameDate(initValue.start, control.value.start) && this.sameDate(initValue.end, control.value.end);
+      } else {
+        // init value and current value have different types
+        sameValue = false;
+      }
+
+      const invalid = (sameValue && initValue.end === control.value.end)
+        && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+
+      return invalid ? {valueNotChanged: {value: control.value}} : null;
+    };
+  };
 
   getInitValue(): KnoraDate | KnoraPeriod | null {
     if (this.displayValue !== undefined) {
