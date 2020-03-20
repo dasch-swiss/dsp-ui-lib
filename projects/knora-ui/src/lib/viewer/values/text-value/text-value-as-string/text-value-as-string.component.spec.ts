@@ -270,10 +270,6 @@ describe('TextValueAsStringComponent', () => {
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
-      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      console.log('commentBooleanDebugElement: ', commentInputDebugElement);
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
-
     });
 
     it('should display an existing value', () => {
@@ -288,10 +284,6 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.readOnly).toEqual(true);
 
-      expect(commentInputNativeElement.value).toEqual('this is a comment');
-
-      expect(commentInputNativeElement.readOnly).toEqual(true);
-
     });
 
     it('should make an existing value editable', () => {
@@ -299,6 +291,9 @@ describe('TextValueAsStringComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
@@ -338,6 +333,9 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
@@ -369,6 +367,9 @@ describe('TextValueAsStringComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
 
@@ -410,7 +411,20 @@ describe('TextValueAsStringComponent', () => {
 
       expect(valueInputNativeElement.value).toEqual('my updated text');
 
+      expect(testHostComponent.inputValueComponent.displayValue.valueHasComment).toEqual('my updated comment');
+      
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+
       expect(commentInputNativeElement.value).toEqual('my updated comment');
+
+      testHostComponent.mode = 'read';
+
+      testHostFixture.detectChanges();
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

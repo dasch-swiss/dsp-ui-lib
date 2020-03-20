@@ -69,6 +69,9 @@ class TestIntValueComponent implements OnInit {
 
     return updateIntVal;
   }
+
+  updateCommentVisibility() : void { }
+
 }
 
 @Component({
@@ -127,6 +130,7 @@ class TestDecimalValueComponent implements OnInit {
 
     return updateDecimalVal;
   }
+
 }
 
 @Component({
@@ -183,7 +187,7 @@ class TestHostDisplayValueComponent implements OnInit {
   }
 }
 
-describe('DisplayEditComponent', () => {
+fdescribe('DisplayEditComponent', () => {
   let testHostComponent: TestHostDisplayValueComponent;
   let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
