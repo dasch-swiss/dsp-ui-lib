@@ -4,6 +4,7 @@ import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiC
 import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core';
+
 @Component({
   selector: 'kui-link-value',
   templateUrl: './link-value.component.html',
@@ -20,6 +21,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   form: FormGroup;
 
   valueChangesSubscription: Subscription;
+  labelChangesSubscription: Subscription;
   // label cannot contain logical operations of lucene index
   customValidators = [];
 
@@ -31,7 +33,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    * Displays a selected resource using its label.
    *
    * @param resource the resource to be displayed (or no selection yet).
-   * @returns
    */
   displayResource(resource: ReadResource | null): string {
 
@@ -45,7 +46,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    * Search for resources whose labels contain the given search term, restricting to to the given properties object constraint.
    * this is to be used for update and new linked resources
    *
-   * @param label to be searched
+   * @param searchTerm label to be searched
    */
   searchByLabel(searchTerm: string): ReadResource[] {
     const linkType = this.parentResource.getLinkPropertyIriFromLinkValuePropertyIri(this.propType);
@@ -53,9 +54,9 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
       this.restrictToResourceClass = this.parentResource.entityInfo.properties[linkType].objectType;
     }
     // at least 3 characters are required
-    if (searchTerm.length >= 3) {
+    if ( typeof searchTerm === 'string' && searchTerm.length >= 3) {
 
-      this.knoraApiConnection.v2.search.doSearchByLabel(searchTerm, 0, {limitToResourceClass: this.restrictToResourceClass} ).subscribe(
+      this.knoraApiConnection.v2.search.doSearchByLabel(searchTerm, 0, {limitToResourceClass: this.restrictToResourceClass}).subscribe(
         (response: ReadResource[]) => {
           this.resources = response;
         });
@@ -81,28 +82,10 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
 
       const invalid = (!(control.value instanceof ReadResource) || initValue.id === control.value.id)
         && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
-
       return invalid ? {valueNotChanged: {value: control.value}} : null;
     };
   };
-
-  // override the resetFormControl() from the base component to deal with initial link value label
-  resetFormControl(): void {
-    super.resetFormControl();
-
-    if (this.valueFormControl !== undefined) {
-      if (this.mode !== 'read') {
-        this.valueFormControl.setValue('');
-        this.valueChangesSubscription = this.valueFormControl.valueChanges.subscribe(data => {
-          this.resources = this.searchByLabel(data);
-        });
-        this.valueFormControl.clearValidators();
-      }
-    }
-  }
-
   ngOnInit() {
-
     // initialize form control elements
     this.valueFormControl = new FormControl(null);
 
@@ -114,6 +97,9 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
         this.valueFormControl.updateValueAndValidity();
       }
     );
+    this.labelChangesSubscription = this.valueFormControl.valueChanges.subscribe(data => {
+      this.resources = this.searchByLabel(data);
+    });
     this.form = this.fb.group({
       linkValue: this.valueFormControl,
       comment: this.commentFormControl
@@ -128,6 +114,9 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   // unsubscribe when the object is destroyed to prevent memory leaks
   ngOnDestroy(): void {
     this.unsubscribeFromValueChanges();
+    if (this.labelChangesSubscription !== undefined) {
+      this.labelChangesSubscription.unsubscribe();
+    }
   }
   getNewValue(): CreateLinkValue | false {
     if (this.mode !== 'create' || !this.form.valid) {
@@ -152,13 +141,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
 
     updatedLinkValue.id = this.displayValue.id;
     
-    // add IRI to updatedLinkValue only if the user submitted a new Link value
-    if (this.valueFormControl.value !== null && this.valueFormControl.value !== '') {
-      updatedLinkValue.linkedResourceIri = this.valueFormControl.value.id;
-    } else {
-      // if user just updated comment value keep the old link value
-      updatedLinkValue.linkedResourceIri = this.displayValue.linkedResourceIri;
-    }
+    updatedLinkValue.linkedResourceIri = this.valueFormControl.value.id;
     // add the submitted comment to updatedLinkValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedLinkValue.valueHasComment = this.commentFormControl.value;

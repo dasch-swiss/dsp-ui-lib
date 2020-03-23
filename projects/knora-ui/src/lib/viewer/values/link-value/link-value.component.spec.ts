@@ -238,8 +238,10 @@ describe('LinkValueComponent', () => {
       commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
+
     it('should create a value', () => {
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+
       valuesSpy.v2.search.doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
@@ -248,21 +250,28 @@ describe('LinkValueComponent', () => {
           return of([res]);
         }
       );
+
       // expect(testHostComponent.inputValueComponent.valueFormControl).toEqual(null);
       expect(testHostComponent.inputValueComponent.mode).toEqual('create');
 
       testHostComponent.inputValueComponent.searchByLabel('thing');
 
       testHostFixture.detectChanges();
+
       expect(valuesSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('thing', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'});
+
       expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
       // simulate user input
       const res = new ReadResource();
       res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
       res.label = 'hidden thing';
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
       testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       const newValue = testHostComponent.inputValueComponent.getNewValue();
 
@@ -294,7 +303,7 @@ describe('LinkValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual('');
+      expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual(null);
 
       expect(commentInputNativeElement.value).toEqual('');
 
