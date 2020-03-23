@@ -37,7 +37,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   displayResource(resource: ReadResource | null): string {
 
     // null is the initial value (no selection yet)
-    if (resource !== null) {
+    if (resource instanceof ReadResource) {
       return resource.label;
     }
   }
@@ -140,7 +140,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     const updatedLinkValue = new UpdateLinkValue();
 
     updatedLinkValue.id = this.displayValue.id;
-    
+
     updatedLinkValue.linkedResourceIri = this.valueFormControl.value.id;
     // add the submitted comment to updatedLinkValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
