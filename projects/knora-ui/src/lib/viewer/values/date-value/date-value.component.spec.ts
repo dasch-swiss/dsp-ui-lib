@@ -2,7 +2,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DateValueComponent} from './date-value.component';
 import {Component, DebugElement, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
-import {IntValueComponent} from '../int-value/int-value.component';
 import {KnoraDate, KnoraPeriod, MockResource, ReadDateValue} from '@knora/api';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material/form-field';
@@ -75,7 +74,7 @@ class TestDateInputComponent implements ControlValueAccessor, MatFormFieldContro
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: IntValueComponent;
+  @ViewChild('inputVal', {static: false}) inputValueComponent: DateValueComponent;
 
   displayInputVal: ReadDateValue;
 
@@ -104,7 +103,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: IntValueComponent;
+  @ViewChild('inputVal', {static: false}) inputValueComponent: DateValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
@@ -165,8 +164,17 @@ describe('DateValueComponent', () => {
     });
 
     it('should display an existing value', () => {
-      expect(testHostComponent.inputValueComponent).toBeTruthy();
-      // console.log(testHostComponent.inputValueComponent)
+
+      expect(testHostComponent.inputValueComponent.displayValue.date).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(true);
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
+
     });
   });
 });

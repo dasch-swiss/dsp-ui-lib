@@ -1,6 +1,6 @@
 <span [formGroup]="form">
     <mat-form-field class="large-field">
-      <kui-date-input [formControlName]="'dateValue'" class="value" placeholder="Date value" [readonly]="mode === 'read'" [errorStateMatcher]="matcher"></kui-date-input>
+      <kui-date-input #dateInput [formControlName]="'dateValue'" class="value" placeholder="Date value" [readonly]="mode === 'read'" [errorStateMatcher]="matcher"></kui-date-input>
     </mat-form-field>
     <br>
     <mat-form-field class="large-field">

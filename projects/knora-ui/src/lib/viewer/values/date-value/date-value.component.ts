@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue} from '@knora/api';
 import {
   AbstractControl,
@@ -12,6 +12,8 @@ import {
 import {Subscription} from 'rxjs';
 import {BaseValueComponent} from '../base-value.component';
 import {ErrorStateMatcher} from '@angular/material';
+import {IntervalInputComponent} from "../interval-value/interval-input/interval-input.component";
+import {DateInputComponent} from "./date-input/date-input.component";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class IntervalErrorStateMatcher implements ErrorStateMatcher {
@@ -27,6 +29,8 @@ export class IntervalErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./date-value.component.scss']
 })
 export class DateValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
+
+  @ViewChild('dateInput', {static: false}) dateInputComponent: DateInputComponent;
 
   @Input() displayValue?: ReadDateValue;
 
