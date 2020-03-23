@@ -37,7 +37,7 @@ class TestHostDisplayValueComponent implements OnInit {
   }
 }
 
-fdescribe('TextValueAsHtmlComponent', () => {
+describe('TextValueAsHtmlComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
