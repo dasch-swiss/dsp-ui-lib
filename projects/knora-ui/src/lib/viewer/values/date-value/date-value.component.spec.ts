@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DateValueComponent} from './date-value.component';
 import {Component, DebugElement, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
-import {KnoraDate, KnoraPeriod, MockResource, ReadDateValue} from '@knora/api';
+import {KnoraDate, KnoraPeriod, MockResource, ReadDateValue, UpdateDateValue, UpdateIntervalValue} from '@knora/api';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
@@ -140,7 +140,7 @@ describe('DateValueComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('display and edit an interval value', () => {
+  describe('display and edit a date value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
@@ -176,5 +176,46 @@ describe('DateValueComponent', () => {
       expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
 
     });
+
+    it('should make an existing value editable', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
+
+      // simulate user input
+      const newKnoraDate = new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13);
+
+      testHostComponent.inputValueComponent.dateInputComponent.value = newKnoraDate;
+      testHostComponent.inputValueComponent.dateInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateDateValue).toBeTruthy();
+
+      expect((updatedValue as UpdateDateValue).calendar).toEqual('GREGORIAN');
+      expect((updatedValue as UpdateDateValue).startYear).toEqual(2019);
+      expect((updatedValue as UpdateDateValue).endYear).toEqual(2019);
+      expect((updatedValue as UpdateDateValue).startMonth).toEqual(5);
+      expect((updatedValue as UpdateDateValue).endMonth).toEqual(5);
+      expect((updatedValue as UpdateDateValue).startDay).toEqual(13);
+      expect((updatedValue as UpdateDateValue).endDay).toEqual(13);
+
+    });
+
   });
 });
