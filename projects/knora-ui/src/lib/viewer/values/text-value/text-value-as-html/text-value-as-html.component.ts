@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, OnInit, Inject, Input, ElementRef } from '@angular/core';
 import {BaseValueComponent} from '../../base-value.component';
-import { ReadTextValueAsString, CreateValue, UpdateValue, ReadTextValueAsHtml } from '@knora/api';
+import { ReadTextValueAsHtml } from '@knora/api';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -22,7 +22,7 @@ export class TextValueAsHtmlComponent extends BaseValueComponent implements OnIn
 
   customValidators = [];
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+  constructor(@Inject(FormBuilder) private fb: FormBuilder, private el: ElementRef,) {
     super();
   }
 
@@ -46,19 +46,20 @@ export class TextValueAsHtmlComponent extends BaseValueComponent implements OnIn
     this.resetFormControl();
   }
 
-  getInitValue() {
+  getInitValue() {    
     if (this.displayValue !== undefined) {
       this.displayValue.html = '<p>This is a very simple HTML document with a <a href="http://rdfh.ch/c9824353ae06" class="kui-link">link</a></p>';
-      console.log('added html: ', this.displayValue);
+      this.el.nativeElement.innerHTML = this.displayValue.html;
       return this.displayValue.html;
     } else {
       return null;
     }
   }
-  getNewValue(): CreateValue | false {
+
+  getNewValue(): false {
     throw new Error("Method not implemented.");
   }
-  getUpdatedValue(): UpdateValue | false {
+  getUpdatedValue(): false {
     throw new Error("Method not implemented.");
   }
 

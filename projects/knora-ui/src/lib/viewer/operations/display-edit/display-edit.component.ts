@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {
   Constants,
   KnoraApiConnection,
@@ -7,12 +7,13 @@ import {
   ReadValue,
   UpdateResource,
   UpdateValue,
-  WriteValueResponse
+  WriteValueResponse,
+  ReadTextValueAsString,
+  ReadTextValueAsXml
 } from '@knora/api';
 import {BaseValueComponent} from '../../values';
 import {mergeMap} from 'rxjs/operators';
 import {KnoraApiConnectionToken} from '../../../core';
-
 
 @Component({
   selector: 'kui-display-edit',
@@ -37,6 +38,8 @@ export class DisplayEditComponent implements OnInit {
 
   editModeActive = false;
 
+  valueType: string;
+
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
@@ -49,6 +52,7 @@ export class DisplayEditComponent implements OnInit {
 
     this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
 
+    this.valueType = this.getValueType();
   }
 
   activateEditMode() {
@@ -91,5 +95,21 @@ export class DisplayEditComponent implements OnInit {
     this.mode = 'read';
   }
 
+  getValueType(): string | null{
+    if (this.displayValue.type === this.constants.TextValue) {
 
+      if (this.displayValue instanceof ReadTextValueAsString) {
+        this.valueType = 'ReadTextValueAsString';
+      } else if (this.displayValue instanceof ReadTextValueAsXml) {
+        this.valueType = 'ReadTextValueAsXml';
+      } else {
+        this.valueType = 'ReadTextValueAsHtml';
+      }
+
+    } else {
+      this.valueType = this.displayValue.type;
+    }
+
+    return this.valueType;
+  }
 }
