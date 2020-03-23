@@ -8,13 +8,6 @@
             title="info">
             <mat-icon>info</mat-icon>
     </button>
-    <button mat-button
-            class="comment-toggle"
-            title="Toggle comment"
-            *ngIf="shouldShowCommentToggle"
-            (click)="toggleComment()">
-            <mat-icon>comment</mat-icon>
-    </button>
   </div>
   <div class="value-component">
     <span [ngSwitch]="displayValue.type">
@@ -35,6 +28,13 @@
             *ngIf="canModify && !editModeActive"
             (click)="activateEditMode()">
             <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-button
+            class="comment-toggle"
+            title="Toggle comment"
+            *ngIf="shouldShowCommentToggle"
+            (click)="toggleComment()">
+            <mat-icon>comment</mat-icon>
     </button>
     <button class="save"
             title="save"

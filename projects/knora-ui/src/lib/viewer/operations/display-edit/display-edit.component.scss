@@ -12,14 +12,15 @@
 }
 
 .property-header .label,
-.property-header .info,
-.property-header .comment-toggle {
+.property-header .info {
     display: inline-block;
     vertical-align: middle;
 }
 
 .property-header .label {
     margin: 0em;
+    font: 400 15px/24px Roboto, "Helvetica Neue", sans-serif;
+    color: #0000008a;
 }
 
 .value-component,
@@ -35,7 +36,7 @@
 }
 
 .crud-buttons {
-    grid-row-start: 1;
+    grid-row-start: 2;
     grid-row-end: auto;
     grid-column-start: 2;
     grid-column-end: 3;
@@ -79,6 +80,23 @@
     margin-left: 1em;
     outline: none;
     background-color: transparent;
+}
+
+.info .material-icons,
+.comment-toggle .material-icons,
+.edit .material-icons,
+.save .material-icons,
+.cancel .material-icons {
+    font-size: 18px;
+}
+
+.info .mat-icon,
+.comment-toggle .mat-icon,
+.edit .mat-icon,
+.save .mat-icon,
+.cancel .mat-icon {
+    width: 18px;
+    height: 18px;
 }
 
 .info,
