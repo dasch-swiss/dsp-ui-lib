@@ -5,11 +5,19 @@ import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core';
 
+export function resourceValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const invalid = !(control.value instanceof ReadResource);
+    return invalid ? {'invalidType': {value: control.value}} : null;
+  };
+}
+
 @Component({
   selector: 'kui-link-value',
   templateUrl: './link-value.component.html',
   styleUrls: ['./link-value.component.scss']
 })
+
 export class LinkValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayValue?: ReadLinkValue;
   @Input() parentResource: ReadResource;
@@ -23,7 +31,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   valueChangesSubscription: Subscription;
   labelChangesSubscription: Subscription;
   // label cannot contain logical operations of lucene index
-  customValidators = [];
+  customValidators = [resourceValidator()];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder, @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
     super();
