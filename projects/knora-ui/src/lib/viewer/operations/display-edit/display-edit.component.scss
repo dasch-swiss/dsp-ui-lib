@@ -80,6 +80,12 @@
     margin-left: 1em;
     outline: none;
     background-color: transparent;
+    color: #000000;
+}
+
+.save:disabled {
+    color: #adadad;
+    cursor: default;
 }
 
 .info .material-icons,
@@ -97,22 +103,4 @@
 .cancel .mat-icon {
     width: 18px;
     height: 18px;
-}
-
-.info,
-.edit {
-    color: #4287f5;
-}
-
-.save {
-    color: #000000;
-}
-
-.save:disabled {
-    color: #adadad;
-    cursor: default;
-}
-
-.cancel {
-    color: #000000;
 }
