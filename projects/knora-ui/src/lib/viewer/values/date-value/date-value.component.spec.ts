@@ -395,8 +395,35 @@ describe('DateValueComponent', () => {
       expect((newValue as CreateDateValue).startYear).toEqual(2019);
       expect((newValue as CreateDateValue).endYear).toEqual(2019);
 
+    });
 
+    it('should reset form after cancellation', () => {
+      // simulate user input
+      // simulate user input
+      const newKnoraDate = new KnoraDate('JULIAN', 'CE', 2019, 5, 13);
 
+      testHostComponent.inputValueComponent.dateInputComponent.value = newKnoraDate;
+      testHostComponent.inputValueComponent.dateInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      commentInputNativeElement.value = 'created comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(null);
+
+      expect(commentInputNativeElement.value).toEqual('');
 
     });
 
