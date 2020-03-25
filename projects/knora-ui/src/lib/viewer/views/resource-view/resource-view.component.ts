@@ -1,6 +1,15 @@
 import { Component, Inject, Input, OnChanges, OnInit } from '@angular/core';
-import { IHasProperty, KnoraApiConnection, PropertyDefinition, ReadResource, ReadValue, ResourcePropertyDefinition, ApiResponseError, Constants, SystemPropertyDefinition } from '@knora/api';
-import { KnoraApiConnectionToken } from '../../../core/core.module';
+import {
+  IHasProperty,
+  KnoraApiConnection,
+  PropertyDefinition,
+  ReadResource,
+  ReadValue,
+  ResourcePropertyDefinition,
+  ApiResponseError,
+  SystemPropertyDefinition
+} from '@knora/api';
+import { KnoraApiConnectionToken } from '../../../core';
 
 
 // object of property information from ontology class, properties and property values

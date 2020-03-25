@@ -1,28 +1,155 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxModule, MatFormFieldModule, MatInputModule } from '@angular/material';
-import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
-import { BooleanValueComponent } from '../../values/boolean-value/boolean-value.component';
-import { ColorPickerComponent } from '../../values/color-value/color-picker/color-picker.component';
-import { ColorValueComponent } from '../../values/color-value/color-value.component';
-import { DecimalValueComponent } from '../../values/decimal-value/decimal-value.component';
-import { IntValueComponent } from '../../values/int-value/int-value.component';
-import { IntervalValueComponent } from '../../values/interval-value/interval-value.component';
-import { TextValueAsStringComponent } from '../../values/text-value/text-value-as-string/text-value-as-string.component';
-import { UriValueComponent } from '../../values/uri-value/uri-value.component';
-import { PropertyViewComponent } from './property-view.component';
-import { ColorPickerModule } from 'ngx-color-picker';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ReadResource, ReadValue, MockResource, IHasProperty, ResourcePropertyDefinition } from '@knora/api';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatCheckboxModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { IHasProperty, MockResource, PropertyDefinition, ReadResource, ReadValue, ResourcePropertyDefinition, SystemPropertyDefinition, UpdateDecimalValue, UpdateIntValue, UpdateValue } from '@knora/api';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
+import { PropertyViewComponent } from './property-view.component';
+import { KnoraApiConnectionToken } from '../../../core';
+import { By } from '@angular/platform-browser';
+
+@Component({
+  selector: `kui-text-value-as-string`,
+  template: ``
+})
+class TestTextValueAsStringComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
+@Component({
+  selector: `kui-uri-value`,
+  template: ``
+})
+class TestUriValueComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
+@Component({
+  selector: `kui-int-value`,
+  template: ``
+})
+class TestIntValueComponent implements OnInit {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+  form: object;
+
+  ngOnInit(): void {
+
+    this.form = new FormGroup({
+      test: new FormControl(null, [Validators.required])
+    });
+  }
+
+  getUpdatedValue(): UpdateValue {
+    const updateIntVal = new UpdateIntValue();
+
+    updateIntVal.id = this.displayValue.id;
+    updateIntVal.int = 1;
+
+    return updateIntVal;
+  }
+}
+
+@Component({
+  selector: `kui-boolean-value`,
+  template: ``
+})
+class TestBooleanValueComponent implements OnInit {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+  form: object;
+
+  ngOnInit(): void {
+    this.form = new FormGroup({
+      test: new FormControl(null, [Validators.required])
+    });
+  }
+}
+
+@Component({
+  selector: `kui-interval-value`,
+  template: ``
+})
+class TestIntervalValueComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+}
+
+@Component({
+  selector: `kui-decimal-value`,
+  template: ``
+})
+class TestDecimalValueComponent implements OnInit {
+  @Input() mode;
+
+  @Input() displayValue;
+
+  form: object;
+
+  ngOnInit(): void {
+    this.form = new FormGroup({
+      test: new FormControl(null, [Validators.required])
+    });
+  }
+
+  getUpdatedValue(): UpdateValue {
+    const updateDecimalVal = new UpdateDecimalValue();
+
+    updateDecimalVal.id = this.displayValue.id;
+    updateDecimalVal.decimal = 1.5;
+
+    return updateDecimalVal;
+  }
+}
+
+@Component({
+  selector: `kui-time-value`,
+  template: ``
+})
+class TestTimeValueComponent {
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
+@Component({
+  selector: `kui-color-value`,
+  template: ``
+})
+class TestColorValueComponent {
+  @Input() mode;
+
+  @Input() displayValue;
+}
 
 /**
  * Test host component to simulate property-view component.
  */
 @Component({
-  selector: `kui-property-view`,
+  selector: `kui-property-host-component`,
   template: `
-    <kui-property-view #propView [resource]="resource" [propArray]="propArray"></kui-property-view>`
+    <kui-property-view #propView
+      [parentResource]="resource"
+      [propArray]="propArray"
+      [systemPropArray]="systemPropArray"
+    ></kui-property-view>`
 })
 class TestPropertyViewComponent implements OnInit {
 
@@ -31,6 +158,8 @@ class TestPropertyViewComponent implements OnInit {
   resource: ReadResource;
 
   propArray: PropertyInfoValues[] = [];
+
+  systemPropArray?: PropertyDefinition[] = [];
 
   ngOnInit() {
 
@@ -51,6 +180,11 @@ class TestPropertyViewComponent implements OnInit {
           };
 
           this.propArray.push(propInfoAndValues);
+        } else if (this.resource.entityInfo.properties[index] &&
+          this.resource.entityInfo.properties[index] instanceof SystemPropertyDefinition) {
+          const systemPropInfo = this.resource.entityInfo.properties[index];
+
+          this.systemPropArray.push(systemPropInfo);
         }
         i++;
       }
@@ -63,7 +197,7 @@ class TestPropertyViewComponent implements OnInit {
  * Test host component to simulate display-edit component.
  */
 @Component({
-  selector: `kui-display-edit`,
+  selector: `kui-host-display-edit`,
   template: `
     <kui-display-edit #displayEditVal [parentResource]="readResource" [displayValue]="readValue"></kui-display-edit>`
 })
@@ -76,36 +210,36 @@ class TestHostDisplayValueComponent implements OnInit {
 
   ngOnInit() {
 
-    MockResource.getTestthing().subscribe(res => {
-      this.readResource = res[0];
-      const readVal =
-        this.readResource.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger')[0];
-
-      this.readValue = readVal;
-
-    });
-
   }
 }
 
-fdescribe('PropertyViewComponent', () => {
+describe('PropertyViewComponent', () => {
   let testHostComponent: TestPropertyViewComponent;
   let testHostFixture: ComponentFixture<TestPropertyViewComponent>;
+  let hostCompDe;
+  let propViewComponentDe;
+
+  const valuesSpyObj = {
+    v2: {
+      values: jasmine.createSpyObj('values', ['updateValue', 'getValue'])
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        /* DisplayEditComponent,
-        BooleanValueComponent,
-        ColorValueComponent,
-        ColorPickerComponent,
-        DecimalValueComponent,
-        IntValueComponent,
-        IntervalValueComponent,
-        TextValueAsStringComponent,
-        UriValueComponent, */
         TestPropertyViewComponent,
-        TestHostDisplayValueComponent
+        TestHostDisplayValueComponent,
+        PropertyViewComponent,
+        DisplayEditComponent,
+        TestTextValueAsStringComponent,
+        TestIntValueComponent,
+        TestIntervalValueComponent,
+        TestBooleanValueComponent,
+        TestUriValueComponent,
+        TestDecimalValueComponent,
+        TestTimeValueComponent,
+        TestColorValueComponent
       ],
       imports: [
         ReactiveFormsModule,
@@ -113,6 +247,12 @@ fdescribe('PropertyViewComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         ColorPickerModule
+      ],
+      providers: [
+        {
+          provide: KnoraApiConnectionToken,
+          useValue: valuesSpyObj
+        }
       ]
     })
       .compileComponents();
@@ -122,9 +262,50 @@ fdescribe('PropertyViewComponent', () => {
     testHostFixture = TestBed.createComponent(TestPropertyViewComponent);
     testHostComponent = testHostFixture.componentInstance;
     testHostFixture.detectChanges();
+
+    hostCompDe = testHostFixture.debugElement;
+    propViewComponentDe = hostCompDe.query(By.directive(PropertyViewComponent));
   });
 
-  fit('should create', () => {
+  it('should create', () => {
+
     expect(testHostComponent).toBeTruthy();
+    expect(testHostComponent.propertyViewComponent).toBeTruthy();
+
   });
+
+  it('should get 25 properties', () => {
+
+    expect(testHostComponent.propArray.length).toBe(25);
+
+  });
+
+  it('should get the resource testding', () => {
+
+    expect(testHostComponent.resource).toBeTruthy();
+    expect(testHostComponent.resource.id).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+    expect(testHostComponent.resource.label).toEqual('testding');
+
+  });
+
+  it('should display a text value among the property list', () => {
+
+    expect(testHostComponent.propArray[8].propDef.label).toEqual('Text');
+    expect(testHostComponent.propArray[8].propDef.comment).toBe(undefined);
+    expect(testHostComponent.propArray[8].guiDef.cardinality).toEqual(2);
+    expect(testHostComponent.propArray[8].guiDef.guiOrder).toEqual(2);
+    expect(testHostComponent.propArray[8].values[0].type).toEqual('http://api.knora.org/ontology/knora-api/v2#TextValue');
+
+  });
+
+  it('should get some system properties', () => {
+
+    expect(testHostComponent.systemPropArray.length).toEqual(14);
+
+    // check if the first system property is an ARK url
+    expect(testHostComponent.systemPropArray[0].label).toEqual('ARK URL');
+
+  });
+
+
 });
