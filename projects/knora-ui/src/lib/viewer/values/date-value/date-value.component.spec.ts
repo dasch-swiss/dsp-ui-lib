@@ -245,6 +245,60 @@ describe('DateValueComponent', () => {
 
       expect((updatedValue as UpdateDateValue).valueHasComment).toEqual('this is a comment');
 
+    });
+
+    it('should not return an invalid update value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      testHostComponent.inputValueComponent.dateInputComponent.value = null;
+      testHostComponent.inputValueComponent.dateInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBeFalsy();
+
+    });
+
+    it('should restore the initially displayed value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      // simulate user input
+      const newKnoraDate = new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13);
+
+      testHostComponent.inputValueComponent.dateInputComponent.value = newKnoraDate;
+      testHostComponent.inputValueComponent.dateInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13));
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
     });
 
