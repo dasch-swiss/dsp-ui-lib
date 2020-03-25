@@ -340,6 +340,22 @@ describe('DateValueComponent', () => {
 
     });
 
+    it('should compare two dates', () => {
+
+      expect(testHostComponent.inputValueComponent.sameDate(
+        new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
+        new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13))).toEqual(true);
+
+      expect(testHostComponent.inputValueComponent.sameDate(
+        new KnoraDate('JULIAN', 'CE', 2018, 5, 13),
+        new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13))).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.sameDate(
+        new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
+        new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13))).toEqual(false);
+
+    });
+
   });
 
   describe('create an interval value', () => {
@@ -398,7 +414,7 @@ describe('DateValueComponent', () => {
     });
 
     it('should reset form after cancellation', () => {
-      // simulate user input
+
       // simulate user input
       const newKnoraDate = new KnoraDate('JULIAN', 'CE', 2019, 5, 13);
 
