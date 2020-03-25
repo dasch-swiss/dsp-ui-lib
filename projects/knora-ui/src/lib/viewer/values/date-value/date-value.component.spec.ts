@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DateValueComponent} from './date-value.component';
 import {Component, DebugElement, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
-import {KnoraDate, KnoraPeriod, MockResource, ReadDateValue, UpdateDateValue, UpdateIntervalValue} from '@knora/api';
+import {KnoraDate, KnoraPeriod, MockResource, ReadDateValue, UpdateDateValue} from '@knora/api';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
@@ -214,6 +214,37 @@ describe('DateValueComponent', () => {
       expect((updatedValue as UpdateDateValue).endMonth).toEqual(5);
       expect((updatedValue as UpdateDateValue).startDay).toEqual(13);
       expect((updatedValue as UpdateDateValue).endDay).toEqual(13);
+
+    });
+
+    it('should validate an existing value with an added comment', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.displayValue.date).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      commentInputNativeElement.value = 'this is a comment';
+
+      commentInputNativeElement.dispatchEvent(new Event('input'));
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateDateValue).toBeTruthy();
+
+      expect((updatedValue as UpdateDateValue).valueHasComment).toEqual('this is a comment');
+
 
     });
 
