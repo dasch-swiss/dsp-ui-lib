@@ -64,6 +64,8 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
         (response: ReadResource[]) => {
           this.resources = response;
         });
+    } else {
+      this.resources = [];
     }
     return this.resources;
   }
