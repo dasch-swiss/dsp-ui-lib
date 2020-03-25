@@ -3,10 +3,13 @@ import { TextValueAsStringComponent } from './values/text-value/text-value-as-st
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CommonModule } from '@angular/common';
 import { ColorPickerModule } from 'ngx-color-picker';
 
+
 import { IntValueComponent } from './values/int-value/int-value.component';
+import { LinkValueComponent } from './values/link-value/link-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
@@ -39,12 +42,14 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
     TimeInputComponent,
     JDNDatepickerDirective,
     PropertyViewComponent,
-    ResourceViewComponent
+    ResourceViewComponent,
+    LinkValueComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatAutocompleteModule,
     MatCheckboxModule,
     MatDatepickerModule,
     MatJDNConvertibleCalendarDateAdapterModule,
@@ -60,6 +65,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
     UriValueComponent,
     IntervalValueComponent,
     TimeValueComponent,
+    LinkValueComponent,
     ResourceViewComponent
   ]
 })

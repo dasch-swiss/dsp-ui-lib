@@ -29,7 +29,18 @@ class TestTextValueAsStringComponent {
 
   @Input() displayValue;
 }
+@Component({
+  selector: `kui-link-value`,
+  template: ``
+})
+class TestLinkValueComponent {
 
+  @Input() mode;
+
+  @Input() displayValue;
+  @Input() parentResource;
+  @Input() propIri;
+}
 @Component({
   selector: `kui-uri-value`,
   template: ``
@@ -203,6 +214,7 @@ describe('DisplayEditComponent', () => {
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
         TestIntValueComponent,
+        TestLinkValueComponent,
         TestIntervalValueComponent,
         TestBooleanValueComponent,
         TestUriValueComponent,
@@ -315,7 +327,8 @@ describe('DisplayEditComponent', () => {
       expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledTimes(1);
 
       expect(valuesSpy.v2.values.getValue).toHaveBeenCalledTimes(1);
-      expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id, testHostComponent.readValue.uuid);
+      expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id,
+        testHostComponent.displayEditValueComponent.displayValue.uuid);
 
       expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
       expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
