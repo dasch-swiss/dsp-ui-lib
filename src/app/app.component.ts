@@ -10,7 +10,7 @@ import {KnoraApiConnectionToken} from 'knora-ui';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  @ViewChild('displayEdit', {static: false}) displayEditComponent: DisplayEditComponent;
+  @ViewChild('displayEdit', { static: false }) displayEditComponent: DisplayEditComponent;
 
   title = 'knora-ui-ng-lib';
 

@@ -24,6 +24,9 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "@knora/api": "file:.yalc/@knora/api",
+    "jdnconvertiblecalendar": "^0.0.5",
+    "jdnconvertiblecalendardateadapter": "^0.0.10",
+    "ngx-color-picker": "^8.2.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

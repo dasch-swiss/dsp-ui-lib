@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DisplayEditComponent} from './display-edit.component';
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { DisplayEditComponent } from './display-edit.component';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
   MockResource,
   ReadIntValue,
@@ -13,11 +13,11 @@ import {
   WriteValueResponse
 } from '@knora/api';
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {By} from '@angular/platform-browser';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {of} from 'rxjs';
-import {KnoraApiConnectionToken} from '../../../core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { of } from 'rxjs';
+import { KnoraApiConnectionToken } from '../../../core';
 
 @Component({
   selector: `kui-text-value-as-string`,
@@ -139,6 +139,25 @@ class TestDecimalValueComponent implements OnInit {
   }
 }
 
+@Component({
+  selector: `kui-time-value`,
+  template: ``
+})
+class TestTimeValueComponent {
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
+@Component({
+  selector: `kui-color-value`,
+  template: ``
+})
+class TestColorValueComponent {
+  @Input() mode;
+
+  @Input() displayValue;
+}
 
 /**
  * Test host component to simulate parent component.
@@ -150,7 +169,7 @@ class TestDecimalValueComponent implements OnInit {
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('displayEditVal', {static: false}) displayEditValueComponent: DisplayEditComponent;
+  @ViewChild('displayEditVal', { static: false }) displayEditValueComponent: DisplayEditComponent;
 
   readResource: ReadResource;
   readValue: ReadValue;
@@ -188,7 +207,7 @@ describe('DisplayEditComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
       ],
       declarations: [
         DisplayEditComponent,
@@ -199,7 +218,9 @@ describe('DisplayEditComponent', () => {
         TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent,
-        TestTextValueAsHtmlComponent
+        TestTextValueAsHtmlComponent,
+        TestTimeValueComponent,
+        TestColorValueComponent
       ],
       providers: [
         {
