@@ -292,13 +292,42 @@ describe('DateValueComponent', () => {
 
       testHostFixture.detectChanges();
 
+      expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13));
+
       expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13));
 
       testHostComponent.inputValueComponent.resetFormControl();
 
+      expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
+
       expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+    });
+
+    it('should set a new display value', done => {
+
+      MockResource.getTestthing().subscribe(res => {
+        const newDate: ReadDateValue =
+          res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+
+        newDate.id = 'updatedId';
+
+        newDate.date = new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13);
+
+        testHostComponent.displayInputVal = newDate;
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13));
+
+        expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13));
+
+        expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+        done();
+      });
 
     });
 
