@@ -7,7 +7,9 @@ import {
   ReadValue,
   UpdateResource,
   UpdateValue,
-  WriteValueResponse
+  WriteValueResponse,
+  CardinalityUtil,
+  ResourceClassDefinition
 } from '@knora/api';
 import {BaseValueComponent} from '../../values';
 import {mergeMap} from 'rxjs/operators';
@@ -37,6 +39,8 @@ export class DisplayEditComponent implements OnInit {
 
   editModeActive = false;
 
+  createAllowed: boolean;
+
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
@@ -49,6 +53,7 @@ export class DisplayEditComponent implements OnInit {
 
     this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
 
+    this.createAllowed = CardinalityUtil.createValueForPropertyAllowed(this.displayValue.property, 1, this.parentResource.entityInfo.classes[this.parentResource.type] as ResourceClassDefinition);
   }
 
   activateEditMode() {
@@ -91,5 +96,8 @@ export class DisplayEditComponent implements OnInit {
     this.mode = 'read';
   }
 
-
+  createNewValue() {
+    console.log('create new value');
+    
+  }
 }
