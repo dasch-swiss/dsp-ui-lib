@@ -57,8 +57,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    * @param searchTerm label to be searched
    */
   searchByLabel(searchTerm: string): ReadResource[] {
-    const linkType = this.parentResource.getLinkPropertyIriFromLinkValuePropertyIri(this.propIri);
-    this.restrictToResourceClass = this.parentResource.entityInfo.properties[linkType].objectType;
     // at least 3 characters are required
     if ( typeof searchTerm === 'string' && searchTerm.length >= 3) {
 
@@ -88,6 +86,8 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     };
   };
   ngOnInit() {
+    const linkType = this.parentResource.getLinkPropertyIriFromLinkValuePropertyIri(this.propIri);
+    this.restrictToResourceClass = this.parentResource.entityInfo.properties[linkType].objectType;
     // initialize form control elements
     this.valueFormControl = new FormControl(null);
 
