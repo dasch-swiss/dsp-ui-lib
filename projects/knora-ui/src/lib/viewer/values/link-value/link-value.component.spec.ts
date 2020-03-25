@@ -22,7 +22,8 @@ import {of} from 'rxjs';
  */
 @Component({
   template: `
-    <kui-link-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [parentResource]="parentResource" [propType]="propType"></kui-link-value>`
+    <kui-link-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [parentResource]="parentResource"
+                    [propIri]="propIri"></kui-link-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -30,7 +31,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
   displayInputVal: ReadLinkValue;
   parentResource: ReadResource;
-  propType: string;
+  propIri: string;
   mode: 'read' | 'update' | 'create' | 'search';
 
   ngOnInit() {
@@ -40,7 +41,7 @@ class TestHostDisplayValueComponent implements OnInit {
         res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue)[0];
 
       this.displayInputVal = inputVal;
-      this.propType = this.displayInputVal.property;
+      this.propIri = this.displayInputVal.property;
       this.parentResource = res[0];
       this.mode = 'read';
     });
@@ -53,19 +54,19 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-link-value #inputVal [mode]="mode" [parentResource]="parentResource" [propType]="propType"></kui-link-value>`
+    <kui-link-value #inputVal [mode]="mode" [parentResource]="parentResource" [propIri]="propIri"></kui-link-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
   @ViewChild('inputVal', {static: false}) inputValueComponent: LinkValueComponent;
   parentResource: ReadResource;
-  propType: string;
+  propIri: string;
   mode: 'read' | 'update' | 'create' | 'search';
 
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(res => {
-      this.propType = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue';
+      this.propIri = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue';
       this.parentResource = res[0];
       this.mode = 'create';
     });
@@ -131,18 +132,18 @@ describe('LinkValueComponent', () => {
 
     it('should display an existing value', () => {
 
-      expect(testHostComponent.displayInputVal.linkedResourceIri).toMatch('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
-      expect(testHostComponent.displayInputVal.propertyLabel).toMatch('Another thing');
+      expect(testHostComponent.inputValueComponent.displayValue.linkedResourceIri).toMatch('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect(testHostComponent.inputValueComponent.displayValue.propertyLabel).toMatch('Another thing');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(testHostComponent.displayInputVal.linkedResource.label).toEqual('Sierra');
-      expect(testHostComponent.displayInputVal.linkedResource.type).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+      expect(testHostComponent.inputValueComponent.displayValue.linkedResource.label).toEqual('Sierra');
+      expect(testHostComponent.inputValueComponent.displayValue.linkedResource.type).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
       expect(valueInputNativeElement.readOnly).toEqual(true);
-
     });
+
     it('should make a link value editable', () => {
 
       testHostComponent.mode = 'update';
@@ -153,6 +154,7 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
     });
+
     it('should search for resources by their label', () => {
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
       valuesSpy.v2.search.doSearchByLabel.and.callFake(
@@ -191,6 +193,7 @@ describe('LinkValueComponent', () => {
       expect((updatedValue as UpdateLinkValue).valueHasComment).toEqual('this is a comment');
 
     });
+
     it('should return a selected resource', () => {
 
       const res = new ReadResource();
@@ -247,6 +250,7 @@ describe('LinkValueComponent', () => {
       expect(valuesSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('thing', 0, {limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'});
       expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
     });
+
     it('should create a value', () => {
       // simulate user input
       const res = new ReadResource();
@@ -263,8 +267,8 @@ describe('LinkValueComponent', () => {
       const newValue = testHostComponent.inputValueComponent.getNewValue();
       expect(newValue instanceof CreateLinkValue).toBeTruthy();
       expect((newValue as CreateLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
-
     });
+
     it('should only create a new value if input is a resource', () => {
       // simulate user input
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
@@ -279,6 +283,7 @@ describe('LinkValueComponent', () => {
 
       expect(newValue instanceof CreateLinkValue).toBeFalsy();
     });
+
     it('should reset form after cancellation', () => {
       // simulate user input
       const res = new ReadResource();

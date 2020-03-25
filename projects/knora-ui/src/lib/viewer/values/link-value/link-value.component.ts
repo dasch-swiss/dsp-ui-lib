@@ -21,8 +21,8 @@ export function resourceValidator(): ValidatorFn {
 export class LinkValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayValue?: ReadLinkValue;
   @Input() parentResource: ReadResource;
-  @Input() propType: string;
-  resources: ReadResource[];
+  @Input() propIri: string;
+  resources: ReadResource[] = [];
   restrictToResourceClass: string;
   valueFormControl: FormControl;
   commentFormControl: FormControl;
@@ -57,10 +57,8 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    * @param searchTerm label to be searched
    */
   searchByLabel(searchTerm: string): ReadResource[] {
-    const linkType = this.parentResource.getLinkPropertyIriFromLinkValuePropertyIri(this.propType);
-    if (typeof linkType === 'string') {
-      this.restrictToResourceClass = this.parentResource.entityInfo.properties[linkType].objectType;
-    }
+    const linkType = this.parentResource.getLinkPropertyIriFromLinkValuePropertyIri(this.propIri);
+    this.restrictToResourceClass = this.parentResource.entityInfo.properties[linkType].objectType;
     // at least 3 characters are required
     if ( typeof searchTerm === 'string' && searchTerm.length >= 3) {
 
@@ -68,10 +66,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
         (response: ReadResource[]) => {
           this.resources = response;
         });
-    } else {
-      // clear selection
-      this.resources = undefined;
-
     }
     return this.resources;
   }

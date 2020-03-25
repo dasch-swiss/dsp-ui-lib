@@ -39,7 +39,7 @@ class TestLinkValueComponent {
 
   @Input() displayValue;
   @Input() parentResource;
-  @Input() propType;
+  @Input() propIri;
 }
 @Component({
   selector: `kui-uri-value`,
