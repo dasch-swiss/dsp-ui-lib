@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DateValueComponent} from './date-value.component';
 import {Component, DebugElement, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
-import {KnoraDate, KnoraPeriod, MockResource, ReadDateValue, UpdateDateValue} from '@knora/api';
+import {CreateDateValue, KnoraDate, KnoraPeriod, MockResource, ReadDateValue, UpdateDateValue} from '@knora/api';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
@@ -337,8 +337,70 @@ describe('DateValueComponent', () => {
       testHostComponent.inputValueComponent.ngOnDestroy();
 
       expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeTruthy();
-      
+
     });
 
   });
+
+  describe('create an interval value', () => {
+
+    let testHostComponent: TestHostCreateValueComponent;
+    let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+
+    let valueComponentDe: DebugElement;
+    let commentInputDebugElement: DebugElement;
+    let commentInputNativeElement;
+
+    beforeEach(() => {
+      testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
+
+      const hostCompDe = testHostFixture.debugElement;
+
+      valueComponentDe = hostCompDe.query(By.directive(DateValueComponent));
+      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+    });
+
+    it('should create a value', () => {
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(null);
+
+      // simulate user input
+      const newKnoraDate = new KnoraDate('JULIAN', 'CE', 2019, 5, 13);
+
+      testHostComponent.inputValueComponent.dateInputComponent.value = newKnoraDate;
+      testHostComponent.inputValueComponent.dateInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const newValue = testHostComponent.inputValueComponent.getNewValue();
+
+      expect(newValue instanceof CreateDateValue).toBeTruthy();
+
+      expect((newValue as CreateDateValue).calendar).toEqual('JULIAN');
+
+      expect((newValue as CreateDateValue).startDay).toEqual(13);
+      expect((newValue as CreateDateValue).endDay).toEqual(13);
+      expect((newValue as CreateDateValue).startMonth).toEqual(5);
+      expect((newValue as CreateDateValue).endMonth).toEqual(5);
+      expect((newValue as CreateDateValue).startYear).toEqual(2019);
+      expect((newValue as CreateDateValue).endYear).toEqual(2019);
+
+
+
+
+    });
+
+  });
+
+
 });
