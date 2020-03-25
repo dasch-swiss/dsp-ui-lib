@@ -331,5 +331,14 @@ describe('DateValueComponent', () => {
 
     });
 
+    it('should unsubscribe when destroyed', () => {
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeFalsy();
+
+      testHostComponent.inputValueComponent.ngOnDestroy();
+
+      expect(testHostComponent.inputValueComponent.valueChangesSubscription.closed).toBeTruthy();
+      
+    });
+
   });
 });
