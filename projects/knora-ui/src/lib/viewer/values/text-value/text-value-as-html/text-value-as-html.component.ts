@@ -22,6 +22,8 @@ export class TextValueAsHtmlComponent extends BaseValueComponent implements OnIn
 
   customValidators = [];
 
+  htmlSnippet: string;
+
   constructor(@Inject(FormBuilder) private fb: FormBuilder, private el: ElementRef,) {
     super();
   }
@@ -39,7 +41,7 @@ export class TextValueAsHtmlComponent extends BaseValueComponent implements OnIn
     );
 
     this.form = this.fb.group({
-      textValue: this.valueFormControl,
+      //textValue: this.valueFormControl,
       comment: this.commentFormControl
     });
 
@@ -48,8 +50,9 @@ export class TextValueAsHtmlComponent extends BaseValueComponent implements OnIn
 
   getInitValue() {    
     if (this.displayValue !== undefined) {
-      this.displayValue.html = '<p>This is a very simple HTML document with a <a href="http://rdfh.ch/c9824353ae06" class="kui-link">link</a></p>';
-      this.el.nativeElement.innerHTML = this.displayValue.html;
+      this.htmlSnippet = '<p>This is a very simple HTML document with a <a href="http://rdfh.ch/c9824353ae06" class="kui-link">link</a></p>';
+      // this.displayValue.html = this.htmlSnippet;
+      // this.el.nativeElement.innerHTML = this.displayValue.html;
       return this.displayValue.html;
     } else {
       return null;
