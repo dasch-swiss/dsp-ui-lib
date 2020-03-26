@@ -1,13 +1,14 @@
 <div>
   <span [ngSwitch]="valueType">
     <kui-text-value-as-string #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-string>
+    <kui-text-value-as-html #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-html>
     <kui-int-value #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></kui-int-value>
     <kui-boolean-value #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]="displayValue"></kui-boolean-value>
-    <kui-interval-value #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]="displayValue"></kui-interval-value>
     <kui-uri-value #displayVal *ngSwitchCase="constants.UriValue" [mode]="mode" [displayValue]="displayValue"></kui-uri-value>
     <kui-decimal-value #displayVal *ngSwitchCase="constants.DecimalValue" [mode]="mode" [displayValue]="displayValue"></kui-decimal-value>
+    <kui-color-value #displayVal *ngSwitchCase="constants.ColorValue" [mode]="mode" [displayValue]="displayValue"></kui-color-value>
+    <kui-interval-value #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]="displayValue"></kui-interval-value>
     <kui-time-value #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="displayValue"></kui-time-value>
-    <kui-text-value-as-html #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-html>
   </span>
 </div>
 <div>
