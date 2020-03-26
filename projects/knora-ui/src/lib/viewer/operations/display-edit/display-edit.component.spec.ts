@@ -1,7 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DisplayEditComponent } from './display-edit.component';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {DisplayEditComponent} from './display-edit.component';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {
   MockResource,
   ReadIntValue,
@@ -13,11 +13,11 @@ import {
   WriteValueResponse
 } from '@knora/api';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { of } from 'rxjs';
-import { KnoraApiConnectionToken } from '../../../core';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {By} from '@angular/platform-browser';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {of} from 'rxjs';
+import {KnoraApiConnectionToken} from '../../../core';
 
 @Component({
   selector: `kui-text-value-as-string`,
@@ -165,11 +165,11 @@ class TestColorValueComponent {
 @Component({
   selector: `lib-host-component`,
   template: `
-    <kui-display-edit #displayEditVal [parentResource]="readResource" [displayValue]="readValue"></kui-display-edit>`
+    <kui-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource" [displayValue]="readValue"></kui-display-edit>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('displayEditVal', { static: false }) displayEditValueComponent: DisplayEditComponent;
+  @ViewChild('displayEditVal', {static: false}) displayEditValueComponent: DisplayEditComponent;
 
   readResource: ReadResource;
   readValue: ReadValue;
@@ -180,16 +180,19 @@ class TestHostDisplayValueComponent implements OnInit {
 
     MockResource.getTestthing().subscribe(res => {
       this.readResource = res[0];
-      const readVal =
-        this.readResource.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger')[0];
-
-      readVal.userHasPermission = 'M';
-
-      this.readValue = readVal;
 
       this.mode = 'read';
     });
+  }
 
+  // when called, assigns a value -> kui-display-edit will be instantiated
+  assignValue(prop: string) {
+    const readVal =
+      this.readResource.getValues(prop)[0];
+
+    readVal.userHasPermission = 'M';
+
+    this.readValue = readVal;
   }
 }
 
@@ -213,12 +216,12 @@ describe('DisplayEditComponent', () => {
         DisplayEditComponent,
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
+        TestTextValueAsHtmlComponent,
         TestIntValueComponent,
         TestIntervalValueComponent,
         TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent,
-        TestTextValueAsHtmlComponent,
         TestTimeValueComponent,
         TestColorValueComponent
       ],
@@ -233,20 +236,48 @@ describe('DisplayEditComponent', () => {
 
   }));
 
+  beforeEach(() => {
+    testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
+    testHostComponent = testHostFixture.componentInstance;
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent).toBeTruthy();
+  });
+
+  describe('display a value with the appropriate component', () => {
+
+    it('should choose the apt component for an integer value in the template', () => {
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestIntValueComponent).toBe(true);
+    });
+
+    it('should choose the apt component for an decimal value in the template', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestDecimalValueComponent).toBe(true);
+    });
+
+  });
+
   describe('change from display to edit mode', () => {
     let hostCompDe;
     let displayEditComponentDe;
 
     beforeEach(() => {
-      testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
-      testHostComponent = testHostFixture.componentInstance;
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
       testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
 
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
-      expect(testHostComponent).toBeTruthy();
-      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
     });
 
     it('should display an edit button if the user has the necessary permissions', () => {
