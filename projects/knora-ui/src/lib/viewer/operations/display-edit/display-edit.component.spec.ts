@@ -7,7 +7,6 @@ import {
   ReadIntValue,
   ReadResource,
   ReadValue,
-  UpdateDecimalValue,
   UpdateIntValue,
   UpdateValue,
   WriteValueResponse
@@ -85,19 +84,12 @@ class TestIntValueComponent implements OnInit {
   selector: `kui-boolean-value`,
   template: ``
 })
-class TestBooleanValueComponent implements OnInit {
+class TestBooleanValueComponent {
 
   @Input() mode;
 
   @Input() displayValue;
 
-  form: object;
-
-  ngOnInit(): void {
-    this.form = new FormGroup({
-      test: new FormControl(null, [Validators.required])
-    });
-  }
 }
 
 @Component({
@@ -116,27 +108,12 @@ class TestIntervalValueComponent {
   selector: `kui-decimal-value`,
   template: ``
 })
-class TestDecimalValueComponent implements OnInit {
+class TestDecimalValueComponent {
+
   @Input() mode;
 
   @Input() displayValue;
 
-  form: object;
-
-  ngOnInit(): void {
-    this.form = new FormGroup({
-      test: new FormControl(null, [Validators.required])
-    });
-  }
-
-  getUpdatedValue(): UpdateValue {
-    const updateDecimalVal = new UpdateDecimalValue();
-
-    updateDecimalVal.id = this.displayValue.id;
-    updateDecimalVal.decimal = 1.5;
-
-    return updateDecimalVal;
-  }
 }
 
 @Component({
@@ -165,7 +142,8 @@ class TestColorValueComponent {
 @Component({
   selector: `lib-host-component`,
   template: `
-    <kui-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource" [displayValue]="readValue"></kui-display-edit>`
+    <kui-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
+                      [displayValue]="readValue"></kui-display-edit>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -245,6 +223,14 @@ describe('DisplayEditComponent', () => {
   });
 
   describe('display a value with the appropriate component', () => {
+
+    it('should choose the apt component for an plain text value in the template', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsStringComponent).toBe(true);
+    });
 
     it('should choose the apt component for an integer value in the template', () => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
