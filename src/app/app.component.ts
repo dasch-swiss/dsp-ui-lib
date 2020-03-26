@@ -31,8 +31,7 @@ export class AppComponent implements OnInit {
     ).subscribe(
       (resource: ReadResource) => {
         this.testthing = resource;
-        //console.log(this.testthing);
-        this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasTimeStamp')[0];
+        this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue')[0];
       }
     );
 
