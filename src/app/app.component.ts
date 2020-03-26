@@ -17,6 +17,8 @@ export class AppComponent implements OnInit {
   testthing: ReadResource;
   testValue: ReadValue;
 
+  values: ReadValue[];
+
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
@@ -31,7 +33,12 @@ export class AppComponent implements OnInit {
     ).subscribe(
       (resource: ReadResource) => {
         this.testthing = resource;
-        this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue')[0];
+        console.log(this.testthing);
+
+        this.values = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
+
+        console.log('values: ', this.values);
+        this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText')[0];
       }
     );
 

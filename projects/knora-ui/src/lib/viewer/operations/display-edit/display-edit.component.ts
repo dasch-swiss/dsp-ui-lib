@@ -9,7 +9,9 @@ import {
   UpdateValue,
   WriteValueResponse,
   CardinalityUtil,
-  ResourceClassDefinition
+  ResourceClassDefinition,
+  CreateTextValueAsString,
+  CreateValue
 } from '@knora/api';
 import {BaseValueComponent} from '../../values';
 import {mergeMap} from 'rxjs/operators';
@@ -94,7 +96,29 @@ export class DisplayEditComponent implements OnInit {
   }
 
   createNewValue() {
-    console.log('create new value');
-    
+    const createVal = new CreateTextValueAsString();
+    createVal.text = 'text created at ' + new Date().toLocaleString();
+    createVal.valueHasComment = 'created comment';
+
+    const updateRes = new UpdateResource();
+    updateRes.type = this.parentResource.type;
+    updateRes.id = this.parentResource.id;
+    updateRes.property = this.displayValue.property;
+    updateRes.value = createVal;
+
+    console.log('updateRes: ', updateRes);
+
+    this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
+      mergeMap((res: WriteValueResponse) => {
+        console.log(res);
+        return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, this.displayValue.uuid);
+      })
+    ).subscribe(
+      (res2: ReadResource) => {
+        console.log(res2);
+        //this.displayValue = res2.getValues(this.displayValue.property)[0];
+        //this.mode = 'read';
+      }
+    );  
   }
 }

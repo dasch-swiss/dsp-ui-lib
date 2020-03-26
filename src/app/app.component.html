@@ -1,5 +1,7 @@
 <div *ngIf="testValue">
-  <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="testValue"></kui-display-edit>
+  <div *ngFor="let v of values">
+    <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="v"></kui-display-edit>
+  </div>
 </div>
 
 
