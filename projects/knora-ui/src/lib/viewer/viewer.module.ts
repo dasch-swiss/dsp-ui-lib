@@ -3,12 +3,15 @@ import { TextValueAsStringComponent } from './values/text-value/text-value-as-st
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CommonModule } from '@angular/common';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MatMenuModule } from '@angular/material/menu';
 
 
+
 import { IntValueComponent } from './values/int-value/int-value.component';
+import { LinkValueComponent } from './values/link-value/link-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { ListValueComponent } from './values/list-value/list-value.component';
 import { SublistValueComponent } from './values/list-value/subList-value/sublist-value.component';
@@ -33,6 +36,7 @@ import { ColorPickerComponent } from './values/color-value/color-picker/color-pi
     BooleanValueComponent,
     ColorValueComponent,
     ColorPickerComponent,
+    LinkValueComponent,
     DecimalValueComponent,
     UriValueComponent,
     IntervalValueComponent,
@@ -43,28 +47,31 @@ import { ColorPickerComponent } from './values/color-value/color-picker/color-pi
     ListValueComponent,
     SublistValueComponent
   ],
-  imports : [
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatAutocompleteModule,
     MatCheckboxModule,
     MatMenuModule,
     MatDatepickerModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     ColorPickerModule
     ],
-  exports : [
+
+  exports: [
     TextValueAsStringComponent,
     IntValueComponent,
     DisplayEditComponent,
     BooleanValueComponent,
+    ColorValueComponent,
     DecimalValueComponent,
     UriValueComponent,
     IntervalValueComponent,
+    TimeValueComponent,
+    LinkValueComponent,
     ListValueComponent,
-    SublistValueComponent,
-    ColorValueComponent,
-    TimeValueComponent
+    SublistValueComponent
   ]
 })
 export class ViewerModule {

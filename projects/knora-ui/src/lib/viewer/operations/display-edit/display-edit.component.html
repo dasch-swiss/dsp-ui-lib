@@ -16,6 +16,8 @@
     </kui-interval-value>
     <kui-time-value #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="displayValue">
     </kui-time-value>
+    <kui-link-value #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"
+                    [parentResource]="parentResource" [propIri]="displayValue.property"></kui-link-value>
     <kui-list-value #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode" [displayValue]="displayValue"
                     [propertyDef]="parentResource.entityInfo.properties[displayValue.property]"></kui-list-value>
   </span>
