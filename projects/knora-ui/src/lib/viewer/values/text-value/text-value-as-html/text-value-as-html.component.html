@@ -1,6 +1,4 @@
-<p [innerHTML]="htmlSnippet"></p>
-<span [formGroup]="form">
-    <mat-form-field class="large-field">
-        <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
-    </mat-form-field>
-</span>
+<p *ngIf="comment" [innerHTML]="htmlFromKnora" class="value"></p>
+<div *ngIf="comment">
+  <label>{{commentLabel}}: </label><span class="comment">{{comment}}</span>
+</div>

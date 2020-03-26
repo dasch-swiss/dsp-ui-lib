@@ -32,13 +32,7 @@ export class AppComponent implements OnInit {
       (resource: ReadResource) => {
         this.testthing = resource;
         // console.log(this.testthing);
-        this.testValue = new ReadTextValueAsHtml();
-        this.testValue.hasPermissions = "CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser";
-        this.testValue.userHasPermission = "CR";
-        this.testValue.type = "http://api.knora.org/ontology/knora-api/v2#TextValue";
-        this.testValue.id = "http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID";
-        //this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText')[0];
-        //console.log(this.testValue);
+        this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasTimeStamp')[0];
       }
     );
 

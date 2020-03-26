@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TextValueAsHtmlComponent } from './text-value-as-html.component';
-import { ReadTextValueAsHtml } from '@knora/api';
-import { OnInit, ViewChild, Component, DebugElement } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {TextValueAsHtmlComponent} from './text-value-as-html.component';
+import {ReadTextValueAsHtml} from '@knora/api';
+import {OnInit, ViewChild, Component, DebugElement} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {By} from '@angular/platform-browser';
 
 /**
  * Test host component to simulate parent component.
@@ -26,11 +26,14 @@ class TestHostDisplayValueComponent implements OnInit {
 
     const inputVal: ReadTextValueAsHtml = new ReadTextValueAsHtml();
 
-    inputVal.hasPermissions = "CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser";
-    inputVal.userHasPermission = "CR";
-    inputVal.type = "http://api.knora.org/ontology/knora-api/v2#TextValue";
-    inputVal.id = "http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID";
-    
+    inputVal.hasPermissions = 'CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser';
+    inputVal.userHasPermission = 'CR';
+    inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+    inputVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID';
+    inputVal.html =
+      '<p>This is a very simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>';
+    inputVal.valueHasComment = 'very interesting';
+
     this.displayInputVal = inputVal;
 
     this.mode = 'read';
@@ -58,8 +61,11 @@ describe('TextValueAsHtmlComponent', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
-    let valueInputDebugElement: DebugElement;
-    let valueInputNativeElement;
+    let valueParagraph: DebugElement;
+    let valueParagraphNativeElement;
+
+    let commentSpan: DebugElement;
+    let commentSpanNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
@@ -71,21 +77,26 @@ describe('TextValueAsHtmlComponent', () => {
 
       const hostCompDe = testHostFixture.debugElement;
       valueComponentDe = hostCompDe.query(By.directive(TextValueAsHtmlComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+      valueParagraph = valueComponentDe.query(By.css('p.value'));
+      valueParagraphNativeElement = valueParagraph.nativeElement;
+
+      commentSpan = valueComponentDe.query(By.css('span.comment'));
+      commentSpanNativeElement = commentSpan.nativeElement;
+
     });
 
     it('should display an existing value', () => {
 
-      expect(testHostComponent.inputValueComponent.displayValue.html).toEqual('<p>This is a very simple HTML document with a <a href="http://rdfh.ch/c9824353ae06" class="kui-link">link</a></p>');
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.displayValue.html)
+        .toEqual('<p>This is a very simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>');
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueInputNativeElement.value).toEqual('<p>This is a very simple HTML document with a <a href="http://rdfh.ch/c9824353ae06" class="kui-link">link</a></p>');
+      expect(valueParagraphNativeElement.innerHTML)
+        .toEqual('<p>This is a very simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>');
 
-      expect(valueInputNativeElement.readOnly).toEqual(true);
+      expect(commentSpanNativeElement.innerText).toEqual('very interesting');
 
     });
   });
