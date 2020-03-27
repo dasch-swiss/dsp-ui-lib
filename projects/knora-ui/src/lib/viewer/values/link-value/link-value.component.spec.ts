@@ -416,6 +416,7 @@ describe('LinkValueComponent', () => {
     });
 
     it('should create a value', () => {
+
       // simulate user input
       const res = new ReadResource();
       res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
@@ -447,6 +448,16 @@ describe('LinkValueComponent', () => {
       );
 
       // simulate user input
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+
+      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+        () => {
+          const res = new ReadResource();
+          res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
+          res.label = 'hidden thing';
+          return of([res]);
+        }
+      );
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       const label = 'thing';
