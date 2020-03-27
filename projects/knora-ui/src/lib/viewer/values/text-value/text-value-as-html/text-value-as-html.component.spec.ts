@@ -86,7 +86,7 @@ describe('TextValueAsHtmlComponent', () => {
 
     });
 
-    fit('should display an existing value', () => {
+    it('should display an existing value', () => {
 
       expect(testHostComponent.inputValueComponent.displayValue.html)
         .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>');
