@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
     ).subscribe(
       (res: ReadResource) => {
         this.resource = res;
-        // console.log(this.resource);∏
+        // console.log(this.resource);
         const propsList: IHasProperty[] = this.resource.entityInfo.classes[this.resource.type].propertiesList;
 
         let i = 0;

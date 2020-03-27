@@ -19,6 +19,8 @@
       <kui-color-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ColorValue" [mode]="mode" [displayValue]="displayValue"></kui-color-value>
       <kui-interval-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]="displayValue"></kui-interval-value>
       <kui-time-value class="parent-value-component" #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="displayValue"></kui-time-value>
+      <kui-link-value #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"
+                    [parentResource]="parentResource" [propIri]="displayValue.property"></kui-link-value>
     </span>
   </div>
   <div class="crud-buttons">
