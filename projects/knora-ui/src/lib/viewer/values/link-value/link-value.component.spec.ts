@@ -330,6 +330,38 @@ describe('LinkValueComponent', () => {
 
     }));
 
+    it('should set a new display value', fakeAsync(() => {
+
+      // setValue has to be called, otherwise the native input field does not get the label via the displayWith function
+      const res = testHostComponent.inputValueComponent.valueFormControl.value;
+      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+
+      // https://github.com/angular/components/blob/29e74eb9431ba01d951ee33df554f465609b59fa/src/material/autocomplete/autocomplete.spec.ts#L2577-L2580
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('Sierra');
+
+      const linkedRes = new ReadResource();
+      linkedRes.id = 'newId';
+      linkedRes.label = 'new target';
+
+      const newLink = new ReadLinkValue();
+      newLink.id = 'updatedId';
+      newLink.linkedResourceIri = 'newId';
+      newLink.linkedResource = linkedRes;
+
+      testHostComponent.displayInputVal = newLink;
+
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('new target');
+
+    }));
+
   });
 
   describe('create a new link value', () => {
@@ -385,10 +417,11 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       testHostComponent.inputValueComponent.valueFormControl.setValue(res);
-      testHostFixture.detectChanges();
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
       expect(testHostComponent.inputValueComponent.valueFormControl.value instanceof ReadResource).toBeTruthy();
+
       const newValue = testHostComponent.inputValueComponent.getNewValue();
       expect(newValue instanceof CreateLinkValue).toBeTruthy();
       expect((newValue as CreateLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
@@ -421,6 +454,7 @@ describe('LinkValueComponent', () => {
     });
 
     it('should reset form after cancellation', () => {
+
       // simulate user input
       const res = new ReadResource();
       res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
