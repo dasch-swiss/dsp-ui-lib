@@ -369,6 +369,9 @@ describe('LinkValueComponent', () => {
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
 
     let valueComponentDe: DebugElement;
+
+    let valueInputDebugElement: DebugElement;
+    let valueInputNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -384,6 +387,10 @@ describe('LinkValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(LinkValueComponent));
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
       commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
@@ -453,7 +460,7 @@ describe('LinkValueComponent', () => {
       expect(newValue instanceof CreateLinkValue).toBeFalsy();
     });
 
-    it('should reset form after cancellation', () => {
+    it('should reset form after cancellation', fakeAsync(() => {
 
       // simulate user input
       const res = new ReadResource();
@@ -461,7 +468,12 @@ describe('LinkValueComponent', () => {
       res.label = 'hidden thing';
       testHostComponent.inputValueComponent.valueFormControl.setValue(res);
 
+      // https://github.com/angular/components/blob/29e74eb9431ba01d951ee33df554f465609b59fa/src/material/autocomplete/autocomplete.spec.ts#L2577-L2580
       testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('hidden thing');
 
       commentInputNativeElement.value = 'created comment';
 
@@ -475,12 +487,17 @@ describe('LinkValueComponent', () => {
 
       testHostComponent.inputValueComponent.resetFormControl();
 
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual(null);
 
+      expect(valueInputNativeElement.value).toEqual('');
       expect(commentInputNativeElement.value).toEqual('');
 
-    });
+    }));
   });
 });
