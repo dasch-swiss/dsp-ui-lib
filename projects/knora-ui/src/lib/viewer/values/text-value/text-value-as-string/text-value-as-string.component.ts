@@ -27,7 +27,8 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
   }
 
   getInitValue(): string | null {
-
+    console.log('getInitCalled');
+    
     if (this.displayValue !== undefined) {
       return this.displayValue.text;
     } else {

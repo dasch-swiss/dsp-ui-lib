@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { ApiResponseData, KnoraApiConnection, LoginResponse, ReadResource, ReadValue, CardinalityUtil, ResourceClassDefinition, CreateTextValueAsString, UpdateResource, CreateValue, WriteValueResponse } from '@knora/api';
+import { ApiResponseData, KnoraApiConnection, LoginResponse, ReadResource, ReadValue, CardinalityUtil, ResourceClassDefinition, CreateTextValueAsString, UpdateResource, CreateValue, WriteValueResponse, ReadTextValueAsString } from '@knora/api';
 import { KnoraApiConnectionToken } from 'knora-ui';
 import { DisplayEditComponent } from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
 import { mergeMap } from 'rxjs/operators';
@@ -20,6 +20,8 @@ export class AppComponent implements OnInit {
   values: ReadValue[];
 
   createAllowed: boolean;
+  createMode: boolean;
+  createValue: ReadTextValueAsString;
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
@@ -49,7 +51,16 @@ export class AppComponent implements OnInit {
   }
 
   showNewValueForm(){
-
+    this.createValue = new ReadTextValueAsString();
+    this.createValue.hasPermissions = 'M';
+    this.createValue.userHasPermission = 'CR';
+    this.createValue.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText';
+    this.createValue.text = "hello";
+  
+    console.log('createValue: ', this.createValue);
+    
+    this.createMode = true;
+    this.createAllowed = false;
   }
 
   createNewValue() {
@@ -72,12 +83,19 @@ export class AppComponent implements OnInit {
       })
     ).subscribe(
       (res2: ReadResource) => {
-        console.log(res2);
-        this.values = res2.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
+        console.log('beep');
+        console.log(this.testthing);
+
+        this.values = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
+
+        console.log('new values: ', this.values);
+        //console.log(res2);
         //this.displayValue = res2.getValues(this.displayValue.property)[0];
         //this.mode = 'read';
       }
-    );  
+    );
+
+    
   }
 
 }

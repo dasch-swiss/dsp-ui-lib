@@ -3,8 +3,11 @@
     <div *ngFor="let v of values">
       <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="v"></kui-display-edit>
     </div>
+    <div *ngIf="createMode">
+      <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="createValue"></kui-display-edit>
+    </div>
     <div>
-      <button class="create" *ngIf="createAllowed" (click)="createNewValue()">add</button>
+      <button class="create" *ngIf="createAllowed" (click)="showNewValueForm()">add</button>
     </div>
   <!-- </div> -->
 </div>
