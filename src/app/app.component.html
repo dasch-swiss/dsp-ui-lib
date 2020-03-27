@@ -1,7 +1,10 @@
 <div *ngIf="testValue">
-  <div *ngFor="let v of values">
-    <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="v"></kui-display-edit>
-  </div>
+  <!--<div *ngFor="let vt of valueTypes"> -->
+    <div *ngFor="let v of values">
+      <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="v"></kui-display-edit>
+    </div>
+    <div>
+      <button class="create" *ngIf="createAllowed" (click)="createNewValue()">add</button>
+    </div>
+  <!-- </div> -->
 </div>
-
-

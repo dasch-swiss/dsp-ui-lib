@@ -11,7 +11,9 @@ import {
   CardinalityUtil,
   ResourceClassDefinition,
   CreateTextValueAsString,
-  CreateValue
+  CreateValue,
+  DeleteValue,
+  DeleteValueResponse
 } from '@knora/api';
 import {BaseValueComponent} from '../../values';
 import {mergeMap} from 'rxjs/operators';
@@ -41,7 +43,7 @@ export class DisplayEditComponent implements OnInit {
 
   editModeActive = false;
 
-  createAllowed: boolean;
+  
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
@@ -54,8 +56,6 @@ export class DisplayEditComponent implements OnInit {
     const allPermissions = PermissionUtil.allUserPermissions(this.displayValue.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR');
 
     this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
-
-    this.createAllowed = CardinalityUtil.createValueForPropertyAllowed(this.displayValue.property, 1, this.parentResource.entityInfo.classes[this.parentResource.type] as ResourceClassDefinition);
   }
 
   activateEditMode() {
@@ -95,30 +95,31 @@ export class DisplayEditComponent implements OnInit {
     this.mode = 'read';
   }
 
-  createNewValue() {
-    const createVal = new CreateTextValueAsString();
-    createVal.text = 'text created at ' + new Date().toLocaleString();
-    createVal.valueHasComment = 'created comment';
+  deleteValue() {
+    const deleteVal = new DeleteValue();
+    deleteVal.id = this.displayValue.id;
+    deleteVal.type = this.displayValue.type;
 
     const updateRes = new UpdateResource();
     updateRes.type = this.parentResource.type;
     updateRes.id = this.parentResource.id;
     updateRes.property = this.displayValue.property;
-    updateRes.value = createVal;
+    updateRes.value = deleteVal;
 
     console.log('updateRes: ', updateRes);
 
-    this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
-      mergeMap((res: WriteValueResponse) => {
-        console.log(res);
-        return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, this.displayValue.uuid);
+    this.knoraApiConnection.v2.values.deleteValue(updateRes as UpdateResource<DeleteValue>).pipe(
+      mergeMap((res: DeleteValueResponse) => {
+        console.log('res: ', res);
+        return res.result;
       })
     ).subscribe(
-      (res2: ReadResource) => {
-        console.log(res2);
+      () => {
+        //console.log('res2: ', res2);
         //this.displayValue = res2.getValues(this.displayValue.property)[0];
         //this.mode = 'read';
       }
     );  
   }
+
 }

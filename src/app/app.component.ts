@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { ApiResponseData, KnoraApiConnection, LoginResponse, ReadResource, ReadValue } from '@knora/api';
+import { ApiResponseData, KnoraApiConnection, LoginResponse, ReadResource, ReadValue, CardinalityUtil, ResourceClassDefinition, CreateTextValueAsString, UpdateResource, CreateValue, WriteValueResponse } from '@knora/api';
 import { KnoraApiConnectionToken } from 'knora-ui';
 import { DisplayEditComponent } from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
 import { mergeMap } from 'rxjs/operators';
@@ -18,6 +18,8 @@ export class AppComponent implements OnInit {
   testValue: ReadValue;
 
   values: ReadValue[];
+
+  createAllowed: boolean;
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
@@ -39,9 +41,43 @@ export class AppComponent implements OnInit {
 
         console.log('values: ', this.values);
         this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText')[0];
+
+        this.createAllowed = CardinalityUtil.createValueForPropertyAllowed(this.testValue.property, 1, this.testthing.entityInfo.classes[this.testthing.type] as ResourceClassDefinition);
       }
     );
 
+  }
+
+  showNewValueForm(){
+
+  }
+
+  createNewValue() {
+    const createVal = new CreateTextValueAsString();
+    createVal.text = new Date().toLocaleString();
+    createVal.valueHasComment = 'created comment';
+
+    const updateRes = new UpdateResource();
+    updateRes.type = this.testthing.type;
+    updateRes.id = this.testthing.id;
+    updateRes.property = this.testValue.property;
+    updateRes.value = createVal;
+
+    console.log('updateRes: ', updateRes);
+
+    this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
+      mergeMap((res: WriteValueResponse) => {
+        console.log(res);
+        return this.knoraApiConnection.v2.values.getValue(this.testthing.id, this.testValue.uuid);
+      })
+    ).subscribe(
+      (res2: ReadResource) => {
+        console.log(res2);
+        this.values = res2.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
+        //this.displayValue = res2.getValues(this.displayValue.property)[0];
+        //this.mode = 'read';
+      }
+    );  
   }
 
 }

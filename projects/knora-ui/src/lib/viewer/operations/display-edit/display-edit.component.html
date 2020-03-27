@@ -22,11 +22,9 @@
   </span>
 </div>
 <div>
-  <button class="create" *ngIf="createAllowed" (click)="createNewValue()">add</button>
-</div>
-<div>
-  <button class="edit" *ngIf="canModify && !editModeActive" (click)="activateEditMode()">edit</button>
+  <button class="edit" *ngIf="canModify && !editModeActive" (click)="activateEditMode()">Edit</button>
   <button class="save" *ngIf="editModeActive" [disabled]="!displayValueComponent.form.valid"
     (click)="saveEditValue()">Save</button>
   <button class="cancel" *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>
+  <button class="delete" (click)="deleteValue()">Delete</button>
 </div>
