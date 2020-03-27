@@ -5,11 +5,9 @@ import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core';
 
-export function resourceValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } | null => {
+export function resourceValidator(control: AbstractControl) {
     const invalid = !(control.value instanceof ReadResource);
     return invalid ? {'invalidType': {value: control.value}} : null;
-  };
 }
 
 @Component({
@@ -31,7 +29,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   valueChangesSubscription: Subscription;
   labelChangesSubscription: Subscription;
   // label cannot contain logical operations of lucene index
-  customValidators = [resourceValidator()];
+  customValidators = [resourceValidator];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder, @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
     super();
@@ -43,7 +41,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    * @param resource the resource to be displayed (or no selection yet).
    */
   displayResource(resource: ReadResource | null): string {
-
     // null is the initial value (no selection yet)
     if (resource instanceof ReadResource) {
       return resource.label;
@@ -56,10 +53,9 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
    *
    * @param searchTerm label to be searched
    */
-  searchByLabel(searchTerm: string): ReadResource[] {
+  searchByLabel(searchTerm: string) {
     // at least 3 characters are required
-    if ( typeof searchTerm === 'string' && searchTerm.length >= 3) {
-
+    if (typeof searchTerm === 'string' && searchTerm.length >= 3) {
       this.knoraApiConnection.v2.search.doSearchByLabel(searchTerm, 0, {limitToResourceClass: this.restrictToResourceClass}).subscribe(
         (response: ReadResource[]) => {
           this.resources = response;
@@ -67,7 +63,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     } else {
       this.resources = [];
     }
-    return this.resources;
   }
 
   // show the label of the linked resource
@@ -87,9 +82,11 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
       return invalid ? {valueNotChanged: {value: control.value}} : null;
     };
   };
+
   ngOnInit() {
     const linkType = this.parentResource.getLinkPropertyIriFromLinkValuePropertyIri(this.propIri);
     this.restrictToResourceClass = this.parentResource.entityInfo.properties[linkType].objectType;
+
     // initialize form control elements
     this.valueFormControl = new FormControl(null);
 
@@ -101,13 +98,16 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
         this.valueFormControl.updateValueAndValidity();
       }
     );
+
     this.labelChangesSubscription = this.valueFormControl.valueChanges.subscribe(data => {
-      this.resources = this.searchByLabel(data);
+      this.searchByLabel(data);
     });
+
     this.form = this.fb.group({
       linkValue: this.valueFormControl,
       comment: this.commentFormControl
     });
+
     this.resetFormControl();
   }
 
@@ -118,10 +118,12 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
   // unsubscribe when the object is destroyed to prevent memory leaks
   ngOnDestroy(): void {
     this.unsubscribeFromValueChanges();
+
     if (this.labelChangesSubscription !== undefined) {
       this.labelChangesSubscription.unsubscribe();
     }
   }
+
   getNewValue(): CreateLinkValue | false {
     if (this.mode !== 'create' || !this.form.valid) {
       return false;
@@ -146,6 +148,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     updatedLinkValue.id = this.displayValue.id;
 
     updatedLinkValue.linkedResourceIri = this.valueFormControl.value.id;
+
     // add the submitted comment to updatedLinkValue only if user has added a comment
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedLinkValue.valueHasComment = this.commentFormControl.value;
