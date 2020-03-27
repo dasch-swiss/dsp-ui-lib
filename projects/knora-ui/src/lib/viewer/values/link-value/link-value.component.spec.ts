@@ -436,17 +436,6 @@ describe('LinkValueComponent', () => {
     });
 
     it('should only create a new value if input is a resource', () => {
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
-
-      valuesSpy.v2.search.doSearchByLabel.and.callFake(
-        () => {
-          const res = new ReadResource();
-          res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
-          res.label = 'hidden thing';
-          return of([res]);
-        }
-      );
-
       // simulate user input
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
 
