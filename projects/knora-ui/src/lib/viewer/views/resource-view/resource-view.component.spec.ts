@@ -67,7 +67,6 @@ describe('ResourceViewComponent', () => {
 
     resSpy.v2.res.getResource.and.callFake(
       (id: string) => {
-        console.log('id', id);
 
         return MockResource.getTestthing().pipe(
           map(
