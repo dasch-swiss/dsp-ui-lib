@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import { LinkValueComponent } from './link-value.component';
 import {
@@ -78,7 +78,6 @@ describe('LinkValueComponent', () => {
   beforeEach(async(() => {
     const valuesSpyObj = {
       v2: {
-        values: jasmine.createSpyObj('values', ['updateValue', 'getValue']),
         search: jasmine.createSpyObj('search', ['doSearchByLabel']),
       }
     };
@@ -108,6 +107,7 @@ describe('LinkValueComponent', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
+    let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
@@ -123,26 +123,38 @@ describe('LinkValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(LinkValueComponent));
-      valueInputNativeElement = valueComponentDe.query(By.css('input')).nativeElement;
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
     });
 
-    it('should display an existing value', () => {
+    it('should display an existing value', fakeAsync(() => {
 
-      expect(testHostComponent.inputValueComponent.displayValue.linkedResourceIri).toMatch('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
-      expect(testHostComponent.inputValueComponent.displayValue.propertyLabel).toMatch('Another thing');
+      expect(testHostComponent.inputValueComponent.displayValue.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect(testHostComponent.inputValueComponent.displayValue.linkedResource.label).toEqual('Sierra');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(testHostComponent.inputValueComponent.displayValue.linkedResource.label).toEqual('Sierra');
-      expect(testHostComponent.inputValueComponent.displayValue.linkedResource.type).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+      expect(testHostComponent.inputValueComponent.valueFormControl.value instanceof ReadResource).toBe(true);
+      expect(testHostComponent.inputValueComponent.valueFormControl.value.label).toEqual('Sierra');
+
+      // setValue has to be called, otherwise the native input field does not get the label via the displayWith function
+      const res = testHostComponent.inputValueComponent.valueFormControl.value;
+      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+
+      // https://github.com/angular/components/blob/29e74eb9431ba01d951ee33df554f465609b59fa/src/material/autocomplete/autocomplete.spec.ts#L2577-L2580
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('Sierra');
       expect(valueInputNativeElement.readOnly).toEqual(true);
-    });
+    }));
 
     it('should make a link value editable', () => {
 
@@ -156,6 +168,7 @@ describe('LinkValueComponent', () => {
     });
 
     it('should search for resources by their label', () => {
+
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
       valuesSpy.v2.search.doSearchByLabel.and.callFake(
         () => {
@@ -166,8 +179,8 @@ describe('LinkValueComponent', () => {
         }
       );
 
-      testHostComponent.inputValueComponent.searchByLabel('thing');
-      testHostFixture.detectChanges();
+      // simulate user searching for label 'thing'
+      testHostComponent.inputValueComponent.valueFormControl.setValue('thing');
 
       expect(valuesSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('thing', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'});
       expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
@@ -198,8 +211,8 @@ describe('LinkValueComponent', () => {
 
       const res = new ReadResource();
       res.id = 'http://rdfh.ch/0001/a-blue-thing';
+
       testHostComponent.inputValueComponent.valueFormControl.setValue(res);
-      testHostFixture.detectChanges();
 
       expect(testHostComponent.inputValueComponent.valueFormControl.value instanceof ReadResource).toBeTruthy();
       expect(testHostComponent.inputValueComponent.form.value.linkValue.id).toEqual('http://rdfh.ch/0001/a-blue-thing');
@@ -270,11 +283,22 @@ describe('LinkValueComponent', () => {
     });
 
     it('should only create a new value if input is a resource', () => {
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+
+      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+        () => {
+          const res = new ReadResource();
+          res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
+          res.label = 'hidden thing';
+          return of([res]);
+        }
+      );
+
       // simulate user input
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      const res = 'thing';
-      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+      const label = 'thing';
+      testHostComponent.inputValueComponent.valueFormControl.setValue(label);
 
       expect(testHostComponent.inputValueComponent.valueFormControl.value instanceof ReadResource).toBeFalsy();
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
