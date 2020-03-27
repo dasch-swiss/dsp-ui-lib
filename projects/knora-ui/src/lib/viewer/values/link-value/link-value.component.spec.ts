@@ -252,6 +252,7 @@ describe('LinkValueComponent', () => {
     });
 
     it('should create a value', () => {
+
       // simulate user input
       const res = new ReadResource();
       res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
@@ -271,10 +272,20 @@ describe('LinkValueComponent', () => {
 
     it('should only create a new value if input is a resource', () => {
       // simulate user input
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+
+      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+        () => {
+          const res = new ReadResource();
+          res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
+          res.label = 'hidden thing';
+          return of([res]);
+        }
+      );
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      const res = 'thing';
-      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+      const label = 'thing';
+      testHostComponent.inputValueComponent.valueFormControl.setValue(label);
 
       expect(testHostComponent.inputValueComponent.valueFormControl.value instanceof ReadResource).toBeFalsy();
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
