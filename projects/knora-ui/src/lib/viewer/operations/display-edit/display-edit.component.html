@@ -19,14 +19,12 @@
     <kui-link-value #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"
                     [parentResource]="parentResource" [propIri]="displayValue.property"></kui-link-value>
   </span>
+  <div>
+    <button class="edit" *ngIf="canModify && !editModeActive" (click)="activateEditMode()">Edit</button>
+    <button class="save" *ngIf="editModeActive" [disabled]="!displayValueComponent.form.valid"
+      (click)="saveEditValue()">Save</button>
+    <button class="cancel" *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>
+    <button class="delete" (click)="deleteValue()">Delete</button>
+  </div>
 </div>
-<div *ngIf="!newValue">
-  <button class="edit" *ngIf="canModify && !editModeActive" (click)="activateEditMode()">Edit</button>
-  <button class="save" *ngIf="editModeActive" [disabled]="!displayValueComponent.form.valid"
-    (click)="saveEditValue()">Save</button>
-  <button class="cancel" *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>
-  <button class="delete" (click)="deleteValue()">Delete</button>
-</div>
-<div *ngIf="newValue">
-  <button class="save" *ngIf="editModeActive" (click)="saveCreateValue()">Save</button>
-</div>
+

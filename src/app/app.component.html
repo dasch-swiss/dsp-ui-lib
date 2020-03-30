@@ -1,10 +1,10 @@
 <div *ngIf="values">
   <!--<div *ngFor="let vt of valueTypes"> -->
-    <div *ngFor="let v of values" (valueCreated)="onCreated($event)">
+    <div *ngFor="let v of values">
       <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="v"></kui-display-edit>
     </div>
     <div *ngIf="createMode">
-      <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="createValue"></kui-display-edit>
+      <kui-add-value #displayEdit [parentResource]="testthing" [displayValue]="createValue" (valueAdded)="onValueAdded($event)" (operationCancelled)="hideNewValueForm($event)"></kui-add-value>
     </div>
     <div>
       <button class="create" *ngIf="createAllowed" (click)="showNewValueForm()">add</button>

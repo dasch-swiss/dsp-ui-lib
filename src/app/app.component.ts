@@ -50,58 +50,39 @@ export class AppComponent implements OnInit {
 
   }
 
-  showNewValueForm(){
+  showNewValueForm() {
     this.createValue = new ReadValue();
     this.createValue.userHasPermission = 'CR';
     this.createValue.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
-  
-    // console.log('testValue: ', this.testValue);
-    
-    // console.log('createValue: ', this.createValue);
     
     this.createMode = true;
     this.createAllowed = false;
   }
 
-  onCreated(s: string){
-    
-    console.log(s);
-    
+  hideNewValueForm(b: boolean) {
+    this.createMode = false;
+    this.createAllowed = true;
   }
 
-  createNewValue() {
-    const createVal = new CreateTextValueAsString();
-    createVal.text = new Date().toLocaleString();
-    createVal.valueHasComment = 'created comment';
+  onValueAdded() {
+    this.knoraApiConnection.v2.auth.login('username', 'root', 'test').pipe(
+      mergeMap(
+        (loginResponse: ApiResponseData<LoginResponse>) => {
+          return this.knoraApiConnection.v2.res.getResource('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+        }
+      )
+    ).subscribe(
+      (resource: ReadResource) => {
+        this.testthing = resource;
+        console.log(this.testthing);
 
-    const updateRes = new UpdateResource();
-    updateRes.type = this.testthing.type;
-    updateRes.id = this.testthing.id;
-    updateRes.property = this.testValue.property;
-    updateRes.value = createVal;
+        this.values = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
+        console.log('values: ', this.values);
 
-    console.log('updateRes: ', updateRes);
-
-    // this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
-    //   mergeMap((res: WriteValueResponse) => {
-    //     console.log(res);
-    //     return this.knoraApiConnection.v2.values.getValue(this.testthing.id, this.testValue.uuid);
-    //   })
-    // ).subscribe(
-    //   (res2: ReadResource) => {
-    //     console.log('beep');
-    //     console.log(this.testthing);
-
-    //     this.values = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
-
-    //     console.log('new values: ', this.values);
-    //     //console.log(res2);
-    //     //this.displayValue = res2.getValues(this.displayValue.property)[0];
-    //     //this.mode = 'read';
-    //   }
-    // );
-
-    
+        this.createMode = false;
+        this.createAllowed = true;
+      }
+    );
   }
 
 }

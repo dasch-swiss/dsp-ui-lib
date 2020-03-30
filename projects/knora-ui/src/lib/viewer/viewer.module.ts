@@ -23,6 +23,7 @@ import {MatDatepickerModule} from '@angular/material';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
 import { JDNDatepickerDirective } from './values/time-value/jdn-datepicker-directive/jdndatepicker.directive';
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
+import { AddValueComponent } from './operations/add-value/add-value.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ColorPickerComponent } from './values/color-value/color-picker/color-pi
     JDNDatepickerDirective,
     ColorValueComponent,
     ColorPickerComponent,
-    LinkValueComponent
+    LinkValueComponent,
+    AddValueComponent
 ],
   imports: [
     CommonModule,
@@ -61,7 +63,8 @@ import { ColorPickerComponent } from './values/color-value/color-picker/color-pi
     UriValueComponent,
     IntervalValueComponent,
     TimeValueComponent,
-    LinkValueComponent]
+    LinkValueComponent,
+    AddValueComponent]
 
 })
 export class ViewerModule {
