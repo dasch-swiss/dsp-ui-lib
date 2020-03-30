@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, Input, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
 import {
   Constants,
   KnoraApiConnection,
@@ -35,6 +35,10 @@ export class DisplayEditComponent implements OnInit {
 
   @Input() configuration?: object;
 
+  @Output() valueCreated = new EventEmitter<string>();
+
+  didCreateValue = false;
+
   constants = Constants;
 
   mode: 'read' | 'update' | 'create' | 'search';
@@ -43,7 +47,7 @@ export class DisplayEditComponent implements OnInit {
 
   editModeActive = false;
 
-  
+  newValue: boolean;
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
@@ -56,6 +60,12 @@ export class DisplayEditComponent implements OnInit {
     const allPermissions = PermissionUtil.allUserPermissions(this.displayValue.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR');
 
     this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
+
+    if(this.displayValue.id === '') {
+      this.newValue = true;
+      this.editModeActive = true;
+      this.mode = 'create';
+    }
   }
 
   activateEditMode() {
@@ -64,6 +74,7 @@ export class DisplayEditComponent implements OnInit {
   }
 
   saveEditValue() {
+    console.log('edit displayValue: ', this.displayValue);
     this.editModeActive = false;
     const updatedVal = this.displayValueComponent.getUpdatedValue();
 
@@ -94,6 +105,47 @@ export class DisplayEditComponent implements OnInit {
     this.editModeActive = false;
     this.mode = 'read';
   }
+
+  saveCreateValue() {
+    this.valueCreated.emit('message to parent');
+  }
+
+  // saveCreateValue() {
+  //   this.editModeActive = false;
+  //   const createVal = this.displayValueComponent.getNewValue();
+  //   // console.log('createVal: ', createVal);
+    
+
+  //   if (createVal instanceof CreateValue) {
+  //     // console.log('create displayValue: ', this.displayValue);
+      
+  //     const updateRes = new UpdateResource();
+  //     updateRes.id = this.parentResource.id;
+  //     updateRes.type = this.parentResource.type;
+  //     updateRes.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText';
+  //     updateRes.value = createVal;
+
+  //     // console.log('updateRes: ', updateRes);
+      
+  //     this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
+  //       mergeMap((res: WriteValueResponse) => {
+  //         // console.log(res);
+  //         return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
+  //       })
+  //       ).subscribe(
+  //         (res2: ReadResource) => {
+  //           // console.log(this.parentResource);
+  //           this.mode = 'read';
+  //           console.log('bopity boopity');
+            
+  //           this.valueCreated.emit(true);
+  //         }
+  //       );
+
+  //   } else {
+  //     console.error('invalid value');
+  //   }
+  // }
 
   deleteValue() {
     const deleteVal = new DeleteValue();

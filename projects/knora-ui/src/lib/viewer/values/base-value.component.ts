@@ -47,6 +47,8 @@ export abstract class BaseValueComponent {
       const invalid = initValue === control.value
         && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
 
+      //console.log('form invalid: ', invalid);
+      
       return invalid ? {valueNotChanged: {value: control.value}} : null;
     };
   };

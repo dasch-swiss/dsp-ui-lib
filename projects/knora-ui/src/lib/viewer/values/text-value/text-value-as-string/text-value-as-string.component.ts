@@ -27,7 +27,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
   }
 
   getInitValue(): string | null {
-    console.log('getInitCalled');
+    // console.log('getInitValue called');
     
     if (this.displayValue !== undefined) {
       return this.displayValue.text;
@@ -37,7 +37,8 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
   }
 
   ngOnInit() {
-
+    // console.log('ngOnInit called');
+    
     // initialize form control elements
     this.valueFormControl = new FormControl(null);
 
@@ -68,8 +69,9 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     this.unsubscribeFromValueChanges();
   }
 
-  getNewValue(): CreateTextValueAsString | false {
-
+  getNewValue(): CreateTextValueAsString | false {    
+    // console.log('form: ', this.form);
+    
     if (this.mode !== 'create' || !this.form.valid) {
       return false;
     }

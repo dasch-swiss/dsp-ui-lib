@@ -1,6 +1,5 @@
 <div>
   <span [ngSwitch]="displayValue.type">
-
     <kui-text-value-as-string #displayVal *ngSwitchCase="constants.TextValue" [mode]="mode"
       [displayValue]="displayValue"></kui-text-value-as-string>
     <kui-int-value #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue">
@@ -21,10 +20,13 @@
                     [parentResource]="parentResource" [propIri]="displayValue.property"></kui-link-value>
   </span>
 </div>
-<div>
+<div *ngIf="!newValue">
   <button class="edit" *ngIf="canModify && !editModeActive" (click)="activateEditMode()">Edit</button>
   <button class="save" *ngIf="editModeActive" [disabled]="!displayValueComponent.form.valid"
     (click)="saveEditValue()">Save</button>
   <button class="cancel" *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>
   <button class="delete" (click)="deleteValue()">Delete</button>
+</div>
+<div *ngIf="newValue">
+  <button class="save" *ngIf="editModeActive" (click)="saveCreateValue()">Save</button>
 </div>

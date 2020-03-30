@@ -1,6 +1,6 @@
-<div *ngIf="testValue">
+<div *ngIf="values">
   <!--<div *ngFor="let vt of valueTypes"> -->
-    <div *ngFor="let v of values">
+    <div *ngFor="let v of values" (valueCreated)="onCreated($event)">
       <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="v"></kui-display-edit>
     </div>
     <div *ngIf="createMode">

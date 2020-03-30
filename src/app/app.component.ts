@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
 
   createAllowed: boolean;
   createMode: boolean;
-  createValue: ReadTextValueAsString;
+  createValue: ReadValue;
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
@@ -51,16 +51,22 @@ export class AppComponent implements OnInit {
   }
 
   showNewValueForm(){
-    this.createValue = new ReadTextValueAsString();
-    this.createValue.hasPermissions = 'M';
+    this.createValue = new ReadValue();
     this.createValue.userHasPermission = 'CR';
-    this.createValue.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText';
-    this.createValue.text = "hello";
+    this.createValue.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
   
-    console.log('createValue: ', this.createValue);
+    // console.log('testValue: ', this.testValue);
+    
+    // console.log('createValue: ', this.createValue);
     
     this.createMode = true;
     this.createAllowed = false;
+  }
+
+  onCreated(s: string){
+    
+    console.log(s);
+    
   }
 
   createNewValue() {
@@ -76,24 +82,24 @@ export class AppComponent implements OnInit {
 
     console.log('updateRes: ', updateRes);
 
-    this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
-      mergeMap((res: WriteValueResponse) => {
-        console.log(res);
-        return this.knoraApiConnection.v2.values.getValue(this.testthing.id, this.testValue.uuid);
-      })
-    ).subscribe(
-      (res2: ReadResource) => {
-        console.log('beep');
-        console.log(this.testthing);
+    // this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
+    //   mergeMap((res: WriteValueResponse) => {
+    //     console.log(res);
+    //     return this.knoraApiConnection.v2.values.getValue(this.testthing.id, this.testValue.uuid);
+    //   })
+    // ).subscribe(
+    //   (res2: ReadResource) => {
+    //     console.log('beep');
+    //     console.log(this.testthing);
 
-        this.values = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
+    //     this.values = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
 
-        console.log('new values: ', this.values);
-        //console.log(res2);
-        //this.displayValue = res2.getValues(this.displayValue.property)[0];
-        //this.mode = 'read';
-      }
-    );
+    //     console.log('new values: ', this.values);
+    //     //console.log(res2);
+    //     //this.displayValue = res2.getValues(this.displayValue.property)[0];
+    //     //this.mode = 'read';
+    //   }
+    // );
 
     
   }
