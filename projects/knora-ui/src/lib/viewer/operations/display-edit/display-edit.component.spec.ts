@@ -414,6 +414,13 @@ describe('DisplayEditComponent', () => {
 
     it('should display an edit button if the user has the necessary permissions', () => {
       expect(testHostComponent.displayEditValueComponent.canModify).toBeTruthy();
+      expect(testHostComponent.displayEditValueComponent.editModeActive).toBeFalsy();
+
+      const editButtonDebugElement = displayEditComponentDe.query(By.css('button.edit'));
+
+      expect(editButtonDebugElement).toBeTruthy();
+      expect(editButtonDebugElement.nativeElement).toBeTruthy();
+
     });
 
     it('should switch to edit mode when the edit button is clicked', () => {
@@ -495,6 +502,37 @@ describe('DisplayEditComponent', () => {
 
       expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
       expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
+    });
+
+  });
+
+  describe('not change from display to edit mode for an html text value', () => {
+    let hostCompDe;
+    let displayEditComponentDe;
+
+    it('should not display the edit button', () => {
+      const inputVal: ReadTextValueAsHtml = new ReadTextValueAsHtml();
+
+      inputVal.hasPermissions = 'CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser';
+      inputVal.userHasPermission = 'CR';
+      inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+      inputVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID';
+      inputVal.html =
+        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>';
+
+      testHostComponent.readValue = inputVal;
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
+
+      hostCompDe = testHostFixture.debugElement;
+      displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
+
+      const editButtonDebugElement = displayEditComponentDe.query(By.css('button.edit'));
+      expect(editButtonDebugElement).toBe(null);
+
+
     });
 
   });
