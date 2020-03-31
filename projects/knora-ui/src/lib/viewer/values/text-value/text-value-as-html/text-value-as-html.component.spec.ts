@@ -81,7 +81,7 @@ describe('TextValueAsHtmlComponent', () => {
 
       const valueComponentDe = hostCompDe.query(By.directive(TextValueAsHtmlComponent));
 
-      const valueParagraph = valueComponentDe.query(By.css('p.value'));
+      const valueParagraph = valueComponentDe.query(By.css('div.value'));
       const valueParagraphNativeElement = valueParagraph.nativeElement;
 
       expect(testHostComponent.inputValueComponent.displayValue.html)
@@ -114,7 +114,7 @@ describe('TextValueAsHtmlComponent', () => {
 
       const valueComponentDe = hostCompDe.query(By.directive(TextValueAsHtmlComponent));
 
-      const valueParagraph = valueComponentDe.query(By.css('p.value'));
+      const valueParagraph = valueComponentDe.query(By.css('div.value'));
       const valueParagraphNativeElement = valueParagraph.nativeElement;
 
       const commentSpan = valueComponentDe.query(By.css('span.comment'));
