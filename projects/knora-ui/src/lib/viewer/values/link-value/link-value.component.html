@@ -1,14 +1,24 @@
 <span [formGroup]="form">
-  <mat-form-field class="example-full-width linkValue-field">
+  <mat-form-field class="child-value-component" floatLabel="never">
         <input matInput [formControlName]="'linkValue'" class="value" type="text" placeholder="Link value" aria-label="resource" [matAutocomplete]="auto" [readonly]="mode === 'read'">
-
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayResource">
           <mat-option *ngFor="let res of resources" [value]="res">
               {{res?.label}}
           </mat-option>
         </mat-autocomplete>
     </mat-form-field>
-    <mat-form-field class="large-field comment-field">
-        <input matInput [formControlName]="'comment'" class="comment" placeholder="Comment" type="text" [readonly]="mode === 'read'">
+    <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
+      <textarea matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="6"
+                [formControlName]="'comment'"
+                class="comment"
+                placeholder="Comment"
+                type="text"
+                [readonly]="mode === 'read'"
+                spellcheck="false">
+      </textarea>
     </mat-form-field>
 </span>

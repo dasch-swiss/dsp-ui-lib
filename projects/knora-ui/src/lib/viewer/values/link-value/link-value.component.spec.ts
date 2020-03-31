@@ -126,9 +126,6 @@ describe('LinkValueComponent', () => {
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
-
     });
 
     it('should display an existing value', fakeAsync(() => {
@@ -274,6 +271,9 @@ describe('LinkValueComponent', () => {
       testHostComponent.mode = 'update';
       testHostFixture.detectChanges();
 
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
       expect(valueInputNativeElement.readOnly).toEqual(false);
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
@@ -391,7 +391,7 @@ describe('LinkValueComponent', () => {
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 
