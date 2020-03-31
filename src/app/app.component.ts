@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
 
   }
 
-  showNewValueForm() {
+  showAddValueForm() {
     this.createValue = new ReadValue();
     this.createValue.userHasPermission = 'CR';
     this.createValue.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
@@ -59,12 +59,12 @@ export class AppComponent implements OnInit {
     this.createAllowed = false;
   }
 
-  hideNewValueForm(b: boolean) {
+  hideAddValueForm(b: boolean) {
     this.createMode = false;
     this.createAllowed = true;
   }
 
-  onValueAdded() {
+  updateValues() {
     this.knoraApiConnection.v2.auth.login('username', 'root', 'test').pipe(
       mergeMap(
         (loginResponse: ApiResponseData<LoginResponse>) => {
