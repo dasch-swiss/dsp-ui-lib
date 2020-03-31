@@ -38,7 +38,9 @@ export class DisplayEditComponent implements OnInit {
 
   editModeActive = false;
 
-  valueType: string;
+  // type of given displayValue
+  // or knora-api-js-lib class representing the value
+  valueTypeOrClass: string;
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
@@ -52,7 +54,7 @@ export class DisplayEditComponent implements OnInit {
 
     this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
 
-    this.valueType = this.getValueType();
+    this.valueTypeOrClass = this.getValueTypeOrClass(this.displayValue);
   }
 
   activateEditMode() {
@@ -92,21 +94,26 @@ export class DisplayEditComponent implements OnInit {
     this.mode = 'read';
   }
 
-  getValueType(): string | null{
-    if (this.displayValue.type === this.constants.TextValue) {
+  /**
+   * Given a value, determines the type or class representing it.
+   *
+   * For text values, this method determines the specific class in use.
+   * For all other types, the given type is returned.
+   *
+   * @param value the given value.
+   */
+  getValueTypeOrClass(value: ReadValue): string {
 
-      if (this.displayValue instanceof ReadTextValueAsString) {
-        this.valueType = 'ReadTextValueAsString';
-      } else if (this.displayValue instanceof ReadTextValueAsXml) {
-        this.valueType = 'ReadTextValueAsXml';
+    if (value.type === this.constants.TextValue) {
+      if (value instanceof ReadTextValueAsString) {
+        return 'ReadTextValueAsString';
+      } else if (value instanceof ReadTextValueAsXml) {
+        return 'ReadTextValueAsXml';
       } else {
-        this.valueType = 'ReadTextValueAsHtml';
+        return 'ReadTextValueAsHtml';
       }
-
     } else {
-      this.valueType = this.displayValue.type;
+      return value.type;
     }
-
-    return this.valueType;
   }
 }

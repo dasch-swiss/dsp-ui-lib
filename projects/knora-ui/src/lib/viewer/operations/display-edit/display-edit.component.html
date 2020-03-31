@@ -1,5 +1,5 @@
 <div>
-  <span [ngSwitch]="valueType">
+  <span [ngSwitch]="valueTypeOrClass">
     <kui-text-value-as-string #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-string>
     <kui-text-value-as-html #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-html>
     <kui-int-value #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></kui-int-value>
@@ -14,7 +14,7 @@
   </span>
 </div>
 <div>
-  <span *ngIf="valueType !== 'ReadTextValueAsHtml'">
+  <span *ngIf="valueTypeOrClass !== 'ReadTextValueAsHtml'">
     <button class="edit" *ngIf="canModify && !editModeActive" (click)="activateEditMode()">edit</button>
     <button class="save" *ngIf="editModeActive" [disabled]="!displayValueComponent.form.valid" (click)="saveEditValue()">Save</button>
     <button class="cancel" *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>

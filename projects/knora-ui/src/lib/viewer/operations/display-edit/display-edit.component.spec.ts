@@ -3,6 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {DisplayEditComponent} from './display-edit.component';
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {
+  Constants,
   MockResource,
   ReadIntValue,
   ReadResource,
@@ -350,7 +351,48 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
       expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).parentResource instanceof ReadResource).toBe(true);
       expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
-      
+
+    });
+
+  });
+
+  describe('method getValueType', () => {
+    let hostCompDe;
+    let displayEditComponentDe;
+
+    beforeEach(() => {
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
+
+      hostCompDe = testHostFixture.debugElement;
+      displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
+
+    });
+
+    it('should return the type of a integer value', () => {
+
+      expect(testHostComponent.displayEditValueComponent.getValueTypeOrClass(testHostComponent.displayEditValueComponent.displayValue)).toEqual(Constants.IntValue);
+
+    });
+
+    it('should return the type of a html text value', () => {
+
+      const htmlTextVal = new ReadTextValueAsHtml();
+      htmlTextVal.type = Constants.TextValue;
+
+      expect(testHostComponent.displayEditValueComponent.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsHtml');
+
+    });
+
+    it('should return the type of a plain text value', () => {
+
+      const plainTextVal = new ReadTextValueAsHtml();
+      plainTextVal.type = Constants.TextValue;
+
+      expect(testHostComponent.displayEditValueComponent.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsHtml');
+
     });
 
   });
