@@ -12,7 +12,7 @@ import {By} from '@angular/platform-browser';
  */
 @Component({
   template: `
-    <kui-text-value-as-html #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-text-value-as-html>`
+    <kui-text-value-as-html *ngIf="displayInputVal" #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-text-value-as-html>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -24,18 +24,6 @@ class TestHostDisplayValueComponent implements OnInit {
 
   ngOnInit() {
 
-    const inputVal: ReadTextValueAsHtml = new ReadTextValueAsHtml();
-
-    inputVal.hasPermissions = 'CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser';
-    inputVal.userHasPermission = 'CR';
-    inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
-    inputVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID';
-    inputVal.html =
-      '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>';
-    inputVal.valueHasComment = 'very interesting';
-
-    this.displayInputVal = inputVal;
-
     this.mode = 'read';
   }
 }
@@ -46,7 +34,8 @@ describe('TextValueAsHtmlComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         TestHostDisplayValueComponent,
-        TextValueAsHtmlComponent],
+        TextValueAsHtmlComponent
+      ],
       imports: [
         ReactiveFormsModule,
         MatInputModule,
@@ -60,12 +49,7 @@ describe('TextValueAsHtmlComponent', () => {
   describe('display text value with markup', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
-    let valueComponentDe: DebugElement;
-    let valueParagraph: DebugElement;
-    let valueParagraphNativeElement;
-
-    let commentSpan: DebugElement;
-    let commentSpanNativeElement;
+    let hostCompDe;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
@@ -73,20 +57,32 @@ describe('TextValueAsHtmlComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
-      expect(testHostComponent.inputValueComponent).toBeTruthy();
 
-      const hostCompDe = testHostFixture.debugElement;
-      valueComponentDe = hostCompDe.query(By.directive(TextValueAsHtmlComponent));
-
-      valueParagraph = valueComponentDe.query(By.css('p.value'));
-      valueParagraphNativeElement = valueParagraph.nativeElement;
-
-      commentSpan = valueComponentDe.query(By.css('span.comment'));
-      commentSpanNativeElement = commentSpan.nativeElement;
+      hostCompDe = testHostFixture.debugElement;
 
     });
 
     it('should display an existing value', () => {
+
+      const inputVal: ReadTextValueAsHtml = new ReadTextValueAsHtml();
+
+      inputVal.hasPermissions = 'CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser';
+      inputVal.userHasPermission = 'CR';
+      inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+      inputVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID';
+      inputVal.html =
+        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>';
+
+      testHostComponent.displayInputVal = inputVal;
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
+
+      const valueComponentDe = hostCompDe.query(By.directive(TextValueAsHtmlComponent));
+
+      const valueParagraph = valueComponentDe.query(By.css('p.value'));
+      const valueParagraphNativeElement = valueParagraph.nativeElement;
 
       expect(testHostComponent.inputValueComponent.displayValue.html)
         .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>');
@@ -95,6 +91,42 @@ describe('TextValueAsHtmlComponent', () => {
 
       expect(valueParagraphNativeElement.innerHTML)
         .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>');
+
+      const commentSpan = valueComponentDe.query(By.css('span.comment'));
+
+      expect(commentSpan).toBe(null);
+
+    });
+
+    it('should display an existing value with a comment', () => {
+
+      const inputVal: ReadTextValueAsHtml = new ReadTextValueAsHtml();
+
+      inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+      inputVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID';
+      inputVal.html =
+        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link and a comment</a></p>';
+      inputVal.valueHasComment = 'very interesting';
+
+      testHostComponent.displayInputVal = inputVal;
+
+      testHostFixture.detectChanges();
+
+      const valueComponentDe = hostCompDe.query(By.directive(TextValueAsHtmlComponent));
+
+      const valueParagraph = valueComponentDe.query(By.css('p.value'));
+      const valueParagraphNativeElement = valueParagraph.nativeElement;
+
+      const commentSpan = valueComponentDe.query(By.css('span.comment'));
+      const commentSpanNativeElement = commentSpan.nativeElement;
+
+      expect(testHostComponent.inputValueComponent.displayValue.html)
+        .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link and a comment</a></p>');
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+
+      expect(valueParagraphNativeElement.innerHTML)
+        .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link and a comment</a></p>');
 
       expect(commentSpanNativeElement.innerText).toEqual('very interesting');
 
