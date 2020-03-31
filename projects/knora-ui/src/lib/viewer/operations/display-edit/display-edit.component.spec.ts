@@ -10,6 +10,7 @@ import {
   ReadTextValueAsHtml,
   ReadValue,
   UpdateIntValue,
+  UpdateResource,
   UpdateValue,
   WriteValueResponse
 } from '@knora/api';
@@ -30,6 +31,7 @@ class TestTextValueAsStringComponent {
 
   @Input() displayValue;
 }
+
 @Component({
   selector: `kui-link-value`,
   template: ``
@@ -42,6 +44,7 @@ class TestLinkValueComponent {
   @Input() parentResource;
   @Input() propIri;
 }
+
 @Component({
   selector: `kui-text-value-as-html`,
   template: ``
@@ -452,6 +455,7 @@ describe('DisplayEditComponent', () => {
 
           response.id = 'newID';
           response.type = 'type';
+          response.uuid = 'uuid';
 
           return of(response);
         }
@@ -493,15 +497,28 @@ describe('DisplayEditComponent', () => {
 
       testHostFixture.detectChanges();
 
-      // expect(updateValueSpy).toHaveBeenCalledWith();
+      const expectedUpdateResource = new UpdateResource();
+
+      expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+      expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
+      expectedUpdateResource.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
+
+      const expectedUpdateVal = new UpdateIntValue();
+      expectedUpdateVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/dJ1ES8QTQNepFKF5-EAqdg';
+      expectedUpdateVal.int = 1;
+
+      expectedUpdateResource.value = expectedUpdateVal;
+
+      expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledWith(expectedUpdateResource);
       expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledTimes(1);
 
       expect(valuesSpy.v2.values.getValue).toHaveBeenCalledTimes(1);
       expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id,
-        testHostComponent.displayEditValueComponent.displayValue.uuid);
+        'uuid');
 
       expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
       expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
+
     });
 
   });
