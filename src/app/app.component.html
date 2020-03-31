@@ -4,7 +4,7 @@
       <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="v" (valueDeleted)="updateValues($event)"></kui-display-edit>
     </div>
     <div *ngIf="createMode">
-      <kui-add-value #displayEdit [parentResource]="testthing" [displayValue]="createValue" (valueAdded)="updateValues($event)" (operationCancelled)="hideAddValueForm($event)"></kui-add-value>
+      <kui-add-value #addValue [parentResource]="testthing" [displayValue]="createValue" (valueAdded)="updateValues($event)" (operationCancelled)="hideAddValueForm($event)"></kui-add-value>
     </div>
     <div>
       <button class="create" *ngIf="createAllowed" (click)="showAddValueForm()">add</button>

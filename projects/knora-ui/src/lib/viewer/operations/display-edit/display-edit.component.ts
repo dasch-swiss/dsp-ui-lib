@@ -31,7 +31,7 @@ export class DisplayEditComponent implements OnInit {
 
   @Input() configuration?: object;
 
-  @Output() valueDeleted = new EventEmitter<boolean>();
+  @Output() valueDeleted = new EventEmitter();
 
   constants = Constants;
 
@@ -109,7 +109,7 @@ export class DisplayEditComponent implements OnInit {
     this.knoraApiConnection.v2.values.deleteValue(updateRes as UpdateResource<DeleteValue>).pipe(
       mergeMap((res: DeleteValueResponse) => {
         console.log('res: ', res);
-        this.valueDeleted.emit(true);
+        this.valueDeleted.emit();
         return res.result;
       })
     ).subscribe(

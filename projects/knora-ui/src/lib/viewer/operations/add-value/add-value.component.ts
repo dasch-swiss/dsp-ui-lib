@@ -19,9 +19,11 @@ export class AddValueComponent implements OnInit {
 
   @Input() configuration?: object;
 
-  @Output() valueAdded = new EventEmitter<boolean>();
+  @Input() resourceValues: ReadValue[];
 
-  @Output() operationCancelled = new EventEmitter<boolean>();
+  @Output() valueAdded = new EventEmitter();
+
+  @Output() operationCancelled = new EventEmitter();
 
   constants = Constants;
 
@@ -29,7 +31,7 @@ export class AddValueComponent implements OnInit {
 
   canModify: boolean;
 
-  editModeActive = false;
+  createModeActive = false;
   
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
 
@@ -41,20 +43,24 @@ export class AddValueComponent implements OnInit {
 
     this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
 
-    this.editModeActive = true;
+    this.createModeActive = true;
+
+    this.resourceValues = this.parentResource.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
   }
 
   saveAddValue() {
-    this.editModeActive = false;
+    this.createModeActive = false;
     const createVal = this.displayValueComponent.getNewValue();
-    // console.log('createVal: ', createVal);
+    console.log('displayValueComponent: ', this.displayValueComponent);
     
     if (createVal instanceof CreateValue) {
-      // console.log('create displayValue: ', this.displayValue);
-      
+      console.log('displayValue: ', this.displayValue);
       const updateRes = new UpdateResource();
       updateRes.id = this.parentResource.id;
       updateRes.type = this.parentResource.type;
+      this.validValue(updateRes);
+
+      // TODO: get the property name of the corresponding value type
       updateRes.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText';
       updateRes.value = createVal;
 
@@ -67,21 +73,34 @@ export class AddValueComponent implements OnInit {
         })
         ).subscribe(
           (res2: ReadResource) => {
-            // console.log(this.parentResource);
-            this.mode = 'read';
-            
-            this.valueAdded.emit(true);
+            // console.log(this.parentResource);            
+            this.valueAdded.emit();
           }
         );
-
     } else {
       console.error('invalid value');
     }
   }
 
   cancelAddValue() {
-    this.editModeActive = false;
-    this.mode = 'read';
-    this.operationCancelled.emit(true);
+    this.createModeActive = false;
+    this.operationCancelled.emit();
+  }
+
+  validValue(updateResource: UpdateResource<CreateValue>): boolean {
+    // get a list of all the property values
+    // compare the value (text, url, etc.) of each property value with the new value
+    // do not submit value if the value already exists
+    // question: how to convert generic into type specific in order to check values?
+    // question: where should this logic be done?
+
+    console.log('updateResource: ', updateResource);
+    
+    this.resourceValues.forEach(function (value) {
+      // if(value.text === updateResource.value){
+
+      // }
+    });
+    return true;
   }
 }

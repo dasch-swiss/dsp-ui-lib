@@ -12,8 +12,8 @@
                       [parentResource]="parentResource" [propIri]="displayValue.property"></kui-link-value>
     </span>
   <div>
-    <button class="save" *ngIf="editModeActive" (click)="saveAddValue()">Save</button>
-    <button class="cancel" *ngIf="editModeActive" (click)="cancelAddValue()">Cancel</button>
+    <button class="save" *ngIf="createModeActive" (click)="saveAddValue()">Save</button>
+    <button class="cancel" *ngIf="createModeActive" (click)="cancelAddValue()">Cancel</button>
   </div>
 </div>
   
