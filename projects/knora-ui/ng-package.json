@@ -7,8 +7,7 @@
       "@knora/api": "@knora/api",
       "ngx-color-picker": "ngxColorPicker",
       "jdnconvertiblecalendar": "jdnconvertiblecalendar",
-      "jdnconvertiblecalendardateadapter": "jdnconvertiblecalendardateadapter",
-      "jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar": "JDNConvertibleCalendar"
+      "jdnconvertiblecalendardateadapter": "jdnconvertiblecalendardateadapter"
     }
   }
 }
