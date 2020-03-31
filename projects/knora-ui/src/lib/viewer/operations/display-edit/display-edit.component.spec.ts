@@ -6,6 +6,7 @@ import {
   MockResource,
   ReadIntValue,
   ReadResource,
+  ReadTextValueAsHtml,
   ReadValue,
   UpdateIntValue,
   UpdateValue,
@@ -174,7 +175,7 @@ class TestHostDisplayValueComponent implements OnInit {
     });
   }
 
-  // when called, assigns a value -> kui-display-edit will be instantiated
+  // assigns a value when called -> kui-display-edit will be instantiated
   assignValue(prop: string) {
     const readVal =
       this.readResource.getValues(prop)[0];
@@ -242,6 +243,28 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsStringComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+    });
+
+    it('should choose the apt component for an HTML text value in the template', () => {
+
+      const inputVal: ReadTextValueAsHtml = new ReadTextValueAsHtml();
+
+      inputVal.hasPermissions = 'CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser';
+      inputVal.userHasPermission = 'CR';
+      inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+      inputVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID';
+      inputVal.html =
+        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>';
+
+      testHostComponent.readValue = inputVal;
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsHtmlComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
     it('should choose the apt component for an integer value in the template', () => {
@@ -251,6 +274,30 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent).toBeTruthy();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestIntValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+    });
+
+    it('should choose the apt component for a boolean value in the template', () => {
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasBoolean');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestBooleanValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+    });
+
+    it('should choose the apt component for a URI value in the template', () => {
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasUri');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestUriValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
     it('should choose the apt component for an decimal value in the template', () => {
@@ -259,6 +306,51 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestDecimalValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+    });
+
+    it('should choose the apt component for a color value in the template', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasColor');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestColorValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+    });
+
+    it('should choose the apt component for an interval value in the template', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInterval');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestIntervalValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+    });
+
+    it('should choose the apt component for a time value in the template', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasTimeStamp');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTimeValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+    });
+
+    it('should choose the apt component for a link value in the template', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestLinkValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).parentResource instanceof ReadResource).toBe(true);
+      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
+      
     });
 
   });
