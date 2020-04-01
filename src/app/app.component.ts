@@ -86,7 +86,9 @@ export class AppComponent implements OnInit {
         console.log('values: ', this.values);
 
         this.createMode = false;
-        this.createAllowed = true;
+        
+        // TODO: move this somewhere else so that it is correctly evaluated for the corresponding property
+        this.createAllowed = CardinalityUtil.createValueForPropertyAllowed(this.values[0].property, 1, this.testthing.entityInfo.classes[this.testthing.type] as ResourceClassDefinition);
       }
     );
   }
