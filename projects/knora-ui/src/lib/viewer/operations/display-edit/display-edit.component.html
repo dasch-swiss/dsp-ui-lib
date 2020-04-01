@@ -18,6 +18,8 @@
     </kui-time-value>
     <kui-date-value #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode" [displayValue]="displayValue">
     </kui-date-value>
+    <kui-link-value #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"
+                    [parentResource]="parentResource" [propIri]="displayValue.property"></kui-link-value>
   </span>
 </div>
 <div>
