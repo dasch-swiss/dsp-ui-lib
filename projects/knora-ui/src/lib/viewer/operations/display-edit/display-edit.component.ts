@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {
   Constants,
   KnoraApiConnection,
@@ -9,9 +9,9 @@ import {
   UpdateValue,
   WriteValueResponse
 } from '@knora/api';
-import {BaseValueComponent} from '../../values';
 import {mergeMap} from 'rxjs/operators';
-import {KnoraApiConnectionToken} from '../../../core';
+import {KnoraApiConnectionToken} from '../../../core/core.module';
+import {BaseValueComponent} from '../../values/base-value.component';
 
 
 @Component({
