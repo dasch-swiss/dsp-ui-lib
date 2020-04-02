@@ -6,15 +6,16 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {CommonModule} from '@angular/common';
 import {ColorPickerModule} from 'ngx-color-picker';
 import {IntValueComponent} from './values/int-value/int-value.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {LinkValueComponent} from './values/link-value/link-value.component';
 import {DisplayEditComponent} from './operations/display-edit/display-edit.component';
 import {BooleanValueComponent} from './values/boolean-value/boolean-value.component';
 import {DecimalValueComponent} from './values/decimal-value/decimal-value.component';
 import {ColorValueComponent} from './values/color-value/color-value.component';
 import {UriValueComponent} from './values/uri-value/uri-value.component';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {LinkValueComponent} from './values/link-value/link-value.component';
 import {IntervalValueComponent} from './values/interval-value/interval-value.component';
 import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
+import {TextValueAsHtmlComponent} from './values/text-value/text-value-as-html/text-value-as-html.component';
 import {TimeValueComponent} from './values/time-value/time-value.component';
 import {TimeInputComponent} from './values/time-value/time-input/time-input.component';
 import {MatDatepickerModule} from '@angular/material';
@@ -30,6 +31,7 @@ import {JDNDatepickerDirective} from './values/jdn-datepicker-directive/jdndatep
 @NgModule({
   declarations: [
     TextValueAsStringComponent,
+    TextValueAsHtmlComponent,
     IntValueComponent,
     DisplayEditComponent,
     BooleanValueComponent,
@@ -45,7 +47,6 @@ import {JDNDatepickerDirective} from './values/jdn-datepicker-directive/jdndatep
     JDNDatepickerDirective,
     DateInputComponent,
     CalendarHeaderComponent,
-    JDNDatepickerDirective,
     ColorValueComponent,
     ColorPickerComponent,
     LinkValueComponent
@@ -65,6 +66,7 @@ import {JDNDatepickerDirective} from './values/jdn-datepicker-directive/jdndatep
   entryComponents: [CalendarHeaderComponent],
   exports: [
     TextValueAsStringComponent,
+    TextValueAsHtmlComponent,
     IntValueComponent,
     DisplayEditComponent,
     BooleanValueComponent,
