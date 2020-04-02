@@ -54,17 +54,6 @@ export class DisplayEditComponent implements OnInit {
 
   private readonly readTextValueAsHtml = 'ReadTextValueAsHtml';
 
-  /**
-   * TEMPORARY readonly values until component is implemented
-   */
-  private readonly readListValue = 'ReadListValue';
-
-  private readonly readDateValue = 'ReadDateValue';
-
-  private readonly readGeomValue = 'ReadGeomValue';
-
-  private readonly readGeonameValue = 'ReadGeonameValue';
-
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
@@ -171,6 +160,11 @@ export class DisplayEditComponent implements OnInit {
       return value.type;
     }
   }
+
+  /**
+   * Equality checks with constants below are TEMPORARY until component is implemented.
+   * Used so that the CRUD buttons do not show if a property doesn't have a value component.
+   */
 
   /**
    * Determines if the given value is readonly.

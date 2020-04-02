@@ -185,13 +185,14 @@ class TestHostDisplayValueComponent implements OnInit {
   }
 
   // assigns a value when called -> kui-display-edit will be instantiated
-  assignValue(prop: string) {
+  assignValue(prop: string, comment?: string) {
     const readVal =
       this.readResource.getValues(prop)[0];
 
     readVal.userHasPermission = 'M';
 
-    this.readValue = readVal;
+    readVal.valueHasComment = comment;
+    this.readValue = readVal;    
   }
 }
 
@@ -574,5 +575,118 @@ describe('DisplayEditComponent', () => {
 
     });
 
+  });
+
+  describe('comment toggle button', () => {
+    let hostCompDe;
+    let displayEditComponentDe;
+
+    beforeEach(() => {
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger', 'comment');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
+
+      hostCompDe = testHostFixture.debugElement;
+      displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
+
+    });
+
+    it('should display a comment button if the value has a comment', () => {
+      //console.log(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue);
+
+      expect(testHostComponent.displayEditValueComponent.editModeActive).toBeFalsy();
+      expect(testHostComponent.displayEditValueComponent.shouldShowCommentToggle).toBeTruthy()
+
+      const commentButtonDebugElement = displayEditComponentDe.query(By.css('button.comment-toggle'));
+
+      expect(commentButtonDebugElement).toBeTruthy();
+      expect(commentButtonDebugElement.nativeElement).toBeTruthy();
+
+    });
+
+    it('should not display a comment button if the comment is deleted', () => {
+
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+
+      valuesSpy.v2.values.updateValue.and.callFake(
+        () => {
+
+          const response = new WriteValueResponse();
+
+          response.id = 'newID';
+          response.type = 'type';
+          response.uuid = 'uuid';
+
+          return of(response);
+        }
+      );
+
+      valuesSpy.v2.values.getValue.and.callFake(
+        () => {
+
+          const updatedVal = new ReadIntValue();
+
+          updatedVal.id = 'newID';
+          updatedVal.int = 1;
+          updatedVal.valueHasComment = '';
+
+          const resource = new ReadResource();
+
+          resource.properties = {
+            'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger': [updatedVal]
+          };
+
+          return of(resource);
+        }
+      );
+
+      testHostComponent.displayEditValueComponent.canModify = true;
+      testHostComponent.displayEditValueComponent.editModeActive = true;
+      testHostComponent.displayEditValueComponent.mode = 'update';
+
+      testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.clearValidators();
+      testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.updateValueAndValidity();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.shouldShowCommentToggle).toBeTruthy();
+
+      const saveButtonDebugElement = displayEditComponentDe.query(By.css('button.save'));
+      const saveButtonNativeElement = saveButtonDebugElement.nativeElement;
+
+      expect(saveButtonNativeElement.disabled).toBeFalsy();
+
+      saveButtonNativeElement.click();
+
+      testHostFixture.detectChanges();
+
+      const expectedUpdateResource = new UpdateResource();
+
+      expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+      expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
+      expectedUpdateResource.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
+
+      const expectedUpdateVal = new UpdateIntValue();
+      expectedUpdateVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/dJ1ES8QTQNepFKF5-EAqdg';
+      expectedUpdateVal.int = 1;
+
+      expectedUpdateResource.value = expectedUpdateVal;
+
+      expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledWith(expectedUpdateResource);
+      expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledTimes(1);
+
+      expect(valuesSpy.v2.values.getValue).toHaveBeenCalledTimes(1);
+      expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id,
+        'uuid');
+
+      expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
+      expect(testHostComponent.displayEditValueComponent.displayValue.valueHasComment).toEqual('');
+
+      expect(testHostComponent.displayEditValueComponent.shouldShowCommentToggle).toBeFalsy();
+      expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
+
+    });
+      
   });
 });
