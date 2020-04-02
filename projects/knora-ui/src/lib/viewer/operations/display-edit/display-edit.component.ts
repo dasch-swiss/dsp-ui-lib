@@ -9,9 +9,9 @@ import {
   UpdateValue,
   WriteValueResponse
 } from '@knora/api';
-import {BaseValueComponent} from '../../values';
+import {BaseValueComponent} from '../../values/base-value.component';
 import {mergeMap} from 'rxjs/operators';
-import {KnoraApiConnectionToken} from '../../../core';
+import {KnoraApiConnectionToken} from '../../../core/core.module';
 
 
 @Component({

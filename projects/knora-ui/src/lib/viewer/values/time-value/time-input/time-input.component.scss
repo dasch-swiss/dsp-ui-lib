@@ -1,3 +1,8 @@
+/**
+ * CSS changed here must also be changed in each child component of a wrapped component
+ * time-input.component.scss, interval-input.component.scss, etc.
+ */
+
 .child-input-component {
     display: inline-block;
     vertical-align: bottom;
