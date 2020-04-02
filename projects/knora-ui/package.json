@@ -8,6 +8,6 @@
     "@angular/cdk": "^8.2.3",
     "@knora/api": "file:.yalc/@knora/api",
     "jdnconvertiblecalendar": "^0.0.5",
-    "jdnconvertiblecalendardateadapter": "^0.0.10"
+    "jdnconvertiblecalendardateadapter": "^0.0.12"
   }
 }

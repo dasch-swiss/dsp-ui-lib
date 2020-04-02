@@ -157,7 +157,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
       value.endEra = dateOrPeriod.end.era;
       value.endDay = dateOrPeriod.end.day;
       value.endMonth = dateOrPeriod.end.month;
-      value.endYear = dateOrPeriod.start.year;
+      value.endYear = dateOrPeriod.end.year;
 
     }
   }

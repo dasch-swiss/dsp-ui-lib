@@ -6,7 +6,8 @@
       <mat-datepicker #picker1 [calendarHeaderComponent]="calendarHeaderComponent"></mat-datepicker>
     </kui-jdn-datepicker>
   </mat-form-field>
-  <mat-form-field *ngIf="period">
+  <mat-checkbox *ngIf="!readonly" [formControlName]="'isPeriod'" (change)="_handleInput()"></mat-checkbox>
+  <mat-form-field *ngIf="isPeriodControl.value">
     <kui-jdn-datepicker [activeCalendar]="endDateControl.value?.calendarName">
       <input matInput [matDatepicker]="picker2" [formControlName]="'dateEnd'" (dateChange)="_handleInput()">
       <mat-datepicker-toggle *ngIf="!readonly" matSuffix [for]="picker2"></mat-datepicker-toggle>
