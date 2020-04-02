@@ -10,7 +10,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
-import {MatCheckbox} from "@angular/material/checkbox";
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 /**
  * Test host component to simulate parent component.
@@ -54,7 +54,7 @@ describe('DateInputComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatDatepickerModule,
-        MatCheckbox,
+        MatCheckboxModule,
         MatJDNConvertibleCalendarDateAdapterModule,
         BrowserAnimationsModule
       ],
