@@ -245,9 +245,9 @@ describe('DisplayEditComponent', () => {
     expect(testHostComponent).toBeTruthy();
   });
 
-  fdescribe('display a value with the appropriate component', () => {
+  describe('display a value with the appropriate component', () => {
 
-    fit('should choose the apt component for an plain text value in the template', () => {
+    it('should choose the apt component for a plain text value in the template', () => {
 
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
       testHostFixture.detectChanges();
@@ -310,7 +310,7 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
-    it('should choose the apt component for an decimal value in the template', () => {
+    it('should choose the apt component for a decimal value in the template', () => {
 
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal');
       testHostFixture.detectChanges();
@@ -398,14 +398,14 @@ describe('DisplayEditComponent', () => {
 
     });
 
-    it('should return the class of an XML text value as not readonly', () => {
+    it('should return the class of an XML text value as readonly', () => {
 
-      const htmlTextVal = new ReadTextValueAsXml();
-      htmlTextVal.type = Constants.TextValue;
+      const xmlTextVal = new ReadTextValueAsXml();
+      xmlTextVal.type = Constants.TextValue;
 
-      expect(testHostComponent.displayEditValueComponent.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsXml');
+      expect(testHostComponent.displayEditValueComponent.getValueTypeOrClass(xmlTextVal)).toEqual('ReadTextValueAsXml');
 
-      expect(testHostComponent.displayEditValueComponent.isReadOnly('ReadTextValueAsXml')).toBe(false);
+      expect(testHostComponent.displayEditValueComponent.isReadOnly('ReadTextValueAsXml')).toBe(true);
 
     });
 
@@ -545,7 +545,7 @@ describe('DisplayEditComponent', () => {
 
   });
 
-  describe('not change from display to edit mode for an html text value', () => {
+  describe('do not change from display to edit mode for an html text value', () => {
     let hostCompDe;
     let displayEditComponentDe;
 
