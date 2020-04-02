@@ -10,7 +10,7 @@
     </button>
   </div>
   <div class="value-component">
-    <span [ngSwitch]="displayValue.type">
+    <span [ngSwitch]="valueTypeOrClass">
       <kui-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="constants.TextValue" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-string>
       <kui-int-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></kui-int-value>
       <kui-boolean-value class="parent-value-component" #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]="displayValue"></kui-boolean-value>
@@ -25,10 +25,7 @@
     </span>
   </div>
   <!-- TEMPORARY CODE: TO HIDE BUTTONS FOR VALUE COMPONENTS NOT YET IMPLEMENTED -->
-  <div class="crud-buttons" *ngIf="displayValue.type !== constants.ListValue
-                                  && displayValue.type !== constants.DateValue
-                                  && displayValue.type !== constants.GeomValue
-                                  && displayValue.type !== constants.GeonameValue">
+  <div class="crud-buttons" *ngIf="!readOnlyValue">
     <button mat-button
             class="edit"
             title="edit"

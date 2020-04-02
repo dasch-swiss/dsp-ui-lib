@@ -5,14 +5,12 @@ import { KnoraApiConnectionToken } from 'knora-ui';
 import { DisplayEditComponent } from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
 import { mergeMap } from 'rxjs/operators';
 
-
 // object of property information from ontology class, properties and property values
 export interface PropertyInfoValues {
   guiDef: IHasProperty;
   propDef: PropertyDefinition;
   values: ReadValue[];
 }
-
 
 @Component({
   selector: 'app-root',

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {
   Constants,
   KnoraApiConnection,
@@ -7,12 +7,14 @@ import {
   ReadValue,
   UpdateResource,
   UpdateValue,
-  WriteValueResponse
+  WriteValueResponse,
+  ReadTextValueAsString,
+  ReadTextValueAsXml,
+  ReadTextValueAsHtml
 } from '@knora/api';
 import {BaseValueComponent} from '../../values/base-value.component';
 import {mergeMap} from 'rxjs/operators';
 import {KnoraApiConnectionToken} from '../../../core/core.module';
-
 
 @Component({
   selector: 'kui-display-edit',
@@ -38,6 +40,19 @@ export class DisplayEditComponent implements OnInit {
   editModeActive = false;
 
   shouldShowCommentToggle: boolean;
+  
+  // type of given displayValue
+  // or knora-api-js-lib class representing the value
+  valueTypeOrClass: string;
+
+  // indicates if value can be edited
+  readOnlyValue: boolean;
+
+  private readonly readTextValueAsString = 'ReadTextValueAsString';
+
+  private readonly readTextValueAsXml = 'ReadTextValueAsXml';
+
+  private readonly readTextValueAsHtml = 'ReadTextValueAsHtml';
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
@@ -53,6 +68,10 @@ export class DisplayEditComponent implements OnInit {
 
     // check if comment toggle button should be shown
     this.checkCommentToggleVisibility();
+
+    this.valueTypeOrClass = this.getValueTypeOrClass(this.displayValue);
+
+    this.readOnlyValue = this.isReadOnly(this.valueTypeOrClass);
   }
 
   activateEditMode() {
@@ -116,5 +135,38 @@ export class DisplayEditComponent implements OnInit {
   checkCommentToggleVisibility() {
     this.shouldShowCommentToggle = (this.mode === 'read' && this.displayValue.valueHasComment !== '' && this.displayValue.valueHasComment !== undefined);
   }
+  
+  /**
+   * Given a value, determines the type or class representing it.
+   *
+   * For text values, this method determines the specific class in use.
+   * For all other types, the given type is returned.
+   *
+   * @param value the given value.
+   */
+  getValueTypeOrClass(value: ReadValue): string {
 
+    if (value.type === this.constants.TextValue) {
+      if (value instanceof ReadTextValueAsString) {
+        return this.readTextValueAsString;
+      } else if (value instanceof ReadTextValueAsXml) {
+        return this.readTextValueAsXml;
+      } else if (value instanceof ReadTextValueAsHtml) {
+        return this.readTextValueAsHtml;
+      } else {
+        throw new Error(`unknown TextValue class ${value}`);
+      }
+    } else {
+      return value.type;
+    }
+  }
+
+  /**
+   * Determines if the given value is readonly.
+   *
+   * @param valueTypeOrClass the type or class of the given value.
+   */
+  isReadOnly(valueTypeOrClass: string): boolean {
+    return valueTypeOrClass === this.readTextValueAsHtml;
+  }
 }
