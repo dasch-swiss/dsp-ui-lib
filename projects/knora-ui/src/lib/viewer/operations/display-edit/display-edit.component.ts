@@ -12,9 +12,9 @@ import {
   ReadTextValueAsXml,
   ReadTextValueAsHtml
 } from '@knora/api';
-import {BaseValueComponent} from '../../values';
 import {mergeMap} from 'rxjs/operators';
-import {KnoraApiConnectionToken} from '../../../core';
+import {KnoraApiConnectionToken} from '../../../core/core.module';
+import {BaseValueComponent} from '../../values/base-value.component';
 
 @Component({
   selector: 'kui-display-edit',
