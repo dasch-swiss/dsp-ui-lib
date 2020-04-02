@@ -99,7 +99,6 @@ class TestIntValueComponent implements OnInit {
   }
 
   updateCommentVisibility() : void { }
-
 }
 
 @Component({
@@ -135,23 +134,6 @@ class TestDecimalValueComponent {
   @Input() mode;
 
   @Input() displayValue;
-
-  form: object;
-
-  ngOnInit(): void {
-    this.form = new FormGroup({
-      test: new FormControl(null, [Validators.required])
-    });
-  }
-
-  getUpdatedValue(): UpdateValue {
-    const updateDecimalVal = new UpdateDecimalValue();
-
-    updateDecimalVal.id = this.displayValue.id;
-    updateDecimalVal.decimal = 1.5;
-
-    return updateDecimalVal;
-  }
 
 }
 
@@ -263,9 +245,9 @@ describe('DisplayEditComponent', () => {
     expect(testHostComponent).toBeTruthy();
   });
 
-  describe('display a value with the appropriate component', () => {
+  fdescribe('display a value with the appropriate component', () => {
 
-    it('should choose the apt component for an plain text value in the template', () => {
+    fit('should choose the apt component for an plain text value in the template', () => {
 
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
       testHostFixture.detectChanges();

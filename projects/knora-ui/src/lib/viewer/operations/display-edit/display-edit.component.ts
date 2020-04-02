@@ -54,6 +54,17 @@ export class DisplayEditComponent implements OnInit {
 
   private readonly readTextValueAsHtml = 'ReadTextValueAsHtml';
 
+  /**
+   * TEMPORARY readonly values until component is implemented
+   */
+  private readonly readListValue = 'ReadListValue';
+
+  private readonly readDateValue = 'ReadDateValue';
+
+  private readonly readGeomValue = 'ReadGeomValue';
+
+  private readonly readGeonameValue = 'ReadGeonameValue';
+
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
@@ -167,6 +178,11 @@ export class DisplayEditComponent implements OnInit {
    * @param valueTypeOrClass the type or class of the given value.
    */
   isReadOnly(valueTypeOrClass: string): boolean {
-    return valueTypeOrClass === this.readTextValueAsHtml;
+    return valueTypeOrClass === this.readTextValueAsHtml ||
+           valueTypeOrClass === this.readTextValueAsXml  ||
+           valueTypeOrClass === this.constants.ListValue ||
+           valueTypeOrClass === this.constants.DateValue ||
+           valueTypeOrClass === this.constants.GeomValue ||
+           valueTypeOrClass === this.constants.GeonameValue;
   }
 }
