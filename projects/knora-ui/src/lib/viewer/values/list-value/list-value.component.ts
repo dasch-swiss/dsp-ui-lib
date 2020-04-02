@@ -11,7 +11,7 @@ import {
 import { MatMenuTrigger } from '@angular/material/menu';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {KnoraApiConnectionToken} from '../../../core';
+import {KnoraApiConnectionToken} from '../../../core/core.module';
 
 @Component({
   selector: 'kui-list-value',
