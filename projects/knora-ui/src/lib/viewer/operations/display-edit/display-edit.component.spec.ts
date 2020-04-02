@@ -8,6 +8,8 @@ import {
   ReadIntValue,
   ReadResource,
   ReadTextValueAsHtml,
+  ReadTextValueAsString,
+  ReadTextValueAsXml,
   ReadValue,
   UpdateIntValue,
   UpdateResource,
@@ -359,7 +361,7 @@ describe('DisplayEditComponent', () => {
 
   });
 
-  describe('method getValueType', () => {
+  describe('methods getValueType and isReadOnly', () => {
     let hostCompDe;
     let displayEditComponentDe;
 
@@ -374,27 +376,43 @@ describe('DisplayEditComponent', () => {
 
     });
 
-    it('should return the type of a integer value', () => {
+    it('should return the type of a integer value as not readonly', () => {
 
       expect(testHostComponent.displayEditValueComponent.getValueTypeOrClass(testHostComponent.displayEditValueComponent.displayValue)).toEqual(Constants.IntValue);
 
+      expect(testHostComponent.displayEditValueComponent.isReadOnly(Constants.IntValue)).toBe(false);
     });
 
-    it('should return the type of a html text value', () => {
+    it('should return the class of a html text value as readonly', () => {
 
       const htmlTextVal = new ReadTextValueAsHtml();
       htmlTextVal.type = Constants.TextValue;
 
       expect(testHostComponent.displayEditValueComponent.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsHtml');
 
+      expect(testHostComponent.displayEditValueComponent.isReadOnly('ReadTextValueAsHtml')).toBe(true);
+
     });
 
-    it('should return the type of a plain text value', () => {
+    it('should return the class of an XML text value as not readonly', () => {
 
-      const plainTextVal = new ReadTextValueAsHtml();
+      const htmlTextVal = new ReadTextValueAsXml();
+      htmlTextVal.type = Constants.TextValue;
+
+      expect(testHostComponent.displayEditValueComponent.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsXml');
+
+      expect(testHostComponent.displayEditValueComponent.isReadOnly('ReadTextValueAsXml')).toBe(false);
+
+    });
+
+    it('should return the type of a plain text value as not readonly', () => {
+
+      const plainTextVal = new ReadTextValueAsString();
       plainTextVal.type = Constants.TextValue;
 
-      expect(testHostComponent.displayEditValueComponent.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsHtml');
+      expect(testHostComponent.displayEditValueComponent.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsString');
+
+      expect(testHostComponent.displayEditValueComponent.isReadOnly('ReadTextValueAsString')).toBe(false);
 
     });
 
