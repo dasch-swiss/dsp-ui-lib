@@ -5,13 +5,14 @@ To simulate circumstances of production, the application should be built with op
 (not in dev mode, but from a local web server).
 
 - First, install `nginx` on your system. Then create a configuration for the test application.
-The example defines a configuration file `/usr/local/etc/nginx/servers/knorauiapp.conf` for MacOS:
+The example defines a configuration file `/usr/local/etc/nginx/servers/knorauiapp.conf` for MacOS.
+Substitute `$abs_path_to_lib` for the actual absolute path on your system pointing to the project root.
 
     ```nginx
         server {
                 listen 8090;
                 server_name knorauiapp.local;
-                root /.../knora-ui-ng-lib/dist/knora-ui-ng-lib;
+                root /$abs_path_to_lib/dist/knora-ui-ng-lib;
     
                 location / {
                          try_files $uri $uri/ /index.html;
@@ -22,6 +23,8 @@ The example defines a configuration file `/usr/local/etc/nginx/servers/knorauiap
     ```
 
 - Then add an entry to your `/etc/hosts`: `127.0.0.1	knorauiapp.local`
+- create an empty file `knorauiapp.local.access.log` in `/usr/local/etc/nginx/logs` 
+  (you might have to create the folder `logs` first)
 - start `nginx`
 - build the library: `npm run build-lib`
 - build the test app with optimization: `npm run build-app`
