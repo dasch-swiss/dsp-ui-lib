@@ -47,7 +47,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
       return null;
     }
    }
-  // override the resetFormControl() from the base component to deal with initial link value label
+  // override the resetFormControl() from the base component to deal with appending root nodes.
   resetFormControl(): void {
     super.resetFormControl();
 
@@ -55,7 +55,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
       if (this.mode !== 'read') {
         this.listRootNode = new ListNodeV2();
         const rootNodeIris = this.propertyDef.guiAttributes;
-        for (let rootNodeIri of rootNodeIris) {
+        for (const rootNodeIri of rootNodeIris) {
           // get rid of the "hlist"
           const trimmedRootNodeIRI = rootNodeIri.substr(7, rootNodeIri.length - (1 + 7));
           this.knoraApiConnection.v2.list.getList(trimmedRootNodeIRI).subscribe(

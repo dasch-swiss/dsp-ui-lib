@@ -3,7 +3,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { ListNodeV2 } from '@knora/api';
 
 @Component({
-  selector: 'sublist-value',
+  selector: 'kui-sublist-value',
   templateUrl: './sublist-value.component.html',
   styleUrls: ['./sublist-value.component.scss']
 })

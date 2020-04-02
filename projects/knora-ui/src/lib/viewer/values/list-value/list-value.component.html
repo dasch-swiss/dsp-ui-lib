@@ -11,8 +11,8 @@
                         type="button">
                     {{child.label}}
                 </button>
-                <sublist-value #menu [children]="child.children" (selectedNode)="getSelectedNode($event)">
-                </sublist-value>
+                <kui-sublist-value #menu [children]="child.children" (selectedNode)="getSelectedNode($event)">
+                </kui-sublist-value>
             </span>
 
             <span *ngIf="!child.children || child.children.length === 0">
