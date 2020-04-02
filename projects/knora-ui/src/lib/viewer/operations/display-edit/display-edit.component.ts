@@ -45,6 +45,8 @@ export class DisplayEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('display-edit OnInit called');
+    
 
     this.mode = 'read';
 

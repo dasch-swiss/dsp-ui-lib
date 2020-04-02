@@ -21,45 +21,25 @@ export class AppComponent implements OnInit {
 
   values: ReadValue[];
 
-  createAllowed: boolean;
-  createMode: boolean;
-  createValue: ReadValue;
+  createAllowed: boolean; // used to toggle add value button
+  createMode: boolean; // used to toggle add value form field
+  newValue: ReadValue;
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
   ngOnInit(): void {
-
-    this.knoraApiConnection.v2.auth.login('username', 'root', 'test').pipe(
-      mergeMap(
-        (loginResponse: ApiResponseData<LoginResponse>) => {
-          return this.knoraApiConnection.v2.res.getResource('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
-        }
-      )
-    ).subscribe(
-      (resource: ReadResource) => {
-        this.testthing = resource;
-        console.log(this.testthing);
-
-        this.values = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
-
-        console.log('values: ', this.values);
-
-        // TODO: move this somewhere else so that it is correctly evaluated for the corresponding property
-        this.createAllowed = CardinalityUtil.createValueForPropertyAllowed(this.values[0].property, 1, this.testthing.entityInfo.classes[this.testthing.type] as ResourceClassDefinition);
-      }
-    );
-
+    this.getValues();
   }
 
   showAddValueForm() {
-    this.createValue = new ReadValue();
+    this.newValue = new ReadValue();
 
     // TODO: get user permission level
-    this.createValue.userHasPermission = 'CR';
+    this.newValue.userHasPermission = 'CR';
 
     // TODO: change this to use the correct type for the corresponding value
-    this.createValue.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+    this.newValue.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
     
     this.createMode = true;
     this.createAllowed = false;
@@ -70,7 +50,7 @@ export class AppComponent implements OnInit {
     this.createAllowed = true;
   }
 
-  updateValues() {
+  getValues() {
     this.knoraApiConnection.v2.auth.login('username', 'root', 'test').pipe(
       mergeMap(
         (loginResponse: ApiResponseData<LoginResponse>) => {
