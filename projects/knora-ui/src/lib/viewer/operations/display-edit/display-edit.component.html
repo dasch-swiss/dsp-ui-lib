@@ -12,6 +12,8 @@
     <kui-link-value #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"
                     [parentResource]="parentResource" [propIri]="displayValue.property"></kui-link-value>
     <kui-date-value #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode" [displayValue]="displayValue"></kui-date-value>
+    <kui-list-value #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode" [displayValue]="displayValue"
+                    [propertyDef]="parentResource.entityInfo.properties[displayValue.property]"></kui-list-value>
   </span>
 </div>
 <div>
