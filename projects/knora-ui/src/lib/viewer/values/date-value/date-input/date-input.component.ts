@@ -15,7 +15,13 @@ import {CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, mixinEr
 import {Subject} from 'rxjs';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {FocusMonitor} from '@angular/cdk/a11y';
-import {CalendarDate, CalendarPeriod, GregorianCalendarDate, JulianCalendarDate} from 'jdnconvertiblecalendar';
+import {
+  CalendarDate,
+  CalendarPeriod,
+  GregorianCalendarDate,
+  JDNConvertibleCalendar,
+  JulianCalendarDate
+} from 'jdnconvertiblecalendar';
 import {CalendarHeaderComponent} from '../calendar-header/calendar-header.component';
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -135,8 +141,19 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
     } else {
       // period
       if (userInput.dateStart !== null && userInput.dateEnd !== null) {
+
+        // check if start is before end
+        const startAsJdnPeriod = (userInput.dateStart as JDNConvertibleCalendar).toJDNPeriod();
+        const endAsJdnPeriod = (userInput.dateEnd as JDNConvertibleCalendar).toJDNPeriod();
+
+        if (startAsJdnPeriod.periodStart >= endAsJdnPeriod.periodStart) {
+          // start after end
+          return null;
+        }
+
         const start = new KnoraDate(userInput.dateStart.calendarName.toUpperCase(), 'CE', userInput.dateStart.calendarStart.year, userInput.dateStart.calendarStart.month, userInput.dateStart.calendarStart.day);
         const end = new KnoraDate(userInput.dateEnd.calendarName.toUpperCase(), 'CE', userInput.dateEnd.calendarStart.year, userInput.dateEnd.calendarStart.month, userInput.dateEnd.calendarStart.day);
+
         console.log('getting ', new KnoraPeriod(start, end));
         return new KnoraPeriod(start, end);
       } else {
@@ -150,36 +167,20 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
     if (date !== null) {
       if (date instanceof KnoraDate) {
         // single date
-        // TODO: set correct calendar
-        const calendarDate = new CalendarDate(date.year, date.month, date.day);
-        let startDate;
-
-        // determine calendar
-        if (date.calendar === 'GREGORIAN') {
-          startDate = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
-        } else if (date.calendar === 'JULIAN') {
-          startDate = new JulianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
-        } else {
-          throw new Error('Unsupported calendar: ' + date.calendar);
-        }
 
         this.form.setValue({
-          dateStart: startDate,
+          dateStart: this.createCalendarDate(date),
           dateEnd: null,
           isPeriod: false
         });
 
       } else {
         // period
-        const period = (date as KnoraPeriod);
-        const calendarDateStart = new CalendarDate(period.start.year, period.start.month, period.start.day);
-        const calendarDateEnd = new CalendarDate(period.end.year, period.end.month, period.end.day);
-
-        // TODO: check for calendar like above
+        const period = date as KnoraPeriod;
 
         this.form.setValue({
-          dateStart: new GregorianCalendarDate(new CalendarPeriod(calendarDateStart, calendarDateStart)),
-          dateEnd: new GregorianCalendarDate(new CalendarPeriod(calendarDateEnd, calendarDateEnd)),
+          dateStart: this.createCalendarDate(period.start),
+          dateEnd: this.createCalendarDate(period.end),
           isPeriod: true
         });
 
@@ -188,6 +189,26 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
       this.form.setValue({dateStart: null, dateEnd: null, isPeriod: false});
     }
     this.stateChanges.next();
+  }
+
+  /**
+   * Given a `KnoraDate`, creates a Gregorian or Julian calendar date.
+   *
+   * @param date the given KnoraDate.
+   */
+  createCalendarDate(date: KnoraDate): GregorianCalendarDate | JulianCalendarDate {
+
+    const calDate = new CalendarDate(date.year, date.month, date.day);
+    const period = new CalendarPeriod(calDate, calDate);
+
+    // determine calendar
+    if (date.calendar === 'GREGORIAN') {
+      return new GregorianCalendarDate(period);
+    } else if (date.calendar === 'JULIAN') {
+      return new JulianCalendarDate(period);
+    } else {
+      throw new Error('Unsupported calendar: ' + date.calendar);
+    }
   }
 
   @Input() errorStateMatcher: ErrorStateMatcher;
