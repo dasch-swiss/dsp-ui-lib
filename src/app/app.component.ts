@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { ApiResponseData, KnoraApiConnection, LoginResponse, ReadResource, ReadValue } from '@knora/api';
-import { KnoraApiConnectionToken } from 'knora-ui';
-import { DisplayEditComponent } from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
-import { mergeMap } from 'rxjs/operators';
+import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {ApiResponseData, KnoraApiConnection, LoginResponse, ReadResource, ReadValue, ReadTextValueAsHtml} from '@knora/api';
+import {mergeMap} from 'rxjs/operators';
+import {DisplayEditComponent} from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
+import {KnoraApiConnectionToken} from 'knora-ui';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +31,8 @@ export class AppComponent implements OnInit {
     ).subscribe(
       (resource: ReadResource) => {
         this.testthing = resource;
-        this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue')[0];
+        // console.log(this.testthing);
+        this.testValue = this.testthing.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasTimeStamp')[0];
       }
     );
 
