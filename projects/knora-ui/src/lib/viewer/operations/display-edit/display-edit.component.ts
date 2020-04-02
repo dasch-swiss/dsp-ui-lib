@@ -51,12 +51,15 @@ export class DisplayEditComponent implements OnInit {
 
     this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
 
+    // check if comment toggle button should be shown
     this.checkCommentToggleVisibility();
   }
 
   activateEditMode() {
     this.editModeActive = true;
     this.mode = 'update';
+
+    // hide comment toggle button while in edit mode
     this.checkCommentToggleVisibility();
   }
 
@@ -79,7 +82,11 @@ export class DisplayEditComponent implements OnInit {
         (res2: ReadResource) => {
           this.displayValue = res2.getValues(this.displayValue.property)[0];
           this.mode = 'read';
+
+          // hide comment once back in read mode
           this.displayValueComponent.updateCommentVisibility();
+
+          // check if comment toggle button should be shown
           this.checkCommentToggleVisibility();
         }
       );
@@ -92,14 +99,20 @@ export class DisplayEditComponent implements OnInit {
   cancelEditValue() {
     this.editModeActive = false;
     this.mode = 'read';
+
+    // hide comment once back in read mode
     this.displayValueComponent.updateCommentVisibility();
+
+    // check if comment toggle button should be shown
     this.checkCommentToggleVisibility();
   }
 
+  // shows or hides the comment
   toggleComment() {
     this.displayValueComponent.toggleCommentVisibility();
   }
 
+  // only show the comment toggle button if user is in READ mode and a comment exists for the value
   checkCommentToggleVisibility() {
     this.shouldShowCommentToggle = (this.mode === 'read' && this.displayValue.valueHasComment !== '' && this.displayValue.valueHasComment !== undefined);
   }
