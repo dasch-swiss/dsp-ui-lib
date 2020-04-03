@@ -2,7 +2,7 @@
   <mat-form-field class="start">
     <span class="calendar">{{startDateControl.value?.calendarName}}</span>
     <kui-jdn-datepicker [activeCalendar]="startDateControl.value?.calendarName">
-      <input matInput [matDatepicker]="picker1" [formControlName]="'dateStart'" (dateChange)="_handleInput()">
+      <input matInput [matDatepicker]="picker1" [formControlName]="'dateStart'" (dateChange)="_handleInput()" readonly>
       <mat-datepicker-toggle *ngIf="!readonly" matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1 [calendarHeaderComponent]="calendarHeaderComponent"></mat-datepicker>
     </kui-jdn-datepicker>
@@ -11,7 +11,7 @@
   <mat-form-field *ngIf="isPeriodControl.value" class="end">
     <span class="calendar">{{endDateControl.value?.calendarName}}</span>
     <kui-jdn-datepicker [activeCalendar]="endDateControl.value?.calendarName">
-      <input matInput [matDatepicker]="picker2" [formControlName]="'dateEnd'" (dateChange)="_handleInput()">
+      <input matInput [matDatepicker]="picker2" [formControlName]="'dateEnd'" (dateChange)="_handleInput()" readonly>
       <mat-datepicker-toggle *ngIf="!readonly" matSuffix [for]="picker2"></mat-datepicker-toggle>
       <mat-datepicker #picker2 [calendarHeaderComponent]="calendarHeaderComponent"></mat-datepicker>
     </kui-jdn-datepicker>
