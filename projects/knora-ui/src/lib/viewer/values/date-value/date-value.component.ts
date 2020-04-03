@@ -134,8 +134,6 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
       value.startMonth = dateOrPeriod.month;
       value.startYear = dateOrPeriod.year;
 
-      // TODO: handle precision correctly
-
       value.endEra = value.startEra;
       value.endDay = value.startDay;
       value.endMonth = value.startMonth;
@@ -145,14 +143,10 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
       value.calendar = dateOrPeriod.start.calendar;
 
-      // TODO: handle precision correctly
-
       value.startEra = dateOrPeriod.start.era;
       value.startDay = dateOrPeriod.start.day;
       value.startMonth = dateOrPeriod.start.month;
       value.startYear = dateOrPeriod.start.year;
-
-      // TODO: handle precision correctly
 
       value.endEra = dateOrPeriod.end.era;
       value.endDay = dateOrPeriod.end.day;

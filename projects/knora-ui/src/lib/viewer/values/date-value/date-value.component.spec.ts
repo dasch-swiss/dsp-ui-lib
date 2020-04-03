@@ -356,6 +356,47 @@ describe('DateValueComponent', () => {
 
     });
 
+    it('should correctly populate an UpdateValue from a KnoraDate', () => {
+
+      const date = new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13);
+
+      const updateVal = new UpdateDateValue();
+
+      testHostComponent.inputValueComponent.populateValue(updateVal, date);
+
+      expect(updateVal.calendar).toEqual('GREGORIAN');
+      expect(updateVal.startEra).toEqual('CE');
+      expect(updateVal.startDay).toEqual(13);
+      expect(updateVal.startMonth).toEqual(5);
+      expect(updateVal.startYear).toEqual(2018);
+      expect(updateVal.endEra).toEqual('CE');
+      expect(updateVal.endDay).toEqual(13);
+      expect(updateVal.endMonth).toEqual(5);
+      expect(updateVal.endYear).toEqual(2018);
+
+    });
+
+    it('should correctly populate an UpdateValue from a KnoraPeriod', () => {
+
+      const dateStart = new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13);
+      const dateEnd = new KnoraDate('GREGORIAN', 'CE', 2019, 6, 14);
+
+      const updateVal = new UpdateDateValue();
+
+      testHostComponent.inputValueComponent.populateValue(updateVal, new KnoraPeriod(dateStart, dateEnd));
+
+      expect(updateVal.calendar).toEqual('GREGORIAN');
+      expect(updateVal.startEra).toEqual('CE');
+      expect(updateVal.startDay).toEqual(13);
+      expect(updateVal.startMonth).toEqual(5);
+      expect(updateVal.startYear).toEqual(2018);
+      expect(updateVal.endEra).toEqual('CE');
+      expect(updateVal.endDay).toEqual(14);
+      expect(updateVal.endMonth).toEqual(6);
+      expect(updateVal.endYear).toEqual(2019);
+
+    });
+
   });
 
   describe('create an interval value', () => {
