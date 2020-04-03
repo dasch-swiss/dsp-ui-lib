@@ -1,5 +1,14 @@
-<div *ngIf="testValue">
-  <kui-display-edit #displayEdit [parentResource]="testthing" [displayValue]="testValue"></kui-display-edit>
-</div>
+<h2 class="label">
+  {{resource?.resourceClassLabel}}
+</h2>
+<p>{{resource?.resourceClassComment}}</p>
 
+<div *ngFor="let prop of propArray">
+  <div *ngIf="prop.values">
 
+    <div *ngFor="let val of prop.values">
+      <kui-display-edit #displayEdit [parentResource]="resource" [displayValue]="val"></kui-display-edit>
+    </div>
+
+  </div>
+</div> 

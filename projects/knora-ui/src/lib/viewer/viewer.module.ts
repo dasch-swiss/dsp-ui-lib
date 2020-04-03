@@ -24,8 +24,9 @@ import {TimeValueComponent} from './values/time-value/time-value.component';
 import {TimeInputComponent} from './values/time-value/time-input/time-input.component';
 import {MatDatepickerModule} from '@angular/material';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
-import {JDNDatepickerDirective} from './values/time-value/jdn-datepicker-directive/jdndatepicker.directive';
-import {ColorPickerComponent} from './values/color-value/color-picker/color-picker.component';
+import { JDNDatepickerDirective } from './values/time-value/jdn-datepicker-directive/jdndatepicker.directive';
+import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import {ColorPickerComponent} from './values/color-value/color-picker/color-pick
     MatCheckboxModule,
     MatMenuModule,
     MatDatepickerModule,
+    MatIconModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     ColorPickerModule
     ],

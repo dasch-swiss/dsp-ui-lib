@@ -54,8 +54,8 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   onChange = (_: any) => { };
   onTouched = () => { };
 
-  @Input() dateLabel = 'date';
-  @Input() timeLabel = 'time';
+  @Input() dateLabel = 'Date';
+  @Input() timeLabel = 'Time';
 
   dateFormControl: FormControl;
   timeFormControl: FormControl;

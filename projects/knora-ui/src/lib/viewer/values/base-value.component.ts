@@ -5,6 +5,8 @@ import {Subscription} from 'rxjs';
 
 export abstract class BaseValueComponent {
 
+  shouldShowComment = false;
+
   /**
    * Value to be displayed, if any.
    */
@@ -96,6 +98,7 @@ export abstract class BaseValueComponent {
 
       }
 
+      this.updateCommentVisibility();
       this.valueFormControl.updateValueAndValidity();
     }
   }
@@ -110,6 +113,20 @@ export abstract class BaseValueComponent {
   }
 
   /**
+   * Display comment field if in UPDATE or CREATE mode
+   */
+  updateCommentVisibility(): void {
+    this.shouldShowComment = this.mode !== 'read' ? true : false;
+  }
+
+  /**
+   * Toggles visibility of the comment field regardless of the mode
+   */
+  toggleCommentVisibility(): void {
+    this.shouldShowComment = !this.shouldShowComment;
+  }
+
+  /**
    * Returns a value that is to be created.
    * Returns false if invalid.
    */
@@ -120,4 +137,6 @@ export abstract class BaseValueComponent {
    * Returns false if invalid.
    */
   abstract getUpdatedValue(): UpdateValue | false;
+
+
 }
