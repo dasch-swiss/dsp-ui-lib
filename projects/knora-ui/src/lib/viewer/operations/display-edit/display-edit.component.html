@@ -1,24 +1,60 @@
-<div>
-  <span [ngSwitch]="valueTypeOrClass">
-    <kui-text-value-as-string #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-string>
-    <kui-text-value-as-html #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-html>
-    <kui-int-value #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></kui-int-value>
-    <kui-boolean-value #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]="displayValue"></kui-boolean-value>
-    <kui-uri-value #displayVal *ngSwitchCase="constants.UriValue" [mode]="mode" [displayValue]="displayValue"></kui-uri-value>
-    <kui-decimal-value #displayVal *ngSwitchCase="constants.DecimalValue" [mode]="mode" [displayValue]="displayValue"></kui-decimal-value>
-    <kui-color-value #displayVal *ngSwitchCase="constants.ColorValue" [mode]="mode" [displayValue]="displayValue"></kui-color-value>
-    <kui-interval-value #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]="displayValue"></kui-interval-value>
-    <kui-time-value #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="displayValue"></kui-time-value>
-    <kui-link-value #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"
+<div class="grid-container">
+  <div class="property-header">
+    <h4 class="label">
+      {{displayValue.propertyLabel}}
+    </h4>
+    <button mat-button
+            class="info"
+            title="info">
+            <mat-icon>info</mat-icon>
+    </button>
+  </div>
+  <div class="value-component">
+    <span [ngSwitch]="valueTypeOrClass">
+      <kui-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-string>
+      <kui-text-value-as-html #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-html>
+      <kui-int-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></kui-int-value>
+      <kui-boolean-value class="parent-value-component" #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]="displayValue"></kui-boolean-value>
+      <kui-uri-value class="parent-value-component" #displayVal *ngSwitchCase="constants.UriValue" [mode]="mode" [displayValue]="displayValue"></kui-uri-value>
+      <kui-decimal-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DecimalValue" [mode]="mode" [displayValue]="displayValue"></kui-decimal-value>
+      <kui-color-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ColorValue" [mode]="mode" [displayValue]="displayValue"></kui-color-value>
+      <kui-interval-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]="displayValue"></kui-interval-value>
+      <kui-time-value class="parent-value-component" #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="displayValue"></kui-time-value>
+      <kui-link-value class="parent-value-component" #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"
                     [parentResource]="parentResource" [propIri]="displayValue.property"></kui-link-value>
-    <kui-list-value #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode" [displayValue]="displayValue"
+      <kui-list-value #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode" [displayValue]="displayValue"
                     [propertyDef]="parentResource.entityInfo.properties[displayValue.property]"></kui-list-value>
-  </span>
-</div>
-<div>
-  <span *ngIf="!readOnlyValue">
-    <button class="edit" *ngIf="canModify && !editModeActive" (click)="activateEditMode()">edit</button>
-    <button class="save" *ngIf="editModeActive" [disabled]="!displayValueComponent.form.valid" (click)="saveEditValue()">Save</button>
-    <button class="cancel" *ngIf="editModeActive" (click)="cancelEditValue()">Cancel</button>
-  </span>
+      <span *ngSwitchDefault>{{displayValue.strval}}</span> 
+    </span>
+  </div>
+  <!-- TEMPORARY CODE: TO HIDE BUTTONS FOR VALUE COMPONENTS NOT YET IMPLEMENTED -->
+  <div class="crud-buttons" *ngIf="!readOnlyValue">
+    <button mat-button
+            class="edit"
+            title="edit"
+            *ngIf="canModify && !editModeActive"
+            (click)="activateEditMode()">
+            <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-button
+            class="comment-toggle"
+            title="Toggle comment"
+            *ngIf="shouldShowCommentToggle"
+            (click)="toggleComment()">
+            <mat-icon>comment</mat-icon>
+    </button>
+    <button class="save"
+            title="save"
+            *ngIf="editModeActive"
+            [disabled]="!displayValueComponent.form.valid"
+            (click)="saveEditValue()">
+            <mat-icon>save</mat-icon>
+    </button>
+    <button class="cancel"
+            title="cancel"
+            *ngIf="editModeActive"
+            (click)="cancelEditValue()">
+            <mat-icon>undo</mat-icon>
+    </button>
+  </div>
 </div>

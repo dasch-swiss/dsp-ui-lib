@@ -7,6 +7,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {CommonModule} from '@angular/common';
 import {ColorPickerModule} from 'ngx-color-picker';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 import {IntValueComponent} from './values/int-value/int-value.component';
 import {LinkValueComponent} from './values/link-value/link-value.component';
@@ -59,6 +60,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
     MatCheckboxModule,
     MatMenuModule,
     MatDatepickerModule,
+    MatIconModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     ColorPickerModule
     ],
