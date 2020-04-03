@@ -102,6 +102,30 @@ describe('DateInputComponent', () => {
 
     expect(testHostComponent.dateInputComponent.isPeriodControl.value).toBe(true);
 
-    expect(testHostComponent.dateInputComponent.endDateControl.value).toEqual(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2019, 5, 19), new CalendarDate(2019, 5, 19))));
-  })
+    expect(testHostComponent.dateInputComponent.endDateControl.value)
+      .toEqual(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2019, 5, 19), new CalendarDate(2019, 5, 19))));
+  });
+
+  it('should propagate changes made by the user for a single date', () => {
+
+    testHostComponent.dateInputComponent.form.controls.dateStart.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2019, 5, 19), new CalendarDate(2019, 5, 19))));
+
+    testHostComponent.dateInputComponent._handleInput();
+
+    expect(testHostComponent.form.controls.date.value).toEqual(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
+  });
+
+  it('should propagate changes made by the user for a period', () => {
+
+    testHostComponent.dateInputComponent.form.controls.dateStart.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2019, 5, 19), new CalendarDate(2019, 5, 19))));
+
+    testHostComponent.dateInputComponent.form.controls.isPeriod.setValue(true);
+
+    testHostComponent.dateInputComponent.form.controls.dateEnd.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 5, 19), new CalendarDate(2020, 5, 19))));
+
+    testHostComponent.dateInputComponent._handleInput();
+
+    expect(testHostComponent.form.controls.date.value).toEqual(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2019, 5, 19), new KnoraDate('JULIAN', 'CE', 2020, 5, 19)));
+  });
+
 });
