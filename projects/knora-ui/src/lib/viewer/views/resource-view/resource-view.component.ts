@@ -9,7 +9,7 @@ import {
   ApiResponseError,
   SystemPropertyDefinition
 } from '@knora/api';
-import { KnoraApiConnectionToken } from '../../../core';
+import { KnoraApiConnectionToken } from '../../../core/core.module';
 
 
 // object of property information from ontology class, properties and property values
