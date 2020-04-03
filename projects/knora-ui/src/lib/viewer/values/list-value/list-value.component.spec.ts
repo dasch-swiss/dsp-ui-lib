@@ -120,9 +120,6 @@ describe('ListValueComponent', () => {
       valueComponentDe = hostCompDe.query(By.directive(ListValueComponent));
       valueInputNativeElement = valueComponentDe.query(By.css('input')).nativeElement;
 
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
-
     });
     it('should display an existing value', () => {
 
@@ -184,6 +181,9 @@ describe('ListValueComponent', () => {
 
       testHostFixture.detectChanges();
 
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
+
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       commentInputNativeElement.value = 'this is a comment';
@@ -202,14 +202,15 @@ describe('ListValueComponent', () => {
 
     });
   });
-  describe('create a list value', () => {
+  fdescribe('create a list value', () => {
     let testHostComponent: TestHostCreateValueComponent;
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
     let valueComponentDe: DebugElement;
+    let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
-    beforeEach(() => {
+    beforeEach(() => {      
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
       valuesSpy.v2.list.getList.and.callFake(
         () => {
@@ -234,10 +235,13 @@ describe('ListValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(ListValueComponent));
+
+      // Fails to get NativeElement here
       valueInputNativeElement = valueComponentDe.query(By.css('input')).nativeElement;
 
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
+      
 
     });
     it('should create a value', () => {
