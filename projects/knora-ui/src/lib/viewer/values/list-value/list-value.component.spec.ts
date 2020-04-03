@@ -202,12 +202,10 @@ describe('ListValueComponent', () => {
 
     });
   });
-  fdescribe('create a list value', () => {
+  describe('create a list value', () => {
     let testHostComponent: TestHostCreateValueComponent;
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
     let valueComponentDe: DebugElement;
-    let valueInputDebugElement: DebugElement;
-    let valueInputNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
     beforeEach(() => {      
@@ -235,9 +233,6 @@ describe('ListValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(ListValueComponent));
-
-      // Fails to get NativeElement here
-      valueInputNativeElement = valueComponentDe.query(By.css('input')).nativeElement;
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
