@@ -215,4 +215,30 @@ describe('DateInputComponent', () => {
 
   });
 
+  it('should not show the calendar when not in readonly mode', () => {
+
+    const hostCompDe = testHostFixture.debugElement;
+    const dateInputComponentDe = hostCompDe.query(By.directive(DateInputComponent));
+
+    const startDateCalendar = dateInputComponentDe.query(By.css('.start span.calendar'));
+
+    expect(startDateCalendar).toBe(null);
+
+  });
+
+  it('should show the calendar when in readonly mode', () => {
+
+    testHostComponent.readonly = true;
+
+    testHostFixture.detectChanges();
+
+    const hostCompDe = testHostFixture.debugElement;
+    const dateInputComponentDe = hostCompDe.query(By.directive(DateInputComponent));
+
+    const startDateCalendar = dateInputComponentDe.query(By.css('.start span.calendar'));
+
+    expect(startDateCalendar.nativeElement.innerText).toEqual('Julian');
+
+  });
+
 });
