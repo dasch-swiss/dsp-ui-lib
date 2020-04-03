@@ -128,12 +128,16 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
 
   @Input()
   get value(): KnoraDate | KnoraPeriod | null {
+
+    if (!this.form.valid) {
+      return null;
+    }
+
     const userInput = this.form.value;
-    console.log(this.isPeriodControl.value);
+
     if (!this.isPeriodControl.value) {
       // single date
       if (userInput.dateStart !== null) {
-        console.log('getting ', new KnoraDate(userInput.dateStart.calendarName.toUpperCase(), 'CE', userInput.dateStart.calendarStart.year, userInput.dateStart.calendarStart.month, userInput.dateStart.calendarStart.day))
         return new KnoraDate(userInput.dateStart.calendarName.toUpperCase(), 'CE', userInput.dateStart.calendarStart.year, userInput.dateStart.calendarStart.month, userInput.dateStart.calendarStart.day);
       } else {
         return null;
@@ -141,6 +145,11 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
     } else {
       // period
       if (userInput.dateStart !== null && userInput.dateEnd !== null) {
+
+        // check that start and end date have the same calendar
+        if (userInput.dateStart.calendarName !== userInput.dateEnd.calendarName) {
+          return null;
+        }
 
         // check if start is before end
         const startAsJdnPeriod = (userInput.dateStart as JDNConvertibleCalendar).toJDNPeriod();
@@ -154,7 +163,6 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
         const start = new KnoraDate(userInput.dateStart.calendarName.toUpperCase(), 'CE', userInput.dateStart.calendarStart.year, userInput.dateStart.calendarStart.month, userInput.dateStart.calendarStart.day);
         const end = new KnoraDate(userInput.dateEnd.calendarName.toUpperCase(), 'CE', userInput.dateEnd.calendarStart.year, userInput.dateEnd.calendarStart.month, userInput.dateEnd.calendarStart.day);
 
-        console.log('getting ', new KnoraPeriod(start, end));
         return new KnoraPeriod(start, end);
       } else {
         return null;
@@ -163,7 +171,6 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
   }
 
   set value(date: KnoraDate | KnoraPeriod | null) {
-    console.log('setting: ', date)
     if (date !== null) {
       if (date instanceof KnoraDate) {
         // single date
