@@ -161,4 +161,14 @@ describe('DateInputComponent', () => {
 
   });
 
+  it('should initialize the date with an empty value', () => {
+
+    testHostComponent.form.controls.date.setValue(null);
+
+    expect(testHostComponent.dateInputComponent.form.controls.dateStart.value).toBe(null);
+    expect(testHostComponent.dateInputComponent.form.controls.isPeriod.value).toBe(false);
+    expect(testHostComponent.dateInputComponent.form.controls.dateEnd.value).toBe(null);
+
+  });
+
 });
