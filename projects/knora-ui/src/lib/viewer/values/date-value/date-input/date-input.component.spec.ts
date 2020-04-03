@@ -11,6 +11,10 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {JDNConvertibleCalendarModule} from "jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar";
+import JulianCalendarDate = JDNConvertibleCalendarModule.JulianCalendarDate;
+import {CalendarDate} from "jdnconvertiblecalendar";
+import CalendarPeriod = JDNConvertibleCalendarModule.CalendarPeriod;
 
 /**
  * Test host component to simulate parent component.
@@ -67,10 +71,21 @@ describe('DateInputComponent', () => {
     testHostFixture = TestBed.createComponent(TestHostComponent);
     testHostComponent = testHostFixture.componentInstance;
     testHostFixture.detectChanges();
+
+    expect(testHostComponent).toBeTruthy();
   });
 
-  it('should create', () => {
-    expect(testHostComponent).toBeTruthy();
-    // console.log(testHostComponent.dateInputComponent);
+  it('should initialize the date correctly', () => {
+
+    expect(testHostComponent.dateInputComponent.value instanceof KnoraDate).toBe(true);
+    expect(testHostComponent.dateInputComponent.value)
+      .toEqual(new KnoraDate('JULIAN', 'CE', 2018, 5, 19));
+
+    expect(testHostComponent.dateInputComponent.startDateControl.value)
+      .toEqual(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2018, 5, 19), new CalendarDate(2018, 5, 19))));
+
+    expect(testHostComponent.dateInputComponent.isPeriodControl.value).toBe(false);
+
+    expect(testHostComponent.dateInputComponent.endDateControl.value).toBe(null);
   });
 });
