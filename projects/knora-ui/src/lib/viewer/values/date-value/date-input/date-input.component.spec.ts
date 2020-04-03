@@ -11,10 +11,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {JDNConvertibleCalendarModule} from "jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar";
-import JulianCalendarDate = JDNConvertibleCalendarModule.JulianCalendarDate;
-import {CalendarDate} from "jdnconvertiblecalendar";
-import CalendarPeriod = JDNConvertibleCalendarModule.CalendarPeriod;
+import {CalendarDate, GregorianCalendarDate, CalendarPeriod, JulianCalendarDate} from 'jdnconvertiblecalendar';
 
 /**
  * Test host component to simulate parent component.
@@ -126,6 +123,42 @@ describe('DateInputComponent', () => {
     testHostComponent.dateInputComponent._handleInput();
 
     expect(testHostComponent.form.controls.date.value).toEqual(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2019, 5, 19), new KnoraDate('JULIAN', 'CE', 2020, 5, 19)));
+  });
+
+  it('should return "null" for an invalid user input (start date greater than end date)', () => {
+
+    testHostComponent.dateInputComponent.form.controls.dateStart.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2021, 5, 19), new CalendarDate(2021, 5, 19))));
+
+    testHostComponent.dateInputComponent.form.controls.isPeriod.setValue(true);
+
+    testHostComponent.dateInputComponent.form.controls.dateEnd.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 5, 19), new CalendarDate(2020, 5, 19))));
+
+    expect(testHostComponent.dateInputComponent.value).toEqual(null);
+
+  });
+
+  it('should return "null" for an invalid user input (start date and end date have different calendars)', () => {
+
+    testHostComponent.dateInputComponent.form.controls.dateStart.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2021, 5, 19), new CalendarDate(2021, 5, 19))));
+
+    testHostComponent.dateInputComponent.form.controls.isPeriod.setValue(true);
+
+    testHostComponent.dateInputComponent.form.controls.dateEnd.setValue(new GregorianCalendarDate(new CalendarPeriod(new CalendarDate(2022, 5, 19), new CalendarDate(2022, 5, 19))));
+
+    expect(testHostComponent.dateInputComponent.value).toEqual(null);
+
+  });
+
+  it('should return "null" for an invalid user input (start date is "null")', () => {
+
+    testHostComponent.dateInputComponent.form.controls.dateStart.setValue(null);
+
+    testHostComponent.dateInputComponent.form.controls.isPeriod.setValue(true);
+
+    testHostComponent.dateInputComponent.form.controls.dateEnd.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 5, 19), new CalendarDate(2020, 5, 19))));
+
+    expect(testHostComponent.dateInputComponent.value).toEqual(null);
+
   });
 
 });
