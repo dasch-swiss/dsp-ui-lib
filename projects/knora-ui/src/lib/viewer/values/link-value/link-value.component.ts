@@ -3,7 +3,7 @@ import {BaseValueComponent} from '../base-value.component';
 import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiConnection} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
-import {KnoraApiConnectionToken} from '../../../core';
+import {KnoraApiConnectionToken} from '../../../core/core.module';
 
 export function resourceValidator(control: AbstractControl) {
     const invalid = !(control.value instanceof ReadResource);

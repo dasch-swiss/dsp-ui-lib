@@ -62,7 +62,7 @@ describe('DecimalValueComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
+      declarations: [ 
         DecimalValueComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent

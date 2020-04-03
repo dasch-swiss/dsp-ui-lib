@@ -1,11 +1,11 @@
 import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges, NgZone } from '@angular/core';
 import { TimeInputComponent, TimeInputErrorStateMatcher } from './time-input/time-input.component';
 import { ReadTimeValue, CreateTimeValue, UpdateTimeValue } from '@knora/api';
-import { BaseValueComponent } from '..';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import {BaseValueComponent} from '../base-value.component';
 
 @Component({
   selector: 'kui-time-value',
@@ -78,7 +78,7 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
     }
 
     const newTimeValue = new CreateTimeValue();
-    
+
     newTimeValue.time = this.valueFormControl.value;
 
     if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {

@@ -6,7 +6,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {CommonModule} from '@angular/common';
 import {ColorPickerModule} from 'ngx-color-picker';
-
+import { MatMenuModule } from '@angular/material/menu';
 
 import {IntValueComponent} from './values/int-value/int-value.component';
 import {LinkValueComponent} from './values/link-value/link-value.component';
@@ -15,6 +15,8 @@ import {BooleanValueComponent} from './values/boolean-value/boolean-value.compon
 import {DecimalValueComponent} from './values/decimal-value/decimal-value.component';
 import {ColorValueComponent} from './values/color-value/color-value.component';
 import {UriValueComponent} from './values/uri-value/uri-value.component';
+import {ListValueComponent} from './values/list-value/list-value.component';
+import {SublistValueComponent} from './values/list-value/subList-value/sublist-value.component';
 import {IntervalValueComponent} from './values/interval-value/interval-value.component';
 import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
 import {TextValueAsHtmlComponent} from './values/text-value/text-value-as-html/text-value-as-html.component';
@@ -33,6 +35,9 @@ import {MatIconModule} from '@angular/material/icon';
     IntValueComponent,
     DisplayEditComponent,
     BooleanValueComponent,
+    ColorValueComponent,
+    ColorPickerComponent,
+    LinkValueComponent,
     DecimalValueComponent,
     UriValueComponent,
     IntervalValueComponent,
@@ -42,7 +47,9 @@ import {MatIconModule} from '@angular/material/icon';
     JDNDatepickerDirective,
     ColorValueComponent,
     ColorPickerComponent,
-    LinkValueComponent
+    LinkValueComponent,
+    ListValueComponent,
+    SublistValueComponent
   ],
   imports: [
     CommonModule,
@@ -50,11 +57,13 @@ import {MatIconModule} from '@angular/material/icon';
     MatInputModule,
     MatAutocompleteModule,
     MatCheckboxModule,
+    MatMenuModule,
     MatDatepickerModule,
     MatIconModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     ColorPickerModule
-  ],
+    ],
+
   exports: [
     TextValueAsStringComponent,
     TextValueAsHtmlComponent,
@@ -66,7 +75,9 @@ import {MatIconModule} from '@angular/material/icon';
     UriValueComponent,
     IntervalValueComponent,
     TimeValueComponent,
-    LinkValueComponent
+    LinkValueComponent,
+    ListValueComponent,
+    SublistValueComponent
   ]
 })
 export class ViewerModule {

@@ -36,6 +36,18 @@ class TestTextValueAsStringComponent {
 }
 
 @Component({
+  selector: `kui-list-value`,
+  template: ``
+})
+class TestListValueComponent {
+  @Input() mode;
+
+  @Input() displayValue;
+
+  @Input() propertyDef;
+}
+
+@Component({
   selector: `kui-link-value`,
   template: ``
 })
@@ -44,7 +56,9 @@ class TestLinkValueComponent {
   @Input() mode;
 
   @Input() displayValue;
+
   @Input() parentResource;
+
   @Input() propIri;
 }
 
@@ -221,6 +235,7 @@ describe('DisplayEditComponent', () => {
         TestIntValueComponent,
         TestLinkValueComponent,
         TestIntervalValueComponent,
+        TestListValueComponent,
         TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent,
