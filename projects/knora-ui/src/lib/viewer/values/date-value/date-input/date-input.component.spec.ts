@@ -12,6 +12,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {CalendarDate, GregorianCalendarDate, CalendarPeriod, JulianCalendarDate} from 'jdnconvertiblecalendar';
+import {By} from '@angular/platform-browser';
 
 /**
  * Test host component to simulate parent component.
@@ -168,6 +169,49 @@ describe('DateInputComponent', () => {
     expect(testHostComponent.dateInputComponent.form.controls.dateStart.value).toBe(null);
     expect(testHostComponent.dateInputComponent.form.controls.isPeriod.value).toBe(false);
     expect(testHostComponent.dateInputComponent.form.controls.dateEnd.value).toBe(null);
+
+  });
+
+  it('should show the toggle when not in readonly mode', () => {
+
+    expect(testHostComponent.dateInputComponent.readonly).toBe(false);
+
+    testHostComponent.dateInputComponent.form.controls.isPeriod.setValue(true);
+
+    testHostFixture.detectChanges();
+
+    const hostCompDe = testHostFixture.debugElement;
+    const dateInputComponentDe = hostCompDe.query(By.directive(DateInputComponent));
+
+    const startDateToggle = dateInputComponentDe.query(By.css('.start mat-datepicker-toggle'));
+
+    expect(startDateToggle).not.toBe(null);
+
+    const endDateToggle = dateInputComponentDe.query(By.css('.end mat-datepicker-toggle'));
+
+    expect(endDateToggle).not.toBe(null);
+  });
+
+  it('should not show the toggle when in readonly mode', () => {
+
+    testHostComponent.readonly = true;
+
+    testHostComponent.dateInputComponent.form.controls.isPeriod.setValue(true);
+
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.dateInputComponent.readonly).toBe(true);
+
+    const hostCompDe = testHostFixture.debugElement;
+    const dateInputComponentDe = hostCompDe.query(By.directive(DateInputComponent));
+
+    const startDateToggle = dateInputComponentDe.query(By.css('.start mat-datepicker-toggle'));
+
+    expect(startDateToggle).toBe(null);
+
+    const endDateToggle = dateInputComponentDe.query(By.css('.end mat-datepicker-toggle'));
+
+    expect(endDateToggle).toBe(null);
 
   });
 
