@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {DateInputComponent} from './date-input.component';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {KnoraDate} from '@knora/api';
+import {KnoraDate, KnoraPeriod} from '@knora/api';
 import {JDNDatepickerDirective} from '../../jdn-datepicker-directive/jdndatepicker.directive';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -75,7 +75,7 @@ describe('DateInputComponent', () => {
     expect(testHostComponent).toBeTruthy();
   });
 
-  it('should initialize the date correctly', () => {
+  it('should initialize a date correctly', () => {
 
     expect(testHostComponent.dateInputComponent.value instanceof KnoraDate).toBe(true);
     expect(testHostComponent.dateInputComponent.value)
@@ -88,4 +88,20 @@ describe('DateInputComponent', () => {
 
     expect(testHostComponent.dateInputComponent.endDateControl.value).toBe(null);
   });
+
+  it('should initialize a period correctly', () => {
+
+    testHostComponent.form.controls.date.setValue(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2018, 5, 19), new KnoraDate('JULIAN', 'CE', 2019, 5, 19)));
+
+    expect(testHostComponent.dateInputComponent.value instanceof KnoraPeriod).toBe(true);
+    expect(testHostComponent.dateInputComponent.value)
+      .toEqual(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2018, 5, 19), new KnoraDate('JULIAN', 'CE', 2019, 5, 19)));
+
+    expect(testHostComponent.dateInputComponent.startDateControl.value)
+      .toEqual(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2018, 5, 19), new CalendarDate(2018, 5, 19))));
+
+    expect(testHostComponent.dateInputComponent.isPeriodControl.value).toBe(true);
+
+    expect(testHostComponent.dateInputComponent.endDateControl.value).toEqual(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2019, 5, 19), new CalendarDate(2019, 5, 19))));
+  })
 });
