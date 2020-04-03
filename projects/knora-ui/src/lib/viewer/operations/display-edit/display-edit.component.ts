@@ -174,7 +174,6 @@ export class DisplayEditComponent implements OnInit {
   isReadOnly(valueTypeOrClass: string): boolean {
     return valueTypeOrClass === this.readTextValueAsHtml ||
            valueTypeOrClass === this.readTextValueAsXml  ||
-           valueTypeOrClass === this.constants.ListValue ||
            valueTypeOrClass === this.constants.DateValue ||
            valueTypeOrClass === this.constants.GeomValue ||
            valueTypeOrClass === this.constants.GeonameValue;
