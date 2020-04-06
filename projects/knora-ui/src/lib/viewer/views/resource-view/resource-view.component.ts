@@ -36,9 +36,9 @@ export class ResourceViewComponent implements OnInit, OnChanges {
 
   resource: ReadResource;
 
-  propArray: PropertyInfoValues[] = [];
+  propArray: PropertyInfoValues[] = []; // resource property
 
-  systemPropArray: PropertyDefinition[] = [];
+  systemPropArray: PropertyDefinition[] = []; // system property
 
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
 

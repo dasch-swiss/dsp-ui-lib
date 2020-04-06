@@ -1,13 +1,9 @@
 <div class="resource-view" *ngIf="resource">
-    <h2 class="label">
-        {{resource?.resourceClassLabel}}
-    </h2>
-    <p>{{resource?.resourceClassComment}}</p>
 
-    <!-- kui-property-view -->
-    <div *ngIf="propArray.length !== 0; else noProperty">
-        <kui-property-view [parentResource]="resource" [propArray]="propArray" [systemPropArray]="systemPropArray">
-        </kui-property-view>
-    </div>
-    <ng-template #noProperty>The resource {{resource?.resourceClassLabel}} has no defined properties.</ng-template>
+  <!-- kui-property-view -->
+  <div *ngIf="propArray.length !== 0; else noProperty">
+    <kui-property-view [parentResource]="resource" [propArray]="propArray" [systemPropArray]="systemPropArray">
+    </kui-property-view>
+  </div>
+  <ng-template #noProperty>The resource {{resource?.resourceClassLabel}} has no defined properties.</ng-template>
 </div>
