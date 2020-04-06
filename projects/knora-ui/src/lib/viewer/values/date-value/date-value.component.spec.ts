@@ -145,8 +145,8 @@ describe('DateValueComponent', () => {
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
     let valueComponentDe: DebugElement;
-    let commentInputDebugElement: DebugElement;
-    let commentInputNativeElement;
+    let commentTextareaDebugElement: DebugElement;
+    let commentTextareaNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
@@ -159,8 +159,7 @@ describe('DateValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(DateValueComponent));
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
+
     });
 
     it('should display an existing value', () => {
@@ -223,6 +222,9 @@ describe('DateValueComponent', () => {
 
       testHostFixture.detectChanges();
 
+      commentTextareaDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentTextareaNativeElement = commentTextareaDebugElement.nativeElement;
+
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(testHostComponent.inputValueComponent.displayValue.date).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
@@ -231,9 +233,9 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      commentInputNativeElement.value = 'this is a comment';
+      commentTextareaNativeElement.value = 'this is a comment';
 
-      commentInputNativeElement.dispatchEvent(new Event('input'));
+      commentTextareaNativeElement.dispatchEvent(new Event('input'));
 
       testHostFixture.detectChanges();
 
@@ -405,8 +407,8 @@ describe('DateValueComponent', () => {
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
 
     let valueComponentDe: DebugElement;
-    let commentInputDebugElement: DebugElement;
-    let commentInputNativeElement;
+    let commentTextareaDebugElement: DebugElement;
+    let commentTextareaNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
@@ -419,8 +421,8 @@ describe('DateValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(DateValueComponent));
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
+      commentTextareaDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentTextareaNativeElement = commentTextareaDebugElement.nativeElement;
     });
 
     it('should create a value', () => {
@@ -464,9 +466,9 @@ describe('DateValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      commentInputNativeElement.value = 'created comment';
+      commentTextareaNativeElement.value = 'created comment';
 
-      commentInputNativeElement.dispatchEvent(new Event('input'));
+      commentTextareaNativeElement.dispatchEvent(new Event('input'));
 
       testHostFixture.detectChanges();
 
@@ -480,7 +482,7 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(null);
 
-      expect(commentInputNativeElement.value).toEqual('');
+      expect(commentTextareaNativeElement.value).toEqual('');
 
     });
 
