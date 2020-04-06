@@ -63,7 +63,6 @@ export class ResourceViewComponent implements OnInit, OnChanges {
         // get list of all properties
         const propsList: IHasProperty[] = this.resource.entityInfo.classes[this.resource.type].propertiesList;
 
-        let i = 0;
         for (const prop of propsList) {
           const index = prop.propertyIndex;
 
@@ -85,12 +84,8 @@ export class ResourceViewComponent implements OnInit, OnChanges {
 
             this.systemPropArray.push(systemPropInfo);
 
-          } else {
-            // all other properties that are not a ResourcePropertyDefinition or SystemPropertyDefinition
-            console.log('other property: ', this.resource.entityInfo.properties[index] + ' ' + index);
           }
 
-          i++;
         }
 
         // sort properties by guiOrder

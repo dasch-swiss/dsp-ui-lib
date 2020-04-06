@@ -31,7 +31,7 @@ class TestPropertyParentComponent implements OnInit {
     MockResource.getTestthing().subscribe(response => {
       this.parentResource = response[0];
       const propsList: IHasProperty[] = this.parentResource.entityInfo.classes[this.parentResource.type].propertiesList;
-      let i = 0;
+
       for (const prop of propsList) {
         const index = prop.propertyIndex;
 
@@ -51,7 +51,7 @@ class TestPropertyParentComponent implements OnInit {
 
           this.systemPropArray.push(systemPropInfo);
         }
-        i++;
+
       }
     });
 
