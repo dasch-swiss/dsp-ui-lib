@@ -40,7 +40,7 @@ export class DisplayEditComponent implements OnInit {
   editModeActive = false;
 
   shouldShowCommentToggle: boolean;
-  
+
   // type of given displayValue
   // or knora-api-js-lib class representing the value
   valueTypeOrClass: string;
@@ -135,7 +135,7 @@ export class DisplayEditComponent implements OnInit {
   checkCommentToggleVisibility() {
     this.shouldShowCommentToggle = (this.mode === 'read' && this.displayValue.valueHasComment !== '' && this.displayValue.valueHasComment !== undefined);
   }
-  
+
   /**
    * Given a value, determines the type or class representing it.
    *
@@ -174,7 +174,6 @@ export class DisplayEditComponent implements OnInit {
   isReadOnly(valueTypeOrClass: string): boolean {
     return valueTypeOrClass === this.readTextValueAsHtml ||
            valueTypeOrClass === this.readTextValueAsXml  ||
-           valueTypeOrClass === this.constants.DateValue ||
            valueTypeOrClass === this.constants.GeomValue ||
            valueTypeOrClass === this.constants.GeonameValue;
   }
