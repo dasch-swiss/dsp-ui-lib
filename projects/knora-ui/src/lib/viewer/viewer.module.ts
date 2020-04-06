@@ -29,6 +29,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {DateValueComponent} from './values/date-value/date-value.component';
 import {CalendarHeaderComponent} from './values/date-value/calendar-header/calendar-header.component';
 import {DateInputComponent} from './values/date-value/date-input/date-input.component';
+import {MatIconModule} from '@angular/material/icon';
 import {JDNDatepickerDirective} from './values/jdn-datepicker-directive/jdndatepicker.directive';
 
 @NgModule({
@@ -63,6 +64,7 @@ import {JDNDatepickerDirective} from './values/jdn-datepicker-directive/jdndatep
     MatOptionModule,
     MatSelectModule,
     MatDatepickerModule,
+    MatIconModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     MatMenuModule,
     ColorPickerModule

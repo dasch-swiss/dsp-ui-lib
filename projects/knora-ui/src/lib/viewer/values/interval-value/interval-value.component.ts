@@ -1,10 +1,12 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, NgZone} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import {CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue} from '@knora/api';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Interval, IntervalInputComponent} from './interval-input/interval-input.component';
 import {ErrorStateMatcher} from '@angular/material';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { take } from 'rxjs/operators';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class IntervalErrorStateMatcher implements ErrorStateMatcher {
@@ -22,6 +24,7 @@ export class IntervalErrorStateMatcher implements ErrorStateMatcher {
 export class IntervalValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('intervalInput', {static: false}) intervalInputComponent: IntervalInputComponent;
+  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadIntervalValue;
 
@@ -36,7 +39,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
 
   matcher = new IntervalErrorStateMatcher();
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+  constructor(@Inject(FormBuilder) private fb: FormBuilder, private _ngZone: NgZone) {
     super();
   }
 
@@ -124,6 +127,12 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
     }
 
     return updatedIntervalValue;
+  }
+
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable.pipe(take(1))
+        .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
 }
