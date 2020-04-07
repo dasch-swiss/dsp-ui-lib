@@ -251,7 +251,7 @@ describe('DisplayEditComponent', () => {
         TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent,
-        TestGeonameValueComponent
+        TestGeonameValueComponent,
         TestTimeValueComponent,
         TestColorValueComponent
       ],

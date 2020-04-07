@@ -175,7 +175,6 @@ export class DisplayEditComponent implements OnInit {
     return valueTypeOrClass === this.readTextValueAsHtml ||
            valueTypeOrClass === this.readTextValueAsXml  ||
            valueTypeOrClass === this.constants.DateValue ||
-           valueTypeOrClass === this.constants.GeomValue ||
-           valueTypeOrClass === this.constants.GeonameValue;
+           valueTypeOrClass === this.constants.GeomValue;
   }
 }

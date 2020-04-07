@@ -75,7 +75,7 @@ describe('GeonameValueComponent', () => {
       .compileComponents();
   }));
 
-  describe('display and edit an integer value', () => {
+  describe('display and edit a geoname value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
@@ -96,9 +96,6 @@ describe('GeonameValueComponent', () => {
       valueComponentDe = hostCompDe.query(By.directive(GeonameValueComponent));
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
-
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -251,7 +248,7 @@ describe('GeonameValueComponent', () => {
       valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);

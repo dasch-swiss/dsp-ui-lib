@@ -3,6 +3,7 @@ import {BaseValueComponent} from '../base-value.component';
 import {CreateGeonameValue, ReadGeonameValue, UpdateGeonameValue} from '@knora/api';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
+import { CustomRegex } from '../custom-regex';
 
 @Component({
   selector: 'kui-geoname-value',
@@ -19,7 +20,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
   valueChangesSubscription: Subscription;
 
-  customValidators = [];
+  customValidators = [Validators.pattern(CustomRegex.GEONAME_REGEX)];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
@@ -105,7 +106,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
   openInfo() {
     if (this.displayValue.geoname){
-      let url = "https://www.geonames.org/" + this.displayValue.geoname;
+      const url = "https://www.geonames.org/" + this.displayValue.geoname;
       window.open(url, "_blank");
     }
   }
