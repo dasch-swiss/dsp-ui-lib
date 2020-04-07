@@ -1,5 +1,6 @@
 import {Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self} from '@angular/core';
 import {
+  AbstractControl,
   ControlValueAccessor,
   FormBuilder,
   FormControl,
@@ -7,6 +8,7 @@ import {
   FormGroupDirective,
   NgControl,
   NgForm,
+  ValidatorFn,
   Validators
 } from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material/form-field';
@@ -30,6 +32,19 @@ export class DateInputErrorStateMatcher implements ErrorStateMatcher {
     const isSubmitted = form && form.submitted;
     return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
+}
+
+/** If a period is defined, start and end date must have the same calendar */
+export function sameCalendarValidator(isPeriod: FormControl, endDate: FormControl): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+
+    if (isPeriod.value) {
+      const invalid = control.value === null || endDate.value === null || control.value.calendarName !== endDate.value.calendarName;
+      return invalid ? {'sameCalendarRequired': {value: control.value}} : null;
+    }
+
+    return null;
+  };
 }
 
 class MatInputBase {
@@ -146,11 +161,6 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
       // period
       if (userInput.dateStart !== null && userInput.dateEnd !== null) {
 
-        // check that start and end date have the same calendar
-        if (userInput.dateStart.calendarName !== userInput.dateEnd.calendarName) {
-          return null;
-        }
-
         // check if start is before end
         const startAsJdnPeriod = (userInput.dateStart as JDNConvertibleCalendar).toJDNPeriod();
         const endAsJdnPeriod = (userInput.dateEnd as JDNConvertibleCalendar).toJDNPeriod();
@@ -230,9 +240,9 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-    this.startDateControl = new FormControl(null, Validators.required);
     this.endDateControl = new FormControl(null);
     this.isPeriodControl = new FormControl(null);
+    this.startDateControl = new FormControl(null, [Validators.required, sameCalendarValidator(this.isPeriodControl, this.endDateControl)]);
 
     this.form = fb.group({
       dateStart: this.startDateControl,
@@ -284,6 +294,8 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
   }
 
   _handleInput(): void {
+    // trigger evaluation of validators defined for start date
+    this.startDateControl.updateValueAndValidity();
     this.onChange(this.value);
   }
 

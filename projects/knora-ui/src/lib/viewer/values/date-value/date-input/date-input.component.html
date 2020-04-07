@@ -2,7 +2,13 @@
   <mat-form-field class="start child-input-component">
     <span class="calendar">{{startDateControl.value?.calendarName}}</span>
     <kui-jdn-datepicker [activeCalendar]="startDateControl.value?.calendarName">
-      <input matInput [matDatepicker]="picker1" [formControlName]="'dateStart'" (dateChange)="_handleInput()" readonly>
+      <input matInput [matDatepicker]="picker1" [formControlName]="'dateStart'" (dateChange)="_handleInput()" [errorStateMatcher]="matcher" readonly>
+      <mat-error *ngIf="startDateControl.hasError('required')">
+        Start date is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="startDateControl.hasError('sameCalendarRequired')">
+        In a period, start and end date must have the same <strong>calendar</strong>
+      </mat-error>
       <mat-datepicker-toggle *ngIf="!readonly" matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1 [calendarHeaderComponent]="calendarHeaderComponent"></mat-datepicker>
     </kui-jdn-datepicker>

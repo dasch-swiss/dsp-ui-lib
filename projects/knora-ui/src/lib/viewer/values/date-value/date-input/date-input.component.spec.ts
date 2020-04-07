@@ -146,6 +146,8 @@ describe('DateInputComponent', () => {
 
     testHostComponent.dateInputComponent.form.controls.dateEnd.setValue(new GregorianCalendarDate(new CalendarPeriod(new CalendarDate(2022, 5, 19), new CalendarDate(2022, 5, 19))));
 
+    testHostComponent.dateInputComponent._handleInput();
+
     expect(testHostComponent.dateInputComponent.value).toEqual(null);
 
   });
