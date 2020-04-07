@@ -1,0 +1,27 @@
+<span [formGroup]="form">
+    <mat-form-field class="large-field color-field child-value-component" floatLabel="never">
+        <kui-color-picker #colorInput [formControlName]="'colorValue'" class="value" placeholder="Color value"
+            [readonly]="mode === 'read'" [errorStateMatcher]="matcher">
+        </kui-color-picker>
+        <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
+            Please change the value.
+        </mat-error>
+        <mat-error *ngIf="valueFormControl.hasError('pattern')">
+            Please enter a hex color value.
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="6"
+                  [formControlName]="'comment'"
+                  class="comment"
+                  placeholder="Comment"
+                  type="text"
+                  [readonly]="mode === 'read'"
+                  spellcheck="false">
+          </textarea>
+      </mat-form-field>
+</span>

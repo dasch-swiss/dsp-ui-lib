@@ -1,9 +1,11 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, NgZone, ViewChild} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import {CreateUriValue, ReadUriValue, UpdateUriValue} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomRegex} from '../custom-regex';
+import { take } from 'rxjs/operators';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'kui-uri-value',
@@ -11,6 +13,8 @@ import {CustomRegex} from '../custom-regex';
   styleUrls: ['./uri-value.component.scss']
 })
 export class UriValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
+
+  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadUriValue;
 
@@ -23,7 +27,7 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
 
   customValidators = [Validators.pattern(CustomRegex.URI_REGEX)];
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+  constructor(@Inject(FormBuilder) private fb: FormBuilder, private _ngZone: NgZone) {
     super();
    }
 
@@ -93,6 +97,12 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
     }
 
     return updatedUriValue;
+  }
+
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable.pipe(take(1))
+        .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
 }

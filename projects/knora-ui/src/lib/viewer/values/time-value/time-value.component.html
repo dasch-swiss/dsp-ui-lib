@@ -1,0 +1,22 @@
+<span [formGroup]="form" class="parent-component-wrapper">
+    <mat-form-field class="large-field child-value-component" floatLabel="never">
+      <kui-time-input #timeInput [formControlName]="'timeValue'" class="value" [readonly]="mode === 'read'" [errorStateMatcher]="matcher"></kui-time-input>
+    </mat-form-field>
+    <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
+      <textarea matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="6"
+                [formControlName]="'comment'"
+                class="comment"
+                placeholder="Comment"
+                type="text"
+                [readonly]="mode === 'read'"
+                spellcheck="false">
+        </textarea>
+    </mat-form-field>
+    <mat-error class="custom-error-message" *ngIf="form.controls.timeValue.hasError('valueNotChanged')">
+      Please change the value
+    </mat-error>
+</span>
