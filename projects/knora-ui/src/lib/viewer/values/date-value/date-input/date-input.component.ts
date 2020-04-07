@@ -39,8 +39,37 @@ export function sameCalendarValidator(isPeriod: FormControl, endDate: FormContro
   return (control: AbstractControl): { [key: string]: any } | null => {
 
     if (isPeriod.value) {
-      const invalid = control.value === null || endDate.value === null || control.value.calendarName !== endDate.value.calendarName;
+
+      let invalid = true;
+      if (control.value instanceof JDNConvertibleCalendar && endDate.value instanceof JDNConvertibleCalendar) {
+        invalid = control.value.calendarName !== endDate.value.calendarName;
+      }
+
       return invalid ? {'sameCalendarRequired': {value: control.value}} : null;
+    }
+
+    return null;
+  };
+}
+
+/** If a period is defined, start date must be before end date */
+export function periodStartEndValidator(isPeriod: FormControl, endDate: FormControl): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+
+    if (isPeriod.value) {
+      let invalid = true;
+
+      if (control.value instanceof JDNConvertibleCalendar && endDate.value instanceof JDNConvertibleCalendar) {
+
+        // check if start is before end
+        const startAsJdnPeriod = (control.value as JDNConvertibleCalendar).toJDNPeriod();
+        const endAsJdnPeriod = (endDate.value as JDNConvertibleCalendar).toJDNPeriod();
+
+        // check for start after end
+        invalid = startAsJdnPeriod.periodStart >= endAsJdnPeriod.periodStart;
+      }
+
+      return invalid ? {'periodStartEnd': {value: control.value}} : null;
     }
 
     return null;
@@ -161,15 +190,6 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
       // period
       if (userInput.dateStart !== null && userInput.dateEnd !== null) {
 
-        // check if start is before end
-        const startAsJdnPeriod = (userInput.dateStart as JDNConvertibleCalendar).toJDNPeriod();
-        const endAsJdnPeriod = (userInput.dateEnd as JDNConvertibleCalendar).toJDNPeriod();
-
-        if (startAsJdnPeriod.periodStart >= endAsJdnPeriod.periodStart) {
-          // start after end
-          return null;
-        }
-
         const start = new KnoraDate(userInput.dateStart.calendarName.toUpperCase(), 'CE', userInput.dateStart.calendarStart.year, userInput.dateStart.calendarStart.month, userInput.dateStart.calendarStart.day);
         const end = new KnoraDate(userInput.dateEnd.calendarName.toUpperCase(), 'CE', userInput.dateEnd.calendarStart.year, userInput.dateEnd.calendarStart.month, userInput.dateEnd.calendarStart.day);
 
@@ -191,6 +211,8 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
           isPeriod: false
         });
 
+        this.startDateControl.updateValueAndValidity();
+
       } else {
         // period
         const period = date as KnoraPeriod;
@@ -201,9 +223,13 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
           isPeriod: true
         });
 
+        this.startDateControl.updateValueAndValidity();
+
       }
     } else {
       this.form.setValue({dateStart: null, dateEnd: null, isPeriod: false});
+
+      this.startDateControl.updateValueAndValidity();
     }
     this.stateChanges.next();
   }
@@ -242,7 +268,11 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
 
     this.endDateControl = new FormControl(null);
     this.isPeriodControl = new FormControl(null);
-    this.startDateControl = new FormControl(null, [Validators.required, sameCalendarValidator(this.isPeriodControl, this.endDateControl)]);
+    this.startDateControl
+      = new FormControl(
+      null,
+      [Validators.required, sameCalendarValidator(this.isPeriodControl, this.endDateControl), periodStartEndValidator(this.isPeriodControl, this.endDateControl)]
+    );
 
     this.form = fb.group({
       dateStart: this.startDateControl,

@@ -9,6 +9,9 @@
       <mat-error *ngIf="startDateControl.hasError('sameCalendarRequired')">
         In a period, start and end date must have the same <strong>calendar</strong>
       </mat-error>
+      <mat-error *ngIf="startDateControl.hasError('periodStartEnd')">
+        In a period, start must be <strong>before end</strong>
+      </mat-error>
       <mat-datepicker-toggle *ngIf="!readonly" matSuffix [for]="picker1"></mat-datepicker-toggle>
       <mat-datepicker #picker1 [calendarHeaderComponent]="calendarHeaderComponent"></mat-datepicker>
     </kui-jdn-datepicker>

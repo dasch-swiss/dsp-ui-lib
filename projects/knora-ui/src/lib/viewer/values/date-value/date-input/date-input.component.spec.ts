@@ -134,6 +134,8 @@ describe('DateInputComponent', () => {
 
     testHostComponent.dateInputComponent.form.controls.dateEnd.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 5, 19), new CalendarDate(2020, 5, 19))));
 
+    testHostComponent.dateInputComponent._handleInput();
+
     expect(testHostComponent.dateInputComponent.value).toEqual(null);
 
   });
