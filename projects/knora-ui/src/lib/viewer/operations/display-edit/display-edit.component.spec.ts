@@ -171,6 +171,18 @@ class TestColorValueComponent {
   @Input() displayValue;
 }
 
+@Component({
+  selector: `kui-geoname-value`,
+  template: ``
+})
+class TestGeonameValueComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+}
+
 /**
  * Test host component to simulate parent component.
  */
@@ -239,6 +251,7 @@ describe('DisplayEditComponent', () => {
         TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent,
+        TestGeonameValueComponent,
         TestTimeValueComponent,
         TestColorValueComponent
       ],

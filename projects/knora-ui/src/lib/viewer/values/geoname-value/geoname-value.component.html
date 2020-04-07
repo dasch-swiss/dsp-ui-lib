@@ -1,0 +1,20 @@
+<span [formGroup]="form">
+    <mat-form-field class="large-field child-value-component">
+        <input matInput [formControlName]="'geonameValue'" class="value" placeholder="Geoname value" type="text" [readonly]="mode === 'read'">
+    </mat-form-field>
+    <button (click)="openInfo()">Info</button>
+    <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="6"
+                  [formControlName]="'comment'"
+                  class="comment"
+                  placeholder="Comment"
+                  type="text"
+                  [readonly]="mode === 'read'"
+                  spellcheck="false">
+        </textarea>
+    </mat-form-field>
+</span>

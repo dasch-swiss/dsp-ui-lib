@@ -43,7 +43,6 @@ export class AppComponent implements OnInit {
         // console.log(this.resource);
         const propsList: IHasProperty[] = this.resource.entityInfo.classes[this.resource.type].propertiesList;
 
-        let i = 0;
         for (const prop of propsList) {
           const index = prop.propertyIndex;
 
@@ -58,8 +57,6 @@ export class AppComponent implements OnInit {
 
             this.propArray.push(propInfoAndValues);
           }
-
-          i++;
 
         }
 
