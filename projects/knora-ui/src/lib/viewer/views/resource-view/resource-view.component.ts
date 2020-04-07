@@ -66,26 +66,28 @@ export class ResourceViewComponent implements OnInit, OnChanges {
         for (const prop of propsList) {
           const index = prop.propertyIndex;
 
-          if (this.resource.entityInfo.properties[index] &&
-            this.resource.entityInfo.properties[index] instanceof ResourcePropertyDefinition) {
-            // filter all properties by type ResourcePropertyDefinition
-            const propInfoAndValues: PropertyInfoValues = {
-              guiDef: prop,
-              propDef: this.resource.entityInfo.properties[index],
-              values: this.resource.properties[index]
-            };
+          if (this.resource.entityInfo.properties[index]) {
+            if (this.resource.entityInfo.properties[index] instanceof ResourcePropertyDefinition) {
+              // filter all properties by type ResourcePropertyDefinition
+              const propInfoAndValues: PropertyInfoValues = {
+                guiDef: prop,
+                propDef: this.resource.entityInfo.properties[index],
+                values: this.resource.properties[index]
+              };
 
-            this.propArray.push(propInfoAndValues);
+              this.propArray.push(propInfoAndValues);
 
-          } else if (this.resource.entityInfo.properties[index] &&
-            this.resource.entityInfo.properties[index] instanceof SystemPropertyDefinition) {
-            // filter all properties by type SystemPropertyDefinition
-            const systemPropInfo = this.resource.entityInfo.properties[index];
+            } else if (this.resource.entityInfo.properties[index] instanceof SystemPropertyDefinition) {
+              // filter all properties by type SystemPropertyDefinition
+              const systemPropInfo = this.resource.entityInfo.properties[index];
 
-            this.systemPropArray.push(systemPropInfo);
+              this.systemPropArray.push(systemPropInfo);
 
+            }
+
+          } else {
+            console.error('Error detected: the property with IRI =' + index + 'is not a property of the resource');
           }
-
         }
 
         // sort properties by guiOrder
