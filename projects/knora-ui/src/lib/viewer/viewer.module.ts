@@ -20,6 +20,7 @@ import {ListValueComponent} from './values/list-value/list-value.component';
 import {SublistValueComponent} from './values/list-value/subList-value/sublist-value.component';
 import {IntervalValueComponent} from './values/interval-value/interval-value.component';
 import {IntervalInputComponent} from './values/interval-value/interval-input/interval-input.component';
+import { GeonameValueComponent } from './values/geoname-value/geoname-value.component';
 import {TextValueAsHtmlComponent} from './values/text-value/text-value-as-html/text-value-as-html.component';
 import {TimeValueComponent} from './values/time-value/time-value.component';
 import {TimeInputComponent} from './values/time-value/time-input/time-input.component';
@@ -50,7 +51,8 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
     PropertyViewComponent,
     ResourceViewComponent,
     ListValueComponent,
-    SublistValueComponent
+    SublistValueComponent,
+    GeonameValueComponent
   ],
   imports: [
     CommonModule,
@@ -79,7 +81,8 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
     LinkValueComponent,
     ResourceViewComponent,
     ListValueComponent,
-    SublistValueComponent
+    SublistValueComponent,
+    GeonameValueComponent
   ]
 })
 export class ViewerModule {
