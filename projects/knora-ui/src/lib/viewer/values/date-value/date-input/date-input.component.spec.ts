@@ -85,6 +85,9 @@ describe('DateInputComponent', () => {
     expect(testHostComponent.dateInputComponent.isPeriodControl.value).toBe(false);
 
     expect(testHostComponent.dateInputComponent.endDateControl.value).toBe(null);
+
+    expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
+
   });
 
   it('should initialize a period correctly', () => {
@@ -102,6 +105,9 @@ describe('DateInputComponent', () => {
 
     expect(testHostComponent.dateInputComponent.endDateControl.value)
       .toEqual(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2019, 5, 19), new CalendarDate(2019, 5, 19))));
+
+    expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
+
   });
 
   it('should propagate changes made by the user for a single date', () => {
@@ -109,6 +115,8 @@ describe('DateInputComponent', () => {
     testHostComponent.dateInputComponent.form.controls.dateStart.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2019, 5, 19), new CalendarDate(2019, 5, 19))));
 
     testHostComponent.dateInputComponent._handleInput();
+
+    expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
 
     expect(testHostComponent.form.controls.date.value).toEqual(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
   });
@@ -123,6 +131,8 @@ describe('DateInputComponent', () => {
 
     testHostComponent.dateInputComponent._handleInput();
 
+    expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
+
     expect(testHostComponent.form.controls.date.value).toEqual(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2019, 5, 19), new KnoraDate('JULIAN', 'CE', 2020, 5, 19)));
   });
 
@@ -135,6 +145,8 @@ describe('DateInputComponent', () => {
     testHostComponent.dateInputComponent.form.controls.dateEnd.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 5, 19), new CalendarDate(2020, 5, 19))));
 
     testHostComponent.dateInputComponent._handleInput();
+
+    expect(testHostComponent.dateInputComponent.form.valid).toBe(false);
 
     expect(testHostComponent.dateInputComponent.value).toEqual(null);
 
@@ -150,6 +162,8 @@ describe('DateInputComponent', () => {
 
     testHostComponent.dateInputComponent._handleInput();
 
+    expect(testHostComponent.dateInputComponent.form.valid).toBe(false);
+
     expect(testHostComponent.dateInputComponent.value).toEqual(null);
 
   });
@@ -162,6 +176,8 @@ describe('DateInputComponent', () => {
 
     testHostComponent.dateInputComponent.form.controls.dateEnd.setValue(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 5, 19), new CalendarDate(2020, 5, 19))));
 
+    expect(testHostComponent.dateInputComponent.form.valid).toBe(false);
+
     expect(testHostComponent.dateInputComponent.value).toEqual(null);
 
   });
@@ -173,6 +189,8 @@ describe('DateInputComponent', () => {
     expect(testHostComponent.dateInputComponent.form.controls.dateStart.value).toBe(null);
     expect(testHostComponent.dateInputComponent.form.controls.isPeriod.value).toBe(false);
     expect(testHostComponent.dateInputComponent.form.controls.dateEnd.value).toBe(null);
+
+    expect(testHostComponent.dateInputComponent.form.valid).toBe(false);
 
   });
 
