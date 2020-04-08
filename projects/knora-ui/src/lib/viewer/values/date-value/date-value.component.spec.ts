@@ -401,7 +401,7 @@ describe('DateValueComponent', () => {
 
   });
 
-  describe('create an interval value', () => {
+  describe('create a date value', () => {
 
     let testHostComponent: TestHostCreateValueComponent;
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
