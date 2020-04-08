@@ -156,7 +156,8 @@ export class DisplayEditComponent implements OnInit {
       () => {
         // TODO: figure out what needs to be done here
       }
-    );  
+    );
+  }
 
   // shows or hides the comment
   toggleComment() {
