@@ -12,10 +12,10 @@ import {
 import {Subscription} from 'rxjs';
 import {BaseValueComponent} from '../base-value.component';
 import {ErrorStateMatcher} from '@angular/material';
-import {DateInputComponent} from "./date-input/date-input.component";
+import {DateInputComponent} from './date-input/date-input.component';
 
 /** Error when invalid control is dirty, touched, or submitted. */
-export class IntervalErrorStateMatcher implements ErrorStateMatcher {
+export class DateErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
     return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
@@ -39,11 +39,10 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
   form: FormGroup;
 
   valueChangesSubscription: Subscription;
-
-  // TODO: check that both dates have the same calendar in case of a KnoraPeriod
+  
   customValidators = [];
 
-  matcher = new IntervalErrorStateMatcher();
+  matcher = new DateErrorStateMatcher();
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
