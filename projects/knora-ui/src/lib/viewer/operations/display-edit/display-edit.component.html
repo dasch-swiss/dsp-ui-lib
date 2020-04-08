@@ -20,6 +20,7 @@
       <kui-color-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ColorValue" [mode]="mode" [displayValue]="displayValue"></kui-color-value>
       <kui-interval-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]="displayValue"></kui-interval-value>
       <kui-time-value class="parent-value-component" #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="displayValue"></kui-time-value>
+      <kui-geoname-value #displayVal *ngSwitchCase="constants.GeonameValue" [mode]="mode" [displayValue]="displayValue"></kui-geoname-value>
       <kui-link-value class="parent-value-component" #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"
                     [parentResource]="parentResource" [propIri]="displayValue.property"></kui-link-value>
       <kui-date-value #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode" [displayValue]="displayValue"></kui-date-value>

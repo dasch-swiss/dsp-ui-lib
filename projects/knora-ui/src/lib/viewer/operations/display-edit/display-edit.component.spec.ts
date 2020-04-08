@@ -172,6 +172,18 @@ class TestColorValueComponent {
 }
 
 @Component({
+  selector: `kui-geoname-value`,
+  template: ``
+})
+class TestGeonameValueComponent {
+
+  @Input() mode;
+
+  @Input() displayValue;
+
+}
+
+@Component({
   selector: `kui-date-value`,
   template: ``
 })
@@ -249,6 +261,7 @@ describe('DisplayEditComponent', () => {
         TestBooleanValueComponent,
         TestUriValueComponent,
         TestDecimalValueComponent,
+        TestGeonameValueComponent,
         TestTimeValueComponent,
         TestColorValueComponent,
         TestDateValueComponent
