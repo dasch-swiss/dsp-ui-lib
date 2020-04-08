@@ -5,16 +5,11 @@ import {JDNConvertibleCalendar} from 'jdnconvertiblecalendar';
 import {MatCalendar, MatDatepickerContent} from '@angular/material/datepicker';
 import {DateAdapter} from '@angular/material/core';
 import {Component, Host, Inject, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'kui-calendar-header',
-  template: `
-    <mat-select placeholder="Calendar" class="kui-calendar-header" [formControl]="formControl">
-      <mat-option *ngFor="let cal of supportedCalendars" [value]="cal">{{cal}}</mat-option>
-    </mat-select>
-    <mat-calendar-header></mat-calendar-header>
-  `,
+  templateUrl: './calendar-header.component.html',
   styleUrls: ['./calendar-header.component.scss']
 })
 export class CalendarHeaderComponent<D> implements OnInit, OnDestroy {
