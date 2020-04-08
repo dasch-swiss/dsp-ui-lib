@@ -7,7 +7,7 @@
         Start date is <strong>required</strong>
       </mat-error>
       <mat-error *ngIf="startDateControl.hasError('sameCalendarRequired')">
-        In a period, start and end date must have the same <strong>calendar</strong>
+        In a period, start and end date must use the same <strong>calendar</strong>
       </mat-error>
       <mat-error *ngIf="startDateControl.hasError('periodStartEnd')">
         In a period, start must be <strong>before end</strong>
