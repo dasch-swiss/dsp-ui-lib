@@ -3,12 +3,11 @@ import {TextValueAsStringComponent} from './values/text-value/text-value-as-stri
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {CommonModule} from '@angular/common';
 import {ColorPickerModule} from 'ngx-color-picker';
-import { MatMenuModule } from '@angular/material/menu';
-
+import {MatMenuModule} from '@angular/material/menu';
 import {IntValueComponent} from './values/int-value/int-value.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {LinkValueComponent} from './values/link-value/link-value.component';
 import {DisplayEditComponent} from './operations/display-edit/display-edit.component';
 import {BooleanValueComponent} from './values/boolean-value/boolean-value.component';
@@ -25,9 +24,14 @@ import {TimeValueComponent} from './values/time-value/time-value.component';
 import {TimeInputComponent} from './values/time-value/time-input/time-input.component';
 import {MatDatepickerModule} from '@angular/material';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
-import { JDNDatepickerDirective } from './values/time-value/jdn-datepicker-directive/jdndatepicker.directive';
-import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
+import {ColorPickerComponent} from './values/color-value/color-picker/color-picker.component';
+import {MatOptionModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+import {DateValueComponent} from './values/date-value/date-value.component';
+import {CalendarHeaderComponent} from './values/date-value/calendar-header/calendar-header.component';
+import {DateInputComponent} from './values/date-value/date-input/date-input.component';
 import {MatIconModule} from '@angular/material/icon';
+import {JDNDatepickerDirective} from './values/jdn-datepicker-directive/jdndatepicker.directive';
 
 @NgModule({
   declarations: [
@@ -36,18 +40,18 @@ import {MatIconModule} from '@angular/material/icon';
     IntValueComponent,
     DisplayEditComponent,
     BooleanValueComponent,
-    ColorValueComponent,
-    ColorPickerComponent,
-    LinkValueComponent,
     DecimalValueComponent,
     UriValueComponent,
     IntervalValueComponent,
     IntervalInputComponent,
     TimeValueComponent,
     TimeInputComponent,
-    JDNDatepickerDirective,
     ColorValueComponent,
     ColorPickerComponent,
+    DateValueComponent,
+    DateInputComponent,
+    JDNDatepickerDirective,
+    CalendarHeaderComponent,
     LinkValueComponent,
     ListValueComponent,
     SublistValueComponent,
@@ -59,13 +63,15 @@ import {MatIconModule} from '@angular/material/icon';
     MatInputModule,
     MatAutocompleteModule,
     MatCheckboxModule,
-    MatMenuModule,
+    MatOptionModule,
+    MatSelectModule,
     MatDatepickerModule,
     MatIconModule,
     MatJDNConvertibleCalendarDateAdapterModule,
+    MatMenuModule,
     ColorPickerModule
-    ],
-
+  ],
+  entryComponents: [CalendarHeaderComponent],
   exports: [
     TextValueAsStringComponent,
     TextValueAsHtmlComponent,
@@ -77,6 +83,7 @@ import {MatIconModule} from '@angular/material/icon';
     UriValueComponent,
     IntervalValueComponent,
     TimeValueComponent,
+    DateValueComponent,
     LinkValueComponent,
     ListValueComponent,
     SublistValueComponent,

@@ -1,9 +1,17 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { ApiResponseData, IHasProperty, KnoraApiConnection, LoginResponse, ReadResource, ReadValue, ResourcePropertyDefinition } from '@knora/api';
-import { PropertyDefinition } from '@knora/api/src/models/v2/ontologies/property-definition';
-import { KnoraApiConnectionToken } from 'knora-ui';
-import { DisplayEditComponent } from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
-import { mergeMap } from 'rxjs/operators';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {
+  ApiResponseData,
+  IHasProperty,
+  KnoraApiConnection,
+  LoginResponse,
+  ReadResource,
+  ReadValue,
+  ResourcePropertyDefinition
+} from '@knora/api';
+import {mergeMap} from 'rxjs/operators';
+import {DisplayEditComponent} from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
+import {KnoraApiConnectionToken} from 'knora-ui';
+import {PropertyDefinition} from '@knora/api/src/models/v2/ontologies/property-definition';
 
 // object of property information from ontology class, properties and property values
 export interface PropertyInfoValues {

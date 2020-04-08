@@ -41,7 +41,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
   selector: 'kui-interval-input',
   templateUrl: './interval-input.component.html',
   styleUrls: ['./interval-input.component.scss'],
-  providers: [{provide: MatFormFieldControl, useExisting: IntervalInputComponent}],
+  providers: [{provide: MatFormFieldControl, useExisting: IntervalInputComponent}]
 })
 export class IntervalInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<Interval>, DoCheck, CanUpdateErrorState, OnDestroy {
   static nextId = 0;

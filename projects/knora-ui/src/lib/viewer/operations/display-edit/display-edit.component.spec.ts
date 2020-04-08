@@ -183,6 +183,16 @@ class TestGeonameValueComponent {
 
 }
 
+@Component({
+  selector: `kui-date-value`,
+  template: ``
+})
+class TestDateValueComponent {
+  @Input() mode;
+
+  @Input() displayValue;
+}
+
 /**
  * Test host component to simulate parent component.
  */
@@ -253,7 +263,8 @@ describe('DisplayEditComponent', () => {
         TestDecimalValueComponent,
         TestGeonameValueComponent,
         TestTimeValueComponent,
-        TestColorValueComponent
+        TestColorValueComponent,
+        TestDateValueComponent
       ],
       providers: [
         {
