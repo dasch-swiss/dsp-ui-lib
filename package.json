@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "test-lib": "ng t --watch=false --browsers=ChromeHeadless --project knora-ui",
-    "build-lib": "ng b knora-ui",
+    "build-lib": "ng b --project knora-ui",
+    "build-app": "ng b --prod --buildOptimizer=true",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -25,7 +26,7 @@
     "@angular/router": "~8.2.14",
     "@knora/api": "file:.yalc/@knora/api",
     "jdnconvertiblecalendar": "^0.0.5",
-    "jdnconvertiblecalendardateadapter": "^0.0.10",
+    "jdnconvertiblecalendardateadapter": "^0.0.12",
     "ngx-color-picker": "^8.2.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

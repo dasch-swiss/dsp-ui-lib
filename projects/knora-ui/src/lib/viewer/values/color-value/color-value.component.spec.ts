@@ -154,8 +154,6 @@ describe('ColorValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(ColorValueComponent));
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -211,6 +209,9 @@ describe('ColorValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
 
       expect(testHostComponent.colorValueComponent.mode).toEqual('update');
 
@@ -343,7 +344,7 @@ describe('ColorValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(ColorValueComponent));
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 

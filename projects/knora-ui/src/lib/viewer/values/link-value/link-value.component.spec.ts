@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import { LinkValueComponent } from './link-value.component';
 import {
@@ -6,7 +6,7 @@ import {
   MockResource,
   UpdateLinkValue,
   CreateLinkValue,
-  ReadResource
+  ReadResource, UpdateTextValueAsString
 } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -78,7 +78,6 @@ describe('LinkValueComponent', () => {
   beforeEach(async(() => {
     const valuesSpyObj = {
       v2: {
-        values: jasmine.createSpyObj('values', ['updateValue', 'getValue']),
         search: jasmine.createSpyObj('search', ['doSearchByLabel']),
       }
     };
@@ -108,6 +107,7 @@ describe('LinkValueComponent', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
+    let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
@@ -123,28 +123,37 @@ describe('LinkValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(LinkValueComponent));
-      valueInputNativeElement = valueComponentDe.query(By.css('input')).nativeElement;
-
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
     });
 
-    it('should display an existing value', () => {
+    it('should display an existing value', fakeAsync(() => {
 
-      expect(testHostComponent.inputValueComponent.displayValue.linkedResourceIri).toMatch('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
-      expect(testHostComponent.inputValueComponent.displayValue.propertyLabel).toMatch('Another thing');
+      expect(testHostComponent.inputValueComponent.displayValue.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect(testHostComponent.inputValueComponent.displayValue.linkedResource.label).toEqual('Sierra');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(testHostComponent.inputValueComponent.displayValue.linkedResource.label).toEqual('Sierra');
-      expect(testHostComponent.inputValueComponent.displayValue.linkedResource.type).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
-      expect(valueInputNativeElement.readOnly).toEqual(true);
-    });
+      expect(testHostComponent.inputValueComponent.valueFormControl.value instanceof ReadResource).toBe(true);
+      expect(testHostComponent.inputValueComponent.valueFormControl.value.label).toEqual('Sierra');
 
-    it('should make a link value editable', () => {
+      // setValue has to be called, otherwise the native input field does not get the label via the displayWith function
+      const res = testHostComponent.inputValueComponent.valueFormControl.value;
+      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+
+      // https://github.com/angular/components/blob/29e74eb9431ba01d951ee33df554f465609b59fa/src/material/autocomplete/autocomplete.spec.ts#L2577-L2580
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('Sierra');
+      expect(valueInputNativeElement.readOnly).toEqual(true);
+    }));
+
+    it('should make a link value editable', fakeAsync(() => {
 
       testHostComponent.mode = 'update';
       testHostFixture.detectChanges();
@@ -153,9 +162,32 @@ describe('LinkValueComponent', () => {
       expect(valueInputNativeElement.readOnly).toEqual(false);
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-    });
+      const update = new ReadResource();
+      update.id = 'newId';
+      update.label = 'new target';
+
+      testHostComponent.inputValueComponent.valueFormControl.setValue(update);
+
+      // https://github.com/angular/components/blob/29e74eb9431ba01d951ee33df554f465609b59fa/src/material/autocomplete/autocomplete.spec.ts#L2577-L2580
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('new target');
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue instanceof UpdateLinkValue).toBeTruthy();
+
+      expect((updatedValue as UpdateLinkValue).linkedResourceIri).toEqual('newId');
+
+    }));
 
     it('should search for resources by their label', () => {
+
       const valuesSpy = TestBed.get(KnoraApiConnectionToken);
       valuesSpy.v2.search.doSearchByLabel.and.callFake(
         () => {
@@ -166,18 +198,81 @@ describe('LinkValueComponent', () => {
         }
       );
 
-      testHostComponent.inputValueComponent.searchByLabel('thing');
-      testHostFixture.detectChanges();
+      // simulate user searching for label 'thing'
+      testHostComponent.inputValueComponent.valueFormControl.setValue('thing');
 
       expect(valuesSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('thing', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'});
       expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
       expect(testHostComponent.inputValueComponent.resources[0].id).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
     });
 
+    it('should not return an invalid update value (string)', () => {
+
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+
+      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+        () => {
+          const res = new ReadResource();
+          res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
+          res.label = 'hidden thing';
+          return of([res]);
+        }
+      );
+
+      testHostComponent.mode = 'update';
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      testHostComponent.inputValueComponent.valueFormControl.setValue('my string');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBeFalsy();
+
+    });
+
+    it('should not return an invalid update value (no value)', () => {
+
+      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+
+      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+        () => {
+          const res = new ReadResource();
+          res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
+          res.label = 'hidden thing';
+          return of([res]);
+        }
+      );
+
+      testHostComponent.mode = 'update';
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      testHostComponent.inputValueComponent.valueFormControl.setValue(null);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBeFalsy();
+
+    });
+
     it('should validate an existing value with an added comment', () => {
 
       testHostComponent.mode = 'update';
       testHostFixture.detectChanges();
+
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputNativeElement = commentInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
       expect(valueInputNativeElement.readOnly).toEqual(false);
@@ -194,16 +289,78 @@ describe('LinkValueComponent', () => {
 
     });
 
-    it('should return a selected resource', () => {
+    it('should restore the initially displayed value', fakeAsync(() => {
 
-      const res = new ReadResource();
-      res.id = 'http://rdfh.ch/0001/a-blue-thing';
-      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+      testHostComponent.mode = 'update';
+
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.valueFormControl.value instanceof ReadResource).toBeTruthy();
-      expect(testHostComponent.inputValueComponent.form.value.linkValue.id).toEqual('http://rdfh.ch/0001/a-blue-thing');
-    });
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      // simulate user input
+      const update = new ReadResource();
+      update.id = 'newId';
+      update.label = 'new target';
+
+      testHostComponent.inputValueComponent.valueFormControl.setValue(update);
+
+      // https://github.com/angular/components/blob/29e74eb9431ba01d951ee33df554f465609b59fa/src/material/autocomplete/autocomplete.spec.ts#L2577-L2580
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('new target');
+      expect(valueInputNativeElement.readOnly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      testHostComponent.inputValueComponent.resetFormControl();
+
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('Sierra');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+    }));
+
+    it('should set a new display value', fakeAsync(() => {
+
+      // setValue has to be called, otherwise the native input field does not get the label via the displayWith function
+      const res = testHostComponent.inputValueComponent.valueFormControl.value;
+      testHostComponent.inputValueComponent.valueFormControl.setValue(res);
+
+      // https://github.com/angular/components/blob/29e74eb9431ba01d951ee33df554f465609b59fa/src/material/autocomplete/autocomplete.spec.ts#L2577-L2580
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('Sierra');
+
+      const linkedRes = new ReadResource();
+      linkedRes.id = 'newId';
+      linkedRes.label = 'new target';
+
+      const newLink = new ReadLinkValue();
+      newLink.id = 'updatedId';
+      newLink.linkedResourceIri = 'newId';
+      newLink.linkedResource = linkedRes;
+
+      testHostComponent.displayInputVal = newLink;
+
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('new target');
+
+    }));
 
   });
 
@@ -212,6 +369,9 @@ describe('LinkValueComponent', () => {
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
 
     let valueComponentDe: DebugElement;
+
+    let valueInputDebugElement: DebugElement;
+    let valueInputNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -227,7 +387,11 @@ describe('LinkValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(LinkValueComponent));
-      commentInputDebugElement = valueComponentDe.query(By.css('input.comment'));
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
     });
 
@@ -261,10 +425,11 @@ describe('LinkValueComponent', () => {
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       testHostComponent.inputValueComponent.valueFormControl.setValue(res);
-      testHostFixture.detectChanges();
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
       expect(testHostComponent.inputValueComponent.valueFormControl.value instanceof ReadResource).toBeTruthy();
+
       const newValue = testHostComponent.inputValueComponent.getNewValue();
       expect(newValue instanceof CreateLinkValue).toBeTruthy();
       expect((newValue as CreateLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
@@ -295,14 +460,20 @@ describe('LinkValueComponent', () => {
       expect(newValue instanceof CreateLinkValue).toBeFalsy();
     });
 
-    it('should reset form after cancellation', () => {
+    it('should reset form after cancellation', fakeAsync(() => {
+
       // simulate user input
       const res = new ReadResource();
       res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
       res.label = 'hidden thing';
       testHostComponent.inputValueComponent.valueFormControl.setValue(res);
 
+      // https://github.com/angular/components/blob/29e74eb9431ba01d951ee33df554f465609b59fa/src/material/autocomplete/autocomplete.spec.ts#L2577-L2580
       testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
+      expect(valueInputNativeElement.value).toEqual('hidden thing');
 
       commentInputNativeElement.value = 'created comment';
 
@@ -316,12 +487,17 @@ describe('LinkValueComponent', () => {
 
       testHostComponent.inputValueComponent.resetFormControl();
 
+      testHostFixture.detectChanges();
+      tick();
+      testHostFixture.detectChanges();
+
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual(null);
 
+      expect(valueInputNativeElement.value).toEqual('');
       expect(commentInputNativeElement.value).toEqual('');
 
-    });
+    }));
   });
 });

@@ -1,15 +1,13 @@
-import { Component, HostBinding, Input, Optional, Self, ElementRef, DoCheck, OnDestroy } from '@angular/core';
-import { ErrorStateMatcher, CanUpdateErrorStateCtor, mixinErrorState, MatFormFieldControl, CanUpdateErrorState } from '@angular/material';
-import { FormControl, FormGroupDirective, NgForm, NgControl, FormGroup, FormBuilder, Validators, ControlValueAccessor } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import {JDNConvertibleCalendarModule} from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
-import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
-import CalendarPeriod = JDNConvertibleCalendarModule.CalendarPeriod;
-import {CalendarDate} from 'jdnconvertiblecalendar';
-import { CustomRegex } from '../../custom-regex';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DatePipe } from '@angular/common';
+import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self } from '@angular/core';
+import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators } from '@angular/forms';
+import { CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, MatFormFieldControl, mixinErrorState } from '@angular/material';
+import { CalendarDate, CalendarPeriod, GregorianCalendarDate } from 'jdnconvertiblecalendar';
+import { Subject } from 'rxjs';
+import { CustomRegex } from '../../custom-regex';
+
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class TimeInputErrorStateMatcher implements ErrorStateMatcher {
@@ -21,9 +19,9 @@ export class TimeInputErrorStateMatcher implements ErrorStateMatcher {
 
 class MatInputBase {
   constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
-              public _parentForm: NgForm,
-              public _parentFormGroup: FormGroupDirective,
-              public ngControl: NgControl) {}
+    public _parentForm: NgForm,
+    public _parentFormGroup: FormGroupDirective,
+    public ngControl: NgControl) { }
 }
 const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase = mixinErrorState(MatInputBase);
 
@@ -40,9 +38,9 @@ export class DateTime {
   selector: 'kui-time-input',
   templateUrl: './time-input.component.html',
   styleUrls: ['./time-input.component.scss'],
-  providers: [{provide: MatFormFieldControl, useExisting: TimeInputComponent}]
+  providers: [{ provide: MatFormFieldControl, useExisting: TimeInputComponent }]
 })
-export class TimeInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<string>, DoCheck, CanUpdateErrorState, OnDestroy{
+export class TimeInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<string>, DoCheck, CanUpdateErrorState, OnDestroy {
 
   static nextId = 0;
 
@@ -53,11 +51,11 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   errorState = false;
   controlType = 'kui-time-input';
   matcher = new TimeInputErrorStateMatcher();
-  onChange = (_: any) => {};
-  onTouched = () => {};
+  onChange = (_: any) => { };
+  onTouched = () => { };
 
-  @Input() dateLabel = 'date';
-  @Input() timeLabel = 'time';
+  @Input() dateLabel = 'Date';
+  @Input() timeLabel = 'Time';
 
   dateFormControl: FormControl;
   timeFormControl: FormControl;
@@ -137,13 +135,13 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
     if (timestamp !== null) {
       try {
         const dateTime = this.convertTimestampToDateTime(timestamp);
-        this.form.setValue({date: dateTime.date, time: dateTime.time});
+        this.form.setValue({ date: dateTime.date, time: dateTime.time });
       }
       catch {
-        this.form.setValue({date: null, time: null});
+        this.form.setValue({ date: null, time: null });
       }
     } else {
-      this.form.setValue({date: null, time: null});
+      this.form.setValue({ date: null, time: null });
     }
     this.stateChanges.next();
   }
@@ -151,18 +149,18 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   @Input() errorStateMatcher: ErrorStateMatcher;
 
   constructor(fb: FormBuilder,
-              @Optional() @Self() public ngControl: NgControl,
-              private fm: FocusMonitor,
-              private elRef: ElementRef<HTMLElement>,
-              @Optional() _parentForm: NgForm,
-              @Optional() _parentFormGroup: FormGroupDirective,
-              _defaultErrorStateMatcher: ErrorStateMatcher) {
+    @Optional() @Self() public ngControl: NgControl,
+    private fm: FocusMonitor,
+    private elRef: ElementRef<HTMLElement>,
+    @Optional() _parentForm: NgForm,
+    @Optional() _parentFormGroup: FormGroupDirective,
+    _defaultErrorStateMatcher: ErrorStateMatcher) {
 
     super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
     this.dateFormControl = new FormControl(null, [Validators.required]);
 
-    this.timeFormControl = new FormControl(null,  [Validators.required, Validators.pattern(CustomRegex.TIME_REGEX)]);
+    this.timeFormControl = new FormControl(null, [Validators.required, Validators.pattern(CustomRegex.TIME_REGEX)]);
 
     this.form = fb.group({
       date: this.dateFormControl,
@@ -221,20 +219,20 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
     // In a Javascript Date, the month is 0-based so we need to subtract 1
     const updateDate = new Date(userInput.date.toCalendarPeriod().periodStart.year,
-                                (userInput.date.toCalendarPeriod().periodStart.month - 1),
-                                userInput.date.toCalendarPeriod().periodStart.day,
-                                Number(splitTime[0]),
-                                Number(splitTime[1])
+      (userInput.date.toCalendarPeriod().periodStart.month - 1),
+      userInput.date.toCalendarPeriod().periodStart.day,
+      Number(splitTime[0]),
+      Number(splitTime[1])
     );
 
-    return updateDate.toISOString().split('.')[0]+'Z';
+    return updateDate.toISOString().split('.')[0] + 'Z';
   }
 
   // converts and returns a unix timestamp string as an array consisting of a GregorianCalendarDate and a string
   convertTimestampToDateTime(timestamp: string): DateTime {
     const calendarDate = new CalendarDate(Number(this.datePipe.transform(timestamp, 'y')),
-                                          Number(this.datePipe.transform(timestamp, 'M')),
-                                          Number(this.datePipe.transform(timestamp, 'd')));
+      Number(this.datePipe.transform(timestamp, 'M')),
+      Number(this.datePipe.transform(timestamp, 'd')));
 
     const date = new GregorianCalendarDate(new CalendarPeriod(calendarDate, calendarDate));
 

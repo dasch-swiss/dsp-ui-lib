@@ -14,8 +14,6 @@ export class AppComponent implements OnInit {
   @ViewChild('displayEdit', { static: false }) displayEditComponent: DisplayEditComponent;
   @ViewChild('addValue', { static: false }) addValueComponent: AddValueComponent;
 
-  title = 'knora-ui-ng-lib';
-
   testthing: ReadResource;
   testValue: ReadValue;
 
@@ -72,5 +70,4 @@ export class AppComponent implements OnInit {
       }
     );
   }
-
 }
