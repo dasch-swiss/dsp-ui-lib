@@ -3,7 +3,7 @@ import { ApiResponseData, KnoraApiConnection, LoginResponse, ReadResource, ReadV
 import { KnoraApiConnectionToken } from 'knora-ui';
 import { DisplayEditComponent } from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
 import { mergeMap } from 'rxjs/operators';
-import { AddValueComponent } from 'projects/knora-ui/src/lib/viewer/operations/add-value/add-value.component';
+import { AddValueComponent } from 'knora-ui/lib/viewer/operations/add-value/add-value.component';
 
 @Component({
   selector: 'app-root',
