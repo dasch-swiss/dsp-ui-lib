@@ -6,7 +6,6 @@ import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
 
 /**

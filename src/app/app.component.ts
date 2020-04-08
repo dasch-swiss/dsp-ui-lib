@@ -15,5 +15,4 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
   }
-
 }
