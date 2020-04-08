@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { KnoraApiConnectionToken } from '../../../core';
+import { KnoraApiConnectionToken } from '../../../core/core.module';
 import { KnoraApiConnection, ReadValue, ReadResource, Constants, PermissionUtil, CreateValue, UpdateResource, WriteValueResponse } from '@knora/api';
-import { BaseValueComponent } from '../../values';
+import { BaseValueComponent } from '../../values/base-value.component';
 import { mergeMap } from 'rxjs/operators';
 
 @Component({
