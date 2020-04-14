@@ -1,8 +1,10 @@
-<span [formGroup]="form">
+<span [formGroup]="form" class="form-fields-container">
     <mat-form-field class="large-field child-value-component">
         <input matInput [formControlName]="'geonameValue'" class="value" placeholder="Geoname value" type="text" [readonly]="mode === 'read'">
+        <button class="more-info" mat-icon-button matSuffix (click)="openInfo()" [attr.aria-label]="'Open in geonames.org'" title="Open in geonames.org">
+            <mat-icon>launch</mat-icon>
+        </button>
     </mat-form-field>
-    <button (click)="openInfo()">Info</button>
     <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
         <textarea matInput
                   cdkTextareaAutosize
