@@ -43,12 +43,12 @@ export class AppComponent implements OnInit {
     this.createAllowed = false;
   }
 
-  hideAddValueForm() {
+  hideAddValueForm(emitterMessage?: string) {
     this.createMode = false;
     this.createAllowed = true;
   }
 
-  getValues() {
+  getValues(emitterMessage?: string) {
     this.knoraApiConnection.v2.auth.login('username', 'root', 'test').pipe(
       mergeMap(
         (loginResponse: ApiResponseData<LoginResponse>) => {
