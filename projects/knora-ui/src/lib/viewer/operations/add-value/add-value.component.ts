@@ -21,9 +21,9 @@ export class AddValueComponent implements OnInit {
 
   @Input() resourceValues: ReadValue[];
 
-  @Output() valueAdded = new EventEmitter();
+  @Output() valueAdded = new EventEmitter<any>();
 
-  @Output() operationCancelled = new EventEmitter();
+  @Output() operationCancelled = new EventEmitter<any>();
 
   constants = Constants;
 
@@ -74,7 +74,7 @@ export class AddValueComponent implements OnInit {
         ).subscribe(
           (res2: ReadResource) => {
             // console.log(this.parentResource);            
-            this.valueAdded.emit();
+            this.valueAdded.emit(null);
           }
         );
     } else {
@@ -84,7 +84,7 @@ export class AddValueComponent implements OnInit {
 
   cancelAddValue() {
     this.createModeActive = false;
-    this.operationCancelled.emit();
+    this.operationCancelled.emit(null);
   }
 
   validValue(updateResource: UpdateResource<CreateValue>): boolean {
