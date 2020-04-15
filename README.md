@@ -15,46 +15,26 @@ This version of DSP-UI requires [DSP-API version ^12.0.0](https://github.com/das
 
 ### knora-ui/core
 
-[![npm](https://img.shields.io/npm/v/@knora/core.svg)](https://www.npmjs.com/package/@knora/core)
-![](https://img.shields.io/npm/dt/@knora/core.svg?style=flat)
-![](https://img.shields.io/bundlephobia/minzip/@knora/core.svg?style=flat)
-![](https://img.shields.io/npm/l/@knora/core.svg?style=flat)
-
-The core module contains every service to use Knora's RESTful webapi.
+The core module contains configuration files and all variables needed to connect the DSP API.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/core)
 
 * * *
 
 ### knora-ui/search
 
-[![npm](https://img.shields.io/npm/v/@knora/search.svg)](https://www.npmjs.com/package/@knora/search)
-![](https://img.shields.io/npm/dt/@knora/search.svg?style=flat)
-![](https://img.shields.io/bundlephobia/minzip/@knora/search.svg?style=flat)
-![](https://img.shields.io/npm/l/@knora/search.svg?style=flat)
-
-Search module allows to make simple searches or extended searches in Knora. In extended search, resource class and its properties related to one specific ontology are selected to create your query.
+Search module allows to make simple searches or extended searches in DSP-API. In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/search)
 
 * * *
 
 ### knora-ui/viewer
 
-[![npm](https://img.shields.io/npm/v/@knora/viewer.svg)](https://www.npmjs.com/package/@knora/viewer)
-![](https://img.shields.io/npm/dt/@knora/viewer.svg?style=flat)
-![](https://img.shields.io/bundlephobia/minzip/@knora/viewer.svg?style=flat)
-![](https://img.shields.io/npm/l/@knora/viewer.svg?style=flat)
-
-The viewer module contains object components to show the resource class representations from Knora, the gui-elements for the property values and different kind of view frameworks.
+The viewer module contains object components to show the resource class representations from DSP-API, the gui-elements for the property values and different kind of view frameworks.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/viewer)
 
 * * *
 
 ### knora-ui/action
-
-[![npm](https://img.shields.io/npm/v/@knora/action.svg)](https://www.npmjs.com/package/@knora/action)
-![](https://img.shields.io/npm/dt/@knora/action.svg?style=flat)
-![](https://img.shields.io/bundlephobia/minzip/@knora/action.svg?style=flat)
-![](https://img.shields.io/npm/l/@knora/action.svg?style=flat)
 
 The action module contains special buttons (e.g. to sort a list), pipes and directives.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/action)
@@ -129,13 +109,13 @@ There's a test environment for the modules on <https://github.com/dhlab-basel/kn
 Yalc publishes the packages to a local store (not the npm website).
 From there, the packages can be added to your depending project.
 
-##### Install [yalc](https://github.com/whitecolor/yalc):
+#### Install [yalc](https://github.com/whitecolor/yalc):
 
 ```bash
 $ npm i yalc -g
 ```
 
-##### Usage
+#### Usage
 
 Publish library to local store:
 
