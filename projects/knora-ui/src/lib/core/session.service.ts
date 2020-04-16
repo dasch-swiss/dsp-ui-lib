@@ -1,9 +1,15 @@
 import { Inject, Injectable } from '@angular/core';
-import { ApiResponseData, ApiResponseError, CredentialsResponse, KnoraApiConfig, KnoraApiConnection, UserResponse, Constants } from '@knora/api';
-import * as momentImported from 'moment';
-
+import {
+    ApiResponseData,
+    ApiResponseError,
+    Constants,
+    CredentialsResponse,
+    KnoraApiConfig,
+    KnoraApiConnection,
+    UserResponse
+} from '@knora/api';
 import { KnoraApiConfigToken, KnoraApiConnectionToken } from './core.module';
-import { KnoraConstants } from './declarations';
+
 
 /**
  * Currently logged-in user information
@@ -33,18 +39,16 @@ export interface Session {
     user: CurrentUser;
 }
 
-const moment = momentImported;
-
 @Injectable({
     providedIn: 'root'
 })
 export class SessionService {
 
     /**
-    * max session time in milliseconds
-    * default value (24h): 86400000
-    *
-    */
+     * max session time in milliseconds
+     * default value (24h): 86400000
+     *
+     */
     readonly MAX_SESSION_TIME: number = 86400000; // 1d = 24 * 60 * 60 * 1000
 
 
@@ -56,12 +60,13 @@ export class SessionService {
 
 
     /**
-       * set the session by using the json web token (jwt) and the user object;
-       * it will be used in the login process
-       *
-       * @param jwt
-       * @param username
-       */
+     * set the session by using the json web token (jwt) and the user object;
+     * it will be used in the login process
+     *
+     * @param jwt json web token
+     * @param identifier user identifier
+     * @param identifierType email or username
+     */
     setSession(jwt: string, identifier: string, identifierType: 'email' | 'username') {
 
         let session: Session;
@@ -89,7 +94,7 @@ export class SessionService {
 
                 // store session information in browser's localstorage
                 session = {
-                    id: this.setTimestamp(),
+                    id: Date.now(),
                     user: {
                         name: response.body.user.username,
                         jwt: jwt,
@@ -118,7 +123,7 @@ export class SessionService {
         // mix of checks with session.validation and this.authenticate
         const session = JSON.parse(localStorage.getItem('session'));
 
-        const tsNow: number = this.setTimestamp();
+        const tsNow: number = Date.now();
 
         if (session) {
 
@@ -175,8 +180,8 @@ export class SessionService {
 
     /**
      * update the session storage
-     * @param jwt
-     * @param username
+     * @param jwt json web token
+     * @param username username
      *
      * @returns boolean
      */
@@ -200,19 +205,11 @@ export class SessionService {
     /**
      * Update the knora-api-config and knora-api-connection of @knora/api
      *
-     * @param  {string} jwt?
+     * @param jwt json web token (optional)
      */
     private updateKnoraApiConnection(jwt?: string) {
         this.knoraApiConfig.jsonWebToken = (jwt ? jwt : '');
         this.knoraApiConnection = new KnoraApiConnection(this.knoraApiConfig);
-    }
-
-    /**
-     * Convert a timestamp in a number
-     * @returns number
-     */
-    private setTimestamp(): number {
-        return (moment().add(0, 'second')).valueOf();
     }
 
 
