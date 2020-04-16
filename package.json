@@ -9,6 +9,7 @@
     "test-lib": "ng t --watch=false --browsers=ChromeHeadless --project knora-ui",
     "build-lib": "ng b --project knora-ui",
     "build-app": "ng b --prod --buildOptimizer=true",
+    "yalc-publish": "npm run build-lib && yalc publish dist/knora-ui",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
