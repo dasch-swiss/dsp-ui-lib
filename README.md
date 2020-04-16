@@ -11,30 +11,30 @@ DSP-API and the DSP-UI library is [free software](http://www.gnu.org/philosophy/
 
 This version of DSP-UI requires [DSP-API version ^12.0.0](https://github.com/dasch-swiss/knora-api/releases/tag/v12.0.0).
 
-## Published modules
+## Library modules
 
-### knora-ui/core
+### DSP-UI/core
 
 The core module contains configuration files and all variables needed to connect the DSP API.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/core)
 
 * * *
 
-### knora-ui/search
+### DSP-UI/search
 
 Search module allows to make simple searches or extended searches in DSP-API. In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/search)
 
 * * *
 
-### knora-ui/viewer
+### DSP-UI/viewer
 
 The viewer module contains object components to show the resource class representations from DSP-API, the gui-elements for the property values and different kind of view frameworks.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/viewer)
 
 * * *
 
-### knora-ui/action
+### DSP-UI/action
 
 The action module contains special buttons (e.g. to sort a list), pipes and directives.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/action)
