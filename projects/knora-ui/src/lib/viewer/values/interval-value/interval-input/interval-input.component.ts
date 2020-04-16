@@ -1,4 +1,4 @@
-import {Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self} from '@angular/core';
+import {Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self, ViewChild} from '@angular/core';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
@@ -58,6 +58,8 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
 
   @Input() intervalStartLabel = 'start';
   @Input() intervalEndLabel = 'end';
+
+  @ViewChild('inputValueStart', {static: false}) inputValueRef: ElementRef;
 
   get empty() {
     const userInput = this.form.value;
@@ -161,6 +163,9 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
 
   ngDoCheck() {
     if (this.ngControl) {
+      // if(this.inputValueRef !== undefined){
+      //   this.inputValueRef.nativeElement.focus();
+      // }
       this.updateErrorState();
     }
   }

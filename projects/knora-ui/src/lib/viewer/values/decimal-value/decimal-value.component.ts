@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, ViewChild, OnInit, SimpleChanges, NgZone} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, ViewChild, OnInit, SimpleChanges, NgZone, ElementRef} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import {CreateDecimalValue, ReadDecimalValue, UpdateDecimalValue} from '@knora/api';
 import {Subscription} from 'rxjs';
@@ -14,6 +14,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 export class DecimalValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('inputValue', {static: false}) inputValueRef: ElementRef;
   
   @Input() displayValue?: ReadDecimalValue;
 
@@ -60,6 +61,10 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if(this.mode != 'read' && this.inputValueRef !== undefined){
+      this.inputValueRef.nativeElement.focus();
+    }
+    
     this.resetFormControl();
   }
 

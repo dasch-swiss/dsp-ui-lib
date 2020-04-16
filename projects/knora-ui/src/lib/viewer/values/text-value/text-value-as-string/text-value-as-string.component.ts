@@ -62,6 +62,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // when user clicks on edit button
     // if user is not in readonly mode, focus on the value input field
     if(this.mode != 'read' && this.inputValueRef !== undefined){
       this.inputValueRef.nativeElement.focus();

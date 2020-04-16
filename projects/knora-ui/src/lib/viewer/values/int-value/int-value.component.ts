@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, NgZone, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, NgZone, ViewChild, ElementRef} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import {CreateIntValue, ReadIntValue, UpdateIntValue} from '@knora/api';
 import {Subscription} from 'rxjs';
@@ -15,6 +15,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 export class IntValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('inputValue', {static: false}) inputValueRef: ElementRef;
 
   @Input() displayValue?: ReadIntValue;
 
@@ -61,6 +62,10 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if(this.mode != 'read' && this.inputValueRef !== undefined){
+      this.inputValueRef.nativeElement.focus();
+    }
+
     this.resetFormControl();
   }
 

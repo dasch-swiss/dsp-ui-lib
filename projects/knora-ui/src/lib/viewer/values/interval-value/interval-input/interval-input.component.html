@@ -1,6 +1,6 @@
 <div [formGroup]="form" class="interval-input-container">
   <mat-form-field class="child-input-component">
-    <input matInput class="interval-input-element start" [formControlName]="'start'" type="number" aria-label="start" [readonly]="readonly" (input)="_handleInput()" [placeholder]="intervalStartLabel" [errorStateMatcher]="matcher">
+    <input matInput #inputValueStart class="interval-input-element start" [formControlName]="'start'" type="number" aria-label="start" [readonly]="readonly" (input)="_handleInput()" [placeholder]="intervalStartLabel" [errorStateMatcher]="matcher">
     <mat-error *ngIf="form.controls.start.hasError('required')">
       Start is <strong>required</strong>
     </mat-error>
