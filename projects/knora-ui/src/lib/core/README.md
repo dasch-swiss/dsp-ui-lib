@@ -203,9 +203,9 @@ fetch(`config/config.${environment.name}.json`)
 
 ## Usage
 
-The `@knora/core` is a configuration handler for `@knora/api` which has all the services to make Knora-api requests.
+The core module is a configuration handler for DSP-JS-LIB (@knora/api npm package) which has all the services to make Knora-api requests.
 
-The following project-component example shows how to implement the two modules to get all projects form Knora.
+The following project-component example shows how to implement the two modules to get all projects from DSP-API.
 
 ```typescript
 import { Component, Inject, OnInit } from '@angular/core';
