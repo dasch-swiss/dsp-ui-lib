@@ -7,7 +7,19 @@ This library was generated with [Angular CLI](https://github.com/angular/angular
 ## Code scaffolding
 
 Run `ng generate component component-name --project knora-ui` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project knora-ui`.
-> Note: Don't forget to add `--project knora-ui` or else it will be added to the default project in your `angular.json` file. 
+> Note: Don't forget to add `--project knora-ui` or else it will be added to the default project in your `angular.json` file.
+
+### Dependencies
+
+This library has the following package dependencies, which you also have to install:
+
+-   @angular/common@8.2.14
+-   @angular/core@8.2.14
+-   @angular/material@8.2.3
+-   @angular/cdk@8.2.3
+-   @knora/api@0.2.0
+-   jdnconvertiblecalendar@^0.0.5
+-   jdnconvertiblecalendardateadapter@^0.0.12
 
 ## Build
 

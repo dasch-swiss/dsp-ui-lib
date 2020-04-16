@@ -14,17 +14,6 @@ For existing apps, follow these steps to begin using the core functions.
 
 This core module is included in the package @knora/ui.
 
-### Dependencies
-
-This module has the following package dependencies, which you also have to install.
-
--   @angular/common@8.0.3
--   @angular/core@8.0.3
--   json2typescript@1.0.6
--   jsonld@1.1.0
--   semver@^6.1.1
--   @knora/api@0.2.0
-
 ### Required version of Knora: 12.0.0
 
 ## Setup
