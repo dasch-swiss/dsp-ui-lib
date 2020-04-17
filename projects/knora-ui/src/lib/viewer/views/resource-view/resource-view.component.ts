@@ -10,6 +10,7 @@ import {
   SystemPropertyDefinition
 } from '@knora/api';
 import { KnoraApiConnectionToken } from '../../../core/core.module';
+import { EventBusService, Events } from '../../services/event-bus.service';
 
 
 // object of property information from ontology class, properties and property values
@@ -40,9 +41,16 @@ export class ResourceViewComponent implements OnInit, OnChanges {
 
   systemPropArray: PropertyDefinition[] = []; // system property
 
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
+  constructor(@Inject(KnoraApiConnectionToken)
+              private knoraApiConnection: KnoraApiConnection,
+              public eventBusService : EventBusService
+  ) { }
 
   ngOnInit() {
+    console.log('beep, boop');
+    
+    // console.log('VES: ', this.eventBusService);
+    // this.eventBusService.on(Events.ValueAdded, temp => console.log(temp));
   }
 
   ngOnChanges() {

@@ -17,6 +17,7 @@ import {
 import {BaseValueComponent} from '../../values/base-value.component';
 import {mergeMap} from 'rxjs/operators';
 import {KnoraApiConnectionToken} from '../../../core/core.module';
+import { EventBusService, EmitEvent, Events } from '../../services/event-bus.service';
 
 @Component({
   selector: 'kui-display-edit',
@@ -58,7 +59,9 @@ export class DisplayEditComponent implements OnInit {
 
   private readonly readTextValueAsHtml = 'ReadTextValueAsHtml';
 
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+  constructor(@Inject(KnoraApiConnectionToken)
+              private knoraApiConnection: KnoraApiConnection,
+              private eventBusService : EventBusService) {
   }
 
   ngOnInit() {
@@ -86,6 +89,11 @@ export class DisplayEditComponent implements OnInit {
 
     // hide comment toggle button while in edit mode
     this.checkCommentToggleVisibility();
+
+    console.log(this.eventBusService);
+    
+    let temp = 'hello';
+    this.eventBusService.emit(new EmitEvent(Events.ValueAdded, temp));
   }
 
   saveEditValue() {

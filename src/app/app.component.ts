@@ -1,19 +1,23 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ApiResponseData, KnoraApiConnection, LoginResponse, ReadResource, ReadValue, CardinalityUtil, ResourceClassDefinition, CreateTextValueAsString, UpdateResource, CreateValue, WriteValueResponse, ReadTextValueAsString } from '@knora/api';
 import { KnoraApiConnectionToken } from 'knora-ui';
 import { DisplayEditComponent } from 'knora-ui/lib/viewer/operations/display-edit/display-edit.component';
 import { mergeMap } from 'rxjs/operators';
 import { AddValueComponent } from 'knora-ui/lib/viewer/operations/add-value/add-value.component';
+import { EventBusService, Events } from 'projects/knora-ui/src/lib/viewer/services/event-bus.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('displayEdit', { static: false }) displayEditComponent: DisplayEditComponent;
   @ViewChild('addValue', { static: false }) addValueComponent: AddValueComponent;
 
+  eventbusSub: Subscription;
+  
   testthing: ReadResource;
   testValue: ReadValue;
 
@@ -23,11 +27,19 @@ export class AppComponent implements OnInit {
   createMode: boolean; // used to toggle add value form field
   newValue: ReadValue;
 
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+  constructor(@Inject(KnoraApiConnectionToken)
+              private knoraApiConnection: KnoraApiConnection,
+              private eventBusService : EventBusService) {
   }
 
   ngOnInit(): void {
     this.getValues();
+    this.eventbusSub = this.eventBusService.on(Events.ValueAdded, temp => (console.log(temp)));
+    console.log('eventbusSub: ', this.eventbusSub);
+  }
+
+  ngOnDestroy(): void {
+    this.eventbusSub.unsubscribe();
   }
 
   showAddValueForm() {
