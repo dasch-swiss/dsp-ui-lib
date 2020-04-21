@@ -75,7 +75,7 @@ class TestIntervalInputComponent implements ControlValueAccessor, MatFormFieldCo
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: IntervalValueComponent;
+  @ViewChild('inputVal') inputValueComponent: IntervalValueComponent;
 
   displayInputVal: ReadIntervalValue;
 
@@ -104,7 +104,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: IntervalValueComponent;
+  @ViewChild('inputVal') inputValueComponent: IntervalValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

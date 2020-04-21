@@ -19,7 +19,7 @@ import { By } from '@angular/platform-browser';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: UriValueComponent;
+  @ViewChild('inputVal') inputValueComponent: UriValueComponent;
 
   displayInputVal: ReadUriValue;
 
@@ -48,7 +48,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: UriValueComponent;
+  @ViewChild('inputVal') inputValueComponent: UriValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

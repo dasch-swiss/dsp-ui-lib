@@ -17,7 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('booleanVal', { static: false }) booleanValueComponent: BooleanValueComponent;
+  @ViewChild('booleanVal') booleanValueComponent: BooleanValueComponent;
 
   displayBooleanVal: ReadBooleanValue;
 
@@ -44,7 +44,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('booleanVal', { static: false }) booleanValueComponent: BooleanValueComponent;
+  @ViewChild('booleanVal') booleanValueComponent: BooleanValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

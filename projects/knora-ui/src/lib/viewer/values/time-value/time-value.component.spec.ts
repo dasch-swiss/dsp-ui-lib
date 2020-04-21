@@ -74,7 +74,7 @@ class TestTimeInputComponent implements ControlValueAccessor, MatFormFieldContro
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TimeValueComponent;
+  @ViewChild('inputVal') inputValueComponent: TimeValueComponent;
 
   displayInputVal: ReadTimeValue;
 
@@ -103,7 +103,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TimeValueComponent;
+  @ViewChild('inputVal') inputValueComponent: TimeValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

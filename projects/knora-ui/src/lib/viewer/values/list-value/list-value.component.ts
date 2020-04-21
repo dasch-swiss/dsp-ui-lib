@@ -21,7 +21,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
   styleUrls: ['./list-value.component.scss']
 })
 export class ListValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadListValue;
   @Input() propertyDef: ResourcePropertyDefinition;
@@ -34,7 +34,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
   form: FormGroup;
 
   valueChangesSubscription: Subscription;
-  @ViewChild(MatMenuTrigger, { static: false }) menuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger) menuTrigger: MatMenuTrigger;
 
   customValidators = [];
 

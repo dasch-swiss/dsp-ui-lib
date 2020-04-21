@@ -30,7 +30,7 @@ class TestPropertyViewComponent implements OnInit {
 })
 class TestParentComponent {
 
-  @ViewChild('resView', { static: false }) resourceViewComponent: ResourceViewComponent;
+  @ViewChild('resView') resourceViewComponent: ResourceViewComponent;
 
   resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
 }

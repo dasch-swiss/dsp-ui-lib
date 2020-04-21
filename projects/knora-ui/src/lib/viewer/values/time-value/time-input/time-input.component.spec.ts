@@ -25,7 +25,7 @@ import {JDNDatepickerDirective} from "../../jdn-datepicker-directive/jdndatepick
 })
 class TestHostComponent implements OnInit {
 
-  @ViewChild('timeInput', {static: false}) timeInputComponent: TimeInputComponent;
+  @ViewChild('timeInput') timeInputComponent: TimeInputComponent;
 
   form: FormGroup;
 

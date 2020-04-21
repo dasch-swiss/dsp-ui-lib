@@ -27,7 +27,7 @@ import {of} from 'rxjs';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: LinkValueComponent;
+  @ViewChild('inputVal') inputValueComponent: LinkValueComponent;
 
   displayInputVal: ReadLinkValue;
   parentResource: ReadResource;
@@ -58,7 +58,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: LinkValueComponent;
+  @ViewChild('inputVal') inputValueComponent: LinkValueComponent;
   parentResource: ReadResource;
   propIri: string;
   mode: 'read' | 'update' | 'create' | 'search';

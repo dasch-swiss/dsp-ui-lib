@@ -16,7 +16,7 @@ import {By} from '@angular/platform-browser';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TextValueAsHtmlComponent;
+  @ViewChild('inputVal') inputValueComponent: TextValueAsHtmlComponent;
 
   displayInputVal: ReadTextValueAsHtml;
 

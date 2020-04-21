@@ -14,7 +14,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 })
 export class UriValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadUriValue;
 

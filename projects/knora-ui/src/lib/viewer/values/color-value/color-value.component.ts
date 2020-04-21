@@ -24,8 +24,8 @@ export class ColorErrorStateMatcher implements ErrorStateMatcher {
 })
 export class ColorValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('colorInput', { static: false }) colorPickerComponent: ColorPickerComponent;
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('colorInput') colorPickerComponent: ColorPickerComponent;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadColorValue;
 

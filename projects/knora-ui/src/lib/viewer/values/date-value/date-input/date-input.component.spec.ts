@@ -27,7 +27,7 @@ import {By} from '@angular/platform-browser';
 })
 class TestHostComponent implements OnInit {
 
-  @ViewChild('dateInput', {static: false}) dateInputComponent: DateInputComponent;
+  @ViewChild('dateInput') dateInputComponent: DateInputComponent;
 
   form: FormGroup;
 

@@ -17,7 +17,7 @@ import {By} from '@angular/platform-browser';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TextValueAsStringComponent;
+  @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
 
   displayInputVal: ReadTextValueAsString;
 
@@ -46,7 +46,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostDisplayValueCommentComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TextValueAsStringComponent;
+  @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
 
   displayInputVal: ReadTextValueAsString;
 
@@ -76,7 +76,7 @@ class TestHostDisplayValueCommentComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TextValueAsStringComponent;
+  @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

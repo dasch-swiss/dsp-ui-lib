@@ -14,7 +14,7 @@ import {DateAdapter} from "@angular/material/core";
 })
 class TestHostComponent implements OnInit {
 
-  @ViewChild(JDNDatepickerDirective, {static: false}) jdnDir;
+  @ViewChild(JDNDatepickerDirective) jdnDir;
 
   activeCalendar: string;
 

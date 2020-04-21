@@ -18,7 +18,7 @@ import { By } from '@angular/platform-browser';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: DecimalValueComponent;
+  @ViewChild('inputVal') inputValueComponent: DecimalValueComponent;
 
   displayInputVal: ReadDecimalValue;
 
@@ -47,7 +47,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: DecimalValueComponent;
+  @ViewChild('inputVal') inputValueComponent: DecimalValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

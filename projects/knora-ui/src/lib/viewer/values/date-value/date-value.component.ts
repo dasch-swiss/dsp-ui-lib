@@ -29,7 +29,7 @@ export class DateErrorStateMatcher implements ErrorStateMatcher {
 })
 export class DateValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('dateInput', {static: false}) dateInputComponent: DateInputComponent;
+  @ViewChild('dateInput') dateInputComponent: DateInputComponent;
 
   @Input() displayValue?: ReadDateValue;
 

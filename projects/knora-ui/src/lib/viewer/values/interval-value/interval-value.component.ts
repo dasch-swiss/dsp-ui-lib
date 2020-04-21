@@ -23,8 +23,8 @@ export class IntervalErrorStateMatcher implements ErrorStateMatcher {
 })
 export class IntervalValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('intervalInput', {static: false}) intervalInputComponent: IntervalInputComponent;
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('intervalInput') intervalInputComponent: IntervalInputComponent;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadIntervalValue;
 

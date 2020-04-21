@@ -75,7 +75,7 @@ class TestColorPickerComponent implements ControlValueAccessor, MatFormFieldCont
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('colorVal', { static: false }) colorValueComponent: ColorValueComponent;
+  @ViewChild('colorVal') colorValueComponent: ColorValueComponent;
 
   displayColorVal: ReadColorValue;
 
@@ -104,7 +104,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('colorValue', { static: false }) colorValueComponent: ColorValueComponent;
+  @ViewChild('colorValue') colorValueComponent: ColorValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

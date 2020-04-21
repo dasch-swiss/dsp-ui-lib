@@ -19,7 +19,7 @@ import { GeonameValueComponent } from './geoname-value.component';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', { static: false }) inputValueComponent: GeonameValueComponent;
+  @ViewChild('inputVal') inputValueComponent: GeonameValueComponent;
 
   displayInputVal: ReadGeonameValue;
 
@@ -48,7 +48,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', { static: false }) inputValueComponent: GeonameValueComponent;
+  @ViewChild('inputVal') inputValueComponent: GeonameValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

@@ -14,7 +14,7 @@ import { take } from 'rxjs/operators';
 })
 export class BooleanValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadBooleanValue;
 

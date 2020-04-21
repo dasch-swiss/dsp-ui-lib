@@ -21,7 +21,7 @@ import {MatInputModule} from '@angular/material';
 })
 class TestHostComponent implements OnInit {
 
-  @ViewChild('intervalInput', {static: false}) intervalInputComponent: IntervalInputComponent;
+  @ViewChild('intervalInput') intervalInputComponent: IntervalInputComponent;
 
   form: FormGroup;
 

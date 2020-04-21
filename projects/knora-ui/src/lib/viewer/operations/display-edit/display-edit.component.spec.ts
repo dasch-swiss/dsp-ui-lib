@@ -204,7 +204,7 @@ class TestDateValueComponent {
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('displayEditVal', {static: false}) displayEditValueComponent: DisplayEditComponent;
+  @ViewChild('displayEditVal') displayEditValueComponent: DisplayEditComponent;
 
   readResource: ReadResource;
   readValue: ReadValue;
