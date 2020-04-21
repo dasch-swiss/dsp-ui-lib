@@ -7,6 +7,8 @@ import {KnoraApiConfigToken, KnoraApiConnectionToken, KuiConfigToken, ViewerModu
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppInitService} from './app-init.service';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
+import { ModifyComponent } from './modify/modify.component';
+import { ReadComponent } from './read/read.component';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -16,7 +18,9 @@ export function initializeApp(appInitService: AppInitService) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ModifyComponent,
+    ReadComponent
   ],
   imports: [
     BrowserModule,

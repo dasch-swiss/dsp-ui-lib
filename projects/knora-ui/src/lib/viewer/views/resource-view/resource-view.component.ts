@@ -7,9 +7,12 @@ import {
   ReadValue,
   ResourcePropertyDefinition,
   ApiResponseError,
-  SystemPropertyDefinition
+  SystemPropertyDefinition,
+  ApiResponseData,
+  LoginResponse
 } from '@knora/api';
 import { KnoraApiConnectionToken } from '../../../core/core.module';
+import { mergeMap } from 'rxjs/operators';
 
 
 // object of property information from ontology class, properties and property values
@@ -34,6 +37,8 @@ export class ResourceViewComponent implements OnInit, OnChanges {
    */
   @Input() iri: string;
 
+  @Input() anonymousLogin: boolean;
+
   resource: ReadResource;
 
   propArray: PropertyInfoValues[] = []; // resource property
@@ -46,7 +51,13 @@ export class ResourceViewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.getResource(this.iri);
+    console.log('ngOnChanges called. this.anonymousLogin: ', this.anonymousLogin);
+    
+    if(this.anonymousLogin){
+      this.getResourceAsAnonymous(this.iri);
+    } else {
+      this.getResourceAsUser(this.iri);
+    }
   }
 
   /**
@@ -54,7 +65,7 @@ export class ResourceViewComponent implements OnInit, OnChanges {
    *
    * @param resource Resource
    */
-  getResource(iri: string): void {
+  getResourceAsAnonymous(iri: string): void {
 
     this.knoraApiConnection.v2.res.getResource(iri).subscribe(
       (response: ReadResource) => {
@@ -98,5 +109,59 @@ export class ResourceViewComponent implements OnInit, OnChanges {
         console.error('Error to get resource: ', error);
       });
   }
+
+  getResourceAsUser(iri: string): void {
+    console.log('login requested');
+    
+    this.knoraApiConnection.v2.auth.login('username', 'root', 'test').pipe(
+      mergeMap(
+        (loginResponse: ApiResponseData<LoginResponse>) => {
+          return this.knoraApiConnection.v2.res.getResource(iri);
+        }
+      )
+    ).subscribe(
+      (response: ReadResource) => {
+        this.resource = response;
+        console.log(this.resource);
+
+        // get list of all properties
+        const propsList: IHasProperty[] = this.resource.entityInfo.classes[this.resource.type].propertiesList;
+
+        for (const prop of propsList) {
+          const index = prop.propertyIndex;
+
+          if (this.resource.entityInfo.properties[index]) {
+            if (this.resource.entityInfo.properties[index] instanceof ResourcePropertyDefinition) {
+              // filter all properties by type ResourcePropertyDefinition
+              const propInfoAndValues: PropertyInfoValues = {
+                guiDef: prop,
+                propDef: this.resource.entityInfo.properties[index],
+                values: this.resource.properties[index]
+              };
+
+              this.propArray.push(propInfoAndValues);
+
+            } else if (this.resource.entityInfo.properties[index] instanceof SystemPropertyDefinition) {
+              // filter all properties by type SystemPropertyDefinition
+              const systemPropInfo = this.resource.entityInfo.properties[index];
+
+              this.systemPropArray.push(systemPropInfo);
+
+            }
+
+          } else {
+            console.error('Error detected: the property with IRI =' + index + 'is not a property of the resource');
+          }
+        }
+
+        // sort properties by guiOrder
+        this.propArray.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
+
+      },
+      (error: ApiResponseError) => {
+        console.error('Error to get resource: ', error);
+      });      
+  }
+
 
 }
