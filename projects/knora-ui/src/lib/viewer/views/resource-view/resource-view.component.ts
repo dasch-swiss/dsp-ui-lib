@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import {
   IHasProperty,
   KnoraApiConnection,
@@ -7,10 +7,14 @@ import {
   ReadValue,
   ResourcePropertyDefinition,
   ApiResponseError,
-  SystemPropertyDefinition
+  SystemPropertyDefinition,
+  ApiResponseData,
+  LoginResponse
 } from '@knora/api';
 import { KnoraApiConnectionToken } from '../../../core/core.module';
 import { EventBusService, Events } from '../../services/event-bus.service';
+import { mergeMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 
 // object of property information from ontology class, properties and property values
@@ -26,7 +30,7 @@ export interface PropertyInfoValues {
   templateUrl: './resource-view.component.html',
   styleUrls: ['./resource-view.component.scss']
 })
-export class ResourceViewComponent implements OnInit, OnChanges {
+export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Resource iri
@@ -41,20 +45,24 @@ export class ResourceViewComponent implements OnInit, OnChanges {
 
   systemPropArray: PropertyDefinition[] = []; // system property
 
+  eventBusSubscription: Subscription;
+
   constructor(@Inject(KnoraApiConnectionToken)
               private knoraApiConnection: KnoraApiConnection,
               public eventBusService : EventBusService
   ) { }
 
-  ngOnInit() {
-    console.log('beep, boop');
-    
-    // console.log('VES: ', this.eventBusService);
-    // this.eventBusService.on(Events.ValueAdded, temp => console.log(temp));
+  ngOnInit() {    
+    this.eventBusSubscription = this.eventBusService.on(Events.ValueAdded, () => this.getResource(this.iri));
+    this.eventBusSubscription = this.eventBusService.on(Events.ValueDeleted, () => this.getResource(this.iri));
   }
 
   ngOnChanges() {
     this.getResource(this.iri);
+  }
+
+  ngOnDestroy() {
+    this.eventBusSubscription.unsubscribe();
   }
 
   /**
@@ -63,14 +71,26 @@ export class ResourceViewComponent implements OnInit, OnChanges {
    * @param resource Resource
    */
   getResource(iri: string): void {
+    // TODO: add this.createAllowed = CardinalityUtil.createValueForPropertyAllowed(this.testValue.property, 1, this.testthing.entityInfo.classes[this.testthing.type] as ResourceClassDefinition);
 
-    this.knoraApiConnection.v2.res.getResource(iri).subscribe(
+    this.knoraApiConnection.v2.auth.login('username', 'root', 'test').pipe(
+      mergeMap(
+        (loginResponse: ApiResponseData<LoginResponse>) => {
+          // this.resource = new ReadResource();
+          this.propArray = [];
+          this.systemPropArray = [];
+          return this.knoraApiConnection.v2.res.getResource(iri);
+        }
+      )
+    ).subscribe(
       (response: ReadResource) => {
         this.resource = response;
+        console.log(this.resource);
 
         // get list of all properties
         const propsList: IHasProperty[] = this.resource.entityInfo.classes[this.resource.type].propertiesList;
-
+        console.log('propsList: ', propsList);
+        
         for (const prop of propsList) {
           const index = prop.propertyIndex;
 
@@ -100,11 +120,12 @@ export class ResourceViewComponent implements OnInit, OnChanges {
 
         // sort properties by guiOrder
         this.propArray.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
-
+        console.log('propArray: ', this.propArray);
+        console.log('systemPropArray: ', this.systemPropArray);
       },
       (error: ApiResponseError) => {
         console.error('Error to get resource: ', error);
-      });
+      });      
   }
 
 }

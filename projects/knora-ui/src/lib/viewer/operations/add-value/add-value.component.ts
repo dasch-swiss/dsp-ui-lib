@@ -3,6 +3,7 @@ import { KnoraApiConnectionToken } from '../../../core/core.module';
 import { KnoraApiConnection, ReadValue, ReadResource, Constants, PermissionUtil, CreateValue, UpdateResource, WriteValueResponse } from '@knora/api';
 import { BaseValueComponent } from '../../values/base-value.component';
 import { mergeMap } from 'rxjs/operators';
+import { EventBusService, EmitEvent, Events } from '../../services/event-bus.service';
 
 @Component({
   selector: 'kui-add-value',
@@ -21,7 +22,7 @@ export class AddValueComponent implements OnInit {
 
   @Input() resourceValues: ReadValue[];
 
-  @Output() valueAdded = new EventEmitter<any>();
+  // @Output() valueAdded = new EventEmitter<any>();
 
   @Output() operationCancelled = new EventEmitter<any>();
 
@@ -33,7 +34,9 @@ export class AddValueComponent implements OnInit {
 
   createModeActive = false;
   
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
+  constructor(@Inject(KnoraApiConnectionToken)
+              private knoraApiConnection: KnoraApiConnection,
+              private eventBusService: EventBusService) { }
 
   ngOnInit() {
     this.mode = 'create';
@@ -45,7 +48,7 @@ export class AddValueComponent implements OnInit {
 
     this.createModeActive = true;
 
-    this.resourceValues = this.parentResource.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
+    // this.resourceValues = this.parentResource.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
   }
 
   saveAddValue() {
@@ -58,13 +61,14 @@ export class AddValueComponent implements OnInit {
       const updateRes = new UpdateResource();
       updateRes.id = this.parentResource.id;
       updateRes.type = this.parentResource.type;
-      this.validValue(updateRes);
+      // this.validValue(updateRes);
 
       // TODO: get the property name of the corresponding value type
-      updateRes.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText';
+      updateRes.property = this.displayValue.id;
+      //updateRes.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText';
       updateRes.value = createVal;
 
-      // console.log('updateRes: ', updateRes);
+      console.log('updateRes: ', updateRes);
       
       this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
         mergeMap((res: WriteValueResponse) => {
@@ -74,7 +78,8 @@ export class AddValueComponent implements OnInit {
         ).subscribe(
           (res2: ReadResource) => {
             // console.log(this.parentResource);            
-            this.valueAdded.emit(null);
+            // this.valueAdded.emit(null);
+            this.eventBusService.emit(new EmitEvent(Events.ValueAdded));
           }
         );
     } else {

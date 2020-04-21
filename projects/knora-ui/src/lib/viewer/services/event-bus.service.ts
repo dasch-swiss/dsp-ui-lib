@@ -10,9 +10,7 @@ export class EventBusService {
 
   private subject$ = new Subject();
 
-  on(event: Events, action: any): Subscription {
-    console.log('EventBusService on called');
-    
+  on(event: Events, action: any): Subscription {    
     return this.subject$
         .pipe(
               filter((e: EmitEvent) => e.name === event),
@@ -21,19 +19,16 @@ export class EventBusService {
         .subscribe(action);
   }
 
-  emit(event: EmitEvent) {
-    console.log('event emitted: ', event);
-    
+  emit(event: EmitEvent) {    
     this.subject$.next(event);
   }
 }
 
 export class EmitEvent {
-
   constructor(public name: any, public value?: any) { }
-
 }
 
 export enum Events {
-  ValueAdded
+  ValueAdded,
+  ValueDeleted
 }

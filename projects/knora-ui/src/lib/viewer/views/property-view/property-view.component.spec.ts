@@ -79,6 +79,21 @@ class TestDisplayValueComponent {
 
 }
 
+/**
+ * Test host component to simulate child component, here display-edit.
+ */
+@Component({
+  selector: `kui-add-value`,
+  template: ``
+})
+class TestAddValueComponent {
+
+  @Input() parentResource: ReadResource;
+  @Input() displayValue: ReadValue;
+  @Input() configuration?: object;
+
+}
+
 describe('PropertyViewComponent', () => {
   let testHostComponent: TestPropertyParentComponent;
   let testHostFixture: ComponentFixture<TestPropertyParentComponent>;
@@ -88,6 +103,7 @@ describe('PropertyViewComponent', () => {
       declarations: [
         TestPropertyParentComponent,
         TestDisplayValueComponent,
+        TestAddValueComponent,
         PropertyViewComponent
       ]
     })

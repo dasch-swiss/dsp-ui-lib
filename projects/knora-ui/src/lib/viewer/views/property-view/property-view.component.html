@@ -6,6 +6,11 @@
         </kui-display-edit>
       </div>
     </div>
-
+    <div *ngIf="createMode">
+      <kui-add-value #addValue [parentResource]="parentResource" [displayValue]="newValue" (operationCancelled)="hideAddValueForm($event)"></kui-add-value>
+    </div>
+    <div>
+      <button class="create" *ngIf="createAllowed" (click)="showAddValueForm(prop)">add</button>
+    </div>
   </div>
 </div>

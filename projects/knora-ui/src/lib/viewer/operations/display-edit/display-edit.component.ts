@@ -34,7 +34,7 @@ export class DisplayEditComponent implements OnInit {
 
   @Input() configuration?: object;
 
-  @Output() valueDeleted = new EventEmitter<any>();
+  // @Output() valueDeleted = new EventEmitter<any>();
 
   constants = Constants;
 
@@ -65,9 +65,6 @@ export class DisplayEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('display-edit OnInit called');
-    
-
     this.mode = 'read';
 
     // determine if user has modify permissions
@@ -89,11 +86,6 @@ export class DisplayEditComponent implements OnInit {
 
     // hide comment toggle button while in edit mode
     this.checkCommentToggleVisibility();
-
-    console.log(this.eventBusService);
-    
-    let temp = 'hello';
-    this.eventBusService.emit(new EmitEvent(Events.ValueAdded, temp));
   }
 
   saveEditValue() {
@@ -157,7 +149,8 @@ export class DisplayEditComponent implements OnInit {
     this.knoraApiConnection.v2.values.deleteValue(updateRes as UpdateResource<DeleteValue>).pipe(
       mergeMap((res: DeleteValueResponse) => {
         console.log('res: ', res);
-        this.valueDeleted.emit(null);
+        // this.valueDeleted.emit(null);
+        this.eventBusService.emit(new EmitEvent(Events.ValueDeleted));
         return res.result;
       })
     ).subscribe(
