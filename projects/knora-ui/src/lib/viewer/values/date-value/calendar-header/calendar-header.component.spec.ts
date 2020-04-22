@@ -101,9 +101,9 @@ describe('CalendarHeaderComponent', () => {
 
   it('should perform a calendar conversion when the selection is changed', () => {
 
-    const dateAdapter = TestBed.inject(DateAdapter) as jasmine.SpyObj<DateAdapter<any>>;
+    const dateAdapter = TestBed.inject(DateAdapter);
 
-    const dateAdapterSpy = spyOn(dateAdapter, 'convertCalendar').and.callFake(
+    const dateAdapterSpy = spyOn(dateAdapter as JDNConvertibleCalendarDateAdapter, 'convertCalendar').and.callFake(
       (date, calendar) => {
         return new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 3, 4), new CalendarDate(2020, 3, 4)));
       });
