@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { LinkValueComponent } from './link-value.component';
 import {
@@ -6,16 +6,17 @@ import {
   MockResource,
   UpdateLinkValue,
   CreateLinkValue,
-  ReadResource, UpdateTextValueAsString
+  ReadResource
 } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {KnoraApiConnectionToken} from '../../../core';
+import { KnoraApiConnectionToken } from '../../../core';
 import { By } from '@angular/platform-browser';
-import {of} from 'rxjs';
+import { of } from 'rxjs';
+import { SearchEndpoint } from '@knora/api/src/api/v2/search/search-endpoint';
 
 /**
  * Test host component to simulate parent component.
@@ -86,8 +87,8 @@ describe('LinkValueComponent', () => {
         LinkValueComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent
-       ],
-       imports: [
+      ],
+      imports: [
         ReactiveFormsModule,
         MatInputModule,
         MatAutocompleteModule,
@@ -100,7 +101,7 @@ describe('LinkValueComponent', () => {
         }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   describe('display and edit a link value', () => {
@@ -188,8 +189,8 @@ describe('LinkValueComponent', () => {
 
     it('should search for resources by their label', () => {
 
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
-      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpoint>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
@@ -201,16 +202,16 @@ describe('LinkValueComponent', () => {
       // simulate user searching for label 'thing'
       testHostComponent.inputValueComponent.valueFormControl.setValue('thing');
 
-      expect(valuesSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('thing', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'});
+      expect(valuesSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('thing', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing' });
       expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
       expect(testHostComponent.inputValueComponent.resources[0].id).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
     });
 
     it('should not return an invalid update value (string)', () => {
 
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpoint>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
@@ -238,9 +239,9 @@ describe('LinkValueComponent', () => {
 
     it('should not return an invalid update value (no value)', () => {
 
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpoint>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
@@ -396,9 +397,9 @@ describe('LinkValueComponent', () => {
     });
 
     it('should search a new value', () => {
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpoint>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
@@ -411,7 +412,7 @@ describe('LinkValueComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('create');
-      expect(valuesSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('thing', 0, {limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'});
+      expect(valuesSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('thing', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing' });
       expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
     });
 
@@ -437,9 +438,9 @@ describe('LinkValueComponent', () => {
 
     it('should only create a new value if input is a resource', () => {
       // simulate user input
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      valuesSpy.v2.search.doSearchByLabel.and.callFake(
+      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpoint>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
