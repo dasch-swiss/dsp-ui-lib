@@ -138,12 +138,12 @@ describe('ListValueComponent', () => {
     it('should make list value editable as button', () => {
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
       (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpoint>).getList.and.callFake(
-        () => {
+          (rootNodeIri: string) => {
           const res = new ListNodeV2();
           res.id = 'http://rdfh.ch/lists/0001/treeList';
           res.label = 'Listenwurzel';
           res.isRootNode = true;
-          return of([res]);
+          return of(res);
         }
       );
       testHostComponent.mode = 'update';
@@ -151,7 +151,7 @@ describe('ListValueComponent', () => {
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(valuesSpy.v2.list.getList).toHaveBeenCalledTimes(1);
-      expect(valuesSpy.v2.list.getList).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList')
+      expect(valuesSpy.v2.list.getList).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList');
       expect(testHostComponent.inputValueComponent.listRootNode.children.length).toEqual(1);
 
       const openListButtonDe = valueComponentDe.query(By.css('button'));
@@ -169,12 +169,12 @@ describe('ListValueComponent', () => {
     it('should validate an existing value with an added comment', () => {
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
       (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpoint>).getList.and.callFake(
-        () => {
+        (rootNodeIri) => {
           const res = new ListNodeV2();
           res.id = 'http://rdfh.ch/lists/0001/treeList';
           res.label = 'Listenwurzel';
           res.isRootNode = true;
-          return of([res]);
+          return of(res);
         }
       );
 
@@ -211,13 +211,14 @@ describe('ListValueComponent', () => {
     let commentInputNativeElement;
     beforeEach(() => {
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+
       (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpoint>).getList.and.callFake(
-        () => {
+        (rootNodeIri: string) => {
           const res = new ListNodeV2();
           res.id = 'http://rdfh.ch/lists/0001/treeList';
           res.label = 'Listenwurzel';
           res.isRootNode = true;
-          return of([res]);
+          return of(res);
         }
       );
 
@@ -230,7 +231,7 @@ describe('ListValueComponent', () => {
       expect(testHostComponent).toBeTruthy();
       expect(testHostComponent.inputValueComponent).toBeTruthy();
       expect(testHostComponent.inputValueComponent.mode).toEqual('create');
-      expect(valuesSpy.v2.list.getList.calls.count()).toEqual(1);
+      expect(valuesSpy.v2.list.getList).toHaveBeenCalledTimes(1);
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(ListValueComponent));
