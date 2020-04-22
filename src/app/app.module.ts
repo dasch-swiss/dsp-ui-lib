@@ -1,5 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {MatButtonModule} from '@angular/material/button';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -27,7 +28,8 @@ export function initializeApp(appInitService: AppInitService) {
     BrowserAnimationsModule,
     AppRoutingModule,
     ViewerModule,
-    MatJDNConvertibleCalendarDateAdapterModule
+    MatJDNConvertibleCalendarDateAdapterModule,
+    MatButtonModule
   ],
   providers: [
     AppInitService,

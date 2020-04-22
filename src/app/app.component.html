@@ -1,5 +1,9 @@
-<nav>
-    <p><a routerLink="/read">Read</a></p>
-    <p><a routerLink="/modify">Modify</a></p>
+<nav class="navbar">
+    <button class="route" mat-raised-button [routerLink]="['/read']" routerLinkActive="mat-accent">
+        Read
+    </button> 
+    <button class="route" mat-raised-button [routerLink]="['/modify']" routerLinkActive="mat-accent">
+        Modify
+    </button> 
 </nav>
 <router-outlet></router-outlet>
