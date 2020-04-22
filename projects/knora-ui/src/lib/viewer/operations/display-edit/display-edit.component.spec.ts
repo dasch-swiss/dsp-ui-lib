@@ -23,6 +23,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {of} from 'rxjs';
 import {KnoraApiConnectionToken} from '../../../core';
 import { MatIconModule } from '@angular/material/icon';
+import {ValuesEndpoint} from "@knora/api/src/api/v2/values/values-endpoint";
 
 @Component({
   selector: `kui-text-value-as-string`,
@@ -228,7 +229,7 @@ class TestHostDisplayValueComponent implements OnInit {
     readVal.userHasPermission = 'M';
 
     readVal.valueHasComment = comment;
-    this.readValue = readVal;    
+    this.readValue = readVal;
   }
 }
 
@@ -646,9 +647,9 @@ describe('DisplayEditComponent', () => {
 
     it('should not display a comment button if the comment is deleted', () => {
 
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      valuesSpy.v2.values.updateValue.and.callFake(
+      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpoint>).updateValue.and.callFake(
         () => {
 
           const response = new WriteValueResponse();
@@ -661,7 +662,7 @@ describe('DisplayEditComponent', () => {
         }
       );
 
-      valuesSpy.v2.values.getValue.and.callFake(
+      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpoint>).getValue.and.callFake(
         () => {
 
           const updatedVal = new ReadIntValue();
@@ -726,6 +727,6 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
 
     });
-      
+
   });
 });
