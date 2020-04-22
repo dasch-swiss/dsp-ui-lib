@@ -1,17 +1,17 @@
-import {async, ComponentFixture, fakeAsync, flush, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 
-import {CalendarHeaderComponent} from './calendar-header.component';
-import {ACTIVE_CALENDAR, JDNConvertibleCalendarDateAdapter} from 'jdnconvertiblecalendardateadapter';
-import {MatSelectModule} from '@angular/material/select';
-import {DateAdapter, MatOptionModule} from '@angular/material/core';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {MatCalendar, MatDatepickerContent} from '@angular/material/datepicker';
-import {BehaviorSubject} from 'rxjs';
-import {Component, DebugElement} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {JDNConvertibleCalendarModule} from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
-import {CalendarDate, CalendarPeriod, JulianCalendarDate} from 'jdnconvertiblecalendar';
+import { CalendarHeaderComponent } from './calendar-header.component';
+import { ACTIVE_CALENDAR, JDNConvertibleCalendarDateAdapter } from 'jdnconvertiblecalendardateadapter';
+import { MatSelectModule } from '@angular/material/select';
+import { DateAdapter, MatOptionModule } from '@angular/material/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatCalendar, MatDatepickerContent } from '@angular/material/datepicker';
+import { BehaviorSubject } from 'rxjs';
+import { Component, DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JDNConvertibleCalendarModule } from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
+import { CalendarDate, CalendarPeriod, JulianCalendarDate } from 'jdnconvertiblecalendar';
 import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
 
 @Component({
@@ -43,8 +43,8 @@ describe('CalendarHeaderComponent', () => {
             }
           }
         },
-        {provide: DateAdapter, useClass: JDNConvertibleCalendarDateAdapter},
-        {provide: ACTIVE_CALENDAR, useValue: new BehaviorSubject('Gregorian')},
+        { provide: DateAdapter, useClass: JDNConvertibleCalendarDateAdapter },
+        { provide: ACTIVE_CALENDAR, useValue: new BehaviorSubject('Gregorian') },
         {
           provide: MatDatepickerContent, useValue: {
             datepicker: {
@@ -101,18 +101,18 @@ describe('CalendarHeaderComponent', () => {
 
   it('should perform a calendar conversion when the selection is changed', () => {
 
-    const dateAdapter = TestBed.get(DateAdapter);
+    const dateAdapter = TestBed.inject(DateAdapter) as jasmine.SpyObj<DateAdapter<any>>;
 
     const dateAdapterSpy = spyOn(dateAdapter, 'convertCalendar').and.callFake(
       (date, calendar) => {
         return new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2020, 3, 4), new CalendarDate(2020, 3, 4)));
       });
 
-    const matCal = TestBed.get(MatCalendar);
+    const matCal = TestBed.inject(MatCalendar);
 
     const matCalendarSpy = spyOn(matCal, 'updateTodaysDate').and.stub();
 
-    const datepickerContent = TestBed.get(MatDatepickerContent);
+    const datepickerContent = TestBed.inject(MatDatepickerContent);
 
     const datepickerContentSpy = spyOn(datepickerContent.datepicker, 'select').and.stub();
 

@@ -15,9 +15,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {KnoraApiConnectionToken} from '../../../core';
+import { KnoraApiConnectionToken } from '../../../core';
 import { By } from '@angular/platform-browser';
-import {of} from 'rxjs';
+import { of } from 'rxjs';
+import { ListsEndpoint } from '@knora/api/src/api/v2/list/lists-endpoint';
 /**
  * Test host component to simulate parent component.
  */
@@ -135,8 +136,8 @@ describe('ListValueComponent', () => {
 
     });
     it('should make list value editable as button', () => {
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
-      valuesSpy.v2.list.getList.and.callFake(
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpoint>).getList.and.callFake(
         () => {
           const res = new ListNodeV2();
           res.id = 'http://rdfh.ch/lists/0001/treeList';
@@ -155,9 +156,9 @@ describe('ListValueComponent', () => {
 
       const openListButtonDe = valueComponentDe.query(By.css('button'));
 
-      expect(openListButtonDe.nativeElement.textContent.trim()).toBe('Select list value' );
+      expect(openListButtonDe.nativeElement.textContent.trim()).toBe('Select list value');
 
-      expect( testHostComponent.inputValueComponent.selectedNode).toBe(undefined);
+      expect(testHostComponent.inputValueComponent.selectedNode).toBe(undefined);
 
       const openListButtonEle: HTMLElement = openListButtonDe.nativeElement;
       openListButtonEle.click();
@@ -166,8 +167,8 @@ describe('ListValueComponent', () => {
       testHostComponent.inputValueComponent.menuTrigger.openMenu();
     });
     it('should validate an existing value with an added comment', () => {
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
-      valuesSpy.v2.list.getList.and.callFake(
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpoint>).getList.and.callFake(
         () => {
           const res = new ListNodeV2();
           res.id = 'http://rdfh.ch/lists/0001/treeList';
@@ -208,9 +209,9 @@ describe('ListValueComponent', () => {
     let valueComponentDe: DebugElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
-    beforeEach(() => {      
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
-      valuesSpy.v2.list.getList.and.callFake(
+    beforeEach(() => {
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpoint>).getList.and.callFake(
         () => {
           const res = new ListNodeV2();
           res.id = 'http://rdfh.ch/lists/0001/treeList';
@@ -236,7 +237,7 @@ describe('ListValueComponent', () => {
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
-      
+
 
     });
     it('should create a value', () => {
