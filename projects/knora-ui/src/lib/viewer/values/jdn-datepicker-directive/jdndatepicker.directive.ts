@@ -1,5 +1,5 @@
 import {Directive, Inject, Input, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
-import {DateAdapter, MAT_DATE_LOCALE} from '@angular/material';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import {JDNConvertibleCalendar} from 'jdnconvertiblecalendar';
 import {ACTIVE_CALENDAR, JDNConvertibleCalendarDateAdapter} from 'jdnconvertiblecalendardateadapter';
 import {BehaviorSubject} from 'rxjs';

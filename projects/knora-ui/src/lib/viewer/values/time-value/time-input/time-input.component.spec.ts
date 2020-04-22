@@ -3,7 +3,8 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {TimeInputComponent, DateTime} from './time-input.component';
 import {Component, OnInit, ViewChild, DebugElement} from '@angular/core';
 import {FormGroup, FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule, MatInputModule} from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
 import {MatDatepickerModule} from '@angular/material/datepicker'

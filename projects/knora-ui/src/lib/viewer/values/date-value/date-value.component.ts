@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {BaseValueComponent} from '../base-value.component';
-import {ErrorStateMatcher} from '@angular/material';
+import { ErrorStateMatcher } from '@angular/material/core';
 import {DateInputComponent} from './date-input/date-input.component';
 
 /** Error when invalid control is dirty, touched, or submitted. */

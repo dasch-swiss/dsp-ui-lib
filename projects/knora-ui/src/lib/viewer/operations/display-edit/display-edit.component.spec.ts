@@ -22,7 +22,7 @@ import {By} from '@angular/platform-browser';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {of} from 'rxjs';
 import {KnoraApiConnectionToken} from '../../../core';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: `kui-text-value-as-string`,

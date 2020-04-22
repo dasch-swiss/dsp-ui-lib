@@ -4,7 +4,7 @@ import { UriValueComponent } from './uri-value.component';
 import { ReadUriValue, MockResource, UpdateValue, UpdateUriValue, CreateUriValue } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';

@@ -4,7 +4,7 @@ import { IntValueComponent } from './int-value.component';
 import { ReadIntValue, MockResource, UpdateValue, UpdateIntValue, CreateIntValue } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 
