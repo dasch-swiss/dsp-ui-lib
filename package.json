@@ -26,7 +26,7 @@
     "@angular/router": "~9.1.2",
     "@knora/api": "file:.yalc/@knora/api",
     "jdnconvertiblecalendar": "^0.0.5",
-    "jdnconvertiblecalendardateadapter": "^0.0.12",
+    "jdnconvertiblecalendardateadapter": "^0.0.13",
     "ngx-color-picker": "^8.2.0",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
