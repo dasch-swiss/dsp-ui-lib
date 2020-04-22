@@ -37,7 +37,7 @@ export class ResourceViewComponent implements OnInit, OnChanges {
    */
   @Input() iri: string;
 
-  @Input() anonymousLogin: boolean;
+  @Input() loggingIn: boolean;
 
   resource: ReadResource;
 
@@ -48,16 +48,11 @@ export class ResourceViewComponent implements OnInit, OnChanges {
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
 
   ngOnInit() {
-    //this.knoraApiConnection.v2.auth.logout();
-    
+
   }
 
-  ngOnChanges() {    
-    if(this.anonymousLogin){
-      this.getResourceAsAnonymous(this.iri);
-    } else {
-      this.getResourceAsUser(this.iri);
-    }
+  ngOnChanges() {
+    this.getResource(this.iri);
   }
 
   /**
@@ -65,38 +60,22 @@ export class ResourceViewComponent implements OnInit, OnChanges {
    *
    * @param resource Resource
    */
-  getResourceAsAnonymous(iri: string): void {
+  getResource(iri: string): void {
 
-    this.knoraApiConnection.v2.res.getResource(iri).subscribe(
-      (response: ReadResource) => {
-        this.getResourceProperties(response);
-      },
-      (error: ApiResponseError) => {
-        console.error('Error to get resource: ', error);
-      });
-  }
-
-  getResourceAsUser(iri: string): void {
-    console.log('login requested');
-    
-    this.knoraApiConnection.v2.auth.login('username', 'root', 'test').pipe(
-      mergeMap(
-        (loginResponse: ApiResponseData<LoginResponse>) => {
-          return this.knoraApiConnection.v2.res.getResource(iri);
-        }
-      )
-    ).subscribe(
-      (response: ReadResource) => {
-        this.getResourceProperties(response);
-      },
-      (error: ApiResponseError) => {
-        console.error('Error to get resource: ', error);
-      });      
+    if(!this.loggingIn){
+      this.knoraApiConnection.v2.res.getResource(iri).subscribe(
+        (response: ReadResource) => {
+          this.getResourceProperties(response);
+        },
+        (error: ApiResponseError) => {
+          console.error('Error to get resource: ', error);
+        });
+    }
   }
 
   getResourceProperties(response: ReadResource) : void {
     this.resource = response;
-    console.log(this.resource);
+    // console.log(this.resource);
 
     // get list of all properties
     const propsList: IHasProperty[] = this.resource.entityInfo.classes[this.resource.type].propertiesList;
