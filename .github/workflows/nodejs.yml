@@ -30,5 +30,4 @@ jobs:
     - run: npm run test
       env:
           TZ: Europe/Zurich
-      env:
-        CI: true
+          CI: true        
