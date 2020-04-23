@@ -2,11 +2,12 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { LinkValueComponent } from './link-value.component';
 import {
-  ReadLinkValue,
-  MockResource,
-  UpdateLinkValue,
-  CreateLinkValue,
-  ReadResource
+    ReadLinkValue,
+    MockResource,
+    UpdateLinkValue,
+    CreateLinkValue,
+    ReadResource,
+    SearchEndpointV2
 } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,7 +17,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KnoraApiConnectionToken } from '../../../core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { SearchEndpoint } from '@knora/api/src/api/v2/search/search-endpoint';
 
 /**
  * Test host component to simulate parent component.
@@ -190,7 +190,7 @@ describe('LinkValueComponent', () => {
     it('should search for resources by their label', () => {
 
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
-      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpoint>).doSearchByLabel.and.callFake(
+      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
@@ -211,7 +211,7 @@ describe('LinkValueComponent', () => {
 
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpoint>).doSearchByLabel.and.callFake(
+      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
@@ -241,7 +241,7 @@ describe('LinkValueComponent', () => {
 
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpoint>).doSearchByLabel.and.callFake(
+      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
@@ -399,7 +399,7 @@ describe('LinkValueComponent', () => {
     it('should search a new value', () => {
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpoint>).doSearchByLabel.and.callFake(
+      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
@@ -440,7 +440,7 @@ describe('LinkValueComponent', () => {
       // simulate user input
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpoint>).doSearchByLabel.and.callFake(
+      (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';

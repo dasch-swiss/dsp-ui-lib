@@ -3,18 +3,19 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DisplayEditComponent } from './display-edit.component';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
-  Constants,
-  MockResource,
-  ReadIntValue,
-  ReadResource,
-  ReadTextValueAsHtml,
-  ReadTextValueAsString,
-  ReadTextValueAsXml,
-  ReadValue,
-  UpdateIntValue,
-  UpdateResource,
-  UpdateValue,
-  WriteValueResponse
+    Constants,
+    MockResource,
+    ReadIntValue,
+    ReadResource,
+    ReadTextValueAsHtml,
+    ReadTextValueAsString,
+    ReadTextValueAsXml,
+    ReadValue,
+    UpdateIntValue,
+    UpdateResource,
+    UpdateValue,
+    ValuesEndpointV2,
+    WriteValueResponse
 } from '@knora/api';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,7 +24,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { KnoraApiConnectionToken } from '../../../core';
 import { MatIconModule } from '@angular/material/icon';
-import { ValuesEndpoint } from '@knora/api/src/api/v2/values/values-endpoint';
 
 @Component({
   selector: `kui-text-value-as-string`,
@@ -511,7 +511,7 @@ describe('DisplayEditComponent', () => {
 
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpoint>).updateValue.and.callFake(
+      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).updateValue.and.callFake(
         () => {
 
           const response = new WriteValueResponse();
@@ -524,7 +524,7 @@ describe('DisplayEditComponent', () => {
         }
       );
 
-      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpoint>).getValue.and.callFake(
+      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).getValue.and.callFake(
         () => {
 
           const updatedVal = new ReadIntValue();
@@ -649,7 +649,7 @@ describe('DisplayEditComponent', () => {
 
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpoint>).updateValue.and.callFake(
+      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).updateValue.and.callFake(
         () => {
 
           const response = new WriteValueResponse();
@@ -662,7 +662,7 @@ describe('DisplayEditComponent', () => {
         }
       );
 
-      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpoint>).getValue.and.callFake(
+      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).getValue.and.callFake(
         () => {
 
           const updatedVal = new ReadIntValue();

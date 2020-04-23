@@ -2,13 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListValueComponent } from './list-value.component';
 import { SublistValueComponent } from './subList-value/sublist-value.component';
 import {
-  ReadListValue,
-  MockResource,
-  ListNodeV2,
-  UpdateListValue,
-  CreateListValue,
-  ResourcePropertyDefinition,
-  CreateColorValue
+    ReadListValue,
+    MockResource,
+    ListNodeV2,
+    UpdateListValue,
+    CreateListValue,
+    ResourcePropertyDefinition,
+    ListsEndpointV2
 } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +18,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KnoraApiConnectionToken } from '../../../core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { ListsEndpoint } from '@knora/api/src/api/v2/list/lists-endpoint';
 /**
  * Test host component to simulate parent component.
  */
@@ -137,7 +136,7 @@ describe('ListValueComponent', () => {
     });
     it('should make list value editable as button', () => {
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
-      (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpoint>).getList.and.callFake(
+      (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpointV2>).getList.and.callFake(
           (rootNodeIri: string) => {
           const res = new ListNodeV2();
           res.id = 'http://rdfh.ch/lists/0001/treeList';
@@ -168,7 +167,7 @@ describe('ListValueComponent', () => {
     });
     it('should validate an existing value with an added comment', () => {
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
-      (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpoint>).getList.and.callFake(
+      (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpointV2>).getList.and.callFake(
         (rootNodeIri) => {
           const res = new ListNodeV2();
           res.id = 'http://rdfh.ch/lists/0001/treeList';
@@ -212,7 +211,7 @@ describe('ListValueComponent', () => {
     beforeEach(() => {
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpoint>).getList.and.callFake(
+      (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpointV2>).getList.and.callFake(
         (rootNodeIri: string) => {
           const res = new ListNodeV2();
           res.id = 'http://rdfh.ch/lists/0001/treeList';

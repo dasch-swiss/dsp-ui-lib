@@ -1,10 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockResource, ReadResource, PropertyDefinition } from '@knora/api';
+import { MockResource, ReadResource, PropertyDefinition, ResourcesEndpointV2 } from '@knora/api';
 import { map } from 'rxjs/internal/operators/map';
 import { KnoraApiConnectionToken } from '../../../core';
 import { ResourceViewComponent, PropertyInfoValues } from './resource-view.component';
-import { ResourcesEndpoint } from '@knora/api/src/api/v2/resource/resources-endpoint';
 
 /**
  * Test host component to simulate child component, here property-view.
@@ -66,7 +65,7 @@ describe('ResourceViewComponent', () => {
   beforeEach(() => {
     const resSpy = TestBed.inject(KnoraApiConnectionToken);
 
-    (resSpy.v2.res as jasmine.SpyObj<ResourcesEndpoint>).getResource.and.callFake(
+    (resSpy.v2.res as jasmine.SpyObj<ResourcesEndpointV2>).getResource.and.callFake(
       (id: string) => {
 
         return MockResource.getTestthing().pipe(
