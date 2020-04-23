@@ -43,7 +43,6 @@ export class ResourceViewComponent implements OnInit, OnChanges {
   constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
 
   ngOnInit() {
-
   }
 
   ngOnChanges() {
@@ -56,51 +55,48 @@ export class ResourceViewComponent implements OnInit, OnChanges {
    * @param resource Resource
    */
   getResource(iri: string): void {
+
     this.knoraApiConnection.v2.res.getResource(iri).subscribe(
       (response: ReadResource) => {
-        this.getResourceProperties(response);
+        this.resource = response;
+
+        // get list of all properties
+        const propsList: IHasProperty[] = this.resource.entityInfo.classes[this.resource.type].propertiesList;
+
+        for (const prop of propsList) {
+          const index = prop.propertyIndex;
+
+          if (this.resource.entityInfo.properties[index]) {
+            if (this.resource.entityInfo.properties[index] instanceof ResourcePropertyDefinition) {
+              // filter all properties by type ResourcePropertyDefinition
+              const propInfoAndValues: PropertyInfoValues = {
+                guiDef: prop,
+                propDef: this.resource.entityInfo.properties[index],
+                values: this.resource.properties[index]
+              };
+
+              this.propArray.push(propInfoAndValues);
+
+            } else if (this.resource.entityInfo.properties[index] instanceof SystemPropertyDefinition) {
+              // filter all properties by type SystemPropertyDefinition
+              const systemPropInfo = this.resource.entityInfo.properties[index];
+
+              this.systemPropArray.push(systemPropInfo);
+
+            }
+
+          } else {
+            console.error('Error detected: the property with IRI =' + index + 'is not a property of the resource');
+          }
+        }
+
+        // sort properties by guiOrder
+        this.propArray.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
+
       },
       (error: ApiResponseError) => {
         console.error('Error to get resource: ', error);
       });
-  }
-
-  getResourceProperties(response: ReadResource) : void {
-    this.resource = response;
-    // console.log(this.resource);
-
-    // get list of all properties
-    const propsList: IHasProperty[] = this.resource.entityInfo.classes[this.resource.type].propertiesList;
-
-    for (const prop of propsList) {
-      const index = prop.propertyIndex;
-
-      if (this.resource.entityInfo.properties[index]) {
-        if (this.resource.entityInfo.properties[index] instanceof ResourcePropertyDefinition) {
-          // filter all properties by type ResourcePropertyDefinition
-          const propInfoAndValues: PropertyInfoValues = {
-            guiDef: prop,
-            propDef: this.resource.entityInfo.properties[index],
-            values: this.resource.properties[index]
-          };
-
-          this.propArray.push(propInfoAndValues);
-
-        } else if (this.resource.entityInfo.properties[index] instanceof SystemPropertyDefinition) {
-          // filter all properties by type SystemPropertyDefinition
-          const systemPropInfo = this.resource.entityInfo.properties[index];
-
-          this.systemPropArray.push(systemPropInfo);
-
-        }
-
-      } else {
-        console.error('Error detected: the property with IRI =' + index + 'is not a property of the resource');
-      }
-    }
-
-    // sort properties by guiOrder
-    this.propArray.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
   }
 
 }
