@@ -26,7 +26,7 @@ class TestPropertyViewComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-resource-view #resView [iri]="resourceIri" [loggingIn]="false"></kui-resource-view>`
+    <kui-resource-view #resView [iri]="resourceIri"></kui-resource-view>`
 })
 class TestParentComponent {
 

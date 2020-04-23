@@ -7,12 +7,9 @@ import {
   ReadValue,
   ResourcePropertyDefinition,
   ApiResponseError,
-  SystemPropertyDefinition,
-  ApiResponseData,
-  LoginResponse
+  SystemPropertyDefinition
 } from '@knora/api';
 import { KnoraApiConnectionToken } from '../../../core/core.module';
-import { mergeMap } from 'rxjs/operators';
 
 
 // object of property information from ontology class, properties and property values
