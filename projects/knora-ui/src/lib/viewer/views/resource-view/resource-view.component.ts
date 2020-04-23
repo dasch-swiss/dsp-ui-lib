@@ -37,8 +37,6 @@ export class ResourceViewComponent implements OnInit, OnChanges {
    */
   @Input() iri: string;
 
-  @Input() loggingIn: boolean;
-
   resource: ReadResource;
 
   propArray: PropertyInfoValues[] = []; // resource property
@@ -61,16 +59,13 @@ export class ResourceViewComponent implements OnInit, OnChanges {
    * @param resource Resource
    */
   getResource(iri: string): void {
-
-    if(!this.loggingIn){
-      this.knoraApiConnection.v2.res.getResource(iri).subscribe(
-        (response: ReadResource) => {
-          this.getResourceProperties(response);
-        },
-        (error: ApiResponseError) => {
-          console.error('Error to get resource: ', error);
-        });
-    }
+    this.knoraApiConnection.v2.res.getResource(iri).subscribe(
+      (response: ReadResource) => {
+        this.getResourceProperties(response);
+      },
+      (error: ApiResponseError) => {
+        console.error('Error to get resource: ', error);
+      });
   }
 
   getResourceProperties(response: ReadResource) : void {
