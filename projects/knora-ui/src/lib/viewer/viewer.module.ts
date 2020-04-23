@@ -91,6 +91,7 @@ import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndat
     TimeValueComponent,
     DateValueComponent,
     LinkValueComponent,
+    PropertyViewComponent,
     ResourceViewComponent,
     ListValueComponent,
     SublistValueComponent,
