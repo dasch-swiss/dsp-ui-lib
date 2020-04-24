@@ -27,5 +27,7 @@ jobs:
     - run: ./find-ignored-tests.sh
     - run: npm run build-lib
     - run: npm run build-app
+    - run: npm run test
       env:
-        CI: true
+          TZ: Europe/Zurich
+          CI: true        

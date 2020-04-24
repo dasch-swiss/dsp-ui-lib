@@ -2,3 +2,20 @@
     color: #888888;
     font-family: Helvetica, sans-serif;
 }
+
+.navbar {
+    padding: 1% 0% 2% 0%;
+}
+
+.navbar .route{
+    display: inline-block;
+}
+
+.navbar .route.mat-accent{
+    background-color: rgb(40, 40, 118);
+    color: white;
+}
+
+.navbar .route:nth-child(2){
+    margin-left: 1%;
+}
