@@ -3,8 +3,8 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {ModifyComponent} from './modify.component';
 import {KnoraApiConnectionToken} from 'knora-ui';
 import {of} from 'rxjs';
-import {Input, Component} from '@angular/core';
-import {ApiResponseData, AuthenticationEndpointV2, LoginResponse} from "@knora/api";
+import {Component, Input} from '@angular/core';
+import {ApiResponseData, AuthenticationEndpointV2, LoginResponse} from '@knora/api';
 
 @Component({
     selector: `kui-resource-view`,

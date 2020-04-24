@@ -3,8 +3,8 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {ReadComponent} from './read.component';
 import {KnoraApiConnectionToken} from 'knora-ui';
 import {of} from 'rxjs';
-import {Input, Component} from '@angular/core';
-import {ApiResponseData, AuthenticationEndpointV2, LoginResponse, LogoutResponse} from "@knora/api";
+import {Component, Input} from '@angular/core';
+import {ApiResponseData, AuthenticationEndpointV2, LogoutResponse} from '@knora/api';
 
 @Component({
     selector: `kui-resource-view`,
@@ -45,7 +45,7 @@ describe('ReadComponent', () => {
         (authSpy.v2.auth as jasmine.SpyObj<AuthenticationEndpointV2>).logout.and.returnValue(
             of({} as ApiResponseData<LogoutResponse>)
         );
-        
+
         fixture = TestBed.createComponent(ReadComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
