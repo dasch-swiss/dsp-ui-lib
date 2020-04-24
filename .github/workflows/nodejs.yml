@@ -18,7 +18,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: git clone -b wip/121-mock-factory --single-branch --depth 1 https://github.com/dasch-swiss/knora-api-js-lib
-    - run: cd knora-api-js-lib && npm install yalc -g && npm install && npm run yalc-publish # each 'run' is executed from project root
+    - run: cd knora-api-js-lib && npm install yalc -g && npm install && npm run peer-deps && npm run yalc-publish # each 'run' is executed from project root
     - run: yalc add @knora/api
     - run: npm install
     - run: npm run test-lib
@@ -27,5 +27,7 @@ jobs:
     - run: ./find-ignored-tests.sh
     - run: npm run build-lib
     - run: npm run build-app
+    - run: npm run test
       env:
-        CI: true
+          TZ: Europe/Zurich
+          CI: true        
