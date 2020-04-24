@@ -1,3 +1,5 @@
+<p *ngIf="mode === 'read'; else showForm">{{valueFormControl.value}}</p>
+<ng-template #showForm>
 <span [formGroup]="form">
     <mat-form-field class="large-field child-value-component" floatLabel="never">
         <input matInput [formControlName]="'textValue'" class="value" placeholder="Text value" type="text" [readonly]="mode === 'read'">
@@ -20,3 +22,4 @@
         Please change the value
     </mat-error>
 </span>
+</ng-template>
