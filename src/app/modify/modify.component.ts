@@ -23,7 +23,6 @@ export class ModifyComponent implements OnInit {
     this.loading = true;
     this.knoraApiConnection.v2.auth.login('username', 'root', 'test').subscribe(
       (response: ApiResponseData<LoginResponse>) => {
-        console.log('User logged in successfully: ', response);
         this.resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
         this.loading = false;
       },

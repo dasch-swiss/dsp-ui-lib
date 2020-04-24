@@ -24,7 +24,6 @@ export class ReadComponent implements OnInit {
     this.loading = true;
     this.knoraApiConnection.v2.auth.logout().subscribe(
       (response: ApiResponseData<LogoutResponse>) => {
-        console.log('User logged out successfully');
         this.resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
         this.loading = false;
       },
