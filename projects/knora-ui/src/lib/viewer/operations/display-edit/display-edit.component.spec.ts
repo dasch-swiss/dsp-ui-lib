@@ -1,28 +1,29 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DisplayEditComponent} from './display-edit.component';
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { DisplayEditComponent } from './display-edit.component';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
-  Constants,
-  MockResource,
-  ReadIntValue,
-  ReadResource,
-  ReadTextValueAsHtml,
-  ReadTextValueAsString,
-  ReadTextValueAsXml,
-  ReadValue,
-  UpdateIntValue,
-  UpdateResource,
-  UpdateValue,
-  WriteValueResponse
+    Constants,
+    MockResource,
+    ReadIntValue,
+    ReadResource,
+    ReadTextValueAsHtml,
+    ReadTextValueAsString,
+    ReadTextValueAsXml,
+    ReadValue,
+    UpdateIntValue,
+    UpdateResource,
+    UpdateValue,
+    ValuesEndpointV2,
+    WriteValueResponse
 } from '@knora/api';
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {By} from '@angular/platform-browser';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {of} from 'rxjs';
-import {KnoraApiConnectionToken} from '../../../core';
-import { MatIconModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { of } from 'rxjs';
+import { KnoraApiConnectionToken } from '../../../core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: `kui-text-value-as-string`,
@@ -112,7 +113,7 @@ class TestIntValueComponent implements OnInit {
     return updateIntVal;
   }
 
-  updateCommentVisibility() : void { }
+  updateCommentVisibility(): void { }
 }
 
 @Component({
@@ -204,7 +205,7 @@ class TestDateValueComponent {
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('displayEditVal', {static: false}) displayEditValueComponent: DisplayEditComponent;
+  @ViewChild('displayEditVal') displayEditValueComponent: DisplayEditComponent;
 
   readResource: ReadResource;
   readValue: ReadValue;
@@ -228,7 +229,7 @@ class TestHostDisplayValueComponent implements OnInit {
     readVal.userHasPermission = 'M';
 
     readVal.valueHasComment = comment;
-    this.readValue = readVal;    
+    this.readValue = readVal;
   }
 }
 
@@ -508,9 +509,9 @@ describe('DisplayEditComponent', () => {
 
     it('should save a new version of a value', () => {
 
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      valuesSpy.v2.values.updateValue.and.callFake(
+      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).updateValue.and.callFake(
         () => {
 
           const response = new WriteValueResponse();
@@ -523,7 +524,7 @@ describe('DisplayEditComponent', () => {
         }
       );
 
-      valuesSpy.v2.values.getValue.and.callFake(
+      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).getValue.and.callFake(
         () => {
 
           const updatedVal = new ReadIntValue();
@@ -646,9 +647,9 @@ describe('DisplayEditComponent', () => {
 
     it('should not display a comment button if the comment is deleted', () => {
 
-      const valuesSpy = TestBed.get(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
 
-      valuesSpy.v2.values.updateValue.and.callFake(
+      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).updateValue.and.callFake(
         () => {
 
           const response = new WriteValueResponse();
@@ -661,7 +662,7 @@ describe('DisplayEditComponent', () => {
         }
       );
 
-      valuesSpy.v2.values.getValue.and.callFake(
+      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).getValue.and.callFake(
         () => {
 
           const updatedVal = new ReadIntValue();
@@ -726,6 +727,6 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
 
     });
-      
+
   });
 });

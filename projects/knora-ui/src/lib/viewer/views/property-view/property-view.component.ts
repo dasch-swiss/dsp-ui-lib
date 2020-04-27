@@ -10,7 +10,7 @@ import { ReadResource, PropertyDefinition } from '@knora/api';
 })
 export class PropertyViewComponent implements OnInit {
 
-  @ViewChild('displayEdit', { static: false }) displayEditComponent: DisplayEditComponent;
+  @ViewChild('displayEdit') displayEditComponent: DisplayEditComponent;
 
   /**
    * Parent resource

@@ -1,8 +1,9 @@
-import {Input} from '@angular/core';
+import { Input, Directive } from '@angular/core';
 import {CreateValue, ReadValue, UpdateValue} from '@knora/api';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
+@Directive()
 export abstract class BaseValueComponent {
 
   shouldShowComment = false;

@@ -4,7 +4,7 @@ import {TextValueAsStringComponent} from './text-value-as-string.component';
 import {Component, DebugElement, OnInit, ViewChild} from '@angular/core';
 import {CreateTextValueAsString, MockResource, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
 
@@ -17,7 +17,7 @@ import {By} from '@angular/platform-browser';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TextValueAsStringComponent;
+  @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
 
   displayInputVal: ReadTextValueAsString;
 
@@ -46,7 +46,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostDisplayValueCommentComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TextValueAsStringComponent;
+  @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
 
   displayInputVal: ReadTextValueAsString;
 
@@ -76,7 +76,7 @@ class TestHostDisplayValueCommentComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TextValueAsStringComponent;
+  @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

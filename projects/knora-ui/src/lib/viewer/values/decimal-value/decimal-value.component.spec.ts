@@ -4,7 +4,7 @@ import { DecimalValueComponent } from './decimal-value.component';
 import { ReadDecimalValue, MockResource, UpdateValue, UpdateDecimalValue, CreateDecimalValue } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
@@ -18,7 +18,7 @@ import { By } from '@angular/platform-browser';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: DecimalValueComponent;
+  @ViewChild('inputVal') inputValueComponent: DecimalValueComponent;
 
   displayInputVal: ReadDecimalValue;
 
@@ -47,7 +47,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: DecimalValueComponent;
+  @ViewChild('inputVal') inputValueComponent: DecimalValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 
