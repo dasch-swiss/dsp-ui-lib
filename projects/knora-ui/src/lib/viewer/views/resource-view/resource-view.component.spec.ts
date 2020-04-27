@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockResource, ReadResource, PropertyDefinition } from '@knora/api';
+import { MockResource, ReadResource, PropertyDefinition, ResourcesEndpointV2 } from '@knora/api';
 import { map } from 'rxjs/internal/operators/map';
 import { KnoraApiConnectionToken } from '../../../core';
 import { ResourceViewComponent, PropertyInfoValues } from './resource-view.component';
@@ -30,7 +30,7 @@ class TestPropertyViewComponent implements OnInit {
 })
 class TestParentComponent {
 
-  @ViewChild('resView', { static: false }) resourceViewComponent: ResourceViewComponent;
+  @ViewChild('resView') resourceViewComponent: ResourceViewComponent;
 
   resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
 }
@@ -63,9 +63,9 @@ describe('ResourceViewComponent', () => {
   }));
 
   beforeEach(() => {
-    const resSpy = TestBed.get(KnoraApiConnectionToken);
+    const resSpy = TestBed.inject(KnoraApiConnectionToken);
 
-    resSpy.v2.res.getResource.and.callFake(
+    (resSpy.v2.res as jasmine.SpyObj<ResourcesEndpointV2>).getResource.and.callFake(
       (id: string) => {
 
         return MockResource.getTestthing().pipe(
@@ -88,7 +88,7 @@ describe('ResourceViewComponent', () => {
 
   it('should get a resource', () => {
 
-    const resSpy = TestBed.get(KnoraApiConnectionToken);
+    const resSpy = TestBed.inject(KnoraApiConnectionToken);
 
     expect(resSpy.v2.res.getResource).toHaveBeenCalledTimes(1);
     expect(resSpy.v2.res.getResource).toHaveBeenCalledWith(testHostComponent.resourceIri);

@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxModule, MatInputModule } from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
 import { BooleanValueComponent } from './boolean-value.component';
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
 import { ReadBooleanValue, MockResource, UpdateBooleanValue, CreateBooleanValue } from '@knora/api';
@@ -17,7 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('booleanVal', { static: false }) booleanValueComponent: BooleanValueComponent;
+  @ViewChild('booleanVal') booleanValueComponent: BooleanValueComponent;
 
   displayBooleanVal: ReadBooleanValue;
 
@@ -44,7 +45,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('booleanVal', { static: false }) booleanValueComponent: BooleanValueComponent;
+  @ViewChild('booleanVal') booleanValueComponent: BooleanValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

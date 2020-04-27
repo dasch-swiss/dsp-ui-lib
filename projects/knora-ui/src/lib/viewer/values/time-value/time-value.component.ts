@@ -14,8 +14,8 @@ import {BaseValueComponent} from '../base-value.component';
 })
 export class TimeValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('timeInput', {static: false}) timeInputComponent: TimeInputComponent;
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('timeInput') timeInputComponent: TimeInputComponent;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadTimeValue;
 

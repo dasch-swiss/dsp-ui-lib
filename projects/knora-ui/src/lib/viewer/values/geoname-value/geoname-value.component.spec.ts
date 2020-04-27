@@ -3,10 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReadGeonameValue, MockResource, UpdateGeonameValue, CreateGeonameValue } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
 
 import { GeonameValueComponent } from './geoname-value.component';
 
@@ -19,7 +19,7 @@ import { GeonameValueComponent } from './geoname-value.component';
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', { static: false }) inputValueComponent: GeonameValueComponent;
+  @ViewChild('inputVal') inputValueComponent: GeonameValueComponent;
 
   displayInputVal: ReadGeonameValue;
 
@@ -48,7 +48,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', { static: false }) inputValueComponent: GeonameValueComponent;
+  @ViewChild('inputVal') inputValueComponent: GeonameValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

@@ -74,7 +74,7 @@ class TestDateInputComponent implements ControlValueAccessor, MatFormFieldContro
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: DateValueComponent;
+  @ViewChild('inputVal') inputValueComponent: DateValueComponent;
 
   displayInputVal: ReadDateValue;
 
@@ -103,7 +103,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: DateValueComponent;
+  @ViewChild('inputVal') inputValueComponent: DateValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

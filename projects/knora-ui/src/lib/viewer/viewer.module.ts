@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
-import { MatDatepickerModule } from '@angular/material';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,65 +38,64 @@ import { DateInputComponent } from './values/date-value/date-input/date-input.co
 import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndatepicker.directive';
 
 @NgModule({
-  declarations: [
-    TextValueAsStringComponent,
-    TextValueAsHtmlComponent,
-    IntValueComponent,
-    DisplayEditComponent,
-    BooleanValueComponent,
-    DecimalValueComponent,
-    UriValueComponent,
-    IntervalValueComponent,
-    IntervalInputComponent,
-    TimeValueComponent,
-    TimeInputComponent,
-    JDNDatepickerDirective,
-    PropertyViewComponent,
-    ResourceViewComponent,
-    ColorValueComponent,
-    ColorPickerComponent,
-    DateValueComponent,
-    DateInputComponent,
-    CalendarHeaderComponent,
-    LinkValueComponent,
-    ListValueComponent,
-    SublistValueComponent,
-    GeonameValueComponent
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatAutocompleteModule,
-    MatCheckboxModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatIconModule,
-    MatJDNConvertibleCalendarDateAdapterModule,
-    MatMenuModule,
-    ColorPickerModule
-  ],
-  entryComponents: [CalendarHeaderComponent],
-  exports: [
-    TextValueAsStringComponent,
-    TextValueAsHtmlComponent,
-    IntValueComponent,
-    DisplayEditComponent,
-    BooleanValueComponent,
-    ColorValueComponent,
-    DecimalValueComponent,
-    UriValueComponent,
-    IntervalValueComponent,
-    TimeValueComponent,
-    DateValueComponent,
-    LinkValueComponent,
-    PropertyViewComponent,
-    ResourceViewComponent,
-    ListValueComponent,
-    SublistValueComponent,
-    GeonameValueComponent
-  ]
+    declarations: [
+        TextValueAsStringComponent,
+        TextValueAsHtmlComponent,
+        IntValueComponent,
+        DisplayEditComponent,
+        BooleanValueComponent,
+        DecimalValueComponent,
+        UriValueComponent,
+        IntervalValueComponent,
+        IntervalInputComponent,
+        TimeValueComponent,
+        TimeInputComponent,
+        JDNDatepickerDirective,
+        PropertyViewComponent,
+        ResourceViewComponent,
+        ColorValueComponent,
+        ColorPickerComponent,
+        DateValueComponent,
+        DateInputComponent,
+        CalendarHeaderComponent,
+        LinkValueComponent,
+        ListValueComponent,
+        SublistValueComponent,
+        GeonameValueComponent
+    ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatAutocompleteModule,
+        MatCheckboxModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatIconModule,
+        MatJDNConvertibleCalendarDateAdapterModule,
+        MatMenuModule,
+        ColorPickerModule
+    ],
+    exports: [
+        TextValueAsStringComponent,
+        TextValueAsHtmlComponent,
+        IntValueComponent,
+        DisplayEditComponent,
+        BooleanValueComponent,
+        ColorValueComponent,
+        DecimalValueComponent,
+        UriValueComponent,
+        IntervalValueComponent,
+        TimeValueComponent,
+        DateValueComponent,
+        LinkValueComponent,
+        PropertyViewComponent,
+        ResourceViewComponent,
+        ListValueComponent,
+        SublistValueComponent,
+        GeonameValueComponent
+    ]
 })
 export class ViewerModule {
 }

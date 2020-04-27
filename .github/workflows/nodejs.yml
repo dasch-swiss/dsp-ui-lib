@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [11.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -27,5 +27,7 @@ jobs:
     - run: ./find-ignored-tests.sh
     - run: npm run build-lib
     - run: npm run build-app
+    - run: npm run test
       env:
-        CI: true
+          TZ: Europe/Zurich
+          CI: true        
