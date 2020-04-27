@@ -7,6 +7,7 @@
     "build": "ng build",
     "test": "ng test --watch=false --browsers=ChromeHeadless",
     "test-lib": "ng t --watch=false --browsers=ChromeHeadless --project knora-ui",
+    "test-lib-local": "ng t --project knora-ui",
     "build-lib": "ng b --prod --project knora-ui",
     "build-app": "ng b --prod --buildOptimizer=true",
     "lint": "ng lint",
