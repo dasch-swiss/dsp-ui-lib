@@ -98,7 +98,6 @@ export abstract class BaseValueComponent {
 
       }
 
-      this.updateCommentVisibility();
       this.valueFormControl.updateValueAndValidity();
     }
   }
@@ -116,7 +115,7 @@ export abstract class BaseValueComponent {
    * Display comment field if in UPDATE or CREATE mode
    */
   updateCommentVisibility(): void {
-    this.shouldShowComment = this.mode !== 'read' ? true : false;
+    this.shouldShowComment = this.mode === 'read' ? true : false;
   }
 
   /**

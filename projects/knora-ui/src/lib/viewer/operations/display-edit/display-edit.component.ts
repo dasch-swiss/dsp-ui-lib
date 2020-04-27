@@ -80,6 +80,9 @@ export class DisplayEditComponent implements OnInit {
 
     // hide comment toggle button while in edit mode
     this.checkCommentToggleVisibility();
+
+    // hide read mode comment when switching to edit mode
+    this.displayValueComponent.shouldShowComment = false;
   }
 
   saveEditValue() {
