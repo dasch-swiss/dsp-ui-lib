@@ -1,6 +1,11 @@
 {
-  "name": "knora-ui",
+  "name": "@knora/ui",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dasch-swiss/knora-ui-ng-lib.git"
+  },
+  "homepage": "https://dasch-swiss.github.io/knora-ui-ng-lib",
   "peerDependencies": {
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14",

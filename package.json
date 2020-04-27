@@ -1,13 +1,18 @@
 {
   "name": "knora-ui-ng-lib",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dasch-swiss/knora-ui-ng-lib.git"
+  },
+  "homepage": "https://dasch-swiss.github.io/knora-ui-ng-lib",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "test-lib": "ng t --watch=false --browsers=ChromeHeadless --project knora-ui",
-    "build-lib": "ng b --project knora-ui",
+    "test-lib": "ng t --watch=false --browsers=ChromeHeadless --project @knora/ui",
+    "build-lib": "ng b --project @knora/ui",
     "build-app": "ng b --prod --buildOptimizer=true",
     "lint": "ng lint",
     "e2e": "ng e2e"

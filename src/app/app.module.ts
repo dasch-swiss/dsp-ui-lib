@@ -3,7 +3,7 @@ import {APP_INITIALIZER, NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {KnoraApiConfigToken, KnoraApiConnectionToken, KuiConfigToken, ViewerModule} from 'knora-ui';
+import {KnoraApiConfigToken, KnoraApiConnectionToken, KuiConfigToken, ViewerModule} from '@knora/ui';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppInitService} from './app-init.service';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';

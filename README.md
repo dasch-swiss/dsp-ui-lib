@@ -1,5 +1,4 @@
-# DSP-UI library (knora-ui)
-
+# DSP-UI library (@knora/ui)
 
 This is the demo and developing environment for DSP-UI library composed of 4 modules.
 
@@ -56,7 +55,7 @@ $ node -v
 $ npm -v
 ```
 
-Install [Node](https://nodejs.org/en/download/) that includes npm in version 10.9.0 or later: 
+Install [Node](https://nodejs.org/en/download/) that includes npm in version 10.9.0 or later:
 
 ```bash
 $ brew install node
@@ -90,9 +89,9 @@ $ npm run build-lib
 
 If you want to add more components, services and so on to a module of the library, you can do it with:
 
-`$ ng generate component [path/in/your/module/][name-of-component] --project knora-ui --styleext scss --prefix kui`
+`$ ng generate component [path/in/your/module/][name-of-component] --project @knora/ui --styleext scss --prefix kui`
 
-Before testing the new component inside of the demo app, you have to rebuild after each change: `ng build knora-ui`.
+Before testing the new component inside of the demo app, you have to rebuild after each change: `ng build @knora/ui`.
 
 #### Run the DSP-UI Demo Application
 
@@ -127,7 +126,7 @@ $ npm run yalc-publish
 Use them in your application:
 
 ```bash
-$ yalc add knora-ui
+$ yalc add @knora/ui
 ```
 
 To remove from the project and restore `package.json` run:
@@ -137,7 +136,7 @@ $ yalc remove --all
 ```
 
 ## Running the application in productive mode
-To simulate circumstances of production, the application should be built with optimization and served locally 
+To simulate circumstances of production, the application should be built with optimization and served locally
 (not in dev mode, but from a local web server).
 
 - install `nginx` on your system, e.g. `brew install nginx` for mac OS. See the docs for more information: <https://linux.die.net/man/8/nginx>.
@@ -151,22 +150,19 @@ To simulate circumstances of production, the application should be built with op
                 listen 8090;
                 server_name knorauiapp.local;
                 root /$abs_path_to_lib/dist/$knora-ui-ng-lib_folder_name;
-    
+
                 location / {
                          try_files $uri $uri/ /index.html;
                 }
-    
+
             access_log /usr/local/etc/nginx/logs/knorauiapp.local.access.log;
         }
     ```
 
-- add an entry to your `/etc/hosts`: `127.0.0.1	knorauiapp.local`
-- create an empty file `knorauiapp.local.access.log` in `/usr/local/etc/nginx/logs` 
+- add an entry to your `/etc/hosts`: `127.0.0.1    knorauiapp.local`
+- create an empty file `knorauiapp.local.access.log` in `/usr/local/etc/nginx/logs`
   (you might have to create the folder `logs` first)
 - start `nginx` (if `nginx` is already running, stop it first: `nginx`: `nginx -s stop`)
 - build the library: `npm run build-lib`
 - build the test app with optimization: `npm run build-app`
 - access <http://knorauiapp.local:8090>
-
-
-
