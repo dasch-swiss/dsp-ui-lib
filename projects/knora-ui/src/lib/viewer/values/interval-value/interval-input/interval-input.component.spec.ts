@@ -6,7 +6,7 @@ import {Component, DebugElement, OnInit, ViewChild} from '@angular/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
-import {MatInputModule} from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
 
 /**
  * Test host component to simulate parent component.
@@ -21,7 +21,7 @@ import {MatInputModule} from '@angular/material';
 })
 class TestHostComponent implements OnInit {
 
-  @ViewChild('intervalInput', {static: false}) intervalInputComponent: IntervalInputComponent;
+  @ViewChild('intervalInput') intervalInputComponent: IntervalInputComponent;
 
   form: FormGroup;
 

@@ -21,7 +21,7 @@ import { By } from '@angular/platform-browser';
 })
 class TestHostComponent implements OnInit {
 
-  @ViewChild('colorInput', { static: false }) colorPickerComponent: ColorPickerComponent;
+  @ViewChild('colorInput') colorPickerComponent: ColorPickerComponent;
 
   form: FormGroup;
 

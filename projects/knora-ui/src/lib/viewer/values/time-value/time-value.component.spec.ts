@@ -9,7 +9,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
 import {By} from '@angular/platform-browser';
-import {ErrorStateMatcher} from '@angular/material';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
   selector: `kui-time-input`,
@@ -74,7 +74,7 @@ class TestTimeInputComponent implements ControlValueAccessor, MatFormFieldContro
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TimeValueComponent;
+  @ViewChild('inputVal') inputValueComponent: TimeValueComponent;
 
   displayInputVal: ReadTimeValue;
 
@@ -103,7 +103,7 @@ class TestHostDisplayValueComponent implements OnInit {
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal', {static: false}) inputValueComponent: TimeValueComponent;
+  @ViewChild('inputVal') inputValueComponent: TimeValueComponent;
 
   mode: 'read' | 'update' | 'create' | 'search';
 

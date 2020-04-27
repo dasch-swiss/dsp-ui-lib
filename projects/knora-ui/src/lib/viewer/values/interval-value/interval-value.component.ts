@@ -4,7 +4,7 @@ import {CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue} from '@knor
 import {AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Interval, IntervalInputComponent} from './interval-input/interval-input.component';
-import {ErrorStateMatcher} from '@angular/material';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { take } from 'rxjs/operators';
 
@@ -23,8 +23,8 @@ export class IntervalErrorStateMatcher implements ErrorStateMatcher {
 })
 export class IntervalValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('intervalInput', {static: false}) intervalInputComponent: IntervalInputComponent;
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('intervalInput') intervalInputComponent: IntervalInputComponent;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadIntervalValue;
 
