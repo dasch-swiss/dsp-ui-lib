@@ -1,5 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {MatButtonModule} from '@angular/material/button';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -7,6 +8,8 @@ import {KnoraApiConfigToken, KnoraApiConnectionToken, KuiConfigToken, ViewerModu
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppInitService} from './app-init.service';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
+import { ModifyComponent } from './modify/modify.component';
+import { ReadComponent } from './read/read.component';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -16,14 +19,17 @@ export function initializeApp(appInitService: AppInitService) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ModifyComponent,
+    ReadComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     ViewerModule,
-    MatJDNConvertibleCalendarDateAdapterModule
+    MatJDNConvertibleCalendarDateAdapterModule,
+    MatButtonModule
   ],
   providers: [
     AppInitService,

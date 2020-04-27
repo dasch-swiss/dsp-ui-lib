@@ -23,7 +23,7 @@ import {KnoraApiConnectionToken} from '../../../core/core.module';
 })
 export class DisplayEditComponent implements OnInit {
 
-  @ViewChild('displayVal', {static: false}) displayValueComponent: BaseValueComponent;
+  @ViewChild('displayVal') displayValueComponent: BaseValueComponent;
 
   @Input() displayValue: ReadValue;
 

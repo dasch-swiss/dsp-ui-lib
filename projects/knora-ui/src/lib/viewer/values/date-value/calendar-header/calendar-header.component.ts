@@ -13,7 +13,7 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./calendar-header.component.scss']
 })
 export class CalendarHeaderComponent<D> implements OnInit, OnDestroy {
-  constructor(@Host() private _calendar: MatCalendar<JDNConvertibleCalendar>,
+  constructor(private _calendar: MatCalendar<JDNConvertibleCalendar>,
               private _dateAdapter: DateAdapter<JDNConvertibleCalendar>,
               private _datepickerContent: MatDatepickerContent<JDNConvertibleCalendar>,
               @Inject(FormBuilder) private fb: FormBuilder) {

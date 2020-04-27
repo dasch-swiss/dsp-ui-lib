@@ -65,7 +65,7 @@ class TestHostComponent implements OnInit {
 
   children: ListNodeV2[];
 
-  @ViewChild(MatMenuTrigger, { static: false }) menuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger) menuTrigger: MatMenuTrigger;
 
   @ViewChild('childMenu', { static: true }) public childMenu: MatMenuTrigger;
 

@@ -18,7 +18,7 @@ import { PropertyViewComponent } from './property-view.component';
 })
 class TestPropertyParentComponent implements OnInit {
 
-  @ViewChild('propView', { static: false }) propertyViewComponent: PropertyViewComponent;
+  @ViewChild('propView') propertyViewComponent: PropertyViewComponent;
 
   parentResource: ReadResource;
 
