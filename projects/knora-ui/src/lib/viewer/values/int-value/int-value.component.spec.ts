@@ -81,6 +81,8 @@ describe('IntValueComponent', () => {
     let valueComponentDe: DebugElement;
     let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -94,8 +96,9 @@ describe('IntValueComponent', () => {
 
       const hostCompDe = testHostFixture.debugElement;
       valueComponentDe = hostCompDe.query(By.directive(IntValueComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -106,9 +109,7 @@ describe('IntValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueInputNativeElement.value).toEqual('1');
-
-      expect(valueInputNativeElement.readOnly).toEqual(true);
+      expect(valueReadModeNativeElement.outerText).toEqual('1');
 
     });
 
@@ -117,6 +118,9 @@ describe('IntValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -147,6 +151,9 @@ describe('IntValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
@@ -181,6 +188,9 @@ describe('IntValueComponent', () => {
 
       testHostFixture.detectChanges();
 
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
@@ -208,6 +218,9 @@ describe('IntValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -242,7 +255,7 @@ describe('IntValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('20');
+      expect(valueReadModeNativeElement.outerText).toEqual('20');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

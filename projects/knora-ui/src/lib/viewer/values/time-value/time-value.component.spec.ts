@@ -131,6 +131,8 @@ describe('TimeValueComponent', () => {
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
     let valueComponentDe: DebugElement;
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -145,6 +147,10 @@ describe('TimeValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(TimeValueComponent));
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+      console.log(valueReadModeDebugElement);
+      
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
       
     });
 
@@ -156,9 +162,9 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(true);      
+      //expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-08-30T10:45:20.173572Z');
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-08-30T10:45:20.173572Z');
+      expect(valueReadModeNativeElement.outerText).toEqual('2019-08-30T10:45:20.173572Z');
 
     });
 
@@ -291,7 +297,7 @@ describe('TimeValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-07-04T00:00:00.000Z');
+      expect(valueReadModeNativeElement.outerText).toEqual('2019-07-04T00:00:00.000Z');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

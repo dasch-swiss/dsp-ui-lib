@@ -56,7 +56,7 @@ class TestHostDisplayValueCommentComponent implements OnInit {
 
     MockResource.getTestthing().subscribe(res => {
       const inputVal: ReadTextValueAsString =
-      res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
+        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
 
       inputVal.valueHasComment = 'this is a comment';
       this.displayInputVal = inputVal;
@@ -110,6 +110,10 @@ describe('TextValueAsStringComponent', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
+
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
+    
     let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
 
@@ -123,8 +127,9 @@ describe('TextValueAsStringComponent', () => {
 
       const hostCompDe = testHostFixture.debugElement;
       valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
+      
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -135,9 +140,7 @@ describe('TextValueAsStringComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueInputNativeElement.value).toEqual('test');
-
-      expect(valueInputNativeElement.readOnly).toEqual(true);
+      expect(valueReadModeNativeElement.outerText).toEqual('test');
 
     });
 
@@ -146,6 +149,9 @@ describe('TextValueAsStringComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -177,6 +183,9 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
@@ -204,6 +213,9 @@ describe('TextValueAsStringComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -238,7 +250,7 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('my updated text');
+      expect(valueReadModeNativeElement.outerText).toEqual('my updated text');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -251,8 +263,16 @@ describe('TextValueAsStringComponent', () => {
     let testHostComponent: TestHostDisplayValueCommentComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueCommentComponent>;
     let valueComponentDe: DebugElement;
+
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
+
     let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
+
+    let commentReadModeDebugElement: DebugElement;
+    let commentReadModeNativeElement;
+
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -267,8 +287,8 @@ describe('TextValueAsStringComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
 
     });
 
@@ -280,9 +300,7 @@ describe('TextValueAsStringComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      expect(valueInputNativeElement.value).toEqual('test');
-
-      expect(valueInputNativeElement.readOnly).toEqual(true);
+      expect(valueReadModeNativeElement.outerText).toEqual('test');
 
     });
 
@@ -291,6 +309,9 @@ describe('TextValueAsStringComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
@@ -333,6 +354,9 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
@@ -367,6 +391,9 @@ describe('TextValueAsStringComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
@@ -409,7 +436,7 @@ describe('TextValueAsStringComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('my updated text');
+      expect(valueReadModeNativeElement.outerText).toEqual('my updated text');
 
       expect(testHostComponent.inputValueComponent.displayValue.valueHasComment).toEqual('my updated comment');
       
@@ -420,11 +447,16 @@ describe('TextValueAsStringComponent', () => {
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
-      expect(commentInputNativeElement.value).toEqual('my updated comment');
-
       testHostComponent.mode = 'read';
+      testHostComponent.inputValueComponent.shouldShowComment = true;
 
       testHostFixture.detectChanges();
+
+      commentReadModeDebugElement = valueComponentDe.query(By.css('.rm-comment'));
+      
+      commentReadModeNativeElement = commentReadModeDebugElement.nativeElement;
+
+      expect(commentReadModeNativeElement.outerText).toEqual('my updated comment');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
