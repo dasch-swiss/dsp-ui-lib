@@ -5,7 +5,7 @@ import {
   ApiResponseData,
   LogoutResponse
 } from '@knora/api';
-import {KnoraApiConnectionToken} from 'knora-ui';
+import {KnoraApiConnectionToken} from '@knora/ui';
 
 @Component({
   selector: 'app-read',
@@ -30,7 +30,7 @@ export class ReadComponent implements OnInit {
       (error: ApiResponseError) => {
           console.error(error);
       }
-  ); 
+  );
   }
 
 }
