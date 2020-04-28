@@ -147,7 +147,7 @@ describe('TimeValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(TimeValueComponent));
-      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value.interval-start'));      
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));      
       valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
       
     });
