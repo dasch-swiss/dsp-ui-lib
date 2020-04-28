@@ -358,6 +358,40 @@ describe('DateValueComponent', () => {
 
     });
 
+    it('should compare the existing version of a date to the user input', () => {
+
+        // KnoraDate('GREGORIAN', 'CE', 2018, 5, 13)
+        const displayValue: KnoraDate | KnoraPeriod = testHostComponent.displayInputVal.date;
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                displayValue, new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13)
+            )
+        ).toBeTruthy();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                displayValue, new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+            )
+        ).toBeFalsy();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                displayValue, null
+            )
+        ).toBeFalsy();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                displayValue, new KnoraPeriod(
+                    new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
+                    new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+                )
+            )
+        ).toBeFalsy();
+
+    });
+
     it('should correctly populate an UpdateValue from a KnoraDate', () => {
 
       const date = new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13);
