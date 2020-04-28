@@ -209,38 +209,38 @@ describe('IntervalValueComponent', () => {
 
     });
 
-    it('should compare the existing version of a date to the user input', () => {
+    it('should compare the existing version of an interval to the user input', () => {
 
         // Interval 0, 216000
-        const displayValue: ReadIntervalValue = testHostComponent.displayInputVal;
+        const initValue: Interval = testHostComponent.inputValueComponent.getInitValue();
 
         expect(
             testHostComponent.inputValueComponent.standardValueComparisonFunc(
-                displayValue, new Interval(0, 216000)
+                initValue, new Interval(0, 216000)
             )
         ).toBeTruthy();
 
         expect(
             testHostComponent.inputValueComponent.standardValueComparisonFunc(
-                displayValue, new Interval(1, 216000)
+                initValue, new Interval(1, 216000)
             )
         ).toBeFalsy();
 
         expect(
             testHostComponent.inputValueComponent.standardValueComparisonFunc(
-                displayValue, new Interval(2, 21)
+                initValue, new Interval(2, 21)
             )
         ).toBeFalsy();
 
         expect(
             testHostComponent.inputValueComponent.standardValueComparisonFunc(
-                displayValue, new Interval(0, 21600)
+                initValue, new Interval(0, 21600)
             )
         ).toBeFalsy();
 
         expect(
             testHostComponent.inputValueComponent.standardValueComparisonFunc(
-                displayValue, null
+                initValue, null
             )
         ).toBeFalsy();
 

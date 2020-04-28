@@ -361,29 +361,29 @@ describe('DateValueComponent', () => {
     it('should compare the existing version of a date to the user input', () => {
 
         // KnoraDate('GREGORIAN', 'CE', 2018, 5, 13)
-        const displayValue: KnoraDate | KnoraPeriod = testHostComponent.displayInputVal.date;
+        const initValue: KnoraDate | KnoraPeriod = testHostComponent.inputValueComponent.getInitValue();
 
         expect(
             testHostComponent.inputValueComponent.standardValueComparisonFunc(
-                displayValue, new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13)
+                initValue, new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13)
             )
         ).toBeTruthy();
 
         expect(
             testHostComponent.inputValueComponent.standardValueComparisonFunc(
-                displayValue, new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+                initValue, new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
             )
         ).toBeFalsy();
 
         expect(
             testHostComponent.inputValueComponent.standardValueComparisonFunc(
-                displayValue, null
+                initValue, null
             )
         ).toBeFalsy();
 
         expect(
             testHostComponent.inputValueComponent.standardValueComparisonFunc(
-                displayValue, new KnoraPeriod(
+                initValue, new KnoraPeriod(
                     new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
                     new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
                 )
