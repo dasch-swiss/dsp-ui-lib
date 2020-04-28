@@ -148,7 +148,7 @@ describe('IntervalValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(IntervalValueComponent));
-      
+
     });
 
     it('should display an existing value', () => {
@@ -206,6 +206,45 @@ describe('IntervalValueComponent', () => {
 
       expect((updatedValue as UpdateIntervalValue).start).toEqual(100);
       expect((updatedValue as UpdateIntervalValue).end).toEqual(200);
+
+    });
+
+    it('should compare the existing version of a date to the user input', () => {
+
+        // Interval 0, 216000
+        const displayValue: ReadIntervalValue = testHostComponent.displayInputVal;
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                displayValue, new Interval(0, 216000)
+            )
+        ).toBeTruthy();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                displayValue, new Interval(1, 216000)
+            )
+        ).toBeFalsy();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                displayValue, new Interval(2, 21)
+            )
+        ).toBeFalsy();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                displayValue, new Interval(0, 21600)
+            )
+        ).toBeFalsy();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                displayValue, null
+            )
+        ).toBeFalsy();
+
+
 
     });
 
