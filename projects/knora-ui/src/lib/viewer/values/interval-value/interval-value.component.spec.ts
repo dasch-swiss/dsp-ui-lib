@@ -134,6 +134,10 @@ describe('IntervalValueComponent', () => {
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
     let valueComponentDe: DebugElement;
+    let intervalStartReadModeDebugElement: DebugElement;
+    let intervalEndReadModeDebugElement: DebugElement;
+    let intervalStartReadModeNativeElement;
+    let intervalEndReadModeNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -148,7 +152,11 @@ describe('IntervalValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(IntervalValueComponent));
-      
+      intervalStartReadModeDebugElement = valueComponentDe.query(By.css('.rm-value.interval-start'));      
+      intervalStartReadModeNativeElement = intervalStartReadModeDebugElement.nativeElement;      
+
+      intervalEndReadModeDebugElement = valueComponentDe.query(By.css('.rm-value.interval-end'));      
+      intervalEndReadModeNativeElement = intervalEndReadModeDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -161,11 +169,9 @@ describe('IntervalValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(testHostComponent.inputValueComponent.intervalInputComponent.readonly).toEqual(true);
+      expect(intervalStartReadModeNativeElement.innerText).toEqual('0');
 
-      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.start).toEqual(0);
-
-      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.end).toEqual(216000);
+      expect(intervalEndReadModeNativeElement.innerText).toEqual('216000');
 
     });
 
@@ -215,7 +221,7 @@ describe('IntervalValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));      
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
@@ -318,9 +324,9 @@ describe('IntervalValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.start).toEqual(300);
+      expect(intervalStartReadModeNativeElement.innerText).toEqual('300');
 
-      expect(testHostComponent.inputValueComponent.intervalInputComponent.value.end).toEqual(500);
+      expect(intervalEndReadModeNativeElement.innerText).toEqual('500');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

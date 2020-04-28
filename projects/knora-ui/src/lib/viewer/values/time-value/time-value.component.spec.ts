@@ -147,9 +147,7 @@ describe('TimeValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(TimeValueComponent));
-      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
-      console.log(valueReadModeDebugElement);
-      
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value.interval-start'));      
       valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
       
     });
@@ -162,9 +160,7 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      //expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-08-30T10:45:20.173572Z');
-
-      expect(valueReadModeNativeElement.outerText).toEqual('2019-08-30T10:45:20.173572Z');
+      expect(valueReadModeNativeElement.innerText).toEqual('2019-08-30T10:45:20.173572Z');
 
     });
 

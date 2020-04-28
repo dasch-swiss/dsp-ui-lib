@@ -1,22 +1,28 @@
-<span [formGroup]="form" class="form-fields-container">
-    <mat-form-field class="large-field child-value-component" floatLabel="never">
-        <input matInput [formControlName]="'geonameValue'" class="value" placeholder="Geoname value" type="text" [readonly]="mode === 'read'">
-        <button class="more-info" mat-icon-button matSuffix (click)="openInfo()" [attr.aria-label]="'Open in geonames.org'" title="Open in geonames.org">
-            <mat-icon>launch</mat-icon>
-        </button>
-    </mat-form-field>
-    <mat-form-field class="large-field value-component-comment" *ngIf="shouldShowComment">
-        <textarea matInput
-                  cdkTextareaAutosize
-                  #autosize="cdkTextareaAutosize"
-                  cdkAutosizeMinRows="1"
-                  cdkAutosizeMaxRows="6"
-                  [formControlName]="'comment'"
-                  class="comment"
-                  placeholder="Comment"
-                  type="text"
-                  [readonly]="mode === 'read'"
-                  spellcheck="false">
-        </textarea>
-    </mat-form-field>
-</span>
+<div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
+    <p class="rm-value">{{valueFormControl.value}}</p>
+    <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
+</div>
+<ng-template #showForm>
+    <span [formGroup]="form" class="form-fields-container">
+        <mat-form-field class="large-field child-value-component" floatLabel="never">
+            <input matInput [formControlName]="'geonameValue'" class="value" placeholder="Geoname value" type="text" [readonly]="mode === 'read'">
+            <button class="more-info" mat-icon-button matSuffix (click)="openInfo()" [attr.aria-label]="'Open in geonames.org'" title="Open in geonames.org">
+                <mat-icon>launch</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-form-field class="large-field value-component-comment">
+            <textarea matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="6"
+                    [formControlName]="'comment'"
+                    class="comment"
+                    placeholder="Comment"
+                    type="text"
+                    [readonly]="mode === 'read'"
+                    spellcheck="false">
+            </textarea>
+        </mat-form-field>
+    </span>
+</ng-template>
