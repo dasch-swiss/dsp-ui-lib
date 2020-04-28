@@ -255,7 +255,7 @@ describe('IntValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueReadModeNativeElement.outerText).toEqual('20');
+      expect(valueReadModeNativeElement.innerText).toEqual('20');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

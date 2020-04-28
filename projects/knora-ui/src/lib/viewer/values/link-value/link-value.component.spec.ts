@@ -110,6 +110,8 @@ describe('LinkValueComponent', () => {
     let valueComponentDe: DebugElement;
     let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -124,8 +126,8 @@ describe('LinkValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(LinkValueComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
 
     });
 
@@ -150,14 +152,15 @@ describe('LinkValueComponent', () => {
       tick();
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('Sierra');
-      expect(valueInputNativeElement.readOnly).toEqual(true);
+      expect(valueReadModeNativeElement.innerText).toEqual('Sierra');
     }));
 
     it('should make a link value editable', fakeAsync(() => {
 
       testHostComponent.mode = 'update';
       testHostFixture.detectChanges();
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
       expect(valueInputNativeElement.readOnly).toEqual(false);
@@ -222,6 +225,8 @@ describe('LinkValueComponent', () => {
 
       testHostComponent.mode = 'update';
       testHostFixture.detectChanges();
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
       expect(valueInputNativeElement.readOnly).toEqual(false);
@@ -252,6 +257,8 @@ describe('LinkValueComponent', () => {
 
       testHostComponent.mode = 'update';
       testHostFixture.detectChanges();
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
       expect(valueInputNativeElement.readOnly).toEqual(false);
@@ -271,6 +278,8 @@ describe('LinkValueComponent', () => {
 
       testHostComponent.mode = 'update';
       testHostFixture.detectChanges();
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
@@ -295,6 +304,9 @@ describe('LinkValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -336,13 +348,13 @@ describe('LinkValueComponent', () => {
       // setValue has to be called, otherwise the native input field does not get the label via the displayWith function
       const res = testHostComponent.inputValueComponent.valueFormControl.value;
       testHostComponent.inputValueComponent.valueFormControl.setValue(res);
-
+      
       // https://github.com/angular/components/blob/29e74eb9431ba01d951ee33df554f465609b59fa/src/material/autocomplete/autocomplete.spec.ts#L2577-L2580
       testHostFixture.detectChanges();
       tick();
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('Sierra');
+      expect(testHostComponent.inputValueComponent.valueFormControl.value.label).toEqual('Sierra');
 
       const linkedRes = new ReadResource();
       linkedRes.id = 'newId';
@@ -359,7 +371,7 @@ describe('LinkValueComponent', () => {
       tick();
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('new target');
+      expect(valueReadModeNativeElement.innerText).toEqual('new target');
 
     }));
 
