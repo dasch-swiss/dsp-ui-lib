@@ -131,8 +131,12 @@ describe('TimeValueComponent', () => {
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
     let valueComponentDe: DebugElement;
-    let valueReadModeDebugElement: DebugElement;
-    let valueReadModeNativeElement;
+    let dateReadModeDebugElement: DebugElement;
+    let dateReadModeNativeElement;
+
+    let timeReadModeDebugElement: DebugElement;
+    let timeReadModeNativeElement;
+
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -147,8 +151,11 @@ describe('TimeValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(TimeValueComponent));
-      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));      
-      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
+      dateReadModeDebugElement = valueComponentDe.query(By.css('.rm-value.date'));      
+      dateReadModeNativeElement = dateReadModeDebugElement.nativeElement;
+
+      timeReadModeDebugElement = valueComponentDe.query(By.css('.rm-value.time'));      
+      timeReadModeNativeElement = timeReadModeDebugElement.nativeElement;
       
     });
 
@@ -160,7 +167,8 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueReadModeNativeElement.innerText).toEqual('2019-08-30T10:45:20.173572Z');
+      expect(dateReadModeNativeElement.innerText).toEqual('Date: Aug 30, 2019');
+      expect(timeReadModeNativeElement.innerText).toEqual('Time: 12:45');
 
     });
 
@@ -293,7 +301,8 @@ describe('TimeValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueReadModeNativeElement.outerText).toEqual('2019-07-04T00:00:00.000Z');
+      expect(dateReadModeNativeElement.innerText).toEqual('Date: Jul 4, 2019');
+      expect(timeReadModeNativeElement.innerText).toEqual('Time: 02:00');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

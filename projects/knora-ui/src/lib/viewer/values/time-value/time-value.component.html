@@ -1,5 +1,6 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-  <p class="rm-value">{{valueFormControl.value}}</p>
+  <p class="rm-value date">Date: {{valueFormControl.value | date}}</p>
+  <p class="rm-value time">Time: {{valueFormControl.value | date:"HH:mm"}}</p>
   <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
 </div>
 <ng-template #showForm>

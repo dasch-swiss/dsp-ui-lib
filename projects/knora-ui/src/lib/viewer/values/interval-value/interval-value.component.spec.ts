@@ -169,9 +169,9 @@ describe('IntervalValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(intervalStartReadModeNativeElement.innerText).toEqual('0');
+      expect(intervalStartReadModeNativeElement.innerText).toEqual('Start: 0');
 
-      expect(intervalEndReadModeNativeElement.innerText).toEqual('216000');
+      expect(intervalEndReadModeNativeElement.innerText).toEqual('End: 216000');
 
     });
 
@@ -324,9 +324,9 @@ describe('IntervalValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(intervalStartReadModeNativeElement.innerText).toEqual('300');
+      expect(intervalStartReadModeNativeElement.innerText).toEqual('Start: 300');
 
-      expect(intervalEndReadModeNativeElement.innerText).toEqual('500');
+      expect(intervalEndReadModeNativeElement.innerText).toEqual('End: 500');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

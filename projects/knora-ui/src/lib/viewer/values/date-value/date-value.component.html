@@ -1,10 +1,10 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
   <div *ngIf="valueFormControl.value.end; else date">
-    <p class="rm-value date-start">{{valueFormControl.value.start | knoraDate}}</p>
-    <p class="rm-value date-end">{{valueFormControl.value.end | knoraDate}}</p>
+    <p class="rm-value date-start">Period Start: {{valueFormControl.value.start | knoraDate}}</p>
+    <p class="rm-value date-end">Period End: {{valueFormControl.value.end | knoraDate}}</p>
   </div>
   <ng-template #date>
-    <p class="rm-value">{{valueFormControl.value | knoraDate}}</p>
+    <p class="rm-value">Date: {{valueFormControl.value | knoraDate}}</p>
   <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
   </ng-template>
 </div>
