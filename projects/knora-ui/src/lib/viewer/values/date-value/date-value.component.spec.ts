@@ -10,6 +10,7 @@ import {ErrorStateMatcher} from '@angular/material/core';
 import {By} from '@angular/platform-browser';
 import {MatInputModule} from '@angular/material/input';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { KnoraDatePipe } from '../../pipes/knoradate.pipe';
 
 @Component({
   selector: `kui-date-input`,
@@ -129,7 +130,8 @@ describe('DateValueComponent', () => {
         DateValueComponent,
         TestDateInputComponent,
         TestHostDisplayValueComponent,
-        TestHostCreateValueComponent]
+        TestHostCreateValueComponent,
+        KnoraDatePipe]
     })
       .compileComponents();
   }));
@@ -145,6 +147,8 @@ describe('DateValueComponent', () => {
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
     let valueComponentDe: DebugElement;
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
     let commentTextareaDebugElement: DebugElement;
     let commentTextareaNativeElement;
 
@@ -159,6 +163,8 @@ describe('DateValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(DateValueComponent));
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));      
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
 
     });
 
@@ -170,9 +176,7 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(true);
-
-      expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
+      expect(valueReadModeNativeElement.innerText).toEqual('5/13/2018');
 
     });
 
@@ -324,7 +328,7 @@ describe('DateValueComponent', () => {
 
         expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13));
 
-        expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13));
+        expect(valueReadModeNativeElement.innerText).toEqual('5/13/2019');
 
         expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

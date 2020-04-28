@@ -106,6 +106,9 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     });
 
     this.resetFormControl();
+
+    console.log(this.valueFormControl);
+    
   }
 
   ngOnChanges(changes: SimpleChanges): void {
