@@ -52,7 +52,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
     }
 
     standardValueComparisonFunc(initValue: Interval, curValue: Interval | null): boolean {
-        return curValue !== null && initValue.start === curValue.start && initValue.end === curValue.end;
+        return (curValue instanceof Interval) && initValue.start === curValue.start && initValue.end === curValue.end;
     }
 
     getInitValue(): Interval | null {
