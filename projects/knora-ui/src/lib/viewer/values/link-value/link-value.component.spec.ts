@@ -187,6 +187,45 @@ describe('LinkValueComponent', () => {
 
     }));
 
+    it('should compare the existing version of a link to the user input', () => {
+
+      // Sierra, http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ
+      const initValue: ReadResource = testHostComponent.inputValueComponent.getInitValue();
+
+      const readRes1 = new ReadResource();
+      readRes1.id = 'http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ';
+      readRes1.label = 'Sierra';
+
+      expect(
+          testHostComponent.inputValueComponent.standardValueComparisonFunc(
+              initValue, readRes1
+          )
+      ).toBeTruthy();
+
+      const readRes2 = new ReadResource();
+      readRes2.id = 'newId';
+      readRes2.label = 'new target';
+
+      expect(
+        testHostComponent.inputValueComponent.standardValueComparisonFunc(
+            initValue, readRes2
+        )
+      ).toBeFalsy();
+
+      expect(
+          testHostComponent.inputValueComponent.standardValueComparisonFunc(
+              initValue, null
+          )
+      ).toBeFalsy();
+
+      expect(
+          testHostComponent.inputValueComponent.standardValueComparisonFunc(
+              initValue, 'searchlabel'
+          )
+      ).toBeFalsy();
+
+    });
+
     it('should search for resources by their label', () => {
 
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
