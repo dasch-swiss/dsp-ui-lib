@@ -92,6 +92,7 @@ import { KnoraDatePipe } from './pipes/knoradate.pipe';
         TimeValueComponent,
         DateValueComponent,
         LinkValueComponent,
+        PropertyViewComponent,
         ResourceViewComponent,
         ListValueComponent,
         SublistValueComponent,
