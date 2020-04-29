@@ -198,7 +198,8 @@ describe('DateValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.valueFormControl.value).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.valueFormControl.value)
+          .toEqual(newKnoraDate);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -239,7 +240,8 @@ describe('DateValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.valueFormControl.value).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.valueFormControl.value)
+          .toEqual(newKnoraDate);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
