@@ -44,15 +44,34 @@ export abstract class BaseValueComponent {
      */
     abstract customValidators: ValidatorFn[];
 
-    standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl) => ValidatorFn = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
-        return (control: AbstractControl): { [key: string]: any } | null => {
+    /**
+     * Standard implementation for comparison of primitive values.
+     * Returns true if two values are equal.
+     *
+     * @param initValue Initially given value.
+     * @param curValue Current value.
+     */
+    standardValueComparisonFunc(initValue: any, curValue: any): boolean {
+        return initValue === curValue;
+    }
 
-            const invalid = initValue === control.value
-                && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+    /**
+     * Standard implementation to determine if a value or comment have been changed.
+     *
+     * @param initValue Initially given value.
+     * @param initComment Initially given comment.
+     * @param commentFormControl FormControl of the current comment.
+     */
+    standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl)
+        => ValidatorFn = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
+            return (control: AbstractControl): { [key: string]: any } | null => {
 
-            return invalid ? { valueNotChanged: { value: control.value } } : null;
+                const invalid = this.standardValueComparisonFunc(initValue, control.value)
+                    && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+
+                return invalid ? { valueNotChanged: { value: control.value } } : null;
+            };
         };
-    };
 
     /**
      * Returns the initially given value set via displayValue.
