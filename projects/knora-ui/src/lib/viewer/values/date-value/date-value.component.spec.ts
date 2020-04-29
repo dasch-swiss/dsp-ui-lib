@@ -198,7 +198,8 @@ describe('DateValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.valueFormControl.value).toBeTruthy();
+      expect(testHostComponent.inputValueComponent.valueFormControl.value)
+          .toEqual(newKnoraDate);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -213,6 +214,40 @@ describe('DateValueComponent', () => {
       expect((updatedValue as UpdateDateValue).endMonth).toEqual(5);
       expect((updatedValue as UpdateDateValue).startDay).toEqual(13);
       expect((updatedValue as UpdateDateValue).endDay).toEqual(13);
+
+    });
+
+    it('should not accept a user input equivalent to the existing value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.value)
+          .toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
+
+      // simulate user input (equivalent date)
+      const newKnoraDate = new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13);
+
+      testHostComponent.inputValueComponent.dateInputComponent.value = newKnoraDate;
+      testHostComponent.inputValueComponent.dateInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value)
+          .toEqual(newKnoraDate);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBe(false);
 
     });
 
@@ -355,6 +390,40 @@ describe('DateValueComponent', () => {
       expect(testHostComponent.inputValueComponent.sameDate(
         new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
         new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13))).toEqual(false);
+
+    });
+
+    it('should compare the existing version of a date to the user input', () => {
+
+        // KnoraDate('GREGORIAN', 'CE', 2018, 5, 13)
+        const initValue: KnoraDate | KnoraPeriod = testHostComponent.inputValueComponent.getInitValue();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                initValue, new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13)
+            )
+        ).toBeTruthy();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                initValue, new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+            )
+        ).toBeFalsy();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                initValue, null
+            )
+        ).toBeFalsy();
+
+        expect(
+            testHostComponent.inputValueComponent.standardValueComparisonFunc(
+                initValue, new KnoraPeriod(
+                    new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
+                    new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+                )
+            )
+        ).toBeFalsy();
 
     });
 
