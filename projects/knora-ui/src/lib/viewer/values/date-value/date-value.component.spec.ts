@@ -216,6 +216,39 @@ describe('DateValueComponent', () => {
 
     });
 
+    it('should not accept a user input equivalent to the existing value', () => {
+
+      testHostComponent.mode = 'update';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.dateInputComponent.value)
+          .toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
+
+      // simulate user input (equivalent date)
+      const newKnoraDate = new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13);
+
+      testHostComponent.inputValueComponent.dateInputComponent.value = newKnoraDate;
+      testHostComponent.inputValueComponent.dateInputComponent._handleInput();
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+      expect(updatedValue).toBe(false);
+
+    });
+
     it('should validate an existing value with an added comment', () => {
 
       testHostComponent.mode = 'update';
