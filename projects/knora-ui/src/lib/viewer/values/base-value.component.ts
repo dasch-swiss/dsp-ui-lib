@@ -132,7 +132,7 @@ export abstract class BaseValueComponent {
     }
 
     /**
-     * Display comment field if in UPDATE or CREATE mode
+     * Hide comment field by default if in READ mode
      */
     updateCommentVisibility(): void {
         this.shouldShowComment = this.mode === 'read' ? true : false;
