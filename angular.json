@@ -125,7 +125,7 @@
         }
       }
     },
-    "knora-ui": {
+    "@knora/ui": {
       "projectType": "library",
       "root": "projects/knora-ui",
       "sourceRoot": "projects/knora-ui/src",
@@ -164,6 +164,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "knora-ui-ng-lib"
 }

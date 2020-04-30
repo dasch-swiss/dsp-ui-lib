@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ResourceViewComponent } from 'projects/knora-ui/src/lib/viewer';
 import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
 
