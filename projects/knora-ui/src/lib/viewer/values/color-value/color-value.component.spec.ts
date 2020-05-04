@@ -140,6 +140,8 @@ describe('ColorValueComponent', () => {
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
     let valueComponentDe: DebugElement;
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -154,6 +156,8 @@ describe('ColorValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(ColorValueComponent));
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -164,9 +168,7 @@ describe('ColorValueComponent', () => {
 
       expect(testHostComponent.colorValueComponent.mode).toEqual('read');
 
-      expect(testHostComponent.colorValueComponent.colorPickerComponent.readonly).toEqual(true);
-
-      expect(testHostComponent.colorValueComponent.colorPickerComponent.value).toEqual('#ff3333');
+      expect(valueReadModeNativeElement.innerText).toEqual('#ff3333');
 
     });
 
@@ -308,7 +310,7 @@ describe('ColorValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.colorValueComponent.colorPickerComponent.value).toEqual('#d8d8d8');
+      expect(valueReadModeNativeElement.innerText).toEqual('#d8d8d8');
 
       expect(testHostComponent.colorValueComponent.form.valid).toBeTruthy();
 

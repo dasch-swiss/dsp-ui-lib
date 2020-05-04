@@ -1,554 +1,586 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TextValueAsStringComponent} from './text-value-as-string.component';
-import {Component, DebugElement, OnInit, ViewChild} from '@angular/core';
-import {CreateTextValueAsString, MockResource, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
-import {ReactiveFormsModule} from '@angular/forms';
+import { TextValueAsStringComponent } from './text-value-as-string.component';
+import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
+import { CreateTextValueAsString, MockResource, ReadTextValueAsString, UpdateTextValueAsString } from '@knora/api';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {By} from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 
 /**
  * Test host component to simulate parent component.
  */
 @Component({
-  template: `
+    template: `
     <kui-text-value-as-string #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-text-value-as-string>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
-  @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
+    @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
 
-  displayInputVal: ReadTextValueAsString;
+    displayInputVal: ReadTextValueAsString;
 
-  mode: 'read' | 'update' | 'create' | 'search';
+    mode: 'read' | 'update' | 'create' | 'search';
 
-  ngOnInit() {
+    ngOnInit() {
 
-    MockResource.getTestthing().subscribe(res => {
-      const inputVal: ReadTextValueAsString =
-        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
+        MockResource.getTestthing().subscribe(res => {
+            const inputVal: ReadTextValueAsString =
+                res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
 
-      this.displayInputVal = inputVal;
+            this.displayInputVal = inputVal;
 
-      this.mode = 'read';
-    });
+            this.mode = 'read';
+        });
 
-  }
+    }
 }
 
 /**
  * Test host component to simulate parent component.
  */
 @Component({
-  template: `
+    template: `
     <kui-text-value-as-string #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-text-value-as-string>`
 })
 class TestHostDisplayValueCommentComponent implements OnInit {
 
-  @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
+    @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
 
-  displayInputVal: ReadTextValueAsString;
+    displayInputVal: ReadTextValueAsString;
 
-  mode: 'read' | 'update' | 'create' | 'search';
+    mode: 'read' | 'update' | 'create' | 'search';
 
-  ngOnInit() {
+    ngOnInit() {
 
-    MockResource.getTestthing().subscribe(res => {
-      const inputVal: ReadTextValueAsString =
-      res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
+        MockResource.getTestthing().subscribe(res => {
+            const inputVal: ReadTextValueAsString =
+                res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
 
-      inputVal.valueHasComment = 'this is a comment';
-      this.displayInputVal = inputVal;
+            inputVal.valueHasComment = 'this is a comment';
+            this.displayInputVal = inputVal;
 
-      this.mode = 'read';
-    });
+            this.mode = 'read';
+        });
 
-  }
+    }
 }
 
 /**
  * Test host component to simulate parent component.
  */
 @Component({
-  template: `
+    template: `
     <kui-text-value-as-string #inputVal [mode]="mode"></kui-text-value-as-string>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
-  @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
+    @ViewChild('inputVal') inputValueComponent: TextValueAsStringComponent;
 
-  mode: 'read' | 'update' | 'create' | 'search';
+    mode: 'read' | 'update' | 'create' | 'search';
 
-  ngOnInit() {
+    ngOnInit() {
 
-    this.mode = 'create';
+        this.mode = 'create';
 
-  }
+    }
 }
 
 describe('TextValueAsStringComponent', () => {
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        TestHostDisplayValueComponent,
-        TestHostDisplayValueCommentComponent,
-        TextValueAsStringComponent,
-        TestHostCreateValueComponent],
-      imports: [
-        ReactiveFormsModule,
-        MatInputModule,
-        BrowserAnimationsModule
-      ],
-      providers: []
-    })
-      .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                TestHostDisplayValueComponent,
+                TestHostDisplayValueCommentComponent,
+                TextValueAsStringComponent,
+                TestHostCreateValueComponent],
+            imports: [
+                ReactiveFormsModule,
+                MatInputModule,
+                BrowserAnimationsModule
+            ],
+            providers: []
+        })
+            .compileComponents();
+    }));
 
-  describe('display and edit a text value without markup', () => {
-    let testHostComponent: TestHostDisplayValueComponent;
-    let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
-    let valueComponentDe: DebugElement;
-    let valueInputDebugElement: DebugElement;
-    let valueInputNativeElement;
+    describe('display and edit a text value without markup', () => {
+        let testHostComponent: TestHostDisplayValueComponent;
+        let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
+        let valueComponentDe: DebugElement;
 
-    beforeEach(() => {
-      testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
-      testHostComponent = testHostFixture.componentInstance;
-      testHostFixture.detectChanges();
+        let valueReadModeDebugElement: DebugElement;
+        let valueReadModeNativeElement;
 
-      expect(testHostComponent).toBeTruthy();
-      expect(testHostComponent.inputValueComponent).toBeTruthy();
+        let valueInputDebugElement: DebugElement;
+        let valueInputNativeElement;
 
-      const hostCompDe = testHostFixture.debugElement;
-      valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
-    });
+        beforeEach(() => {
+            testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
+            testHostComponent = testHostFixture.componentInstance;
+            testHostFixture.detectChanges();
 
-    it('should display an existing value', () => {
+            expect(testHostComponent).toBeTruthy();
+            expect(testHostComponent.inputValueComponent).toBeTruthy();
 
-      expect(testHostComponent.inputValueComponent.displayValue.text).toEqual('test');
+            const hostCompDe = testHostFixture.debugElement;
+            valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+            valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+            valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
+        });
 
-      expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+        it('should display an existing value', () => {
 
-      expect(valueInputNativeElement.value).toEqual('test');
+            expect(testHostComponent.inputValueComponent.displayValue.text).toEqual('test');
 
-      expect(valueInputNativeElement.readOnly).toEqual(true);
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-    });
+            expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-    it('should make an existing value editable', () => {
+            expect(valueReadModeNativeElement.innerText).toEqual('test');
 
-      testHostComponent.mode = 'update';
+        });
 
-      testHostFixture.detectChanges();
+        it('should make an existing value editable', () => {
 
-      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+            testHostComponent.mode = 'update';
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
+            testHostFixture.detectChanges();
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+            valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+            valueInputNativeElement = valueInputDebugElement.nativeElement;
 
-      expect(valueInputNativeElement.value).toEqual('test');
+            expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      valueInputNativeElement.value = 'updated text';
+            expect(valueInputNativeElement.readOnly).toEqual(false);
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      testHostFixture.detectChanges();
+            expect(valueInputNativeElement.value).toEqual('test');
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+            valueInputNativeElement.value = 'updated text';
 
-      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+            valueInputNativeElement.dispatchEvent(new Event('input'));
 
-      expect(updatedValue instanceof UpdateTextValueAsString).toBeTruthy();
+            testHostFixture.detectChanges();
 
-      expect((updatedValue as UpdateTextValueAsString).text).toEqual('updated text');
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-    });
+            const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
-    it('should not return an invalid update value', () => {
+            expect(updatedValue instanceof UpdateTextValueAsString).toBeTruthy();
 
-      testHostComponent.mode = 'update';
+            expect((updatedValue as UpdateTextValueAsString).text).toEqual('updated text');
 
-      testHostFixture.detectChanges();
+        });
 
-      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+        it('should not return an invalid update value', () => {
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
+            testHostComponent.mode = 'update';
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+            testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('test');
+            valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+            valueInputNativeElement = valueInputDebugElement.nativeElement;
 
-      valueInputNativeElement.value = '';
+            expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+            expect(valueInputNativeElement.readOnly).toEqual(false);
 
-      testHostFixture.detectChanges();
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+            expect(valueInputNativeElement.value).toEqual('test');
 
-      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+            valueInputNativeElement.value = '';
 
-      expect(updatedValue).toBeFalsy();
+            valueInputNativeElement.dispatchEvent(new Event('input'));
 
-    });
+            testHostFixture.detectChanges();
 
-    it('should restore the initially displayed value', () => {
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      testHostComponent.mode = 'update';
+            const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
-      testHostFixture.detectChanges();
+            expect(updatedValue).toBeFalsy();
 
-      expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+        });
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
+        it('should restore the initially displayed value', () => {
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+            testHostComponent.mode = 'update';
 
-      expect(valueInputNativeElement.value).toEqual('test');
+            testHostFixture.detectChanges();
 
-      valueInputNativeElement.value = 'updated text';
+            valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+            valueInputNativeElement = valueInputDebugElement.nativeElement;
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+            expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      testHostFixture.detectChanges();
+            expect(valueInputNativeElement.readOnly).toEqual(false);
 
-      testHostComponent.inputValueComponent.resetFormControl();
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('test');
+            expect(valueInputNativeElement.value).toEqual('test');
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+            valueInputNativeElement.value = 'updated text';
 
-    });
+            valueInputNativeElement.dispatchEvent(new Event('input'));
 
-    it('should set a new display value', () => {
+            testHostFixture.detectChanges();
 
-      const newStr = new ReadTextValueAsString();
+            testHostComponent.inputValueComponent.resetFormControl();
 
-      newStr.text = 'my updated text';
-      newStr.id = 'updatedId';
+            expect(valueInputNativeElement.value).toEqual('test');
 
-      testHostComponent.displayInputVal = newStr;
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      testHostFixture.detectChanges();
+        });
 
-      expect(valueInputNativeElement.value).toEqual('my updated text');
+        it('should set a new display value', () => {
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+            const newStr = new ReadTextValueAsString();
 
-    });
+            newStr.text = 'my updated text';
+            newStr.id = 'updatedId';
 
-  });
+            testHostComponent.displayInputVal = newStr;
 
-  describe('display and edit a text value and comment without markup', () => {
+            testHostFixture.detectChanges();
 
-    let testHostComponent: TestHostDisplayValueCommentComponent;
-    let testHostFixture: ComponentFixture<TestHostDisplayValueCommentComponent>;
-    let valueComponentDe: DebugElement;
-    let valueInputDebugElement: DebugElement;
-    let valueInputNativeElement;
-    let commentInputDebugElement: DebugElement;
-    let commentInputNativeElement;
+            expect(valueReadModeNativeElement.innerText).toEqual('my updated text');
 
-    beforeEach(() => {
-      testHostFixture = TestBed.createComponent(TestHostDisplayValueCommentComponent);
-      testHostComponent = testHostFixture.componentInstance;
-      testHostFixture.detectChanges();
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      expect(testHostComponent).toBeTruthy();
-      expect(testHostComponent.inputValueComponent).toBeTruthy();
-
-      const hostCompDe = testHostFixture.debugElement;
-
-      valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
+        });
 
     });
 
-    it('should display an existing value', () => {
+    describe('display and edit a text value and comment without markup', () => {
 
-      expect(testHostComponent.inputValueComponent.displayValue.text).toEqual('test');
+        let testHostComponent: TestHostDisplayValueCommentComponent;
+        let testHostFixture: ComponentFixture<TestHostDisplayValueCommentComponent>;
+        let valueComponentDe: DebugElement;
 
-      expect(testHostComponent.inputValueComponent.displayValue.valueHasComment).toEqual('this is a comment');
+        let valueReadModeDebugElement: DebugElement;
+        let valueReadModeNativeElement;
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+        let valueInputDebugElement: DebugElement;
+        let valueInputNativeElement;
 
-      expect(valueInputNativeElement.value).toEqual('test');
+        let commentReadModeDebugElement: DebugElement;
+        let commentReadModeNativeElement;
 
-      expect(valueInputNativeElement.readOnly).toEqual(true);
+        let commentInputDebugElement: DebugElement;
+        let commentInputNativeElement;
 
+        beforeEach(() => {
+            testHostFixture = TestBed.createComponent(TestHostDisplayValueCommentComponent);
+            testHostComponent = testHostFixture.componentInstance;
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent).toBeTruthy();
+            expect(testHostComponent.inputValueComponent).toBeTruthy();
+
+            const hostCompDe = testHostFixture.debugElement;
+
+            valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
+            valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+            valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
+
+        });
+
+        it('should display an existing value', () => {
+
+            expect(testHostComponent.inputValueComponent.displayValue.text).toEqual('test');
+
+            expect(testHostComponent.inputValueComponent.displayValue.valueHasComment).toEqual('this is a comment');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+            expect(valueReadModeNativeElement.innerText).toEqual('test');
+
+        });
+
+        it('should make an existing value editable', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+            valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+            commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+            commentInputNativeElement = commentInputDebugElement.nativeElement;
+
+            expect(valueInputNativeElement.readOnly).toEqual(false);
+
+            expect(commentInputNativeElement.readOnly).toEqual(false);
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            expect(valueInputNativeElement.value).toEqual('test');
+
+            expect(commentInputNativeElement.value).toEqual('this is a comment');
+
+            valueInputNativeElement.value = 'updated text';
+
+            valueInputNativeElement.dispatchEvent(new Event('input'));
+
+            commentInputNativeElement.value = 'this is an updated comment';
+
+            commentInputNativeElement.dispatchEvent(new Event('input'));
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+            const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+            expect(updatedValue instanceof UpdateTextValueAsString).toBeTruthy();
+
+            expect((updatedValue as UpdateTextValueAsString).text).toEqual('updated text');
+
+            expect((updatedValue as UpdateTextValueAsString).valueHasComment).toEqual('this is an updated comment');
+
+        });
+
+        it('should not return an invalid update value', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+            valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+            commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+            commentInputNativeElement = commentInputDebugElement.nativeElement;
+
+            expect(valueInputNativeElement.readOnly).toEqual(false);
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            expect(valueInputNativeElement.value).toEqual('test');
+
+            expect(commentInputNativeElement.value).toEqual('this is a comment');
+
+            valueInputNativeElement.value = '';
+
+            valueInputNativeElement.dispatchEvent(new Event('input'));
+
+            commentInputNativeElement.value = 'this is an updated comment';
+
+            commentInputNativeElement.dispatchEvent(new Event('input'));
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+            expect(updatedValue).toBeFalsy();
+
+        });
+
+        it('should restore the initially displayed value', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+            valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+            commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+            commentInputNativeElement = commentInputDebugElement.nativeElement;
+
+            expect(valueInputNativeElement.readOnly).toEqual(false);
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            expect(valueInputNativeElement.value).toEqual('test');
+
+            valueInputNativeElement.value = 'updated text';
+
+            valueInputNativeElement.dispatchEvent(new Event('input'));
+
+            commentInputNativeElement.value = 'this is an updated comment';
+
+            commentInputNativeElement.dispatchEvent(new Event('input'));
+
+            testHostFixture.detectChanges();
+
+            testHostComponent.inputValueComponent.resetFormControl();
+
+            expect(valueInputNativeElement.value).toEqual('test');
+
+            expect(commentInputNativeElement.value).toEqual('this is a comment');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+        });
+
+        it('should set a new display value', () => {
+
+            const newStr = new ReadTextValueAsString();
+
+            newStr.text = 'my updated text';
+            newStr.valueHasComment = 'my updated comment';
+            newStr.id = 'updatedId';
+
+            testHostComponent.displayInputVal = newStr;
+
+            testHostFixture.detectChanges();
+
+            expect(valueReadModeNativeElement.innerText).toEqual('my updated text');
+
+            expect(testHostComponent.inputValueComponent.displayValue.valueHasComment).toEqual('my updated comment');
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+            commentInputNativeElement = commentInputDebugElement.nativeElement;
+
+            testHostComponent.mode = 'read';
+            testHostComponent.inputValueComponent.shouldShowComment = true;
+
+            testHostFixture.detectChanges();
+
+            commentReadModeDebugElement = valueComponentDe.query(By.css('.rm-comment'));
+
+            commentReadModeNativeElement = commentReadModeDebugElement.nativeElement;
+
+            expect(commentReadModeNativeElement.innerText).toEqual('my updated comment');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+        });
     });
 
-    it('should make an existing value editable', () => {
+    describe('create a text value without markup', () => {
 
-      testHostComponent.mode = 'update';
+        let testHostComponent: TestHostCreateValueComponent;
+        let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+        let valueComponentDe: DebugElement;
+        let valueInputDebugElement: DebugElement;
+        let valueInputNativeElement;
+        let commentInputDebugElement: DebugElement;
+        let commentInputNativeElement;
 
-      testHostFixture.detectChanges();
+        beforeEach(() => {
+            testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+            testHostComponent = testHostFixture.componentInstance;
+            testHostFixture.detectChanges();
 
-      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
+            expect(testHostComponent).toBeTruthy();
+            expect(testHostComponent.inputValueComponent).toBeTruthy();
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
+            const hostCompDe = testHostFixture.debugElement;
 
-      expect(commentInputNativeElement.readOnly).toEqual(false);
+            valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
+            valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+            valueInputNativeElement = valueInputDebugElement.nativeElement;
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+            commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+            commentInputNativeElement = commentInputDebugElement.nativeElement;
 
-      expect(valueInputNativeElement.value).toEqual('test');
+            expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+            expect(valueInputNativeElement.value).toEqual('');
+            expect(valueInputNativeElement.readOnly).toEqual(false);
+            expect(commentInputNativeElement.value).toEqual('');
+            expect(commentInputNativeElement.readOnly).toEqual(false);
+        });
 
-      expect(commentInputNativeElement.value).toEqual('this is a comment');
+        it('should create a value', () => {
+            valueInputNativeElement.value = 'created text';
 
-      valueInputNativeElement.value = 'updated text';
+            valueInputNativeElement.dispatchEvent(new Event('input'));
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+            testHostFixture.detectChanges();
 
-      commentInputNativeElement.value = 'this is an updated comment';
+            expect(testHostComponent.inputValueComponent.mode).toEqual('create');
 
-      commentInputNativeElement.dispatchEvent(new Event('input'));
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      testHostFixture.detectChanges();
+            const newValue = testHostComponent.inputValueComponent.getNewValue();
 
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+            expect(newValue instanceof CreateTextValueAsString).toBeTruthy();
 
-      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+            expect((newValue as CreateTextValueAsString).text).toEqual('created text');
+        });
 
-      expect(updatedValue instanceof UpdateTextValueAsString).toBeTruthy();
+        it('should reset form after cancellation', () => {
+            valueInputNativeElement.value = 'created text';
 
-      expect((updatedValue as UpdateTextValueAsString).text).toEqual('updated text');
+            valueInputNativeElement.dispatchEvent(new Event('input'));
 
-      expect((updatedValue as UpdateTextValueAsString).valueHasComment).toEqual('this is an updated comment');
+            commentInputNativeElement.value = 'created comment';
 
+            commentInputNativeElement.dispatchEvent(new Event('input'));
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+            testHostComponent.inputValueComponent.resetFormControl();
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            expect(valueInputNativeElement.value).toEqual('');
+
+            expect(commentInputNativeElement.value).toEqual('');
+
+        });
+
+        // *** Begin testing comments ***
+
+        // value: yes  comment:yes
+        it('should allow a comment if a value exists', () => {
+            valueInputNativeElement.value = 'test';
+
+            valueInputNativeElement.dispatchEvent(new Event('input'));
+
+            commentInputNativeElement.value = 'comment';
+
+            commentInputNativeElement.dispatchEvent(new Event('input'));
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+        });
+
+        // value: yes  comment:no
+        it('should allow no comment if a value exists', () => {
+            valueInputNativeElement.value = 'test';
+
+            valueInputNativeElement.dispatchEvent(new Event('input'));
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+        });
+
+        // value: no  comment:yes
+        it('should not allow a comment if a value does not exist', () => {
+            commentInputNativeElement.value = 'comment';
+
+            commentInputNativeElement.dispatchEvent(new Event('input'));
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+        });
+
+        // *** End testing comments ***
     });
-
-    it('should not return an invalid update value', () => {
-
-      testHostComponent.mode = 'update';
-
-      testHostFixture.detectChanges();
-
-      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
-
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
-      expect(valueInputNativeElement.value).toEqual('test');
-
-      expect(commentInputNativeElement.value).toEqual('this is a comment');
-
-      valueInputNativeElement.value = '';
-
-      valueInputNativeElement.dispatchEvent(new Event('input'));
-
-      commentInputNativeElement.value = 'this is an updated comment';
-
-      commentInputNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
-      const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
-
-      expect(updatedValue).toBeFalsy();
-
-    });
-
-    it('should restore the initially displayed value', () => {
-
-      testHostComponent.mode = 'update';
-
-      testHostFixture.detectChanges();
-
-      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
-
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
-      expect(valueInputNativeElement.value).toEqual('test');
-
-      valueInputNativeElement.value = 'updated text';
-
-      valueInputNativeElement.dispatchEvent(new Event('input'));
-
-      commentInputNativeElement.value = 'this is an updated comment';
-
-      commentInputNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
-
-      testHostComponent.inputValueComponent.resetFormControl();
-
-      expect(valueInputNativeElement.value).toEqual('test');
-
-      expect(commentInputNativeElement.value).toEqual('this is a comment');
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
-    });
-
-    it('should set a new display value', () => {
-
-      const newStr = new ReadTextValueAsString();
-
-      newStr.text = 'my updated text';
-      newStr.valueHasComment = 'my updated comment';
-      newStr.id = 'updatedId';
-
-      testHostComponent.displayInputVal = newStr;
-
-      testHostFixture.detectChanges();
-
-      expect(valueInputNativeElement.value).toEqual('my updated text');
-
-      expect(testHostComponent.inputValueComponent.displayValue.valueHasComment).toEqual('my updated comment');
-      
-      testHostComponent.mode = 'update';
-
-      testHostFixture.detectChanges();
-
-      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
-
-      expect(commentInputNativeElement.value).toEqual('my updated comment');
-
-      testHostComponent.mode = 'read';
-
-      testHostFixture.detectChanges();
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
-
-    });
-  });
-
-  describe('create a text value without markup', () => {
-
-    let testHostComponent: TestHostCreateValueComponent;
-    let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
-    let valueComponentDe: DebugElement;
-    let valueInputDebugElement: DebugElement;
-    let valueInputNativeElement;
-    let commentInputDebugElement: DebugElement;
-    let commentInputNativeElement;
-
-    beforeEach(() => {
-      testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
-      testHostComponent = testHostFixture.componentInstance;
-      testHostFixture.detectChanges();
-
-      expect(testHostComponent).toBeTruthy();
-      expect(testHostComponent.inputValueComponent).toBeTruthy();
-
-      const hostCompDe = testHostFixture.debugElement;
-
-      valueComponentDe = hostCompDe.query(By.directive(TextValueAsStringComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
-
-      commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentInputNativeElement = commentInputDebugElement.nativeElement;
-
-      expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-      expect(valueInputNativeElement.value).toEqual('');
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-      expect(commentInputNativeElement.value).toEqual('');
-      expect(commentInputNativeElement.readOnly).toEqual(false);
-    });
-
-    it('should create a value', () => {
-      valueInputNativeElement.value = 'created text';
-
-      valueInputNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
-
-      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
-
-      const newValue = testHostComponent.inputValueComponent.getNewValue();
-
-      expect(newValue instanceof CreateTextValueAsString).toBeTruthy();
-
-      expect((newValue as CreateTextValueAsString).text).toEqual('created text');
-    });
-
-    it('should reset form after cancellation', () => {
-      valueInputNativeElement.value = 'created text';
-
-      valueInputNativeElement.dispatchEvent(new Event('input'));
-
-      commentInputNativeElement.value = 'created comment';
-
-      commentInputNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
-
-      expect(testHostComponent.inputValueComponent.mode).toEqual('create');
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
-
-      testHostComponent.inputValueComponent.resetFormControl();
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
-      expect(valueInputNativeElement.value).toEqual('');
-
-      expect(commentInputNativeElement.value).toEqual('');
-
-    });
-
-    // *** Begin testing comments ***
-
-    // value: yes  comment:yes
-    it('should allow a comment if a value exists', () => {
-      valueInputNativeElement.value = 'test';
-
-      valueInputNativeElement.dispatchEvent(new Event('input'));
-
-      commentInputNativeElement.value = 'comment';
-
-      commentInputNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
-    });
-
-    // value: yes  comment:no
-    it('should allow no comment if a value exists', () => {
-      valueInputNativeElement.value = 'test';
-
-      valueInputNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
-    });
-
-    // value: no  comment:yes
-    it('should not allow a comment if a value does not exist', () => {
-      commentInputNativeElement.value = 'comment';
-
-      commentInputNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
-
-      expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-    });
-
-    // *** End testing comments ***
-  });
 
 });

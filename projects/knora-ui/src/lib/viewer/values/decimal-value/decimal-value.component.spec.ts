@@ -82,6 +82,8 @@ describe('DecimalValueComponent', () => {
     let valueComponentDe: DebugElement;
     let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -95,8 +97,10 @@ describe('DecimalValueComponent', () => {
 
       const hostCompDe = testHostFixture.debugElement;
       valueComponentDe = hostCompDe.query(By.directive(DecimalValueComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
+      
 
     });
 
@@ -108,10 +112,7 @@ describe('DecimalValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueInputNativeElement.value).toEqual('1.5');
-
-      expect(valueInputNativeElement.readOnly).toEqual(true);
-
+      expect(valueReadModeNativeElement.innerText).toEqual('1.5');
     });
 
     it('should make an existing value editable', () => {
@@ -119,6 +120,9 @@ describe('DecimalValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -149,6 +153,9 @@ describe('DecimalValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
@@ -183,6 +190,9 @@ describe('DecimalValueComponent', () => {
 
       testHostFixture.detectChanges();
 
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
@@ -211,6 +221,9 @@ describe('DecimalValueComponent', () => {
 
       testHostFixture.detectChanges();
 
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
@@ -227,7 +240,7 @@ describe('DecimalValueComponent', () => {
 
       testHostComponent.inputValueComponent.resetFormControl();
 
-      expect(valueInputNativeElement.value).toEqual('1.5');
+      expect(valueReadModeNativeElement.innerText).toEqual('1.5');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -244,7 +257,7 @@ describe('DecimalValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('40.09');
+      expect(valueReadModeNativeElement.innerText).toEqual('40.09');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

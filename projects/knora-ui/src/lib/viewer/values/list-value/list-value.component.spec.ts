@@ -103,7 +103,8 @@ describe('ListValueComponent', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
-    let valueInputNativeElement;
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -118,9 +119,11 @@ describe('ListValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(ListValueComponent));
-      valueInputNativeElement = valueComponentDe.query(By.css('input')).nativeElement;
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
 
     });
+
     it('should display an existing value', () => {
 
       expect(testHostComponent.inputValueComponent.displayValue.listNode).toMatch('http://rdfh.ch/lists/0001/treeList01');
@@ -130,10 +133,10 @@ describe('ListValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(testHostComponent.inputValueComponent.form.value.listValue).toEqual('Tree list node 01');
-      expect(valueInputNativeElement.readOnly).toEqual(true);
+      expect(valueReadModeNativeElement.innerText).toEqual('Tree list node 01');
 
     });
+
     it('should make list value editable as button', () => {
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
       (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpointV2>).getList.and.callFake(
@@ -147,6 +150,7 @@ describe('ListValueComponent', () => {
       );
       testHostComponent.mode = 'update';
       testHostFixture.detectChanges();
+
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(valuesSpy.v2.list.getList).toHaveBeenCalledTimes(1);
@@ -165,6 +169,7 @@ describe('ListValueComponent', () => {
 
       testHostComponent.inputValueComponent.menuTrigger.openMenu();
     });
+
     it('should validate an existing value with an added comment', () => {
       const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
       (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpointV2>).getList.and.callFake(
@@ -179,7 +184,7 @@ describe('ListValueComponent', () => {
 
       testHostComponent.mode = 'update';
 
-      testHostFixture.detectChanges();
+      testHostFixture.detectChanges();      
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;

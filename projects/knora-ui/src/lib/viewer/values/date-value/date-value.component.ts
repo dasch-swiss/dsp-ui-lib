@@ -1,5 +1,5 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue} from '@knora/api';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue } from '@knora/api';
 import {
     AbstractControl,
     FormBuilder,
@@ -9,10 +9,10 @@ import {
     NgForm,
     ValidatorFn
 } from '@angular/forms';
-import {Subscription} from 'rxjs';
-import {BaseValueComponent} from '../base-value.component';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {DateInputComponent} from './date-input/date-input.component';
+import { Subscription } from 'rxjs';
+import { BaseValueComponent } from '../base-value.component';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { DateInputComponent } from './date-input/date-input.component';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class DateErrorStateMatcher implements ErrorStateMatcher {

@@ -1,7 +1,7 @@
-import {Input, Directive} from '@angular/core';
-import {CreateValue, ReadValue, UpdateValue} from '@knora/api';
-import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
+import { Input, Directive } from '@angular/core';
+import { CreateValue, ReadValue, UpdateValue } from '@knora/api';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Directive()
 export abstract class BaseValueComponent {
@@ -64,14 +64,14 @@ export abstract class BaseValueComponent {
      */
     standardValidatorFunc: (val: any, comment: string, commentCtrl: FormControl)
         => ValidatorFn = (initValue: any, initComment: string, commentFormControl: FormControl): ValidatorFn => {
-        return (control: AbstractControl): { [key: string]: any } | null => {
+            return (control: AbstractControl): { [key: string]: any } | null => {
 
-            const invalid = this.standardValueComparisonFunc(initValue, control.value)
-                && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
+                const invalid = this.standardValueComparisonFunc(initValue, control.value)
+                    && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
 
-            return invalid ? {valueNotChanged: {value: control.value}} : null;
+                return invalid ? { valueNotChanged: { value: control.value } } : null;
+            };
         };
-    };
 
     /**
      * Returns the initially given value set via displayValue.
@@ -118,7 +118,6 @@ export abstract class BaseValueComponent {
 
             }
 
-            this.updateCommentVisibility();
             this.valueFormControl.updateValueAndValidity();
         }
     }
@@ -133,10 +132,10 @@ export abstract class BaseValueComponent {
     }
 
     /**
-     * Display comment field if in UPDATE or CREATE mode
+     * Hide comment field by default if in READ mode
      */
     updateCommentVisibility(): void {
-        this.shouldShowComment = this.mode !== 'read' ? true : false;
+        this.shouldShowComment = this.mode === 'read' ? true : false;
     }
 
     /**

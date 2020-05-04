@@ -83,6 +83,8 @@ describe('GeonameValueComponent', () => {
     let valueComponentDe: DebugElement;
     let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -96,8 +98,8 @@ describe('GeonameValueComponent', () => {
 
       const hostCompDe = testHostFixture.debugElement;
       valueComponentDe = hostCompDe.query(By.directive(GeonameValueComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -108,9 +110,7 @@ describe('GeonameValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueInputNativeElement.value).toEqual('2661604');
-
-      expect(valueInputNativeElement.readOnly).toEqual(true);
+      expect(valueReadModeNativeElement.innerText).toEqual('2661604');
 
     });
 
@@ -119,6 +119,9 @@ describe('GeonameValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -150,6 +153,9 @@ describe('GeonameValueComponent', () => {
 
       testHostFixture.detectChanges();
 
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
@@ -177,6 +183,9 @@ describe('GeonameValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -211,7 +220,7 @@ describe('GeonameValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('5401678');
+      expect(valueReadModeNativeElement.innerText).toEqual('5401678');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

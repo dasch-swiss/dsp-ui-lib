@@ -82,6 +82,8 @@ describe('UriValueComponent', () => {
     let valueComponentDe: DebugElement;
     let valueInputDebugElement: DebugElement;
     let valueInputNativeElement;
+    let valueReadModeDebugElement: DebugElement;
+    let valueReadModeNativeElement;
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
@@ -95,8 +97,9 @@ describe('UriValueComponent', () => {
 
       const hostCompDe = testHostFixture.debugElement;
       valueComponentDe = hostCompDe.query(By.directive(UriValueComponent));
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+      valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
     });
 
     it('should display an existing value', () => {
@@ -107,10 +110,7 @@ describe('UriValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
-
-      expect(valueInputNativeElement.readOnly).toEqual(true);
-
+      expect(valueReadModeNativeElement.innerText).toEqual('http://www.google.ch');
     });
 
     it('should make an existing value editable', () => {
@@ -118,6 +118,9 @@ describe('UriValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -148,6 +151,9 @@ describe('UriValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
@@ -182,6 +188,9 @@ describe('UriValueComponent', () => {
 
       testHostFixture.detectChanges();
 
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
+
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(valueInputNativeElement.readOnly).toEqual(false);
@@ -209,6 +218,9 @@ describe('UriValueComponent', () => {
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
+
+      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
+      valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -243,7 +255,7 @@ describe('UriValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueInputNativeElement.value).toEqual('http://www.reddit.com');
+      expect(valueReadModeNativeElement.innerText).toEqual('http://www.reddit.com');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
