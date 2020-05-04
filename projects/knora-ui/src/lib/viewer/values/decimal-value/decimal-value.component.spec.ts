@@ -62,7 +62,7 @@ describe('DecimalValueComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         DecimalValueComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent
@@ -100,7 +100,7 @@ describe('DecimalValueComponent', () => {
 
       valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
       valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
-      
+
 
     });
 
@@ -125,8 +125,6 @@ describe('DecimalValueComponent', () => {
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-      expect(valueInputNativeElement.readOnly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -162,8 +160,6 @@ describe('DecimalValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('1.5');
@@ -195,8 +191,6 @@ describe('DecimalValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('1.5');
@@ -225,8 +219,6 @@ describe('DecimalValueComponent', () => {
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-      expect(valueInputNativeElement.readOnly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -302,9 +294,7 @@ describe('DecimalValueComponent', () => {
       expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
       expect(valueInputNativeElement.value).toEqual('');
-      expect(valueInputNativeElement.readOnly).toEqual(false);
       expect(commentInputNativeElement.value).toEqual('');
-      expect(commentInputNativeElement.readOnly).toEqual(false);
     });
 
     it('should create a value', () => {

@@ -125,8 +125,6 @@ describe('GeonameValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('2661604');
@@ -158,8 +156,6 @@ describe('GeonameValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('2661604');
@@ -188,8 +184,6 @@ describe('GeonameValueComponent', () => {
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-      expect(valueInputNativeElement.readOnly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -265,9 +259,7 @@ describe('GeonameValueComponent', () => {
       expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
       expect(valueInputNativeElement.value).toEqual('');
-      expect(valueInputNativeElement.readOnly).toEqual(false);
       expect(commentInputNativeElement.value).toEqual('');
-      expect(commentInputNativeElement.readOnly).toEqual(false);
     });
 
     it('should create a value', () => {

@@ -6,7 +6,7 @@
 <ng-template #showForm>
   <span [formGroup]="form">
       <mat-form-field class="large-field child-value-component" floatLabel="never">
-        <kui-interval-input #intervalInput [formControlName]="'intervalValue'" class="value" placeholder="Interval value" [readonly]="mode === 'read'" [errorStateMatcher]="matcher"></kui-interval-input>
+        <kui-interval-input #intervalInput [formControlName]="'intervalValue'" class="value" placeholder="Interval value" [errorStateMatcher]="matcher"></kui-interval-input>
         <mat-error *ngIf="form.controls.intervalValue.hasError('valueNotChanged')">
           Change value
         </mat-error>
@@ -21,7 +21,6 @@
                   class="comment"
                   placeholder="Comment"
                   type="text"
-                  [readonly]="mode === 'read'"
                   spellcheck="false">
           </textarea>
       </mat-form-field>

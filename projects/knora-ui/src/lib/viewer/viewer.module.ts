@@ -37,6 +37,7 @@ import { CalendarHeaderComponent } from './values/date-value/calendar-header/cal
 import { DateInputComponent } from './values/date-value/date-input/date-input.component';
 import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndatepicker.directive';
 import { KnoraDatePipe } from './pipes/knoradate.pipe';
+import { FormattedBooleanPipe } from './pipes/formatted-boolean.pipe';
 
 @NgModule({
     declarations: [
@@ -63,7 +64,8 @@ import { KnoraDatePipe } from './pipes/knoradate.pipe';
         ListValueComponent,
         SublistValueComponent,
         GeonameValueComponent,
-        KnoraDatePipe
+        KnoraDatePipe,
+        FormattedBooleanPipe
     ],
     imports: [
         CommonModule,

@@ -26,7 +26,6 @@ import { KnoraDatePipe } from '../../pipes/knoradate.pipe';
 })
 class TestDateInputComponent implements ControlValueAccessor, MatFormFieldControl<any> {
 
-  @Input() readonly = false;
   @Input() value;
   @Input() disabled: boolean;
   @Input() empty: boolean;
@@ -163,7 +162,7 @@ describe('DateValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(DateValueComponent));
-      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));      
+      valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
       valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
 
     });
@@ -187,8 +186,6 @@ describe('DateValueComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -229,8 +226,6 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(testHostComponent.inputValueComponent.dateInputComponent.value)
@@ -268,8 +263,6 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.displayValue.date).toEqual(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13));
 
-      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       commentTextareaNativeElement.value = 'this is a comment';
@@ -296,8 +289,6 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       testHostComponent.inputValueComponent.dateInputComponent.value = null;
@@ -320,8 +311,6 @@ describe('DateValueComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-      expect(testHostComponent.inputValueComponent.dateInputComponent.readonly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
