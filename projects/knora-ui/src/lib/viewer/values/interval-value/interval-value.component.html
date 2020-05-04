@@ -1,6 +1,6 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-  <p class="rm-value interval-start">Start: {{valueFormControl.value.start}}</p>
-  <p class="rm-value interval-end">End: {{valueFormControl.value.end}}</p>
+  <p class="rm-value interval-start">Start: {{valueFormControl.value?.start}}</p>
+  <p class="rm-value interval-end">End: {{valueFormControl.value?.end}}</p>
   <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
 </div>
 <ng-template #showForm>

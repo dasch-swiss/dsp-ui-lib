@@ -2,14 +2,28 @@
     <p>Hex value:</p>
     <p class="rm-value">{{ valueFormControl.value }}</p>
     <p>Preview:</p>
-    <div class="color-preview" [style.background-color]="valueFormControl.value"></div>
-    <p class="rm-comment" *ngIf="shouldShowComment">{{ commentFormControl.value }}</p>
+    <div
+        class="color-preview"
+        [style.background-color]="valueFormControl.value"
+    ></div>
+    <p class="rm-comment" *ngIf="shouldShowComment">
+        {{ commentFormControl.value }}
+    </p>
 </div>
 <ng-template #showForm>
     <span [formGroup]="form">
-        <mat-form-field class="large-field color-field child-value-component" floatLabel="never">
-            <kui-color-picker #colorInput [formControlName]="'colorValue'" class="value" placeholder="Color value"
-                [readonly]="mode === 'read'" [errorStateMatcher]="matcher">
+        <mat-form-field
+            class="large-field color-field child-value-component"
+            floatLabel="never"
+        >
+            <kui-color-picker
+                #colorInput
+                [formControlName]="'colorValue'"
+                class="value"
+                placeholder="Color value"
+                [readonly]="mode === 'read'"
+                [errorStateMatcher]="matcher"
+            >
             </kui-color-picker>
             <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
                 Please change the value.
@@ -19,9 +33,19 @@
             </mat-error>
         </mat-form-field>
         <mat-form-field class="large-field value-component-comment">
-            <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="6" [formControlName]="'comment'" class="comment" placeholder="Comment" type="text"
-                [readonly]="mode === 'read'" spellcheck="false">
+            <textarea
+                matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="6"
+                [formControlName]="'comment'"
+                class="comment"
+                placeholder="Comment"
+                type="text"
+                [readonly]="mode === 'read'"
+                spellcheck="false"
+            >
             </textarea>
         </mat-form-field>
     </span>

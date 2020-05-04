@@ -2,20 +2,30 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { KnoraDate } from '@knora/api';
 
 @Pipe({
-  name: 'knoraDate'
+    name: 'knoraDate'
 })
 export class KnoraDatePipe implements PipeTransform {
 
-  // TODO: use the optional format parameter and return a string with that format
-  transform(value: KnoraDate, format?: string): string {
-    let formattedDate: Date = new Date();
+    // TODO: use the optional format parameter and return a string with that format
+    transform(value: KnoraDate, format?: string): string {
+        if (!(value instanceof KnoraDate)) {
+            console.error('Non-KnoraDate provided. Expected a valid KnoraDate');
+            return '';
+        }
 
-    // js date month is 0-based, so subtract 1
-    formattedDate.setFullYear(value.year, (value.month - 1), value.day);
+        if (value == null) {
+            console.error('Value is null. Expected a valid KnoraDate');
+            return '';
+        }
 
-    let dateStr = formattedDate.toLocaleDateString();
+        const formattedDate: Date = new Date();
 
-    return dateStr;
-  }
+        // js date month is 0-based, so subtract 1
+        formattedDate.setFullYear(value.year, (value.month - 1), value.day);
+
+        const dateStr = formattedDate.toLocaleDateString();
+
+        return dateStr;
+    }
 
 }
