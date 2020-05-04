@@ -2,6 +2,9 @@
 
 Reusable Angular elements for Angular applications based on knora-api.
 
+<!-- TODO: write documentation about usage of the package. This REAMDE will be published on npm. We can add links to the github repo and to the documentation to help developers. -->
+
+<!--
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.14.
 
 ## Code scaffolding
@@ -24,3 +27,4 @@ Run `ng test @knora/ui` to execute the unit tests via [Karma](https://karma-runn
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+-->
