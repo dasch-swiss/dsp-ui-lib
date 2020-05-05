@@ -1,10 +1,8 @@
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, NgZone, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CreateBooleanValue, ReadBooleanValue, UpdateBooleanValue } from '@knora/api';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'kui-boolean-value',
@@ -12,8 +10,6 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./boolean-value.component.scss']
 })
 export class BooleanValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
-
-    @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
     @Input() displayValue?: ReadBooleanValue;
 
@@ -28,7 +24,7 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
 
     booleanLabel: string;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder, private _ngZone: NgZone) {
+    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
         super();
     }
 
@@ -128,12 +124,6 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     private setBoolLabel(): string {
         this.booleanLabel = this.valueFormControl.value ? 'true' : 'false';
         return this.booleanLabel;
-    }
-
-    triggerResize() {
-        // Wait for changes to be applied, then trigger textarea resize.
-        this._ngZone.onStable.pipe(take(1))
-            .subscribe(() => this.autosize.resizeToFitContent(true));
     }
 
 }

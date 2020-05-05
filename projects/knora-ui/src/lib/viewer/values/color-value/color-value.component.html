@@ -36,7 +36,6 @@
             <textarea
                 matInput
                 cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
                 cdkAutosizeMinRows="1"
                 cdkAutosizeMaxRows="6"
                 [formControlName]="'comment'"
@@ -44,8 +43,7 @@
                 placeholder="Comment"
                 type="text"
                 [readonly]="mode === 'read'"
-                spellcheck="false"
-            >
+                spellcheck="false">
             </textarea>
         </mat-form-field>
     </span>

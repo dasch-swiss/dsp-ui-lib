@@ -1,13 +1,11 @@
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, NgZone } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, AbstractControl, Validators } from '@angular/forms';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { CreateColorValue, ReadColorValue, UpdateColorValue } from '@knora/api';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { CustomRegex } from '../custom-regex';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { take } from 'rxjs/operators';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class ColorErrorStateMatcher implements ErrorStateMatcher {
@@ -25,7 +23,6 @@ export class ColorErrorStateMatcher implements ErrorStateMatcher {
 export class ColorValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('colorInput') colorPickerComponent: ColorPickerComponent;
-  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadColorValue;
 
@@ -36,7 +33,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   customValidators = [Validators.pattern(CustomRegex.COLOR_REGEX)];
   matcher = new ColorErrorStateMatcher();
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder, private _ngZone: NgZone) {
+  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
 
@@ -112,12 +109,6 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     }
 
     return updatedColorValue;
-  }
-
-  triggerResize() {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this._ngZone.onStable.pipe(take(1))
-        .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
 }
