@@ -192,7 +192,7 @@ describe('DateInputComponent', () => {
 
   });
 
-  it('should show the toggle when not in readonly mode', () => {
+  it('should show the toggle', () => {
 
     testHostComponent.dateInputComponent.form.controls.isPeriod.setValue(true);
 
