@@ -20,7 +20,7 @@ import {JDNDatepickerDirective} from "../../jdn-datepicker-directive/jdndatepick
   template: `
     <div [formGroup]="form">
       <mat-form-field>
-        <kui-time-input #timeInput [formControlName]="'time'" [readonly]="readonly"></kui-time-input>
+        <kui-time-input #timeInput [formControlName]="'time'"></kui-time-input>
       </mat-form-field>
     </div>`
 })
@@ -29,8 +29,6 @@ class TestHostComponent implements OnInit {
   @ViewChild('timeInput') timeInputComponent: TimeInputComponent;
 
   form: FormGroup;
-
-  readonly = false;
 
   constructor(private fb: FormBuilder) {
   }
@@ -75,7 +73,6 @@ describe('TimeInputComponent', () => {
 
     expect(testHostComponent).toBeTruthy();
     expect(testHostComponent.timeInputComponent).toBeTruthy();
-    expect(testHostComponent.timeInputComponent.readonly).toBeFalsy();
 
     const hostCompDe = testHostFixture.debugElement;
     datetimeInputComponentDe = hostCompDe.query(By.directive(TimeInputComponent));
@@ -85,9 +82,6 @@ describe('TimeInputComponent', () => {
 
     timeInputDebugElement = datetimeInputComponentDe.query(By.css('input.time'));
     timeInputNativeElement = timeInputDebugElement.nativeElement;
-
-    expect(dateInputNativeElement.readOnly).toBeFalsy;
-    expect(timeInputNativeElement.readOnly).toBeFalsy;
   });
 
   it('should initialize the date correctly', () => {

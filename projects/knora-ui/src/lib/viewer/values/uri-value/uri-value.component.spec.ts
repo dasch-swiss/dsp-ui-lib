@@ -62,7 +62,7 @@ class TestHostCreateValueComponent implements OnInit {
 describe('UriValueComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [
         UriValueComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent
@@ -124,8 +124,6 @@ describe('UriValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
@@ -160,8 +158,6 @@ describe('UriValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
@@ -193,8 +189,6 @@ describe('UriValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       expect(valueInputNativeElement.value).toEqual('http://www.google.ch');
@@ -223,8 +217,6 @@ describe('UriValueComponent', () => {
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-      expect(valueInputNativeElement.readOnly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -300,9 +292,7 @@ describe('UriValueComponent', () => {
       expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
       expect(valueInputNativeElement.value).toEqual('');
-      expect(valueInputNativeElement.readOnly).toEqual(false);
       expect(commentInputNativeElement.value).toEqual('');
-      expect(commentInputNativeElement.readOnly).toEqual(false);
     });
 
     it('should create a value', () => {

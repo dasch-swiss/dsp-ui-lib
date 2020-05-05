@@ -15,7 +15,7 @@ import { By } from '@angular/platform-browser';
   template: `
     <div [formGroup]="form">
       <mat-form-field>
-        <kui-color-picker #colorInput [formControlName]="'colorValue'" [readonly]="readonly"></kui-color-picker>
+        <kui-color-picker #colorInput [formControlName]="'colorValue'"></kui-color-picker>
       </mat-form-field>
     </div>`
 })
@@ -24,8 +24,6 @@ class TestHostComponent implements OnInit {
   @ViewChild('colorInput') colorPickerComponent: ColorPickerComponent;
 
   form: FormGroup;
-
-  readonly = false;
 
   constructor(private fb: FormBuilder) {
   }
@@ -62,14 +60,12 @@ describe('ColorPickerComponent', () => {
 
     expect(testHostComponent).toBeTruthy();
     expect(testHostComponent.colorPickerComponent).toBeTruthy();
-    expect(testHostComponent.colorPickerComponent.readonly).toBeFalsy();
 
     const hostCompDe = testHostFixture.debugElement;
     colorPickerComponentDe = hostCompDe.query(By.directive(ColorPickerComponent));
     colorInputDebugElement = colorPickerComponentDe.query(By.css('input.color'));
     colorInputNativeElement = colorInputDebugElement.nativeElement;
 
-    expect(colorInputNativeElement.readOnly).toBe(true);
     expect(colorInputNativeElement.getAttribute('ng-reflect-cp-disabled')).toEqual('false');
   });
 
@@ -97,15 +93,6 @@ describe('ColorPickerComponent', () => {
     testHostFixture.detectChanges();
 
     expect(testHostComponent.form.controls.colorValue.value).toEqual('');
-  });
-
-  it('should be disabled when the readonly input is set to true', () => {
-    testHostComponent.readonly = true;
-
-    testHostFixture.detectChanges();
-
-    expect(colorInputNativeElement.readOnly).toBe(true);
-    expect(colorInputNativeElement.getAttribute('ng-reflect-cp-disabled')).toEqual('true');
   });
 
 });

@@ -7,6 +7,7 @@ import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
 import { ReadBooleanValue, MockResource, UpdateBooleanValue, CreateBooleanValue } from '@knora/api';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormattedBooleanPipe } from '../../pipes/formatted-boolean.pipe';
 
 
 /**
@@ -61,7 +62,8 @@ describe('BooleanValueComponent', () => {
       declarations: [
         BooleanValueComponent,
         TestHostDisplayValueComponent,
-        TestHostCreateValueComponent
+        TestHostCreateValueComponent,
+        FormattedBooleanPipe
       ],
       imports: [
         ReactiveFormsModule,
@@ -298,7 +300,6 @@ describe('BooleanValueComponent', () => {
       expect(checkboxEl.checked).toBe(false);
       expect(checkboxLabel.innerText).toEqual('false');
       expect(commentBooleanNativeElement.value).toEqual('');
-      expect(commentBooleanNativeElement.readOnly).toEqual(false);
     });
 
     it('should create a value', () => {

@@ -106,8 +106,6 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
 
   private _placeholder: string;
 
-  @Input() readonly = false;
-
   @HostBinding('attr.aria-describedby') describedBy = '';
 
   setDescribedByIds(ids: string[]) {
