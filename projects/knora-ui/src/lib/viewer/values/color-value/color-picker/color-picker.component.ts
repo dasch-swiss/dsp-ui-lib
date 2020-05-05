@@ -41,8 +41,6 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
   private _disabled = false;
   private _placeholder: string;
 
-  @Input() readonly = false;
-
   @Input() errorStateMatcher: ErrorStateMatcher;
 
   @HostBinding() id = `kui-color-picker-${ColorPickerComponent.nextId++}`;
