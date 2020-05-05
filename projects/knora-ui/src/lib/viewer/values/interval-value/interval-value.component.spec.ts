@@ -26,7 +26,6 @@ import { ErrorStateMatcher } from '@angular/material/core';
 })
 class TestIntervalInputComponent implements ControlValueAccessor, MatFormFieldControl<any> {
 
-    @Input() readonly = false;
     @Input() value;
     @Input() disabled: boolean;
     @Input() empty: boolean;
@@ -183,8 +182,6 @@ describe('IntervalValueComponent', () => {
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-            expect(testHostComponent.inputValueComponent.intervalInputComponent.readonly).toEqual(false);
-
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
             expect(testHostComponent.inputValueComponent.intervalInputComponent.value.start).toEqual(0);
@@ -269,8 +266,6 @@ describe('IntervalValueComponent', () => {
 
             expect(testHostComponent.inputValueComponent.displayValue.end).toEqual(216000);
 
-            expect(testHostComponent.inputValueComponent.intervalInputComponent.readonly).toEqual(false);
-
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
             commentInputNativeElement.value = 'this is a comment';
@@ -297,8 +292,6 @@ describe('IntervalValueComponent', () => {
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-            expect(testHostComponent.inputValueComponent.intervalInputComponent.readonly).toEqual(false);
-
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
             testHostComponent.inputValueComponent.intervalInputComponent.value = null;
@@ -321,8 +314,6 @@ describe('IntervalValueComponent', () => {
             testHostFixture.detectChanges();
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-            expect(testHostComponent.inputValueComponent.intervalInputComponent.readonly).toEqual(false);
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 

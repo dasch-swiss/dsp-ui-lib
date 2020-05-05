@@ -5,7 +5,7 @@
         <input matInput class="color-picker-input color" [formControlName]="'color'" [placeholder]="value"
             [(colorPicker)]="value" [style.background]="value" [style.color]="value"
             (colorPickerChange)="_handleInput()" [cpOutputFormat]="'hex'" [cpFallbackColor]="'#ff0000'"
-            [cpDisabled]="readonly" [errorStateMatcher]="matcher" readonly />
+            [cpDisabled]="false" [errorStateMatcher]="matcher" />
         <mat-error *ngIf="colorForm.controls.color.hasError('required')">
             Color is <strong>required</strong>
         </mat-error>

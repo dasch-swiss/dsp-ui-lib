@@ -30,7 +30,7 @@
 <ng-template #showForm>
     <span [formGroup]="form">
     <mat-form-field class="large-field child-value-component" *ngIf="mode === 'read'" floatLabel="never">
-            <input [formControlName]="'listValue'" class="value" type="text" placeholder="List value" matInput [readonly]="true">
+            <input [formControlName]="'listValue'" class="value" type="text" placeholder="List value" matInput readonly>
     </mat-form-field>
     <mat-form-field class="large-field value-component-comment">
         <textarea matInput
@@ -41,7 +41,6 @@
                   class="comment"
                   placeholder="Comment"
                   type="text"
-                  [readonly]="mode === 'read'"
                   spellcheck="false">
         </textarea>
     </mat-form-field>

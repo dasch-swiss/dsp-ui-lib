@@ -1,14 +1,15 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <p class="rm-value">{{booleanLabel}}</p>
+    <p class="rm-value">{{valueFormControl.value | formattedBoolean}}</p>
     <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
 </div>
 <ng-template #showForm>
     <span [formGroup]="form">
-        <mat-checkbox [formControlName]="'booleanValue'" class="value boolValue child-value-component" (change)="onChecked()">
-            {{booleanLabel}}
+        <mat-checkbox [formControlName]="'booleanValue'" class="value boolValue child-value-component">
+            {{valueFormControl.value | formattedBoolean}}
         </mat-checkbox>
         <mat-form-field class="large-field value-component-comment">
-            <textarea matInput
+            <textarea
+                    matInput
                     cdkTextareaAutosize
                     cdkAutosizeMinRows="1"
                     cdkAutosizeMaxRows="6"
@@ -16,7 +17,6 @@
                     class="comment"
                     placeholder="Comment"
                     type="text"
-                    [readonly]="mode === 'read'"
                     spellcheck="false">
             </textarea>
         </mat-form-field>

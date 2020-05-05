@@ -15,7 +15,7 @@ import { MatInputModule } from '@angular/material/input';
   template: `
     <div [formGroup]="form">
       <mat-form-field>
-        <kui-interval-input #intervalInput [formControlName]="'interval'" [readonly]="readonly"></kui-interval-input>
+        <kui-interval-input #intervalInput [formControlName]="'interval'"></kui-interval-input>
       </mat-form-field>
     </div>`
 })
@@ -24,8 +24,6 @@ class TestHostComponent implements OnInit {
   @ViewChild('intervalInput') intervalInputComponent: IntervalInputComponent;
 
   form: FormGroup;
-
-  readonly = false;
 
   constructor(private fb: FormBuilder) {
   }
@@ -64,7 +62,6 @@ describe('InvertalInputComponent', () => {
 
     expect(testHostComponent).toBeTruthy();
     expect(testHostComponent.intervalInputComponent).toBeTruthy();
-    expect(testHostComponent.intervalInputComponent.readonly).toBeFalsy();
 
     const hostCompDe = testHostFixture.debugElement;
     intervalInputComponentDe = hostCompDe.query(By.directive(IntervalInputComponent));
@@ -72,9 +69,6 @@ describe('InvertalInputComponent', () => {
     startInputNativeElement = startInputDebugElement.nativeElement;
     endInputDebugElement = intervalInputComponentDe.query(By.css('input.end'));
     endInputNativeElement = endInputDebugElement.nativeElement;
-
-    expect(startInputNativeElement.readOnly).toBe(false);
-    expect(endInputNativeElement.readOnly).toBe(false);
   });
 
   it('should initialize the interval correctly', () => {
@@ -127,12 +121,4 @@ describe('InvertalInputComponent', () => {
 
   });
 
-  it('should be readonly when the readonly input is set to true', () => {
-    testHostComponent.readonly = true;
-
-    testHostFixture.detectChanges();
-
-    expect(startInputNativeElement.readOnly).toBe(true);
-    expect(endInputNativeElement.readOnly).toBe(true);
-  });
 });

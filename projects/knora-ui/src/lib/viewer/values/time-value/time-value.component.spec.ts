@@ -25,7 +25,6 @@ import { ErrorStateMatcher } from '@angular/material/core';
 })
 class TestTimeInputComponent implements ControlValueAccessor, MatFormFieldControl<any> {
 
-  @Input() readonly = false;
   @Input() value;
   @Input() disabled: boolean;
   @Input() empty: boolean;
@@ -151,12 +150,12 @@ describe('TimeValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(TimeValueComponent));
-      dateReadModeDebugElement = valueComponentDe.query(By.css('.rm-value.date'));      
+      dateReadModeDebugElement = valueComponentDe.query(By.css('.rm-value.date'));
       dateReadModeNativeElement = dateReadModeDebugElement.nativeElement;
 
-      timeReadModeDebugElement = valueComponentDe.query(By.css('.rm-value.time'));      
+      timeReadModeDebugElement = valueComponentDe.query(By.css('.rm-value.time'));
       timeReadModeNativeElement = timeReadModeDebugElement.nativeElement;
-      
+
     });
 
     it('should display an existing value', () => {
@@ -178,8 +177,6 @@ describe('TimeValueComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -216,8 +213,6 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual('2019-08-30T10:45:20.173572Z');
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       commentInputNativeElement.value = 'this is a comment';
@@ -244,8 +239,6 @@ describe('TimeValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       testHostComponent.inputValueComponent.timeInputComponent.value = '';
@@ -268,8 +261,6 @@ describe('TimeValueComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-      expect(testHostComponent.inputValueComponent.timeInputComponent.readonly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 

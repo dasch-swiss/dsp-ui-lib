@@ -163,7 +163,6 @@ describe('LinkValueComponent', () => {
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-      expect(valueInputNativeElement.readOnly).toEqual(false);
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       const update = new ReadResource();
@@ -178,7 +177,6 @@ describe('LinkValueComponent', () => {
       testHostFixture.detectChanges();
 
       expect(valueInputNativeElement.value).toEqual('new target');
-      expect(valueInputNativeElement.readOnly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -268,7 +266,6 @@ describe('LinkValueComponent', () => {
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-      expect(valueInputNativeElement.readOnly).toEqual(false);
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       testHostComponent.inputValueComponent.valueFormControl.setValue('my string');
@@ -300,7 +297,6 @@ describe('LinkValueComponent', () => {
       valueInputNativeElement = valueInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-      expect(valueInputNativeElement.readOnly).toEqual(false);
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       testHostComponent.inputValueComponent.valueFormControl.setValue(null);
@@ -324,7 +320,6 @@ describe('LinkValueComponent', () => {
       commentInputNativeElement = commentInputDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-      expect(valueInputNativeElement.readOnly).toEqual(false);
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       commentInputNativeElement.value = 'this is a comment';
@@ -349,8 +344,6 @@ describe('LinkValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-      expect(valueInputNativeElement.readOnly).toEqual(false);
-
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
       // simulate user input
@@ -366,7 +359,6 @@ describe('LinkValueComponent', () => {
       testHostFixture.detectChanges();
 
       expect(valueInputNativeElement.value).toEqual('new target');
-      expect(valueInputNativeElement.readOnly).toEqual(false);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -387,7 +379,7 @@ describe('LinkValueComponent', () => {
       // setValue has to be called, otherwise the native input field does not get the label via the displayWith function
       const res = testHostComponent.inputValueComponent.valueFormControl.value;
       testHostComponent.inputValueComponent.valueFormControl.setValue(res);
-      
+
       // https://github.com/angular/components/blob/29e74eb9431ba01d951ee33df554f465609b59fa/src/material/autocomplete/autocomplete.spec.ts#L2577-L2580
       testHostFixture.detectChanges();
       tick();

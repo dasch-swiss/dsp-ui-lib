@@ -12,7 +12,7 @@
     <span [formGroup]="form">
         <mat-form-field class="large-field child-value-component" floatLabel="never">
             <kui-date-input #dateInput [formControlName]="'dateValue'" class="value" placeholder="Date value"
-                [readonly]="mode === 'read'" [errorStateMatcher]="matcher"></kui-date-input>
+                [errorStateMatcher]="matcher"></kui-date-input>
         </mat-form-field>
         <mat-form-field class="large-field value-component-comment">
             <textarea matInput
@@ -23,7 +23,6 @@
                       class="comment"
                       placeholder="Comment"
                       type="text"
-                      [readonly]="mode === 'read'"
                       spellcheck="false">
           </textarea>
         </mat-form-field>

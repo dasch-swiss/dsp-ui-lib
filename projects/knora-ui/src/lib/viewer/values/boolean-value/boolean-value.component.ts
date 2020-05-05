@@ -22,8 +22,6 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
 
     customValidators = [];
 
-    booleanLabel: string;
-
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
         super();
     }
@@ -54,21 +52,6 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
         });
 
         this.resetFormControl();
-    }
-
-    // override the resetFormControl() from the base component to deal with the disabled state and the checkbox label
-    resetFormControl(): void {
-        super.resetFormControl();
-
-        if (this.valueFormControl !== undefined) {
-            this.setBoolLabel();
-            if (this.mode === 'read') {
-                this.valueFormControl.disable();
-            } else {
-                this.valueFormControl.enable();
-            }
-        }
-
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -114,16 +97,6 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
         }
 
         return updatedBooleanValue;
-    }
-
-    // update dynamically the checkbox label according to the checked status
-    onChecked() {
-        this.setBoolLabel();
-    }
-
-    private setBoolLabel(): string {
-        this.booleanLabel = this.valueFormControl.value ? 'true' : 'false';
-        return this.booleanLabel;
     }
 
 }
