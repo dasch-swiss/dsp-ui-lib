@@ -5,7 +5,7 @@
 <ng-template #showForm>
   <span [formGroup]="form">
     <mat-form-field class="child-value-component" floatLabel="never">
-          <input matInput [formControlName]="'linkValue'" class="value" type="text" placeholder="Link value" aria-label="resource" [matAutocomplete]="auto" [readonly]="mode === 'read'">
+          <input matInput [formControlName]="'linkValue'" class="value" type="text" placeholder="Link value" aria-label="resource" [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayResource">
             <mat-option *ngFor="let res of resources" [value]="res">
                 {{res?.label}}
@@ -22,7 +22,6 @@
                   class="comment"
                   placeholder="Comment"
                   type="text"
-                  [readonly]="mode === 'read'"
                   spellcheck="false">
         </textarea>
       </mat-form-field>

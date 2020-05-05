@@ -155,8 +155,6 @@ describe('TextValueAsStringComponent', () => {
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-            expect(valueInputNativeElement.readOnly).toEqual(false);
-
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
             expect(valueInputNativeElement.value).toEqual('test');
@@ -188,8 +186,6 @@ describe('TextValueAsStringComponent', () => {
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
-            expect(valueInputNativeElement.readOnly).toEqual(false);
-
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
             expect(valueInputNativeElement.value).toEqual('test');
@@ -218,8 +214,6 @@ describe('TextValueAsStringComponent', () => {
             valueInputNativeElement = valueInputDebugElement.nativeElement;
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-            expect(valueInputNativeElement.readOnly).toEqual(false);
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -316,10 +310,6 @@ describe('TextValueAsStringComponent', () => {
             commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
             commentInputNativeElement = commentInputDebugElement.nativeElement;
 
-            expect(valueInputNativeElement.readOnly).toEqual(false);
-
-            expect(commentInputNativeElement.readOnly).toEqual(false);
-
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
             expect(valueInputNativeElement.value).toEqual('test');
@@ -360,8 +350,6 @@ describe('TextValueAsStringComponent', () => {
             commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
             commentInputNativeElement = commentInputDebugElement.nativeElement;
 
-            expect(valueInputNativeElement.readOnly).toEqual(false);
-
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
             expect(valueInputNativeElement.value).toEqual('test');
@@ -397,8 +385,6 @@ describe('TextValueAsStringComponent', () => {
 
             commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
             commentInputNativeElement = commentInputDebugElement.nativeElement;
-
-            expect(valueInputNativeElement.readOnly).toEqual(false);
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -493,9 +479,7 @@ describe('TextValueAsStringComponent', () => {
             expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
             expect(valueInputNativeElement.value).toEqual('');
-            expect(valueInputNativeElement.readOnly).toEqual(false);
             expect(commentInputNativeElement.value).toEqual('');
-            expect(commentInputNativeElement.readOnly).toEqual(false);
         });
 
         it('should create a value', () => {

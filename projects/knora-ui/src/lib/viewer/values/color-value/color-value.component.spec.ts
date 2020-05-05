@@ -26,7 +26,6 @@ import { ColorValueComponent } from './color-value.component';
 })
 class TestColorPickerComponent implements ControlValueAccessor, MatFormFieldControl<any> {
 
-  @Input() readonly = false;
   @Input() value;
   @Input() disabled: boolean;
   @Input() empty: boolean;
@@ -180,8 +179,6 @@ describe('ColorValueComponent', () => {
 
       expect(testHostComponent.colorValueComponent.mode).toEqual('update');
 
-      expect(testHostComponent.colorValueComponent.colorPickerComponent.readonly).toEqual(false);
-
       expect(testHostComponent.colorValueComponent.form.valid).toBeFalsy();
 
       expect(testHostComponent.colorValueComponent.colorPickerComponent.value).toEqual('#ff3333');
@@ -219,8 +216,6 @@ describe('ColorValueComponent', () => {
 
       expect(testHostComponent.colorValueComponent.displayValue.color).toEqual('#ff3333');
 
-      expect(testHostComponent.colorValueComponent.colorPickerComponent.readonly).toEqual(false);
-
       expect(testHostComponent.colorValueComponent.form.valid).toBeFalsy();
 
       commentInputNativeElement.value = 'this is a comment';
@@ -250,8 +245,6 @@ describe('ColorValueComponent', () => {
 
       expect(testHostComponent.colorValueComponent.mode).toEqual('update');
 
-      expect(testHostComponent.colorValueComponent.colorPickerComponent.readonly).toEqual(false);
-
       expect(testHostComponent.colorValueComponent.form.valid).toBeFalsy();
 
       testHostComponent.colorValueComponent.colorPickerComponent.value = null;
@@ -276,8 +269,6 @@ describe('ColorValueComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.colorValueComponent.mode).toEqual('update');
-
-      expect(testHostComponent.colorValueComponent.colorPickerComponent.readonly).toEqual(false);
 
       expect(testHostComponent.colorValueComponent.form.valid).toBeFalsy();
 

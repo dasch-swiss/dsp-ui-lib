@@ -110,8 +110,6 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
   private _placeholder: string;
 
-  @Input() readonly = false;
-
   @HostBinding('attr.aria-describedby') describedBy = '';
 
   setDescribedByIds(ids: string[]) {

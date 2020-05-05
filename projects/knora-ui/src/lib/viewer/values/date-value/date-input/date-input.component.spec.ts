@@ -21,7 +21,7 @@ import {By} from '@angular/platform-browser';
   template: `
     <div [formGroup]="form">
       <mat-form-field>
-        <kui-date-input #dateInput [formControlName]="'date'" [readonly]="readonly"></kui-date-input>
+        <kui-date-input #dateInput [formControlName]="'date'"></kui-date-input>
       </mat-form-field>
     </div>`
 })
@@ -30,8 +30,6 @@ class TestHostComponent implements OnInit {
   @ViewChild('dateInput') dateInputComponent: DateInputComponent;
 
   form: FormGroup;
-
-  readonly = false;
 
   constructor(private fb: FormBuilder) {
   }
@@ -194,9 +192,7 @@ describe('DateInputComponent', () => {
 
   });
 
-  it('should show the toggle when not in readonly mode', () => {
-
-    expect(testHostComponent.dateInputComponent.readonly).toBe(false);
+  it('should show the toggle', () => {
 
     testHostComponent.dateInputComponent.form.controls.isPeriod.setValue(true);
 
@@ -214,28 +210,6 @@ describe('DateInputComponent', () => {
     expect(endDateToggle).not.toBe(null);
   });
 
-  it('should not show the toggle when in readonly mode', () => {
-
-    testHostComponent.readonly = true;
-
-    testHostComponent.dateInputComponent.form.controls.isPeriod.setValue(true);
-
-    testHostFixture.detectChanges();
-
-    expect(testHostComponent.dateInputComponent.readonly).toBe(true);
-
-    const hostCompDe = testHostFixture.debugElement;
-    const dateInputComponentDe = hostCompDe.query(By.directive(DateInputComponent));
-
-    const startDateToggle = dateInputComponentDe.query(By.css('.start mat-datepicker-toggle'));
-
-    expect(startDateToggle).toBe(null);
-
-    const endDateToggle = dateInputComponentDe.query(By.css('.end mat-datepicker-toggle'));
-
-    expect(endDateToggle).toBe(null);
-
-  });
 
   it('should show the calendar of a date', () => {
 
