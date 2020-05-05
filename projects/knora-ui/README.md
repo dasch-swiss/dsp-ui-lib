@@ -1,30 +1,36 @@
 # @knora/ui
 
-Reusable Angular elements for Angular applications based on knora-api.
+The modules helps to create a graphical user interface, a web application to use [DSP-API](https://api.knora.org) in a quick and simple way. The modules are written in typescript to use them with **[Angular](https://angular.io) (version 9)**. We decided to style the components and directives with [Angular Material](https://material.angular.io).
 
-<!-- TODO: write documentation about usage of the package. This REAMDE will be published on npm. We can add links to the github repo and to the documentation to help developers. -->
+DSP-UI library implements [DSP-API-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the Knora web API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
-<!--
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.14.
+DSP-API and the DSP-UI library is [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
 
-## Code scaffolding
+This version of DSP-UI **requires [DSP-API version ^12.0.0](https://github.com/dasch-swiss/knora-api/releases/tag/v12.0.0).**
 
-Run `ng generate component component-name --project @knora/ui` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project @knora/ui`.
-> Note: Don't forget to add `--project @knora/ui` or else it will be added to the default project in your `angular.json` file.
+## Installation
 
-## Build
+```bash
+npm install @knora/ui
+```
 
-Run `ng build @knora/ui` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Dependencies
 
-## Publishing
+The module has the following package dependencies, which you also have to install.
 
-After building your library with `ng build @knora/ui`, go to the dist folder `cd dist/knora/ui` and run `npm publish`.
+- [@knora/api@latest](https://www.npmjs.com/package/@knora/api)
+- [jdnconvertiblecalendar@0.0.5](https://www.npmjs.com/package/jdnconvertiblecalendar)
+- [jdnconvertiblecalendardateadapter@0.0.13](https://www.npmjs.com/package/jdnconvertiblecalendardateadapter)
 
-## Running unit tests
+## Setup
 
-Run `ng test @knora/ui` to execute the unit tests via [Karma](https://karma-runner.github.io).
+<!-- TODO: copy configuration from @knora/core -->
 
-## Further help
+## Usage
+<!-- TODO: add the modules to app.modules and use them as usual  -->
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
--->
+## Contribution
+
+If you want to improve the elements and help developing, do not hesitate to [contact us](https://dasch.swiss/team) and read the manual on [docs.dasch.swiss](https://docs.dasch.swiss/developers/knora-ui/contribution/).
+
+The sources for this package are in the [dasch-swiss/knora-ui-ng-lib](https://github.com/dasch-swiss/knora-ui-ng-lib) repo. Please file issues and pull requests against that repo.

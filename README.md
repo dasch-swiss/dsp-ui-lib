@@ -2,7 +2,7 @@
 
 This is the demo and developing environment for DSP-UI library (@knora/ui) composed of 4 modules.
 
-The modules helps to create a graphical user interface, a web application to use [DSP-API](https://www.knora.org) in a quick and simple way. The modules are written in typescript to use them with [Angular](https://angular.io) (version 8). We decided to style the components and directives with [Angular Material design](https://material.angular.io).
+The modules helps to create a graphical user interface, a web application to use [DSP-API](https://www.knora.org) in a quick and simple way. The modules are written in typescript to use them with [Angular](https://angular.io) (version 9). We decided to style the components and directives with [Angular Material design](https://material.angular.io).
 
 DSP-UI library implements [DSP-API-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the Knora web API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
