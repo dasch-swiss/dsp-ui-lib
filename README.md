@@ -1,6 +1,6 @@
-# DSP-UI library
+# DSP-NG library
 
-This is the demo and developing environment for DSP-UI library (@knora/ui) composed of 4 modules.
+This is the demo and developing environment for DSP-NG library (@dasch-swiss/dsp-ng-lib) composed of 4 modules.
 
 The modules help to create a graphical user interface, a web application to use [DSP-API](https://www.knora.org) in a quick and simple way. The modules are written in Typescript to use them with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
