@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 import { BooleanValueComponent } from './boolean-value.component';
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
 import { ReadBooleanValue, MockResource, UpdateBooleanValue, CreateBooleanValue } from '@knora/api';
@@ -69,6 +71,8 @@ describe('BooleanValueComponent', () => {
         ReactiveFormsModule,
         MatCheckboxModule,
         MatInputModule,
+        MatSelectModule,
+        MatOptionModule,
         BrowserAnimationsModule
       ]
     })

@@ -28,7 +28,6 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
 
     preferredDisplayType: string;
 
-
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
         super();
     }
