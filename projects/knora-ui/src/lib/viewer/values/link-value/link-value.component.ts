@@ -4,7 +4,6 @@ import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiC
 import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core/core.module';
-import {Interval} from '../interval-value/interval-input/interval-input.component';
 
 export function resourceValidator(control: AbstractControl) {
     const invalid = !(control.value instanceof ReadResource);

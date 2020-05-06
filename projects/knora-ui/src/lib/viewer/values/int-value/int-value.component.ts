@@ -1,11 +1,9 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, NgZone, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import {CreateIntValue, ReadIntValue, UpdateIntValue} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomRegex} from '../custom-regex';
-import { take } from 'rxjs/operators';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'kui-int-value',
@@ -13,8 +11,6 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
   styleUrls: ['./int-value.component.scss']
 })
 export class IntValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
-
-  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadIntValue;
 
@@ -27,7 +23,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
 
   customValidators = [Validators.pattern(CustomRegex.INT_REGEX)]; // only allow for integer values (no fractions)
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder, private _ngZone: NgZone) {
+  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
 
@@ -102,13 +98,6 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
     }
 
     return updatedIntValue;
-  }
-
-  // Auto resize for comment textarea
-  triggerResize() {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this._ngZone.onStable.pipe(take(1))
-        .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
 }
