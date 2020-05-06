@@ -86,7 +86,23 @@ ng generate component [path/in/the/module/][name-of-component] --project @knora/
 
 For example `ng generate component core/test --project @knora/ui` will create a component-folder called `test` inside of `projects/knora-ui/src/lib/core/` with four files: `test.component.scss`, `test.component.html`, `test.component.spec.ts` and `test.component.ts`. The main component file should look as follow:
 
+```typescript
+import { Component, OnInit } from '@angular/core';
 
+@Component({
+  selector: 'kui-test',
+  templateUrl: './test.component.html',
+  styleUrls: ['./test.component.scss']
+})
+export class TestComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+```
 
 Before testing the new component inside of the demo app, you have to rebuild after each change: `npm run build-lib`.
 
