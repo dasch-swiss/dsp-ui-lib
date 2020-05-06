@@ -129,7 +129,7 @@
       "projectType": "library",
       "root": "projects/knora-ui",
       "sourceRoot": "projects/knora-ui/src",
-      "prefix": "lib",
+      "prefix": "kui",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
