@@ -1,10 +1,10 @@
 # @knora/ui
 
-The modules helps to create a graphical user interface, a web application to use [DSP-API](https://api.knora.org) in a quick and simple way. The modules are written in typescript to use them with **[Angular](https://angular.io) (version 9)**. We decided to style the components and directives with [Angular Material](https://material.angular.io).
+The modules help to create a graphical user interface, a web application to use [DSP-API](https://api.knora.org) in a quick and simple way. The modules are written in typescript to use them with **[Angular](https://angular.io) (version 9)**. We decided to style components and directives with [Angular Material](https://material.angular.io).
 
 DSP-UI library implements [DSP-API-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the Knora web API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
-DSP-API and the DSP-UI library is [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
+DSP-API and the DSP-UI library are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
 
 This version of DSP-UI **requires [DSP-API version ^12.0.0](https://github.com/dasch-swiss/knora-api/releases/tag/v12.0.0).**
 
@@ -21,6 +21,7 @@ The module has the following package dependencies, which you also have to instal
 - [@knora/api@latest](https://www.npmjs.com/package/@knora/api)
 - [jdnconvertiblecalendar@0.0.5](https://www.npmjs.com/package/jdnconvertiblecalendar)
 - [jdnconvertiblecalendardateadapter@0.0.13](https://www.npmjs.com/package/jdnconvertiblecalendardateadapter)
+- [ngx-color-picker@9.1.0](https://www.npmjs.com/package/ngx-color-picker)
 
 ## Setup
 
