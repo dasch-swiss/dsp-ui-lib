@@ -2,7 +2,7 @@
 
 This is the demo and developing environment for DSP-UI library (@knora/ui) composed of 4 modules.
 
-The modules helps to create a graphical user interface, a web application to use [DSP-API](https://www.knora.org) in a quick and simple way. The modules are written in typescript to use them with [Angular](https://angular.io) (version 9). We decided to style the components and directives with [Angular Material design](https://material.angular.io).
+The modules help to create a graphical user interface, a web application to use [DSP-API](https://www.knora.org) in a quick and simple way. The modules are written in Typescript to use them with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
 DSP-UI library implements [DSP-API-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the Knora web API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
@@ -118,7 +118,7 @@ yalc add @knora/ui
 npm install
 ```
 
-To remove from the project and restore `package.json` run:
+To remove from the project and restore `package.json`, run:
 
 ```bash
 yalc remove --all
@@ -126,7 +126,7 @@ yalc remove --all
 
 #### Conflicts
 
-In case of an issue with package-lock.json (e.g. merge conflict) where you have to reset/delete package-lock file you must consider the following commands in the correct order:
+In case of an issue with package-lock.json (e.g. merge conflict) where you have to reset/delete package-lock file, you must consider the following commands in the correct order:
 
 ```bash
 yalc remove --all
@@ -142,8 +142,8 @@ npm install
 To simulate circumstances of production, the application should be built with optimization and served locally
 (not in dev mode, but from a local web server).
 
-* install `nginx` on your system, e.g. `brew install nginx` for mac OS. See the docs for more information: <https://linux.die.net/man/8/nginx>.
-* create a configuration file for the test application.
+* Install `nginx` on your system, e.g. `brew install nginx` for mac OS. See the docs for more information: <https://linux.die.net/man/8/nginx>.
+* Create a configuration file for the test application.
     The example defines a configuration file `/usr/local/etc/nginx/servers/knorauiapp.conf` for macOS.
     Substitute `$abs_path_to_lib` for the actual absolute path on your system pointing to the project root.
     Substitute `$knora-ui-ng-lib_folder_name` for the folder name of the app build in `dist`.
@@ -162,10 +162,10 @@ To simulate circumstances of production, the application should be built with op
     }
 ```
 
-* add an entry to your `/etc/hosts`: `127.0.0.1 knorauiapp.local`
-* create an empty file `knorauiapp.local.access.log` in `/usr/local/etc/nginx/logs`
+* Add an entry to your `/etc/hosts`: `127.0.0.1 knorauiapp.local`
+* Create an empty file `knorauiapp.local.access.log` in `/usr/local/etc/nginx/logs`
     (you might have to create the folder `logs` first)
-* start `nginx` (if `nginx` is already running, stop it first: `nginx`: `nginx -s stop`)
-* build the library: `npm run build-lib`
-* build the test app with optimization: `npm run build-app`
-* access <http://knorauiapp.local:8090>
+* Start `nginx` (if `nginx` is already running, stop it first: `nginx`: `nginx -s stop`)
+* Build the library: `npm run build-lib`
+* Build the test app with optimization: `npm run build-app`
+* Access <http://knorauiapp.local:8090>
