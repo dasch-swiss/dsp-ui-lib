@@ -80,7 +80,13 @@ npm run build-lib
 
 If you want to add more components, services and so on to a module of the library, you can do it with:
 
-`$ ng generate component [path/in/the/module/][name-of-component] --project @knora/ui --styleext scss --prefix kui`
+```bash
+ng generate component [path/in/the/module/][name-of-component] --project @knora/ui
+```
+
+For example `ng generate component core/test --project @knora/ui` will create a component-folder called `test` inside of `projects/knora-ui/src/lib/core/` with four files: `test.component.scss`, `test.component.html`, `test.component.spec.ts` and `test.component.ts`. The main component file should look as follow:
+
+
 
 Before testing the new component inside of the demo app, you have to rebuild after each change: `npm run build-lib`.
 
