@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, NgZone, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import {
   CreateListValue,
@@ -6,14 +6,13 @@ import {
   UpdateListValue,
   ListNodeV2,
   KnoraApiConnection,
-  ApiResponseError, ResourcePropertyDefinition
+  ApiResponseError,
+  ResourcePropertyDefinition
 } from '@knora/api';
 import { MatMenuTrigger } from '@angular/material/menu';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core/core.module';
-import { take } from 'rxjs/operators';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'kui-list-value',
@@ -21,7 +20,6 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
   styleUrls: ['./list-value.component.scss']
 })
 export class ListValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadListValue;
   @Input() propertyDef: ResourcePropertyDefinition;
@@ -39,8 +37,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
   customValidators = [];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder,
-              @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
-              private _ngZone: NgZone) {
+              @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
     super();
    }
 
@@ -134,16 +131,11 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
     return updatedListValue;
   }
+
   getSelectedNode(item: ListNodeV2) {
     this.menuTrigger.closeMenu();
     this.selectedNode = item;
     this.valueFormControl.setValue(item.id);
-  }
-
-  triggerResize() {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this._ngZone.onStable.pipe(take(1))
-        .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
 }

@@ -1,10 +1,8 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, ViewChild, OnInit, SimpleChanges, NgZone} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, ViewChild, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import {CreateDecimalValue, ReadDecimalValue, UpdateDecimalValue} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import { take } from 'rxjs/operators';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'kui-decimal-value',
@@ -13,8 +11,6 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 })
 export class DecimalValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('autosize') autosize: CdkTextareaAutosize;
-  
   @Input() displayValue?: ReadDecimalValue;
 
   valueFormControl: FormControl;
@@ -25,11 +21,11 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
   valueChangesSubscription: Subscription;
 
   customValidators = [];
-  
-  constructor(@Inject(FormBuilder) private fb: FormBuilder, private _ngZone: NgZone) {
+
+  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
    }
-  
+
    getInitValue(): number | null {
     if (this.displayValue !== undefined) {
       return this.displayValue.decimal;
@@ -101,12 +97,6 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
     }
 
     return updatedDecimalValue;
-  }
-
-  triggerResize() {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this._ngZone.onStable.pipe(take(1))
-        .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
 }
