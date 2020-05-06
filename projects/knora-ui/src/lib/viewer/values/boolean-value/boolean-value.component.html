@@ -1,11 +1,11 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <p class="rm-value">{{valueFormControl.value | formattedBoolean}}</p>
+    <p class="rm-value">{{valueFormControl.value | formattedBoolean:preferredDisplayType}}</p>
     <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
 </div>
 <ng-template #showForm>
     <span [formGroup]="form">
         <mat-checkbox [formControlName]="'booleanValue'" class="value boolValue child-value-component">
-            {{valueFormControl.value | formattedBoolean}}
+            {{valueFormControl.value | formattedBoolean:preferredDisplayType}}
         </mat-checkbox>
         <mat-form-field class="large-field value-component-comment">
             <textarea
@@ -22,4 +22,12 @@
             </textarea>
         </mat-form-field>
     </span>
+    <mat-form-field>
+        <mat-label>Preferred display type</mat-label>
+        <mat-select [(value)]="preferredDisplayType">
+          <mat-option *ngFor="let dt of displayTypes" [value]="dt.value">
+            {{dt.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 </ng-template>

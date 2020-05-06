@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { take } from 'rxjs/operators';
+import { FormattedBooleanPipe } from '../../pipes/formatted-boolean.pipe';
 
 @Component({
     selector: 'kui-boolean-value',
@@ -25,6 +26,10 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     valueChangesSubscription: Subscription;
 
     customValidators = [];
+
+    displayTypes = [];
+
+    preferredDisplayType: string;
 
     constructor(@Inject(FormBuilder) private fb: FormBuilder, private _ngZone: NgZone) {
         super();
@@ -49,6 +54,11 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
                 this.valueFormControl.updateValueAndValidity();
             }
         );
+
+        this.displayTypes = new FormattedBooleanPipe().displayTypes;
+        console.log('displayTypes: ', this.displayTypes);
+        this.preferredDisplayType = this.displayTypes[0].value;
+
 
         this.form = this.fb.group({
             booleanValue: this.valueFormControl,
