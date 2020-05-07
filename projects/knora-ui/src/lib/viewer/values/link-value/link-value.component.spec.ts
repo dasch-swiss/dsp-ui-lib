@@ -105,7 +105,7 @@ describe('LinkValueComponent', () => {
       .compileComponents();
   }));
 
-  fdescribe('display and edit a link value', () => {
+  describe('display and edit a link value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
