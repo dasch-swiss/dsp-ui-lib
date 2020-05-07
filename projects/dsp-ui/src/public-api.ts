@@ -1,5 +1,5 @@
 /*
- * Public API Surface of knora-ui
+ * Public API Surface of dsp-ui
  */
 
 export * from './lib/core/index';

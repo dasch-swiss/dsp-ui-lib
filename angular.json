@@ -125,38 +125,38 @@
         }
       }
     },
-    "@knora/ui": {
+    "@dasch-swiss/dsp-ui": {
       "projectType": "library",
-      "root": "projects/knora-ui",
-      "sourceRoot": "projects/knora-ui/src",
-      "prefix": "lib",
+      "root": "projects/dsp-ui",
+      "sourceRoot": "projects/dsp-ui/src",
+      "prefix": "kui",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/knora-ui/tsconfig.lib.json",
-            "project": "projects/knora-ui/ng-package.json"
+            "tsConfig": "projects/dsp-ui/tsconfig.lib.json",
+            "project": "projects/dsp-ui/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/knora-ui/tsconfig.lib.prod.json"
+              "tsConfig": "projects/dsp-ui/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/knora-ui/src/test.ts",
-            "tsConfig": "projects/knora-ui/tsconfig.spec.json",
-            "karmaConfig": "projects/knora-ui/karma.conf.js"
+            "main": "projects/dsp-ui/src/test.ts",
+            "tsConfig": "projects/dsp-ui/tsconfig.spec.json",
+            "karmaConfig": "projects/dsp-ui/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/knora-ui/tsconfig.lib.json",
-              "projects/knora-ui/tsconfig.spec.json"
+              "projects/dsp-ui/tsconfig.lib.json",
+              "projects/dsp-ui/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -166,5 +166,5 @@
       }
     }
   },
-  "defaultProject": "knora-ui-ng-lib"
+  "defaultProject": "dsp-ui"
 }

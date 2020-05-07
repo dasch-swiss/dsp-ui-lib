@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { KnoraApiConnection, KnoraApiConfig } from '@knora/api';
-import { KuiConfig } from '@knora/ui';
+import { KuiConfig } from '@dasch-swiss/dsp-ui';
 
 
 
@@ -20,7 +20,7 @@ export class AppInitService {
 
     return new Promise<void>((resolve, reject) => {
 
-      // init knora-ui configuration
+      // init dsp-ui configuration
       AppInitService.kuiConfig = window['tempConfigStorage'] as KuiConfig;
 
       // init knora-api configuration

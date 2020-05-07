@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ReadComponent} from './read.component';
-import {KnoraApiConnectionToken} from '@knora/ui';
+import {KnoraApiConnectionToken} from '@dasch-swiss/dsp-ui';
 import {of} from 'rxjs';
 import {Component, Input} from '@angular/core';
 import {ApiResponseData, AuthenticationEndpointV2, LogoutResponse} from '@knora/api';

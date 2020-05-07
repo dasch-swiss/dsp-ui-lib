@@ -1,16 +1,16 @@
 {
-  "name": "@knora/ui",
+  "name": "@dasch-swiss/dsp-ui",
   "version": "1.0.0-rc1",
   "repository": {
     "type": "git",
     "url": "https://github.com/dasch-swiss/knora-ui-ng-lib.git"
   },
-  "homepage": "https://dasch-swiss.github.io/knora-ui-ng-lib",
+  "homepage": "https://docs.dasch.swiss/developers/knora-ui/documentation/",
   "peerDependencies": {
-    "@angular/common": "~9.1.2",
-    "@angular/core": "~9.1.2",
-    "@angular/material": "^9.2.1",
-    "@angular/cdk": "^9.2.1",
+    "@angular/common": "^9.0.0",
+    "@angular/core": "^9.0.0",
+    "@angular/material": "^9.0.0",
+    "@angular/cdk": "^9.0.0",
     "@knora/api": "file:.yalc/@knora/api",
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.13"

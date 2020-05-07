@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "@knora/api": {
-      "signature": "58cea2c0b9e1aaeba3745d86d4a68bfc",
+      "signature": "d9a3d2d9852c2954d46ea1e83698835b",
       "file": true
     }
   }

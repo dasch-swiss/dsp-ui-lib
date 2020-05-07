@@ -5,7 +5,7 @@
     "apiPort": 3333
   },
   "app": {
-    "name": "Knora-UI-APP",
+    "name": "DSP-UI-APP",
     "url": "localhost:4200"
   }
 }

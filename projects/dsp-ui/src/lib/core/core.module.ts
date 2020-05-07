@@ -8,8 +8,8 @@ export const KnoraApiConfigToken = new InjectionToken<KnoraApiConfig>('Knora api
 // connection config for knora-api-js-lib (@knora/api) connection
 export const KnoraApiConnectionToken = new InjectionToken<KnoraApiConnection>('Knora api connection instance');
 
-// config for knora-ui
-export const KuiConfigToken = new InjectionToken<KuiConfig>('Main configuration for knora-ui modules');
+// config for dsp-ui
+// export const KuiConfigToken = new InjectionToken<KuiConfig>('Main configuration for dsp-ui library');
 
 @NgModule({
   declarations: [],

@@ -5,7 +5,7 @@ import {
   ApiResponseData,
   LoginResponse
 } from '@knora/api';
-import {KnoraApiConnectionToken} from '@knora/ui';
+import {KnoraApiConnectionToken} from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-modify',
