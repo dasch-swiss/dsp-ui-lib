@@ -27,7 +27,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
         MockResource.getTestthing().subscribe(res => {
             const inputVal: ReadTextValueAsString =
-                res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
+                res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
 
             this.displayInputVal = inputVal;
 
@@ -56,7 +56,7 @@ class TestHostDisplayValueCommentComponent implements OnInit {
 
         MockResource.getTestthing().subscribe(res => {
             const inputVal: ReadTextValueAsString =
-                res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
+                res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText', ReadTextValueAsString)[0];
 
             inputVal.valueHasComment = 'this is a comment';
             this.displayInputVal = inputVal;
