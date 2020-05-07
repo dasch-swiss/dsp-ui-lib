@@ -44,6 +44,9 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     matcher = new DateErrorStateMatcher();
 
+    // will come from the ontology settings when implemented
+    ontologyDateSetting: string;
+
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
         super();
     }
@@ -84,6 +87,8 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         this.valueFormControl = new FormControl(null);
 
         this.commentFormControl = new FormControl(null);
+
+        this.ontologyDateSetting = 'dd.MM.YYYY';
 
         // subscribe to any change on the comment and recheck validity
         this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
