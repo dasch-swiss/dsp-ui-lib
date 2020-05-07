@@ -1,10 +1,8 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, NgZone, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../../base-value.component';
 import {CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Subscription} from 'rxjs';
-import { take } from 'rxjs/operators';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'kui-text-value-as-string',
@@ -12,8 +10,6 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
   styleUrls: ['./text-value-as-string.component.scss']
 })
 export class TextValueAsStringComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
-
-  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input() displayValue?: ReadTextValueAsString;
 
@@ -26,7 +22,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
   customValidators = [];
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder, private _ngZone: NgZone) {
+  constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
   }
 
@@ -108,9 +104,4 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     return updatedTextValue;
   }
 
-  triggerResize() {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this._ngZone.onStable.pipe(take(1))
-        .subscribe(() => this.autosize.resizeToFitContent(true));
-  }
 }
