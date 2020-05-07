@@ -68,7 +68,6 @@ class TestHostCreateValueComponent implements OnInit {
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(res => {
-        console.log('test');
       this.propIri = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue';
       this.parentResource = res;
       this.mode = 'create';
@@ -106,7 +105,7 @@ describe('LinkValueComponent', () => {
       .compileComponents();
   }));
 
-  describe('display and edit a link value', () => {
+  fdescribe('display and edit a link value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;

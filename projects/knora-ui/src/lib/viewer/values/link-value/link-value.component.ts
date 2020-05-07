@@ -86,7 +86,6 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     }
 
     ngOnInit() {
-        console.log(this.parentResource)
         const linkType = this.parentResource.getLinkPropertyIriFromLinkValuePropertyIri(this.propIri);
         this.restrictToResourceClass = this.parentResource.entityInfo.properties[linkType].objectType;
 
