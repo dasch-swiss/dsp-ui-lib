@@ -21,12 +21,4 @@
             </textarea>
         </mat-form-field>
     </span>
-    <mat-form-field>
-        <mat-label>Preferred display type</mat-label>
-        <mat-select [(value)]="preferredDisplayType">
-          <mat-option *ngFor="let dt of displayTypes" [value]="dt.value">
-            {{dt.viewValue}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
 </ng-template>

@@ -17,8 +17,6 @@ export class FormattedBooleanPipe implements PipeTransform {
     ];
 
     transform(value: boolean, format?: string): string {
-        console.log('chosen type: ', format);
-
         switch (format) {
             case 'true-false':
                 return value ? 'true' : 'false';
@@ -27,7 +25,6 @@ export class FormattedBooleanPipe implements PipeTransform {
             case 'on-off':
                 return value ? 'on' : 'off';
             default:
-                console.log('Defaulted to true/false');
                 return value ? 'true' : 'false';
         }
     }
