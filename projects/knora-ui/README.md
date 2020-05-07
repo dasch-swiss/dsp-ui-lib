@@ -1,17 +1,17 @@
-# @dasch-swiss/dsp-ng-lib
+# @dasch-swiss/dsp-ui-lib
 
-The modules help to create a graphical user interface, a web application to use [DSP-API](https://api.knora.org) in a quick and simple way. The modules are written in typescript to use them with **[Angular](https://angular.io) (version 9)**. We decided to style components and directives with [Angular Material](https://material.angular.io).
+The modules help to create a graphical user interface, a web application to use [DSP-API](https://api.knora.org) in a quick and simple way. The modules are written in Typescript to use them with **[Angular](https://angular.io) (version 9)**. We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
-DSP-NG library implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the Knora web API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
+DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the DSP API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
-DSP-API and the DSP-NG library are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
+DSP-API and the DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
 
-This version of DSP-NG-LIB **requires [DSP-API version ^12.0.0](https://github.com/dasch-swiss/knora-api/releases/tag/v12.0.0).**
+This version of DSP-UI-LIB **requires [DSP-API version ^12.0.0](https://github.com/dasch-swiss/knora-api/releases/tag/v12.0.0).**
 
 ## Installation
 
 ```bash
-npm install @dasch-swiss/dsp-ng-lib
+npm install @dasch-swiss/dsp-ui-lib
 ```
 
 ### Dependencies
