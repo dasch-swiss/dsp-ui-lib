@@ -4,7 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {KnoraApiConfigToken, KnoraApiConnectionToken, KuiConfigToken, ViewerModule} from '@knora/ui';
+import {KnoraApiConfigToken, KnoraApiConnectionToken, KuiConfigToken, KuiViewerModule} from '@knora/ui';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppInitService} from './app-init.service';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
@@ -27,7 +27,7 @@ export function initializeApp(appInitService: AppInitService) {
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    ViewerModule,
+    KuiViewerModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     MatButtonModule
   ],

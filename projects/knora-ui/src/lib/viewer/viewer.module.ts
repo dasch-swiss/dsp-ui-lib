@@ -103,5 +103,5 @@ import { FormattedBooleanPipe } from './pipes/formatted-boolean.pipe';
         FormattedBooleanPipe
     ]
 })
-export class ViewerModule {
+export class KuiViewerModule {
 }
