@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-export interface DisplayTypes {
+interface DisplayTypes {
     value: string;
     viewValue: string;
 }
