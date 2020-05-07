@@ -81,7 +81,6 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
     if(this.mode !== 'update' || !this.form.valid) {
       return false;
     }
-
     const updatedUriValue = new UpdateUriValue();
 
     updatedUriValue.id = this.displayValue.id;

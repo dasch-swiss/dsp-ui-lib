@@ -8,7 +8,7 @@
       <mat-form-field class="large-field child-value-component" floatLabel="never">
         <kui-time-input #timeInput [formControlName]="'timeValue'" class="value" [errorStateMatcher]="matcher"></kui-time-input>
         <mat-error *ngIf="form.controls.timeValue.hasError('valueNotChanged')">
-            <span class="custom-error-message">New value must be different than the current value</span>
+            <span class="custom-error-message">New value must be different than the current value.</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="large-field value-component-comment">

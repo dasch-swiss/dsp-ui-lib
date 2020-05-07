@@ -21,7 +21,7 @@
                 [errorStateMatcher]="matcher">
             </kui-color-picker>
             <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
-                Please change the value.
+               New value must be different than the current value.
             </mat-error>
             <mat-error *ngIf="valueFormControl.hasError('pattern')">
                 Please enter a hex color value.
