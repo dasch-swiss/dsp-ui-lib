@@ -1,6 +1,6 @@
 # DSP-UI-LIB library
 
-This is the demo and developing environment for DSP-UI-LIB library (@dasch-swiss/dsp-ui-lib) composed of 4 modules.
+This is the demo and developing environment for DSP-UI-LIB library (@dasch-swiss/dsp-ui) composed of 4 modules.
 
 The modules help to create a graphical user interface, a web application to use [DSP-API](https://www.knora.org) in a quick and simple way. The modules are written in Typescript to use them with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
@@ -12,28 +12,28 @@ This version of DSP-UI-LIB requires [DSP-API version ^12.0.0](https://github.com
 
 ## Library modules
 
-### DSP-UI-LIB/core
+### dsp-ui/core
 
 The core module contains configuration files and all variables needed to connect the DSP API.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/core)
 
 ---
 
-### DSP-UI-LIB/search
+### dsp-ui/search
 
 Search module allows to make simple searches or extended searches in DSP-API. In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/search)
 
 ---
 
-### DSP-UI-LIB/viewer
+### dsp-ui/viewer
 
 The viewer module contains object components to show the resource class representations from DSP-API, the GUI-elements for the property values and different kind of view frameworks.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/viewer)
 
 ---
 
-### DSP-UI-LIB/action
+### dsp-ui/action
 
 The action module contains special buttons (e.g. to sort a list), pipes and directives.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/action)
@@ -82,10 +82,10 @@ npm run build-lib
 If you want to add more components, services and so on to a module of the library, you can do it with:
 
 ```bash
-ng generate component [path/in/the/module/][name-of-component] --project @dasch-swiss/dsp-ui-lib
+ng generate component [path/in/the/module/][name-of-component] --project @dasch-swiss/dsp-ui
 ```
 
-For example `ng generate component core/test --project @dasch-swiss/dsp-ui-lib` will create a component-folder called `test` inside of `projects/knora-ui/src/lib/core/` with four files: `test.component.scss`, `test.component.html`, `test.component.spec.ts` and `test.component.ts`. The main component file should look as follow:
+For example `ng generate component core/test --project @dasch-swiss/dsp-ui` will create a component-folder called `test` inside of `projects/dsp-ui/src/lib/core/` with four files: `test.component.scss`, `test.component.html`, `test.component.spec.ts` and `test.component.ts`. The main component file should look as follow:
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
@@ -115,7 +115,7 @@ There's an additional test environment for the modules on <https://github.com/dh
 
 #### YALC
 
-In some cases we have to work with unpublished npm packages like our own [@knora/api](https://github.com/dasch-swiss/knora-api-js-lib), a JavaScript library that allows a developer to implement the Knora API without knowing technical details about it.
+In some cases we have to work with unpublished npm packages like our own [@knora/api](https://github.com/dasch-swiss/knora-api-js-lib), a JavaScript library that allows a developer to implement the DSP API without knowing technical details about it.
 To publish and add local packages we use [yalc](https://www.npmjs.com/package/yalc). Yalc publishes the packages to a local store (not the npm website).
 From there, the packages can be added to your depending project.
 
@@ -137,7 +137,7 @@ npm run yalc-publish
 Use them in your application:
 
 ```bash
-yalc add @dasch-swiss/dsp-ui-lib
+yalc add @dasch-swiss/dsp-ui
 npm install
 ```
 
@@ -169,13 +169,13 @@ To simulate circumstances of production, the application should be built with op
 * Create a configuration file for the test application.
     The example defines a configuration file `/usr/local/etc/nginx/servers/knorauiapp.conf` for macOS.
     Substitute `$abs_path_to_lib` for the actual absolute path on your system pointing to the project root.
-    Substitute `$dsp-ui-lib_folder_name` for the folder name of the app build in `dist`.
+    Substitute `$dsp-ui_folder_name` for the folder name of the app build in `dist`.
 
 ```nginx
     server {
             listen 8090;
             server_name knorauiapp.local;
-            root /$abs_path_to_lib/dist/$dsp-ui-lib_folder_name;
+            root /$abs_path_to_lib/dist/$dsp-ui_folder_name;
 
             location / {
                         try_files $uri $uri/ /index.html;

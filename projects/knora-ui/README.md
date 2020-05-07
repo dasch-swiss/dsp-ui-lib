@@ -1,4 +1,4 @@
-# @dasch-swiss/dsp-ui-lib
+# @dasch-swiss/dsp-ui
 
 The modules help to create a graphical user interface, a web application to use [DSP-API](https://api.knora.org) in a quick and simple way. The modules are written in Typescript to use them with **[Angular](https://angular.io) (version 9)**. We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
@@ -11,7 +11,7 @@ This version of DSP-UI-LIB **requires [DSP-API version ^12.0.0](https://github.c
 ## Installation
 
 ```bash
-npm install @dasch-swiss/dsp-ui-lib
+npm install @dasch-swiss/dsp-ui
 ```
 
 ### Dependencies
@@ -34,4 +34,4 @@ The module has the following package dependencies, which you also have to instal
 
 If you want to improve the elements and help developing, do not hesitate to [contact us](https://dasch.swiss/team) and read the manual on [docs.dasch.swiss](https://docs.dasch.swiss/developers/knora-ui/contribution/).
 
-The sources for this package are in the [dasch-swiss/knora-ui-ng-lib](https://github.com/dasch-swiss/knora-ui-ng-lib) repo. Please file issues and pull requests against that repo.
+The sources for this package are in the [dasch-swiss/dsp-ui](https://github.com/dasch-swiss/knora-ui-ng-lib) repo. Please file issues and pull requests against that repo.
