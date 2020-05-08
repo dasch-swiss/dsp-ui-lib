@@ -7,7 +7,8 @@ import {
     UpdateLinkValue,
     CreateLinkValue,
     ReadResource,
-    SearchEndpointV2
+    SearchEndpointV2,
+    ReadResourceSequence
 } from '@knora/api';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -39,11 +40,11 @@ class TestHostDisplayValueComponent implements OnInit {
 
     MockResource.getTestthing().subscribe(res => {
       const inputVal: ReadLinkValue =
-        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue)[0];
+        res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue)[0];
 
       this.displayInputVal = inputVal;
       this.propIri = this.displayInputVal.property;
-      this.parentResource = res[0];
+      this.parentResource = res;
       this.mode = 'read';
     });
 
@@ -68,7 +69,7 @@ class TestHostCreateValueComponent implements OnInit {
 
     MockResource.getTestthing().subscribe(res => {
       this.propIri = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue';
-      this.parentResource = res[0];
+      this.parentResource = res;
       this.mode = 'create';
     });
   }
@@ -235,7 +236,7 @@ describe('LinkValueComponent', () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
           res.label = 'hidden thing';
-          return of([res]);
+          return of(new ReadResourceSequence([res]));
         }
       );
 
@@ -256,7 +257,7 @@ describe('LinkValueComponent', () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
           res.label = 'hidden thing';
-          return of([res]);
+          return of(new ReadResourceSequence([res]));
         }
       );
 
@@ -287,7 +288,7 @@ describe('LinkValueComponent', () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
           res.label = 'hidden thing';
-          return of([res]);
+          return of(new ReadResourceSequence([res]));
         }
       );
 
@@ -447,7 +448,7 @@ describe('LinkValueComponent', () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
           res.label = 'hidden thing';
-          return of([res]);
+          return of(new ReadResourceSequence([res]));
         }
       );
 
@@ -488,7 +489,7 @@ describe('LinkValueComponent', () => {
           const res = new ReadResource();
           res.id = 'http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ';
           res.label = 'hidden thing';
-          return of([res]);
+          return of(new ReadResourceSequence([res]));
         }
       );
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();

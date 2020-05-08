@@ -84,7 +84,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
     MockResource.getTestthing().subscribe(res => {
       const inputVal: ReadDateValue =
-        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+        res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
       this.displayInputVal = inputVal;
 
@@ -175,7 +175,7 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueReadModeNativeElement.innerText).toEqual('Date: 5/13/2018');
+      expect(valueReadModeNativeElement.innerText).toEqual('Date: 13.05.2018');
 
     });
 
@@ -340,7 +340,7 @@ describe('DateValueComponent', () => {
 
       MockResource.getTestthing().subscribe(res => {
         const newDate: ReadDateValue =
-          res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+          res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
         newDate.id = 'updatedId';
 
@@ -352,7 +352,7 @@ describe('DateValueComponent', () => {
 
         expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13));
 
-        expect(valueReadModeNativeElement.innerText).toEqual('Date: 5/13/2019');
+        expect(valueReadModeNativeElement.innerText).toEqual('Date: 13.05.2019');
 
         expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 

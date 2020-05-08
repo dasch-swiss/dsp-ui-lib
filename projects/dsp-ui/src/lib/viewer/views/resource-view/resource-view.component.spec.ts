@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockResource, ReadResource, PropertyDefinition, ResourcesEndpointV2 } from '@knora/api';
+import { MockResource, ReadResource, PropertyDefinition, ResourcesEndpointV2, ReadResourceSequence } from '@knora/api';
 import { map } from 'rxjs/internal/operators/map';
 import { DspApiConnectionToken } from '../../../core';
 import { ResourceViewComponent, PropertyInfoValues } from './resource-view.component';
@@ -70,9 +70,9 @@ describe('ResourceViewComponent', () => {
 
         return MockResource.getTestthing().pipe(
           map(
-            (res: ReadResource[]) => {
-              res[0].id = id;
-              return res[0];
+            (res: ReadResource) => {
+              res.id = id;
+              return res;
             }
           ));
       }
