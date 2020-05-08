@@ -6,26 +6,27 @@ import { KnoraDate } from '@knora/api';
 })
 export class KnoraDatePipe implements PipeTransform {
 
-    // TODO: use the optional format parameter and return a string with that format
-    transform(value: KnoraDate, format?: string): string {
-        if (!(value instanceof KnoraDate)) {
+    transform(date: KnoraDate, format?: string): string {
+        if (!(date instanceof KnoraDate)) {
             console.error('Non-KnoraDate provided. Expected a valid KnoraDate');
             return '';
         }
 
-        if (value == null) {
-            console.error('Value is null. Expected a valid KnoraDate');
-            return '';
+        switch (format) {
+            case 'dd.MM.YYYY':
+                return `${this.leftPadding(date.day)}.${this.leftPadding(date.month)}.${date.year}`;
+            case 'dd-MM-YYYY':
+                return `${this.leftPadding(date.day)}-${this.leftPadding(date.month)}-${date.year}`;
+            case 'MM/dd/YYYY':
+                return `${this.leftPadding(date.month)}/${this.leftPadding(date.day)}/${date.year}`;
+            default:
+                return `${this.leftPadding(date.day)}.${this.leftPadding(date.month)}.${date.year}`;
         }
+    }
 
-        const formattedDate: Date = new Date();
-
-        // js date month is 0-based, so subtract 1
-        formattedDate.setFullYear(value.year, (value.month - 1), value.day);
-
-        const dateStr = formattedDate.toLocaleDateString();
-
-        return dateStr;
+    // ensures that day and month are always two digits
+    leftPadding(value: number): string {
+        return ('0' + value).slice(-2);
     }
 
 }
