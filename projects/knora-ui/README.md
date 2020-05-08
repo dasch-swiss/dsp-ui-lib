@@ -75,9 +75,9 @@ import { KnoraApiConfig, KnoraApiConnection } from '@knora/api';
 })
 export class AppInitService {
 
-  static knoraApiConnection: KnoraApiConnection;
+  static dspApiConnection: KnoraApiConnection;
 
-  static knoraApiConfig: KnoraApiConfig;
+  static dspApiConfig: KnoraApiConfig;
 
   constructor() { }
 
@@ -89,7 +89,7 @@ export class AppInitService {
       const dspApiConfig: KnoraApiConfig = window['tempConfigStorage'] as KnoraApiConfig;
 
       // init dsp-api configuration
-      AppInitService.knoraApiConfig = new KnoraApiConfig(
+      AppInitService.dspApiConfig = new KnoraApiConfig(
         dspApiConfig.apiProtocol,
         dspApiConfig.apiHost,
         dspApiConfig.apiPort,
@@ -99,7 +99,7 @@ export class AppInitService {
       );
 
       // set knora-api connection configuration
-      AppInitService.knoraApiConnection = new KnoraApiConnection(AppInitService.knoraApiConfig);
+      AppInitService.dspApiConnection = new KnoraApiConnection(AppInitService.dspApiConfig);
 
       resolve();
     });
@@ -141,12 +141,12 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
       multi: true
     },
     {
-      provide: KnoraApiConfigToken,
-      useFactory: () => AppInitService.knoraApiConfig
+      provide: DspApiConfigToken,
+      useFactory: () => AppInitService.dspApiConfig
     },
     {
-      provide: KnoraApiConnectionToken,
-      useFactory: () => AppInitService.knoraApiConnection
+      provide: DspApiConnectionToken,
+      useFactory: () => AppInitService.dspApiConnection
     }
   ],
   bootstrap: [AppComponent]
@@ -156,7 +156,7 @@ export class AppModule { }
 
 Do not forget to make the imports for `APP_INITIALIZER` from `@angular/core` and the desired DSP-UI modules from `@dasch-swiss/dsp-ui`.
 
-Finally, the `main.ts` must be modified:
+Finally, the `main.ts` file must be modified:
 
 ```typescript
 import { enableProdMode } from '@angular/core';
