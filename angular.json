@@ -166,5 +166,5 @@
       }
     }
   },
-  "defaultProject": "dsp-ui"
+  "defaultProject": "dsp-ui-lib"
 }

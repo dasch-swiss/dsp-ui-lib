@@ -11,7 +11,7 @@ function bootstrapFailed(result) {
   console.error('bootstrap-fail! Config is missing or api parameters are not defined', result);
 }
 
-fetch(`config/config.${environment.name}.json`)
+fetch(`./config/config.${environment.name}.json`)
   .then(response => response.json())
   .then(config => {
     if (!config) {
