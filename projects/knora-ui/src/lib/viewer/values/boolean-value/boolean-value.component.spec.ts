@@ -30,7 +30,7 @@ class TestHostDisplayValueComponent implements OnInit {
   ngOnInit() {
     MockResource.getTestthing().subscribe(res => {
       const booleanVal: ReadBooleanValue =
-        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasBoolean', ReadBooleanValue)[0];
+        res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasBoolean', ReadBooleanValue)[0];
 
       this.displayBooleanVal = booleanVal;
 

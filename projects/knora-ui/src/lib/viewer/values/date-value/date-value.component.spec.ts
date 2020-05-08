@@ -84,7 +84,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
     MockResource.getTestthing().subscribe(res => {
       const inputVal: ReadDateValue =
-        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+        res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
       this.displayInputVal = inputVal;
 
@@ -340,7 +340,7 @@ describe('DateValueComponent', () => {
 
       MockResource.getTestthing().subscribe(res => {
         const newDate: ReadDateValue =
-          res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+          res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
         newDate.id = 'updatedId';
 
