@@ -1,36 +1,38 @@
 import { Injectable } from '@angular/core';
-import { KuiConfig } from '@dasch-swiss/dsp-ui';
 import { KnoraApiConfig, KnoraApiConnection } from '@knora/api';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppInitService {
 
-    static knoraApiConnection: KnoraApiConnection;
+  static dspApiConnection: KnoraApiConnection;
 
-    static knoraApiConfig: KnoraApiConfig;
+  static dspApiConfig: KnoraApiConfig;
 
-    constructor() { }
+  constructor() { }
 
-    Init() {
+  Init() {
 
-        return new Promise<void>((resolve, reject) => {
+    return new Promise<void>((resolve) => {
 
-            // init dsp-ui configuration
-            const dspConfig: KuiConfig = window['tempConfigStorage'] as KuiConfig;
+      // get api config information from temp storage
+      const dspApiConfig: KnoraApiConfig = window['tempConfigStorage'] as KnoraApiConfig;
 
-            console.log(window);
+      // init dsp-api configuration
+      AppInitService.dspApiConfig = new KnoraApiConfig(
+        dspApiConfig.apiProtocol,
+        dspApiConfig.apiHost,
+        dspApiConfig.apiPort,
+        dspApiConfig.apiPath,
+        dspApiConfig.jsonWebToken,
+        dspApiConfig.logErrors
+      );
 
-            // init knora-api configuration
-            AppInitService.knoraApiConfig = new KnoraApiConfig(
-                dspConfig.knora.apiProtocol,
-                dspConfig.knora.apiHost,
-                dspConfig.knora.apiPort
-            );
+      // set knora-api connection configuration
+      AppInitService.dspApiConnection = new KnoraApiConnection(AppInitService.dspApiConfig);
 
-            // set knora-api connection configuration
-            AppInitService.knoraApiConnection = new KnoraApiConnection(AppInitService.knoraApiConfig);
-
-            resolve();
-        });
-    }
+      resolve();
+    });
+  }
 }
