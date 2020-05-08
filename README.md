@@ -1,4 +1,4 @@
-# DSP-UI-LIB library
+# DSP-UI library
 
 This is the demo and developing environment for DSP-UI-LIB library (@dasch-swiss/dsp-ui) composed of 4 modules.
 
@@ -12,28 +12,28 @@ This version of DSP-UI-LIB requires [DSP-API version ^12.0.0](https://github.com
 
 ## Library modules
 
-### dsp-ui/core
+### DspCoreModule
 
 The core module contains configuration files and all variables needed to connect the DSP API.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/core)
 
 ---
 
-### dsp-ui/search
+### DspSearchModule
 
 Search module allows to make simple searches or extended searches in DSP-API. In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/search)
 
 ---
 
-### dsp-ui/viewer
+### DspViewerModule
 
 The viewer module contains object components to show the resource class representations from DSP-API, the GUI-elements for the property values and different kind of view frameworks.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/viewer)
 
 ---
 
-### dsp-ui/action
+### DspActionModule
 
 The action module contains special buttons (e.g. to sort a list), pipes and directives.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/action)

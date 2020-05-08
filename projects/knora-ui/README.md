@@ -56,7 +56,7 @@ The config files have to been integrated in `angular.json` in all "assets"-secti
 "assets": [
     "src/favicon.ico",
     "src/assets",
-    "src/config"    <-- add this line
+    "src/config"    <-- add this line and do not forget the comma above
 ]
 ```
 
@@ -191,13 +191,15 @@ fetch(`config/config.${environment.name}.json`)
 
 ```
 
-
-
-<!-- TODO: copy configuration from @knora/core -->
-
-
 ## Usage
 <!-- TODO: add the modules to app.modules and use them as usual  -->
+<!-- app.modules -->
+
+<!-- example of component e.g. get all projects and display as a list -->
+
+<!-- example of resource viewer -->
+
+<!-- link to main documentation: https://docs.dasch.swiss/developers/knora-ui/documentation/ -->
 
 ## Contribution
 
