@@ -6,19 +6,12 @@ import { KnoraDate } from '@knora/api';
 })
 export class KnoraDatePipe implements PipeTransform {
 
-    // TODO: use the optional format parameter and return a string with that format
     transform(date: KnoraDate, format?: string): string {
         if (!(date instanceof KnoraDate)) {
             console.error('Non-KnoraDate provided. Expected a valid KnoraDate');
             return '';
         }
 
-        if (!date) {
-            console.error('Value is null. Expected a valid KnoraDate');
-            return '';
-        }
-
-        // make this fancier
         switch (format) {
             case 'dd.MM.YYYY':
                 return `${this.leftPadding(date.day)}.${this.leftPadding(date.month)}.${date.year}`;
@@ -33,7 +26,7 @@ export class KnoraDatePipe implements PipeTransform {
 
     // ensures that day and month are always two digits
     leftPadding(value: number): string {
-        return ('00' + value).slice(-2);
+        return ('0' + value).slice(-2);
     }
 
 }

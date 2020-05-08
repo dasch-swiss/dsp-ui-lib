@@ -1,13 +1,11 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue } from '@knora/api';
 import {
-    AbstractControl,
     FormBuilder,
     FormControl,
     FormGroup,
     FormGroupDirective,
-    NgForm,
-    ValidatorFn
+    NgForm
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';

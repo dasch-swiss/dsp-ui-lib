@@ -37,4 +37,16 @@ describe('KnoradatePipe', () => {
 
         expect(convertedDate).toEqual('04.07.1776');
     });
+
+    it('should return a number of two digits', () => {
+        const pipe = new KnoraDatePipe();
+
+        let num = pipe.leftPadding(7);
+
+        expect(num).toEqual('07');
+
+        num = pipe.leftPadding(12);
+
+        expect(num).toEqual('12');
+    });
 });
