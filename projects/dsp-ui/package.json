@@ -3,9 +3,9 @@
   "version": "1.0.0-rc1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dasch-swiss/knora-ui-ng-lib.git"
+    "url": "https://github.com/dasch-swiss/dsp-ui-lib.git"
   },
-  "homepage": "https://docs.dasch.swiss/developers/knora-ui/documentation/",
+  "homepage": "https://docs.dasch.swiss/developers/dsp-ui/documentation/",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",

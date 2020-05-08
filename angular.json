@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "knora-ui-ng-lib": {
+    "dsp-ui-lib": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/knora-ui-ng-lib",
+            "outputPath": "dist/dsp-ui-lib",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "knora-ui-ng-lib:build"
+            "browserTarget": "dsp-ui-lib:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "knora-ui-ng-lib:build:production"
+              "browserTarget": "dsp-ui-lib:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "knora-ui-ng-lib:build"
+            "browserTarget": "dsp-ui-lib:build"
           }
         },
         "test": {
@@ -115,11 +115,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "knora-ui-ng-lib:serve"
+            "devServerTarget": "dsp-ui-lib:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "knora-ui-ng-lib:serve:production"
+              "devServerTarget": "dsp-ui-lib:serve:production"
             }
           }
         }
@@ -129,7 +129,7 @@
       "projectType": "library",
       "root": "projects/dsp-ui",
       "sourceRoot": "projects/dsp-ui/src",
-      "prefix": "kui",
+      "prefix": "dsp",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",

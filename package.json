@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dasch-swiss/knora-ui-ng-lib.git"
+    "url": "https://github.com/dasch-swiss/dsp-ui-lib.git"
   },
-  "homepage": "https://docs.dasch.swiss/developers/knora-ui/contribution/",
+  "homepage": "https://docs.dasch.swiss/developers/dsp-ui/contribution/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,7 +14,8 @@
     "test-lib": "ng t --watch=false --browsers=ChromeHeadless --project @dasch-swiss/dsp-ui",
     "test-lib-local": "ng t --project @dasch-swiss/dsp-ui",
     "build-lib": "ng b --prod --project @dasch-swiss/dsp-ui",
-    "build-app": "ng b --prod --buildOptimizer=true",
+    "yalc-publish-lib": "ng b --prod --project @dasch-swiss/dsp-ui && yalc publish dist/@dasch-swiss/dsp-ui",
+    "build-app": "ng b --prod",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

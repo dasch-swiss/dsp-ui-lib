@@ -4,7 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {KnoraApiConfigToken, KnoraApiConnectionToken, KuiConfigToken, KuiViewerModule} from '@dasch-swiss/dsp-ui';
+import {KnoraApiConfigToken, KnoraApiConnectionToken, KuiViewerModule} from '@dasch-swiss/dsp-ui';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppInitService} from './app-init.service';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
@@ -38,10 +38,6 @@ export function initializeApp(appInitService: AppInitService) {
       useFactory: initializeApp,
       deps: [AppInitService],
       multi: true
-    },
-    {
-      provide: KuiConfigToken,
-      useFactory: () => AppInitService.kuiConfig
     },
     {
       provide: KnoraApiConfigToken,
