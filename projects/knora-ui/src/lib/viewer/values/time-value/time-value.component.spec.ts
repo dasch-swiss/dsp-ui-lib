@@ -83,7 +83,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
     MockResource.getTestthing().subscribe(res => {
       const inputVal: ReadTimeValue =
-        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasTimeStamp', ReadTimeValue)[0];
+        res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasTimeStamp', ReadTimeValue)[0];
 
       this.displayInputVal = inputVal;
 

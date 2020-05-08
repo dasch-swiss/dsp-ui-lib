@@ -29,7 +29,7 @@ class TestPropertyParentComponent implements OnInit {
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(response => {
-      this.parentResource = response[0];
+      this.parentResource = response;
       const propsList: IHasProperty[] = this.parentResource.entityInfo.classes[this.parentResource.type].propertiesList;
 
       for (const prop of propsList) {

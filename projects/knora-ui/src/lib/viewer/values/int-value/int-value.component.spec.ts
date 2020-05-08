@@ -27,7 +27,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
         MockResource.getTestthing().subscribe(res => {
             const inputVal: ReadIntValue =
-                res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger', ReadIntValue)[0];
+                res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger', ReadIntValue)[0];
 
             this.displayInputVal = inputVal;
 
