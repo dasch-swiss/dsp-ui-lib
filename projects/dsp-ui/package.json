@@ -1,6 +1,6 @@
 {
   "name": "@dasch-swiss/dsp-ui",
-  "version": "1.0.0-rc1",
+  "version": "1.0.0-rc.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/dasch-swiss/dsp-ui-lib.git"
@@ -11,7 +11,7 @@
     "@angular/core": "^9.0.0",
     "@angular/material": "^9.0.0",
     "@angular/cdk": "^9.0.0",
-    "@knora/api": "file:.yalc/@knora/api",
+    "@knora/api": "1.0.0-rc.0",
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.13"
   }
