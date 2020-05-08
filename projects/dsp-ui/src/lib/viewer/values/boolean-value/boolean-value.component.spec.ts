@@ -15,7 +15,7 @@ import { FormattedBooleanPipe } from '../../pipes/formatted-boolean.pipe';
  */
 @Component({
   template: `
-  <kui-boolean-value #booleanVal [displayValue]="displayBooleanVal" [mode]="mode"></kui-boolean-value>`
+  <dsp-boolean-value #booleanVal [displayValue]="displayBooleanVal" [mode]="mode"></dsp-boolean-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -42,7 +42,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-  <kui-boolean-value #booleanVal [mode]="mode"></kui-boolean-value>`
+  <dsp-boolean-value #booleanVal [mode]="mode"></dsp-boolean-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 

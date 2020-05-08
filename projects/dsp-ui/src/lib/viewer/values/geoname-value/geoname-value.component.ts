@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs';
 import { CustomRegex } from '../custom-regex';
 
 @Component({
-  selector: 'kui-geoname-value',
+  selector: 'dsp-geoname-value',
   templateUrl: './geoname-value.component.html',
   styleUrls: ['./geoname-value.component.scss']
 })

@@ -36,7 +36,7 @@ export class DateTime {
 }
 
 @Component({
-  selector: 'kui-time-input',
+  selector: 'dsp-time-input',
   templateUrl: './time-input.component.html',
   styleUrls: ['./time-input.component.scss'],
   providers: [{ provide: MatFormFieldControl, useExisting: TimeInputComponent }]
@@ -47,10 +47,10 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
   form: FormGroup;
   stateChanges = new Subject<void>();
-  @HostBinding() id = `kui-time-input-${TimeInputComponent.nextId++}`;
+  @HostBinding() id = `dsp-time-input-${TimeInputComponent.nextId++}`;
   focused = false;
   errorState = false;
-  controlType = 'kui-time-input';
+  controlType = 'dsp-time-input';
   matcher = new TimeInputErrorStateMatcher();
   onChange = (_: any) => { };
   onTouched = () => { };

@@ -6,7 +6,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomRegex} from '../custom-regex';
 
 @Component({
-  selector: 'kui-uri-value',
+  selector: 'dsp-uri-value',
   templateUrl: './uri-value.component.html',
   styleUrls: ['./uri-value.component.scss']
 })

@@ -38,7 +38,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
 
 // https://material.angular.io/guide/creating-a-custom-form-field-control
 @Component({
-  selector: 'kui-interval-input',
+  selector: 'dsp-interval-input',
   templateUrl: './interval-input.component.html',
   styleUrls: ['./interval-input.component.scss'],
   providers: [{provide: MatFormFieldControl, useExisting: IntervalInputComponent}]
@@ -48,10 +48,10 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
 
   form: FormGroup;
   stateChanges = new Subject<void>();
-  @HostBinding() id = `kui-interval-input-${IntervalInputComponent.nextId++}`;
+  @HostBinding() id = `dsp-interval-input-${IntervalInputComponent.nextId++}`;
   focused = false;
   errorState = false;
-  controlType = 'kui-interval-input';
+  controlType = 'dsp-interval-input';
   matcher = new IntervalInputErrorStateMatcher();
   onChange = (_: any) => {};
   onTouched = () => {};

@@ -12,10 +12,10 @@ import {
 import { MatMenuTrigger } from '@angular/material/menu';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {KnoraApiConnectionToken} from '../../../core/core.module';
+import {DspApiConnectionToken} from '../../../core/core.module';
 
 @Component({
-  selector: 'kui-list-value',
+  selector: 'dsp-list-value',
   templateUrl: './list-value.component.html',
   styleUrls: ['./list-value.component.scss']
 })
@@ -37,7 +37,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
   customValidators = [];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder,
-              @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+              @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
     super();
    }
 

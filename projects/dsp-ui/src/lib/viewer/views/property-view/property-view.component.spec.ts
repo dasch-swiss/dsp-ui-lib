@@ -10,11 +10,11 @@ import { PropertyViewComponent } from './property-view.component';
  */
 @Component({
   template: `
-    <kui-property-view #propView
+    <dsp-property-view #propView
       [parentResource]="parentResource"
       [propArray]="propArray"
       [systemPropArray]="systemPropArray"
-    ></kui-property-view>`
+    ></dsp-property-view>`
 })
 class TestPropertyParentComponent implements OnInit {
 
@@ -68,7 +68,7 @@ class TestPropertyParentComponent implements OnInit {
  * Test host component to simulate child component, here display-edit.
  */
 @Component({
-  selector: `kui-display-edit`,
+  selector: `dsp-display-edit`,
   template: ``
 })
 class TestDisplayValueComponent {

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 
 @Component({
-    selector: 'kui-boolean-value',
+    selector: 'dsp-boolean-value',
     templateUrl: './boolean-value.component.html',
     styleUrls: ['./boolean-value.component.scss']
 })

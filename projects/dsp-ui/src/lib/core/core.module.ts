@@ -3,13 +3,11 @@ import { InjectionToken, NgModule } from '@angular/core';
 import { KnoraApiConfig, KnoraApiConnection } from '@knora/api';
 
 // config for knora-api-js-lib (@knora/api) config object
-export const KnoraApiConfigToken = new InjectionToken<KnoraApiConfig>('Knora api configuration');
+export const DspApiConfigToken = new InjectionToken<KnoraApiConfig>('DSP api configuration');
 
 // connection config for knora-api-js-lib (@knora/api) connection
-export const KnoraApiConnectionToken = new InjectionToken<KnoraApiConnection>('Knora api connection instance');
+export const DspApiConnectionToken = new InjectionToken<KnoraApiConnection>('DSP api connection instance');
 
-// config for dsp-ui
-// export const KuiConfigToken = new InjectionToken<DspConfig>('Main configuration for dsp-ui modules');
 
 @NgModule({
     declarations: [],

@@ -5,7 +5,7 @@ import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'kui-text-value-as-html',
+  selector: 'dsp-text-value-as-html',
   templateUrl: './text-value-as-html.component.html',
   styleUrls: ['./text-value-as-html.component.scss']
 })

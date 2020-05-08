@@ -4,7 +4,7 @@ import { PropertyInfoValues } from '../resource-view/resource-view.component';
 import { ReadResource, PropertyDefinition } from '@knora/api';
 
 @Component({
-  selector: 'kui-property-view',
+  selector: 'dsp-property-view',
   templateUrl: './property-view.component.html',
   styleUrls: ['./property-view.component.scss']
 })

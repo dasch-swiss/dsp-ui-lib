@@ -23,7 +23,7 @@ export class DateErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-    selector: 'kui-date-value',
+    selector: 'dsp-date-value',
     templateUrl: './date-value.component.html',
     styleUrls: ['./date-value.component.scss']
 })

@@ -11,22 +11,22 @@
   </div>
   <div class="value-component">
     <span [ngSwitch]="valueTypeOrClass">
-      <kui-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-string>
-      <kui-text-value-as-html class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="displayValue"></kui-text-value-as-html>
-      <kui-int-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></kui-int-value>
-      <kui-boolean-value class="parent-value-component" #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]="displayValue"></kui-boolean-value>
-      <kui-uri-value class="parent-value-component" #displayVal *ngSwitchCase="constants.UriValue" [mode]="mode" [displayValue]="displayValue"></kui-uri-value>
-      <kui-decimal-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DecimalValue" [mode]="mode" [displayValue]="displayValue"></kui-decimal-value>
-      <kui-color-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ColorValue" [mode]="mode" [displayValue]="displayValue"></kui-color-value>
-      <kui-interval-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]="displayValue"></kui-interval-value>
-      <kui-time-value class="parent-value-component" #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="displayValue"></kui-time-value>
-      <kui-geoname-value class="parent-value-component" #displayVal *ngSwitchCase="constants.GeonameValue" [mode]="mode" [displayValue]="displayValue"></kui-geoname-value>
-      <kui-link-value class="parent-value-component" #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"
-                    [parentResource]="parentResource" [propIri]="displayValue.property"></kui-link-value>
-      <kui-date-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode" [displayValue]="displayValue"></kui-date-value>
-      <kui-list-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode" [displayValue]="displayValue"
-                    [propertyDef]="parentResource.entityInfo.properties[displayValue.property]"></kui-list-value>
-      <span *ngSwitchDefault>{{displayValue.strval}}</span> 
+      <dsp-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="displayValue"></dsp-text-value-as-string>
+      <dsp-text-value-as-html class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="displayValue"></dsp-text-value-as-html>
+      <dsp-int-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></dsp-int-value>
+      <dsp-boolean-value class="parent-value-component" #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]="displayValue"></dsp-boolean-value>
+      <dsp-uri-value class="parent-value-component" #displayVal *ngSwitchCase="constants.UriValue" [mode]="mode" [displayValue]="displayValue"></dsp-uri-value>
+      <dsp-decimal-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DecimalValue" [mode]="mode" [displayValue]="displayValue"></dsp-decimal-value>
+      <dsp-color-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ColorValue" [mode]="mode" [displayValue]="displayValue"></dsp-color-value>
+      <dsp-interval-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]="displayValue"></dsp-interval-value>
+      <dsp-time-value class="parent-value-component" #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="displayValue"></dsp-time-value>
+      <dsp-geoname-value class="parent-value-component" #displayVal *ngSwitchCase="constants.GeonameValue" [mode]="mode" [displayValue]="displayValue"></dsp-geoname-value>
+      <dsp-link-value class="parent-value-component" #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="displayValue"
+                    [parentResource]="parentResource" [propIri]="displayValue.property"></dsp-link-value>
+      <dsp-date-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode" [displayValue]="displayValue"></dsp-date-value>
+      <dsp-list-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode" [displayValue]="displayValue"
+                    [propertyDef]="parentResource.entityInfo.properties[displayValue.property]"></dsp-list-value>
+      <span *ngSwitchDefault>{{displayValue.strval}}</span>
     </span>
   </div>
   <!-- TEMPORARY CODE: TO HIDE BUTTONS FOR VALUE COMPONENTS NOT YET IMPLEMENTED -->

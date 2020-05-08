@@ -25,7 +25,7 @@ export class ListNodeV2 {
  * Test host component to simulate parent component.
  */
 @Component({
-  selector: `kui-host-component`,
+  selector: `dsp-host-component`,
   template: `
     <button mat-stroked-button [matMenuTriggerFor]="mainMenu" type="button">
         <span *ngIf="!selectedNode">Select list value</span>
@@ -44,7 +44,7 @@ export class ListNodeV2 {
                     <button mat-menu-item [matMenuTriggerFor]="menu.childMenu" (click)="setValue(child)" type="button">
                         {{child.label}}
                     </button>
-                    <kui-sublist-value #menu [children]="child.children" (selectedNode)="setValue($event)"></kui-sublist-value>
+                    <dsp-sublist-value #menu [children]="child.children" (selectedNode)="setValue($event)"></dsp-sublist-value>
                 </span>
 
                 <span *ngIf="!child.children || child.children.length === 0">

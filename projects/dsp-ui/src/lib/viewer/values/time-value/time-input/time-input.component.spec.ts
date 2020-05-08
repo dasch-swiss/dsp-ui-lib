@@ -20,7 +20,7 @@ import {JDNDatepickerDirective} from "../../jdn-datepicker-directive/jdndatepick
   template: `
     <div [formGroup]="form">
       <mat-form-field>
-        <kui-time-input #timeInput [formControlName]="'time'"></kui-time-input>
+        <dsp-time-input #timeInput [formControlName]="'time'"></dsp-time-input>
       </mat-form-field>
     </div>`
 })

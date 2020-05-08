@@ -13,13 +13,13 @@
 <ng-template #showForm>
     <span [formGroup]="form">
         <mat-form-field class="large-field color-field child-value-component" floatLabel="never">
-            <kui-color-picker
+            <dsp-color-picker
                 #colorInput
                 [formControlName]="'colorValue'"
                 class="value"
                 placeholder="Color value"
                 [errorStateMatcher]="matcher">
-            </kui-color-picker>
+            </dsp-color-picker>
             <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
                 Please change the value.
             </mat-error>

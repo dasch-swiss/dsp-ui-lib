@@ -6,7 +6,7 @@
 <ng-template #showForm>
   <span [formGroup]="form">
       <mat-form-field class="large-field child-value-component" floatLabel="never">
-        <kui-interval-input #intervalInput [formControlName]="'intervalValue'" class="value" placeholder="Interval value" [errorStateMatcher]="matcher"></kui-interval-input>
+        <dsp-interval-input #intervalInput [formControlName]="'intervalValue'" class="value" placeholder="Interval value" [errorStateMatcher]="matcher"></dsp-interval-input>
         <mat-error *ngIf="form.controls.intervalValue.hasError('valueNotChanged')">
           Change value
         </mat-error>

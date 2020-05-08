@@ -6,7 +6,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomRegex} from '../custom-regex';
 
 @Component({
-  selector: 'kui-int-value',
+  selector: 'dsp-int-value',
   templateUrl: './int-value.component.html',
   styleUrls: ['./int-value.component.scss']
 })

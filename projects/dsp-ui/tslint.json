@@ -4,13 +4,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "kui",
+      "dsp",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "kui",
+      "dsp",
       "kebab-case"
     ]
   }

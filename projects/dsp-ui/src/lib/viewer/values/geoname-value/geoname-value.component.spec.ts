@@ -15,7 +15,7 @@ import { GeonameValueComponent } from './geoname-value.component';
  */
 @Component({
   template: `
-    <kui-geoname-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-geoname-value>`
+    <dsp-geoname-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-geoname-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -44,7 +44,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-geoname-value #inputVal [mode]="mode"></kui-geoname-value>`
+    <dsp-geoname-value #inputVal [mode]="mode"></dsp-geoname-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 

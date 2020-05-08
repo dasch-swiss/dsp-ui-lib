@@ -22,11 +22,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { of } from 'rxjs';
-import { KnoraApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: `kui-text-value-as-string`,
+  selector: `dsp-text-value-as-string`,
   template: ``
 })
 class TestTextValueAsStringComponent {
@@ -37,7 +37,7 @@ class TestTextValueAsStringComponent {
 }
 
 @Component({
-  selector: `kui-list-value`,
+  selector: `dsp-list-value`,
   template: ``
 })
 class TestListValueComponent {
@@ -49,7 +49,7 @@ class TestListValueComponent {
 }
 
 @Component({
-  selector: `kui-link-value`,
+  selector: `dsp-link-value`,
   template: ``
 })
 class TestLinkValueComponent {
@@ -64,7 +64,7 @@ class TestLinkValueComponent {
 }
 
 @Component({
-  selector: `kui-text-value-as-html`,
+  selector: `dsp-text-value-as-html`,
   template: ``
 })
 class TestTextValueAsHtmlComponent {
@@ -75,7 +75,7 @@ class TestTextValueAsHtmlComponent {
 }
 
 @Component({
-  selector: `kui-uri-value`,
+  selector: `dsp-uri-value`,
   template: ``
 })
 class TestUriValueComponent {
@@ -86,7 +86,7 @@ class TestUriValueComponent {
 }
 
 @Component({
-  selector: `kui-int-value`,
+  selector: `dsp-int-value`,
   template: ``
 })
 class TestIntValueComponent implements OnInit {
@@ -117,7 +117,7 @@ class TestIntValueComponent implements OnInit {
 }
 
 @Component({
-  selector: `kui-boolean-value`,
+  selector: `dsp-boolean-value`,
   template: ``
 })
 class TestBooleanValueComponent {
@@ -129,7 +129,7 @@ class TestBooleanValueComponent {
 }
 
 @Component({
-  selector: `kui-interval-value`,
+  selector: `dsp-interval-value`,
   template: ``
 })
 class TestIntervalValueComponent {
@@ -141,7 +141,7 @@ class TestIntervalValueComponent {
 }
 
 @Component({
-  selector: `kui-decimal-value`,
+  selector: `dsp-decimal-value`,
   template: ``
 })
 class TestDecimalValueComponent {
@@ -153,7 +153,7 @@ class TestDecimalValueComponent {
 }
 
 @Component({
-  selector: `kui-time-value`,
+  selector: `dsp-time-value`,
   template: ``
 })
 class TestTimeValueComponent {
@@ -163,7 +163,7 @@ class TestTimeValueComponent {
 }
 
 @Component({
-  selector: `kui-color-value`,
+  selector: `dsp-color-value`,
   template: ``
 })
 class TestColorValueComponent {
@@ -173,7 +173,7 @@ class TestColorValueComponent {
 }
 
 @Component({
-  selector: `kui-geoname-value`,
+  selector: `dsp-geoname-value`,
   template: ``
 })
 class TestGeonameValueComponent {
@@ -185,7 +185,7 @@ class TestGeonameValueComponent {
 }
 
 @Component({
-  selector: `kui-date-value`,
+  selector: `dsp-date-value`,
   template: ``
 })
 class TestDateValueComponent {
@@ -200,8 +200,8 @@ class TestDateValueComponent {
 @Component({
   selector: `lib-host-component`,
   template: `
-    <kui-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
-                      [displayValue]="readValue"></kui-display-edit>`
+    <dsp-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
+                      [displayValue]="readValue"></dsp-display-edit>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -221,7 +221,7 @@ class TestHostDisplayValueComponent implements OnInit {
     });
   }
 
-  // assigns a value when called -> kui-display-edit will be instantiated
+  // assigns a value when called -> dsp-display-edit will be instantiated
   assignValue(prop: string, comment?: string) {
     const readVal =
       this.readResource.getValues(prop)[0];
@@ -269,7 +269,7 @@ describe('DisplayEditComponent', () => {
       ],
       providers: [
         {
-          provide: KnoraApiConnectionToken,
+          provide: DspApiConnectionToken,
           useValue: valuesSpyObj
         }
       ]
@@ -307,7 +307,7 @@ describe('DisplayEditComponent', () => {
       inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
       inputVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID';
       inputVal.html =
-        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>';
+        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="dsp-link">link</a></p>';
 
       testHostComponent.readValue = inputVal;
 
@@ -509,7 +509,7 @@ describe('DisplayEditComponent', () => {
 
     it('should save a new version of a value', () => {
 
-      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
       (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).updateValue.and.callFake(
         () => {
@@ -598,7 +598,7 @@ describe('DisplayEditComponent', () => {
       inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
       inputVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID';
       inputVal.html =
-        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>';
+        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="dsp-link">link</a></p>';
 
       testHostComponent.readValue = inputVal;
 
@@ -647,7 +647,7 @@ describe('DisplayEditComponent', () => {
 
     it('should not display a comment button if the comment is deleted', () => {
 
-      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
       (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).updateValue.and.callFake(
         () => {

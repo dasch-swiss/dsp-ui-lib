@@ -14,7 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { KnoraApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 
@@ -23,8 +23,8 @@ import { of } from 'rxjs';
  */
 @Component({
   template: `
-    <kui-link-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [parentResource]="parentResource"
-                    [propIri]="propIri"></kui-link-value>`
+    <dsp-link-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [parentResource]="parentResource"
+                    [propIri]="propIri"></dsp-link-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -55,7 +55,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-link-value #inputVal [mode]="mode" [parentResource]="parentResource" [propIri]="propIri"></kui-link-value>`
+    <dsp-link-value #inputVal [mode]="mode" [parentResource]="parentResource" [propIri]="propIri"></dsp-link-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
@@ -96,7 +96,7 @@ describe('LinkValueComponent', () => {
       ],
       providers: [
         {
-          provide: KnoraApiConnectionToken,
+          provide: DspApiConnectionToken,
           useValue: valuesSpyObj
         }
       ]
@@ -229,7 +229,7 @@ describe('LinkValueComponent', () => {
 
     it('should search for resources by their label', () => {
 
-      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(DspApiConnectionToken);
       (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doSearchByLabel.and.callFake(
         () => {
           const res = new ReadResource();
@@ -249,7 +249,7 @@ describe('LinkValueComponent', () => {
 
     it('should not return an invalid update value (string)', () => {
 
-      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
       (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doSearchByLabel.and.callFake(
         () => {
@@ -280,7 +280,7 @@ describe('LinkValueComponent', () => {
 
     it('should not return an invalid update value (no value)', () => {
 
-      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
       (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doSearchByLabel.and.callFake(
         () => {
@@ -440,7 +440,7 @@ describe('LinkValueComponent', () => {
     });
 
     it('should search a new value', () => {
-      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
       (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doSearchByLabel.and.callFake(
         () => {
@@ -481,7 +481,7 @@ describe('LinkValueComponent', () => {
 
     it('should only create a new value if input is a resource', () => {
       // simulate user input
-      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
       (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doSearchByLabel.and.callFake(
         () => {

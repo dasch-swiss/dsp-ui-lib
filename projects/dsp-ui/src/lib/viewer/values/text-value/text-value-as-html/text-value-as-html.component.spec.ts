@@ -12,7 +12,7 @@ import {By} from '@angular/platform-browser';
  */
 @Component({
   template: `
-    <kui-text-value-as-html *ngIf="displayInputVal" #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-text-value-as-html>`
+    <dsp-text-value-as-html *ngIf="displayInputVal" #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-text-value-as-html>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -71,7 +71,7 @@ describe('TextValueAsHtmlComponent', () => {
       inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
       inputVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID';
       inputVal.html =
-        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>';
+        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="dsp-link">link</a></p>';
 
       testHostComponent.displayInputVal = inputVal;
 
@@ -85,12 +85,12 @@ describe('TextValueAsHtmlComponent', () => {
       const valueParagraphNativeElement = valueParagraph.nativeElement;
 
       expect(testHostComponent.inputValueComponent.displayValue.html)
-        .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>');
+        .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="dsp-link">link</a></p>');
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
       expect(valueParagraphNativeElement.innerHTML)
-        .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a></p>');
+        .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="dsp-link">link</a></p>');
 
       const commentSpan = valueComponentDe.query(By.css('span.comment'));
 
@@ -105,7 +105,7 @@ describe('TextValueAsHtmlComponent', () => {
       inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
       inputVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/TEST_ID';
       inputVal.html =
-        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a> and a comment</p>';
+        '<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="dsp-link">link</a> and a comment</p>';
       inputVal.valueHasComment = 'very interesting';
 
       testHostComponent.displayInputVal = inputVal;
@@ -121,12 +121,12 @@ describe('TextValueAsHtmlComponent', () => {
       const commentSpanNativeElement = commentSpan.nativeElement;
 
       expect(testHostComponent.inputValueComponent.displayValue.html)
-        .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a> and a comment</p>');
+        .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="dsp-link">link</a> and a comment</p>');
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
       expect(valueParagraphNativeElement.innerHTML)
-        .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="kui-link">link</a> and a comment</p>');
+        .toEqual('<p>This is a <b>very</b> simple HTML document with a <a href="https://www.google.ch" target="_blank" class="dsp-link">link</a> and a comment</p>');
 
       expect(commentSpanNativeElement.innerText).toEqual('very interesting');
 

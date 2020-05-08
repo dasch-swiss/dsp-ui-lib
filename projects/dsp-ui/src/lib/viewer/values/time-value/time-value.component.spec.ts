@@ -12,7 +12,7 @@ import {By} from '@angular/platform-browser';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
-  selector: `kui-time-input`,
+  selector: `dsp-time-input`,
   template: ``,
   providers: [
     {
@@ -69,7 +69,7 @@ class TestTimeInputComponent implements ControlValueAccessor, MatFormFieldContro
  */
 @Component({
   template: `
-    <kui-time-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-time-value>`
+    <dsp-time-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-time-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -98,7 +98,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-time-value #inputVal [mode]="mode"></kui-time-value>`
+    <dsp-time-value #inputVal [mode]="mode"></dsp-time-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 

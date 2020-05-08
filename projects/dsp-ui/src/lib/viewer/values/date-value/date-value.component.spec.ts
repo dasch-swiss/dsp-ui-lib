@@ -13,7 +13,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { KnoraDatePipe } from '../../pipes/knoradate.pipe';
 
 @Component({
-  selector: `kui-date-input`,
+  selector: `dsp-date-input`,
   template: ``,
   providers: [
     {
@@ -70,7 +70,7 @@ class TestDateInputComponent implements ControlValueAccessor, MatFormFieldContro
  */
 @Component({
   template: `
-    <kui-date-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-date-value>`
+    <dsp-date-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-date-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -99,7 +99,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-date-value #inputVal [mode]="mode"></kui-date-value>`
+    <dsp-date-value #inputVal [mode]="mode"></dsp-date-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 

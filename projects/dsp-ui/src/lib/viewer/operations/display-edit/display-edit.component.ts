@@ -14,10 +14,10 @@ import {
 } from '@knora/api';
 import {BaseValueComponent} from '../../values/base-value.component';
 import {mergeMap} from 'rxjs/operators';
-import {KnoraApiConnectionToken} from '../../../core/core.module';
+import {DspApiConnectionToken} from '../../../core/core.module';
 
 @Component({
-  selector: 'kui-display-edit',
+  selector: 'dsp-display-edit',
   templateUrl: './display-edit.component.html',
   styleUrls: ['./display-edit.component.scss']
 })
@@ -54,7 +54,7 @@ export class DisplayEditComponent implements OnInit {
 
   private readonly readTextValueAsHtml = 'ReadTextValueAsHtml';
 
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+  constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
   ngOnInit() {

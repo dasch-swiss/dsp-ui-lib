@@ -16,7 +16,7 @@ export class ColorErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'kui-color-value',
+  selector: 'dsp-color-value',
   templateUrl: './color-value.component.html',
   styleUrls: ['./color-value.component.scss']
 })

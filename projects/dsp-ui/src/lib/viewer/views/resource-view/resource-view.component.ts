@@ -9,7 +9,7 @@ import {
   ApiResponseError,
   SystemPropertyDefinition
 } from '@knora/api';
-import { KnoraApiConnectionToken } from '../../../core/core.module';
+import { DspApiConnectionToken } from '../../../core/core.module';
 
 
 // object of property information from ontology class, properties and property values
@@ -21,7 +21,7 @@ export interface PropertyInfoValues {
 
 
 @Component({
-  selector: 'kui-resource-view',
+  selector: 'dsp-resource-view',
   templateUrl: './resource-view.component.html',
   styleUrls: ['./resource-view.component.scss']
 })
@@ -40,7 +40,7 @@ export class ResourceViewComponent implements OnInit, OnChanges {
 
   systemPropArray: PropertyDefinition[] = []; // system property
 
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
+  constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
 
   ngOnInit() {
   }

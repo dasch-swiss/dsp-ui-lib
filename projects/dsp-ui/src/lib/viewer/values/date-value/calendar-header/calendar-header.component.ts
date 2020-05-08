@@ -8,7 +8,7 @@ import {Component, Host, Inject, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'kui-calendar-header',
+  selector: 'dsp-calendar-header',
   templateUrl: './calendar-header.component.html',
   styleUrls: ['./calendar-header.component.scss']
 })

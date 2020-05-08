@@ -3,7 +3,7 @@ import {BaseValueComponent} from '../base-value.component';
 import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiConnection} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
-import {KnoraApiConnectionToken} from '../../../core/core.module';
+import {DspApiConnectionToken} from '../../../core/core.module';
 
 export function resourceValidator(control: AbstractControl) {
     const invalid = !(control.value instanceof ReadResource);
@@ -11,7 +11,7 @@ export function resourceValidator(control: AbstractControl) {
 }
 
 @Component({
-    selector: 'kui-link-value',
+    selector: 'dsp-link-value',
     templateUrl: './link-value.component.html',
     styleUrls: ['./link-value.component.scss']
 })
@@ -31,7 +31,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     // label cannot contain logical operations of lucene index
     customValidators = [resourceValidator];
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder, @Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+    constructor(@Inject(FormBuilder) private fb: FormBuilder, @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
         super();
     }
 

@@ -15,7 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { KnoraApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 /**
@@ -23,7 +23,7 @@ import { of } from 'rxjs';
  */
 @Component({
   template: `
-    <kui-list-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [propertyDef]="propertyDef"></kui-list-value>`
+    <dsp-list-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [propertyDef]="propertyDef"></dsp-list-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -51,7 +51,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-list-value #inputVal [mode]="mode" [propertyDef]="propertyDef"></kui-list-value>`
+    <dsp-list-value #inputVal [mode]="mode" [propertyDef]="propertyDef"></dsp-list-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
@@ -91,7 +91,7 @@ describe('ListValueComponent', () => {
       ],
       providers: [
         {
-          provide: KnoraApiConnectionToken,
+          provide: DspApiConnectionToken,
           useValue: valuesSpyObj
         }
       ]
@@ -138,7 +138,7 @@ describe('ListValueComponent', () => {
     });
 
     it('should make list value editable as button', () => {
-      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(DspApiConnectionToken);
       (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpointV2>).getList.and.callFake(
           (rootNodeIri: string) => {
           const res = new ListNodeV2();
@@ -171,7 +171,7 @@ describe('ListValueComponent', () => {
     });
 
     it('should validate an existing value with an added comment', () => {
-      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(DspApiConnectionToken);
       (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpointV2>).getList.and.callFake(
         (rootNodeIri) => {
           const res = new ListNodeV2();
@@ -184,7 +184,7 @@ describe('ListValueComponent', () => {
 
       testHostComponent.mode = 'update';
 
-      testHostFixture.detectChanges();      
+      testHostFixture.detectChanges();
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;
@@ -214,7 +214,7 @@ describe('ListValueComponent', () => {
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
     beforeEach(() => {
-      const valuesSpy = TestBed.inject(KnoraApiConnectionToken);
+      const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
       (valuesSpy.v2.list as jasmine.SpyObj<ListsEndpointV2>).getList.and.callFake(
         (rootNodeIri: string) => {

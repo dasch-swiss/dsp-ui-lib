@@ -13,7 +13,7 @@ import { By } from '@angular/platform-browser';
  */
 @Component({
     template: `
-    <kui-text-value-as-string #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-text-value-as-string>`
+    <dsp-text-value-as-string #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-text-value-as-string>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -42,7 +42,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
     template: `
-    <kui-text-value-as-string #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-text-value-as-string>`
+    <dsp-text-value-as-string #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-text-value-as-string>`
 })
 class TestHostDisplayValueCommentComponent implements OnInit {
 
@@ -72,7 +72,7 @@ class TestHostDisplayValueCommentComponent implements OnInit {
  */
 @Component({
     template: `
-    <kui-text-value-as-string #inputVal [mode]="mode"></kui-text-value-as-string>`
+    <dsp-text-value-as-string #inputVal [mode]="mode"></dsp-text-value-as-string>`
 })
 class TestHostCreateValueComponent implements OnInit {
 

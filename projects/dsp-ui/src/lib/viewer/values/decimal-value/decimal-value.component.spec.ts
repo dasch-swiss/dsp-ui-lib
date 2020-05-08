@@ -14,7 +14,7 @@ import { By } from '@angular/platform-browser';
  */
 @Component({
   template: `
-    <kui-decimal-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-decimal-value>`
+    <dsp-decimal-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-decimal-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -43,7 +43,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-decimal-value #inputVal [mode]="mode"></kui-decimal-value>`
+    <dsp-decimal-value #inputVal [mode]="mode"></dsp-decimal-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 

@@ -13,7 +13,7 @@ import { ColorValueComponent } from './color-value.component';
 
 
 @Component({
-  selector: `kui-color-picker`,
+  selector: `dsp-color-picker`,
   template: ``,
   providers: [
     {
@@ -70,7 +70,7 @@ class TestColorPickerComponent implements ControlValueAccessor, MatFormFieldCont
  */
 @Component({
   template: `
-    <kui-color-value #colorVal [displayValue]="displayColorVal" [mode]="mode"></kui-color-value>`
+    <dsp-color-value #colorVal [displayValue]="displayColorVal" [mode]="mode"></dsp-color-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -99,7 +99,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
   template: `
-    <kui-color-value #colorValue [mode]="mode"></kui-color-value>`
+    <dsp-color-value #colorValue [mode]="mode"></dsp-color-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 

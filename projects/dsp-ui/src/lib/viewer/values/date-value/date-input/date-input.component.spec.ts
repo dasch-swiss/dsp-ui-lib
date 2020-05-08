@@ -21,7 +21,7 @@ import {By} from '@angular/platform-browser';
   template: `
     <div [formGroup]="form">
       <mat-form-field>
-        <kui-date-input #dateInput [formControlName]="'date'"></kui-date-input>
+        <dsp-date-input #dateInput [formControlName]="'date'"></dsp-date-input>
       </mat-form-field>
     </div>`
 })

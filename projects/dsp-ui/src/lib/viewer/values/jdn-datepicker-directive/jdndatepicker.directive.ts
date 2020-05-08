@@ -9,7 +9,7 @@ export function makeCalendarToken() {
 }
 
 @Directive({
-  selector: 'kui-jdn-datepicker',
+  selector: 'dsp-jdn-datepicker',
   providers: [
     {provide: DateAdapter, useClass: JDNConvertibleCalendarDateAdapter, deps: [MAT_DATE_LOCALE, ACTIVE_CALENDAR]},
     {provide: ACTIVE_CALENDAR, useFactory: makeCalendarToken}

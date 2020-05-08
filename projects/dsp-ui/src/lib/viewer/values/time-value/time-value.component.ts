@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import {BaseValueComponent} from '../base-value.component';
 
 @Component({
-  selector: 'kui-time-value',
+  selector: 'dsp-time-value',
   templateUrl: './time-value.component.html',
   styleUrls: ['./time-value.component.scss']
 })

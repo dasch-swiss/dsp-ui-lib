@@ -15,7 +15,7 @@ import { MatInputModule } from '@angular/material/input';
   template: `
     <div [formGroup]="form">
       <mat-form-field>
-        <kui-interval-input #intervalInput [formControlName]="'interval'"></kui-interval-input>
+        <dsp-interval-input #intervalInput [formControlName]="'interval'"></dsp-interval-input>
       </mat-form-field>
     </div>`
 })

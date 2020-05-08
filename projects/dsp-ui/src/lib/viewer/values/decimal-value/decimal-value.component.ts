@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'kui-decimal-value',
+  selector: 'dsp-decimal-value',
   templateUrl: './decimal-value.component.html',
   styleUrls: ['./decimal-value.component.scss']
 })

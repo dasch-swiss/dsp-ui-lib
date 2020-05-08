@@ -10,7 +10,7 @@ import { DateAdapter } from "@angular/material/core";
  */
 @Component({
   template: `
-    <kui-jdn-datepicker #activeCalDir [activeCalendar]=activeCalendar></kui-jdn-datepicker>`
+    <dsp-jdn-datepicker #activeCalDir [activeCalendar]=activeCalendar></dsp-jdn-datepicker>`
 })
 class TestHostComponent implements OnInit {
 

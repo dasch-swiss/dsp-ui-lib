@@ -88,7 +88,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
   mixinErrorState(MatInputBase);
 
 @Component({
-  selector: 'kui-date-input',
+  selector: 'dsp-date-input',
   templateUrl: './date-input.component.html',
   styleUrls: ['./date-input.component.scss'],
   providers: [{provide: MatFormFieldControl, useExisting: DateInputComponent}]
@@ -99,10 +99,10 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
 
   form: FormGroup;
   stateChanges = new Subject<void>();
-  @HostBinding() id = `kui-date-input-${DateInputComponent.nextId++}`;
+  @HostBinding() id = `dsp-date-input-${DateInputComponent.nextId++}`;
   focused = false;
   errorState = false;
-  controlType = 'kui-date-input';
+  controlType = 'dsp-date-input';
   matcher = new DateInputErrorStateMatcher();
 
   calendarHeaderComponent = CalendarHeaderComponent;

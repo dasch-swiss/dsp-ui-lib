@@ -13,7 +13,7 @@ import { By } from '@angular/platform-browser';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
-    selector: `kui-interval-input`,
+    selector: `dsp-interval-input`,
     template: ``,
     providers: [
         {
@@ -70,7 +70,7 @@ class TestIntervalInputComponent implements ControlValueAccessor, MatFormFieldCo
  */
 @Component({
     template: `
-    <kui-interval-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></kui-interval-value>`
+    <dsp-interval-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-interval-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -99,7 +99,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
     template: `
-    <kui-interval-value #inputVal [mode]="mode"></kui-interval-value>`
+    <dsp-interval-value #inputVal [mode]="mode"></dsp-interval-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 

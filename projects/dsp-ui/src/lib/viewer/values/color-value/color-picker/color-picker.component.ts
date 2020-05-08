@@ -26,7 +26,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
 
 
 @Component({
-  selector: 'kui-color-picker',
+  selector: 'dsp-color-picker',
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.scss'],
   providers: [
@@ -43,7 +43,7 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
 
   @Input() errorStateMatcher: ErrorStateMatcher;
 
-  @HostBinding() id = `kui-color-picker-${ColorPickerComponent.nextId++}`;
+  @HostBinding() id = `dsp-color-picker-${ColorPickerComponent.nextId++}`;
 
   @HostBinding('attr.aria-describedby') describedBy = '';
 
@@ -51,7 +51,7 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
   stateChanges = new Subject<void>();
   focused = false;
   errorState = false;
-  controlType = 'kui-color-picker';
+  controlType = 'dsp-color-picker';
   matcher = new ColorPickerErrorStateMatcher();
 
   onChange = (_: any) => { };

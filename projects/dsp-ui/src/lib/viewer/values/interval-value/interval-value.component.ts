@@ -21,7 +21,7 @@ export class IntervalErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-    selector: 'kui-interval-value',
+    selector: 'dsp-interval-value',
     templateUrl: './interval-value.component.html',
     styleUrls: ['./interval-value.component.scss']
 })
