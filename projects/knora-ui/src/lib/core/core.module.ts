@@ -16,5 +16,5 @@ export const KuiConfigToken = new InjectionToken<KuiConfig>('Main configuration 
   imports: [],
   exports: []
 })
-export class CoreModule {
+export class KuiCoreModule {
 }
