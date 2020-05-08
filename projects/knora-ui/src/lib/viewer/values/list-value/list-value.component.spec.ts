@@ -37,7 +37,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
     MockResource.getTestthing().subscribe(res => {
       const inputVal: ReadListValue =
-        res[0].getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasListItem', ReadListValue)[0];
+        res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasListItem', ReadListValue)[0];
       this.displayInputVal = inputVal;
       this.mode = 'read';
     });
@@ -184,7 +184,7 @@ describe('ListValueComponent', () => {
 
       testHostComponent.mode = 'update';
 
-      testHostFixture.detectChanges();      
+      testHostFixture.detectChanges();
 
       commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
       commentInputNativeElement = commentInputDebugElement.nativeElement;

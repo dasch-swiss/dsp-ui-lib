@@ -1,6 +1,13 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
-import {CreateLinkValue, ReadLinkValue, ReadResource, UpdateLinkValue, KnoraApiConnection} from '@knora/api';
+import {
+    CreateLinkValue,
+    ReadLinkValue,
+    ReadResource,
+    UpdateLinkValue,
+    KnoraApiConnection,
+    ReadResourceSequence
+} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {KnoraApiConnectionToken} from '../../../core/core.module';
@@ -57,8 +64,8 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
         // at least 3 characters are required
         if (typeof searchTerm === 'string' && searchTerm.length >= 3) {
             this.knoraApiConnection.v2.search.doSearchByLabel(searchTerm, 0, {limitToResourceClass: this.restrictToResourceClass}).subscribe(
-                (response: ReadResource[]) => {
-                    this.resources = response;
+                (response: ReadResourceSequence) => {
+                    this.resources = response.resources;
                 });
         } else {
             this.resources = [];

@@ -215,7 +215,7 @@ class TestHostDisplayValueComponent implements OnInit {
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(res => {
-      this.readResource = res[0];
+      this.readResource = res;
 
       this.mode = 'read';
     });
