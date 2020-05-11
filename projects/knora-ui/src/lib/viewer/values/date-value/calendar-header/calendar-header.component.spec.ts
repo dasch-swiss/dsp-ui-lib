@@ -13,6 +13,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JDNConvertibleCalendarModule } from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
 import { CalendarDate, CalendarPeriod, JulianCalendarDate } from 'jdnconvertiblecalendar';
 import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatSelectHarness } from '@angular/material/select/testing';
 
 @Component({
   selector: `mat-calendar-header`,
@@ -25,6 +28,8 @@ class TestMatCalendarHeaderComponent {
 describe('CalendarHeaderComponent', () => {
   let component: CalendarHeaderComponent<JDNConvertibleCalendarDateAdapter>;
   let fixture: ComponentFixture<CalendarHeaderComponent<JDNConvertibleCalendarDateAdapter>>;
+  let loader: HarnessLoader;
+  let rootLoader: HarnessLoader;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -61,6 +66,8 @@ describe('CalendarHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CalendarHeaderComponent);
     component = fixture.componentInstance;
+    loader = TestbedHarnessEnvironment.loader(fixture);
+    rootLoader = TestbedHarnessEnvironment.documentRootLoader(fixture);
     fixture.detectChanges();
   });
 
@@ -68,36 +75,28 @@ describe('CalendarHeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should init the selected value and options correctly', fakeAsync(() => {
+  it('should init the selected value and options correctly', async () => {
 
-    expect(component.formControl.value).toEqual('Gregorian');
+      const select = await loader.getHarness(MatSelectHarness);
+      const initVal = await select.getValueText();
 
-    // https://github.com/angular/components/blob/941b5a3529727f583b76068835e07e412e69f4f7/src/material/select/select.spec.ts#L1674-L1692
-    component.formControl = new FormControl('Gregorian');
-    fixture.detectChanges();
+      expect(initVal).toEqual('Gregorian');
 
-    const compDe = fixture.debugElement;
+      await select.open();
 
-    const selectValueDebugElement = compDe.query(By.css('.mat-select-value'));
+      const options = await select.getOptions();
 
-    const selectDebugElement = compDe.query(By.css('.mat-select'));
+      expect(options.length).toEqual(2);
 
-    expect(selectValueDebugElement.nativeElement.textContent).toEqual('Gregorian');
+      const option1 = await options[0].getText();
 
-    const trigger = compDe.query(By.css('.mat-select-trigger')).nativeElement;
-    trigger.click();
-    fixture.detectChanges();
-    flush();
+      expect(option1).toEqual('Gregorian');
 
-    const options: DebugElement[] = selectDebugElement.queryAll(By.css('mat-option'));
+      const option2 = await options[1].getText()
 
-    expect(options.length).toEqual(2);
+      expect(option2).toEqual('Julian');
 
-    expect(options[0].nativeElement.innerText).toEqual('Gregorian');
-
-    expect(options[1].nativeElement.innerText).toEqual('Julian');
-
-  }));
+  });
 
   it('should perform a calendar conversion when the selection is changed', () => {
 

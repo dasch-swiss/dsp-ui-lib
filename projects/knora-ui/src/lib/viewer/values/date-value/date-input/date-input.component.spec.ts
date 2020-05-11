@@ -8,7 +8,7 @@ import {JDNDatepickerDirective} from '../../jdn-datepicker-directive/jdndatepick
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {CalendarDate, GregorianCalendarDate, CalendarPeriod, JulianCalendarDate} from 'jdnconvertiblecalendar';
