@@ -56,7 +56,7 @@ The config files have to been integrated in `angular.json` in all "assets"-secti
 "assets": [
     "src/favicon.ico",
     "src/assets",
-    "src/config"    <-- add this line and do not forget the comma above
+    "src/config"    <-- add this line and do not forget the comma in previous line
 ]
 ```
 
@@ -194,15 +194,95 @@ fetch(`config/config.${environment.name}.json`)
 ## Usage
 <!-- TODO: add the modules to app.modules and use them as usual  -->
 <!-- app.modules -->
+Add the desired modules from DSP-UI to the `app.module.ts`. At least `DspCoreModule` has to be imported!
+
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent,
+    ProjectsComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    DspCoreModule        // <-- add the dsp-ui core module here
+  ],
+  providers: [ ... ]    // <-- add providers as mentioned in section above
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
 <!-- example of component e.g. get all projects and display as a list -->
+The **DspCoreModule** is a configuration handler for [`@knora/api`](https://www.npmjs.com/package/@knora/api) which offers all the services to make [DSP-API requests](https://docs.dasch.swiss/developers/knora/api-reference/queries/). The following projects-component example shows how to implement the two libraries to get all projects form DSP-API:
 
+```typescript
+import { Component, Inject, OnInit } from '@angular/core';
+import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
+import { ApiResponseData, ApiResponseError, KnoraApiConnection, ProjectsResponse, ReadProject } from '@knora/api';
+
+@Component({
+  selector: 'app-projects',
+  template: `<ul><li *ngFor="let p of projects">{{p.longname}} (<strong>{{p.shortname}}</strong> | {{p.shortcode}})</li></ul>`
+})
+export class ProjectsComponent implements OnInit {
+  projects: ReadProject[];
+
+  constructor(
+    @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection
+  ) { }
+
+  ngOnInit() {
+    this.getProjects();
+  }
+
+  getProjects() {
+    this.dspApiConnection.admin.projectsEndpoint.getProjects().subscribe(
+      (response: ApiResponseData<ProjectsResponse>) => {
+        this.projects = response.body.projects;
+      },
+      (error: ApiResponseError) => {
+        console.error(error);
+      }
+    );
+  }
+}
+```
+
+The **DspViewerModule** contains components to display resources; as single one or as a list for search results. It comprises resource sub-components such as file representations components to display still image, video, audio or text only. But also value components to use single property elements.
+
+Import DspViewerModule in the `app.module.ts`:
+
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent,
+    ProjectsComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    DspCoreModule,
+    DspViewerModule      // <-- add the dsp-ui viewer module here
+  ],
+  providers: [ ... ]    // <-- add providers as mentioned in section above
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 <!-- example of resource viewer -->
 
-<!-- link to main documentation: https://docs.dasch.swiss/developers/knora-ui/documentation/ -->
+And use it in the component template as follow. The example shows how to display a resource by iri = 'http://rdfh.ch/0803/18a671b8a601'.
+
+```html
+<dsp-resource-view [iri]="'http://rdfh.ch/0803/18a671b8a601'"></dsp-resource-view>
+```
+
+<!-- TODO: link to main documentation or playground: e.g. https://docs.dasch.swiss/developers/knora-ui/documentation/ -->
 
 ## Contribution
 
-If you want to improve the elements and help developing, do not hesitate to [contact us](https://dasch.swiss/team) and read the manual on [docs.dasch.swiss](https://docs.dasch.swiss/developers/knora-ui/contribution/).
+If you want to improve the elements and help developing, do not hesitate to [contact us](https://dasch.swiss/team)
+Get the developer manual on [docs.dasch.swiss](https://docs.dasch.swiss/developers/knora-ui/contribution/).
 
 The sources for this package are in the [dasch-swiss/dsp-ui](https://github.com/dasch-swiss/knora-ui-ng-lib) repo. Please file issues and pull requests against that repo.

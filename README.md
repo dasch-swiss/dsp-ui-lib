@@ -19,17 +19,17 @@ The core module contains configuration files and all variables needed to connect
 
 ---
 
-### DspSearchModule
-
-Search module allows to make simple searches or extended searches in DSP-API. In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
-[read more...](https://dasch-swiss.github.io/knora-ui/modules/search)
-
----
-
 ### DspViewerModule
 
 The viewer module contains object components to show the resource class representations from DSP-API, the GUI-elements for the property values and different kind of view frameworks.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/viewer)
+
+---
+
+### DspSearchModule
+
+Search module allows to make simple searches or extended searches in DSP-API. In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
+[read more...](https://dasch-swiss.github.io/knora-ui/modules/search)
 
 ---
 
@@ -167,28 +167,28 @@ To simulate circumstances of production, the application should be built with op
 
 * Install `nginx` on your system, e.g. `brew install nginx` for mac OS. Check the [documentation](https://linux.die.net/man/8/nginx) for more information.
 * Create a configuration file for the test application.
-    The example defines a configuration file `/usr/local/etc/nginx/servers/knorauiapp.conf` for macOS.
+    The example defines a configuration file `/usr/local/etc/nginx/servers/dspuiapp.conf` for macOS.
     Substitute `$abs_path_to_lib` for the actual absolute path on your system pointing to the project root.
     Substitute `$dsp-ui_folder_name` for the folder name of the app build in `dist`.
 
 ```nginx
     server {
             listen 8090;
-            server_name knorauiapp.local;
+            server_name dspuiapp.local;
             root /$abs_path_to_lib/dist/$dsp-ui_folder_name;
 
             location / {
                         try_files $uri $uri/ /index.html;
             }
 
-        access_log /usr/local/etc/nginx/logs/knorauiapp.local.access.log;
+        access_log /usr/local/etc/nginx/logs/dspuiapp.local.access.log;
     }
 ```
 
-* Add an entry to your `/etc/hosts`: `127.0.0.1 knorauiapp.local`
-* Create an empty file `knorauiapp.local.access.log` in `/usr/local/etc/nginx/logs`
+* Add an entry to your `/etc/hosts`: `127.0.0.1 dspuiapp.local`
+* Create an empty file `dspuiapp.local.access.log` in `/usr/local/etc/nginx/logs`
     (you might have to create the folder `logs` first)
 * Start `nginx` (if `nginx` is already running, stop it first: `nginx`: `nginx -s stop`)
 * Build the library: `npm run build-lib`
 * Build the test app with optimization: `npm run build-app`
-* Access <http://knorauiapp.local:8090>
+* Access <http://dspuiapp.local:8090>
