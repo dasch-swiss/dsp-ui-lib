@@ -102,7 +102,7 @@ export abstract class BaseValueComponent {
 
             const initialValue = this.getInitValue();
             const initialComment = this.getInitComment();
-
+            this.valueFormControl.reset();
             this.valueFormControl.setValue(initialValue);
             this.commentFormControl.setValue(initialComment);
 
