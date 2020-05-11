@@ -5,7 +5,7 @@ import { ReadComponent } from './read/read.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/read', pathMatch: 'full' }, //readonly view is the default if no endpoint is specified
+  { path: '', redirectTo: '/read', pathMatch: 'full' }, // readonly view is the default if no endpoint is specified
   { path: 'read', component: ReadComponent }, // readonly view component
   { path: 'modify', component: ModifyComponent} // modify view component
 ];
