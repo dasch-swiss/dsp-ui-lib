@@ -467,14 +467,17 @@ describe('DateValueComponent', () => {
 
     let testHostComponent: TestHostCreateValueComponent;
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+    let loader: HarnessLoader;
+    let rootLoader: HarnessLoader;
 
     let valueComponentDe: DebugElement;
-    let commentTextareaDebugElement: DebugElement;
-    let commentTextareaNativeElement;
+    let commentTextarea: MatInputHarness;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
       testHostComponent = testHostFixture.componentInstance;
+      loader = TestbedHarnessEnvironment.loader(testHostFixture);
+      rootLoader = TestbedHarnessEnvironment.documentRootLoader(testHostFixture);
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
@@ -483,8 +486,7 @@ describe('DateValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(DateValueComponent));
-      commentTextareaDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentTextareaNativeElement = commentTextareaDebugElement.nativeElement;
+      commentTextarea = await loader.getHarness(MatInputHarness);
     });
 
     it('should create a value', () => {
@@ -518,7 +520,7 @@ describe('DateValueComponent', () => {
 
     });
 
-    it('should reset form after cancellation', () => {
+    it('should reset form after cancellation', async () => {
 
       // simulate user input
       const newKnoraDate = new KnoraDate('JULIAN', 'CE', 2019, 5, 13);
@@ -528,9 +530,7 @@ describe('DateValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      commentTextareaNativeElement.value = 'created comment';
-
-      commentTextareaNativeElement.dispatchEvent(new Event('input'));
+      await commentTextarea.setValue('created comment')
 
       testHostFixture.detectChanges();
 
@@ -544,7 +544,9 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(null);
 
-      expect(commentTextareaNativeElement.value).toEqual('');
+      const comment = await commentTextarea.getValue();
+
+      expect(comment).toEqual('');
 
     });
 
