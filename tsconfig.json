@@ -19,11 +19,11 @@
       "dom"
     ],
     "paths": {
-      "@knora/ui": [
-        "dist/@knora/ui"
+      "@dasch-swiss/dsp-ui": [
+        "dist/@dasch-swiss/dsp-ui"
       ],
-      "@knora/ui/*": [
-        "dist/@knora/ui/*"
+      "@dasch-swiss/dsp-ui/*": [
+        "dist/@dasch-swiss/dsp-ui/*"
       ]
     }
   },

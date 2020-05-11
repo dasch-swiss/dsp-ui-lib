@@ -5,7 +5,7 @@ import {
   ApiResponseData,
   LogoutResponse
 } from '@knora/api';
-import {KnoraApiConnectionToken} from '@knora/ui';
+import {DspApiConnectionToken} from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-read',
@@ -17,7 +17,7 @@ export class ReadComponent implements OnInit {
   resourceIri: string;
   loading: boolean;
 
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+  constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
   ngOnInit(): void {
