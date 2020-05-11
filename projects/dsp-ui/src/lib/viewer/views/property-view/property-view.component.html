@@ -1,0 +1,11 @@
+<div *ngFor="let prop of propArray">
+  <div *ngIf="prop.values">
+    <div *ngFor="let value of prop.values">
+      <div *ngIf="value">
+        <dsp-display-edit #displayEdit [parentResource]="parentResource" [displayValue]="value">
+        </dsp-display-edit>
+      </div>
+    </div>
+
+  </div>
+</div>

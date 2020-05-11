@@ -5,7 +5,7 @@ import {
   ApiResponseData,
   LoginResponse
 } from '@knora/api';
-import {KnoraApiConnectionToken} from '@knora/ui';
+import {DspApiConnectionToken} from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-modify',
@@ -17,7 +17,7 @@ export class ModifyComponent implements OnInit {
   resourceIri: string;
   loading: boolean;
 
-  constructor(@Inject(KnoraApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
+  constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
 
   ngOnInit(): void {
     this.loading = true;
