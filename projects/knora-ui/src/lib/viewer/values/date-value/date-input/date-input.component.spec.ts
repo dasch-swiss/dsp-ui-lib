@@ -78,7 +78,7 @@ describe('DateInputComponent', () => {
     expect(testHostComponent).toBeTruthy();
   });
 
-  it('should initialize a date correctly', async() => {
+  it('should initialize a date correctly', async () => {
 
     expect(testHostComponent.dateInputComponent.value instanceof KnoraDate).toBe(true);
     expect(testHostComponent.dateInputComponent.value)
@@ -102,13 +102,13 @@ describe('DateInputComponent', () => {
 
     expect(startDate).toEqual('19-05-2018');
 
-    const readonly = await dateInputs[0].isReadonly();
+    const startDateReadonly = await dateInputs[0].isReadonly();
 
-    expect(readonly).toBe(true);
+    expect(startDateReadonly).toBe(true);
 
   });
 
-  it('should initialize a period correctly', () => {
+  it('should initialize a period correctly', async () => {
 
     testHostComponent.form.controls.date.setValue(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2018, 5, 19), new KnoraDate('JULIAN', 'CE', 2019, 5, 19)));
 
@@ -125,6 +125,27 @@ describe('DateInputComponent', () => {
       .toEqual(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2019, 5, 19), new CalendarDate(2019, 5, 19))));
 
     expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
+
+    // check that MatDatepicker has been initialized correctly
+    const dateInputs = await loader.getAllHarnesses(MatInputHarness);
+
+    expect(dateInputs.length).toEqual(2);
+
+    const startDate = await dateInputs[0].getValue();
+
+    expect(startDate).toEqual('19-05-2018');
+
+    const startDateReadonly = await dateInputs[0].isReadonly();
+
+    expect(startDateReadonly).toBe(true);
+
+    const endDate = await dateInputs[1].getValue();
+
+    expect(endDate).toEqual('19-05-2019');
+
+    const endDateReadonly = await dateInputs[1].isReadonly();
+
+    expect(endDateReadonly).toBe(true);
 
   });
 
