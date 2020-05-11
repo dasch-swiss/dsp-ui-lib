@@ -57,11 +57,20 @@ For other platforms, please visit the [Node.js download page](https://nodejs.org
 brew install node@12
 ```
 
-_Developer hint: To switch between various node versions, we recommand to use [n &mdash; Node.js versions manager](https://www.npmjs.com/package/n). Install `npm install -g n` and switch to node version e.g. 12.16.2 with `n v12.16.2`_
+_Developer hint: To switch between various node versions, we recommand to use [n &mdash; Node.js versions manager](https://www.npmjs.com/package/n)._
+
+To install it:
+
+```bash
+npm install -g n
+```
+and switch to node version, e.g. 12.16.2 with `n v12.16.2`
 
 #### NPM package manager
 
-We use the [npm](https://docs.npmjs.com/cli/install) instead of yarn, which is installed with Node.js by default. To check that you have the npm client installed, run `npm -v`
+We use the [npm](https://docs.npmjs.com/cli/install) instead of yarn, which is installed with Node.js by default.
+
+To check that you have the npm client installed, run `npm -v`.
 
 ### First steps
 
@@ -85,7 +94,20 @@ If you want to add more components, services and so on to a module of the librar
 ng generate component [path/in/the/module/][name-of-component] --project @dasch-swiss/dsp-ui
 ```
 
-For example `ng generate component core/test --project @dasch-swiss/dsp-ui` will create a component-folder called `test` inside of `projects/dsp-ui/src/lib/core/` with four files: `test.component.scss`, `test.component.html`, `test.component.spec.ts` and `test.component.ts`. The main component file should look as follow:
+For example:
+
+```bash
+ng generate component core/test --project @dasch-swiss/dsp-ui
+```
+
+will create a component-folder called `test` inside of `projects/dsp-ui/src/lib/core/` with four files:
+
+- `test.component.scss`
+- `test.component.html` 
+- `test.component.spec.ts`
+- `test.component.ts`
+
+The main component file should look as follow:
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
@@ -105,11 +127,17 @@ export class TestComponent implements OnInit {
 }
 ```
 
-Before testing the new component inside of the demo app, you have to rebuild after each change: `npm run build-lib`.
+Before testing the new component inside of the demo app, you have to rebuild after each change: 
+
+```bash
+npm run build-lib
+```
 
 ### Run the DSP-UI-LIB Demo Application
 
-Run the app with `ng s`. The demo app runs on <http://0.0.0.0:4200> and we use it for documentation on [DSP-UI-LIB Github page](https://dasch-swiss.github.io/knora-ui).
+Run the app with the command line: `ng s`.
+
+The demo app runs on <http://0.0.0.0:4200> and we use it for documentation on [DSP-UI-LIB Github page](https://dasch-swiss.github.io/knora-ui).
 
 There's an additional test environment for the modules on <https://github.com/dhlab-basel/knora-ui-playground> with yalc.
 
@@ -165,8 +193,8 @@ npm install
 To simulate circumstances of production, the application should be built with optimization and served locally
 (not in dev mode, but from a local web server).
 
-* Install `nginx` on your system, e.g. `brew install nginx` for mac OS. Check the [documentation](https://linux.die.net/man/8/nginx) for more information.
-* Create a configuration file for the test application.
+- Install `nginx` on your system, e.g. `brew install nginx` for mac OS. Check the [documentation](https://linux.die.net/man/8/nginx) for more information.
+- Create a configuration file for the test application.
     The example defines a configuration file `/usr/local/etc/nginx/servers/dspuiapp.conf` for macOS.
     Substitute `$abs_path_to_lib` for the actual absolute path on your system pointing to the project root.
     Substitute `$dsp-ui_folder_name` for the folder name of the app build in `dist`.
@@ -185,10 +213,10 @@ To simulate circumstances of production, the application should be built with op
     }
 ```
 
-* Add an entry to your `/etc/hosts`: `127.0.0.1 dspuiapp.local`
-* Create an empty file `dspuiapp.local.access.log` in `/usr/local/etc/nginx/logs`
+- Add an entry to your `/etc/hosts`: `127.0.0.1 dspuiapp.local`
+- Create an empty file `dspuiapp.local.access.log` in `/usr/local/etc/nginx/logs`
     (you might have to create the folder `logs` first)
-* Start `nginx` (if `nginx` is already running, stop it first: `nginx`: `nginx -s stop`)
-* Build the library: `npm run build-lib`
-* Build the test app with optimization: `npm run build-app`
-* Access <http://dspuiapp.local:8090>
+- Start `nginx` (if `nginx` is already running, stop it first: `nginx`: `nginx -s stop`)
+- Build the library: `npm run build-lib`
+- Build the test app with optimization: `npm run build-app`
+- Access <http://dspuiapp.local:8090>
