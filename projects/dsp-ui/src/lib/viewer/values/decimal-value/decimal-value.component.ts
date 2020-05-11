@@ -2,7 +2,8 @@ import {Component, Inject, Input, OnChanges, OnDestroy, ViewChild, OnInit, Simpl
 import {BaseValueComponent} from '../base-value.component';
 import {CreateDecimalValue, ReadDecimalValue, UpdateDecimalValue} from '@knora/api';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {CustomRegex} from '../custom-regex';
 
 @Component({
   selector: 'dsp-decimal-value',
@@ -20,7 +21,7 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
 
   valueChangesSubscription: Subscription;
 
-  customValidators = [];
+  customValidators = [Validators.pattern(CustomRegex.DECIMAL_REGEX)]; // only allow for decimal values
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();

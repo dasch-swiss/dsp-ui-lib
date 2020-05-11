@@ -15,6 +15,9 @@
             <mat-error *ngIf="form.controls.geonameValue.hasError('valueNotChanged')">
                 <span class="custom-error-message">New value must be different than the current value.</span>
             </mat-error>
+            <mat-error *ngIf="form.controls.geonameValue.hasError('pattern')">
+                <span class="custom-error-message">New value must be a valid GeoName identifier.</span>
+            </mat-error>
             <button class="more-info" mat-icon-button matSuffix (click)="openInfo()"
                 [attr.aria-label]="'Open in geonames.org'" title="Open in geonames.org">
                 <mat-icon>launch</mat-icon>

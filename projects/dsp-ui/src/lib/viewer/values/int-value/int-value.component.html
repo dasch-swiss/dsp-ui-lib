@@ -9,6 +9,9 @@
             <mat-error *ngIf="form.controls.intValue.hasError('valueNotChanged')">
                 <span class="custom-error-message">New value must be different than the current value.</span>
             </mat-error>
+            <mat-error *ngIf="form.controls.intValue.hasError('pattern')">
+                <span class="custom-error-message">New value must be an integer.</span>
+            </mat-error>
         </mat-form-field>
         <mat-form-field class="large-field value-component-comment">
             <textarea matInput
