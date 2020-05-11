@@ -118,8 +118,6 @@ class TestHostCreateValueComponent implements OnInit {
 }
 
 describe('DateValueComponent', () => {
-  let component: DateValueComponent;
-  let fixture: ComponentFixture<DateValueComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -143,7 +141,6 @@ describe('DateValueComponent', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let loader: HarnessLoader;
-    let rootLoader: HarnessLoader;
 
     let valueComponentDe: DebugElement;
     let valueReadModeDebugElement: DebugElement;
@@ -153,7 +150,6 @@ describe('DateValueComponent', () => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
       testHostComponent = testHostFixture.componentInstance;
       loader = TestbedHarnessEnvironment.loader(testHostFixture);
-      rootLoader = TestbedHarnessEnvironment.documentRootLoader(testHostFixture);
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
@@ -250,7 +246,7 @@ describe('DateValueComponent', () => {
 
     });
 
-    it('should validate an existing value with an added comment', async() => {
+    it('should validate an existing value with an added comment', async () => {
 
       testHostComponent.mode = 'update';
 
@@ -463,7 +459,6 @@ describe('DateValueComponent', () => {
     let testHostComponent: TestHostCreateValueComponent;
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
     let loader: HarnessLoader;
-    let rootLoader: HarnessLoader;
 
     let valueComponentDe: DebugElement;
     let commentTextarea: MatInputHarness;
@@ -472,7 +467,6 @@ describe('DateValueComponent', () => {
       testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
       testHostComponent = testHostFixture.componentInstance;
       loader = TestbedHarnessEnvironment.loader(testHostFixture);
-      rootLoader = TestbedHarnessEnvironment.documentRootLoader(testHostFixture);
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();

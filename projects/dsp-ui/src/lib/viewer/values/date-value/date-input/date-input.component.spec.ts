@@ -50,7 +50,6 @@ describe('DateInputComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
   let loader: HarnessLoader;
-  let rootLoader: HarnessLoader;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -72,7 +71,6 @@ describe('DateInputComponent', () => {
     testHostFixture = TestBed.createComponent(TestHostComponent);
     testHostComponent = testHostFixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(testHostFixture);
-    rootLoader = TestbedHarnessEnvironment.documentRootLoader(testHostFixture);
     testHostFixture.detectChanges();
 
     expect(testHostComponent).toBeTruthy();

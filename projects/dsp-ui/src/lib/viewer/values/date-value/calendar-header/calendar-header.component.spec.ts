@@ -1,18 +1,15 @@
-import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CalendarHeaderComponent } from './calendar-header.component';
 import { ACTIVE_CALENDAR, JDNConvertibleCalendarDateAdapter } from 'jdnconvertiblecalendardateadapter';
 import { MatSelectModule } from '@angular/material/select';
 import { DateAdapter, MatOptionModule } from '@angular/material/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatCalendar, MatDatepickerContent } from '@angular/material/datepicker';
 import { BehaviorSubject } from 'rxjs';
-import { Component, DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
+import { Component } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { JDNConvertibleCalendarModule } from 'jdnconvertiblecalendar/dist/src/JDNConvertibleCalendar';
-import { CalendarDate, CalendarPeriod, JulianCalendarDate } from 'jdnconvertiblecalendar';
-import GregorianCalendarDate = JDNConvertibleCalendarModule.GregorianCalendarDate;
+import { CalendarDate, CalendarPeriod, GregorianCalendarDate, JulianCalendarDate } from 'jdnconvertiblecalendar';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSelectHarness } from '@angular/material/select/testing';
@@ -29,7 +26,6 @@ describe('CalendarHeaderComponent', () => {
   let component: CalendarHeaderComponent<JDNConvertibleCalendarDateAdapter>;
   let fixture: ComponentFixture<CalendarHeaderComponent<JDNConvertibleCalendarDateAdapter>>;
   let loader: HarnessLoader;
-  let rootLoader: HarnessLoader;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -67,7 +63,6 @@ describe('CalendarHeaderComponent', () => {
     fixture = TestBed.createComponent(CalendarHeaderComponent);
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
-    rootLoader = TestbedHarnessEnvironment.documentRootLoader(fixture);
     fixture.detectChanges();
   });
 
