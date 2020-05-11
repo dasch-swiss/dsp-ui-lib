@@ -11,6 +11,9 @@ import {By} from '@angular/platform-browser';
 import {MatInputModule} from '@angular/material/input';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { KnoraDatePipe } from '../../pipes/knoradate.pipe';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatInputHarness } from '@angular/material/input/testing';
 
 @Component({
   selector: `dsp-date-input`,
@@ -144,16 +147,18 @@ describe('DateValueComponent', () => {
   describe('display and edit a date value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
+    let loader: HarnessLoader;
+    let rootLoader: HarnessLoader;
 
     let valueComponentDe: DebugElement;
     let valueReadModeDebugElement: DebugElement;
     let valueReadModeNativeElement;
-    let commentTextareaDebugElement: DebugElement;
-    let commentTextareaNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
       testHostComponent = testHostFixture.componentInstance;
+      loader = TestbedHarnessEnvironment.loader(testHostFixture);
+      rootLoader = TestbedHarnessEnvironment.documentRootLoader(testHostFixture);
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
@@ -250,14 +255,11 @@ describe('DateValueComponent', () => {
 
     });
 
-    it('should validate an existing value with an added comment', () => {
+    it('should validate an existing value with an added comment', async() => {
 
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
-
-      commentTextareaDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentTextareaNativeElement = commentTextareaDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -265,11 +267,9 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      commentTextareaNativeElement.value = 'this is a comment';
+      const commentTextarea =  await loader.getHarness(MatInputHarness);
 
-      commentTextareaNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
+      await commentTextarea.setValue('this is a comment');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
