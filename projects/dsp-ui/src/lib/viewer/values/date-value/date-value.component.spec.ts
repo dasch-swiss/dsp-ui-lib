@@ -133,16 +133,11 @@ describe('DateValueComponent', () => {
         TestDateInputComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent,
-        KnoraDatePipe]
+        KnoraDatePipe
+      ]
     })
       .compileComponents();
   }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DateValueComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
 
   describe('display and edit a date value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
@@ -267,7 +262,7 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      const commentTextarea =  await loader.getHarness(MatInputHarness);
+      const commentTextarea = await loader.getHarness(MatInputHarness);
 
       await commentTextarea.setValue('this is a comment');
 
