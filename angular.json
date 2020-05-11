@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "knora-ui-ng-lib": {
+    "dsp-ui-lib": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/knora-ui-ng-lib",
+            "outputPath": "dist/dsp-ui-lib",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "knora-ui-ng-lib:build"
+            "browserTarget": "dsp-ui-lib:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "knora-ui-ng-lib:build:production"
+              "browserTarget": "dsp-ui-lib:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "knora-ui-ng-lib:build"
+            "browserTarget": "dsp-ui-lib:build"
           }
         },
         "test": {
@@ -115,48 +115,48 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "knora-ui-ng-lib:serve"
+            "devServerTarget": "dsp-ui-lib:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "knora-ui-ng-lib:serve:production"
+              "devServerTarget": "dsp-ui-lib:serve:production"
             }
           }
         }
       }
     },
-    "@knora/ui": {
+    "@dasch-swiss/dsp-ui": {
       "projectType": "library",
-      "root": "projects/knora-ui",
-      "sourceRoot": "projects/knora-ui/src",
-      "prefix": "lib",
+      "root": "projects/dsp-ui",
+      "sourceRoot": "projects/dsp-ui/src",
+      "prefix": "dsp",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/knora-ui/tsconfig.lib.json",
-            "project": "projects/knora-ui/ng-package.json"
+            "tsConfig": "projects/dsp-ui/tsconfig.lib.json",
+            "project": "projects/dsp-ui/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/knora-ui/tsconfig.lib.prod.json"
+              "tsConfig": "projects/dsp-ui/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/knora-ui/src/test.ts",
-            "tsConfig": "projects/knora-ui/tsconfig.spec.json",
-            "karmaConfig": "projects/knora-ui/karma.conf.js"
+            "main": "projects/dsp-ui/src/test.ts",
+            "tsConfig": "projects/dsp-ui/tsconfig.spec.json",
+            "karmaConfig": "projects/dsp-ui/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/knora-ui/tsconfig.lib.json",
-              "projects/knora-ui/tsconfig.spec.json"
+              "projects/dsp-ui/tsconfig.lib.json",
+              "projects/dsp-ui/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -166,5 +166,5 @@
       }
     }
   },
-  "defaultProject": "knora-ui-ng-lib"
+  "defaultProject": "dsp-ui-lib"
 }

@@ -1,13 +1,13 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ModifyComponent} from './modify.component';
-import {KnoraApiConnectionToken} from '@knora/ui';
+import {DspApiConnectionToken} from '@dasch-swiss/dsp-ui';
 import {of} from 'rxjs';
 import {Component, Input} from '@angular/core';
 import {ApiResponseData, AuthenticationEndpointV2, LoginResponse} from '@knora/api';
 
 @Component({
-    selector: `kui-resource-view`,
+    selector: `dsp-resource-view`,
     template: ``
 })
 class TestResourceViewerComponent {
@@ -31,7 +31,7 @@ describe('ModifyComponent', () => {
             declarations: [ModifyComponent, TestResourceViewerComponent],
             providers: [
                 {
-                    provide: KnoraApiConnectionToken,
+                    provide: DspApiConnectionToken,
                     useValue: authSpyObj
                 }
             ]
@@ -40,7 +40,7 @@ describe('ModifyComponent', () => {
     }));
 
     beforeEach(() => {
-        const authSpy = TestBed.inject(KnoraApiConnectionToken);
+        const authSpy = TestBed.inject(DspApiConnectionToken);
 
         (authSpy.v2.auth as jasmine.SpyObj<AuthenticationEndpointV2>).login.and.returnValue(
             of({} as ApiResponseData<LoginResponse>)

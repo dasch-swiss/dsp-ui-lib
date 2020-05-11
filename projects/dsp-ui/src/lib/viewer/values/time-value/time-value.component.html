@@ -1,0 +1,27 @@
+<div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
+  <p class="rm-value date">Date: {{valueFormControl.value | date}}</p>
+  <p class="rm-value time">Time: {{valueFormControl.value | date:"HH:mm"}}</p>
+  <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
+</div>
+<ng-template #showForm>
+  <span [formGroup]="form" class="parent-component-wrapper">
+      <mat-form-field class="large-field child-value-component" floatLabel="never">
+        <dsp-time-input #timeInput [formControlName]="'timeValue'" class="value" [errorStateMatcher]="matcher"></dsp-time-input>
+      </mat-form-field>
+      <mat-form-field class="large-field value-component-comment">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="6"
+                  [formControlName]="'comment'"
+                  class="comment"
+                  placeholder="Comment"
+                  type="text"
+                  spellcheck="false">
+          </textarea>
+      </mat-form-field>
+      <mat-error class="custom-error-message" *ngIf="form.controls.timeValue.hasError('valueNotChanged')">
+        Please change the value
+      </mat-error>
+  </span>
+</ng-template>

@@ -1,13 +1,14 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {APP_INITIALIZER, NgModule} from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DspApiConfigToken, DspApiConnectionToken, DspCoreModule, DspViewerModule } from '@dasch-swiss/dsp-ui';
+import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {KnoraApiConfigToken, KnoraApiConnectionToken, KuiConfigToken, KuiViewerModule} from '@knora/ui';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {AppInitService} from './app-init.service';
-import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
+import { AppInitService } from './app-init.service';
+import { AppRoutingModule } from './app-routing.module';
+
+import { AppComponent } from './app.component';
 import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
 
@@ -27,7 +28,8 @@ export function initializeApp(appInitService: AppInitService) {
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    KuiViewerModule,
+    DspCoreModule,
+    DspViewerModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     MatButtonModule
   ],
@@ -40,16 +42,12 @@ export function initializeApp(appInitService: AppInitService) {
       multi: true
     },
     {
-      provide: KuiConfigToken,
-      useFactory: () => AppInitService.kuiConfig
+      provide: DspApiConfigToken,
+      useFactory: () => AppInitService.dspApiConfig
     },
     {
-      provide: KnoraApiConfigToken,
-      useFactory: () => AppInitService.knoraApiConfig
-    },
-    {
-      provide: KnoraApiConnectionToken,
-      useFactory: () => AppInitService.knoraApiConnection
+      provide: DspApiConnectionToken,
+      useFactory: () => AppInitService.dspApiConnection
     }
   ],
   bootstrap: [AppComponent]
