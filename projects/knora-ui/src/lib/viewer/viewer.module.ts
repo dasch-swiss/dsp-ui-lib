@@ -97,7 +97,6 @@ import { FormattedBooleanPipe } from './pipes/formatted-boolean.pipe';
         PropertyViewComponent,
         ResourceViewComponent,
         ListValueComponent,
-        SublistValueComponent,
         GeonameValueComponent,
         KnoraDatePipe,
         FormattedBooleanPipe
