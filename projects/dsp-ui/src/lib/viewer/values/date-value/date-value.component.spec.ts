@@ -461,9 +461,8 @@ describe('DateValueComponent', () => {
     let loader: HarnessLoader;
 
     let valueComponentDe: DebugElement;
-    let commentTextarea: MatInputHarness;
 
-    beforeEach(async () => {
+    beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
       testHostComponent = testHostFixture.componentInstance;
       loader = TestbedHarnessEnvironment.loader(testHostFixture);
@@ -475,7 +474,6 @@ describe('DateValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(DateValueComponent));
-      commentTextarea = await loader.getHarness(MatInputHarness);
     });
 
     it('should create a value', () => {
@@ -519,7 +517,8 @@ describe('DateValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      await commentTextarea.setValue('created comment')
+      const commentTextarea = await loader.getHarness(MatInputHarness);
+      await commentTextarea.setValue('created comment');
 
       testHostFixture.detectChanges();
 
