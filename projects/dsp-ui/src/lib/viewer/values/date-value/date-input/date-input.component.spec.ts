@@ -92,15 +92,15 @@ describe('DateInputComponent', () => {
     expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
 
     // check that MatDatepicker has been initialized correctly
-    const dateInputs = await loader.getAllHarnesses(MatInputHarness);
+    const dateStartInput = await loader.getAllHarnesses(MatInputHarness);
 
-    expect(dateInputs.length).toEqual(1);
+    expect(dateStartInput.length).toEqual(1);
 
-    const startDate = await dateInputs[0].getValue();
+    const startDate = await dateStartInput[0].getValue();
 
     expect(startDate).toEqual('19-05-2018');
 
-    const startDateReadonly = await dateInputs[0].isReadonly();
+    const startDateReadonly = await dateStartInput[0].isReadonly();
 
     expect(startDateReadonly).toBe(true);
 
@@ -125,23 +125,23 @@ describe('DateInputComponent', () => {
     expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
 
     // check that MatDatepicker has been initialized correctly
-    const dateInputs = await loader.getAllHarnesses(MatInputHarness);
+    const dateStartInput = await loader.getHarness(MatInputHarness.with({ancestor: '.start'}));
 
-    expect(dateInputs.length).toEqual(2);
-
-    const startDate = await dateInputs[0].getValue();
+    const startDate = await dateStartInput.getValue();
 
     expect(startDate).toEqual('19-05-2018');
 
-    const startDateReadonly = await dateInputs[0].isReadonly();
+    const startDateReadonly = await dateStartInput.isReadonly();
 
     expect(startDateReadonly).toBe(true);
 
-    const endDate = await dateInputs[1].getValue();
+    const dateEndInput = await loader.getHarness(MatInputHarness.with({ancestor: '.end'}));
+
+    const endDate = await dateEndInput.getValue();
 
     expect(endDate).toEqual('19-05-2019');
 
-    const endDateReadonly = await dateInputs[1].isReadonly();
+    const endDateReadonly = await dateEndInput.isReadonly();
 
     expect(endDateReadonly).toBe(true);
 
