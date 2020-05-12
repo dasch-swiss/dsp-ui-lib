@@ -9,7 +9,13 @@ import { MatCalendar, MatDatepickerContent } from '@angular/material/datepicker'
 import { BehaviorSubject } from 'rxjs';
 import { Component } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CalendarDate, CalendarPeriod, GregorianCalendarDate, JulianCalendarDate } from 'jdnconvertiblecalendar';
+import {
+    CalendarDate,
+    CalendarPeriod,
+    GregorianCalendarDate,
+    JDNConvertibleCalendar,
+    JulianCalendarDate
+} from 'jdnconvertiblecalendar';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSelectHarness } from '@angular/material/select/testing';
@@ -87,15 +93,15 @@ describe('CalendarHeaderComponent', () => {
 
       expect(option1).toEqual('Gregorian');
 
-      const option2 = await options[1].getText()
+      const option2 = await options[1].getText();
 
       expect(option2).toEqual('Julian');
 
   });
 
-  it('should perform a calendar conversion when the selection is changed', () => {
+  it('should perform a calendar conversion when the selection is changed', async () => {
 
-    const dateAdapter = TestBed.inject(DateAdapter);
+    const dateAdapter: DateAdapter<JDNConvertibleCalendar> = TestBed.inject(DateAdapter);
 
     const dateAdapterSpy = spyOn(dateAdapter as JDNConvertibleCalendarDateAdapter, 'convertCalendar').and.callFake(
       (date, calendar) => {
@@ -110,7 +116,15 @@ describe('CalendarHeaderComponent', () => {
 
     const datepickerContentSpy = spyOn(datepickerContent.datepicker, 'select').and.stub();
 
-    component.formControl.setValue('Julian');
+    const select = await loader.getHarness(MatSelectHarness);
+
+    await select.open();
+
+    const options = await select.getOptions({text: 'Julian'});
+
+    expect(options.length).toEqual(1);
+
+    await options[0].click();
 
     expect(dateAdapterSpy).toHaveBeenCalledTimes(1);
 
