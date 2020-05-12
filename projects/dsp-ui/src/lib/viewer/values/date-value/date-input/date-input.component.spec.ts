@@ -7,12 +7,15 @@ import {KnoraDate, KnoraPeriod} from '@knora/api';
 import {JDNDatepickerDirective} from '../../jdn-datepicker-directive/jdndatepicker.directive';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatInputModule} from '@angular/material/input';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import {MatJDNConvertibleCalendarDateAdapterModule} from 'jdnconvertiblecalendardateadapter';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {CalendarDate, GregorianCalendarDate, CalendarPeriod, JulianCalendarDate} from 'jdnconvertiblecalendar';
 import {By} from '@angular/platform-browser';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatInputHarness } from '@angular/material/input/testing';
 
 /**
  * Test host component to simulate parent component.
@@ -46,6 +49,7 @@ class TestHostComponent implements OnInit {
 describe('DateInputComponent', () => {
   let testHostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
+  let loader: HarnessLoader;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -66,12 +70,13 @@ describe('DateInputComponent', () => {
   beforeEach(() => {
     testHostFixture = TestBed.createComponent(TestHostComponent);
     testHostComponent = testHostFixture.componentInstance;
+    loader = TestbedHarnessEnvironment.loader(testHostFixture);
     testHostFixture.detectChanges();
 
     expect(testHostComponent).toBeTruthy();
   });
 
-  it('should initialize a date correctly', () => {
+  it('should initialize a date correctly', async () => {
 
     expect(testHostComponent.dateInputComponent.value instanceof KnoraDate).toBe(true);
     expect(testHostComponent.dateInputComponent.value)
@@ -86,9 +91,22 @@ describe('DateInputComponent', () => {
 
     expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
 
+    // check that MatDatepicker has been initialized correctly
+    const dateStartInput = await loader.getAllHarnesses(MatInputHarness);
+
+    expect(dateStartInput.length).toEqual(1);
+
+    const startDate = await dateStartInput[0].getValue();
+
+    expect(startDate).toEqual('19-05-2018');
+
+    const startDateReadonly = await dateStartInput[0].isReadonly();
+
+    expect(startDateReadonly).toBe(true);
+
   });
 
-  it('should initialize a period correctly', () => {
+  it('should initialize a period correctly', async () => {
 
     testHostComponent.form.controls.date.setValue(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2018, 5, 19), new KnoraDate('JULIAN', 'CE', 2019, 5, 19)));
 
@@ -105,6 +123,27 @@ describe('DateInputComponent', () => {
       .toEqual(new JulianCalendarDate(new CalendarPeriod(new CalendarDate(2019, 5, 19), new CalendarDate(2019, 5, 19))));
 
     expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
+
+    // check that MatDatepicker has been initialized correctly
+    const dateStartInput = await loader.getHarness(MatInputHarness.with({ancestor: '.start'}));
+
+    const startDate = await dateStartInput.getValue();
+
+    expect(startDate).toEqual('19-05-2018');
+
+    const startDateReadonly = await dateStartInput.isReadonly();
+
+    expect(startDateReadonly).toBe(true);
+
+    const dateEndInput = await loader.getHarness(MatInputHarness.with({ancestor: '.end'}));
+
+    const endDate = await dateEndInput.getValue();
+
+    expect(endDate).toEqual('19-05-2019');
+
+    const endDateReadonly = await dateEndInput.isReadonly();
+
+    expect(endDateReadonly).toBe(true);
 
   });
 
