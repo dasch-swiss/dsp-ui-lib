@@ -41,8 +41,7 @@ class TestDateInputComponent implements ControlValueAccessor, MatFormFieldContro
   focused = false;
   id = 'testid';
   ngControl: NgControl | null;
-  onChange = (_: any) => {
-  };
+  onChange = (_: any) => {};
   stateChanges = new Subject<void>();
 
   writeValue(date: KnoraDate | KnoraPeriod | null): void {
