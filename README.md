@@ -14,7 +14,7 @@ This version of DSP-UI-LIB requires [DSP-API version ^12.0.0](https://github.com
 
 ### DspCoreModule
 
-The core module contains configuration files and all variables needed to connect the DSP API.
+The core module contains configuration files and all injection tokens needed to connect to the DSP-API.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/core)
 
 ---
@@ -64,6 +64,7 @@ To install it:
 ```bash
 npm install -g n
 ```
+
 and switch to node version, e.g. 12.16.2 with `n v12.16.2`
 
 #### NPM package manager
@@ -113,7 +114,7 @@ The main component file should look as follow:
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'kui-test',
+  selector: 'dsp-test',
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']
 })
@@ -135,11 +136,9 @@ npm run build-lib
 
 ### Run the DSP-UI-LIB Demo Application
 
-Run the app with the command line: `ng s`.
+Run the app with the command line: `npm run start`.
 
 The demo app runs on <http://0.0.0.0:4200> and we use it for documentation on [DSP-UI-LIB Github page](https://dasch-swiss.github.io/knora-ui).
-
-There's an additional test environment for the modules on <https://github.com/dhlab-basel/knora-ui-playground> with yalc.
 
 #### YALC
 
