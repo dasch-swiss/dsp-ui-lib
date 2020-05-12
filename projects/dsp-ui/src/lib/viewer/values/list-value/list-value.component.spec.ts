@@ -161,7 +161,7 @@ describe('ListValueComponent', () => {
 
       expect(openListButtonDe.nativeElement.textContent.trim()).toBe('Select list value');
 
-      expect(testHostComponent.inputValueComponent.selectedNode).toBe(undefined);
+      expect(testHostComponent.inputValueComponent.selectedNode).toBe(null);
 
       const openListButtonEle: HTMLElement = openListButtonDe.nativeElement;
       openListButtonEle.click();
