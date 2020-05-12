@@ -1,6 +1,6 @@
 # DSP-UI library
 
-This is the demo and developing environment for DSP-UI-LIB library (@dasch-swiss/dsp-ui) composed of 4 modules.
+This is the demo and developing environment for DSP-UI-LIB (@dasch-swiss/dsp-ui) composed of 4 modules.
 
 The modules help to create a graphical user interface, a web application to use [DSP-API](https://www.knora.org) in a quick and simple way. The modules are written in Typescript to use them with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
@@ -103,7 +103,7 @@ ng generate component core/test --project @dasch-swiss/dsp-ui
 will create a component-folder called `test` inside of `projects/dsp-ui/src/lib/core/` with four files:
 
 - `test.component.scss`
-- `test.component.html` 
+- `test.component.html`
 - `test.component.spec.ts`
 - `test.component.ts`
 
@@ -127,7 +127,7 @@ export class TestComponent implements OnInit {
 }
 ```
 
-Before testing the new component inside of the demo app, you have to rebuild after each change: 
+Before testing the new component inside of the demo app, you have to rebuild after each change:
 
 ```bash
 npm run build-lib
