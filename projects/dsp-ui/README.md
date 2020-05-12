@@ -156,7 +156,7 @@ export class AppModule { }
 
 Do not forget to make the imports for `APP_INITIALIZER` from `@angular/core` and the desired DSP-UI modules from `@dasch-swiss/dsp-ui`.
 
-Finally, the `main.ts` file must be modified:
+Finally, the main.ts file must be modified to load the environment specific config file and to test, that the config is correct:
 
 ```typescript
 import { enableProdMode } from '@angular/core';
