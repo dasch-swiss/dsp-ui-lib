@@ -43,7 +43,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
    getInitValue(): string | null {
     if (this.displayValue !== undefined) {
-      return this.displayValue.listNodeLabel;
+      return this.displayValue.listNode;
     } else {
       return null;
     }
@@ -66,11 +66,14 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
               console.error(error);
             });
         }
+      } else {
+          this.valueFormControl.setValue(this.displayValue.listNodeLabel);
       }
     }
   }
 
   ngOnInit() {
+    this.selectedNode = null;
     this.valueFormControl = new FormControl(null);
     this.commentFormControl = new FormControl(null);
     this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(

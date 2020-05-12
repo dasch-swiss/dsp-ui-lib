@@ -22,6 +22,9 @@
             </span>
         </span>
     </mat-menu>
+    <mat-error *ngIf="form.controls.listValue.hasError('valueNotChanged')">
+        <span class="custom-error-message">New value must be different than the current value.</span>
+    </mat-error>
 </span>
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
     <p class="rm-value">{{valueFormControl.value}}</p>
@@ -31,7 +34,6 @@
     <span [formGroup]="form">
     <mat-form-field class="large-field child-value-component" *ngIf="mode === 'read'" floatLabel="never">
             <input [formControlName]="'listValue'" class="value" type="text" placeholder="List value" matInput readonly>
-
     </mat-form-field>
     <mat-form-field class="large-field value-component-comment">
         <textarea matInput
