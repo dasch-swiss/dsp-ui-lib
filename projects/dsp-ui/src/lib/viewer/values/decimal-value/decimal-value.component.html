@@ -13,6 +13,9 @@
             <mat-error *ngIf="form.controls.decimalValue.hasError('pattern')">
                 <span class="custom-error-message">New value must be a decimal value.</span>
             </mat-error>
+            <mat-error *ngIf="form.controls.decimalValue.hasError('required')">
+                A decimal value is <strong>required</strong>.
+            </mat-error>
         </mat-form-field>
         <mat-form-field class="large-field value-component-comment">
             <textarea matInput

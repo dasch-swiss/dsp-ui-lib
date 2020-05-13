@@ -19,6 +19,9 @@
             <mat-error *ngIf="form.controls.geonameValue.hasError('pattern')">
                 <span class="custom-error-message">New value must be a valid GeoName identifier.</span>
             </mat-error>
+            <mat-error *ngIf="form.controls.geonameValue.hasError('required')">
+                A GeoName value is <strong>required</strong>.
+            </mat-error>
             <button class="more-info" mat-icon-button matSuffix (click)="openInfo()"
                 [attr.aria-label]="'Open in geonames.org'" title="Open in geonames.org">
                 <mat-icon>launch</mat-icon>
