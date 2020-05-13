@@ -11,6 +11,9 @@ import {By} from '@angular/platform-browser';
 import {MatInputModule} from '@angular/material/input';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { KnoraDatePipe } from '../../pipes/knoradate.pipe';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatInputHarness } from '@angular/material/input/testing';
 
 @Component({
   selector: `dsp-date-input`,
@@ -38,8 +41,7 @@ class TestDateInputComponent implements ControlValueAccessor, MatFormFieldContro
   focused = false;
   id = 'testid';
   ngControl: NgControl | null;
-  onChange = (_: any) => {
-  };
+  onChange = (_: any) => {};
   stateChanges = new Subject<void>();
 
   writeValue(date: KnoraDate | KnoraPeriod | null): void {
@@ -115,8 +117,6 @@ class TestHostCreateValueComponent implements OnInit {
 }
 
 describe('DateValueComponent', () => {
-  let component: DateValueComponent;
-  let fixture: ComponentFixture<DateValueComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -130,30 +130,25 @@ describe('DateValueComponent', () => {
         TestDateInputComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent,
-        KnoraDatePipe]
+        KnoraDatePipe
+      ]
     })
       .compileComponents();
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DateValueComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
   describe('display and edit a date value', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
+    let loader: HarnessLoader;
 
     let valueComponentDe: DebugElement;
     let valueReadModeDebugElement: DebugElement;
     let valueReadModeNativeElement;
-    let commentTextareaDebugElement: DebugElement;
-    let commentTextareaNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
       testHostComponent = testHostFixture.componentInstance;
+      loader = TestbedHarnessEnvironment.loader(testHostFixture);
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
@@ -250,14 +245,11 @@ describe('DateValueComponent', () => {
 
     });
 
-    it('should validate an existing value with an added comment', () => {
+    it('should validate an existing value with an added comment', async () => {
 
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
-
-      commentTextareaDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentTextareaNativeElement = commentTextareaDebugElement.nativeElement;
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -265,11 +257,9 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      commentTextareaNativeElement.value = 'this is a comment';
+      const commentTextarea = await loader.getHarness(MatInputHarness);
 
-      commentTextareaNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
+      await commentTextarea.setValue('this is a comment');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -467,14 +457,14 @@ describe('DateValueComponent', () => {
 
     let testHostComponent: TestHostCreateValueComponent;
     let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+    let loader: HarnessLoader;
 
     let valueComponentDe: DebugElement;
-    let commentTextareaDebugElement: DebugElement;
-    let commentTextareaNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
       testHostComponent = testHostFixture.componentInstance;
+      loader = TestbedHarnessEnvironment.loader(testHostFixture);
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
@@ -483,8 +473,6 @@ describe('DateValueComponent', () => {
       const hostCompDe = testHostFixture.debugElement;
 
       valueComponentDe = hostCompDe.query(By.directive(DateValueComponent));
-      commentTextareaDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-      commentTextareaNativeElement = commentTextareaDebugElement.nativeElement;
     });
 
     it('should create a value', () => {
@@ -518,7 +506,7 @@ describe('DateValueComponent', () => {
 
     });
 
-    it('should reset form after cancellation', () => {
+    it('should reset form after cancellation', async () => {
 
       // simulate user input
       const newKnoraDate = new KnoraDate('JULIAN', 'CE', 2019, 5, 13);
@@ -528,9 +516,8 @@ describe('DateValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      commentTextareaNativeElement.value = 'created comment';
-
-      commentTextareaNativeElement.dispatchEvent(new Event('input'));
+      const commentTextarea = await loader.getHarness(MatInputHarness);
+      await commentTextarea.setValue('created comment');
 
       testHostFixture.detectChanges();
 
@@ -544,7 +531,9 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(null);
 
-      expect(commentTextareaNativeElement.value).toEqual('');
+      const comment = await commentTextarea.getValue();
+
+      expect(comment).toEqual('');
 
     });
 
