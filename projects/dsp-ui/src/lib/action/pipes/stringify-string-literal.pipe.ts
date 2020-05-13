@@ -34,6 +34,7 @@ export class StringifyStringLiteralPipe implements PipeTransform {
             }
             return stringified;
         } else {
+            // TODO: handle this logic in the session service
             // show only one value, depending on default language
             // the language is defined in user profile if a user is logged-in
             // otherwise it takes the language from browser
