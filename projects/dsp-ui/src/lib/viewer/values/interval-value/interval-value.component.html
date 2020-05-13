@@ -7,7 +7,8 @@
   <span [formGroup]="form">
       <mat-form-field class="large-field child-value-component" floatLabel="never">
         <dsp-interval-input #intervalInput [formControlName]="'intervalValue'" class="value" placeholder="Interval value" [errorStateMatcher]="matcher"></dsp-interval-input>
-        <mat-error *ngIf="form.controls.intervalValue.hasError('valueNotChanged')">
+        <mat-error *ngIf="form.controls.intervalValue.hasError('valueNotChanged') &&
+                   (form.controls.intervalValue.touched || form.controls.intervalValue.dirty)">
              <span class="custom-error-message">New value must be different than the current value.</span>
         </mat-error>
       </mat-form-field>

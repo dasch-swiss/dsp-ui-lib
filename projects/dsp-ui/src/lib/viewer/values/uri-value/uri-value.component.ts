@@ -1,5 +1,6 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
+import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 import {CreateUriValue, ReadUriValue, UpdateUriValue} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -18,7 +19,7 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
   commentFormControl: FormControl;
 
   form: FormGroup;
-
+  matcher = new  ValueErrorStateMatcher();
   valueChangesSubscription: Subscription;
 
   customValidators = [Validators.pattern(CustomRegex.URI_REGEX)];
@@ -87,7 +88,7 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
 
     updatedUriValue.uri = this.valueFormControl.value;
 
-    if(this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
+    if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
       updatedUriValue.valueHasComment = this.commentFormControl.value;
     }
 
