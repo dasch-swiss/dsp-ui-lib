@@ -2,11 +2,11 @@
 
 This is the demo and developing environment for DSP-UI-LIB (@dasch-swiss/dsp-ui) comprised of 4 modules.
 
-The modules help create a GUI to allow the user to use the [DSP-API](https://www.knora.org) in a quick and simple way from within a web application. The modules are written in Typescript for use with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
+The modules help create a GUI to allow the user to use [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/) in a quick and simple way from within a web application. The modules are written in Typescript for use with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
-DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/). DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
+DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/). DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
-DSP-API and DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html) license.
+DSP-API and DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html) license.
 
 This version of DSP-UI-LIB requires [DSP-API version ^12.0.0](https://github.com/dasch-swiss/knora-api/releases/tag/v12.0.0).
 
@@ -14,7 +14,7 @@ This version of DSP-UI-LIB requires [DSP-API version ^12.0.0](https://github.com
 
 ### DspCoreModule
 
-The core module contains configuration files and all injection tokens needed to connect to the DSP-API.
+The core module contains configuration files and all injection tokens needed to connect to DSP-API.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/core)
 
 ---
@@ -44,7 +44,7 @@ The action module contains special buttons (e.g. to sort a list), pipes and dire
 
 ### Prerequisites
 
-We develop the DSP-UI-LIB modules using Angular 9, with heavy reliance on Angular-cli, which requires the following tools:
+We develop DSP-UI-LIB modules using Angular 9, with heavy reliance on Angular-cli, which requires the following tools:
 
 #### Node.js
 
@@ -69,7 +69,7 @@ and switch to the desired node version, e.g. 12.16.2 with `n v12.16.2`
 
 #### NPM package manager
 
-We use the [npm](https://docs.npmjs.com/cli/install) instead of yarn, which is installed with Node.js by default.
+We use [npm](https://docs.npmjs.com/cli/install) instead of yarn, which is installed with Node.js by default.
 
 To check that you have the npm client installed, run `npm -v`.
 

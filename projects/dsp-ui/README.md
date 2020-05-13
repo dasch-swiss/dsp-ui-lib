@@ -1,8 +1,8 @@
 # @dasch-swiss/dsp-ui
 
-The modules help create a GUI to allow the user to use the [DSP-API](https://www.knora.org) in a quick and simple way from within a web application. The modules are written in Typescript for use with **[Angular](https://angular.io) (version 9)**. We decided to style components and directives with [Angular Material design](https://material.angular.io).
+The modules help create a GUI to allow the user to use [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/) in a quick and simple way from within a web application. The modules are written in Typescript for use with **[Angular](https://angular.io) (version 9)**. We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
-DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the DSP API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
+DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with DSP API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
 DSP-API and DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
 
@@ -286,4 +286,4 @@ If you want to improve the elements and help developing, do not hesitate to [con
 
 Get the developer manual on [docs.dasch.swiss](https://docs.dasch.swiss/developers/knora-ui/contribution/).
 
-The sources for this package are in the [dasch-swiss/dsp-ui](https://github.com/dasch-swiss/knora-ui-ng-lib) repo. Please file issues and pull requests on this repo.
+The sources for this package are in [dasch-swiss/dsp-ui](https://github.com/dasch-swiss/knora-ui-ng-lib) repo. Please file issues and pull requests on this repo.
