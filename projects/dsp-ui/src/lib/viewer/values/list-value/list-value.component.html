@@ -22,7 +22,7 @@
             </span>
         </span>
     </mat-menu>
-    <mat-error *ngIf="form.controls.listValue.hasError('valueNotChanged')">
+    <mat-error *ngIf="form.controls.listValue.hasError('valueNotChanged')  && form.controls.listValue.dirty">
         <span class="custom-error-message">New value must be different than the current value.</span>
     </mat-error>
 </span>
