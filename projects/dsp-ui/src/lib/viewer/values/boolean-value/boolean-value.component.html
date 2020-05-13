@@ -3,11 +3,11 @@
     <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
 </div>
 <ng-template #showForm>
-    <span [formGroup]="form">
+    <span [formGroup]="form" (ngSubmit)="onSubmit()">
         <mat-checkbox [formControlName]="'booleanValue'" class="value boolValue child-value-component">
             {{valueFormControl.value | formattedBoolean}}
         </mat-checkbox>
-        <mat-error *ngIf="form.controls.booleanValue.hasError('valueNotChanged')">
+        <mat-error *ngIf="form.controls.booleanValue.hasError('valueNotChanged') && form.controls.booleanValue.dirty">
                 <span class="custom-error-message">New value must be different than the current value.</span>
         </mat-error>
         <mat-form-field class="large-field value-component-comment">
