@@ -1,10 +1,10 @@
 # @dasch-swiss/dsp-ui
 
-The modules help to create a graphical user interface, a web application to use [DSP-API](https://api.knora.org) in a quick and simple way. The modules are written in Typescript to use them with **[Angular](https://angular.io) (version 9)**. We decided to style components and directives with [Angular Material design](https://material.angular.io).
+The modules help create a GUI to allow the user to use the [DSP-API](https://www.knora.org) in a quick and simple way from within a web application. The modules are written in Typescript for use with **[Angular](https://angular.io) (version 9)**. We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
 DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the DSP API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
-DSP-API and the DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
+DSP-API and DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
 
 This version of DSP-UI-LIB **requires [DSP-API version ^12.0.0](https://github.com/dasch-swiss/knora-api/releases/tag/v12.0.0).**
 
@@ -26,7 +26,7 @@ The module has the following package dependencies, which you also have to instal
 
 ## Setup
 
-The module supports runtime config to load the API configuration on load and not on build. This helps to run an App as docker image in various environments. But this needs some modifications in your app. We suggest to build the app with [@angular/cli](https://cli.angular.io/).
+The module supports runtime config to load the API configuration on load as opposed to on build. This helps run an App as a docker image in various environments. However, this requires some modifications in your app. We suggest building the app with [@angular/cli](https://cli.angular.io/).
 
 First, let's make a `config.dev.json` file in an additional folder `src/config/`:
 
@@ -41,22 +41,22 @@ First, let's make a `config.dev.json` file in an additional folder `src/config/`
 }
 ```
 
-It's possible to create several config files e.g. one for productive use. In this case, `logErrors` should be set to `false` and the filename would be `config.prod.json`. In the environment-files, we have to add the corresponding name:
+It's possible to create several config files e.g. one for productive use. In this case, `logErrors` should be set to `false` and the filename would be `config.prod.json`. In the environment files, we have to add the corresponding name:
 
 ```typescript
 export const environment = {
-  name: 'dev',      // <-- add here the name 'dev' or 'prod' etc.
+  name: 'dev',      // <-- add the name 'dev', 'prod', etc. here.
   production: false
 };
 ```
 
-The config files have to been integrated in `angular.json` in all "assets"-sections:
+The config files have to be integrated in `angular.json` in all "assets"-sections:
 
 ```json
 "assets": [
     "src/favicon.ico",
     "src/assets",
-    "src/config"    <-- add this line and do not forget the comma in previous line
+    "src/config"    <-- add this line and do not forget the comma on the previous line
 ]
 ```
 
@@ -154,9 +154,9 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
 export class AppModule { }
 ```
 
-Do not forget to make the imports for `APP_INITIALIZER` from `@angular/core` and the desired DSP-UI modules from `@dasch-swiss/dsp-ui`.
+Do not forget to import `APP_INITIALIZER` from `@angular/core` and the desired DSP-UI modules from `@dasch-swiss/dsp-ui`.
 
-Finally, the main.ts file must be modified to load the environment specific config file and to test, that the config is correct:
+Finally, the main.ts file must be modified to load the environment specific config file and test that the config is correct:
 
 ```typescript
 import { enableProdMode } from '@angular/core';
@@ -194,7 +194,7 @@ fetch(`config/config.${environment.name}.json`)
 ## Usage
 <!-- TODO: add the modules to app.modules and use them as usual  -->
 <!-- app.modules -->
-Add the desired modules from DSP-UI to the `app.module.ts`. At least `DspCoreModule` has to be imported!
+Add the desired modules from DSP-UI to the `app.module.ts`. `DspCoreModule` must be imported at the very minimum!
 
 ```typescript
 @NgModule({
@@ -214,7 +214,7 @@ export class AppModule { }
 ```
 
 <!-- example of component e.g. get all projects and display as a list -->
-The **DspCoreModule** is a configuration handler for [`@knora/api`](https://www.npmjs.com/package/@knora/api) which offers all the services to make [DSP-API requests](https://docs.dasch.swiss/developers/knora/api-reference/queries/). The following projects-component example shows how to implement the two libraries to get all projects form DSP-API:
+The **DspCoreModule** is a configuration handler for [`@knora/api`](https://www.npmjs.com/package/@knora/api) which offers all the services to make [DSP-API requests](https://docs.dasch.swiss/developers/knora/api-reference/queries/). The following ProjectsComponent example shows how to implement the two libraries to get all projects form DSP-API:
 
 ```typescript
 import { Component, Inject, OnInit } from '@angular/core';
@@ -249,7 +249,7 @@ export class ProjectsComponent implements OnInit {
 }
 ```
 
-The **DspViewerModule** contains components to display resources; as single one or as a list for search results. It comprises resource sub-components such as file representations components to display still image, video, audio or text only. But also value components to use single property elements.
+The **DspViewerModule** contains components to display resources; as single item or as a list for search results. It is comprised of resource sub-components such as file representations components to display still image, video, audio or text only and also value components to use single property elements.
 
 Import DspViewerModule in the `app.module.ts`:
 
@@ -272,7 +272,7 @@ export class AppModule { }
 ```
 <!-- example of resource viewer -->
 
-And use it in the component template as follow. The example shows how to display a resource by iri = 'http://rdfh.ch/0803/18a671b8a601'.
+And use it in the component template as follows. The example shows how to display a resource by iri = 'http://rdfh.ch/0803/18a671b8a601'.
 
 ```html
 <dsp-resource-view [iri]="'http://rdfh.ch/0803/18a671b8a601'"></dsp-resource-view>
@@ -283,6 +283,7 @@ And use it in the component template as follow. The example shows how to display
 ## Contribution
 
 If you want to improve the elements and help developing, do not hesitate to [contact us](https://dasch.swiss/team)
+
 Get the developer manual on [docs.dasch.swiss](https://docs.dasch.swiss/developers/knora-ui/contribution/).
 
-The sources for this package are in the [dasch-swiss/dsp-ui](https://github.com/dasch-swiss/knora-ui-ng-lib) repo. Please file issues and pull requests against that repo.
+The sources for this package are in the [dasch-swiss/dsp-ui](https://github.com/dasch-swiss/knora-ui-ng-lib) repo. Please file issues and pull requests on this repo.

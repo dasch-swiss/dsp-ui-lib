@@ -1,10 +1,10 @@
 # DSP-UI library
 
-This is the demo and developing environment for DSP-UI-LIB (@dasch-swiss/dsp-ui) composed of 4 modules.
+This is the demo and developing environment for DSP-UI-LIB (@dasch-swiss/dsp-ui) comprised of 4 modules.
 
-The modules help to create a graphical user interface, a web application to use [DSP-API](https://www.knora.org) in a quick and simple way. The modules are written in Typescript to use them with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
+The modules help create a GUI to allow the user to use the [DSP-API](https://www.knora.org) in a quick and simple way from within a web application. The modules are written in Typescript for use with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
-DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the [DSP API](https://docs.dasch.swiss/developers/knora/api-reference/). DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
+DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with the [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/). DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
 DSP-API and DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html) license.
 
@@ -21,14 +21,14 @@ The core module contains configuration files and all injection tokens needed to 
 
 ### DspViewerModule
 
-The viewer module contains object components to show the resource class representations from DSP-API, the GUI-elements for the property values and different kind of view frameworks.
+The viewer module contains object components to show the resource class representations from DSP-API, the GUI-elements for the property values and frameworks to display these values in different ways.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/viewer)
 
 ---
 
 ### DspSearchModule
 
-Search module allows to make simple searches or extended searches in DSP-API. In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
+The search module allows you to make simple or extended searches in DSP-API. In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
 [read more...](https://dasch-swiss.github.io/knora-ui/modules/search)
 
 ---
@@ -44,11 +44,11 @@ The action module contains special buttons (e.g. to sort a list), pipes and dire
 
 ### Prerequisites
 
-We develop the DSP-UI-LIB modules with Angular 9, especially with Angular-cli, which requires the following tools:
+We develop the DSP-UI-LIB modules using Angular 9, with heavy reliance on Angular-cli, which requires the following tools:
 
 #### Node.js
 
-Angular requires a [current, active LTS, or maintenance LTS](https://nodejs.org/about/releases/) version of Node.js. We recommend to install [Node version 12.x](https://nodejs.org/download/release/latest-v12.x/).
+Angular requires a [current, active LTS, or maintenance LTS](https://nodejs.org/about/releases/) version of Node.js. We recommend installing [Node version 12.x](https://nodejs.org/download/release/latest-v12.x/).
 
 On MacOs, install node with [Homebrew](https://brew.sh).
 For other platforms, please visit the [Node.js download page](https://nodejs.org/en/download/).
@@ -59,13 +59,13 @@ brew install node@12
 
 _Developer hint: To switch between various node versions, we recommand to use [n &mdash; Node.js versions manager](https://www.npmjs.com/package/n)._
 
-To install it:
+To install it, run:
 
 ```bash
 npm install -g n
 ```
 
-and switch to node version, e.g. 12.16.2 with `n v12.16.2`
+and switch to the desired node version, e.g. 12.16.2 with `n v12.16.2`
 
 #### NPM package manager
 
@@ -108,7 +108,7 @@ will create a component-folder called `test` inside of `projects/dsp-ui/src/lib/
 - `test.component.spec.ts`
 - `test.component.ts`
 
-The main component file should look as follow:
+The main component file should look as follows:
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
@@ -138,13 +138,15 @@ npm run build-lib
 
 Run the app with the command line: `npm run start`.
 
-The demo app runs on <http://0.0.0.0:4200> and we use it for documentation on [DSP-UI-LIB Github page](https://dasch-swiss.github.io/knora-ui).
+The demo app runs on <http://0.0.0.0:4200>.
+
+Documentation can be found on [DSP-UI-LIB Github page](https://dasch-swiss.github.io/knora-ui).
 
 #### YALC
 
 In some cases we have to work with unpublished npm packages like our own [@knora/api](https://github.com/dasch-swiss/knora-api-js-lib), a JavaScript library that allows a developer to implement the DSP API without knowing technical details about it.
 To publish and add local packages we use [yalc](https://www.npmjs.com/package/yalc). Yalc publishes the packages to a local store (not the npm website).
-From there, the packages can be added to your depending project.
+From there, the packages can be added to your project.
 
 ##### Installation
 
@@ -176,7 +178,7 @@ yalc remove --all
 
 #### Conflicts
 
-In case of an issue with package-lock.json (e.g. merge conflict) where you have to reset/delete package-lock file, you must consider the following commands in the correct order:
+In the event of an issue with package-lock.json (e.g. merge conflict) where you have to reset/delete package-lock file, run the following commands in this exact order:
 
 ```bash
 yalc remove --all
@@ -189,14 +191,14 @@ npm install
 
 ### Run the application in productive mode
 
-To simulate circumstances of production, the application should be built with optimization and served locally
+To simulate a production environment, the application should be built with optimization and served locally
 (not in dev mode, but from a local web server).
 
 - Install `nginx` on your system, e.g. `brew install nginx` for mac OS. Check the [documentation](https://linux.die.net/man/8/nginx) for more information.
 - Create a configuration file for the test application.
     The example defines a configuration file `/usr/local/etc/nginx/servers/dspuiapp.conf` for macOS.
-    Substitute `$abs_path_to_lib` for the actual absolute path on your system pointing to the project root.
-    Substitute `$dsp-ui_folder_name` for the folder name of the app build in `dist`.
+    Substitute `$abs_path_to_lib` with the actual absolute path on your system pointing to the project root.
+    Substitute `$dsp-ui_folder_name` with the folder name of the app build in `dist`.
 
 ```nginx
     server {
@@ -218,4 +220,4 @@ To simulate circumstances of production, the application should be built with op
 - Start `nginx` (if `nginx` is already running, stop it first: `nginx`: `nginx -s stop`)
 - Build the library: `npm run build-lib`
 - Build the test app with optimization: `npm run build-app`
-- Access <http://dspuiapp.local:8090>
+- Access it via <http://dspuiapp.local:8090>
