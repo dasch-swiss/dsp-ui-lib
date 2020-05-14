@@ -1,19 +1,11 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreateColorValue, ReadColorValue, UpdateColorValue } from '@knora/api';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { CustomRegex } from '../custom-regex';
-
-/** Error when invalid control is dirty, touched, or submitted. */
-export class ColorErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
+import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 
 @Component({
   selector: 'dsp-color-value',
@@ -31,7 +23,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
   form: FormGroup;
   valueChangesSubscription: Subscription;
   customValidators = [Validators.pattern(CustomRegex.COLOR_REGEX)];
-  matcher = new ColorErrorStateMatcher();
+  matcher = new ValueErrorStateMatcher();
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
