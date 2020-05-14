@@ -159,9 +159,9 @@ describe('ListValueComponent', () => {
 
       const openListButtonDe = valueComponentDe.query(By.css('button'));
 
-      expect(openListButtonDe.nativeElement.textContent.trim()).toBe('Select list value');
+      expect(openListButtonDe.nativeElement.textContent.trim()).toBe('Tree list node 01');
 
-      expect(testHostComponent.inputValueComponent.selectedNode).toBe(null);
+      expect(testHostComponent.inputValueComponent.selectedNode.label).toBe('Tree list node 01');
 
       const openListButtonEle: HTMLElement = openListButtonDe.nativeElement;
       openListButtonEle.click();

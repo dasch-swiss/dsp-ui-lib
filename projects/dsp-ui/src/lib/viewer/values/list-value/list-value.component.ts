@@ -51,7 +51,12 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
   // override the resetFormControl() from the base component to deal with appending root nodes.
   resetFormControl(): void {
     super.resetFormControl();
-
+    if (this.mode === 'update'){
+        this.selectedNode = new ListNodeV2();
+        this.selectedNode.label = this.displayValue.listNodeLabel;
+    } else {
+        this.selectedNode = null;
+    }
     if (this.valueFormControl !== undefined) {
       if (this.mode !== 'read') {
         this.listRootNode = new ListNodeV2();
@@ -73,7 +78,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
   }
 
   ngOnInit() {
-    this.selectedNode = null;
+
     this.valueFormControl = new FormControl(null);
     this.commentFormControl = new FormControl(null);
     this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
