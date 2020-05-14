@@ -43,7 +43,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
    getInitValue(): string | null {
     if (this.displayValue !== undefined) {
-      return this.displayValue.listNodeLabel;
+      return this.displayValue.listNode;
     } else {
       return null;
     }
@@ -51,7 +51,12 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
   // override the resetFormControl() from the base component to deal with appending root nodes.
   resetFormControl(): void {
     super.resetFormControl();
-
+    if (this.mode === 'update'){
+        this.selectedNode = new ListNodeV2();
+        this.selectedNode.label = this.displayValue.listNodeLabel;
+    } else {
+        this.selectedNode = null;
+    }
     if (this.valueFormControl !== undefined) {
       if (this.mode !== 'read') {
         this.listRootNode = new ListNodeV2();
@@ -66,11 +71,14 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
               console.error(error);
             });
         }
+      } else {
+          this.valueFormControl.setValue(this.displayValue.listNodeLabel);
       }
     }
   }
 
   ngOnInit() {
+
     this.valueFormControl = new FormControl(null);
     this.commentFormControl = new FormControl(null);
     this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
@@ -85,7 +93,6 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
     this.resetFormControl();
   }
-
   ngOnChanges(changes: SimpleChanges): void {
     this.resetFormControl();
   }
@@ -134,6 +141,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
   getSelectedNode(item: ListNodeV2) {
     this.menuTrigger.closeMenu();
+    this.form.controls.listValue.markAsDirty();
     this.selectedNode = item;
     this.valueFormControl.setValue(item.id);
   }

@@ -3,7 +3,7 @@
   "version": "1.0.0-rc.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dasch-swiss/dsp-ui-lib.git"
+    "url": "https://github.com/dasch-swiss/knora-ui-ng-lib.git"
   },
   "homepage": "https://docs.dasch.swiss/developers/dsp-ui/contribution/",
   "scripts": {

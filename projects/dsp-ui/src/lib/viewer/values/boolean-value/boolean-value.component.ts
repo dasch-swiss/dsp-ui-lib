@@ -63,7 +63,9 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
 
         this.resetFormControl();
     }
-
+    onSubmit() {
+        this.form.controls.booleanValue.markAsDirty();
+    }
     ngOnChanges(changes: SimpleChanges): void {
         this.resetFormControl();
     }
