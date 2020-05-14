@@ -9,7 +9,7 @@
     <mat-form-field class="child-input-component">
         <input matInput class="time-input-element time" [formControlName]="'time'" type="time" aria-label="Time" (input)="_handleInput()" [placeholder]="timeLabel" [errorStateMatcher]="matcher">
         <mat-error *ngIf="form.controls.time.hasError('required')">
-            A time is <strong>required</strong>
+            A time value in precision HH:MM is <strong>required</strong>.
         </mat-error>
     </mat-form-field>
   </div>
