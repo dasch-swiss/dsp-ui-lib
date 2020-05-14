@@ -11,5 +11,8 @@
         <mat-error *ngIf="form.controls.time.hasError('required')">
             A time value in precision HH:MM is <strong>required</strong>.
         </mat-error>
+        <mat-error *ngIf="form.controls.time.hasError('pattern')">
+            <span class="custom-error-message">Time should be given in precision HH:MM.</span>
+        </mat-error>
     </mat-form-field>
   </div>
