@@ -3,7 +3,7 @@ import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
 import { SessionService } from './session.service';
 import { KnoraApiConnection, KnoraApiConfig } from '@knora/api';
 
-fdescribe('SessionService', () => {
+describe('SessionService', () => {
 
     let service: SessionService;
 
