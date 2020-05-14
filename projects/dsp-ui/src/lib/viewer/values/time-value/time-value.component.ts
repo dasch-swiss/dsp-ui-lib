@@ -1,9 +1,10 @@
 import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges } from '@angular/core';
-import { TimeInputComponent, TimeInputErrorStateMatcher } from './time-input/time-input.component';
+import { TimeInputComponent } from './time-input/time-input.component';
 import { ReadTimeValue, CreateTimeValue, UpdateTimeValue } from '@knora/api';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import {BaseValueComponent} from '../base-value.component';
+import { BaseValueComponent } from '../base-value.component';
+import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 
 @Component({
   selector: 'dsp-time-value',
@@ -25,7 +26,7 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
 
   customValidators = [];
 
-  matcher = new TimeInputErrorStateMatcher();
+  matcher = new ValueErrorStateMatcher();
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
