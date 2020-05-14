@@ -14,4 +14,4 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     CommonModule
   ]
 })
-export class ActionModule { }
+export class DspActionModule { }
