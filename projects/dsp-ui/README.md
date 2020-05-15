@@ -18,7 +18,7 @@ npm install @dasch-swiss/dsp-ui
 
 The module has the following package dependencies, which you also have to install.
 
-<!-- TODO: the following package will be renamed to @dasch-swiss/dsp-js -->
+<!-- TODO: the following package will be renamed to @dasch-swiss/dsp-js and the list of dependencies incl. version will be added to an external matrix file -->
 - [@knora/api](https://www.npmjs.com/package/@knora/api)
 - [jdnconvertiblecalendar@0.0.5](https://www.npmjs.com/package/jdnconvertiblecalendar)
 - [jdnconvertiblecalendardateadapter@0.0.13](https://www.npmjs.com/package/jdnconvertiblecalendardateadapter)

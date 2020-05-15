@@ -1,6 +1,10 @@
 # DSP-UI library
 
-This is the demo and developing environment for DSP-UI-LIB (@dasch-swiss/dsp-ui) comprised of 4 modules.
+---
+
+![npm (scoped)](https://img.shields.io/npm/v/@dasch-swiss/dsp-ui)
+
+This is the demo and developing environment for DSP-UI-LIB ([@dasch-swiss/dsp-ui](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)) comprised of 4 modules.
 
 The modules help create a GUI to allow the user to use [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/) in a quick and simple way from within a web application. The modules are written in Typescript for use with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
