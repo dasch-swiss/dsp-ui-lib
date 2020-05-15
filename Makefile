@@ -24,8 +24,6 @@ define update-version
 	git add $(LIB_DIR)/package.json && \
 	git commit -m "release($(1)): $$NEXT_VERSION" && \
 	git push
-#	git tag "v$$NEXT_VERSION" -m "Version $$NEXT_VERSION" && \
-#	git push --tags origin
 endef
 
 .PHONY: clean
