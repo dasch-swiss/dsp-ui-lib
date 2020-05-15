@@ -9,8 +9,7 @@ import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
 import { ReadBooleanValue, MockResource, UpdateBooleanValue, CreateBooleanValue } from '@knora/api';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormattedBooleanPipe } from '../../pipes/formatted-boolean.pipe';
-
+import { FormattedBooleanPipe } from '../../../action';
 
 /**
  * Test host component to simulate parent component.

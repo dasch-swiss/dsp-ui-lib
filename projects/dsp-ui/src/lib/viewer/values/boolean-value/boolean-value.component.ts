@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CreateBooleanValue, ReadBooleanValue, UpdateBooleanValue } from '@knora/api';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
-import { FormattedBooleanPipe } from '../../pipes/formatted-boolean.pipe';
 
 @Component({
     selector: 'dsp-boolean-value',
@@ -50,11 +49,6 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
                 this.valueFormControl.updateValueAndValidity();
             }
         );
-
-        this.displayTypes = new FormattedBooleanPipe().displayTypes;
-        console.log('displayTypes: ', this.displayTypes);
-        this.preferredDisplayType = this.displayTypes[0].value;
-
 
         this.form = this.fb.group({
             booleanValue: this.valueFormControl,
