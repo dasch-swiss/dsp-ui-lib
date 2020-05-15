@@ -14,7 +14,8 @@ define update-version
 	NEXT_VERSION=`node -pe "require('./package.json').version"` && \
 	echo "This will update from $$CURRENT_VERSION to $$NEXT_VERSION ($(1)). Do you want to continue? [Y/n]" && \
 	read ans && \
-	([ $${ans:-N} != Y ] && npm version $$CURRENT_VERSION --git-tag-version=false --commit-hooks=false && exit 1) && \
+	([ $${ans:-N} != Y ] && npm version $$CURRENT_VERSION --git-tag-version=false --commit-hooks=false && exit 1) || \
+	([ $${ans:-N} == Y ]) && \
 	cd $(LIB_DIR) && \
 	npm version "$$NEXT_VERSION" && \
 	cd $(CURRENT_DIR) && \
@@ -22,7 +23,7 @@ define update-version
 	git add package-lock.json && \
 	git add $(LIB_DIR)/package.json && \
 	git commit -m "release($(1)): $$NEXT_VERSION" && \
-	git push
+    git push
 #	git tag "v$$NEXT_VERSION" -m "Version $$NEXT_VERSION" && \
 #	git push --tags origin
 endef
