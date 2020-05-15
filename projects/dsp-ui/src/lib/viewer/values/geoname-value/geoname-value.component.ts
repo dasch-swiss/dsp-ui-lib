@@ -4,6 +4,7 @@ import {CreateGeonameValue, ReadGeonameValue, UpdateGeonameValue} from '@knora/a
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import { CustomRegex } from '../custom-regex';
+import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 
 @Component({
   selector: 'dsp-geoname-value',
@@ -19,7 +20,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
   form: FormGroup;
 
   valueChangesSubscription: Subscription;
-
+  matcher = new ValueErrorStateMatcher();
   customValidators = [Validators.pattern(CustomRegex.GEONAME_REGEX)];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {

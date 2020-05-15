@@ -4,6 +4,7 @@ import {CreateIntValue, ReadIntValue, UpdateIntValue} from '@knora/api';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomRegex} from '../custom-regex';
+import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 
 @Component({
   selector: 'dsp-int-value',
@@ -18,7 +19,7 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
   commentFormControl: FormControl;
 
   form: FormGroup;
-
+  matcher = new ValueErrorStateMatcher();
   valueChangesSubscription: Subscription;
 
   customValidators = [Validators.pattern(CustomRegex.INT_REGEX)]; // only allow for integer values (no fractions)

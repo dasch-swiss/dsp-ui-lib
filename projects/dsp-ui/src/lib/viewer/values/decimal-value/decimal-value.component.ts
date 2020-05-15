@@ -1,8 +1,10 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, ViewChild, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
+import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 import {CreateDecimalValue, ReadDecimalValue, UpdateDecimalValue} from '@knora/api';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {CustomRegex} from '../custom-regex';
 
 @Component({
   selector: 'dsp-decimal-value',
@@ -17,10 +19,10 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
   commentFormControl: FormControl;
 
   form: FormGroup;
-
+  matcher = new ValueErrorStateMatcher();
   valueChangesSubscription: Subscription;
 
-  customValidators = [];
+  customValidators = [Validators.pattern(CustomRegex.DECIMAL_REGEX)]; // only allow for decimal values
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     super();
@@ -39,7 +41,6 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
     this.valueFormControl = new FormControl(null);
 
     this.commentFormControl = new FormControl(null);
-
     // subscribe to any change on the comment and recheck validity
     this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
       data => {
