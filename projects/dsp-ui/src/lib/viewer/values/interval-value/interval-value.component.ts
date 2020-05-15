@@ -1,24 +1,14 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
+import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 import {CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue} from '@knora/api';
 import {
     FormBuilder,
     FormControl,
-    FormGroup,
-    FormGroupDirective,
-    NgForm
+    FormGroup
 } from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Interval, IntervalInputComponent} from './interval-input/interval-input.component';
-import {ErrorStateMatcher} from '@angular/material/core';
-
-/** Error when invalid control is dirty, touched, or submitted. */
-export class IntervalErrorStateMatcher implements ErrorStateMatcher {
-    isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        const isSubmitted = form && form.submitted;
-        return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-    }
-}
 
 @Component({
     selector: 'dsp-interval-value',
@@ -40,7 +30,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
 
     customValidators = [];
 
-    matcher = new IntervalErrorStateMatcher();
+    matcher = new ValueErrorStateMatcher();
 
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
         super();
