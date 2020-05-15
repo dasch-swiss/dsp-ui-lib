@@ -1,6 +1,8 @@
 # Change Log
 
-## Release [v1.0.0-rc.1](https://github.com/dasch-swiss/knora-ui-ng-lib/releases/tag/v1.0.0-rc.1)
+## Released
+
+### [v1.0.0-rc.1](https://github.com/dasch-swiss/knora-ui-ng-lib/releases/tag/v1.0.0-rc.1)
 
 #### Breaking changes:
 
