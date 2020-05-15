@@ -1,6 +1,6 @@
 import { FormattedBooleanPipe } from './formatted-boolean.pipe';
 
-fdescribe('FormattedBooleanPipe', () => {
+describe('FormattedBooleanPipe', () => {
     let pipe: FormattedBooleanPipe;
 
     beforeEach(() => {
