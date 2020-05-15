@@ -1,4 +1,4 @@
-name: Node.js CI
+name: CI
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
           CI: true
 
   publish:
-    name: Publish to npm
+    name: Publish to npm / Update release notes
     needs: [build-test]
     runs-on: ubuntu-latest
     env:
