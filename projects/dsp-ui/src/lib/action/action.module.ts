@@ -5,13 +5,28 @@ import { ReversePipe } from './pipes/reverse.pipe';
 import { SortByPipe } from './pipes/sort-by.pipe';
 import { StringifyStringLiteralPipe } from './pipes/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
-
-
+import { KnoraDatePipe } from './pipes/knoradate.pipe';
 
 @NgModule({
-  declarations: [KeyPipe, ReversePipe, SortByPipe, StringifyStringLiteralPipe, TruncatePipe],
+  declarations: [
+    KeyPipe,
+    ReversePipe,
+    SortByPipe,
+    StringifyStringLiteralPipe,
+    TruncatePipe,
+    KnoraDatePipe
+  ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    KeyPipe,
+    ReversePipe,
+    SortByPipe,
+    StringifyStringLiteralPipe,
+    TruncatePipe,
+    KnoraDatePipe
   ]
 })
+
 export class DspActionModule { }

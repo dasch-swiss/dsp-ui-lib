@@ -4,3 +4,4 @@
 
 export * from './lib/core/index';
 export * from './lib/viewer/index';
+export * from './lib/action/index';
