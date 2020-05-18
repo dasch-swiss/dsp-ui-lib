@@ -5,7 +5,6 @@ import { KeyPipe } from './pipes/key.pipe';
 import { KnoraDatePipe } from './pipes/knoradate.pipe';
 import { ReversePipe } from './pipes/reverse.pipe';
 import { SortByPipe } from './pipes/sort-by.pipe';
-import { StringifyStringLiteralPipe } from './pipes/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/truncate.pipe';
 
 @NgModule({
@@ -15,7 +14,6 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     KnoraDatePipe,
     ReversePipe,
     SortByPipe,
-    StringifyStringLiteralPipe,
     TruncatePipe,
   ],
   imports: [
@@ -27,7 +25,6 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     KnoraDatePipe,
     ReversePipe,
     SortByPipe,
-    StringifyStringLiteralPipe,
     TruncatePipe,
   ]
 })
