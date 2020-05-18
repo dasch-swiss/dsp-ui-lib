@@ -287,3 +287,5 @@ If you want to improve the elements and help developing, do not hesitate to [con
 Get the developer manual on [docs.dasch.swiss](https://docs.dasch.swiss/developers/knora-ui/contribution/).
 
 The sources for this package are in [dasch-swiss/dsp-ui](https://github.com/dasch-swiss/knora-ui-ng-lib) repo. Please file issues and pull requests on this repo.
+
+For more information on the implementation of this Angular library, consult the design documentation in `design-documentation.md`.
