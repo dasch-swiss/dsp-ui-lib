@@ -1,22 +1,22 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DatePipe } from '@angular/common';
+import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
 import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators } from '@angular/forms';
+import { ControlValueAccessor,
+         FormBuilder,
+         FormControl,
+         FormGroup,
+         FormGroupDirective,
+         NgControl,
+         NgForm,
+         Validators } from '@angular/forms';
 import { CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, mixinErrorState } from '@angular/material/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { CalendarDate, CalendarPeriod, GregorianCalendarDate } from 'jdnconvertiblecalendar';
 import { Subject } from 'rxjs';
 import { CustomRegex } from '../../custom-regex';
 
-
-/** Error when invalid control is dirty, touched, or submitted. */
-export class TimeInputErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
 
 class MatInputBase {
   constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
@@ -51,7 +51,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
   focused = false;
   errorState = false;
   controlType = 'dsp-time-input';
-  matcher = new TimeInputErrorStateMatcher();
+  matcher = new ValueErrorStateMatcher();
   onChange = (_: any) => { };
   onTouched = () => { };
 

@@ -1,11 +1,13 @@
 {
   "name": "@dasch-swiss/dsp-ui",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/dasch-swiss/dsp-ui-lib.git"
   },
   "homepage": "https://docs.dasch.swiss/developers/dsp-ui/documentation/",
+  "keywords": ["dasch service platform", "user interface", "angular", "knora", "humanities"],
+  "license" : "AGPL-3.0-or-later",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",

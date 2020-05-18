@@ -5,7 +5,17 @@
 <ng-template #showForm>
     <span [formGroup]="form">
         <mat-form-field class="large-field child-value-component" floatLabel="never">
-            <input matInput [formControlName]="'intValue'" class="value" placeholder="Int value" type="number">
+            <input matInput [formControlName]="'intValue'" class="value" placeholder="Int value" type="number" [errorStateMatcher]="matcher">
+            <mat-error *ngIf="form.controls.intValue.hasError('valueNotChanged') &&
+                (form.controls.intValue.touched || form.controls.intValue.dirty)">
+                <span class="custom-error-message">New value must be different than the current value.</span>
+            </mat-error>
+            <mat-error *ngIf="form.controls.intValue.hasError('pattern')">
+                <span class="custom-error-message">New value must be an integer.</span>
+            </mat-error>
+            <mat-error *ngIf="form.controls.intValue.hasError('required')">
+                An integer value is <strong>required</strong>.
+            </mat-error>
         </mat-form-field>
         <mat-form-field class="large-field value-component-comment">
             <textarea matInput

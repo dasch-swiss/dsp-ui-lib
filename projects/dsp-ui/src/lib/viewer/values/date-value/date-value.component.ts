@@ -3,22 +3,12 @@ import { CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue
 import {
     FormBuilder,
     FormControl,
-    FormGroup,
-    FormGroupDirective,
-    NgForm
+    FormGroup
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { DateInputComponent } from './date-input/date-input.component';
-
-/** Error when invalid control is dirty, touched, or submitted. */
-export class DateErrorStateMatcher implements ErrorStateMatcher {
-    isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        const isSubmitted = form && form.submitted;
-        return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-    }
-}
+import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 
 @Component({
     selector: 'dsp-date-value',
@@ -40,7 +30,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     customValidators = [];
 
-    matcher = new DateErrorStateMatcher();
+    matcher = new ValueErrorStateMatcher();
 
     // will come from the ontology settings when implemented
     ontologyDateSetting: string;

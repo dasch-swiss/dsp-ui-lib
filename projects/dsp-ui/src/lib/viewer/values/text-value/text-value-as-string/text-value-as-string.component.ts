@@ -1,5 +1,6 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../../base-value.component';
+import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
 import {CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Subscription} from 'rxjs';
@@ -19,7 +20,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
   form: FormGroup;
 
   valueChangesSubscription: Subscription;
-
+  matcher = new ValueErrorStateMatcher();
   customValidators = [];
 
   constructor(@Inject(FormBuilder) private fb: FormBuilder) {
