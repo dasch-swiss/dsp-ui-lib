@@ -91,3 +91,37 @@ In some case, also primitive values need to be handled using `ControlValueAccess
 This is [necessary](https://indepth.dev/never-again-be-confused-when-implementing-controlvalueaccessor-in-angular-forms/) in the case of the color value becasue a third-party lib is used.
 
 #### Operation Components
+
+Operation components work with any value. They control the value components' inputs `displayValue` and `mode`.
+They are responsible for the communication with the Knora API using `@knora/api` when updating or creating a value.
+
+`DisplayEditComponent` is an operation component that displays an existing value and makes it editable
+ if the user has the necessary permissions.
+
+It works for all value types by choosing the apt value component in its template:
+
+```html
+<span [ngSwitch]="valueTypeOrClass">
+    <dsp-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="displayValue"></dsp-text-value-as-string>
+    <dsp-text-value-as-html class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="displayValue"></dsp-text-value-as-html>
+    <dsp-int-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="displayValue"></dsp-int-value>
+    ...
+</span>
+```
+
+From `valueTypeOrClass` the value component's selector is chosen. Since all value components share the same interface, they can all be handled alike.
+
+Value components may have additional specific inputs for configuration that can be handled in `DisplayEditComponent`'s template too
+,e.g., additional configuration how do display a date.
+
+
+
+
+
+
+
+
+
+
+
+```
