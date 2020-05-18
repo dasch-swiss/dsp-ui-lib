@@ -114,14 +114,3 @@ From `valueTypeOrClass` the value component's selector is chosen. Since all valu
 Value components may have additional specific inputs for configuration that can be handled in `DisplayEditComponent`'s template too
 ,e.g., additional configuration how do display a date.
 
-
-
-
-
-
-
-
-
-
-
-```
