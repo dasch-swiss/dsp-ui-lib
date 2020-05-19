@@ -1,9 +1,9 @@
 export * from './action.module';
 
 // pipes
-export * from './pipes/formatted-boolean.pipe';
-export * from './pipes/key.pipe';
-export * from './pipes/knoradate.pipe';
-export * from './pipes/reverse.pipe';
-export * from './pipes/sort-by.pipe';
-export * from './pipes/truncate.pipe';
+export * from './pipes/formatting/formatted-boolean.pipe';
+export * from './pipes/array-transformation/key.pipe';
+export * from './pipes/formatting/knoradate.pipe';
+export * from './pipes/array-transformation/reverse.pipe';
+export * from './pipes/array-transformation/sort-by.pipe';
+export * from './pipes/string-transformation/truncate.pipe';
