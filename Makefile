@@ -65,12 +65,9 @@ git-stuff: ## some tests with branches: checkout from master, commit, push
 ifneq ($(BRANCH), wip/dsp-270-makefile-improvements)
 	@echo 'You are not on master branch'
 else
-	@git diff --quiet
-	@echo 'Status: $(STATUS)'
-ifeq ($(STATUS),)
-	@echo 'You have uncomitted changes. Please commit them, before you continue!'
+ifneq ($(GIT_STATUS),)
+	@echo 'ERROR: Master branch is not clean. You have uncomitted changes. Please commit them, before you continue!'
 else
-
 	@echo 'Continue'
 endif
 endif

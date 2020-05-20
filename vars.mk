@@ -6,5 +6,3 @@ LIB_DIR := $(shell node -pe "require('$(CURRENT_DIR)/angular.json').projects['@d
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 
 GIT_STATUS := $(shell git diff-index HEAD)
-
-
