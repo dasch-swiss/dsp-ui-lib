@@ -65,11 +65,11 @@ git-stuff: ## some tests with branches: checkout from master, commit, push
 ifneq ($(BRANCH), wip/dsp-270-makefile-improvements)
 	@echo 'You are not on master branch'
 else
+	@echo $(STATUS)
 ifeq ($(STATUS),)
-	@echo 'You have uncomitted changes. Please commit before you continue!'
+	@echo 'You have uncomitted changes. Please commit them, before you continue!'
 else
 
-	@echo $(STATUS)
 	@echo 'Continue'
 endif
 endif
