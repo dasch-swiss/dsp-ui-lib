@@ -3,7 +3,8 @@ BIN = ./node_modules/.bin
 # Be sure to place this BEFORE `include` directives, if any.
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-LIB_DIR := $(shell node -pe "require('$(CURRENT_DIR)/angular.json').projects['@dasch-swiss/dsp-ui'].root")
+
+include vars.mk
 
 define update-version
 	# update version: first as dry-run.
@@ -55,6 +56,18 @@ release-major: ## updates version to next MAJOR version e.g. from 3.0.0 to 4.0.0
 .PHONY: prerelease-major
 prerelease-major: ## updates version to next MAJOR as release candidate e.g. from 4.0.0 to 5.0.0-rc.0
 	@$(call update-version,premajor,rc)
+
+.PHONY: git-stuff
+git-stuff: ## some tests with branches: checkout from master, commit, push
+	# @echo 'Root: $(CURRENT_DIR)'
+	# @echo 'Lib: $(LIB_DIR)'
+	@echo 'Branch: $(BRANCH)'
+ifneq ($(BRANCH), wip/dsp-270-makefile-improvements)
+	@echo 'Aborting script'
+else
+	@echo 'Continue'
+endif
+
 
 .PHONY: help
 help: ## this help
