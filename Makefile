@@ -63,9 +63,15 @@ git-stuff: ## some tests with branches: checkout from master, commit, push
 	# @echo 'Lib: $(LIB_DIR)'
 	@echo 'Branch: $(BRANCH)'
 ifneq ($(BRANCH), wip/dsp-270-makefile-improvements)
-	@echo 'Aborting script'
+	@echo 'You are not on master branch'
 else
+ifeq ($(STATUS),)
+	@echo 'You have uncomitted changes. Please commit before you continue!'
+else
+
+	@echo $(STATUS)
 	@echo 'Continue'
+endif
 endif
 
 
