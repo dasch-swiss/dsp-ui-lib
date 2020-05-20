@@ -69,6 +69,8 @@ ifneq ($(GIT_STATUS),)
 	@echo 'ERROR: Master branch is not clean. You have uncomitted changes. Please commit them, before you continue!'
 else
 	@echo 'Continue'
+	@git pull
+	@git checkout -b "new-branch"
 endif
 endif
 
