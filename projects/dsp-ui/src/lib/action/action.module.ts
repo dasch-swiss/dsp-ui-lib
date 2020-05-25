@@ -6,7 +6,6 @@ import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { ReversePipe } from './pipes/array-transformation/reverse.pipe';
 import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
-import { SortingService } from './services/sorting.service';
 
 @NgModule({
   declarations: [
@@ -15,8 +14,7 @@ import { SortingService } from './services/sorting.service';
     KnoraDatePipe,
     ReversePipe,
     SortByPipe,
-    TruncatePipe,
-    SortingService
+    TruncatePipe
   ],
   imports: [
     CommonModule
@@ -27,8 +25,7 @@ import { SortingService } from './services/sorting.service';
     KnoraDatePipe,
     ReversePipe,
     SortByPipe,
-    TruncatePipe,
-    SortingService
+    TruncatePipe
   ]
 })
 
