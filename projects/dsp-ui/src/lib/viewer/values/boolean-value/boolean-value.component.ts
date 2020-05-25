@@ -52,7 +52,7 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
         );
 
         this.displayTypes = new FormattedBooleanPipe().displayTypes;
-        console.log('displayTypes: ', this.displayTypes);
+
         this.preferredDisplayType = this.displayTypes[0].value;
 
 
