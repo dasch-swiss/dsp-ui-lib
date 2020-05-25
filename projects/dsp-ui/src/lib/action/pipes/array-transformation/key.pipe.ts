@@ -8,6 +8,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  * When the value is an object with name and label, you get them with:
  * {{item.value.name}} and {{item.value.label}}
  *
+ * Check out https://angular.io/guide/pipes#pure-pipes for change detection issues.
  */
 @Pipe({
     name: 'dspKey'
