@@ -1,5 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * DEPRECATED
+ * Please make use of the new sorting service and sort arrays in the class instead of in the template.
+ */
+
 @Pipe({
     name: 'dspReverse'
 })
