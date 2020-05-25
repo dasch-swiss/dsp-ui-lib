@@ -93,6 +93,17 @@ describe('SortingService', () => {
                 Object({ firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' }),
                 Object({ firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' })]);
     });
+
+    it('should return an array sorted by lastname reversed', () => {
+        sortKey = 'lastname';
+        expect(service.sortByAlphabetical(data, sortKey, true)).toEqual(
+            [
+                Object({ firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' }),
+                Object({ firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' }),
+                Object({ firstname: 'Gyro', lastname: 'Gearloose', creator: 'Carl Barks' }),
+                Object({ firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' })
+            ]);
+    });
   });
 
 });
