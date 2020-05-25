@@ -20,7 +20,7 @@ export class SortingService {
      * compares value by value and sorts by alphabetical order
      */
     sortByAlphabetical(value: Array<any>, args: string): Array<any> {
-        if (value !== undefined) {
+        if (value instanceof Array) {
             value.sort((a: any, b: any) => {
                 if (args) {
                     a[args] = (a[args] === null ? '' : a[args]);
