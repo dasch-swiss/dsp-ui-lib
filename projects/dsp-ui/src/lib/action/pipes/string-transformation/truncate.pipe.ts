@@ -11,7 +11,6 @@ import { Pipe, PipeTransform } from '@angular/core';
  *
  * {{ str | dspTruncate:['24', '...'] }}
  *
- *
  * The first parameter defines the length where to truncate the string.
  * Second optional parameter defines the characters to append to the shortened string. Default is '...'.
  *
