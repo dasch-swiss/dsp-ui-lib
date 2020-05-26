@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IHasProperty, MockResource, PropertyDefinition, ReadResource, ReadValue, ResourcePropertyDefinition, SystemPropertyDefinition } from '@knora/api';
+import { IHasProperty, MockResource, PropertyDefinition, ReadResource, ReadValue, ResourcePropertyDefinition, SystemPropertyDefinition, IHasPropertyWithPropertyDefinition, ApiResponseError } from '@knora/api';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 import { PropertyViewComponent } from './property-view.component';
 
@@ -24,40 +24,34 @@ class TestPropertyParentComponent implements OnInit {
 
   propArray: PropertyInfoValues[] = [];
 
-  systemPropArray?: PropertyDefinition[] = [];
+  systemPropArray: SystemPropertyDefinition[] = [];
 
   ngOnInit() {
 
     MockResource.getTestthing().subscribe(response => {
-      this.parentResource = response;
-      const propsList: IHasProperty[] = this.parentResource.entityInfo.classes[this.parentResource.type].propertiesList;
+        this.parentResource = response;
 
-      for (const prop of propsList) {
-        const index = prop.propertyIndex;
+        // gather resource property information
+        this.propArray = this.parentResource.entityInfo.classes[this.parentResource.type].getResourcePropertiesList().map(
+            (prop: IHasPropertyWithPropertyDefinition) => {
+                const propInfoAndValues: PropertyInfoValues = {
+                    propDef: prop.propertyDefinition,
+                    guiDef: prop,
+                    values: this.parentResource.getValues(prop.propertyIndex)
+                };
+                return propInfoAndValues;
+            }
+        );
 
-        if (this.parentResource.entityInfo.properties[index]) {
-          if (this.parentResource.entityInfo.properties[index] instanceof ResourcePropertyDefinition) {
-            // filter all properties by type ResourcePropertyDefinition
-            const propInfoAndValues: PropertyInfoValues = {
-              guiDef: prop,
-              propDef: this.parentResource.entityInfo.properties[index],
-              values: this.parentResource.properties[index]
-            };
+        // sort properties by guiOrder
+        this.propArray.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
 
-            this.propArray.push(propInfoAndValues);
+        // get system property information
+        this.systemPropArray = this.parentResource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
 
-          } else if (this.parentResource.entityInfo.properties[index] instanceof SystemPropertyDefinition) {
-            // filter all properties by type SystemPropertyDefinition
-            const systemPropInfo = this.parentResource.entityInfo.properties[index];
-
-            this.systemPropArray.push(systemPropInfo);
-
-          }
-
-        } else {
-          console.error('Error detected: the property with IRI =' + index + 'is not a property of the resource');
-        }
-      }
+    },
+    (error: ApiResponseError) => {
+        console.error('Error to get the mock resource', error);
     }
     );
 
@@ -120,18 +114,20 @@ describe('PropertyViewComponent', () => {
 
   it('should display a text value among the property list', () => {
 
-    expect(testHostComponent.propArray[8].propDef.label).toEqual('Text');
-    expect(testHostComponent.propArray[8].propDef.comment).toBe(undefined);
-    expect(testHostComponent.propArray[8].guiDef.cardinality).toEqual(2);
-    expect(testHostComponent.propArray[8].guiDef.guiOrder).toEqual(2);
-    expect(testHostComponent.propArray[8].values[0].type).toEqual('http://api.knora.org/ontology/knora-api/v2#TextValue');
+    console.log('testHostComponent.propArray', testHostComponent.propArray);
+
+    expect(testHostComponent.propArray[4].propDef.label).toEqual('Text');
+    expect(testHostComponent.propArray[4].propDef.comment).toBe(undefined);
+    expect(testHostComponent.propArray[4].guiDef.cardinality).toEqual(2);
+    expect(testHostComponent.propArray[4].guiDef.guiOrder).toEqual(2);
+    expect(testHostComponent.propArray[4].values[0].type).toEqual('http://api.knora.org/ontology/knora-api/v2#TextValue');
 
   });
 
   it('should get some system properties', () => {
 
     expect(testHostComponent.systemPropArray).toBeTruthy();
-    expect(testHostComponent.systemPropArray.length).toEqual(14);
+    expect(testHostComponent.systemPropArray.length).toEqual(13);
 
     // check if the first system property is an ARK url
     expect(testHostComponent.systemPropArray[0].label).toEqual('ARK URL');
