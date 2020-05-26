@@ -62,7 +62,7 @@ export class ResourceViewComponent implements OnChanges {
                     propDef: prop.propertyDefinition,
                     guiDef: prop,
                     values: this.resource.getValues(prop.propertyIndex)
-                }
+                };
                 return propInfoAndValues;
             }
         );
