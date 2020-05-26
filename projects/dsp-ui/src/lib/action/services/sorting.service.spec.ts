@@ -4,8 +4,14 @@ import { SortingService } from './sorting.service';
 
 describe('SortingService', () => {
   let service: SortingService;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+        providers: [
+            SortingService
+        ]
+    });
+
     service = TestBed.inject(SortingService);
   });
 

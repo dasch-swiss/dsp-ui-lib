@@ -1,35 +1,49 @@
 import { SortByPipe } from './sort-by.pipe';
 import { SortingService } from '../../services/sorting.service';
+import { TestBed } from '@angular/core/testing';
 
-describe('SortByPipe', () => {
-
+fdescribe('SortByPipe', () => {
     let pipe: SortByPipe;
+    let service: SortingService;
     let sortKey = '';
-    const data = [
-        {
-            prename: 'Gaston',
-            lastname: 'Lagaffe',
-            creator: 'André Franquin'
-        },
-        {
-            prename: 'Mickey',
-            lastname: 'Mouse',
-            creator: 'Walt Disney'
-        },
-        {
-            prename: 'Gyro',
-            lastname: 'Gearloose',
-            creator: 'Carl Barks'
-        },
-        {
-            prename: 'Charlie',
-            lastname: 'Brown',
-            creator: 'Charles M. Schulz'
-        }
-    ];
+    let data:
+    {
+        prename: string;
+        lastname: string;
+        creator: string;
+    }[];
 
     beforeEach(() => {
-        pipe = new SortByPipe(new SortingService());
+        TestBed.configureTestingModule({
+            providers: [
+                SortingService
+            ]
+        });
+        service = TestBed.inject(SortingService);
+        pipe = new SortByPipe(service);
+
+        data = [
+            {
+                prename: 'Gaston',
+                lastname: 'Lagaffe',
+                creator: 'André Franquin'
+            },
+            {
+                prename: 'Mickey',
+                lastname: 'Mouse',
+                creator: 'Walt Disney'
+            },
+            {
+                prename: 'Gyro',
+                lastname: 'Gearloose',
+                creator: 'Carl Barks'
+            },
+            {
+                prename: 'Charlie',
+                lastname: 'Brown',
+                creator: 'Charles M. Schulz'
+            }
+        ];
     });
 
     it('create an instance', () => {

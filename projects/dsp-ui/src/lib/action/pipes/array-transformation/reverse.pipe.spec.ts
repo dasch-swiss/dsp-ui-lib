@@ -1,13 +1,22 @@
 import { ReversePipe } from './reverse.pipe';
 import { SortingService } from '../../services/sorting.service';
+import { TestBed } from '@angular/core/testing';
 
-describe('ReversePipe', () => {
+fdescribe('ReversePipe', () => {
 
   let pipe: ReversePipe;
-  const data = ['Bernouilli', 'Euler', 'Goldbach', 'Hermann'];
+  let service: SortingService;
+  let data: string[];
 
   beforeEach(() => {
-    pipe = new ReversePipe(new SortingService());
+    TestBed.configureTestingModule({
+        providers: [
+            SortingService
+        ]
+    });
+    service = TestBed.inject(SortingService);
+    pipe = new ReversePipe(service);
+    data = ['Bernouilli', 'Euler', 'Goldbach', 'Hermann'];
   });
 
   it('create an instance', () => {
