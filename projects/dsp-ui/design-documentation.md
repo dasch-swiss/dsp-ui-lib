@@ -1,5 +1,23 @@
 # Design Documentation
 
+## Action Module
+
+The action module contains various directives, components, and pipes which can be used with ease by other parts of the library.
+
+### Pipes
+
+#### Array Tranformation
+
+Any pipe relating to the transformation of arrays must be placed in the folder called "array-transformation". Examples include reversing or sorting an array.
+
+#### Formatting
+
+Any pipe relating to formatting must be placed in the folder called "formatting". Examples include returning a string depending on the value of a boolean or returning a formatted date.
+
+#### String Transformation
+
+Any pipe relating to the transformation of strings must be placed in the folder called "string-transformation". For example, a pipe that truncates a string after a certain amount of characters.
+
 ## Viewer Module
 
 ### CRUD UI Components
