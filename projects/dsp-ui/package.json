@@ -13,7 +13,7 @@
     "@angular/core": "^9.0.0",
     "@angular/material": "^9.0.0",
     "@angular/cdk": "^9.0.0",
-    "@knora/api": "1.0.0-rc.0",
+    "@knora/api": "1.0.0-rc.1",
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.13",
     "ngx-color-picker": "^9.1.0"
