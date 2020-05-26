@@ -114,8 +114,6 @@ describe('PropertyViewComponent', () => {
 
   it('should display a text value among the property list', () => {
 
-    console.log('testHostComponent.propArray', testHostComponent.propArray);
-
     expect(testHostComponent.propArray[4].propDef.label).toEqual('Text');
     expect(testHostComponent.propArray[4].propDef.comment).toBe(undefined);
     expect(testHostComponent.propArray[4].guiDef.cardinality).toEqual(2);
