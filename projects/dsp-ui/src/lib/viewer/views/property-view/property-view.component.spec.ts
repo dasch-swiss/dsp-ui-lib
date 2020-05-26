@@ -1,6 +1,13 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IHasProperty, MockResource, PropertyDefinition, ReadResource, ReadValue, ResourcePropertyDefinition, SystemPropertyDefinition, IHasPropertyWithPropertyDefinition, ApiResponseError } from '@knora/api';
+import {
+    ApiResponseError,
+    IHasPropertyWithPropertyDefinition,
+    MockResource,
+    ReadResource,
+    ReadValue,
+    SystemPropertyDefinition
+} from '@knora/api';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 import { PropertyViewComponent } from './property-view.component';
 
@@ -13,8 +20,8 @@ import { PropertyViewComponent } from './property-view.component';
     <dsp-property-view #propView
       [parentResource]="parentResource"
       [propArray]="propArray"
-      [systemPropArray]="systemPropArray"
-    ></dsp-property-view>`
+      [systemPropArray]="systemPropArray">
+    </dsp-property-view>`
 })
 class TestPropertyParentComponent implements OnInit {
 
