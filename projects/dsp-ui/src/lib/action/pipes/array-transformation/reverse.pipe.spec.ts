@@ -1,4 +1,5 @@
 import { ReversePipe } from './reverse.pipe';
+import { SortingService } from '../../services/sorting.service';
 
 describe('ReversePipe', () => {
 
@@ -6,7 +7,7 @@ describe('ReversePipe', () => {
   const data = ['Bernouilli', 'Euler', 'Goldbach', 'Hermann'];
 
   beforeEach(() => {
-    pipe = new ReversePipe();
+    pipe = new ReversePipe(new SortingService());
   });
 
   it('create an instance', () => {

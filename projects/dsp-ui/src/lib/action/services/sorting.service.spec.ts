@@ -35,8 +35,6 @@ describe('SortingService', () => {
         creator: string;
     }[];
 
-    let sortKey: string;
-
     beforeEach(() => {
         data = [
             {
@@ -63,45 +61,46 @@ describe('SortingService', () => {
     });
 
     it('should return an array sorted by creator', () => {
-        sortKey = 'creator';
-        expect(service.sortByAlphabetical(data, sortKey)).toEqual(
+        const sorted = service.keySortByAlphabetical(data, 'creator');
+        expect(sorted).toEqual(
             [
-                Object({ firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' }),
-                Object({ firstname: 'Gyro', lastname: 'Gearloose', creator: 'Carl Barks' }),
-                Object({ firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' }),
-                Object({ firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' })
+                { firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' },
+                { firstname: 'Gyro', lastname: 'Gearloose', creator: 'Carl Barks' },
+                { firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' },
+                { firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' }
             ]);
     });
 
     it('should return an array sorted by firstname', () => {
-        sortKey = 'firstname';
-        expect(service.sortByAlphabetical(data, sortKey)).toEqual(
+        const sorted = service.keySortByAlphabetical(data, 'firstname');
+        expect(sorted).toEqual(
             [
-                Object({ firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' }),
-                Object({ firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' }),
-                Object({ firstname: 'Gyro', lastname: 'Gearloose', creator: 'Carl Barks' }),
-                Object({ firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' })
+                { firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' },
+                { firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' },
+                { firstname: 'Gyro', lastname: 'Gearloose', creator: 'Carl Barks' },
+                { firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' }
             ]);
     });
 
     it('should return an array sorted by lastname', () => {
-        sortKey = 'lastname';
-        expect(service.sortByAlphabetical(data, sortKey)).toEqual(
+        const sorted = service.keySortByAlphabetical(data, 'lastname');
+        expect(sorted).toEqual(
             [
-                Object({ firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' }),
-                Object({ firstname: 'Gyro', lastname: 'Gearloose', creator: 'Carl Barks' }),
-                Object({ firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' }),
-                Object({ firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' })]);
+                { firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' },
+                { firstname: 'Gyro', lastname: 'Gearloose', creator: 'Carl Barks' },
+                { firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' },
+                { firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' }
+            ]);
     });
 
     it('should return an array sorted by lastname reversed', () => {
-        sortKey = 'lastname';
-        expect(service.sortByAlphabetical(data, sortKey, true)).toEqual(
+        const sorted = service.keySortByAlphabetical(data, 'lastname', true);
+        expect(sorted).toEqual(
             [
-                Object({ firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' }),
-                Object({ firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' }),
-                Object({ firstname: 'Gyro', lastname: 'Gearloose', creator: 'Carl Barks' }),
-                Object({ firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' })
+                { firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' },
+                { firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' },
+                { firstname: 'Gyro', lastname: 'Gearloose', creator: 'Carl Barks' },
+                { firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' }
             ]);
     });
   });

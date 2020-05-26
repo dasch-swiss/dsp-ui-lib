@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 
+interface StringArray {
+    [index: string]: string;
+}
+
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SortingService {
 
@@ -11,31 +15,27 @@ export class SortingService {
      * reverses an array
      */
     reverseArray(value: Array<any>): Array<any> {
-        if (value instanceof Array) {
-            return value.slice().reverse();
-        }
+        return value.slice().reverse();
     }
 
     /**
-     * compares value by value and sorts by alphabetical order
-     * optionally, you can have the array returned to you in reversed order by providing the 'reversed' parameter to the method call
+     * compares value by value and sorts in alphabetical order using the provided key
+     * optionally, you can have the array returned to you in reversed order by setting the reversed parameter to 'true'
      */
-    sortByAlphabetical(value: Array<any>, args: string, reversed?: boolean): Array<any> {
-        if (value instanceof Array) {
-            value.sort((a: any, b: any) => {
-                if (args) {
-                    a[args] = (a[args] === null ? '' : a[args]);
-                    b[args] = (b[args] === null ? '' : b[args]);
-                    if (a[args].toLowerCase() < b[args].toLowerCase()) {
-                        return reversed ? 1 : -1;
-                    } else if (a[args].toLowerCase() > b[args].toLowerCase()) {
-                        return reversed ? -1 : 1;
-                    } else {
-                        return 0;
-                    }
-                }
-            });
+    keySortByAlphabetical<T extends StringArray>(value: Array<T>, sortKey: keyof T, reversed = false): Array<T> {
+        const sortedArray = value.slice();
+        sortedArray.sort((a: T, b: T) => {
+            if (a[sortKey].toLowerCase() < b[sortKey].toLowerCase()) {
+                return -1;
+            } else if (a[sortKey].toLowerCase() > b[sortKey].toLowerCase()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+        if (reversed) {
+            sortedArray.reverse();
         }
-        return value;
+        return sortedArray;
     }
 }

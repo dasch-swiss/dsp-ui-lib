@@ -1,8 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { SortingService } from '../../services/sorting.service';
 
 /**
  * @deprecated
- * Please make use of the new sorting service and sort arrays in the class instead of in the template.
+ * Please make use of the sorting service and sort arrays in the class instead of in the template.
  */
 
 @Pipe({
@@ -10,14 +11,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ReversePipe implements PipeTransform {
 
+    constructor(private sortingService: SortingService) { }
+
     /**
-     * reverses an array
+     * uses sorting service to reverse the array
      */
 
     transform(value: any): any {
-        if (value) {
-            return value.slice().reverse();
-        }
+        return this.sortingService.reverseArray(value);
     }
 
 }

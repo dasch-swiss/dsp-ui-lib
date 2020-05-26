@@ -1,4 +1,5 @@
 import { SortByPipe } from './sort-by.pipe';
+import { SortingService } from '../../services/sorting.service';
 
 describe('SortByPipe', () => {
 
@@ -28,7 +29,7 @@ describe('SortByPipe', () => {
     ];
 
     beforeEach(() => {
-        pipe = new SortByPipe();
+        pipe = new SortByPipe(new SortingService());
     });
 
     it('create an instance', () => {
