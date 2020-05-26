@@ -2,7 +2,7 @@ import { ReversePipe } from './reverse.pipe';
 import { SortingService } from '../../services/sorting.service';
 import { TestBed } from '@angular/core/testing';
 
-fdescribe('ReversePipe', () => {
+describe('ReversePipe', () => {
 
   let pipe: ReversePipe;
   let service: SortingService;
