@@ -47,7 +47,7 @@ export class ResourceViewComponent implements OnChanges {
   /**
    * Get a read resource sequence with ontology information and incoming resources.
    *
-   * @param resource Resource
+   * @param iri resourceIri
    */
   getResource(iri: string): void {
 
