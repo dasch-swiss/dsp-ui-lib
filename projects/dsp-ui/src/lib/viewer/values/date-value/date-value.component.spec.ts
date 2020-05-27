@@ -10,7 +10,7 @@ import {ErrorStateMatcher} from '@angular/material/core';
 import {By} from '@angular/platform-browser';
 import {MatInputModule} from '@angular/material/input';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { KnoraDatePipe } from '../../pipes/knoradate.pipe';
+import { KnoraDatePipe } from '../../../action/pipes/formatting/knoradate.pipe';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatInputHarness } from '@angular/material/input/testing';

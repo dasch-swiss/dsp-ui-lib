@@ -36,8 +36,7 @@ import { DateValueComponent } from './values/date-value/date-value.component';
 import { CalendarHeaderComponent } from './values/date-value/calendar-header/calendar-header.component';
 import { DateInputComponent } from './values/date-value/date-input/date-input.component';
 import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndatepicker.directive';
-import { KnoraDatePipe } from './pipes/knoradate.pipe';
-import { FormattedBooleanPipe } from './pipes/formatted-boolean.pipe';
+import { DspActionModule } from '../action';
 
 @NgModule({
     declarations: [
@@ -64,8 +63,6 @@ import { FormattedBooleanPipe } from './pipes/formatted-boolean.pipe';
         ListValueComponent,
         SublistValueComponent,
         GeonameValueComponent,
-        KnoraDatePipe,
-        FormattedBooleanPipe
     ],
     imports: [
         CommonModule,
@@ -79,7 +76,8 @@ import { FormattedBooleanPipe } from './pipes/formatted-boolean.pipe';
         MatIconModule,
         MatJDNConvertibleCalendarDateAdapterModule,
         MatMenuModule,
-        ColorPickerModule
+        ColorPickerModule,
+        DspActionModule
     ],
     exports: [
         TextValueAsStringComponent,
@@ -98,8 +96,6 @@ import { FormattedBooleanPipe } from './pipes/formatted-boolean.pipe';
         ResourceViewComponent,
         ListValueComponent,
         GeonameValueComponent,
-        KnoraDatePipe,
-        FormattedBooleanPipe
     ]
 })
 export class DspViewerModule {

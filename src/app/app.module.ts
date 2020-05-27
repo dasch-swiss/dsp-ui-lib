@@ -2,7 +2,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DspApiConfigToken, DspApiConnectionToken, DspCoreModule, DspViewerModule } from '@dasch-swiss/dsp-ui';
+import { DspApiConfigToken, DspApiConnectionToken, DspCoreModule, DspViewerModule, DspActionModule } from '@dasch-swiss/dsp-ui';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 
 import { AppInitService } from './app-init.service';
@@ -30,6 +30,7 @@ export function initializeApp(appInitService: AppInitService) {
     AppRoutingModule,
     DspCoreModule,
     DspViewerModule,
+    DspActionModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     MatButtonModule
   ],
