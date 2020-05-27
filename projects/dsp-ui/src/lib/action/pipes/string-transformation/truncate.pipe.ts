@@ -24,19 +24,22 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TruncatePipe implements PipeTransform {
 
+    defaultLimit = 20;
+    defaultTrail = '...';
+
     transform(value: string, limit?: number, trail?: string): string {
 
         if (typeof value !== 'string' || value.length === 0) {
             return '';
         }
 
-        // default to 20 if no character limit is provided
-        if (!limit) { limit = 20; }
+        // if a custom limit was provided, use that. Otherwise, use the default limit of 20 characters
+        const limitSetting: number = limit !== undefined ? limit : this.defaultLimit;
 
-        // default to '...' if no trail is provided
-        if (!trail) { trail = '...'; }
+        // if a custom trail was provided, use that. Otherwise, use the default trail of '...'
+        const trailSetting: string = trail !== undefined ? trail : this.defaultTrail;
 
-        return value.length > limit ? value.substring(0, limit) + trail : value;
+        return value.length > limitSetting ? value.substring(0, limitSetting) + trailSetting : value;
     }
 
 }
