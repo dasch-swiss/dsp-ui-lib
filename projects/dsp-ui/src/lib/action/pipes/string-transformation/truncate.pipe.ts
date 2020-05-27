@@ -5,15 +5,14 @@ import { Pipe, PipeTransform } from '@angular/core';
  *
  * In markup:
  *
- * {{ str | dspTruncate:['24'] }}
+ * {{ str | dspTruncate:24 }}
  *
  * or
  *
- * {{ str | dspTruncate:['24', '...'] }}
+ * {{ str | dspTruncate:24:'...' }}
  *
- *
- * The first parameter defines the length where to truncate the string.
- * Second optional parameter defines the characters to append to the shortened string. Default is '...'.
+ * The first optional parameter defines the length where to truncate the string.
+ * The second optional parameter defines the characters to append to the shortened string. Default is '...'.
  *
  * The advantage of this pipe over the default Angular slice pipe is the simplicity of adding
  *  additional characters at the end of the shortened string.
@@ -25,15 +24,22 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TruncatePipe implements PipeTransform {
 
-    transform(value: string, args: string[]): string {
+    defaultLimit = 20;
+    defaultTrail = '...';
 
-        if (!value || value.length === 0) {
-            return;
+    transform(value: string, limit?: number, trail?: string): string {
+
+        if (typeof value !== 'string' || value.length === 0) {
+            return '';
         }
 
-        const limit = args.length > 0 ? parseInt(args[0], 10) : 20;
-        const trail = args.length > 1 ? args[1] : '...';
-        return value.length > limit ? value.substring(0, limit) + trail : value;
+        // if a custom limit was provided, use that. Otherwise, use the default limit of 20 characters
+        const limitSetting: number = limit !== undefined ? limit : this.defaultLimit;
+
+        // if a custom trail was provided, use that. Otherwise, use the default trail of '...'
+        const trailSetting: string = trail !== undefined ? trail : this.defaultTrail;
+
+        return value.length > limitSetting ? value.substring(0, limitSetting) + trailSetting : value;
     }
 
 }
