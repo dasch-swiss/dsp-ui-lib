@@ -42,7 +42,7 @@ describe('TruncatePipe', () => {
         const fixture = TestBed.createComponent(App);
         fixture.detectChanges();
 
-        expect(fixture.nativeElement.textContent).toBe('This...');
+        expect(fixture.nativeElement.textContent).toEqual('This...');
     });
 
     it('should support the trail argument in the template', () => {
@@ -57,6 +57,6 @@ describe('TruncatePipe', () => {
         const fixture = TestBed.createComponent(App);
         fixture.detectChanges();
 
-        expect(fixture.nativeElement.textContent).toBe('This is!!');
+        expect(fixture.nativeElement.textContent).toEqual('This is!!');
     });
 });
