@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
-import { ReadResource, PropertyDefinition } from '@knora/api';
+import { ReadResource, SystemPropertyDefinition } from '@knora/api';
 
 @Component({
   selector: 'dsp-property-view',
@@ -24,14 +24,14 @@ export class PropertyViewComponent implements OnInit {
    *
    * @param (propArray)
    */
-  @Input() propArray: PropertyInfoValues;
+  @Input() propArray: PropertyInfoValues[];
 
   /**
    * Array of system property object with list of system properties
    *
    * @param (propArray)
    */
-  @Input() systemPropArray?: PropertyDefinition;
+  @Input() systemPropArray: SystemPropertyDefinition[];
 
   constructor() { }
 

@@ -1,31 +1,29 @@
-import { Component, Inject, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnChanges } from '@angular/core';
 import {
-  IHasProperty,
-  KnoraApiConnection,
-  PropertyDefinition,
-  ReadResource,
-  ReadValue,
-  ResourcePropertyDefinition,
-  ApiResponseError,
-  SystemPropertyDefinition
+    ApiResponseError,
+    IHasPropertyWithPropertyDefinition,
+    KnoraApiConnection,
+    PropertyDefinition,
+    ReadResource,
+    ReadValue,
+    SystemPropertyDefinition
 } from '@knora/api';
 import { DspApiConnectionToken } from '../../../core/core.module';
 
 
 // object of property information from ontology class, properties and property values
 export interface PropertyInfoValues {
-  guiDef: IHasProperty;
-  propDef: PropertyDefinition;
-  values: ReadValue[];
+    guiDef: IHasPropertyWithPropertyDefinition;
+    propDef: PropertyDefinition;
+    values: ReadValue[];
 }
-
 
 @Component({
   selector: 'dsp-resource-view',
   templateUrl: './resource-view.component.html',
   styleUrls: ['./resource-view.component.scss']
 })
-export class ResourceViewComponent implements OnInit, OnChanges {
+export class ResourceViewComponent implements OnChanges {
 
   /**
    * Resource iri
@@ -36,14 +34,11 @@ export class ResourceViewComponent implements OnInit, OnChanges {
 
   resource: ReadResource;
 
-  propArray: PropertyInfoValues[] = []; // resource property
+  resPropInfoVals: PropertyInfoValues[] = []; // array of resource properties
 
-  systemPropArray: PropertyDefinition[] = []; // system property
+  systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
 
   constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
-
-  ngOnInit() {
-  }
 
   ngOnChanges() {
     this.getResource(this.iri);
@@ -52,7 +47,7 @@ export class ResourceViewComponent implements OnInit, OnChanges {
   /**
    * Get a read resource sequence with ontology information and incoming resources.
    *
-   * @param resource Resource
+   * @param iri resourceIri
    */
   getResource(iri: string): void {
 
@@ -60,38 +55,23 @@ export class ResourceViewComponent implements OnInit, OnChanges {
       (response: ReadResource) => {
         this.resource = response;
 
-        // get list of all properties
-        const propsList: IHasProperty[] = this.resource.entityInfo.classes[this.resource.type].propertiesList;
-
-        for (const prop of propsList) {
-          const index = prop.propertyIndex;
-
-          if (this.resource.entityInfo.properties[index]) {
-            if (this.resource.entityInfo.properties[index] instanceof ResourcePropertyDefinition) {
-              // filter all properties by type ResourcePropertyDefinition
-              const propInfoAndValues: PropertyInfoValues = {
-                guiDef: prop,
-                propDef: this.resource.entityInfo.properties[index],
-                values: this.resource.properties[index]
-              };
-
-              this.propArray.push(propInfoAndValues);
-
-            } else if (this.resource.entityInfo.properties[index] instanceof SystemPropertyDefinition) {
-              // filter all properties by type SystemPropertyDefinition
-              const systemPropInfo = this.resource.entityInfo.properties[index];
-
-              this.systemPropArray.push(systemPropInfo);
-
+        // gather resource property information
+        this.resPropInfoVals = this.resource.entityInfo.classes[this.resource.type].getResourcePropertiesList().map(
+            (prop: IHasPropertyWithPropertyDefinition) => {
+                const propInfoAndValues: PropertyInfoValues = {
+                    propDef: prop.propertyDefinition,
+                    guiDef: prop,
+                    values: this.resource.getValues(prop.propertyIndex)
+                };
+                return propInfoAndValues;
             }
-
-          } else {
-            console.error('Error detected: the property with IRI =' + index + 'is not a property of the resource');
-          }
-        }
+        );
 
         // sort properties by guiOrder
-        this.propArray.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
+        this.resPropInfoVals.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
+
+        // get system property information
+        this.systemPropDefs = this.resource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
 
       },
       (error: ApiResponseError) => {
