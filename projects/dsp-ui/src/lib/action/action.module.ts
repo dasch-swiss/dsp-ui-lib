@@ -6,6 +6,7 @@ import { ReversePipe } from './pipes/array-transformation/reverse.pipe';
 import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
 import { AdminImageDirective } from './directives/admin-image.directive';
+import { ExistingNameDirective } from './directives/existing-name.directive';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { AdminImageDirective } from './directives/admin-image.directive';
     ReversePipe,
     SortByPipe,
     TruncatePipe,
-    AdminImageDirective
+    AdminImageDirective,
+    ExistingNameDirective
   ],
   imports: [
     CommonModule
@@ -24,7 +26,9 @@ import { AdminImageDirective } from './directives/admin-image.directive';
     KnoraDatePipe,
     ReversePipe,
     SortByPipe,
-    TruncatePipe
+    TruncatePipe,
+    AdminImageDirective,
+    ExistingNameDirective
   ]
 })
 
