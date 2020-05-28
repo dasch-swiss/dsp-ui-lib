@@ -7,6 +7,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatInputHarness } from '@angular/material/input/testing';
 
 /**
  * Test host component to simulate parent component.
@@ -86,9 +89,12 @@ describe('IntValueComponent', () => {
         let commentInputDebugElement: DebugElement;
         let commentInputNativeElement;
 
+        let loader: HarnessLoader;
+
         beforeEach(() => {
             testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
             testHostComponent = testHostFixture.componentInstance;
+            loader = TestbedHarnessEnvironment.loader(testHostFixture);
             testHostFixture.detectChanges();
 
             expect(testHostComponent).toBeTruthy();
@@ -113,7 +119,7 @@ describe('IntValueComponent', () => {
 
         });
 
-        it('should make an existing value editable', () => {
+        it('should make an existing value editable', async () => {
 
             testHostComponent.mode = 'update';
 
@@ -126,13 +132,11 @@ describe('IntValueComponent', () => {
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-            expect(valueInputNativeElement.value).toEqual('1');
+            const inputElement = await loader.getHarness(MatInputHarness.with({selector: '.value'}));
 
-            valueInputNativeElement.value = '20';
+            expect(await inputElement.getValue()).toEqual('1');
 
-            valueInputNativeElement.dispatchEvent(new Event('input'));
-
-            testHostFixture.detectChanges();
+            await inputElement.setValue('20');
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
