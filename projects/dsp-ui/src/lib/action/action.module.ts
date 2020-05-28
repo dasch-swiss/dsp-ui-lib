@@ -5,6 +5,7 @@ import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { ReversePipe } from './pipes/array-transformation/reverse.pipe';
 import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
+import { AdminImageDirective } from './directives/admin-image.directive';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     KnoraDatePipe,
     ReversePipe,
     SortByPipe,
-    TruncatePipe
+    TruncatePipe,
+    AdminImageDirective
   ],
   imports: [
     CommonModule
