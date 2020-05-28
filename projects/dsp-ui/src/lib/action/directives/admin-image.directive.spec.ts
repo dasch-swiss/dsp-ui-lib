@@ -14,7 +14,7 @@ class TestAdminImageComponent {
     constructor() { }
 }
 
-fdescribe('Directive: AdminImageDirective', () => {
+describe('Directive: AdminImageDirective', () => {
     let component: TestAdminImageComponent;
     let fixture: ComponentFixture<TestAdminImageComponent>;
     let imageEl: DebugElement;
