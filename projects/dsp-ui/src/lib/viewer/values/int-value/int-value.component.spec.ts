@@ -255,41 +255,32 @@ describe('IntValueComponent', () => {
 
         let testHostComponent: TestHostCreateValueComponent;
         let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
-        let valueComponentDe: DebugElement;
-        let valueInputDebugElement: DebugElement;
-        let valueInputNativeElement;
-        let commentInputDebugElement: DebugElement;
-        let commentInputNativeElement;
+        let inputElement: MatInputHarness;
+        let commentElement: MatInputHarness;
 
-        beforeEach(() => {
+        let loader: HarnessLoader;
+
+        beforeEach(async () => {
             testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
             testHostComponent = testHostFixture.componentInstance;
+            loader = TestbedHarnessEnvironment.loader(testHostFixture);
             testHostFixture.detectChanges();
 
             expect(testHostComponent).toBeTruthy();
             expect(testHostComponent.inputValueComponent).toBeTruthy();
 
-            const hostCompDe = testHostFixture.debugElement;
+            inputElement = await loader.getHarness(MatInputHarness.with({selector: '.value'}));
 
-            valueComponentDe = hostCompDe.query(By.directive(IntValueComponent));
-            valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-            valueInputNativeElement = valueInputDebugElement.nativeElement;
-
-            commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
-            commentInputNativeElement = commentInputDebugElement.nativeElement;
+            commentElement = await loader.getHarness(MatInputHarness.with({selector: '.comment'}));
 
             expect(testHostComponent.inputValueComponent.displayValue).toEqual(undefined);
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-            expect(valueInputNativeElement.value).toEqual('');
-            expect(commentInputNativeElement.value).toEqual('');
+            expect(await inputElement.getValue()).toEqual('');
+            expect(await commentElement.getValue()).toEqual('');
         });
 
-        it('should create a value', () => {
-            valueInputNativeElement.value = '20';
-
-            valueInputNativeElement.dispatchEvent(new Event('input'));
-
-            testHostFixture.detectChanges();
+        it('should create a value', async () => {
+            await inputElement.setValue('20');
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('create');
 
@@ -302,16 +293,10 @@ describe('IntValueComponent', () => {
             expect((newValue as CreateIntValue).int).toEqual(20);
         });
 
-        it('should reset form after cancellation', () => {
-            valueInputNativeElement.value = '20';
+        it('should reset form after cancellation', async () => {
+            await inputElement.setValue('20');
 
-            valueInputNativeElement.dispatchEvent(new Event('input'));
-
-            commentInputNativeElement.value = 'created comment';
-
-            commentInputNativeElement.dispatchEvent(new Event('input'));
-
-            testHostFixture.detectChanges();
+            await commentElement.setValue('created comment');
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('create');
 
@@ -321,9 +306,9 @@ describe('IntValueComponent', () => {
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-            expect(valueInputNativeElement.value).toEqual('');
+            expect(await inputElement.getValue()).toEqual('');
 
-            expect(commentInputNativeElement.value).toEqual('');
+            expect(await commentElement.getValue()).toEqual('');
 
         });
     });
