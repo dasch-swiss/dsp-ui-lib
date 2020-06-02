@@ -25,9 +25,10 @@ export class ProgressIndicatorComponent implements OnInit {
      *
      * Parameter to customize the appearance of the loader.
      * Hexadecimal color value e.g. #00ff00 or similar color values 'red', 'green' etc.
+     *
+     * TODO: Default color should come from app settings
      */
-    @Input() color?: string = 'primary';
-
+    @Input() color = '#5849a7';
 
     /**
      * @ignore
