@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
 import {
-  KnoraApiConnection,
-  ApiResponseError,
   ApiResponseData,
+  ApiResponseError,
+  KnoraApiConnection,
   LoginResponse
 } from '@knora/api';
-import {DspApiConnectionToken} from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-modify',
