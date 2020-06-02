@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator/progress-indicator.component';
+import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator.component';
 import { AdminImageDirective } from './directives/admin-image/admin-image.directive';
 import { ExistingNameDirective } from './directives/existing-names/existing-name.directive';
 import { GndDirective } from './directives/gnd/gnd.directive';

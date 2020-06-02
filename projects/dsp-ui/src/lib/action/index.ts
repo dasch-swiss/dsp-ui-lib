@@ -11,7 +11,7 @@ export * from './pipes/string-transformation/truncate.pipe';
 export * from './services/sorting.service';
 
 // components
-export * from './components/progress-indicator/progress-indicator/progress-indicator.component';
+export * from './components/progress-indicator/progress-indicator.component';
 
 // directives
 export * from './directives/admin-image/admin-image.directive';
