@@ -1,0 +1,28 @@
+<p>Sorting</p>
+<dsp-sort-button [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="'right'"></dsp-sort-button>
+<ul>
+    <li *ngFor="let item of list | dspSortBy: sortKey">
+        <span [class.active]="sortKey === 'firstname'">{{item.firstname}} </span>
+        <span [class.active]="sortKey === 'lastname'">{{item.lastname}} </span>
+        by
+        <span [class.active]="sortKey === 'creator'">{{item.creator}}</span>
+    </li>
+</ul>
+
+<p>Progress indicator</p>
+<mat-list>
+    <mat-list-item>
+        <dsp-progress-indicator mat-list-avatar [status]="status" color="blue"></dsp-progress-indicator>
+        <p mat-line>
+            <strong>
+                <span *ngIf="status == -1">before submit (not ready)</span>
+                <span *ngIf="status == 0">submitting</span>
+                <span *ngIf="status == 1">after submit (done)</span>
+            </strong>
+            status: {{status}}
+        </p>
+    </mat-list-item>
+</mat-list>
+
+<p>Loading animation</p>
+<dsp-progress-indicator></dsp-progress-indicator>

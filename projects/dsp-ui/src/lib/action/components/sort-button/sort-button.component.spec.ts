@@ -1,0 +1,169 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SortButtonComponent } from './sort-button.component';
+
+import { Component, DebugElement, OnInit, ViewChild, } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { SortByPipe } from '../../pipes/array-transformation/sort-by.pipe';
+
+/**
+ * Test host component to simulate parent component with a progress bar.
+ */
+@Component({
+    template: `
+    <dsp-sort-button #sortButton [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="position">
+    </dsp-sort-button>
+    <ul>
+            <li *ngFor="let item of list | dspSortBy: sortKey">
+                <span [class.active]="sortKey === 'firstname'">{{item.firstname}} </span>
+                <span [class.active]="sortKey === 'lastname'">{{item.lastname}} </span>
+                by
+                <span [class.active]="sortKey === 'creator'">{{item.creator}}</span>
+            </li>
+        </ul>
+    `
+})
+class TestHostComponent implements OnInit {
+
+    @ViewChild('sortButton', { static: false }) sortButtonComponent: SortButtonComponent;
+
+    sortProps: any = [{
+        key: 'firstname',
+        label: 'Firstname'
+    },
+    {
+        key: 'lastname',
+        label: 'Last name'
+    },
+    {
+        key: 'creator',
+        label: 'Creator'
+    }
+    ];
+    sortKey = 'creator';
+    position = 'left';
+
+    list = [{
+        firstname: 'Gaston',
+        lastname: 'Lagaffe',
+        creator: 'André Franquin'
+
+    },
+    {
+        firstname: 'Mickey',
+        lastname: 'Mouse',
+        creator: 'Walt Disney'
+
+    },
+    {
+        firstname: 'Donald',
+        lastname: 'Duck',
+        creator: 'Walt Disney'
+
+    },
+    {
+        firstname: 'Charlie',
+        lastname: 'Brown',
+        creator: 'Charles M. Schulz'
+
+    }
+    ];
+
+    constructor() {
+    }
+
+    ngOnInit() { }
+}
+
+fdescribe('SortButtonComponent', () => {
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
+    const listData = [
+        { firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' },
+        { firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' },
+        { firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' },
+        { firstname: 'Donald', lastname: 'Duck', creator: 'Walt Disney' },
+    ];
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                MatIconModule,
+                MatMenuModule,
+                BrowserAnimationsModule
+            ],
+            declarations: [
+                SortButtonComponent,
+                TestHostComponent,
+                SortByPipe]
+        })
+            .compileComponents();
+    }));
+
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should create an instance', () => {
+        expect(testHostComponent.sortButtonComponent).toBeTruthy();
+    });
+
+    it('should sort the list by lastname', () => {
+        expect(testHostComponent.sortButtonComponent).toBeTruthy();
+        expect(testHostComponent.sortKey).toBe('creator');
+        expect(testHostComponent.list).toEqual(listData);
+        // console.log(testHostComponent.list);
+
+        const hostCompDe = testHostFixture.debugElement;
+
+        const sortBtnEl = hostCompDe.query(By.directive(SortButtonComponent));
+
+        const spanEl: DebugElement = hostCompDe.query(By.css('span'));
+
+        // expect the button position to be 'right'
+        // expect(spanEl.properties).toEqual({ 'className': 'left' });
+
+        const sortSelectionBtnEl: DebugElement = spanEl.query(By.css('button'));
+
+        const matIconEl: DebugElement = sortSelectionBtnEl.query(By.css('mat-icon'));
+
+        // expect that the button label is 'sort'
+        expect(matIconEl.nativeElement.innerText).toEqual('sort');
+
+        // click on the sort button to trigger the sort selection menu
+        sortSelectionBtnEl.triggerEventHandler('click', null);
+
+        const matMenuEl = spanEl.query(By.css('mat-menu'));
+
+        const sortSelectionEl = matMenuEl.references.sortSelection;
+
+        // expect that items's names of the sort list are 'Firstname', 'Last name' and 'Creator'
+        expect(sortSelectionEl.items._results[0]._elementRef.nativeElement.innerText).toEqual('Firstname');
+        expect(sortSelectionEl.items._results[1]._elementRef.nativeElement.innerText).toEqual('Last name');
+        expect(sortSelectionEl.items._results[2]._elementRef.nativeElement.innerText).toEqual('Creator');
+
+        // sort by 'lastname' through a click event
+        const item2 = sortSelectionEl.items._results[1]._elementRef.nativeElement;
+        item2.click();
+        testHostFixture.detectChanges();
+
+        // expect the list to be sorted by lastname
+        expect(testHostComponent.sortKey).toBe('lastname');
+        expect(testHostComponent.list).toEqual(
+            [
+                { firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' },
+                { firstname: 'Donald', lastname: 'Duck', creator: 'Walt Disney' },
+                { firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' },
+                { firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' }
+            ]);
+    });
+});
+
+
