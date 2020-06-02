@@ -1,5 +1,9 @@
 import { AppPage } from './app.po';
-import { browser, by, logging, WebElement } from 'protractor';
+import { browser, by, ElementArrayFinder, ElementFinder, logging, WebElement } from 'protractor';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { ProtractorHarnessEnvironment } from '@angular/cdk/testing/protractor';
+import { MatButtonHarness } from '@angular/material/button/testing';
+import { MatInputHarness } from '@angular/material/input/testing';
 
 describe('Test App', () => {
     let page: AppPage;
@@ -18,27 +22,55 @@ describe('Test App', () => {
     });
 
     describe('Playground Modify Page', () => {
+        let loader: HarnessLoader;
 
         it('should display an integer value', async () => {
-            page.navigateTo('modify');
-            const valueEle: WebElement = await page.getComponentBySelector('dsp-int-value').getWebElement();
+            await page.navigateTo('modify');
 
-            const intValEle = await valueEle.findElement(by.css('.rm-value'));
-            expect(await intValEle.getText()).toEqual('1');
+            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value');
+
+            const intValEleField = await page.getReadValueFieldFromValueComponent(valueEleComp);
+            expect(await intValEleField.getText()).toEqual('1');
 
         });
 
         it('should edit an integer value', async () => {
-            page.navigateTo('modify');
-            const valueEle: WebElement = await page.getComponentBySelector('dsp-int-value').getWebElement();
 
-            const displayEdit = await valueEle.findElement(by.xpath('ancestor::dsp-display-edit'));
+            await page.navigateTo('modify');
 
-            const editButton: WebElement = await displayEdit.findElement(by.css('button.edit'));
+            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value');
+
+            const displayEditComp: WebElement = await page.getDisplayEditComponentFromValueComponent(valueEleComp);
+
+            const editButton: WebElement = await page.getEditButtonFromDisplayEditComponent(displayEditComp);
 
             await editButton.click();
 
-            // browser.sleep(100000);
+            // loader = ProtractorHarnessEnvironment.loader({queryFn: (selector: string, root: ElementFinder) => root.all(by.css(selector))});
+            // loader = ProtractorHarnessEnvironment.loader({queryFn: (selector: string, root: ElementFinder) => displayEdit as unknown as ElementArrayFinder});
+
+            /*const editButtons = await loader.getAllHarnesses(MatButtonHarness.with({selector: '.edit'}));
+
+            await editButtons[5].click();*/
+
+            loader = ProtractorHarnessEnvironment.loader();
+
+            const matInput = await loader.getHarness(MatInputHarness.with({selector: '.value'}));
+
+            await matInput.setValue('7');
+
+            const saveButton = await page.getSaveButtonFromDisplayEditComponent(displayEditComp);
+
+            await saveButton.click();
+
+            // browser.sleep(5000);
+
+            /*const intValEle = await page.getReadValueFieldFromValueComponent(valueEleComp);
+
+            expect(await intValEle.getText()).toEqual('3');
+
+            browser.sleep(5000);*/
+
         });
 
     });
