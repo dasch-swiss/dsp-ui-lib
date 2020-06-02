@@ -1,5 +1,5 @@
 import { AppPage } from './app.po';
-import { browser, by, ElementArrayFinder, ElementFinder, logging, WebElement } from 'protractor';
+import { browser, by, element, ElementArrayFinder, ElementFinder, logging, WebElement } from 'protractor';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { ProtractorHarnessEnvironment } from '@angular/cdk/testing/protractor';
 import { MatButtonHarness } from '@angular/material/button/testing';
@@ -34,7 +34,7 @@ describe('Test App', () => {
 
         });
 
-        it('should edit an integer value', async () => {
+        fit('should edit an integer value', async () => {
 
             await page.navigateTo('modify');
 
@@ -57,13 +57,21 @@ describe('Test App', () => {
 
             const matInput = await loader.getHarness(MatInputHarness.with({selector: '.value'}));
 
-            await matInput.setValue('7');
+            await matInput.setValue('91');
 
             const saveButton = await page.getSaveButtonFromDisplayEditComponent(displayEditComp);
 
             await saveButton.click();
 
-            // browser.sleep(5000);
+            const EC = browser.ExpectedConditions;
+
+            browser.wait(EC.presenceOf(element(by.css('.rm-value'))), 2000,
+                'Wait for read value to be visible.');
+
+            const readEle = await page.getReadValueFieldFromValueComponent(valueEleComp);
+            expect(await readEle.getText()).toEqual('91');
+
+            browser.sleep(5000);
 
             /*const intValEle = await page.getReadValueFieldFromValueComponent(valueEleComp);
 
