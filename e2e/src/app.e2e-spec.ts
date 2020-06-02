@@ -34,7 +34,7 @@ describe('Test App', () => {
 
         });
 
-        fit('should edit an integer value', async () => {
+        it('should edit an integer value', async () => {
 
             await page.navigateTo('modify');
 
@@ -57,7 +57,7 @@ describe('Test App', () => {
 
             const matInput = await loader.getHarness(MatInputHarness.with({selector: '.value'}));
 
-            await matInput.setValue('91');
+            await matInput.setValue('3');
 
             const saveButton = await page.getSaveButtonFromDisplayEditComponent(displayEditComp);
 
@@ -65,19 +65,11 @@ describe('Test App', () => {
 
             const EC = browser.ExpectedConditions;
 
-            browser.wait(EC.presenceOf(element(by.css('.rm-value'))), 2000,
+            await browser.wait(EC.presenceOf(element(by.css('.rm-value'))), 3000,
                 'Wait for read value to be visible.');
 
             const readEle = await page.getReadValueFieldFromValueComponent(valueEleComp);
-            expect(await readEle.getText()).toEqual('91');
-
-            browser.sleep(5000);
-
-            /*const intValEle = await page.getReadValueFieldFromValueComponent(valueEleComp);
-
-            expect(await intValEle.getText()).toEqual('3');
-
-            browser.sleep(5000);*/
+            expect(await readEle.getText()).toEqual('3');
 
         });
 
