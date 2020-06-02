@@ -1,24 +1,45 @@
 import { AppPage } from './app.po';
-import { browser, by, logging } from 'protractor';
+import { browser, by, logging, WebElement } from 'protractor';
 
-describe('workspace-project App', () => {
+describe('Test App', () => {
     let page: AppPage;
 
     beforeEach(() => {
         page = new AppPage();
     });
 
-    it('should display welcome message', async () => {
-        page.navigateTo('modify');
-        expect(page.getTitleText()).toEqual('dsp-ui-lib app is running!');
+    describe('Playground Read Page', () => {
+
+        it('should display welcome message', async () => {
+            page.navigateTo('read');
+            expect(page.getTitleText()).toEqual('dsp-ui-lib app is running!');
+        });
+
     });
 
-    it('should display an integer value', async () => {
-        page.navigateTo('modify');
-        const ele = await page.getComponentBySelector('dsp-int-value').getWebElement();
+    describe('Playground Modify Page', () => {
 
-        const intValEle = await ele.findElement(by.css('.rm-value'));
-        expect(await intValEle.getText()).toEqual('1');
+        it('should display an integer value', async () => {
+            page.navigateTo('modify');
+            const valueEle: WebElement = await page.getComponentBySelector('dsp-int-value').getWebElement();
+
+            const intValEle = await valueEle.findElement(by.css('.rm-value'));
+            expect(await intValEle.getText()).toEqual('1');
+
+        });
+
+        it('should edit an integer value', async () => {
+            page.navigateTo('modify');
+            const valueEle: WebElement = await page.getComponentBySelector('dsp-int-value').getWebElement();
+
+            const displayEdit = await valueEle.findElement(by.xpath('ancestor::dsp-display-edit'));
+
+            const editButton: WebElement = await displayEdit.findElement(by.css('button.edit'));
+
+            await editButton.click();
+
+            // browser.sleep(100000);
+        });
 
     });
 
