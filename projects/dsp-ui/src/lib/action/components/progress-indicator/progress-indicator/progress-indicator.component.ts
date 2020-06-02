@@ -21,7 +21,7 @@ export class ProgressIndicatorComponent implements OnInit {
     @Input() status?: number;
 
     /**
-     * @param {string} [color=primary]
+     * @param color Hex value or predefined color from scss
      *
      * Parameter to customize the appearance of the loader.
      * Hexadecimal color value e.g. #00ff00 or similar color values 'red', 'green' etc.

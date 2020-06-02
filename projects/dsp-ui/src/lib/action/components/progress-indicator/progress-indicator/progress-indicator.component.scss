@@ -24,7 +24,6 @@ $warn: rgb(244, 67, 54);
   margin-right: auto;
   padding: 24px 36px;
   top: 60px;
-  //  position: relative;
   width: 96px;
 
   &.page-center {
@@ -65,11 +64,6 @@ $warn: rgb(244, 67, 54);
     }
   }
 
-  //    @-webkit-keyframes sk-bouncedelay {
-  //        0%, 80%, 100% { -webkit-transform: scale(0) }
-  //        40% { -webkit-transform: scale(1.0) }
-  //    }
-
   @keyframes bounce-keyframes {
 
     0%, 80%, 100% {
@@ -92,7 +86,6 @@ $warn: rgb(244, 67, 54);
   .on-submit {
     animation: spinner-keyframes .7s linear infinite;
     height: 32px;
-    //    margin: 2px;
     width: 32px;
 
     .spinner {
@@ -102,7 +95,6 @@ $warn: rgb(244, 67, 54);
       border-right-color: transparent;
       height: 28px;
       width: 28px;
-      //      background: yellow;
     }
   }
 
