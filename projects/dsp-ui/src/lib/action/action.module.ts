@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator/progress-indicator.component';
 import { AdminImageDirective } from './directives/admin-image/admin-image.directive';
 import { ExistingNameDirective } from './directives/existing-names/existing-name.directive';
 import { GndDirective } from './directives/gnd/gnd.directive';
@@ -20,10 +22,12 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     AdminImageDirective,
     ExistingNameDirective,
     GndDirective,
-    JdnDatepickerDirective
+    JdnDatepickerDirective,
+    ProgressIndicatorComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatIconModule
   ],
   exports: [
     FormattedBooleanPipe,
@@ -33,7 +37,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     TruncatePipe,
     AdminImageDirective,
     ExistingNameDirective,
-    JdnDatepickerDirective
+    JdnDatepickerDirective,
+    ProgressIndicatorComponent
   ]
 })
 
