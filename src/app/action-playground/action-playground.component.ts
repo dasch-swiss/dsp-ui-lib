@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SortingService } from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-action-playground',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./action-playground.component.scss']
 })
 export class ActionPlaygroundComponent implements OnInit {
+
+    sortingService: SortingService = new SortingService();
 
     sortProps: any = [
         {
@@ -67,23 +70,27 @@ export class ActionPlaygroundComponent implements OnInit {
     ];
     status = -1;
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit(): void {
-    this.refresh();
-  }
-
-  // only for testing the change of status
-  refresh() {
-    setTimeout(() => {
-        if (this.status === 1) {
-            this.status -= 2;
-        } else {
-            this.status++;
-        }
-        // Then recall the parent function to
-        // create a recursive loop.
+    ngOnInit(): void {
         this.refresh();
-    }, 2500);
-}
+    }
+
+    // only for testing the change of status
+    refresh() {
+        setTimeout(() => {
+            if (this.status === 1) {
+                this.status -= 2;
+            } else {
+                this.status++;
+            }
+            // Then recall the parent function to
+            // create a recursive loop.
+            this.refresh();
+        }, 2500);
+    }
+
+    sortList(key) {
+        this.list = this.sortingService.keySortByAlphabetical(this.list, key);
+    }
 }

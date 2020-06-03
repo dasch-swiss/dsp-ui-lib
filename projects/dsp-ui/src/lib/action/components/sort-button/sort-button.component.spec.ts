@@ -8,16 +8,17 @@ import { SortButtonComponent } from './sort-button.component';
 import { Component, DebugElement, OnInit, ViewChild, } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { SortByPipe } from '../../pipes/array-transformation/sort-by.pipe';
+import { SortingService } from '../../services/sorting.service';
 
 /**
  * Test host component to simulate parent component with a progress bar.
  */
 @Component({
     template: `
-    <dsp-sort-button #sortButton [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="position">
+    <dsp-sort-button #sortButton [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="position" (sortKeyChange)="sortList($event)">
     </dsp-sort-button>
     <ul class="list">
-            <li *ngFor="let item of list | dspSortBy: sortKey" class="item">
+            <li *ngFor="let item of list" class="item">
                 <span [class.active]="sortKey === 'firstname'">{{item.firstname}} </span>
                 <span [class.active]="sortKey === 'lastname'">{{item.lastname}} </span>
                 by
@@ -29,6 +30,8 @@ import { SortByPipe } from '../../pipes/array-transformation/sort-by.pipe';
 class TestHostComponent implements OnInit {
 
     @ViewChild('sortButton', { static: false }) sortButtonComponent: SortButtonComponent;
+
+    sortingService: SortingService = new SortingService();
 
     sortProps: any = [{
         key: 'firstname',
@@ -76,6 +79,10 @@ class TestHostComponent implements OnInit {
     }
 
     ngOnInit() { }
+
+    sortList(key) {
+        this.list = this.sortingService.keySortByAlphabetical(this.list, key);
+    }
 }
 
 describe('SortButtonComponent', () => {
@@ -98,7 +105,7 @@ describe('SortButtonComponent', () => {
             declarations: [
                 SortButtonComponent,
                 TestHostComponent,
-                SortByPipe]
+            ]
         })
             .compileComponents();
     }));

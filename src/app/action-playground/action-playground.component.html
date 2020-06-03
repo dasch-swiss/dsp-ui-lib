@@ -1,10 +1,9 @@
 <p>Sorting</p>
-<dsp-sort-button [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="'right'"></dsp-sort-button>
+<dsp-sort-button [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="'right'" (sortKeyChange)="sortList($event)"></dsp-sort-button>
 <ul>
-    <li *ngFor="let item of list | dspSortBy: sortKey">
+    <li *ngFor="let item of list">
         <span [class.active]="sortKey === 'firstname'">{{item.firstname}} </span>
         <span [class.active]="sortKey === 'lastname'">{{item.lastname}} </span>
-        by
         <span [class.active]="sortKey === 'creator'">{{item.creator}}</span>
     </li>
 </ul>
