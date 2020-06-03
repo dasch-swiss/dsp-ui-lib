@@ -26,7 +26,7 @@ import { MessageComponent } from './components/message/message.component';
     ExistingNameDirective,
     GndDirective,
     JdnDatepickerDirective,
-    ProgressIndicatorComponent
+    ProgressIndicatorComponent,
     MessageComponent,
     SortButtonComponent
   ],
