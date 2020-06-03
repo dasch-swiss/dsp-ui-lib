@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DspActionModule } from '@dasch-swiss/dsp-ui/lib/action';
+import { DspActionModule } from '@dasch-swiss/dsp-ui';
 import { ActionPlaygroundComponent } from './action-playground.component';
 
 describe('ActionPlaygroundComponent', () => {
@@ -9,7 +9,7 @@ describe('ActionPlaygroundComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        imports: [ DspActionModule],
+        imports: [ DspActionModule ],
         declarations: [ ActionPlaygroundComponent ]
     })
     .compileComponents();
