@@ -11,6 +11,7 @@ import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe';
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
+import { MessageComponent } from './components/message/message.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     ExistingNameDirective,
     GndDirective,
     JdnDatepickerDirective,
-    ProgressIndicatorComponent
+    ProgressIndicatorComponent,
+    MessageComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +40,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     AdminImageDirective,
     ExistingNameDirective,
     JdnDatepickerDirective,
-    ProgressIndicatorComponent
+    ProgressIndicatorComponent,
+    MessageComponent
   ]
 })
 

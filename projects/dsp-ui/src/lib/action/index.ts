@@ -12,6 +12,7 @@ export * from './services/sorting.service';
 
 // components
 export * from './components/progress-indicator/progress-indicator.component';
+export * from './components/message/message.component';
 
 // directives
 export * from './directives/admin-image/admin-image.directive';
