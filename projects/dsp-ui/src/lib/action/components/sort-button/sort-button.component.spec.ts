@@ -16,8 +16,8 @@ import { SortByPipe } from '../../pipes/array-transformation/sort-by.pipe';
     template: `
     <dsp-sort-button #sortButton [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="position">
     </dsp-sort-button>
-    <ul>
-            <li *ngFor="let item of list | dspSortBy: sortKey">
+    <ul class="list">
+            <li *ngFor="let item of list | dspSortBy: sortKey" class="item">
                 <span [class.active]="sortKey === 'firstname'">{{item.firstname}} </span>
                 <span [class.active]="sortKey === 'lastname'">{{item.lastname}} </span>
                 by
@@ -32,7 +32,7 @@ class TestHostComponent implements OnInit {
 
     sortProps: any = [{
         key: 'firstname',
-        label: 'Firstname'
+        label: 'First name'
     },
     {
         key: 'lastname',
@@ -47,26 +47,26 @@ class TestHostComponent implements OnInit {
     position = 'left';
 
     list = [{
-        firstname: 'Gaston',
-        lastname: 'Lagaffe',
+        firstname: 'a',
+        lastname: 'z',
         creator: 'André Franquin'
 
     },
     {
-        firstname: 'Mickey',
-        lastname: 'Mouse',
+        firstname: 'b',
+        lastname: 'y',
         creator: 'Walt Disney'
 
     },
     {
-        firstname: 'Donald',
-        lastname: 'Duck',
-        creator: 'Walt Disney'
+        firstname: 'c',
+        lastname: 'x',
+        creator: 'William Shakespeare'
 
     },
     {
-        firstname: 'Charlie',
-        lastname: 'Brown',
+        firstname: 'd',
+        lastname: 'w',
         creator: 'Charles M. Schulz'
 
     }
@@ -78,14 +78,14 @@ class TestHostComponent implements OnInit {
     ngOnInit() { }
 }
 
-fdescribe('SortButtonComponent', () => {
+describe('SortButtonComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
     const listData = [
-        { firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' },
-        { firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' },
-        { firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' },
-        { firstname: 'Donald', lastname: 'Duck', creator: 'Walt Disney' },
+        { firstname: 'a', lastname: 'z', creator: 'André Franquin' },
+        { firstname: 'b', lastname: 'y', creator: 'Walt Disney' },
+        { firstname: 'c', lastname: 'x', creator: 'William Shakespeare' },
+        { firstname: 'd', lastname: 'w', creator: 'Charles M. Schulz' },
     ];
 
     beforeEach(async(() => {
@@ -119,11 +119,8 @@ fdescribe('SortButtonComponent', () => {
         expect(testHostComponent.sortButtonComponent).toBeTruthy();
         expect(testHostComponent.sortKey).toBe('creator');
         expect(testHostComponent.list).toEqual(listData);
-        // console.log(testHostComponent.list);
 
         const hostCompDe = testHostFixture.debugElement;
-
-        const sortBtnEl = hostCompDe.query(By.directive(SortButtonComponent));
 
         const spanEl: DebugElement = hostCompDe.query(By.css('span'));
 
@@ -145,7 +142,7 @@ fdescribe('SortButtonComponent', () => {
         const sortSelectionEl = matMenuEl.references.sortSelection;
 
         // expect that items's names of the sort list are 'Firstname', 'Last name' and 'Creator'
-        expect(sortSelectionEl.items._results[0]._elementRef.nativeElement.innerText).toEqual('Firstname');
+        expect(sortSelectionEl.items._results[0]._elementRef.nativeElement.innerText).toEqual('First name');
         expect(sortSelectionEl.items._results[1]._elementRef.nativeElement.innerText).toEqual('Last name');
         expect(sortSelectionEl.items._results[2]._elementRef.nativeElement.innerText).toEqual('Creator');
 
@@ -156,13 +153,13 @@ fdescribe('SortButtonComponent', () => {
 
         // expect the list to be sorted by lastname
         expect(testHostComponent.sortKey).toBe('lastname');
-        expect(testHostComponent.list).toEqual(
-            [
-                { firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' },
-                { firstname: 'Donald', lastname: 'Duck', creator: 'Walt Disney' },
-                { firstname: 'Gaston', lastname: 'Lagaffe', creator: 'André Franquin' },
-                { firstname: 'Mickey', lastname: 'Mouse', creator: 'Walt Disney' }
-            ]);
+
+        const listEl: DebugElement = hostCompDe.query(By.css('.list'));
+        const children = listEl.nativeNode.children;
+        expect(children[0].innerText).toEqual('d w by Charles M. Schulz');
+        expect(children[1].innerText).toEqual('c x by William Shakespeare');
+        expect(children[2].innerText).toEqual('b y by Walt Disney');
+        expect(children[3].innerText).toEqual('a z by André Franquin');
     });
 });
 

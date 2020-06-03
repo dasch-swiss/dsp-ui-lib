@@ -36,9 +36,9 @@ export class ActionPlaygroundComponent implements OnInit {
             creator: 'Walt Disney'
         },
         {
-            firstname: 'Donald',
-            lastname: 'Duck',
-            creator: 'Walt Disney'
+            firstname: 'Scooby',
+            lastname: 'Doo',
+            creator: 'Joe Ruby'
         },
         {
             firstname: 'Charlie',
