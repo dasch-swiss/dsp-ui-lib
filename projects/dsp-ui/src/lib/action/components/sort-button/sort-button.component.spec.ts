@@ -7,7 +7,6 @@ import { SortButtonComponent } from './sort-button.component';
 
 import { Component, DebugElement, OnInit, ViewChild, } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { SortByPipe } from '../../pipes/array-transformation/sort-by.pipe';
 import { SortingService } from '../../services/sorting.service';
 
 /**
