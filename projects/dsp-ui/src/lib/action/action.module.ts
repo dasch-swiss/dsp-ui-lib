@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator.component';
+import { SortButtonComponent } from './components/sort-button/sort-button.component';
 import { AdminImageDirective } from './directives/admin-image/admin-image.directive';
 import { ExistingNameDirective } from './directives/existing-names/existing-name.directive';
 import { GndDirective } from './directives/gnd/gnd.directive';
@@ -24,11 +26,14 @@ import { MessageComponent } from './components/message/message.component';
     ExistingNameDirective,
     GndDirective,
     JdnDatepickerDirective,
-    ProgressIndicatorComponent,
-    MessageComponent
+    ProgressIndicatorComponent
+    MessageComponent,
+    SortButtonComponent
   ],
   imports: [
     CommonModule,
+    MatIconModule,
+    MatMenuModule,
     MatIconModule
   ],
   exports: [
@@ -41,7 +46,8 @@ import { MessageComponent } from './components/message/message.component';
     ExistingNameDirective,
     JdnDatepickerDirective,
     ProgressIndicatorComponent,
-    MessageComponent
+    MessageComponent,
+    SortButtonComponent
   ]
 })
 
