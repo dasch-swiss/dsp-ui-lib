@@ -13,6 +13,7 @@ import { ActionPlaygroundComponent } from './action-playground/action-playground
 import { AppComponent } from './app.component';
 import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
+import { InputTestComponent } from './input-test/input-test.component';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -25,7 +26,8 @@ export function initializeApp(appInitService: AppInitService) {
     AppComponent,
     ModifyComponent,
     ReadComponent,
-    ActionPlaygroundComponent
+    ActionPlaygroundComponent,
+    InputTestComponent
   ],
   imports: [
     BrowserModule,
