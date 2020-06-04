@@ -8,7 +8,7 @@
       "ngx-color-picker": "ngxColorPicker",
       "jdnconvertiblecalendar": "jdnconvertiblecalendar",
       "jdnconvertiblecalendardateadapter": "jdnconvertiblecalendardateadapter",
-      "ts-md5": "Md5"
+      "ts-md5": "tsMd5"
     }
   }
 }
