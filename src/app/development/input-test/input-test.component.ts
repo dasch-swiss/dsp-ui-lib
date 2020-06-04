@@ -28,8 +28,16 @@ export class InputTestComponent implements OnInit, OnChanges {
 
     }
 
+    replacer(key, value) {
+        // Filtering out properties
+        if (value === undefined) {
+            return 'undefined';
+        }
+        return value;
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
-        // console.log(changes);
+       // console.log(JSON.stringify(changes, this.replacer));
     }
 
 

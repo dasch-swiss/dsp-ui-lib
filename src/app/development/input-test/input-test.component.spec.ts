@@ -70,6 +70,26 @@ class TestHostComponent4 implements OnInit {
     }
 }
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+        <app-input-test #testComp [myFirstInput]="firstInput" [mySecondInput]="secondInput" [myThirdInput]="thirdInput"></app-input-test>`
+})
+class TestHostComponent5 implements OnInit {
+
+    firstInput = 'dada';
+    secondInput = 'dudu';
+    thirdInput = 'hihi';
+
+    @ViewChild('testComp') testComponent: InputTestComponent;
+
+    ngOnInit() {
+
+    }
+}
+
 describe('InputTestComponent', () => {
 
     beforeEach(async(() => {
@@ -79,7 +99,8 @@ describe('InputTestComponent', () => {
                 TestHostComponent1,
                 TestHostComponent2,
                 TestHostComponent3,
-                TestHostComponent4
+                TestHostComponent4,
+                TestHostComponent5
             ]
         })
             .compileComponents();
@@ -141,6 +162,28 @@ describe('InputTestComponent', () => {
         fixture.detectChanges();
 
         expect(component.testComponent.myFirstInput).toEqual('gaga');
+        expect(component.testComponent.mySecondInput).toEqual('dudu');
+        expect(component.testComponent.myThirdInput).toEqual(undefined);
+
+    });
+
+    it('should create InputTestComponent using TestHostComponent5', () => {
+        const fixture = TestBed.createComponent(TestHostComponent5);
+        const component = fixture.componentInstance;
+        fixture.detectChanges();
+
+        expect(component).toBeTruthy();
+
+        expect(component.testComponent).toBeTruthy();
+        expect(component.testComponent.myFirstInput).toEqual('dada');
+        expect(component.testComponent.mySecondInput).toEqual('dudu');
+        expect(component.testComponent.myThirdInput).toEqual('hihi');
+
+        component.thirdInput = undefined;
+
+        fixture.detectChanges();
+
+        expect(component.testComponent.myFirstInput).toEqual('dada');
         expect(component.testComponent.mySecondInput).toEqual('dudu');
         expect(component.testComponent.myThirdInput).toEqual(undefined);
 
