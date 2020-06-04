@@ -56,9 +56,12 @@ class TestHostComponent3 implements OnInit {
  */
 @Component({
     template: `
-        <app-input-test #testComp [myFirstInput]="'dada'" [mySecondInput]="'dudu'"></app-input-test>`
+        <app-input-test #testComp [myFirstInput]="firstInput" [mySecondInput]="secondInput"></app-input-test>`
 })
 class TestHostComponent4 implements OnInit {
+
+    firstInput = 'dada';
+    secondInput = 'dudu';
 
     @ViewChild('testComp') testComponent: InputTestComponent;
 
@@ -132,5 +135,14 @@ describe('InputTestComponent', () => {
         expect(component.testComponent.myFirstInput).toEqual('dada');
         expect(component.testComponent.mySecondInput).toEqual('dudu');
         expect(component.testComponent.myThirdInput).toEqual(undefined);
+
+        component.firstInput = 'gaga';
+
+        fixture.detectChanges();
+
+        expect(component.testComponent.myFirstInput).toEqual('gaga');
+        expect(component.testComponent.mySecondInput).toEqual('dudu');
+        expect(component.testComponent.myThirdInput).toEqual(undefined);
+
     });
 });
