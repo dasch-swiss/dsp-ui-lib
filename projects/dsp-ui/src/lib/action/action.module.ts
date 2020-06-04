@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MessageComponent } from './components/message/message.component';
 import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator.component';
 import { SortButtonComponent } from './components/sort-button/sort-button.component';
 import { AdminImageDirective } from './directives/admin-image/admin-image.directive';
@@ -13,7 +16,6 @@ import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe';
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
-import { MessageComponent } from './components/message/message.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { MessageComponent } from './components/message/message.component';
     CommonModule,
     MatIconModule,
     MatMenuModule,
-    MatIconModule
+    MatCardModule,
+    MatListModule
   ],
   exports: [
     FormattedBooleanPipe,
