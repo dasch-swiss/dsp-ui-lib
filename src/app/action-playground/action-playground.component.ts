@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SortingService, DspMessageData } from '@dasch-swiss/dsp-ui';
+import { DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
 import { ApiResponseError } from '@knora/api';
 
 @Component({
