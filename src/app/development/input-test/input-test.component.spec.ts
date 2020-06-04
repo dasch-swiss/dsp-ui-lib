@@ -51,11 +51,33 @@ class TestHostComponent3 implements OnInit {
     }
 }
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+        <app-input-test #testComp [myFirstInput]="'dada'" [mySecondInput]="'dudu'"></app-input-test>`
+})
+class TestHostComponent4 implements OnInit {
+
+    @ViewChild('testComp') testComponent: InputTestComponent;
+
+    ngOnInit() {
+
+    }
+}
+
 describe('InputTestComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [InputTestComponent, TestHostComponent1, TestHostComponent2, TestHostComponent3]
+            declarations: [
+                InputTestComponent,
+                TestHostComponent1,
+                TestHostComponent2,
+                TestHostComponent3,
+                TestHostComponent4
+            ]
         })
             .compileComponents();
     }));
@@ -97,5 +119,18 @@ describe('InputTestComponent', () => {
         expect(component.testComponent.myFirstInput).toEqual('oho');
         expect(component.testComponent.mySecondInput).toEqual('hi');
         expect(component.testComponent.myThirdInput).toEqual('aha');
+    });
+
+    it('should create InputTestComponent using TestHostComponent4', () => {
+        const fixture = TestBed.createComponent(TestHostComponent4);
+        const component = fixture.componentInstance;
+        fixture.detectChanges();
+
+        expect(component).toBeTruthy();
+
+        expect(component.testComponent).toBeTruthy();
+        expect(component.testComponent.myFirstInput).toEqual('dada');
+        expect(component.testComponent.mySecondInput).toEqual('dudu');
+        expect(component.testComponent.myThirdInput).toEqual(undefined);
     });
 });
