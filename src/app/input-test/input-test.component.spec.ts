@@ -1,16 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InputTestComponent } from './input-test.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 /**
  * Test host component to simulate parent component.
  */
 @Component({
     template: `
-    <app-input-test [myFirstInput]="'dada'"></app-input-test>`
+        <app-input-test #testComp [myFirstInput]="'dada'"></app-input-test>`
 })
-class TestHostComponent implements OnInit {
+class TestHostComponent1 implements OnInit {
+
+    @ViewChild('testComp') testComponent: InputTestComponent;
 
     ngOnInit() {
 
@@ -18,23 +20,28 @@ class TestHostComponent implements OnInit {
 }
 
 describe('InputTestComponent', () => {
-  let component: TestHostComponent;
-  let fixture: ComponentFixture<TestHostComponent>;
+    let component: TestHostComponent1;
+    let fixture: ComponentFixture<TestHostComponent1>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ InputTestComponent, TestHostComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [InputTestComponent, TestHostComponent1]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TestHostComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(TestHostComponent1);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+
+        expect(component.testComponent).toBeTruthy();
+        expect(component.testComponent.myFirstInput).toEqual('dada');
+        expect(component.testComponent.mySecondInput).toEqual('hi');
+        expect(component.testComponent.myThirdInput).toEqual(undefined);
+    });
 });

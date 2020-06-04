@@ -9,7 +9,17 @@ export class InputTestComponent implements OnInit, OnChanges {
 
     @Input() myFirstInput = 'oho';
 
-    @Input() mySecondInput = 'hi';
+    private _mySecondInput = 'hi';
+
+    @Input() set mySecondInput(value: string) {
+        this._mySecondInput = value;
+    }
+
+    get mySecondInput() {
+        return this._mySecondInput;
+    }
+
+    @Input() myThirdInput?: string;
 
     constructor() {
     }
@@ -19,9 +29,7 @@ export class InputTestComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log(changes);
-
-        console.log(this.myFirstInput, this.mySecondInput)
+        // console.log(changes);
     }
 
 
