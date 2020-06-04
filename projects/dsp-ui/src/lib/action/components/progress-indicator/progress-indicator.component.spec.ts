@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { ProgressIndicatorComponent } from './progress-indicator.component';
 
@@ -29,9 +30,12 @@ describe('ProgressIndicatorComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-        declarations: [
-            ProgressIndicatorComponent,
-            TestHostComponent
+            imports: [
+                MatIconModule
+            ],
+            declarations: [
+                ProgressIndicatorComponent,
+                TestHostComponent
         ]
         })
         .compileComponents();
@@ -125,7 +129,7 @@ describe('ProgressIndicatorComponent', () => {
         const matIconEl = divProgressElement.query(By.css('mat-icon'));
 
         // new status: done
-        expect(matIconEl.attributes.class).toEqual('after-submit');
+        expect(matIconEl.attributes.class).toEqual('mat-icon notranslate after-submit material-icons mat-icon-no-color');
         expect(matIconEl.nativeElement.innerText).toEqual('done');
         expect(matIconEl.styles.color).toEqual('red');
     });
