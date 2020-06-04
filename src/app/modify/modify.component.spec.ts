@@ -1,10 +1,10 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ModifyComponent} from './modify.component';
-import {DspApiConnectionToken} from '@dasch-swiss/dsp-ui';
-import {of} from 'rxjs';
-import {Component, Input} from '@angular/core';
-import {ApiResponseData, AuthenticationEndpointV2, LoginResponse} from '@knora/api';
+import { Component, Input } from '@angular/core';
+import { DspActionModule, DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
+import { ApiResponseData, AuthenticationEndpointV2, LoginResponse } from '@knora/api';
+import { of } from 'rxjs';
+import { ModifyComponent } from './modify.component';
 
 @Component({
     selector: `dsp-resource-view`,
@@ -34,7 +34,8 @@ describe('ModifyComponent', () => {
                     provide: DspApiConnectionToken,
                     useValue: authSpyObj
                 }
-            ]
+            ],
+            imports: [ DspActionModule ]
         })
             .compileComponents();
     }));
