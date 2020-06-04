@@ -1,7 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { InputTestComponent } from './input-test.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { async, TestBed } from '@angular/core/testing';
+import { InputTestComponent } from './input-test.component';
 
 /**
  * Test host component to simulate parent component.
