@@ -75,7 +75,7 @@ export class ActionPlaygroundComponent implements OnInit {
     shortMessage: DspMessageData = {
         status: 200,
         statusMsg: 'Success',
-        statusText: 'You just update the user profile.',
+        statusText: 'You just updated the user profile.',
         type: 'Note',
         footnote: 'Close it'
     };
