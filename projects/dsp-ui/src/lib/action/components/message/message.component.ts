@@ -167,7 +167,7 @@ export class MessageComponent implements OnInit {
                         ? msg.footnote
                         : this.footnote.text + ' ' + this.footnote.team.dasch;
                 this.showLinks = !this.medium;
-
+                console.log('tempMsg: ', tmpMsg);
                 break;
             case s >= 500 && s < 600:
                 // the message is a server side (api) error
