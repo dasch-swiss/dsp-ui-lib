@@ -42,6 +42,7 @@ jobs:
           TZ: Europe/Zurich
           CI: true
     - run: |
+        sudo apt-get install expect
         make clone-knora-stack
         make knora-stack
         npm run e2e
