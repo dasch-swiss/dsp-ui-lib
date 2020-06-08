@@ -56,6 +56,23 @@ release-major: ## updates version to next MAJOR version e.g. from 3.0.0 to 4.0.0
 prerelease-major: ## updates version to next MAJOR as release candidate e.g. from 4.0.0 to 5.0.0-rc.0
 	@$(call update-version,premajor,rc)
 
+# Clones the knora-api git repository
+.PHONY: clone-knora-stack
+clone-knora-stack:
+	@git clone --branch v13.0.0-rc.3 --single-branch --depth 1 https://github.com/dasch-swiss/knora-api.git $(CURRENT_DIR)/.tmp/knora-stack
+
+.PHONY: knora-stack
+knora-stack: ## runs the knora-stack
+	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-without-api
+	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack print-env-file
+	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-config
+	sleep 15
+	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack init-db-test
+	sleep 15
+	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-restart-api
+	sleep 35
+	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-logs-api-no-follow
+
 .PHONY: help
 help: ## this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort

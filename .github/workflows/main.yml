@@ -5,6 +5,10 @@ on:
   release:
     types: [published]
 
+env:
+  KNORA_GDB_LICENSE: ${{ github.workspace }}/ci/graphdb/UNIBAS_DEV_GRAPHDB_SE_latest-31-12-2020_1cores.license
+  GRAPHDB_HEAP_SIZE: 4G
+
 jobs:
   build-test:
     name: Build and Test
@@ -16,6 +20,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Checkout private ci-assets
+      uses: actions/checkout@v2
+      with:
+        repository: dasch-swiss/dsp-ci-assets
+        token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
+        path: ci
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -31,6 +41,12 @@ jobs:
       env:
           TZ: Europe/Zurich
           CI: true
+    - run: |
+        sudo apt-get install expect
+        make clone-knora-stack
+        make knora-stack
+        npm run webdriver-update
+        npm run e2e
 
   publish:
     name: Publish to npm / Update release notes
