@@ -227,7 +227,7 @@ To simulate a production environment, the application should be built with optim
 
 ### Publish a new version to NPM
 
-A new version will be published with each github release it's part of Github actions' workflow. Please follow the steps below to prepare the next release:
+A new version will be published with each github release as it's part of Github actions' workflow. Please follow the steps below to prepare the next release:
 
 - Create new branch from master called e.g. `prerelease/v1.0.0-rc.2` or `release/v2.0.0`
 - Run one of the corresponding make commands:
