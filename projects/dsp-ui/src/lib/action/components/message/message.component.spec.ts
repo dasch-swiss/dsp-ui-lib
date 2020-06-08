@@ -136,8 +136,6 @@ describe('MessageComponent', () => {
 
         it('should display a long message', () => {
             expect(longMsgTestHostComponent.messageComponent).toBeTruthy();
-            console.log('message: ', longMsgTestHostComponent.messageComponent.message);
-            console.log(longMsgTestHostComponent.messageComponent);
 
             expect(longMsgTestHostComponent.messageComponent.message.status).toEqual(403);
             expect(longMsgTestHostComponent.messageComponent.message.statusMsg).toEqual('Forbidden');
@@ -146,8 +144,6 @@ describe('MessageComponent', () => {
             const hostCompDe = longMsgTestHostFixture.debugElement;
 
             const messageEl = hostCompDe.query(By.directive(MessageComponent));
-
-            console.log(messageEl);
 
             const messageSubtitleElement = messageEl.query(By.css('.message-subtitle .left'));
 
