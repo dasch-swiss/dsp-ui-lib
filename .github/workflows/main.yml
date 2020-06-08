@@ -45,6 +45,7 @@ jobs:
         sudo apt-get install expect
         make clone-knora-stack
         make knora-stack
+        npm run webdriver-update
         npm run e2e
 
   publish:
