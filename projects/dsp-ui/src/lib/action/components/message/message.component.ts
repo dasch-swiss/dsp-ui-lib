@@ -34,9 +34,12 @@ export class MessageComponent implements OnInit {
      */
     @Input() message: DspMessageData = new DspMessageData();
 
+    // TODO: Refactor Inputs into one parameter (i.e. 'size')
+    // https://github.com/dasch-swiss/knora-ui-ng-lib/pull/95#discussion_r435978988
+
     /**
      * @param short Show short message only
-     * It can be used in form to show if a post was successfull or not.
+     * A small message box to notify the user an event has occured.
      */
     @Input() short = false;
 
