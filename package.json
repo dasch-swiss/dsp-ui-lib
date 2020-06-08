@@ -17,7 +17,7 @@
     "yalc-publish-lib": "ng b --prod --project @dasch-swiss/dsp-ui && yalc publish dist/@dasch-swiss/dsp-ui",
     "build-app": "ng b --prod",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e --prod=true --protractor-config=./e2e/protractor.conf.js"
   },
   "private": true,
   "dependencies": {
