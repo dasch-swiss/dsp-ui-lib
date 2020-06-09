@@ -9,14 +9,15 @@ env:
   KNORA_GDB_LICENSE: ${{ github.workspace }}/ci/graphdb/UNIBAS_DEV_GRAPHDB_SE_latest-31-12-2020_1cores.license
   GRAPHDB_HEAP_SIZE: 4G
 
+strategy:
+  matrix:
+    node-version: [12.x]
+
 jobs:
   build-test:
     name: Build and Test
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -40,9 +41,6 @@ jobs:
     name: Build lib in dev mode
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -59,9 +57,6 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -80,8 +75,8 @@ jobs:
     - run: |
         make clone-knora-stack
         make knora-stack
-        npm run webdriver-update
-        npm run e2e
+    - run: npm run webdriver-update
+    - run: npm run e2e
 
 
   publish:
