@@ -26,8 +26,6 @@ export class ActionPlaygroundComponent implements OnInit {
         }
     ];
 
-    sortKey = 'creator';
-
     list = [
         {
             firstname: 'Gaston',
