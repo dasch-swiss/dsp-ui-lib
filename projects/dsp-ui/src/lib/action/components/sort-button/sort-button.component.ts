@@ -42,7 +42,6 @@ export class SortButtonComponent implements OnInit {
      */
     @Input() position = 'left';
 
-
     /**
      * @param icon
      * Default icon is "sort" from material design.
@@ -50,14 +49,6 @@ export class SortButtonComponent implements OnInit {
      * e.g. sort_by_alpha
      */
     @Input() icon = 'sort';
-
-    /**
-     * @param sortKey
-     * set and get (two-way data binding) of current sort key
-     */
-    @Input() sortKey(sortKey: string) {
-        this.activeKey = sortKey;
-    }
 
     constructor() {
     }
