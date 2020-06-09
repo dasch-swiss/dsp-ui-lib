@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SortingService } from '@dasch-swiss/dsp-ui';
+import { DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
+import { ApiResponseError } from '@knora/api';
 
 @Component({
   selector: 'app-action-playground',
@@ -69,6 +70,23 @@ export class ActionPlaygroundComponent implements OnInit {
         }
     ];
     status = -1;
+
+    // short message example
+    shortMessage: DspMessageData = {
+        status: 200,
+        statusMsg: 'Success',
+        statusText: 'You just updated the user profile.',
+        type: 'Note',
+        footnote: 'Close it'
+    };
+
+    // error message example
+    errorMessage: ApiResponseError = {
+        status: 403,
+        url: 'http://0.0.0.0:3333/admin/projects/shortcode/001/members',
+        method: 'Http failure response for http://0.0.0.0:3333/admin/projects/shortcode/001/members: 400 Bad Request',
+        error: 'error message'
+    };
 
     constructor() { }
 
