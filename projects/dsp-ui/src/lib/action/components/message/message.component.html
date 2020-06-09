@@ -2,7 +2,6 @@
 
     <mat-card-subtitle class="message-subtitle">
         <span class="left">{{message?.type | uppercase }} {{message?.status}} | {{message?.statusMsg}}</span>
-        <!-- <mat-icon class="right">{{message?.type}}</mat-icon> -->
     </mat-card-subtitle>
 
     <mat-card-title class="message-title" [innerHtml]="message?.statusText"></mat-card-title>
@@ -38,9 +37,6 @@
             {{message?.statusText}}
         </span>
         <span class="fill-remaining-space"></span>
-        <!--         <button mat-icon-button (click)="closeMessage()">
-            <mat-icon>close</mat-icon>
-        </button> -->
     </div>
 
 </mat-card>
