@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MessageComponent } from './components/message/message.component';
 import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator.component';
 import { SortButtonComponent } from './components/sort-button/sort-button.component';
 import { AdminImageDirective } from './directives/admin-image/admin-image.directive';
@@ -26,13 +29,15 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     GndDirective,
     JdnDatepickerDirective,
     ProgressIndicatorComponent,
+    MessageComponent,
     SortButtonComponent
   ],
   imports: [
     CommonModule,
     MatIconModule,
     MatMenuModule,
-    MatIconModule
+    MatCardModule,
+    MatListModule
   ],
   exports: [
     FormattedBooleanPipe,
@@ -44,6 +49,7 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     ExistingNameDirective,
     JdnDatepickerDirective,
     ProgressIndicatorComponent,
+    MessageComponent,
     SortButtonComponent
   ]
 })
