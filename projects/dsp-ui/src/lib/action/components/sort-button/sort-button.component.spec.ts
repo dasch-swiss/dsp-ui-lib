@@ -14,14 +14,14 @@ import { SortingService } from '../../services/sorting.service';
  */
 @Component({
     template: `
-    <dsp-sort-button #sortButton [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="position" (sortKeyChange)="sortList($event)">
+    <dsp-sort-button #sortButton [sortProps]="sortProps" [position]="position" (sortKeyChange)="sortList($event)">
     </dsp-sort-button>
     <ul class="list">
             <li *ngFor="let item of list" class="item">
-                <span [class.active]="sortKey === 'firstname'">{{item.firstname}} </span>
-                <span [class.active]="sortKey === 'lastname'">{{item.lastname}} </span>
+                <span>{{item.firstname}} </span>
+                <span>{{item.lastname}} </span>
                 by
-                <span [class.active]="sortKey === 'creator'">{{item.creator}}</span>
+                <span>{{item.creator}}</span>
             </li>
         </ul>
     `
@@ -45,7 +45,6 @@ class TestHostComponent implements OnInit {
         label: 'Creator'
     }
     ];
-    sortKey = 'creator';
     position = 'left';
 
     list = [{
@@ -123,7 +122,6 @@ describe('SortButtonComponent', () => {
 
     it('should sort the list by lastname', () => {
         expect(testHostComponent.sortButtonComponent).toBeTruthy();
-        expect(testHostComponent.sortKey).toBe('creator');
         expect(testHostComponent.list).toEqual(listData);
 
         const hostCompDe = testHostFixture.debugElement;
@@ -157,8 +155,6 @@ describe('SortButtonComponent', () => {
         item2.click();
         testHostFixture.detectChanges();
 
-        // expect the list to be sorted by lastname
-        expect(testHostComponent.sortKey).toBe('lastname');
 
         const listEl: DebugElement = hostCompDe.query(By.css('.list'));
         const children = listEl.nativeNode.children;
