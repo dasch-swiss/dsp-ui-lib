@@ -41,6 +41,7 @@ jobs:
       env:
           TZ: Europe/Zurich
           CI: true
+    - run: npm run build-lib-dev
     - run: |
         sudo apt-get install expect
         make clone-knora-stack
