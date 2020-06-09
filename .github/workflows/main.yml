@@ -50,9 +50,9 @@ jobs:
           token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
           path: ci
       - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v1
-          with:
-            node-version: ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run build-lib
       - run: |
