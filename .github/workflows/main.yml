@@ -37,30 +37,37 @@ jobs:
           CI: true
     - run: npm run build-lib-dev
 
+
+
   e2e-test:
     name: E2E Tests
     needs: [build-test]
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Checkout private ci-assets
-        uses: actions/checkout@v2
-        with:
-          repository: dasch-swiss/dsp-ci-assets
-          token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
-          path: ci
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm run build-lib
-      - run: |
-          sudo apt-get install expect
-          make clone-knora-stack
-          make knora-stack
-          npm run webdriver-update
-          npm run e2e
+    - uses: actions/checkout@v2
+    - name: Checkout private ci-assets
+      uses: actions/checkout@v2
+      with:
+        repository: dasch-swiss/dsp-ci-assets
+        token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
+        path: ci
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run build-lib
+    - run: |
+        sudo apt-get install expect
+        make clone-knora-stack
+        make knora-stack
+        npm run webdriver-update
+        npm run e2e
 
 
 
