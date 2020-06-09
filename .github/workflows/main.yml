@@ -80,8 +80,11 @@ jobs:
     - run: |
         make clone-knora-stack
         make knora-stack
-        npm run webdriver-update
-        npm run e2e
+    - run: npm run webdriver-update
+    - run: npm run e2e
+      env:
+        TZ: Europe/Zurich
+        CI: true
 
 
   publish:
