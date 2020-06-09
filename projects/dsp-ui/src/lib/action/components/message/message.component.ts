@@ -58,7 +58,7 @@ export class MessageComponent implements OnInit {
     // disable message
     disable = false;
 
-    /*
+    /**
      * @ignore
      * default link list, which will be used in message content to give a user some possibilities
      * what he can do in the case of an error
