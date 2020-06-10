@@ -1,18 +1,18 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {BaseValueComponent} from '../base-value.component';
-import {
-  CreateListValue,
-  ReadListValue,
-  UpdateListValue,
-  ListNodeV2,
-  KnoraApiConnection,
-  ApiResponseError,
-  ResourcePropertyDefinition
-} from '@knora/api';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
-import {Subscription} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {DspApiConnectionToken} from '../../../core/core.module';
+import {
+  ApiResponseError,
+  CreateListValue,
+  KnoraApiConnection,
+  ListNodeV2,
+  ReadListValue,
+  ResourcePropertyDefinition,
+  UpdateListValue
+} from '@knora/api';
+import { Subscription } from 'rxjs';
+import { DspApiConnectionToken } from '../../../core/core.module';
+import { BaseValueComponent } from '../base-value.component';
 
 @Component({
   selector: 'dsp-list-value',
