@@ -139,7 +139,7 @@ This module contains various components to search. All of them can be used stand
 
 ### Search-panel
 
-This is a fully customizable panel. You can set the following parameters defined as `@Inputs` in dsp-search-panel:
+This is a fully customizable panel. You can assemble the search components and the filters you need in a configurable way. You can set the following parameters defined as `@Inputs` in dsp-search-panel:
 
 - route: string; url-route for search results
 - filterbyproject: string; project iri to limit search results by project
