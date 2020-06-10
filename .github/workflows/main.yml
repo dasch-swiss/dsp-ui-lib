@@ -10,9 +10,8 @@ env:
   GRAPHDB_HEAP_SIZE: 4G
 
 defaults:
-  strategy:
-    matrix:
-      node-version: [12.x]
+  matrix:
+    node-version: [12.x]
 
 jobs:
   build-test:
