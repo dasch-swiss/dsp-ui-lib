@@ -2,7 +2,7 @@
     <button mat-icon-button [matMenuTriggerFor]="sortSelection">
         <mat-icon>{{icon}}</mat-icon>
     </button>
-    <mat-menu #sortSelection="matMenu" [xPosition]="$any(menuXPos)">
+    <mat-menu #sortSelection="matMenu" [xPosition]="menuXPos">
         <button mat-menu-item
                 *ngFor="let item of sortProps"
                 (click)="sortBy(item.key)"
