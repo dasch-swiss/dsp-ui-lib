@@ -1,5 +1,5 @@
-import {Component, Input, Output, EventEmitter, ViewChild, OnInit} from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { MatMenu } from '@angular/material/menu';
 import { ListNodeV2 } from '@knora/api';
 
 @Component({
@@ -13,7 +13,7 @@ export class SublistValueComponent {
 
   @Output() selectedNode: EventEmitter<ListNodeV2> = new EventEmitter<ListNodeV2>();
 
-  @ViewChild('childMenu', { static: true }) public childMenu: MatMenuTrigger;
+  @ViewChild('childMenu', { static: true }) public childMenu: MatMenu;
   constructor() {
   }
   setValue(item: ListNodeV2) {
