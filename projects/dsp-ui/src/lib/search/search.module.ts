@@ -7,4 +7,4 @@ import { NgModule } from '@angular/core';
     CommonModule
   ]
 })
-export class SearchModule { }
+export class DspSearchModule { }
