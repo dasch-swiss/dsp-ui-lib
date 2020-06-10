@@ -3,16 +3,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DspApiConfigToken, DspApiConnectionToken, DspCoreModule, DspViewerModule, DspActionModule } from '@dasch-swiss/dsp-ui';
+import {
+    DspActionModule,
+    DspApiConfigToken,
+    DspApiConnectionToken,
+    DspCoreModule,
+    DspSearchModule,
+    DspViewerModule
+} from '@dasch-swiss/dsp-ui';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
-
+import { ActionPlaygroundComponent } from './action-playground/action-playground.component';
 import { AppInitService } from './app-init.service';
 import { AppRoutingModule } from './app-routing.module';
-
-import { ActionPlaygroundComponent } from './action-playground/action-playground.component';
 import { AppComponent } from './app.component';
 import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
+import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
+
+
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -25,7 +33,8 @@ export function initializeApp(appInitService: AppInitService) {
     AppComponent,
     ModifyComponent,
     ReadComponent,
-    ActionPlaygroundComponent
+    ActionPlaygroundComponent,
+    SearchPlaygroundComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +43,7 @@ export function initializeApp(appInitService: AppInitService) {
     DspCoreModule,
     DspViewerModule,
     DspActionModule,
+    DspSearchModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     MatButtonModule,
     MatListModule
