@@ -4,7 +4,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SearchPanelComponent } from './search-panel.component';
 
 
-fdescribe('SearchPanelComponent', () => {
+describe('SearchPanelComponent', () => {
   let component: SearchPanelComponent;
   let fixture: ComponentFixture<SearchPanelComponent>;
 
@@ -22,7 +22,7 @@ fdescribe('SearchPanelComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
