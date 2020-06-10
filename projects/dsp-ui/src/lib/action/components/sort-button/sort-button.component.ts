@@ -24,7 +24,7 @@ export class SortButtonComponent implements OnInit {
      */
     @Output() sortKeyChange: EventEmitter<string> = new EventEmitter<string>();
 
-    menuXPos = 'after';
+    menuXPos: 'before' | 'after' = 'after';
 
     activeKey: string;
 
