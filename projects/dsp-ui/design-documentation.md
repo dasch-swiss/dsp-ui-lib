@@ -145,7 +145,7 @@ Fully customizable panel. You can set the following parameters in dsp-search-pan
 - filterbyproject: string; project iri to limit search results by project
 - projectfilter: boolean; selection of all projects to filter by one of them
 - advanced: boolean; additional menu with advanced / extended search
-- expert: boolean;  additional menu with expert search / gravsearch "editor"
+- expert: boolean;  additional menu with expert search / Gravsearch "editor"
 
 If everything is set to false or undefined the search-panel is a simple full-text search.
 
@@ -155,8 +155,8 @@ Full text search quickly finds all instances of a term in DSP-API.
 
 ### Expert search
 
-Expert search is a textarea to write manually GravSearch queries when you know the language.
+Expert search is a textarea to write manually Gravsearch queries when you know the language.
 
 ### Advanced search
 
-Advanced search is a search form in which resource class and its properties related to one specific ontology are selected to create a GravSearch query.
+Advanced search is a search form in which resource class and its properties related to one specific ontology are selected to create a Gravsearch query.
