@@ -134,20 +134,20 @@ Value components may have additional specific inputs for configuration that can 
 
 ## Search Module
 
-The search module allows different modes of search, to make simple or complex searches, in DSP-API.
-This module contains various components to search. All of them can be used standalone or in combination in the search panel.
+The search module allows different ways of searching in order to make simple or complex searches in DSP-API.
+This module contains various components you can use to search and all of them can either be used individually or in combination with one another using the search panel.
 
 ### Search-panel
 
-This is a fully customizable panel. You can assemble the search components and the filters you need in a configurable way. You can set the following parameters defined as `@Inputs` in dsp-search-panel:
+This is a fully-customizable panel that allows you to assemble the search components and the filters you need in a configurable way. You can set the following parameters defined as `@Inputs` in dsp-search-panel:
 
 - route: string; url-route for search results
-- filterbyproject: string; project iri to limit search results by project
-- projectfilter: boolean; selection of all projects to filter by one of them
+- filterbyproject: string; project iri to limit search results to a specific project
+- projectfilter: boolean; provides a drop-down menu of all available projects allowing the user to choose which project to search in
 - advanced: boolean; additional menu with advanced / extended search
 - expert: boolean;  additional menu with expert search / Gravsearch "editor"
 
-If everything is set to false or undefined the search-panel is a simple full-text search.
+If everything is set to false or undefined, the search-panel will be a simple full-text search.
 
 ### Fulltext search
 
@@ -155,7 +155,7 @@ The full text search quickly finds all instances of a term in DSP-API. It can be
 
 ### Expert search
 
-The expert search is a textarea to write manually Gravsearch queries when you know the language.
+The expert search is a textarea which allows you to manually write Gravsearch queries if you are comfortable with the language and want more precise results.
 
 ### Advanced search
 
