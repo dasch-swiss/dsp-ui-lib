@@ -134,12 +134,12 @@ Value components may have additional specific inputs for configuration that can 
 
 ## Search Module
 
-Search module allows different modes of search, to make simple or complex searches, in DSP-API.
-This module contains various components to search. All of them can be used standalone or in combination in dsp-search-panel.
+The search module allows different modes of search, to make simple or complex searches, in DSP-API.
+This module contains various components to search. All of them can be used standalone or in combination in the search panel.
 
 ### Search-panel
 
-Fully customizable panel. You can set the following parameters in dsp-search-panel:
+This is a fully customizable panel. You can set the following parameters defined as `@Inputs` in dsp-search-panel:
 
 - route: string; url-route for search results
 - filterbyproject: string; project iri to limit search results by project
@@ -151,12 +151,12 @@ If everything is set to false or undefined the search-panel is a simple full-tex
 
 ### Fulltext search
 
-Full text search quickly finds all instances of a term in DSP-API.
+The full text search quickly finds all instances of a term in DSP-API. It can be restricted to a certain project.
 
 ### Expert search
 
-Expert search is a textarea to write manually Gravsearch queries when you know the language.
+The expert search is a textarea to write manually Gravsearch queries when you know the language.
 
 ### Advanced search
 
-Advanced search is a search form in which resource class and its properties related to one specific ontology are selected to create a Gravsearch query.
+The advanced search is a search form in which resource class and its properties related to one specific ontology are selected to create a Gravsearch query.
