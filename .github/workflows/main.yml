@@ -9,9 +9,6 @@ env:
   KNORA_GDB_LICENSE: ${{ github.workspace }}/ci/graphdb/UNIBAS_DEV_GRAPHDB_SE_latest-31-12-2020_1cores.license
   GRAPHDB_HEAP_SIZE: 4G
 
-matrix:
-  node-version: [12.x]
-
 jobs:
   build-test:
     name: Build and Test
