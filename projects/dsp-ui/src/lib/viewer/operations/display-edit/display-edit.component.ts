@@ -130,6 +130,7 @@ export class DisplayEditComponent implements OnInit {
         ).subscribe(
         (res2: ReadResource) => {
             this.displayValue = res2.getValues(this.displayValue.property)[0];
+            this.checkValueType();
             this.mode = 'read';
 
             // hide comment once back in read mode
