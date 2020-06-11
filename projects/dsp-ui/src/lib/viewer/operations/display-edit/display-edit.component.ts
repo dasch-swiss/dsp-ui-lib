@@ -84,66 +84,66 @@ export class DisplayEditComponent implements OnInit {
 
     ngOnInit() {
 
-    this.mode = 'read';
+        this.mode = 'read';
 
-    // determine if user has modify permissions
-    const allPermissions = PermissionUtil.allUserPermissions(this.displayValue.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR');
+        // determine if user has modify permissions
+        const allPermissions = PermissionUtil.allUserPermissions(this.displayValue.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR');
 
-    this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
+        this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
 
-    // check if comment toggle button should be shown
-    this.checkCommentToggleVisibility();
+        // check if comment toggle button should be shown
+        this.checkCommentToggleVisibility();
 
-    this.checkValueType();
+        this.checkValueType();
 
-    this.valueTypeOrClass = this.getValueTypeOrClass(this.displayValue);
+        this.valueTypeOrClass = this.getValueTypeOrClass(this.displayValue);
 
-    this.readOnlyValue = this.isReadOnly(this.valueTypeOrClass);
+        this.readOnlyValue = this.isReadOnly(this.valueTypeOrClass);
     }
 
     activateEditMode() {
-    this.editModeActive = true;
-    this.mode = 'update';
+        this.editModeActive = true;
+        this.mode = 'update';
 
-    // hide comment toggle button while in edit mode
-    this.checkCommentToggleVisibility();
+        // hide comment toggle button while in edit mode
+        this.checkCommentToggleVisibility();
 
-    // hide read mode comment when switching to edit mode
-    this.displayValueComponent.shouldShowComment = false;
+        // hide read mode comment when switching to edit mode
+        this.displayValueComponent.shouldShowComment = false;
     }
 
     saveEditValue() {
-    this.editModeActive = false;
-    const updatedVal = this.displayValueComponent.getUpdatedValue();
+        this.editModeActive = false;
+        const updatedVal = this.displayValueComponent.getUpdatedValue();
 
-    if (updatedVal instanceof UpdateValue) {
+        if (updatedVal instanceof UpdateValue) {
 
-        const updateRes = new UpdateResource();
-        updateRes.id = this.parentResource.id;
-        updateRes.type = this.parentResource.type;
-        updateRes.property = this.displayValue.property;
-        updateRes.value = updatedVal;
-        this.knoraApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
-        mergeMap((res: WriteValueResponse) => {
-            return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
-        })
-        ).subscribe(
-        (res2: ReadResource) => {
-            this.displayValue = res2.getValues(this.displayValue.property)[0];
-            this.checkValueType();
-            this.mode = 'read';
+            const updateRes = new UpdateResource();
+            updateRes.id = this.parentResource.id;
+            updateRes.type = this.parentResource.type;
+            updateRes.property = this.displayValue.property;
+            updateRes.value = updatedVal;
+            this.knoraApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
+            mergeMap((res: WriteValueResponse) => {
+                return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
+            })
+            ).subscribe(
+            (res2: ReadResource) => {
+                this.displayValue = res2.getValues(this.displayValue.property)[0];
+                this.checkValueType();
+                this.mode = 'read';
 
-            // hide comment once back in read mode
-            this.displayValueComponent.updateCommentVisibility();
+                // hide comment once back in read mode
+                this.displayValueComponent.updateCommentVisibility();
 
-            // check if comment toggle button should be shown
-            this.checkCommentToggleVisibility();
+                // check if comment toggle button should be shown
+                this.checkCommentToggleVisibility();
+            }
+            );
+
+        } else {
+            console.error('invalid value');
         }
-        );
-
-    } else {
-        console.error('invalid value');
-    }
     }
 
     cancelEditValue() {
