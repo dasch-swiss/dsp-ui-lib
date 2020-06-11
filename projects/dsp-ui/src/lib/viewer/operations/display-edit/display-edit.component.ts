@@ -3,21 +3,10 @@ import {
   Constants,
   KnoraApiConnection,
   PermissionUtil,
-  ReadBooleanValue,
-  ReadColorValue,
-  ReadDateValue,
-  ReadDecimalValue,
-  ReadGeonameValue,
-  ReadIntervalValue,
-  ReadIntValue,
-  ReadLinkValue,
-  ReadListValue,
   ReadResource,
   ReadTextValueAsHtml,
   ReadTextValueAsString,
   ReadTextValueAsXml,
-  ReadTimeValue,
-  ReadUriValue,
   ReadValue,
   UpdateResource,
   UpdateValue,
@@ -52,20 +41,6 @@ export class DisplayEditComponent implements OnInit {
 
     shouldShowCommentToggle: boolean;
 
-    readTextValAsString: ReadTextValueAsString;
-    readTextValAsHtml: ReadTextValueAsHtml;
-    readIntVal: ReadIntValue;
-    readBooleanVal: ReadBooleanValue;
-    readUriVal: ReadUriValue;
-    readDecimalVal: ReadDecimalValue;
-    readColorVal: ReadColorValue;
-    readIntervalVal: ReadIntervalValue;
-    readTimeVal: ReadTimeValue;
-    readGeonameVal: ReadGeonameValue;
-    readLinkVal: ReadLinkValue;
-    readDateVal: ReadDateValue;
-    readListVal: ReadListValue;
-
     // type of given displayValue
     // or knora-api-js-lib class representing the value
     valueTypeOrClass: string;
@@ -93,8 +68,6 @@ export class DisplayEditComponent implements OnInit {
 
         // check if comment toggle button should be shown
         this.checkCommentToggleVisibility();
-
-        this.checkValueType();
 
         this.valueTypeOrClass = this.getValueTypeOrClass(this.displayValue);
 
@@ -130,7 +103,6 @@ export class DisplayEditComponent implements OnInit {
             ).subscribe(
             (res2: ReadResource) => {
                 this.displayValue = res2.getValues(this.displayValue.property)[0];
-                this.checkValueType();
                 this.mode = 'read';
 
                 // hide comment once back in read mode
@@ -189,36 +161,6 @@ export class DisplayEditComponent implements OnInit {
             }
         } else {
             return value.type;
-        }
-    }
-
-    checkValueType(): void {
-        if (this.displayValue instanceof ReadTextValueAsString) {
-            this.readTextValAsString = this.displayValue;
-        } else if (this.displayValue instanceof ReadTextValueAsHtml) {
-            this.readTextValAsHtml = this.displayValue;
-        } else if (this.displayValue instanceof ReadIntValue) {
-            this.readIntVal = this.displayValue;
-        } else if (this.displayValue instanceof ReadBooleanValue) {
-            this.readBooleanVal = this.displayValue;
-        } else if (this.displayValue instanceof ReadUriValue) {
-            this.readUriVal = this.displayValue;
-        } else if (this.displayValue instanceof ReadDecimalValue) {
-            this.readDecimalVal = this.displayValue;
-        } else if (this.displayValue instanceof ReadColorValue) {
-            this.readColorVal = this.displayValue;
-        } else if (this.displayValue instanceof ReadIntervalValue) {
-            this.readIntervalVal = this.displayValue;
-        } else if (this.displayValue instanceof ReadTimeValue) {
-            this.readTimeVal = this.displayValue;
-        } else if (this.displayValue instanceof ReadGeonameValue) {
-            this.readGeonameVal = this.displayValue;
-        } else if (this.displayValue instanceof ReadLinkValue) {
-            this.readLinkVal = this.displayValue;
-        } else if (this.displayValue instanceof ReadDateValue) {
-            this.readDateVal = this.displayValue;
-        } else if (this.displayValue instanceof ReadListValue) {
-            this.readListVal = this.displayValue;
         }
     }
 
