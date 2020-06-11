@@ -580,6 +580,7 @@ describe('DisplayEditComponent', () => {
         'uuid');
 
       expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue.id).toEqual('newID');
       expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
 
     });
