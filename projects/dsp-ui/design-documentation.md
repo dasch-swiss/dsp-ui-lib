@@ -132,3 +132,31 @@ The value component's selector is chosen from `valueTypeOrClass`. Since all valu
 Value components may have additional specific inputs for configuration that can be handled in `DisplayEditComponent`'s template as well
 ,e.g., additional configuration of how do display a date.
 
+## Search Module
+
+The search module allows different ways of searching in order to make simple or complex searches in DSP-API.
+This module contains various components you can use to search and all of them can either be used individually or in combination with one another using the search panel.
+
+### Search-panel
+
+This is a fully-customizable panel that allows you to assemble the search components and the filters you need in a configurable way. You can set the following parameters defined as `@Inputs` in dsp-search-panel:
+
+- route: string; url-route for search results
+- filterbyproject: string; project iri to limit search results to a specific project
+- projectfilter: boolean; provides a drop-down menu of all available projects allowing the user to choose which project to search in
+- advanced: boolean; additional menu with advanced / extended search
+- expert: boolean;  additional menu with expert search / Gravsearch "editor"
+
+If everything is set to false or undefined, the search-panel will be a simple full-text search.
+
+### Fulltext search
+
+The full text search quickly finds all instances of a term in DSP-API. It can be restricted to a certain project.
+
+### Expert search
+
+The expert search is a textarea which allows you to manually write Gravsearch queries if you are comfortable with the language and want more precise results.
+
+### Advanced search
+
+The advanced search is a search form in which resource class and its properties related to one specific ontology are selected to create a Gravsearch query.
