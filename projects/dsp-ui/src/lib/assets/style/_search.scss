@@ -1,0 +1,239 @@
+@import "./mixins";
+@import "./responsive";
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+input[type="search"] {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+//
+// color variables
+//
+$bright: rgba(249, 249, 249, 1);
+$grey: rgba(184, 184, 184, 1);
+$dark: rgba(41, 41, 41, 1);
+$black: rgb(11, 11, 11);
+$black-12-opacity: rgba($black, 0.12);
+$black-14-opacity: rgba($black, 0.14);
+$black-20-opacity: rgba($black, 0.2);
+$black-60-opacity: rgba($black, 0.6);
+
+// sizes for search element
+// input field
+$search-width: 480px;
+$extended-search-width: 740px;
+// $search-height: $search-width;
+
+// width on smaller devices
+$search-width-small-device: 360px;
+
+// width of project filter
+$project-filter-width: 160px;
+
+// width of project filter
+$project-filter-width-small-device: 120px;
+
+// general border color
+$border-color: #ebebeb;
+
+// general border radius
+$border-radius: 4px;
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.kui-search-menu {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  background-color: $bright;
+  border-radius: $border-radius;
+  overflow-y: auto;
+  width: calc(#{$search-width} - 32px);
+  min-height: 320px;
+  // height: 100%;
+  margin-top: 6px; // -40px
+  padding: 16px;
+  z-index: -1;
+  position: relative;
+
+  &.with-project-filter {
+    width: calc(#{$search-width} + #{$project-filter-width} - 32px);
+  }
+
+  &.with-extended-search {
+    width: calc(#{$extended-search-width} - 32px);
+  }
+
+  .kui-menu-header {
+    background-color: rgba(249, 249, 249, 1);
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+    display: inline-flex;
+    height: 48px;
+    width: 100%;
+    margin-bottom: 12px;
+
+    .kui-menu-title h4 {
+      margin: 12px 0;
+    }
+  }
+
+  .kui-previous-search-list {
+    .mat-list-item {
+      .kui-previous-search-item {
+        cursor: pointer;
+        padding: 12px !important;
+      }
+
+      &:hover {
+        background-color: $grey;
+
+        .mat-icon {
+          display: inline-block;
+        }
+      }
+
+      .mat-icon {
+        display: none;
+      }
+
+      .kui-previous-search-item {
+        display: inherit;
+
+        .kui-project-filter-label {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: $project-filter-width;
+
+          &.not-empty {
+            &::before {
+              content: "[";
+            }
+            &::after {
+              content: "]";
+            }
+          }
+        }
+
+        .kui-previous-search-query {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .kui-menu-action {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 32px);
+
+    .center {
+      display: block;
+      margin: 12px auto;
+    }
+  }
+}
+
+// form elements
+$full-input-width: 320;
+$gc-large: decimal-floor($full-input-width / 1.618, 0) - 2;
+$gc-small: $full-input-width - $gc-large - 4;
+
+.kui-form-content {
+  width: 100%;
+  position: relative;
+  min-height: 320px;
+  height: 100%;
+
+  .kui-form-action {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: inline-flex;
+  }
+
+  .kui-form-expert-search {
+    bottom: 16px;
+    width: calc(100% - 32px);
+    display: inline-flex;
+  }
+}
+
+.small-field {
+  width: $gc-small + px;
+}
+
+.medium-field {
+  width: $gc-large + px;
+}
+
+.large-field {
+  min-width: $full-input-width + px;
+}
+
+.input-icon {
+  color: $black-60-opacity;
+}
+
+@media (max-width: map-get($grid-breakpoints, desktop)) and (min-width: map-get($grid-breakpoints, tablet)) {
+  .kui-fulltext-search {
+    width: $search-width-small-device;
+
+    &.input-field {
+      input {
+        width: calc(#{$search-width-small-device} - 80px);
+      }
+    }
+  }
+
+  .kui-fulltext-search,
+  .kui-menu.extended-search {
+    width: $search-width-small-device;
+  }
+}
+
+@media (max-width: map-get($grid-breakpoints, tablet)) and (min-width: map-get($grid-breakpoints, phone)) {
+  .kui-fulltext-search-panel {
+    width: $search-width-small-device;
+
+    &.with-project-filter {
+      width: calc(#{$search-width-small-device} + 160px);
+    }
+  }
+
+  .kui-fulltext-search,
+  .kui-menu.extended-search {
+    width: calc(#{$search-width-small-device} - 160px);
+
+    &.with-project-filter {
+      width: 360px !important;
+    }
+  }
+}
+
+.kui-project-filter-menu {
+  width: $project-filter-width;
+
+  .mat-menu-item {
+    text-transform: capitalize;
+  }
+}
+
+.kui-project-filter-menu-mobile {
+  width: calc(100vw - 32px);
+
+  .mat-menu-item {
+    text-transform: capitalize;
+  }
+}
+
+.mat-menu-panel {
+  max-width: 100% !important;
+}
