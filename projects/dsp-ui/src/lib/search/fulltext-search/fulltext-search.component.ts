@@ -253,8 +253,11 @@ export class FulltextSearchComponent implements OnInit {
     }
 
     setFocus(): void {
-        this.prevSearch = JSON.parse(localStorage.getItem('prevSearch'));
-        this.sortingService.reverseArray(this.prevSearch);
+        if (localStorage.getItem('prevSearch') !== null) {
+            this.prevSearch = this.sortingService.reverseArray(JSON.parse(localStorage.getItem('prevSearch')));
+        } else {
+            this.prevSearch = [];
+        }
         this.searchPanelFocus = true;
         this.openPanelWithBackdrop();
     }
@@ -281,13 +284,16 @@ export class FulltextSearchComponent implements OnInit {
             // delete only this item with the name ...
             const i: number = this.prevSearch.indexOf(prevSearch);
             this.prevSearch.splice(i, 1);
-            // TODO: reverse pervSearch here???
             localStorage.setItem('prevSearch', JSON.stringify(this.prevSearch));
         } else {
             // delete the whole "previous search" array
             localStorage.removeItem('prevSearch');
         }
-        this.prevSearch = JSON.parse(localStorage.getItem('prevSearch'));
+        if (localStorage.getItem('prevSearch') !== null) {
+            this.prevSearch = this.sortingService.reverseArray(JSON.parse(localStorage.getItem('prevSearch')));
+        } else {
+            this.prevSearch = [];
+        }
     }
 
     changeFocus() {
