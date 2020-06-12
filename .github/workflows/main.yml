@@ -20,12 +20,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Checkout private ci-assets
-      uses: actions/checkout@v2
-      with:
-        repository: dasch-swiss/dsp-ci-assets
-        token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
-        path: ci
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -41,16 +35,61 @@ jobs:
       env:
           TZ: Europe/Zurich
           CI: true
+
+  build-dev:
+    name: Build lib in dev mode
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run build-lib-dev
+      - run: npm run build-app
+
+
+  e2e-test:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout private ci-assets
+      uses: actions/checkout@v2
+      with:
+        repository: dasch-swiss/dsp-ci-assets
+        token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
+        path: ci
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run build-lib
     - run: |
-        sudo apt-get install expect
         make clone-knora-stack
         make knora-stack
-        npm run webdriver-update
-        npm run e2e
+    - run: npm run webdriver-update
+    - run: npm run e2e
+      env:
+        TZ: Europe/Zurich
+        CI: true
+
 
   publish:
     name: Publish to npm / Update release notes
-    needs: [build-test]
+    needs: [build-test, e2e-test]
     runs-on: ubuntu-latest
     env:
       dist-directory: ./dist/@dasch-swiss/dsp-ui/

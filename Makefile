@@ -63,6 +63,7 @@ clone-knora-stack:
 
 .PHONY: knora-stack
 knora-stack: ## runs the knora-stack
+	sudo apt-get install expect
 	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-without-api
 	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack print-env-file
 	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-config

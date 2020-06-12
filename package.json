@@ -14,6 +14,7 @@
     "test-lib": "ng t --watch=false --browsers=ChromeHeadless --project @dasch-swiss/dsp-ui",
     "test-lib-local": "ng t --project @dasch-swiss/dsp-ui",
     "build-lib": "ng b --prod --project @dasch-swiss/dsp-ui",
+    "build-lib-dev": "ng b --project @dasch-swiss/dsp-ui",
     "yalc-publish-lib": "ng b --prod --project @dasch-swiss/dsp-ui && yalc publish dist/@dasch-swiss/dsp-ui",
     "build-app": "ng b --prod",
     "lint": "ng lint",
