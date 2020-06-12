@@ -22,6 +22,10 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
 
     customValidators = [];
 
+    displayTypes = [];
+
+    preferredDisplayType: string;
+
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
         super();
     }

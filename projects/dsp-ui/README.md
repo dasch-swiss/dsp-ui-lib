@@ -18,7 +18,7 @@ npm install @dasch-swiss/dsp-ui
 
 The module has the following package dependencies, which you also have to install.
 
-<!-- TODO: the following package will be renamed to @dasch-swiss/dsp-js -->
+<!-- TODO: the following package will be renamed to @dasch-swiss/dsp-js and the list of dependencies incl. version will be added to an external matrix file -->
 - [@knora/api](https://www.npmjs.com/package/@knora/api)
 - [jdnconvertiblecalendar@0.0.5](https://www.npmjs.com/package/jdnconvertiblecalendar)
 - [jdnconvertiblecalendardateadapter@0.0.13](https://www.npmjs.com/package/jdnconvertiblecalendardateadapter)
@@ -287,3 +287,5 @@ If you want to improve the elements and help developing, do not hesitate to [con
 Get the developer manual on [docs.dasch.swiss](https://docs.dasch.swiss/developers/knora-ui/contribution/).
 
 The sources for this package are in [dasch-swiss/dsp-ui](https://github.com/dasch-swiss/knora-ui-ng-lib) repo. Please file issues and pull requests on this repo.
+
+For more information on the implementation of this Angular library, consult the design documentation in `design-documentation.md`.

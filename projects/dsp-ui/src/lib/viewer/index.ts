@@ -20,6 +20,3 @@ export * from './operations/display-edit/display-edit.component';
 // view components
 export * from './views/resource-view/resource-view.component';
 export * from './views/property-view/property-view.component';
-// pipes
-export * from './pipes/knoradate.pipe';
-export * from './pipes/formatted-boolean.pipe';

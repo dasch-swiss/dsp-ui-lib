@@ -1,6 +1,6 @@
 {
   "name": "dsp-ui-lib",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/dasch-swiss/knora-ui-ng-lib.git"
@@ -14,10 +14,12 @@
     "test-lib": "ng t --watch=false --browsers=ChromeHeadless --project @dasch-swiss/dsp-ui",
     "test-lib-local": "ng t --project @dasch-swiss/dsp-ui",
     "build-lib": "ng b --prod --project @dasch-swiss/dsp-ui",
+    "build-lib-dev": "ng b --project @dasch-swiss/dsp-ui",
     "yalc-publish-lib": "ng b --prod --project @dasch-swiss/dsp-ui && yalc publish dist/@dasch-swiss/dsp-ui",
     "build-app": "ng b --prod",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e --prod=true --protractor-config=./e2e/protractor.conf.js --webdriver-update=false",
+    "webdriver-update": "webdriver-manager update --standalone false --gecko false --versions.chrome 2.37"
   },
   "private": true,
   "dependencies": {
@@ -31,11 +33,12 @@
     "@angular/platform-browser": "~9.1.2",
     "@angular/platform-browser-dynamic": "~9.1.2",
     "@angular/router": "~9.1.2",
-    "@knora/api": "1.0.0-rc.0",
+    "@knora/api": "1.0.0-rc.1",
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.13",
     "ngx-color-picker": "^9.1.0",
     "rxjs": "~6.5.5",
+    "ts-md5": "^1.2.7",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },

@@ -1,20 +1,20 @@
-import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import {
   Constants,
   KnoraApiConnection,
   PermissionUtil,
   ReadResource,
+  ReadTextValueAsHtml,
+  ReadTextValueAsString,
+  ReadTextValueAsXml,
   ReadValue,
   UpdateResource,
   UpdateValue,
-  WriteValueResponse,
-  ReadTextValueAsString,
-  ReadTextValueAsXml,
-  ReadTextValueAsHtml
+  WriteValueResponse
 } from '@knora/api';
-import {BaseValueComponent} from '../../values/base-value.component';
-import {mergeMap} from 'rxjs/operators';
-import {DspApiConnectionToken} from '../../../core/core.module';
+import { mergeMap } from 'rxjs/operators';
+import { DspApiConnectionToken } from '../../../core/core.module';
+import { BaseValueComponent } from '../../values/base-value.component';
 
 @Component({
   selector: 'dsp-display-edit',

@@ -76,7 +76,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
         this.commentFormControl = new FormControl(null);
 
-        this.ontologyDateSetting = 'dd.MM.YYYY';
+        this.ontologyDateSetting = 'MM.dd.YYYY';
 
         // subscribe to any change on the comment and recheck validity
         this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(

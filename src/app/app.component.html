@@ -1,9 +1,13 @@
+<span>dsp-ui-lib app is running!</span>
 <nav class="navbar">
     <button class="route" mat-raised-button [routerLink]="['/read']" routerLinkActive="mat-accent">
         Read
-    </button> 
+    </button>
     <button class="route" mat-raised-button [routerLink]="['/modify']" routerLinkActive="mat-accent">
         Modify
-    </button> 
+    </button>
+    <button class="route" mat-raised-button [routerLink]="['/action']" routerLinkActive="mat-accent">
+        Action Module
+    </button>
 </nav>
 <router-outlet></router-outlet>
