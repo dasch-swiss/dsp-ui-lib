@@ -11,7 +11,7 @@
   </div>
   <div class="value-component">
     <span [ngSwitch]="valueTypeOrClass">
-        <!-- display value is cast as 'any' because the compiler cannot infer the value type of the child component -->
+        <!-- display value is cast as 'any' because the compiler cannot infer the value type expected by the child component -->
         <dsp-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-string>
         <dsp-text-value-as-html class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-html>
         <dsp-int-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-int-value>
