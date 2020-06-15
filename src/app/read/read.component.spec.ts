@@ -4,7 +4,7 @@ import {ReadComponent} from './read.component';
 import {DspApiConnectionToken} from '@dasch-swiss/dsp-ui';
 import {of} from 'rxjs';
 import {Component, Input} from '@angular/core';
-import {ApiResponseData, AuthenticationEndpointV2, LogoutResponse} from '@knora/api';
+import {ApiResponseData, AuthenticationEndpointV2, LogoutResponse} from '@dasch-swiss/dsp-js';
 
 @Component({
     selector: `dsp-resource-view`,

@@ -9,7 +9,7 @@ import {
   ReadListValue,
   ResourcePropertyDefinition,
   UpdateListValue
-} from '@knora/api';
+} from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { BaseValueComponent } from '../base-value.component';

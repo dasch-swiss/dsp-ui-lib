@@ -7,11 +7,11 @@ This is the demo and developing environment for DSP-UI-LIB ([@dasch-swiss/dsp-ui
 
 The modules help create a GUI to allow the user to use [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/) in a quick and simple way from within a web application. The modules are written in Typescript for use with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
-DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/). DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
+DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@dasch-swiss/dsp-js) to connect with [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/). DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
 DSP-API and DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html) license.
 
-This version of DSP-UI-LIB requires [DSP-API version ^12.0.0](https://github.com/dasch-swiss/knora-api/releases/tag/v12.0.0).
+This version of DSP-UI-LIB requires [DSP-API version ^13.0.0-rc.4](https://github.com/dasch-swiss/knora-api/releases/tag/v13.0.0-rc.4).
 
 ## Library modules
 
@@ -147,7 +147,7 @@ Documentation can be found on [DSP-UI-LIB Github page](https://dasch-swiss.githu
 
 #### YALC
 
-In some cases we have to work with unpublished npm packages like our own [@knora/api](https://github.com/dasch-swiss/knora-api-js-lib), a JavaScript library that allows a developer to implement the DSP API without knowing technical details about it.
+In some cases we have to work with unpublished npm packages like our own [@dasch-swiss/dsp-js](https://github.com/dasch-swiss/knora-api-js-lib), a JavaScript library that allows a developer to implement the DSP API without knowing technical details about it.
 To publish and add local packages we use [yalc](https://www.npmjs.com/package/yalc). Yalc publishes the packages to a local store (not the npm website).
 From there, the packages can be added to your project.
 
@@ -188,7 +188,7 @@ yalc remove --all
 rm -rf node_modules
 rm package-lock.json
 npm install
-yalc add @knora/api
+yalc add @dasch-swiss/dsp-js
 npm install
 ```
 

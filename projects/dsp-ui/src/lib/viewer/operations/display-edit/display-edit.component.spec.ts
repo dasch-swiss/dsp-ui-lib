@@ -25,7 +25,7 @@ import {
     ReadLinkValue,
     ReadListValue,
     ReadGeonameValue
-} from '@knora/api';
+} from '@dasch-swiss/dsp-js';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';

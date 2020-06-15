@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {DateInputComponent} from './date-input.component';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {KnoraDate, KnoraPeriod} from '@knora/api';
+import {KnoraDate, KnoraPeriod} from '@dasch-swiss/dsp-js';
 import {JDNDatepickerDirective} from '../../jdn-datepicker-directive/jdndatepicker.directive';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';

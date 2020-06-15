@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TextValueAsStringComponent } from './text-value-as-string.component';
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
-import { CreateTextValueAsString, MockResource, ReadTextValueAsString, UpdateTextValueAsString } from '@knora/api';
+import { CreateTextValueAsString, MockResource, ReadTextValueAsString, UpdateTextValueAsString } from '@dasch-swiss/dsp-js';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

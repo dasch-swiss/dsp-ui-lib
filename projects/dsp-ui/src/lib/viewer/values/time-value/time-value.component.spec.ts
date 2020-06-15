@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TimeValueComponent} from './time-value.component';
 import {Component, DebugElement, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
-import {CreateTimeValue, MockResource, ReadTimeValue, UpdateTimeValue, KnoraDate} from '@knora/api';
+import {CreateTimeValue, MockResource, ReadTimeValue, UpdateTimeValue, KnoraDate} from '@dasch-swiss/dsp-js';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';

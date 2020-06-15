@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
-import { ApiResponseError } from '@knora/api';
+import { ApiResponseError } from '@dasch-swiss/dsp-js';
 
 @Component({
   selector: 'app-action-playground',

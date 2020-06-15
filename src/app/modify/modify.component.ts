@@ -5,7 +5,7 @@ import {
   ApiResponseError,
   KnoraApiConnection,
   LoginResponse
-} from '@knora/api';
+} from '@dasch-swiss/dsp-js';
 
 @Component({
   selector: 'app-modify',
