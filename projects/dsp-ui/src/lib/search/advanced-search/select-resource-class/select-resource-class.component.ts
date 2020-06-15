@@ -1,6 +1,17 @@
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Inject,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ResourceClassDefinition } from '@knora/api';
+import { Subscription } from 'rxjs';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -10,7 +21,7 @@ const resolvedPromise = Promise.resolve(null);
     templateUrl: './select-resource-class.component.html',
     styleUrls: ['./select-resource-class.component.scss']
 })
-export class SelectResourceClassComponent implements OnInit, OnChanges {
+export class SelectResourceClassComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() formGroup: FormGroup;
 
@@ -29,13 +40,15 @@ export class SelectResourceClassComponent implements OnInit, OnChanges {
     // stores the currently selected resource class
     private _selectedResourceClassIri: string;
 
+    ontologyChangesSubscription: Subscription;
+
     form: FormGroup;
 
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     }
 
     /**
-     * Initalizes the FormGroup for the resource class selection.
+     * Initialises the FormGroup for the resource class selection.
      * The initial value is set to null.
      */
     private initForm() {
@@ -45,7 +58,7 @@ export class SelectResourceClassComponent implements OnInit, OnChanges {
         });
 
         // store and emit Iri of the resource class when selected
-        this.form.valueChanges.subscribe((data) => {
+        this.ontologyChangesSubscription = this.form.valueChanges.subscribe((data) => {
             this._selectedResourceClassIri = data.resourceClass;
             this.resourceClassSelected.emit(this._selectedResourceClassIri);
         });
@@ -76,6 +89,12 @@ export class SelectResourceClassComponent implements OnInit, OnChanges {
 
             });
 
+        }
+    }
+
+    ngOnDestroy() {
+        if (this.ontologyChangesSubscription !== undefined) {
+            this.ontologyChangesSubscription.unsubscribe();
         }
     }
 
