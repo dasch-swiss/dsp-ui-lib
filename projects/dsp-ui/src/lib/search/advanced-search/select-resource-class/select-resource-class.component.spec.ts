@@ -15,7 +15,7 @@ import { MatOptionModule } from '@angular/material/core';
  */
 @Component({
     template: `
-        <dsp-select-resource-class #selectResClass [formGroup]="form" [resourceClasses]="resourceClasses"
+        <dsp-select-resource-class #selectResClass [formGroup]="form" [resourceClassDefinitions]="resourceClasses"
                                    (resourceClassSelected)="resClassSelected($event)"></dsp-select-resource-class>`
 })
 class TestHostComponent implements OnInit {
