@@ -98,27 +98,28 @@ describe('SelectResourceClassComponent', () => {
         expect(testHostComponent.selectResourceClass).toBeTruthy();
     });
 
-    fit('should init the MatSelect and MatOptions correctly', async () => {
+    it('should init the MatSelect and MatOptions correctly', async () => {
 
         const select = await loader.getHarness(MatSelectHarness);
         const initVal = await select.getValueText();
 
         // placeholder
-        expect(initVal).toEqual('Select an Ontology');
+        expect(initVal).toEqual('Select a Resource Class (optional)');
 
         await select.open();
 
         const options = await select.getOptions();
 
-        expect(options.length).toEqual(2);
+        expect(options.length).toEqual(9);
 
         const option1 = await options[0].getText();
 
-        expect(option1).toEqual('anythingOnto');
+        expect(option1).toEqual('no selection');
 
         const option2 = await options[1].getText();
 
-        expect(option2).toEqual('somethingOnto');
+        expect(option2).toEqual('Blue thing');
+
 
     });
 });
