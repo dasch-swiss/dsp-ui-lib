@@ -4,9 +4,12 @@ import { SelectOntologyComponent } from './advanced-search/select-ontology/selec
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SelectResourceClassComponent } from './advanced-search/select-resource-class/select-resource-class.component';
 
 @NgModule({
-    declarations: [SelectOntologyComponent],
+    declarations: [
+        SelectOntologyComponent,
+        SelectResourceClassComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,

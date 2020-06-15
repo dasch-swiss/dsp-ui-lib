@@ -19,7 +19,7 @@ import { MatSelectHarness } from '@angular/material/select/testing';
         <dsp-select-ontology #selectOnto [formGroup]="form" [ontologiesMetadata]="ontoMetadata"
                              (ontologySelected)="ontoSelected($event)"></dsp-select-ontology>`
 })
-class TestHostDisplayValueComponent implements OnInit {
+class TestHostComponent implements OnInit {
 
     @ViewChild('selectOnto') selectOntology: SelectOntologyComponent;
 
@@ -55,8 +55,8 @@ class TestHostDisplayValueComponent implements OnInit {
 }
 
 describe('SelectOntologyComponent', () => {
-    let testHostComponent: TestHostDisplayValueComponent;
-    let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
 
     let loader: HarnessLoader;
 
@@ -70,13 +70,13 @@ describe('SelectOntologyComponent', () => {
             ],
             declarations: [
                 SelectOntologyComponent,
-                TestHostDisplayValueComponent]
+                TestHostComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
+        testHostFixture = TestBed.createComponent(TestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
         loader = TestbedHarnessEnvironment.loader(testHostFixture);
 
