@@ -27,7 +27,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
     form: FormGroup;
 
-    selectedOntoIri: number;
+    selectedOntoIri: string;
 
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     }
@@ -49,7 +49,7 @@ class TestHostDisplayValueComponent implements OnInit {
         this.ontoMetadata.ontologies = [anythingOnto, somethingOnto];
     }
 
-    ontoSelected(ontoIri: number) {
+    ontoSelected(ontoIri: string) {
         this.selectedOntoIri = ontoIri;
     }
 }
@@ -109,6 +109,24 @@ describe('SelectOntologyComponent', () => {
         const option2 = await options[1].getText();
 
         expect(option2).toEqual('somethingOnto');
+
+    });
+
+    it('should emit the Iri of a select ontology', async () => {
+
+        expect(testHostComponent.selectedOntoIri).toBeUndefined();
+
+        const select = await loader.getHarness(MatSelectHarness);
+
+        await select.open();
+
+        const options = await select.getOptions({text: 'anythingOnto'});
+
+        expect(options.length).toEqual(1);
+
+        await options[0].click();
+
+        expect(testHostComponent.selectedOntoIri).toEqual('anyid');
 
     });
 });

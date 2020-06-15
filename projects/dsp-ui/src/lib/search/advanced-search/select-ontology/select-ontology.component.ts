@@ -29,7 +29,7 @@ export class SelectOntologyComponent implements OnInit {
 
         // emit Iri of the ontology when selected
         this.form.valueChanges.subscribe((data) => {
-            this.ontologySelected.emit(data.ontology);
+            this.ontologySelected.emit(data.ontologies);
         });
 
         // add form to the parent form group
