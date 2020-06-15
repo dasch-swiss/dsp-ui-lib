@@ -15,7 +15,16 @@ import {
     UpdateResource,
     UpdateValue,
     ValuesEndpointV2,
-    WriteValueResponse
+    WriteValueResponse,
+    ReadBooleanValue,
+    ReadUriValue,
+    ReadDecimalValue,
+    ReadColorValue,
+    ReadIntervalValue,
+    ReadTimeValue,
+    ReadLinkValue,
+    ReadListValue,
+    ReadGeonameValue
 } from '@knora/api';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -294,7 +303,7 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsStringComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadTextValueAsString).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
@@ -314,7 +323,7 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsHtmlComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadTextValueAsHtml).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
@@ -325,7 +334,7 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent).toBeTruthy();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestIntValueComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadIntValue).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
@@ -336,7 +345,7 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent).toBeTruthy();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestBooleanValueComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadBooleanValue).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
@@ -347,7 +356,7 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent).toBeTruthy();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestUriValueComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadUriValue).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
@@ -357,7 +366,7 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestDecimalValueComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadDecimalValue).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
@@ -367,7 +376,7 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestColorValueComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadColorValue).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
@@ -377,7 +386,7 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestIntervalValueComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadIntervalValue).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
@@ -387,7 +396,7 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTimeValueComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadTimeValue).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
@@ -397,11 +406,33 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestLinkValueComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue).not.toBeUndefined();
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadLinkValue).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
       expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).parentResource instanceof ReadResource).toBe(true);
       expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
 
+    });
+
+    it('should choose the apt component for a list value in the template', () => {
+        testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasListItem');
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.displayEditValueComponent).toBeTruthy();
+
+        expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestListValueComponent).toBe(true);
+        expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadListValue).toBe(true);
+        expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+    });
+
+    it('should choose the apt component for a geoname value in the template', () => {
+        testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasGeoname');
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.displayEditValueComponent).toBeTruthy();
+
+        expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestGeonameValueComponent).toBe(true);
+        expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadGeonameValue).toBe(true);
+        expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
     });
 
   });
@@ -580,6 +611,7 @@ describe('DisplayEditComponent', () => {
         'uuid');
 
       expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue.id).toEqual('newID');
       expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
 
     });
