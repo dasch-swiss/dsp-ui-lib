@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { CreateBooleanValue, ReadBooleanValue, UpdateBooleanValue } from '@knora/api';
+import { CreateBooleanValue, ReadBooleanValue, UpdateBooleanValue } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 

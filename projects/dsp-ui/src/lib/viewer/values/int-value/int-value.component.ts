@@ -1,6 +1,6 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
-import {CreateIntValue, ReadIntValue, UpdateIntValue} from '@knora/api';
+import {CreateIntValue, ReadIntValue, UpdateIntValue} from '@dasch-swiss/dsp-js';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomRegex} from '../custom-regex';

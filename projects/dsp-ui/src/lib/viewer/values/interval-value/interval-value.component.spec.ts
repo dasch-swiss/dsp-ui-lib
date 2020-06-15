@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IntervalValueComponent } from './interval-value.component';
 import { Component, DebugElement, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
-import { CreateIntervalValue, MockResource, ReadIntervalValue, UpdateIntervalValue } from '@knora/api';
+import { CreateIntervalValue, MockResource, ReadIntervalValue, UpdateIntervalValue } from '@dasch-swiss/dsp-js';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';

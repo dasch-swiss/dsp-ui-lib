@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReadGeonameValue, MockResource, UpdateGeonameValue, CreateGeonameValue } from '@knora/api';
+import { ReadGeonameValue, MockResource, UpdateGeonameValue, CreateGeonameValue } from '@dasch-swiss/dsp-js';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';

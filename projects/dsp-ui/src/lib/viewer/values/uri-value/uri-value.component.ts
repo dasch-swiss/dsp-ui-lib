@@ -1,7 +1,7 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
-import {CreateUriValue, ReadUriValue, UpdateUriValue} from '@knora/api';
+import {CreateUriValue, ReadUriValue, UpdateUriValue} from '@dasch-swiss/dsp-js';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomRegex} from '../custom-regex';

@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DateValueComponent} from './date-value.component';
 import {Component, DebugElement, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
-import {CreateDateValue, KnoraDate, KnoraPeriod, MockResource, ReadDateValue, UpdateDateValue} from '@knora/api';
+import {CreateDateValue, KnoraDate, KnoraPeriod, MockResource, ReadDateValue, UpdateDateValue} from '@dasch-swiss/dsp-js';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';

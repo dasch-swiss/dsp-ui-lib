@@ -1,5 +1,5 @@
 import { KnoraDatePipe } from './knoradate.pipe';
-import { KnoraDate } from '@knora/api';
+import { KnoraDate } from '@dasch-swiss/dsp-js';
 
 describe('KnoradatePipe', () => {
     it('create an instance', () => {

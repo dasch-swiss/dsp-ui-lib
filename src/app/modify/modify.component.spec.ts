@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Component, Input } from '@angular/core';
 import { DspActionModule, DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
-import { ApiResponseData, AuthenticationEndpointV2, LoginResponse } from '@knora/api';
+import { ApiResponseData, AuthenticationEndpointV2, LoginResponse } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { ModifyComponent } from './modify.component';
 

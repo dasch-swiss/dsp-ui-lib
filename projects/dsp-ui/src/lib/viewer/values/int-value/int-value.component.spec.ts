@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IntValueComponent } from './int-value.component';
-import { ReadIntValue, MockResource, UpdateValue, UpdateIntValue, CreateIntValue } from '@knora/api';
+import { ReadIntValue, MockResource, UpdateValue, UpdateIntValue, CreateIntValue } from '@dasch-swiss/dsp-js';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';

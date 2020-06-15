@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockResource, ReadResource, PropertyDefinition, ResourcesEndpointV2 } from '@knora/api';
+import { MockResource, ReadResource, PropertyDefinition, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
 import { map } from 'rxjs/internal/operators/map';
 import { DspApiConnectionToken } from '../../../core';
 import { ResourceViewComponent, PropertyInfoValues } from './resource-view.component';

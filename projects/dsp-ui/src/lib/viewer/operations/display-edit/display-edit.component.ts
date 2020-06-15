@@ -11,7 +11,7 @@ import {
   UpdateResource,
   UpdateValue,
   WriteValueResponse
-} from '@knora/api';
+} from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { BaseValueComponent } from '../../values/base-value.component';

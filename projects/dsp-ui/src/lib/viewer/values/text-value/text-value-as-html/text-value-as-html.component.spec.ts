@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {TextValueAsHtmlComponent} from './text-value-as-html.component';
-import {ReadTextValueAsHtml} from '@knora/api';
+import {ReadTextValueAsHtml} from '@dasch-swiss/dsp-js';
 import {OnInit, ViewChild, Component, DebugElement} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';

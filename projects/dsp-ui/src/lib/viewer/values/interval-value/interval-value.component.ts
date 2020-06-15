@@ -1,7 +1,7 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
-import {CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue} from '@knora/api';
+import {CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue} from '@dasch-swiss/dsp-js';
 import {
     FormBuilder,
     FormControl,

@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CreateColorValue, ReadColorValue, UpdateColorValue } from '@knora/api';
+import { CreateColorValue, ReadColorValue, UpdateColorValue } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';

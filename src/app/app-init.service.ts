@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { KnoraApiConfig, KnoraApiConnection } from '@knora/api';
+import { KnoraApiConfig, KnoraApiConnection } from '@dasch-swiss/dsp-js';
 
 @Injectable({
   providedIn: 'root'
