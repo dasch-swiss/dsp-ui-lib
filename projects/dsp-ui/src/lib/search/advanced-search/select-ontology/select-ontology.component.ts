@@ -1,13 +1,14 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OntologiesMetadata } from '@knora/api';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'dsp-select-ontology',
   templateUrl: './select-ontology.component.html',
   styleUrls: ['./select-ontology.component.scss']
 })
-export class SelectOntologyComponent implements OnInit {
+export class SelectOntologyComponent implements OnInit, OnDestroy {
 
     @Input() formGroup: FormGroup;
 
@@ -16,6 +17,8 @@ export class SelectOntologyComponent implements OnInit {
     @Output() ontologySelected = new EventEmitter<string>();
 
     form: FormGroup;
+
+    ontologyChangesSubscription: Subscription;
 
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     }
@@ -28,13 +31,19 @@ export class SelectOntologyComponent implements OnInit {
         });
 
         // emit Iri of the ontology when selected
-        this.form.valueChanges.subscribe((data) => {
+        this.ontologyChangesSubscription = this.form.valueChanges.subscribe((data) => {
             this.ontologySelected.emit(data.ontologies);
         });
 
         // add form to the parent form group
         this.formGroup.addControl('ontologies', this.form);
 
+    }
+
+    ngOnDestroy() {
+        if (this.ontologyChangesSubscription !== undefined) {
+           this.ontologyChangesSubscription.unsubscribe();
+        }
     }
 
 }

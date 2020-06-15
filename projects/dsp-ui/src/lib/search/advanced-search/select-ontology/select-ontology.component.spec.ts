@@ -129,4 +129,14 @@ describe('SelectOntologyComponent', () => {
         expect(testHostComponent.selectedOntoIri).toEqual('anyid');
 
     });
+
+    it('should unsubscribe from from changes on destruction', () => {
+
+        expect(testHostComponent.selectOntology.ontologyChangesSubscription.closed).toBe(false);
+
+        testHostFixture.destroy();
+
+        expect(testHostComponent.selectOntology.ontologyChangesSubscription.closed).toBe(true);
+
+    });
 });
