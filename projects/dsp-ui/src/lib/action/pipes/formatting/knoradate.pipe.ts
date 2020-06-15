@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { KnoraDate } from '@knora/api';
+import { KnoraDate } from '@dasch-swiss/dsp-js';
 
 @Pipe({
     name: 'knoraDate'

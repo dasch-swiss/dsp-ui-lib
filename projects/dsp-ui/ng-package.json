@@ -4,7 +4,7 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
-      "@knora/api": "@knora/api",
+      "@dasch-swiss/dsp-js": "@dasch-swiss/dsp-js",
       "ngx-color-picker": "ngxColorPicker",
       "jdnconvertiblecalendar": "jdnconvertiblecalendar",
       "jdnconvertiblecalendardateadapter": "jdnconvertiblecalendardateadapter",

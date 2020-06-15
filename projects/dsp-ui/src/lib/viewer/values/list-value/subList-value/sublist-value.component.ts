@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatMenu } from '@angular/material/menu';
-import { ListNodeV2 } from '@knora/api';
+import { ListNodeV2 } from '@dasch-swiss/dsp-js';
 
 @Component({
   selector: 'dsp-sublist-value',

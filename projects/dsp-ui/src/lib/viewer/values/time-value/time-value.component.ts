@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, OnDestroy, ViewChild, Input, Inject, SimpleChanges } from '@angular/core';
 import { TimeInputComponent } from './time-input/time-input.component';
-import { ReadTimeValue, CreateTimeValue, UpdateTimeValue } from '@knora/api';
+import { ReadTimeValue, CreateTimeValue, UpdateTimeValue } from '@dasch-swiss/dsp-js';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';

@@ -1,5 +1,5 @@
 import { Input, Directive } from '@angular/core';
-import { CreateValue, ReadValue, UpdateValue } from '@knora/api';
+import { CreateValue, ReadValue, UpdateValue } from '@dasch-swiss/dsp-js';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 

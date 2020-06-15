@@ -6,7 +6,7 @@ import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-
 import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MockResource, ReadColorValue, UpdateColorValue, CreateColorValue } from '@knora/api';
+import { MockResource, ReadColorValue, UpdateColorValue, CreateColorValue } from '@dasch-swiss/dsp-js';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { Subject } from 'rxjs';
 import { ColorValueComponent } from './color-value.component';

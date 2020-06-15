@@ -7,7 +7,7 @@ import {
     ReadResource,
     ReadValue,
     SystemPropertyDefinition
-} from '@knora/api';
+} from '@dasch-swiss/dsp-js';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 import { PropertyViewComponent } from './property-view.component';
 
