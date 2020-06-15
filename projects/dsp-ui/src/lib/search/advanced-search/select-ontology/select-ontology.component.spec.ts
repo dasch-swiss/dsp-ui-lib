@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectOntologyComponent } from './select-ontology.component';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { OntologiesMetadata, OntologyMetadata } from '@knora/api';
+import { OntologiesMetadata, OntologyMetadata } from '@dasch-swiss/dsp-js';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';

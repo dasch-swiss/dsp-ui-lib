@@ -10,7 +10,7 @@ import {
     SimpleChanges
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ResourceClassDefinition } from '@knora/api';
+import { ResourceClassDefinition } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror

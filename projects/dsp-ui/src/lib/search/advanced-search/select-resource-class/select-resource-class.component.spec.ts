@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectResourceClassComponent } from './select-resource-class.component';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MockOntology, ResourceClassDefinition } from '@knora/api';
+import { MockOntology, ResourceClassDefinition } from '@dasch-swiss/dsp-js';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
