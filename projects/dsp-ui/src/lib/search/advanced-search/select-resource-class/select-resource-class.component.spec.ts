@@ -120,6 +120,16 @@ describe('SelectResourceClassComponent', () => {
 
         expect(option2).toEqual('Blue thing');
 
+    });
+
+    it('should unsubscribe from from changes on destruction', () => {
+
+        expect(testHostComponent.selectResourceClass.ontologyChangesSubscription.closed).toBe(false);
+
+        testHostFixture.destroy();
+
+        expect(testHostComponent.selectResourceClass.ontologyChangesSubscription.closed).toBe(true);
 
     });
+
 });

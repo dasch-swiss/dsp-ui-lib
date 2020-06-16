@@ -57,11 +57,22 @@ export class SelectResourceClassComponent implements OnInit, OnChanges, OnDestro
             resourceClass: [null] // resource class selection is optional
         });
 
+        this.closeOntologyChangesSubscription();
+
         // store and emit Iri of the resource class when selected
         this.ontologyChangesSubscription = this.form.valueChanges.subscribe((data) => {
             this._selectedResourceClassIri = data.resourceClass;
             this.resourceClassSelected.emit(this._selectedResourceClassIri);
         });
+    }
+
+    /**
+     * Unsubscribe from form changes.
+     */
+    private closeOntologyChangesSubscription() {
+        if (this.ontologyChangesSubscription !== undefined) {
+            this.ontologyChangesSubscription.unsubscribe();
+        }
     }
 
     ngOnInit(): void {
@@ -93,9 +104,7 @@ export class SelectResourceClassComponent implements OnInit, OnChanges, OnDestro
     }
 
     ngOnDestroy() {
-        if (this.ontologyChangesSubscription !== undefined) {
-            this.ontologyChangesSubscription.unsubscribe();
-        }
+        this.closeOntologyChangesSubscription();
     }
 
 }
