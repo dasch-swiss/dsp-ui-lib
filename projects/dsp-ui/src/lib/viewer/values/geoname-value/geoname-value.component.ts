@@ -1,6 +1,6 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../base-value.component';
-import {CreateGeonameValue, ReadGeonameValue, UpdateGeonameValue} from '@knora/api';
+import {CreateGeonameValue, ReadGeonameValue, UpdateGeonameValue} from '@dasch-swiss/dsp-js';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import { CustomRegex } from '../custom-regex';

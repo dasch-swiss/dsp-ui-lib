@@ -1,7 +1,7 @@
 <div class="grid-container">
   <div class="property-header">
     <h4 class="label">
-      {{displayValue.propertyLabel}}
+        {{displayValue.propertyLabel}}
     </h4>
     <button mat-button
             class="info"
@@ -11,22 +11,23 @@
   </div>
   <div class="value-component">
     <span [ngSwitch]="valueTypeOrClass">
-      <dsp-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-string>
-      <dsp-text-value-as-html class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]=$any(displayValue)></dsp-text-value-as-html>
-      <dsp-int-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]=$any(displayValue)></dsp-int-value>
-      <dsp-boolean-value class="parent-value-component" #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]=$any(displayValue)></dsp-boolean-value>
-      <dsp-uri-value class="parent-value-component" #displayVal *ngSwitchCase="constants.UriValue" [mode]="mode" [displayValue]=$any(displayValue)></dsp-uri-value>
-      <dsp-decimal-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DecimalValue" [mode]="mode" [displayValue]=$any(displayValue)></dsp-decimal-value>
-      <dsp-color-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ColorValue" [mode]="mode" [displayValue]=$any(displayValue)></dsp-color-value>
-      <dsp-interval-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]=$any(displayValue)></dsp-interval-value>
-      <dsp-time-value class="parent-value-component" #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]=$any(displayValue)></dsp-time-value>
-      <dsp-geoname-value class="parent-value-component" #displayVal *ngSwitchCase="constants.GeonameValue" [mode]="mode" [displayValue]=$any(displayValue)></dsp-geoname-value>
-      <dsp-link-value class="parent-value-component" #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]=$any(displayValue)
+        <!-- display value is cast as 'any' because the compiler cannot infer the value type expected by the child component -->
+        <dsp-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-string>
+        <dsp-text-value-as-html class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-html>
+        <dsp-int-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-int-value>
+        <dsp-boolean-value class="parent-value-component" #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-boolean-value>
+        <dsp-uri-value class="parent-value-component" #displayVal *ngSwitchCase="constants.UriValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-uri-value>
+        <dsp-decimal-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DecimalValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-decimal-value>
+        <dsp-color-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ColorValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-color-value>
+        <dsp-interval-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-interval-value>
+        <dsp-time-value class="parent-value-component" #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-time-value>
+        <dsp-geoname-value class="parent-value-component" #displayVal *ngSwitchCase="constants.GeonameValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-geoname-value>
+        <dsp-link-value class="parent-value-component" #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="$any(displayValue)"
                     [parentResource]="parentResource" [propIri]="displayValue.property"></dsp-link-value>
-      <dsp-date-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode" [displayValue]=$any(displayValue)></dsp-date-value>
-      <dsp-list-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode" [displayValue]=$any(displayValue)
+        <dsp-date-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-date-value>
+        <dsp-list-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode" [displayValue]="$any(displayValue)"
                     [propertyDef]="$any(parentResource.entityInfo.properties[displayValue.property])"></dsp-list-value>
-      <span *ngSwitchDefault>{{displayValue.strval}}</span>
+        <span *ngSwitchDefault>{{displayValue.strval}}</span>
     </span>
   </div>
   <!-- TEMPORARY CODE: TO HIDE BUTTONS FOR VALUE COMPONENTS NOT YET IMPLEMENTED -->

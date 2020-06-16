@@ -1,7 +1,7 @@
 import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {BaseValueComponent} from '../../base-value.component';
 import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
-import {CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString} from '@knora/api';
+import {CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString} from '@dasch-swiss/dsp-js';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Subscription} from 'rxjs';
 

@@ -1,10 +1,11 @@
 import { InjectionToken, NgModule } from '@angular/core';
-import { KnoraApiConfig, KnoraApiConnection } from '@knora/api';
+// import { DspConfig } from './core.config';
+import { KnoraApiConfig, KnoraApiConnection } from '@dasch-swiss/dsp-js';
 
-// config for knora-api-js-lib (@knora/api) config object
+// config for dsp-js-lib (@dasch-swiss/dsp-js) config object
 export const DspApiConfigToken = new InjectionToken<KnoraApiConfig>('DSP api configuration');
 
-// connection config for knora-api-js-lib (@knora/api) connection
+// connection config for dsp-js-lib (@dasch-swiss/dsp-js) connection
 export const DspApiConnectionToken = new InjectionToken<KnoraApiConnection>('DSP api connection instance');
 
 @NgModule({
