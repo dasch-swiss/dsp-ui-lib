@@ -57,6 +57,9 @@ export class SelectResourceClassComponent implements OnInit, OnChanges, OnDestro
             resourceClass: [null] // resource class selection is optional
         });
 
+        // reset on updates of @Input resourceClassDefinitions
+        this._selectedResourceClassIri = undefined;
+
         this.closeOntologyChangesSubscription();
 
         // store and emit Iri of the resource class when selected

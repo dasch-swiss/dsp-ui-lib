@@ -178,6 +178,9 @@ describe('SelectResourceClassComponent', () => {
 
     it('should update the resource class definitions when the @Input changes', async () => {
 
+        // simulate an existing resource class selection
+        testHostComponent.selectResourceClass['_selectedResourceClassIri'] = 'http://0.0.0.0:3333/ontology/0001/anything/v2#BlueThing';
+
         const resClasses = MockOntology.mockReadOntology('http://api.knora.org/ontology/knora-api/v2').classes;
 
         const resClassIris = Object.keys(resClasses);
@@ -206,6 +209,8 @@ describe('SelectResourceClassComponent', () => {
         const options = await select.getOptions();
 
         expect(options.length).toEqual(13);
+
+        expect(testHostComponent.selectResourceClass.selectedResourceClassIri).toBe(false);
 
     });
 
