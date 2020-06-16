@@ -88,6 +88,19 @@ describe('SelectOntologyComponent', () => {
         expect(testHostComponent.selectOntology).toBeTruthy();
     });
 
+    it('should add a new control to the parent form', () => {
+
+        expect(testHostComponent.form.contains('ontologies')).toBe(true);
+
+    });
+
+    it('should initialise the ontologies\' metadata', () => {
+
+        expect(testHostComponent.selectOntology.ontologiesMetadata.ontologies).toBeDefined();
+        expect(testHostComponent.selectOntology.ontologiesMetadata.ontologies.length).toEqual(2);
+
+    });
+
     it('should init the MatSelect and MatOptions correctly', async () => {
 
         const select = await loader.getHarness(MatSelectHarness);
