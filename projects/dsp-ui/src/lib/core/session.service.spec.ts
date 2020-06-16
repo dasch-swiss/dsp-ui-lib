@@ -1,8 +1,7 @@
 import { async, TestBed } from '@angular/core/testing';
-import { KnoraApiConfig, KnoraApiConnection, UsersEndpointAdmin, ApiResponseData, UserResponse, ApiResponseError, User, ReadUser } from '@knora/api';
+import { KnoraApiConfig, KnoraApiConnection } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
-import { SessionService, Session } from './session.service';
-import { of, Observable } from 'rxjs';
+import { SessionService } from './session.service';
 
 describe('SessionService', () => {
 
