@@ -112,7 +112,7 @@ describe('SelectOntologyComponent', () => {
 
     });
 
-    it('should emit the Iri of a select ontology', async () => {
+    it('should emit the Iri of a selected ontology', async () => {
 
         expect(testHostComponent.selectedOntoIri).toBeUndefined();
 

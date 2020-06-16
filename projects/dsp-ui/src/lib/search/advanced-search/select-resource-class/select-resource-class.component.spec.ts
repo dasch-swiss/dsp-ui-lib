@@ -98,6 +98,12 @@ describe('SelectResourceClassComponent', () => {
         expect(testHostComponent.selectResourceClass).toBeTruthy();
     });
 
+    it('should add a new control to the parent form', () => {
+
+        expect(testHostComponent.form.contains('resourceClass')).toBe(true);
+
+    });
+
     it('should init the MatSelect and MatOptions correctly', async () => {
 
         const select = await loader.getHarness(MatSelectHarness);
@@ -119,6 +125,27 @@ describe('SelectResourceClassComponent', () => {
         const option2 = await options[1].getText();
 
         expect(option2).toEqual('Blue thing');
+
+    });
+
+    it('should emit the Iri of a selected resource class', async () => {
+
+        expect(testHostComponent.selectedResClassIri).toBeUndefined();
+        expect(testHostComponent.selectResourceClass.selectedResourceClassIri).toBe(false);
+
+        const select = await loader.getHarness(MatSelectHarness);
+
+        await select.open();
+
+        const options = await select.getOptions({text: 'Blue thing'});
+
+        expect(options.length).toEqual(1);
+
+        await options[0].click();
+
+        expect(testHostComponent.selectedResClassIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#BlueThing');
+
+        expect(testHostComponent.selectResourceClass.selectedResourceClassIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#BlueThing');
 
     });
 
