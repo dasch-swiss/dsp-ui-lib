@@ -104,6 +104,12 @@ describe('SelectResourceClassComponent', () => {
 
     });
 
+    it('should initialise the resource class definitions correctly', () => {
+
+        expect(testHostComponent.selectResourceClass.resourceClassDefinitions.length).toEqual(8);
+
+    });
+
     it('should init the MatSelect and MatOptions correctly', async () => {
 
         const select = await loader.getHarness(MatSelectHarness);
@@ -146,6 +152,60 @@ describe('SelectResourceClassComponent', () => {
         expect(testHostComponent.selectedResClassIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#BlueThing');
 
         expect(testHostComponent.selectResourceClass.selectedResourceClassIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#BlueThing');
+
+    });
+
+    it('should select the option "no selection"', async () => {
+
+        expect(testHostComponent.selectedResClassIri).toBeUndefined();
+        expect(testHostComponent.selectResourceClass.selectedResourceClassIri).toBe(false);
+
+        const select = await loader.getHarness(MatSelectHarness);
+
+        await select.open();
+
+        const options = await select.getOptions({text: 'no selection'});
+
+        expect(options.length).toEqual(1);
+
+        await options[0].click();
+
+        expect(testHostComponent.selectedResClassIri).toBe(null);
+
+        expect(testHostComponent.selectResourceClass.selectedResourceClassIri).toBe(false);
+
+    });
+
+    it('should update the resource class definitions when the @Input changes', async () => {
+
+        const resClasses = MockOntology.mockReadOntology('http://api.knora.org/ontology/knora-api/v2').classes;
+
+        const resClassIris = Object.keys(resClasses);
+
+        // get resource class defs
+        testHostComponent.resourceClassDefs = resClassIris.filter(resClassIri => {
+            return typeGuard(resClasses[resClassIri], ResourceClassDefinition);
+        }).map(
+            (resClassIri: string) => {
+                return resClasses[resClassIri] as ResourceClassDefinition;
+            }
+        );
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.selectResourceClass.resourceClassDefinitions.length).toEqual(12);
+
+        const select = await loader.getHarness(MatSelectHarness);
+        const initVal = await select.getValueText();
+
+        // placeholder
+        expect(initVal).toEqual('Select a Resource Class (optional)');
+
+        await select.open();
+
+        const options = await select.getOptions();
+
+        expect(options.length).toEqual(13);
 
     });
 
