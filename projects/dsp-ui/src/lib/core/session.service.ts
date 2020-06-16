@@ -7,7 +7,7 @@ import {
         KnoraApiConnection,
         UserResponse,
         Constants
-    } from '@knora/api';
+    } from '@dasch-swiss/dsp-js';
 
 import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
 
@@ -149,7 +149,7 @@ export class SessionService {
                         // the knora api credentials are still valid
                         // console.log('knora api credentials', response);
 
-                        // refresh the jwt in @knora/api
+                        // refresh the jwt in @dasch-swiss/dsp-js
                         this.updateKnoraApiConnection(session.user.jwt);
 
                         // update the session.id
@@ -211,7 +211,7 @@ export class SessionService {
     }
 
     /**
-     * Update the knora-api-config and knora-api-connection of @knora/api
+     * Update the knora-api-config and knora-api-connection of @dasch-swiss/dsp-js
      *
      * @param  {string} jwt?
      */
