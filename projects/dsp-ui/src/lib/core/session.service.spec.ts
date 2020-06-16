@@ -65,14 +65,14 @@ describe('SessionService', () => {
         expect(service).toBeTruthy();
     });
 
-    it('should store a users jwt in local storage', () => {
+    // it('should store a users jwt in local storage', () => {
 
-        service.setSession('jwtToken', 'root', 'username');
+    //     service.setSession('jwtToken', 'root', 'username');
 
-        const ls = JSON.parse(localStorage.getItem('session')) as Session;
+    //     const ls = JSON.parse(localStorage.getItem('session')) as Session;
 
-        console.log(ls);
+    //     console.log(ls);
 
-        expect(ls.user.jwt).toEqual('jwtToken');
-    });
+    //     expect(ls.user.jwt).toEqual('jwtToken');
+    // });
 });
