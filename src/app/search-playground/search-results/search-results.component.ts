@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-search-results',
@@ -17,12 +17,16 @@ export class SearchResultsComponent implements OnInit {
     constructor(private _route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.searchQuery = this._route.snapshot.paramMap.get('q');
-        console.log('searchQuery', this.searchQuery);
-        this.searchMode = this._route.snapshot.paramMap.get('mode');
-        console.log('searchMode', this.searchMode);
-        this.projectIri = decodeURIComponent(this._route.snapshot.paramMap.get('project'));
-        console.log('projectIri', this.projectIri);
+        this._route.paramMap.subscribe(
+            (params: Params) => {
+                this.searchQuery = params.get('q');
+                this.searchMode = params.get('mode');
+                if (params.get('project') && (this.projectIri !== decodeURIComponent(params.get('project')))) {
+                    this.projectIri = decodeURIComponent(params.get('project'));
+                } else {
+                    this.projectIri = 'All projects';
+                }
+            });
     }
 
 }
