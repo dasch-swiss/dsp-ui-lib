@@ -37,6 +37,7 @@ import { CalendarHeaderComponent } from './values/date-value/calendar-header/cal
 import { DateInputComponent } from './values/date-value/date-input/date-input.component';
 import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndatepicker.directive';
 import { DspActionModule } from '../action';
+import { AddValueComponent } from './operations/add-value/add-value.component';
 
 @NgModule({
     declarations: [
@@ -63,6 +64,7 @@ import { DspActionModule } from '../action';
         ListValueComponent,
         SublistValueComponent,
         GeonameValueComponent,
+        AddValueComponent,
     ],
     imports: [
         CommonModule,
@@ -96,6 +98,7 @@ import { DspActionModule } from '../action';
         ResourceViewComponent,
         ListValueComponent,
         GeonameValueComponent,
+        AddValueComponent
     ]
 })
 export class DspViewerModule {

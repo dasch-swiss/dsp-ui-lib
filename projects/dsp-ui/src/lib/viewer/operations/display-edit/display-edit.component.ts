@@ -10,11 +10,14 @@ import {
   ReadValue,
   UpdateResource,
   UpdateValue,
-  WriteValueResponse
+  WriteValueResponse,
+  DeleteValue,
+  DeleteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { BaseValueComponent } from '../../values/base-value.component';
+import { EventBusService, EmitEvent, Events } from '../../services/event-bus.service';
 
 @Component({
   selector: 'dsp-display-edit',
@@ -54,7 +57,9 @@ export class DisplayEditComponent implements OnInit {
 
     private readonly readTextValueAsHtml = 'ReadTextValueAsHtml';
 
-    constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+    constructor(@Inject(DspApiConnectionToken)
+                private knoraApiConnection: KnoraApiConnection,
+                private eventBusService: EventBusService) {
     }
 
     ngOnInit() {
@@ -128,6 +133,32 @@ export class DisplayEditComponent implements OnInit {
         // check if comment toggle button should be shown
         this.checkCommentToggleVisibility();
     }
+
+    deleteValue() {
+        const deleteVal = new DeleteValue();
+        deleteVal.id = this.displayValue.id;
+        deleteVal.type = this.displayValue.type;
+
+        const updateRes = new UpdateResource();
+        updateRes.type = this.parentResource.type;
+        updateRes.id = this.parentResource.id;
+        updateRes.property = this.displayValue.property;
+        updateRes.value = deleteVal;
+
+        console.log('updateRes: ', updateRes);
+
+        this.knoraApiConnection.v2.values.deleteValue(updateRes as UpdateResource<DeleteValue>).pipe(
+          mergeMap((res: DeleteValueResponse) => {
+            console.log('res: ', res);
+            this.eventBusService.emit(new EmitEvent(Events.ValueDeleted));
+            return res.result;
+          })
+        ).subscribe(
+          () => {
+            // TODO: figure out what needs to be done here
+          }
+        );
+      }
 
     // shows or hides the comment
     toggleComment() {
