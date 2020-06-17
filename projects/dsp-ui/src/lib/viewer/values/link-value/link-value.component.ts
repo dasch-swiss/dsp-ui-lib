@@ -7,7 +7,7 @@ import {
     UpdateLinkValue,
     KnoraApiConnection,
     ReadResourceSequence
-} from '@knora/api';
+} from '@dasch-swiss/dsp-js';
 import {Subscription} from 'rxjs';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import {DspApiConnectionToken} from '../../../core/core.module';

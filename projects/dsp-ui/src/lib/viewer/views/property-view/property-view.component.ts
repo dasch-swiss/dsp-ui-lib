@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
-import { ReadResource, SystemPropertyDefinition } from '@knora/api';
+import { ReadResource, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
 
 @Component({
   selector: 'dsp-property-view',

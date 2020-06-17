@@ -1,6 +1,6 @@
 import {Component, OnInit, Inject, Input, ElementRef} from '@angular/core';
 import {BaseValueComponent} from '../../base-value.component';
-import {ReadTextValueAsHtml} from '@knora/api';
+import {ReadTextValueAsHtml} from '@dasch-swiss/dsp-js';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {Subscription} from 'rxjs';
 

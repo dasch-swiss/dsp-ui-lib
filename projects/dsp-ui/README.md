@@ -2,11 +2,11 @@
 
 The modules help create a GUI to allow the user to use [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/) in a quick and simple way from within a web application. The modules are written in Typescript for use with **[Angular](https://angular.io) (version 9)**. We decided to style components and directives with [Angular Material design](https://material.angular.io).
 
-DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to connect with DSP API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
+DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@dasch-swiss/dsp-js) to connect with DSP API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
 
 DSP-API and DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
 
-This version of DSP-UI-LIB **requires [DSP-API version ^12.0.0](https://github.com/dasch-swiss/knora-api/releases/tag/v12.0.0).**
+This version of DSP-UI-LIB requires [DSP-API version ^13.0.0-rc.4](https://github.com/dasch-swiss/knora-api/releases/tag/v13.0.0-rc.4).
 
 ## Installation
 
@@ -19,7 +19,7 @@ npm install @dasch-swiss/dsp-ui
 The module has the following package dependencies, which you also have to install.
 
 <!-- TODO: the following package will be renamed to @dasch-swiss/dsp-js and the list of dependencies incl. version will be added to an external matrix file -->
-- [@knora/api](https://www.npmjs.com/package/@knora/api)
+- [@dasch-swiss/dsp-js](https://www.npmjs.com/package/@dasch-swiss/dsp-js)
 - [jdnconvertiblecalendar@0.0.5](https://www.npmjs.com/package/jdnconvertiblecalendar)
 - [jdnconvertiblecalendardateadapter@0.0.13](https://www.npmjs.com/package/jdnconvertiblecalendardateadapter)
 - [ngx-color-picker@9.1.0](https://www.npmjs.com/package/ngx-color-picker)
@@ -68,7 +68,7 @@ ng generate service app-init
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { KnoraApiConfig, KnoraApiConnection } from '@knora/api';
+import { KnoraApiConfig, KnoraApiConnection } from '@dasch-swiss/dsp-js';
 
 @Injectable({
   providedIn: 'root'
@@ -214,12 +214,12 @@ export class AppModule { }
 ```
 
 <!-- example of component e.g. get all projects and display as a list -->
-The **DspCoreModule** is a configuration handler for [`@knora/api`](https://www.npmjs.com/package/@knora/api) which offers all the services to make [DSP-API requests](https://docs.dasch.swiss/developers/knora/api-reference/queries/). The following ProjectsComponent example shows how to implement the two libraries to get all projects form DSP-API:
+The **DspCoreModule** is a configuration handler for [`@dasch-swiss/dsp-js`](https://www.npmjs.com/package/@dasch-swiss/dsp-js) which offers all the services to make [DSP-API requests](https://docs.dasch.swiss/developers/knora/api-reference/queries/). The following ProjectsComponent example shows how to implement the two libraries to get all projects form DSP-API:
 
 ```typescript
 import { Component, Inject, OnInit } from '@angular/core';
 import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
-import { ApiResponseData, ApiResponseError, KnoraApiConnection, ProjectsResponse, ReadProject } from '@knora/api';
+import { ApiResponseData, ApiResponseError, KnoraApiConnection, ProjectsResponse, ReadProject } from '@dasch-swiss/dsp-js';
 
 @Component({
   selector: 'app-projects',

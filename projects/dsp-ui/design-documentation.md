@@ -111,7 +111,7 @@ This is [necessary](https://indepth.dev/never-again-be-confused-when-implementin
 #### Operation Components
 
 Operation components work with any value. They control the value components' inputs `displayValue` and `mode`.
-They are responsible for the communication with the Knora API using `@knora/api` when updating or creating a value.
+They are responsible for the communication with the Knora API using `@dasch-swiss/dsp-js` when updating or creating a value.
 
 `DisplayEditComponent` is an operation component that displays an existing value and makes it editable
  if the user has the necessary permissions.

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UriValueComponent } from './uri-value.component';
-import { ReadUriValue, MockResource, UpdateValue, UpdateUriValue, CreateUriValue } from '@knora/api';
+import { ReadUriValue, MockResource, UpdateValue, UpdateUriValue, CreateUriValue } from '@dasch-swiss/dsp-js';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';

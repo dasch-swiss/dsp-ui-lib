@@ -12,7 +12,7 @@ import {
   Validators
 } from '@angular/forms';
 import {MatFormFieldControl} from '@angular/material/form-field';
-import {KnoraDate, KnoraPeriod} from '@knora/api';
+import {KnoraDate, KnoraPeriod} from '@dasch-swiss/dsp-js';
 import {CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, mixinErrorState} from '@angular/material/core';
 import {Subject} from 'rxjs';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';

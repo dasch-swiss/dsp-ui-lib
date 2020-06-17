@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { BooleanValueComponent } from './boolean-value.component';
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
-import { ReadBooleanValue, MockResource, UpdateBooleanValue, CreateBooleanValue } from '@knora/api';
+import { ReadBooleanValue, MockResource, UpdateBooleanValue, CreateBooleanValue } from '@dasch-swiss/dsp-js';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormattedBooleanPipe } from '../../../action/pipes/formatting/formatted-boolean.pipe';

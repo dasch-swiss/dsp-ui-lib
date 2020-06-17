@@ -9,7 +9,7 @@ import {
     CreateListValue,
     ResourcePropertyDefinition,
     ListsEndpointV2
-} from '@knora/api';
+} from '@dasch-swiss/dsp-js';
 import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
