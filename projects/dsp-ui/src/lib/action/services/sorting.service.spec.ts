@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { SortingService } from './sorting.service';
+import { ReadProject } from '@dasch-swiss/dsp-js';
 
 describe('SortingService', () => {
   let service: SortingService;
@@ -108,6 +109,31 @@ describe('SortingService', () => {
                 { firstname: 'Gyro', lastname: 'Gearloose', creator: 'Carl Barks' },
                 { firstname: 'Charlie', lastname: 'Brown', creator: 'Charles M. Schulz' }
             ]);
+    });
+
+    it('should sort an array of ReadProject by "longname"', () => {
+
+        const project1 = new ReadProject();
+        project1.id = '1';
+        project1.longname = 'a';
+
+        const project2 = new ReadProject();
+        project2.id = '2';
+        project1.longname = 'b';
+
+        const project3 = new ReadProject();
+        project3.id = '3';
+        project1.longname = 'c';
+
+        // ReadProject[]
+        const projects = [project2, project3, project1];
+
+        const sorted = service.keySortByAlphabetical(projects, 'longname');
+
+        expect(sorted).toEqual(
+            [project1, project2, project3]
+        );
+
     });
   });
 
