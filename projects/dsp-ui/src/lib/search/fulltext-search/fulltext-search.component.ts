@@ -1,9 +1,28 @@
 import { ConnectionPositionPair, Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Inject,
+    Input,
+    OnInit,
+    Output,
+    TemplateRef,
+    ViewChild,
+    ViewContainerRef
+} from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
-import { ApiResponseData, ApiResponseError, Constants, KnoraApiConnection, ProjectResponse, ProjectsResponse, ReadProject } from '@knora/api';
+import {
+    ApiResponseData,
+    ApiResponseError,
+    Constants,
+    KnoraApiConnection,
+    ProjectResponse,
+    ProjectsResponse,
+    ReadProject
+} from '@dasch-swiss/dsp-js';
 import { SortingService } from '../../action/services/sorting.service';
 import { DspApiConnectionToken } from '../../core';
 
