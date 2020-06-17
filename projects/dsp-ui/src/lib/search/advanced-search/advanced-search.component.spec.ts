@@ -8,7 +8,6 @@ import { DspApiConnectionToken } from '../../core';
 import { OntologiesEndpointV2, OntologiesMetadata, OntologyMetadata } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
-import { IntValueComponent } from '../../viewer';
 
 /**
  * Test component to simulate select ontology component.

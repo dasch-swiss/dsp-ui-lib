@@ -3,7 +3,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DspApiConfigToken, DspApiConnectionToken, DspCoreModule, DspViewerModule, DspActionModule } from '@dasch-swiss/dsp-ui';
+import {
+    DspApiConfigToken,
+    DspApiConnectionToken,
+    DspCoreModule,
+    DspViewerModule,
+    DspActionModule,
+    DspSearchModule
+} from '@dasch-swiss/dsp-ui';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 
 import { AppInitService } from './app-init.service';
@@ -13,6 +20,7 @@ import { ActionPlaygroundComponent } from './action-playground/action-playground
 import { AppComponent } from './app.component';
 import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
+import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
 
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
@@ -25,7 +33,8 @@ export function initializeApp(appInitService: AppInitService) {
     AppComponent,
     ModifyComponent,
     ReadComponent,
-    ActionPlaygroundComponent
+    ActionPlaygroundComponent,
+    AdvancedSearchPlaygroundComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +43,7 @@ export function initializeApp(appInitService: AppInitService) {
     DspCoreModule,
     DspViewerModule,
     DspActionModule,
+    DspSearchModule,
     MatJDNConvertibleCalendarDateAdapterModule,
     MatButtonModule,
     MatListModule
