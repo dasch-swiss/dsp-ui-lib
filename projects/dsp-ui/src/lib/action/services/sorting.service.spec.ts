@@ -125,7 +125,6 @@ describe('SortingService', () => {
         project3.id = '3';
         project1.longname = 'c';
 
-        // ReadProject[]
         const projects = [project2, project3, project1];
 
         const sorted = service.keySortByAlphabetical(projects, 'longname');
