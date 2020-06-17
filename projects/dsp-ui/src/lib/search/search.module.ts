@@ -6,19 +6,23 @@ import { MatOptionModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SelectResourceClassComponent } from './advanced-search/select-resource-class/select-resource-class.component';
 import { SelectPropertyComponent } from './advanced-search/select-property/select-property.component';
+import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 
 @NgModule({
     declarations: [
         SelectOntologyComponent,
         SelectResourceClassComponent,
-        SelectPropertyComponent],
+        SelectPropertyComponent,
+        AdvancedSearchComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         MatSelectModule,
         MatOptionModule
     ],
-    exports: []
+    exports: [
+        AdvancedSearchComponent
+    ]
 })
 export class DspSearchModule {
 }
