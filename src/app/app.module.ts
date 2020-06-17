@@ -19,6 +19,7 @@ import { AppComponent } from './app.component';
 import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
+import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
 
 
 
@@ -34,7 +35,8 @@ export function initializeApp(appInitService: AppInitService) {
     ModifyComponent,
     ReadComponent,
     ActionPlaygroundComponent,
-    SearchPlaygroundComponent
+    SearchPlaygroundComponent,
+    SearchResultsComponent
   ],
   imports: [
     BrowserModule,

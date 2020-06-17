@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
-  selector: 'app-search-playground',
-  templateUrl: './search-playground.component.html',
-  styleUrls: ['./search-playground.component.scss']
+    selector: 'app-search-playground',
+    templateUrl: './search-playground.component.html',
+    styleUrls: ['./search-playground.component.scss']
 })
-export class SearchPlaygroundComponent implements OnInit {
+export class SearchPlaygroundComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+    constructor() { }
 
 }

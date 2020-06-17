@@ -4,6 +4,7 @@ import { ActionPlaygroundComponent } from './action-playground/action-playground
 import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
+import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
 
 
 const routes: Routes = [
@@ -11,7 +12,20 @@ const routes: Routes = [
   { path: 'read', component: ReadComponent }, // readonly view component
   { path: 'modify', component: ModifyComponent}, // modify view component
   { path: 'action', component: ActionPlaygroundComponent}, // action playground component
-  { path: 'search', component: SearchPlaygroundComponent} // action playground component
+  {
+    path: 'search',
+    component: SearchPlaygroundComponent, // search playground component
+        children: [
+            {
+                path: ':mode/:q',
+                component: SearchResultsComponent
+            },
+            {
+                path: ':mode/:q/:project',
+                component: SearchResultsComponent
+            }
+        ]
+  }
 ];
 
 @NgModule({
