@@ -88,12 +88,12 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
 
-        if (this.propertyChangesSubscription !== undefined) {
-            this.propertyChangesSubscription.unsubscribe();
-        }
-
         // remove form from the parent form group
         resolvedPromise.then(() => {
+            if (this.propertyChangesSubscription !== undefined) {
+                this.propertyChangesSubscription.unsubscribe();
+            }
+
             this.formGroup.removeControl(this.propIndex);
         });
     }
