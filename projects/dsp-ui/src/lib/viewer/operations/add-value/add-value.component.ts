@@ -92,7 +92,6 @@ export class AddValueComponent implements OnInit {
                 ).subscribe(
                     (res2: ReadResource) => {
                     // console.log(this.parentResource);
-                    // this.valueAdded.emit(null);
                     this.eventBusService.emit(new EmitEvent(Events.ValueAdded));
                     }
                 );

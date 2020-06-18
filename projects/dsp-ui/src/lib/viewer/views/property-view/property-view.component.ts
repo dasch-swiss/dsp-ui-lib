@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, Input, AfterViewInit, OnChanges } from '@angular/core';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
-import { ReadResource, SystemPropertyDefinition, ReadValue, PermissionUtil } from '@dasch-swiss/dsp-js';
+import { ReadResource, SystemPropertyDefinition, ReadValue, PermissionUtil, ReadDateValue, KnoraDate, Constants, ReadIntervalValue } from '@dasch-swiss/dsp-js';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
+import { ParseReadDateValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-date-value';
 
 @Component({
   selector: 'dsp-property-view',
@@ -38,6 +39,8 @@ export class PropertyViewComponent implements OnInit {
     addValueFormIsVisible: boolean; // used to toggle add value form field
     newValue: ReadValue;
 
+    constants = Constants;
+
     constructor() { }
 
     ngOnInit() {
@@ -56,7 +59,7 @@ export class PropertyViewComponent implements OnInit {
     }
 
     showAddValueForm(prop: PropertyInfoValues) {
-        this.newValue = new ReadValue();
+        this.newValue = this.getNewValueType(prop.propDef.objectType);
 
         // TODO: get user permission level
         this.newValue.userHasPermission = this.parentResource.userHasPermission;
@@ -66,6 +69,7 @@ export class PropertyViewComponent implements OnInit {
 
         this.addValueFormIsVisible = true;
         this.addButtonIsVisible = false;
+
         console.log('prop: ', prop);
         console.log('newValue: ', this.newValue);
     }
@@ -73,6 +77,15 @@ export class PropertyViewComponent implements OnInit {
     hideAddValueForm(emitterMessage?: string) {
         this.addValueFormIsVisible = false;
         this.addButtonIsVisible = true;
+    }
+
+    getNewValueType(value: string): ReadValue {
+        switch (value) {
+            case this.constants.IntervalValue:
+                return new ReadIntervalValue();
+            default:
+                return new ReadValue();
+        }
     }
 
 }
