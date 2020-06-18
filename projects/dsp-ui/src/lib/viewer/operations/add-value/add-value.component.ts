@@ -76,7 +76,6 @@ export class AddValueComponent implements OnInit {
             const updateRes = new UpdateResource();
             updateRes.id = this.parentResource.id;
             updateRes.type = this.parentResource.type;
-            // this.validValue(updateRes);
 
             // TODO: get the property name of the corresponding value type
             updateRes.property = this.displayValue.id;

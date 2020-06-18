@@ -26,16 +26,15 @@ class DspAddValueTestComponent implements OnInit {
     ngOnInit() {
 
         MockResource.getTestthing().subscribe(res => {
-        this.readResource = res;
+            this.readResource = res;
 
-        this.mode = 'read';
+            this.mode = 'read';
         });
     }
 
     // assigns a value when called -> dsp-add-value will be instantiated
     assignValue(prop: string, comment?: string) {
-        const readVal =
-        this.readResource.getValues(prop)[0];
+        const readVal = this.readResource.getValues(prop)[0];
 
         readVal.userHasPermission = 'M';
 
@@ -44,9 +43,9 @@ class DspAddValueTestComponent implements OnInit {
     }
 }
 
-fdescribe('AddValueComponent', () => {
-    let component: AddValueComponent;
-    let fixture: ComponentFixture<AddValueComponent>;
+describe('AddValueComponent', () => {
+    let testHostComponent: DspAddValueTestComponent;
+    let testHostFixture: ComponentFixture<DspAddValueTestComponent>;
 
     beforeEach(async(() => {
 
@@ -71,12 +70,12 @@ fdescribe('AddValueComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(AddValueComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+        testHostFixture = TestBed.createComponent(DspAddValueTestComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
     });
 
     it('should create', () => {
-        expect(component).toBeTruthy();
+        expect(testHostComponent).toBeTruthy();
     });
 });
