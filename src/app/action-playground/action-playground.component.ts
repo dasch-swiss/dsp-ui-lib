@@ -9,8 +9,6 @@ import { ApiResponseError } from '@dasch-swiss/dsp-js';
 })
 export class ActionPlaygroundComponent implements OnInit {
 
-    sortingService: SortingService = new SortingService();
-
     sortProps: any = [
         {
             key: 'firstname',
@@ -86,7 +84,7 @@ export class ActionPlaygroundComponent implements OnInit {
         error: 'error message'
     };
 
-    constructor() { }
+    constructor(private sortingService: SortingService) { }
 
     ngOnInit(): void {
         this.refresh();
