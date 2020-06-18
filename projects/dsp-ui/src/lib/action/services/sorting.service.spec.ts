@@ -126,11 +126,11 @@ describe('SortingService', () => {
 
             project2 = new ReadProject();
             project2.id = '2';
-            project1.longname = 'b';
+            project2.longname = 'b';
 
             project3 = new ReadProject();
             project3.id = '3';
-            project1.longname = 'c';
+            project3.longname = 'c';
 
             projects = [project2, project3, project1];
         });
