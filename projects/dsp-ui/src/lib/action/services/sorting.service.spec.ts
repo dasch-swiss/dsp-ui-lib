@@ -117,6 +117,7 @@ describe('SortingService', () => {
         let project1: ReadProject;
         let project2: ReadProject;
         let project3: ReadProject;
+        let project4: ReadProject;
         let projects: ReadProject[];
 
         beforeEach(() => {
@@ -132,7 +133,11 @@ describe('SortingService', () => {
             project3.id = '3';
             project3.longname = 'c';
 
-            projects = [project2, project3, project1];
+            project4 = new ReadProject();
+            project4.id = '23';
+            project4.longname = 'z';
+
+            projects = [project4, project2, project3, project1];
         });
 
         it('should sort an array of ReadProject by "longname"', () => {
@@ -140,7 +145,7 @@ describe('SortingService', () => {
             const sorted = service.keySortByAlphabetical(projects, 'longname');
 
             expect(sorted).toEqual(
-                [project1, project2, project3]
+                [project1, project2, project3, project4]
             );
 
         });
@@ -150,7 +155,7 @@ describe('SortingService', () => {
             const sorted = service.keySortByAlphabetical(projects, 'longname', true);
 
             expect(sorted).toEqual(
-                [project3, project2, project1]
+                [project4, project3, project2, project1]
             );
 
         });
