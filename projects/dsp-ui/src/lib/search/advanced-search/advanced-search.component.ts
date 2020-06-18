@@ -1,7 +1,21 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DspApiConnectionToken } from '../../core';
-import { ApiResponseError, KnoraApiConnection, OntologiesMetadata } from '@dasch-swiss/dsp-js';
+import {
+    ApiResponseError,
+    ClassDefinition,
+    KnoraApiConnection,
+    OntologiesMetadata,
+    ResourceClassDefinition
+} from '@dasch-swiss/dsp-js';
+import { Properties } from './select-property/select-property.component';
+
+// https://dev.to/krumpet/generic-type-guard-in-typescript-258l
+type Constructor<T> = { new(...args: any[]): T };
+
+const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
+    return o instanceof className;
+};
 
 @Component({
     selector: 'dsp-advanced-search',
@@ -17,6 +31,16 @@ export class AdvancedSearchComponent implements OnInit {
 
     // form validation status
     formValid = false;
+
+    activeOntology: string;
+
+    activeResourceClass: ResourceClassDefinition;
+
+    resourceClasses: ResourceClassDefinition[];
+
+    activeProperties: boolean[] = [];
+
+    properties: Properties;
 
     constructor(
         @Inject(FormBuilder) private fb: FormBuilder,
@@ -39,10 +63,49 @@ export class AdvancedSearchComponent implements OnInit {
             });
     }
 
+    /**
+     * Given a map of class definitions,
+     * returns an array of resource class definitions.
+     *
+     * @param classDefs a map of class definitions
+     */
+    private makeResourceClassesArray(classDefs: { [index: string]: ClassDefinition}): ResourceClassDefinition[] {
+
+        const classIris = Object.keys(classDefs);
+
+        // get resource class defs
+        return classIris.filter(resClassIri => {
+            return typeGuard(classDefs[resClassIri], ResourceClassDefinition);
+        }).map(
+            (resClassIri: string) => {
+                return classDefs[resClassIri] as ResourceClassDefinition;
+            }
+        );
+
+    }
+
+    /**
+     * Initialises resources classes and properties,
+     * when an ontology is selected
+     *
+     * @param ontologyIri the Iri of the selected ontology.
+     */
     getResourceClassesAndPropertiesForOntology(ontologyIri: string) {
+
+        // reset active resource class definition
+        this.activeResourceClass = undefined;
+
+        // reset specified properties
+        this.activeProperties = [];
+
+        this.activeOntology = ontologyIri;
+
         this.knoraApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
             onto => {
-                console.log(onto);
+
+                this.resourceClasses = this.makeResourceClassesArray(onto.get(ontologyIri).classes);
+
+                // this.properties = onto.get(ontologyIri).properties;
             },
             err => {
                 console.error(err);

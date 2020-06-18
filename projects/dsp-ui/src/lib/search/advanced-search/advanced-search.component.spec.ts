@@ -157,6 +157,14 @@ describe('AdvancedSearchComponent', () => {
 
         (selectOntoComp.componentInstance as TestSelectOntologyComponent).ontologySelected.emit('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.advancedSearch.activeOntology).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
+        expect(testHostComponent.advancedSearch.activeResourceClass).toEqual(undefined);
+        expect(testHostComponent.advancedSearch.resourceClasses.length).toEqual(8);
+
+
+
         expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledTimes(1);
         expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledWith('http://0.0.0.0:3333/ontology/0001/anything/v2');
 

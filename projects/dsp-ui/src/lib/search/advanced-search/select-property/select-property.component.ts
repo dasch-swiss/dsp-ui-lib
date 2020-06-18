@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
 
-interface Properties {
+export interface Properties {
     [index: string]: ResourcePropertyDefinition;
 }
 
