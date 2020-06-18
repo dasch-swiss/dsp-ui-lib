@@ -15,7 +15,7 @@ import {
     ReadValue,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { EventBusService, Events } from '../../services/event-bus.service';
 

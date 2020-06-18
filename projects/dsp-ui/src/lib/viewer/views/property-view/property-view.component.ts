@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, AfterViewInit, OnChanges } from '@angular/core';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
-import { ReadResource, SystemPropertyDefinition, ReadValue } from '@dasch-swiss/dsp-js';
+import { ReadResource, SystemPropertyDefinition, ReadValue, PermissionUtil } from '@dasch-swiss/dsp-js';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { AddValueComponent } from '../../operations/add-value/add-value.componen
 })
 export class PropertyViewComponent implements OnInit {
 
-    @ViewChild('displayEdit') displayEditComponent: DisplayEditComponent;
+    @ViewChild('displayEdit', { static: false}) displayEditComponent: DisplayEditComponent;
     @ViewChild('addValue', { static: false}) addValueComponent: AddValueComponent;
     /**
      * Parent resource
@@ -34,33 +34,45 @@ export class PropertyViewComponent implements OnInit {
      */
     @Input() systemPropArray: SystemPropertyDefinition[];
 
-    createAllowed: boolean; // used to toggle add value button
-    createMode: boolean; // used to toggle add value form field
+    addButtonIsVisible: boolean; // used to toggle add value button
+    addValueFormIsVisible: boolean; // used to toggle add value form field
     newValue: ReadValue;
 
     constructor() { }
 
     ngOnInit() {
-        this.createAllowed = true;
+        if (this.parentResource) {
+            // get user permissions
+            const allPermissions = PermissionUtil.allUserPermissions(
+                this.parentResource.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR'
+            );
+
+            // if user has modify permissions, set createAllowed to true so the user see's the add button
+            this.addButtonIsVisible = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
+        }
+
+        console.log(this.propArray);
+
     }
 
     showAddValueForm(prop: PropertyInfoValues) {
         this.newValue = new ReadValue();
 
         // TODO: get user permission level
-        this.newValue.userHasPermission = 'CR';
+        this.newValue.userHasPermission = this.parentResource.userHasPermission;
 
-        console.log('prop: ', prop);
         this.newValue.type = prop.propDef.objectType;
         this.newValue.id = prop.propDef.id;
 
-        this.createMode = true;
-        this.createAllowed = false;
+        this.addValueFormIsVisible = true;
+        this.addButtonIsVisible = false;
+        console.log('prop: ', prop);
+        console.log('newValue: ', this.newValue);
     }
 
     hideAddValueForm(emitterMessage?: string) {
-    this.createMode = false;
-    this.createAllowed = true;
+        this.addValueFormIsVisible = false;
+        this.addButtonIsVisible = true;
     }
 
 }

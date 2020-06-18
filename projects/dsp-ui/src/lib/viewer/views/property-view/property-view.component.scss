@@ -1,0 +1,30 @@
+.property-header .label,
+.property-header .info {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.property-header .label {
+    margin: 0em;
+    font: 400 15px/24px Roboto, "Helvetica Neue", sans-serif;
+    color: #0000008a;
+}
+
+.info {
+    cursor: pointer;
+    border: none;
+    padding: 0em;
+    margin-left: 1em;
+    outline: none;
+    background-color: transparent;
+    color: #000000;
+}
+
+.info .material-icons {
+    font-size: 18px;
+}
+
+.info .mat-icon {
+    width: 18px;
+    height: 18px;
+}

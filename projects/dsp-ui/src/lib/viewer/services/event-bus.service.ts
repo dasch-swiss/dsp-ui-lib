@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/internal/Subject';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Injectable({
