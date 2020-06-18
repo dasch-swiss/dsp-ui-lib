@@ -10,7 +10,8 @@ import {
     OntologiesEndpointV2,
     OntologiesMetadata,
     OntologyMetadata,
-    ReadOntology
+    ReadOntology,
+    ResourceClassDefinition
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
@@ -30,6 +31,27 @@ class TestSelectOntologyComponent implements OnInit {
     @Input() ontologiesMetadata: OntologiesMetadata;
 
     @Output() ontologySelected = new EventEmitter<string>();
+
+    ngOnInit() {
+
+    }
+
+}
+
+/**
+ * Test component to simulate select ontology component.
+ */
+@Component({
+    selector: 'dsp-select-resource-class',
+    template: ``
+})
+class TestSelectResourceClassComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    @Input() resourceClassDefinitions: ResourceClassDefinition[];
+
+    @Output() resourceClassSelected = new EventEmitter<string>();
 
     ngOnInit() {
 
@@ -67,7 +89,7 @@ describe('AdvancedSearchComponent', () => {
         };
 
         TestBed.configureTestingModule({
-            declarations: [AdvancedSearchComponent, TestHostComponent, TestSelectOntologyComponent],
+            declarations: [AdvancedSearchComponent, TestHostComponent, TestSelectOntologyComponent, TestSelectResourceClassComponent],
             imports: [
                 ReactiveFormsModule,
                 BrowserAnimationsModule
@@ -163,7 +185,9 @@ describe('AdvancedSearchComponent', () => {
         expect(testHostComponent.advancedSearch.activeResourceClass).toEqual(undefined);
         expect(testHostComponent.advancedSearch.resourceClasses.length).toEqual(8);
 
+        const selectResClassComp = hostCompDe.query(By.directive(TestSelectResourceClassComponent));
 
+        expect((selectResClassComp.componentInstance as TestSelectResourceClassComponent).resourceClassDefinitions.length).toEqual(8);
 
         expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledTimes(1);
         expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledWith('http://0.0.0.0:3333/ontology/0001/anything/v2');

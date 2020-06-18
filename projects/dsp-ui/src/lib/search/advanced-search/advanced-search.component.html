@@ -1,7 +1,13 @@
 <form [formGroup]="form" (ngSubmit)="submit()" class="kui-form-content">
 
-    <div>
-        <dsp-select-ontology *ngIf="ontologiesMetadata?.ontologies.length > 0" [formGroup]="form" [ontologiesMetadata]="ontologiesMetadata"
+    <div *ngIf="ontologiesMetadata?.ontologies.length > 0">
+        <dsp-select-ontology [formGroup]="form" [ontologiesMetadata]="ontologiesMetadata"
                              (ontologySelected)="getResourceClassesAndPropertiesForOntology($event)"></dsp-select-ontology>
+    </div>
+
+    <div class="select-resource-class" *ngIf="resourceClasses?.length > 0">
+        <dsp-select-resource-class #resourceClass [formGroup]="form" [resourceClassDefinitions]="resourceClasses"
+                                   (resourceClassSelected)="getPropertiesForResourceClass($event)">
+        </dsp-select-resource-class>
     </div>
 </form>

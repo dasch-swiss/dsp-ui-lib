@@ -113,6 +113,10 @@ export class AdvancedSearchComponent implements OnInit {
         );
     }
 
+    getPropertiesForResourceClass(resClassIri: string) {
+        console.log(resClassIri);
+    }
+
     /**
      * @ignore
      * Validates form and returns its status (boolean).
