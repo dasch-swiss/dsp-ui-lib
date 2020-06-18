@@ -40,7 +40,14 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     getResourceClassesAndPropertiesForOntology(ontologyIri: string) {
-
+        this.knoraApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
+            onto => {
+                console.log(onto);
+            },
+            err => {
+                console.error(err);
+            }
+        );
     }
 
     /**
