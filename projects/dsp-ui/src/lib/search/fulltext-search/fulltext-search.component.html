@@ -16,7 +16,7 @@
                         (click)="setProject();changeFocus()">{{defaultProjectLabel}}</button>
                 <mat-divider></mat-divider>
                 <span *ngFor="let project of projects">
-                    <button mat-menu-item *ngIf="!doNotDisplay.includes(project.id)"
+                    <button mat-menu-item class="project-item" *ngIf="!doNotDisplay.includes(project.id)"
                             (click)="setProject(project);changeFocus()" [matTooltip]="project.longname"
                             [matTooltipPosition]="'after'">{{project.shortname}}</button>
                 </span>
