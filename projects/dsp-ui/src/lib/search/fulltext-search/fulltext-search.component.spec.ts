@@ -2,7 +2,9 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockResource } from '@dasch-swiss/dsp-js';
+import { MockProjects, ProjectsEndpointAdmin, ReadProject } from '@dasch-swiss/dsp-js';
+import { of } from 'rxjs/internal/observable/of';
+import { SortingService } from '../../action/services/sorting.service';
 import { DspApiConnectionToken } from '../../core';
 import { FulltextSearchComponent } from './fulltext-search.component';
 
@@ -21,21 +23,29 @@ class TestHostFulltextSearchComponent implements OnInit {
 
     @ViewChild('fulltextSearch') fulltextSearchComponent: FulltextSearchComponent;
 
-    route: string = '/search';
-    projectfilter: boolean = false;
+    sortingService: SortingService = new SortingService();
+
+    route = '/search';
+    projectfilter?: boolean = true;
     filterbyproject?: string;
 
+    projects: ReadProject[];
+
     ngOnInit() {
-        MockResource.getTestthing().subscribe(res => {
-            console.log('res', res);
-            this.filterbyproject = res.attachedToProject;
-        });
+        console.log(MockProjects.mockProjects());
+        /* if (this.projectfilter) {
+            this.getAllProjects();
+        } */
+    }
+
+    getAllProjects() {
+        // get all mocked projects sorted by alphabetical order
+        // this.projects = this.sortingService.keySortByAlphabetical(MockProjects.mockProjects().body.projects, 'shortname');
     }
 
 }
 
-
-describe('FulltextSearchComponent', () => {
+fdescribe('FulltextSearchComponent', () => {
     let testHostComponent: TestHostFulltextSearchComponent;
     let testHostFixture: ComponentFixture<TestHostFulltextSearchComponent>;
 
@@ -67,22 +77,22 @@ describe('FulltextSearchComponent', () => {
     }));
 
     beforeEach(() => {
-        /* const dspConnSpy = TestBed.inject(DspApiConnectionToken);
 
-        (dspConnSpy.admin.projectsEndpoint as jasmine.SpyObj<ProjectsEndpointAdmin>).getProjectByIri.and.callFake(
-            (projIri: string) => {
+        const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
-                // create fake data and return project
-
+        (valuesSpy.admin.projectsEndpoint as jasmine.SpyObj<ProjectsEndpointAdmin>).getProjects.and.callFake(
+            () => {
+                const projects = MockProjects.mockProjects();
+                return of(projects);
             }
-        ); */
+        );
 
         testHostFixture = TestBed.createComponent(TestHostFulltextSearchComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
     });
 
-    it('should create', () => {
+    fit('should create', () => {
         expect(testHostComponent).toBeTruthy();
         expect(testHostComponent.fulltextSearchComponent).toBeTruthy();
     });
