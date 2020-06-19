@@ -58,7 +58,7 @@ export class SessionService {
     ) { }
 
     /**
-     * get the session via the localstorage
+     * get session information from localstorage
      */
     getSession(): Session {
         if (localStorage.getItem('session') !== null) {
@@ -69,7 +69,7 @@ export class SessionService {
     }
 
     /**
-     * set the session by using the json web token (jwt) and the user object;
+     * set session by using the json web token (jwt) and the user object;
      * it will be used in the login process
      *
      * @param jwt
@@ -101,6 +101,7 @@ export class SessionService {
                 }
 
                 // store session information in browser's localstorage
+                // TODO: jwt will be removed, when we have a better cookie solution (DSP-261)
                 session = {
                     id: this.setTimestamp(),
                     user: {
@@ -111,6 +112,8 @@ export class SessionService {
                         projectAdmin: projectAdmin
                     }
                 };
+
+                console.log('SESSION', session);
                 // update localStorage
                 localStorage.setItem('session', JSON.stringify(session));
             },
@@ -139,15 +142,12 @@ export class SessionService {
 
             // check if the session is still valid:
             if (session.id + this.MAX_SESSION_TIME <= tsNow) {
-                // the internal (knora-ui) session has expired
+                // the internal (dsp-ui) session has expired
                 // check if the api credentails are still valid
-
-                // console.error('session is not valid; check knora api credentials');
 
                 this.dspApiConnection.v2.auth.checkCredentials().subscribe(
                     (response: ApiResponseData<CredentialsResponse>) => {
                         // the knora api credentials are still valid
-                        // console.log('knora api credentials', response);
 
                         // refresh the jwt in @dasch-swiss/dsp-js
                         this.updateKnoraApiConnection(session.user.jwt);
@@ -172,7 +172,7 @@ export class SessionService {
                 );
 
             } else {
-                // the internal (knora-ui) session is still valid
+                // the internal (dsp-ui) session is still valid
 
                 // console.log('session is valid; return', true);
                 return true;
