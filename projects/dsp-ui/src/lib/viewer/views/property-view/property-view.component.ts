@@ -1,9 +1,20 @@
-import { Component, OnInit, ViewChild, Input, AfterViewInit, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+    Constants,
+    KnoraDate,
+    PermissionUtil,
+    ReadColorValue,
+    ReadDateValue,
+    ReadIntervalValue,
+    ReadResource,
+    ReadTimeValue,
+    ReadValue,
+    SystemPropertyDefinition
+} from '@dasch-swiss/dsp-js';
+import { ParseReadDateValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-date-value';
+import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
-import { ReadResource, SystemPropertyDefinition, ReadValue, PermissionUtil, ReadDateValue, KnoraDate, Constants, ReadIntervalValue } from '@dasch-swiss/dsp-js';
-import { AddValueComponent } from '../../operations/add-value/add-value.component';
-import { ParseReadDateValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-date-value';
 
 @Component({
   selector: 'dsp-property-view',
@@ -58,6 +69,9 @@ export class PropertyViewComponent implements OnInit {
 
     }
 
+    /**
+     * Called from the template when the user clicks on the add button
+     */
     showAddValueForm(prop: PropertyInfoValues) {
         this.newValue = this.getNewValueType(prop.propDef.objectType);
 
@@ -74,18 +88,51 @@ export class PropertyViewComponent implements OnInit {
         console.log('newValue: ', this.newValue);
     }
 
+    /**
+     * Called from the template when the user clicks on the cancel button
+     */
     hideAddValueForm(emitterMessage?: string) {
         this.addValueFormIsVisible = false;
         this.addButtonIsVisible = true;
     }
 
+    /**
+     * Determines the correct ReadValue type
+     * For complex values, it must be the exact value type
+     * For simple values, ReadValue is enough
+     *
+     * @param value object type
+     */
     getNewValueType(value: string): ReadValue {
         switch (value) {
+            case this.constants.ColorValue:
+                return new ReadColorValue();
+            case this.constants.DateValue:
+                // Initialize a new ParseReadDateValue as it is required to initialize a new ReadDateValue
+                const parseReadDateValue = new ParseReadDateValue();
+
+                // Set the default date for a new value
+                const knoraDate = new KnoraDate('GREGORIAN', 'CE', 1971, 1, 1);
+
+                // Setting the start and end properties to the same value ensure it will be a single date
+                // If the start and end properties are different, it will be considered a date period
+                parseReadDateValue.calendar = knoraDate.calendar;
+                parseReadDateValue.startEra = knoraDate.era;
+                parseReadDateValue.endEra = knoraDate.era;
+                parseReadDateValue.startYear = knoraDate.year;
+                parseReadDateValue.endYear = knoraDate.year;
+                parseReadDateValue.startMonth = knoraDate.month;
+                parseReadDateValue.endMonth = knoraDate.month;
+                parseReadDateValue.startDay = knoraDate.day;
+                parseReadDateValue.endDay = knoraDate.day;
+
+                return new ReadDateValue(parseReadDateValue);
             case this.constants.IntervalValue:
                 return new ReadIntervalValue();
+            case this.constants.TimeValue:
+                return new ReadTimeValue();
             default:
                 return new ReadValue();
         }
     }
-
 }

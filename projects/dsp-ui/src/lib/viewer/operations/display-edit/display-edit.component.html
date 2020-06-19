@@ -19,9 +19,9 @@
                         [propertyDef]="$any(parentResource.entityInfo.properties[displayValue.property])"></dsp-list-value>
             <span *ngSwitchDefault>{{displayValue.strval}}</span>
         </span>
-        </div>
-        <!-- TEMPORARY CODE: TO HIDE BUTTONS FOR VALUE COMPONENTS NOT YET IMPLEMENTED -->
-        <div class="crud-buttons" *ngIf="!readOnlyValue">
+    </div>
+    <!-- TEMPORARY CODE: TO HIDE BUTTONS FOR VALUE COMPONENTS NOT YET IMPLEMENTED -->
+    <div class="crud-buttons" *ngIf="!readOnlyValue">
         <button mat-button
                 class="edit"
                 title="edit"
