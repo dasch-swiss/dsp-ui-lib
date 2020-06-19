@@ -106,31 +106,38 @@ export class PropertyViewComponent implements OnInit {
     getNewValueType(value: string): ReadValue {
         switch (value) {
             case this.constants.ColorValue:
-                return new ReadColorValue();
+                const newReadColorValue = new ReadColorValue();
+                newReadColorValue.color = '#ffffff';
+                return newReadColorValue;
             case this.constants.DateValue:
                 // Initialize a new ParseReadDateValue as it is required to initialize a new ReadDateValue
-                const parseReadDateValue = new ParseReadDateValue();
+                const newParseReadDateValue = new ParseReadDateValue();
 
                 // Set the default date for a new value
                 const knoraDate = new KnoraDate('GREGORIAN', 'CE', 1971, 1, 1);
 
                 // Setting the start and end properties to the same value ensure it will be a single date
                 // If the start and end properties are different, it will be considered a date period
-                parseReadDateValue.calendar = knoraDate.calendar;
-                parseReadDateValue.startEra = knoraDate.era;
-                parseReadDateValue.endEra = knoraDate.era;
-                parseReadDateValue.startYear = knoraDate.year;
-                parseReadDateValue.endYear = knoraDate.year;
-                parseReadDateValue.startMonth = knoraDate.month;
-                parseReadDateValue.endMonth = knoraDate.month;
-                parseReadDateValue.startDay = knoraDate.day;
-                parseReadDateValue.endDay = knoraDate.day;
+                newParseReadDateValue.calendar = knoraDate.calendar;
+                newParseReadDateValue.startEra = knoraDate.era;
+                newParseReadDateValue.endEra = knoraDate.era;
+                newParseReadDateValue.startYear = knoraDate.year;
+                newParseReadDateValue.endYear = knoraDate.year;
+                newParseReadDateValue.startMonth = knoraDate.month;
+                newParseReadDateValue.endMonth = knoraDate.month;
+                newParseReadDateValue.startDay = knoraDate.day;
+                newParseReadDateValue.endDay = knoraDate.day;
 
-                return new ReadDateValue(parseReadDateValue);
+                return new ReadDateValue(newParseReadDateValue);
             case this.constants.IntervalValue:
-                return new ReadIntervalValue();
+                const newReadIntervalValue = new ReadIntervalValue();
+                newReadIntervalValue.start = 0;
+                newReadIntervalValue.end = 1;
+                return newReadIntervalValue;
             case this.constants.TimeValue:
-                return new ReadTimeValue();
+                const newReadTimeValue = new ReadTimeValue();
+                newReadTimeValue.time = '1971-01-01T00:00:00.000Z';
+                return newReadTimeValue;
             default:
                 return new ReadValue();
         }
