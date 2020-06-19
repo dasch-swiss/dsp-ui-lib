@@ -1,4 +1,4 @@
-# DSP-UI-LIB &mdash; A library to easily create a Knora/DSP Apps
+# DSP-UI-LIB &mdash; A library to easily create Knora/DSP Apps
 
 [![npm version](https://badge.fury.io/js/%40dasch-swiss%2Fdsp-ui.svg)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
 [![CI](https://github.com/dasch-swiss/knora-ui-ng-lib/workflows/CI/badge.svg)](https://github.com/dasch-swiss/knora-ui-ng-lib/actions?query=workflow%3ACI)
