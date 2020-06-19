@@ -1,19 +1,21 @@
 {
   "name": "@dasch-swiss/dsp-ui",
   "version": "1.0.0-rc.1",
+  "description": "Angular library to easily create a Knora/DSP user interface",
   "repository": {
     "type": "git",
     "url": "https://github.com/dasch-swiss/dsp-ui-lib.git"
   },
   "homepage": "https://docs.dasch.swiss/developers/dsp-ui/documentation/",
   "keywords": ["dasch service platform", "user interface", "angular", "knora", "humanities"],
+  "author": "Data and Service Center for the Humanities DaSCH, University of Basel",
   "license" : "AGPL-3.0-or-later",
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",
     "@angular/material": "^9.0.0",
     "@angular/cdk": "^9.0.0",
-    "@dasch-swiss/dsp-js": "1.0.0-rc.2",
+    "@dasch-swiss/dsp-js": "1.0.0-rc.3",
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.13",
     "ngx-color-picker": "^9.1.0"
