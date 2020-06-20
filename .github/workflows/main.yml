@@ -52,17 +52,18 @@ jobs:
     - run: npm install
     - run: npm run build-lib
     - name: Unit tests lib
-    - run: make test-ci
+      run: make test-ci
     - name: Build app
-    - run: npm run build-app
+      run: npm run build-app
     - name: Unit tests app
-    - run: npm run test
+      run: npm run test
       env:
-          TZ: Europe/Zurich
-          CI: true
+        TZ: Europe/Zurich
+        CI: true
     - name: e2e tests
-    - run: npm run webdriver-update
-    - run: npm run e2e
+      run: |
+        npm run webdriver-update
+        npm run e2e
       env:
         TZ: Europe/Zurich
         CI: true
