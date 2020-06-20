@@ -17,7 +17,7 @@ export class TestConfig {
     };
 }
 
-fdescribe('SessionService', () => {
+describe('SessionService', () => {
 
     let service: SessionService;
 
@@ -73,66 +73,23 @@ fdescribe('SessionService', () => {
         });
     });
 
-    beforeEach(() => {
-        // login and set session
+    it('should store user information in local storage', done => {
+
         knoraApiConnection.v2.auth.login("username", "root", "test").subscribe(
             (response: ApiResponseData<LoginResponse>) => {
                 service.setSession(response.body.token, 'root', 'username');
+                let ls: Session;
+                setTimeout(() => {
+                    console.log(localStorage.getItem('session'));
+                    ls = JSON.parse(localStorage.getItem('session'));
+                    expect(ls.user.name).toEqual('root');
+                    expect(ls.user.lang).toEqual('de');
+                    expect(ls.user.sysAdmin).toEqual(true);
+                    expect(ls.user.projectAdmin.length).toEqual(0);
+                    done();
+                }, 800);
             }
         );
-    });
 
-    // it('should create', () => {
-    //     expect<any>(localStorage.getItem('session')).toBe(
-    //         JSON.stringify(TestConfig.CurrentSession)
-    //     );
-    // });
-
-
-    it('should store a users jwt in local storage', () => {
-
-        let ls: Session;
-
-        setTimeout(() => {
-            console.log(localStorage.getItem('session'));
-            ls = JSON.parse(localStorage.getItem('session'));
-        }, 500);
-
-        expect(ls.user.name).toEqual('root');
-        // expect(JSON.parse(localStorage.getItem('session')).user.name).toEqual('root');
-
-
-        // // get test data
-        // let user;
-
-        // // fetch('https://raw.githubusercontent.com/dasch-swiss/knora-api-js-lib/master/test/data/api/admin/users/get-user-response.json')
-        // //     .then(res => res.json())
-        // //     .then((mockedUser) => {
-        // //         console.log('Output:', mockedUser);
-        // //         user = mockedUser;
-        // //     }).catch(err => console.error(err));
-
-        // // const user = require(data);
-        // // console.log(user);
-
-        // // service.setSession('myJsonWebToken', 'root', 'username');
-
-
-
-        // expect<any>(localStorage.getItem('session')).toBe(
-        //     JSON.stringify(TestConfig.CurrentSession)
-        // );
-
-
-
-        // const value = browser.executeScript("return window.localStorage.getItem('session');");
-
-        //     service.setSession('jwtToken', 'root', 'username');
-
-        //     const ls = JSON.parse(localStorage.getItem('session')) as Session;
-
-        //     console.log(ls);
-
-        //     expect(ls.user.jwt).toEqual('jwtToken');
     });
 });
