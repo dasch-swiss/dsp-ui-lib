@@ -8,138 +8,21 @@ on:
 env:
   KNORA_GDB_LICENSE: ${{ github.workspace }}/ci/graphdb/UNIBAS_DEV_GRAPHDB_SE_latest-31-12-2020_1cores.license
   GRAPHDB_HEAP_SIZE: 4G
+  NODE_VERSION: [12.x]
 
 jobs:
-  lib-build-test:
-    name: Build lib and test with Knora Api
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Checkout private ci-assets
-      uses: actions/checkout@v2
-      with:
-        repository: dasch-swiss/dsp-ci-assets
-        token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
-        path: ci
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm run build-lib
-    - run: make test-ci
-
-  build-test:
-    name: Build and Test
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm run test-lib
-      env:
-        TZ: Europe/Zurich
-    - run: ./find-ignored-tests.sh
-    - run: npm run build-lib
-    - run: npm run build-app
-    - run: npm run test
-      env:
-          TZ: Europe/Zurich
-          CI: true
-
   build-dev:
     name: Build lib in dev mode
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
       - run: npm install
       - run: npm run build-lib-dev
       - run: npm run build-app
 
 
-  e2e-test:
-    name: E2E Tests
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Checkout private ci-assets
-      uses: actions/checkout@v2
-      with:
-        repository: dasch-swiss/dsp-ci-assets
-        token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
-        path: ci
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm run build-lib
-    - run: |
-        make clone-knora-stack
-        make knora-stack
-    - run: npm run webdriver-update
-    - run: npm run e2e
-      env:
-        TZ: Europe/Zurich
-        CI: true
-
-
-  publish:
-    name: Publish to npm / Update release notes
-    needs: [build-test, e2e-test]
-    runs-on: ubuntu-latest
-    env:
-      dist-directory: ./dist/@dasch-swiss/dsp-ui/
-    if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags')
-    # additional if condition: compare tag with package.json version
-    # - name: Get the version
-    # id: get_version
-    # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-    # --> solution from https://github.community/t5/GitHub-Actions/How-to-get-just-the-tag-name/td-p/31595
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
-      - run: npm install
-      - run: npm run build-lib
-      - if: "github.event.release.prerelease"
-        name: Publish prerelease to npm
-        run: cd ${{env.dist-directory}} && npm publish --tag rc --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
-      - if: "!github.event.release.prerelease"
-        name: Publish release to npm
-        run: cd ${{env.dist-directory}} && npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
-      - uses: lakto/gren-action@v1.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
