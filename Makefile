@@ -78,16 +78,20 @@ test-ci: ## first starts the knora-stack and then runs the tests
 	@$(MAKE) -f $(THIS_FILE) local-tmp
 	@$(MAKE) -f $(THIS_FILE) clone-knora-stack
 	@$(MAKE) -f $(THIS_FILE) knora-stack
-	@$(MAKE) -f $(THIS_FILE) build
-	@$(MAKE) -f $(THIS_FILE) test
+	@$(MAKE) -f $(THIS_FILE) build-lib
+	@$(MAKE) -f $(THIS_FILE) test-lib
 
-.PHONY: build
-build: ## builds the lib
+.PHONY: build-lib
+build-lib: ## builds the lib
 	npm run build-lib
 
-.PHONY: test
-unit-tests: ## runs the unit tests
+.PHONY: test-lib
+test-lib: ## runs the unit tests in lib
 	npm run test-lib
+
+.PHONY: build-app
+build-app: ## builds the app
+	npm run build-app
 
 .PHONY: local-tmp
 local-tmp:
