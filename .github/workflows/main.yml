@@ -10,6 +10,24 @@ env:
   GRAPHDB_HEAP_SIZE: 4G
 
 jobs:
+  lib-build-test:
+    name: Build lib and test with Knora Api
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run build-lib
+      - run: make test-ci
+
   build-test:
     name: Build and Test
     runs-on: ubuntu-latest

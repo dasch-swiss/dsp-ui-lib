@@ -26,8 +26,6 @@ define update-version
 	git push
 endef
 
-.PHONY: clean
-
 .PHONY: next-release-candidate
 next-release-candidate: ## updates version to next release candidate e.g. from 3.0.0-rc.0 to 3.0.0-rc.1 or from 3.0.0 to 3.0.1-rc.0
 	@$(call update-version,prerelease,rc)
@@ -73,6 +71,31 @@ knora-stack: ## runs the knora-stack
 	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-restart-api
 	sleep 35
 	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-logs-api-no-follow
+
+.PHONY: test-ci
+test-ci: ## first starts the knora-stack and then runs the tests
+	@$(MAKE) -f $(THIS_FILE) clean
+	@$(MAKE) -f $(THIS_FILE) local-tmp
+	@$(MAKE) -f $(THIS_FILE) clone-knora-stack
+	@$(MAKE) -f $(THIS_FILE) knora-stack
+	@$(MAKE) -f $(THIS_FILE) build
+	@$(MAKE) -f $(THIS_FILE) test
+
+.PHONY: build
+build: ## builds the lib
+	npm run build-lib
+
+.PHONY: test
+unit-tests: ## runs the unit tests
+	npm run test-lib
+
+.PHONY: local-tmp
+local-tmp:
+	@mkdir -p $(CURRENT_DIR)/.tmp
+
+.PHONY: clean
+clean:
+	@rm -rf $(CURRENT_DIR)/.tmp
 
 .PHONY: help
 help: ## this help
