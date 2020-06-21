@@ -72,14 +72,12 @@ knora-stack: ## runs the knora-stack
 	sleep 35
 	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-logs-api-no-follow
 
-.PHONY: test-ci
-test-ci: ## first starts the knora-stack and then runs the tests
+.PHONY: prepare-test-env
+prepare-test-env: ## prepare test environment DSP/Knora API
 	@$(MAKE) -f $(THIS_FILE) clean
 	@$(MAKE) -f $(THIS_FILE) local-tmp
 	@$(MAKE) -f $(THIS_FILE) clone-knora-stack
 	@$(MAKE) -f $(THIS_FILE) knora-stack
-	@$(MAKE) -f $(THIS_FILE) build-lib
-	@$(MAKE) -f $(THIS_FILE) test-lib
 
 .PHONY: build-lib
 build-lib: ## builds the lib

@@ -51,8 +51,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run build-lib
+    - name: Knora API preparation
+      run: make prepare-test-env
     - name: Unit tests lib
-      run: make test-ci
+      run: npm run test-lib
+      env:
+        TZ: Europe/Zurich
     - name: Build app
       run: npm run build-app
     - name: Unit tests app
