@@ -283,7 +283,6 @@ export class FulltextSearchComponent implements OnInit {
 
     doPrevSearch(prevSearch: PrevSearchItem): void {
         this.searchQuery = prevSearch.query;
-        console.log('prevSearch', prevSearch);
 
         if (prevSearch.projectIri !== undefined) {
             this.projectIri = prevSearch.projectIri;
