@@ -1,15 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdvancedSearchComponent } from './advanced-search.component';
-import { Component, DebugElement, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DspApiConnectionToken } from '../../core';
 import {
+    ClassDefinition,
     MockOntology,
     OntologiesEndpointV2,
     OntologiesMetadata,
-    OntologyMetadata,
+    OntologyMetadata, PropertyDefinition,
     ReadOntology,
     ResourceClassDefinition, ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
@@ -20,7 +21,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { Properties } from './select-property/select-property.component';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { MatSelectHarness } from '@angular/material/select/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
@@ -28,6 +28,37 @@ type Constructor<T> = { new(...args: any[]): T };
 
 const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
     return o instanceof className;
+};
+
+const makeResourceClassDefs = (resClassDefs: { [ index: string ]: ClassDefinition}): ResourceClassDefinition[] => {
+    const classIris = Object.keys(resClassDefs);
+
+    // get resource class defs
+    return classIris.filter(resClassIri => {
+        return typeGuard(resClassDefs[resClassIri], ResourceClassDefinition);
+    }).map(
+        (resClassIri: string) => {
+            return resClassDefs[resClassIri] as ResourceClassDefinition;
+        }
+    );
+};
+
+const makeProperties = (propDefs: { [ index: string ]: PropertyDefinition}): Properties => {
+
+    const propIris = Object.keys(propDefs);
+
+    // get property defs
+    const resProps: Properties = {};
+
+    propIris.filter(
+        (propIri: string) => {
+            return typeGuard(propDefs[propIri], ResourcePropertyDefinition);
+        }
+    ).forEach((propIri: string) => {
+        resProps[propIri] = (propDefs[propIri] as ResourcePropertyDefinition);
+    });
+
+    return resProps;
 };
 
 /**
@@ -263,29 +294,10 @@ describe('AdvancedSearchComponent', () => {
 
         const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
-        const classIris = Object.keys(anythingOnto.classes);
-
         // get resource class defs
-        testHostComponent.advancedSearch.resourceClasses = classIris.filter(resClassIri => {
-            return typeGuard(anythingOnto.classes[resClassIri], ResourceClassDefinition);
-        }).map(
-            (resClassIri: string) => {
-                return anythingOnto.classes[resClassIri] as ResourceClassDefinition;
-            }
-        );
+        testHostComponent.advancedSearch.resourceClasses = makeResourceClassDefs(anythingOnto.classes);
 
-        const propIris = Object.keys(anythingOnto.properties);
-
-        // get property defs
-        const resProps: Properties = {};
-
-        propIris.filter(
-            (propIri: string) => {
-                return typeGuard(anythingOnto.properties[propIri], ResourcePropertyDefinition);
-            }
-        ).forEach((propIri: string) => {
-            resProps[propIri] = (anythingOnto.properties[propIri] as ResourcePropertyDefinition);
-        });
+        const resProps = makeProperties(anythingOnto.properties);
 
         testHostComponent.advancedSearch.properties = resProps;
 
