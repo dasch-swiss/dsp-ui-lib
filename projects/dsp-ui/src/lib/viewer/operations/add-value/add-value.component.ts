@@ -15,7 +15,10 @@ import {
     ReadResource,
     ReadValue,
     UpdateResource,
-    WriteValueResponse
+    WriteValueResponse,
+    PropertyDefinition,
+    ResourceClassDefinition,
+    ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
@@ -31,13 +34,11 @@ export class AddValueComponent implements OnInit {
 
     @ViewChild('displayVal', {static: false}) displayValueComponent: BaseValueComponent;
 
-    @Input() displayValue: ReadValue;
+    @Input() resourcePropertyDefinition: ResourcePropertyDefinition;
 
     @Input() parentResource: ReadResource;
 
     @Input() configuration?: object;
-
-    @Input() resourceValues: ReadValue[];
 
     @Output() operationCancelled = new EventEmitter<any>();
 
@@ -56,14 +57,11 @@ export class AddValueComponent implements OnInit {
     ngOnInit() {
         this.mode = 'create';
 
-        // determine if user has modify permissions
-        const allPermissions = PermissionUtil.allUserPermissions(this.displayValue.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR');
-
-        this.canModify = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
-
         this.createModeActive = true;
 
-        // this.resourceValues = this.parentResource.getValues('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
+        console.log(this.resourcePropertyDefinition);
+
+
     }
 
     saveAddValue() {
@@ -72,14 +70,13 @@ export class AddValueComponent implements OnInit {
         console.log('displayValueComponent: ', this.displayValueComponent);
 
         if (createVal instanceof CreateValue) {
-            console.log('displayValue: ', this.displayValue);
+            console.log('displayValue: ', this.resourcePropertyDefinition);
             const updateRes = new UpdateResource();
             updateRes.id = this.parentResource.id;
             updateRes.type = this.parentResource.type;
 
-            // TODO: get the property name of the corresponding value type
-            updateRes.property = this.displayValue.id;
-            // updateRes.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText';
+            // TODO: get the property of the corresponding value type
+            updateRes.property = this.resourcePropertyDefinition.id;
             updateRes.value = createVal;
 
             console.log('updateRes: ', updateRes);
