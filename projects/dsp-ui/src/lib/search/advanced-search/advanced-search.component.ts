@@ -152,24 +152,32 @@ export class AdvancedSearchComponent implements OnInit {
         );
     }
 
-    getPropertiesForResourceClass(resClassIri: string) {
+    /**
+     * @ignore
+     * Once a resource class has been selected, gets its properties.
+     * The properties will be made available to the user for selection.
+     *
+     * @param resourceClassIri the IRI of the selected resource class, if any.
+     */
+    getPropertiesForResourceClass(resourceClassIri: string | null) {
 
-        // TODO: init resource classes and properties, set active res class
+        // reset specified properties
+        this.activeProperties = [];
 
-        /*this.knoraApiConnection.v2.ontologyCache.getResourceClassDefinition(resClassIri).subscribe(
-            onto => {
+        // if the client undoes the selection of a resource class, use the active ontology as a fallback
+        if (resourceClassIri === null) {
+            this.getResourceClassesAndPropertiesForOntology(this.activeOntology);
+        } else {
 
-                this.activeResourceClass = resClassIri;
+            this.knoraApiConnection.v2.ontologyCache.getResourceClassDefinition(resourceClassIri).subscribe(
+                onto => {
+                    this.activeResourceClass = onto.classes[resourceClassIri];
 
-                this.resourceClasses = this.makeResourceClassesArray(onto.classes);
+                    this.properties = this.makeResourceProperties(onto.properties);
 
-
-            }
-        );*/
-
-
-
-        // console.log(resClassIri);
+                }
+            );
+        }
     }
 
     /**

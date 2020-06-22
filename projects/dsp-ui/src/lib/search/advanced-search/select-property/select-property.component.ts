@@ -2,6 +2,7 @@ import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ResourceClassDefinition, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
+import { SortingService } from '../../../action';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -59,7 +60,8 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
 
     propertyChangesSubscription: Subscription;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private fb: FormBuilder,
+                private _sortingService: SortingService) {
 
     }
 
@@ -118,9 +120,7 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
         }
 
         // sort properties by label (ascending)
-        // propsArray.sort(OntologyInformation.sortFunc);
-
-        this.propertiesAsArray = propsArray;
+        this.propertiesAsArray = this._sortingService.keySortByAlphabetical(propsArray, 'label');
     }
 
 }
