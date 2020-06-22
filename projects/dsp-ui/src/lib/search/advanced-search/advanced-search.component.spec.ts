@@ -184,6 +184,7 @@ describe('AdvancedSearchComponent', () => {
         expect(testHostComponent.advancedSearch.activeOntology).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
         expect(testHostComponent.advancedSearch.activeResourceClass).toEqual(undefined);
         expect(testHostComponent.advancedSearch.resourceClasses.length).toEqual(8);
+        expect(Object.keys(testHostComponent.advancedSearch.properties).length).toEqual(28);
 
         const selectResClassComp = hostCompDe.query(By.directive(TestSelectResourceClassComponent));
 

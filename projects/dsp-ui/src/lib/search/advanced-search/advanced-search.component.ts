@@ -5,8 +5,8 @@ import {
     ApiResponseError,
     ClassDefinition,
     KnoraApiConnection,
-    OntologiesMetadata,
-    ResourceClassDefinition
+    OntologiesMetadata, PropertyDefinition,
+    ResourceClassDefinition, ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Properties } from './select-property/select-property.component';
 
@@ -85,6 +85,28 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     /**
+     * Given a map of property definitions,
+     * returns a map of resource property definitions.
+     *
+     * @param propertyDefs a map of property definitions
+     */
+    private makeResourceProperties(propertyDefs: { [index: string]: PropertyDefinition}): Properties {
+        const resProps: Properties = {};
+
+        const propIris = Object.keys(propertyDefs);
+
+        propIris.filter(
+            (propIri: string) => {
+                return typeGuard(propertyDefs[propIri], ResourcePropertyDefinition);
+            }
+        ).forEach((propIri: string) => {
+            resProps[propIri] = (propertyDefs[propIri] as ResourcePropertyDefinition);
+        });
+
+        return resProps;
+    }
+
+    /**
      * Initialises resources classes and properties,
      * when an ontology is selected
      *
@@ -105,7 +127,7 @@ export class AdvancedSearchComponent implements OnInit {
 
                 this.resourceClasses = this.makeResourceClassesArray(onto.get(ontologyIri).classes);
 
-                // this.properties = onto.get(ontologyIri).properties;
+                this.properties = this.makeResourceProperties(onto.get(ontologyIri).properties);
             },
             err => {
                 console.error(err);
