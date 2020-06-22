@@ -49,6 +49,24 @@ export class AdvancedSearchComponent implements OnInit {
 
     /**
      * @ignore
+     * Add a property to the search form.
+     * @returns void
+     */
+    addProperty(): void {
+        this.activeProperties.push(true);
+    }
+
+    /**
+     * @ignore
+     * Remove the last property from the search form.
+     * @returns void
+     */
+    removeProperty(): void {
+        this.activeProperties.splice(-1, 1);
+    }
+
+    /**
+     * @ignore
      * Gets all available ontologies for the search form.
      * @returns void
      */

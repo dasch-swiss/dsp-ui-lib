@@ -16,6 +16,8 @@ import {
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { OntologyCache } from '@dasch-swiss/dsp-js/src/cache/ontology-cache/OntologyCache';
+import { MatIconModule } from '@angular/material/icon';
+import { Properties } from './select-property/select-property.component';
 
 /**
  * Test component to simulate select ontology component.
@@ -60,6 +62,29 @@ class TestSelectResourceClassComponent implements OnInit {
 }
 
 /**
+ * Test component to simulate select ontology component.
+ */
+@Component({
+    selector: 'dsp-select-property',
+    template: ``
+})
+class TestSelectPropertyComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    @Input() properties: Properties;
+
+    @Input() index: number;
+
+    @Input() activeResourceClass: ResourceClassDefinition;
+
+    ngOnInit() {
+
+    }
+
+}
+
+/**
  * Test host component to simulate parent component.
  */
 @Component({
@@ -89,10 +114,17 @@ describe('AdvancedSearchComponent', () => {
         };
 
         TestBed.configureTestingModule({
-            declarations: [AdvancedSearchComponent, TestHostComponent, TestSelectOntologyComponent, TestSelectResourceClassComponent],
+            declarations: [
+                AdvancedSearchComponent,
+                TestHostComponent,
+                TestSelectOntologyComponent,
+                TestSelectResourceClassComponent,
+                TestSelectPropertyComponent
+            ],
             imports: [
                 ReactiveFormsModule,
-                BrowserAnimationsModule
+                BrowserAnimationsModule,
+                MatIconModule
             ],
             providers: [
                 {
@@ -187,7 +219,6 @@ describe('AdvancedSearchComponent', () => {
         expect(Object.keys(testHostComponent.advancedSearch.properties).length).toEqual(28);
 
         const selectResClassComp = hostCompDe.query(By.directive(TestSelectResourceClassComponent));
-
         expect((selectResClassComp.componentInstance as TestSelectResourceClassComponent).resourceClassDefinitions.length).toEqual(8);
 
         expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledTimes(1);

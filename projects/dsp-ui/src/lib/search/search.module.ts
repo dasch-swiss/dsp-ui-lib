@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SelectResourceClassComponent } from './advanced-search/select-resource-class/select-resource-class.component';
 import { SelectPropertyComponent } from './advanced-search/select-property/select-property.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { AdvancedSearchComponent } from './advanced-search/advanced-search.compo
         CommonModule,
         ReactiveFormsModule,
         MatSelectModule,
-        MatOptionModule
+        MatOptionModule,
+        MatIconModule
     ],
     exports: [
         AdvancedSearchComponent

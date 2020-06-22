@@ -10,4 +10,26 @@
                                    (resourceClassSelected)="getPropertiesForResourceClass($event)">
         </dsp-select-resource-class>
     </div>
+
+    <div class="select-property" *ngIf="properties !== undefined">
+        <div *ngFor="let prop of activeProperties; let i = index">
+
+            <dsp-select-property #property [activeResourceClass]="activeResourceClass" [formGroup]="form" [index]="i"
+                                 [properties]="properties"></dsp-select-property>
+
+        </div>
+    </div>
+
+    <div class="select-property buttons">
+        <button mat-mini-fab class="property-button add-property-button" color="primary" type="button"
+                (click)="addProperty()" [disabled]="activeOntology === undefined || activeProperties.length >= 4">
+            <mat-icon aria-label="add a property">add</mat-icon>
+        </button>
+
+        <button mat-mini-fab class="property-button remove-property-button" color="primary" type="button"
+                (click)="removeProperty()" [disabled]="activeProperties.length == 0">
+            <mat-icon aria-label="remove property">remove</mat-icon>
+        </button>
+    </div>
+
 </form>
