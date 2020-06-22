@@ -154,7 +154,10 @@ export class AdvancedSearchComponent implements OnInit {
     }
 
     getPropertiesForResourceClass(resClassIri: string) {
-        console.log(resClassIri);
+
+        // TODO: init resource classes and properties, set active res class
+
+        // console.log(resClassIri);
     }
 
     /**

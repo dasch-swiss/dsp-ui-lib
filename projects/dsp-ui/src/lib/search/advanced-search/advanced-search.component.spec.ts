@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdvancedSearchComponent } from './advanced-search.component';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, DebugElement, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DspApiConnectionToken } from '../../core';
@@ -11,13 +11,20 @@ import {
     OntologiesMetadata,
     OntologyMetadata,
     ReadOntology,
-    ResourceClassDefinition
+    ResourceClassDefinition, ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { OntologyCache } from '@dasch-swiss/dsp-js/src/cache/ontology-cache/OntologyCache';
 import { MatIconModule } from '@angular/material/icon';
 import { Properties } from './select-property/select-property.component';
+
+// https://dev.to/krumpet/generic-type-guard-in-typescript-258l
+type Constructor<T> = { new(...args: any[]): T };
+
+const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
+    return o instanceof className;
+};
 
 /**
  * Test component to simulate select ontology component.
@@ -187,6 +194,24 @@ describe('AdvancedSearchComponent', () => {
 
     });
 
+    it('should disable add property button on init', () => {
+        const ele: DebugElement = testHostFixture.debugElement;
+        const addPropDe = ele.query(By.css('.add-property-button'));
+
+        const addProp = addPropDe.nativeElement;
+
+        expect(addProp.disabled).toBe(true);
+    });
+
+    it('should disable remove property button on init', () => {
+        const ele: DebugElement = testHostFixture.debugElement;
+        const rmPropDe = ele.query(By.css('.remove-property-button'));
+
+        const rmProp = rmPropDe.nativeElement;
+
+        expect(rmProp.disabled).toBe(true);
+    });
+
     it('should react when an ontology is selected', async () => {
 
         const dspConnSpy = TestBed.inject(DspApiConnectionToken);
@@ -224,5 +249,67 @@ describe('AdvancedSearchComponent', () => {
         expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledTimes(1);
         expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledWith('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
+    });
+
+    it('should display a property selection when the add property button has been clicked', () => {
+
+        // simulate state after anything onto selection
+        testHostComponent.advancedSearch.activeOntology = 'http://0.0.0.0:3333/ontology/0001/anything/v2';
+
+        const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+        const classIris = Object.keys(anythingOnto.classes);
+
+        // get resource class defs
+        testHostComponent.advancedSearch.resourceClasses = classIris.filter(resClassIri => {
+            return typeGuard(anythingOnto.classes[resClassIri], ResourceClassDefinition);
+        }).map(
+            (resClassIri: string) => {
+                return anythingOnto.classes[resClassIri] as ResourceClassDefinition;
+            }
+        );
+
+        const propIris = Object.keys(anythingOnto.properties);
+
+        // get property defs
+        const resProps: Properties = {};
+
+        propIris.filter(
+            (propIri: string) => {
+                return typeGuard(anythingOnto.properties[propIri], ResourcePropertyDefinition);
+            }
+        ).forEach((propIri: string) => {
+            resProps[propIri] = (anythingOnto.properties[propIri] as ResourcePropertyDefinition);
+        });
+
+        testHostComponent.advancedSearch.properties = resProps;
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.advancedSearch.activeProperties.length).toEqual(0);
+
+        const ele: DebugElement = testHostFixture.debugElement;
+        const addPropDe = ele.query(By.css('.add-property-button'));
+
+        const addProp = addPropDe.nativeElement;
+
+        expect(addProp.disabled).toBe(false);
+
+        addProp.click();
+
+        testHostFixture.detectChanges();
+
+        const hostCompDe = testHostFixture.debugElement;
+        const selectPropComp = hostCompDe.query(By.directive(TestSelectPropertyComponent));
+
+        expect((selectPropComp.componentInstance as TestSelectPropertyComponent).activeResourceClass).toEqual(undefined);
+        expect((selectPropComp.componentInstance as TestSelectPropertyComponent).index).toEqual(0);
+        expect((selectPropComp.componentInstance as TestSelectPropertyComponent).properties).toEqual(resProps);
+
+        const rmPropDe = ele.query(By.css('.remove-property-button'));
+
+        const rmProp = rmPropDe.nativeElement;
+
+        expect(rmProp.disabled).toBe(false );
     });
 });
