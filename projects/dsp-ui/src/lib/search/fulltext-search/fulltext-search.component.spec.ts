@@ -42,9 +42,14 @@ class TestHostFulltextSearchComponent implements OnInit {
     filterbyproject?: string;
 
     ngOnInit() {
-        console.log(MockProjects.mockProjects());
     }
 
+}
+
+interface PrevSearchItem {
+    projectIri?: string;
+    projectLabel?: string;
+    query: string;
 }
 
 describe('FulltextSearchComponent', () => {
@@ -106,6 +111,24 @@ describe('FulltextSearchComponent', () => {
         fulltextSearchComponentDe = hostCompDe.query(By.directive(FulltextSearchComponent));
     });
 
+    // Mock localStorage
+    beforeEach(() => {
+        let store = {};
+
+        spyOn(localStorage, 'getItem').and.callFake((key: string): string => {
+            return store[key] || null;
+        });
+        spyOn(localStorage, 'removeItem').and.callFake((key: string): void => {
+            delete store[key];
+        });
+        spyOn(localStorage, 'setItem').and.callFake((key: string, value: string): string => {
+            return store[key] = value as string;
+        });
+        spyOn(localStorage, 'clear').and.callFake(() => {
+            store = {};
+        });
+    });
+
     it('should create', () => {
         expect(testHostComponent).toBeTruthy();
         expect(testHostComponent.fulltextSearch).toBeTruthy();
@@ -118,14 +141,140 @@ describe('FulltextSearchComponent', () => {
         expect(testHostComponent.fulltextSearch.projects.length).toEqual(8);
         expect(testHostComponent.fulltextSearch.projectfilter).toEqual(true);
 
-        expect(projSpy.admin.projectsEndpoint.getProjects).toHaveBeenCalledTimes(2);
+        expect(projSpy.admin.projectsEndpoint.getProjects).toHaveBeenCalledTimes(1);
 
     });
 
-    // TODO: perform a search
-    // TODO: reset search
-    // TODO: do prev search
-    // TODO: reset prev search
+    it('should do a search', () => {
+        const searchBtn = fulltextSearchComponentDe.query(By.css('button.kui-fulltext-search-button'));
+        expect(searchBtn).toBeDefined();
+        const searchInput = fulltextSearchComponentDe.query(By.css('input.kui-fulltext-search-input')).nativeElement;
+        expect(searchInput).toBeDefined();
+
+        spyOn(testHostComponent.fulltextSearch, 'doSearch');
+
+        searchInput.value = 'thing';
+        searchInput.dispatchEvent(new Event('input'));
+
+        // click on the search button and trigger the method doSearch()
+        searchBtn.triggerEventHandler('click', null);
+        // another possible click trigger: searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.fulltextSearch.searchQuery).toEqual('thing');
+        expect(testHostComponent.fulltextSearch.doSearch).toHaveBeenCalled();
+        expect(testHostComponent.fulltextSearch.doSearch).toHaveBeenCalledTimes(1);
+
+        // todo: add a check on the local storage
+    });
+
+    it('should reset the current search', () => {
+        const searchInput = fulltextSearchComponentDe.query(By.css('input.kui-fulltext-search-input')).nativeElement;
+        expect(searchInput).toBeDefined();
+
+        spyOn(testHostComponent.fulltextSearch, 'resetSearch');
+
+        searchInput.value = 'thing';
+
+        searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Esc' }));
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.fulltextSearch.searchQuery).toEqual(undefined);
+        expect(testHostComponent.fulltextSearch.resetSearch).toHaveBeenCalled();
+        expect(testHostComponent.fulltextSearch.resetSearch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should perform a search with a previous item', () => {
+        const prevSearchArray: PrevSearchItem[] = [
+            { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'thing' },
+            { projectIri: 'http://rdfh.ch/projects/0801', projectLabel: 'anything', query: 'blue thing' }
+        ];
+
+        const prevSearchStorage = localStorage.setItem('prevSearch', JSON.stringify(prevSearchArray));
+        expect(prevSearchStorage).toBeDefined();
+
+        spyOn(testHostComponent.fulltextSearch, 'doPrevSearch');
+
+        // click in the search input to open the search panel
+        const searchInput = fulltextSearchComponentDe.query(By.css('input.kui-fulltext-search-input')).nativeElement;
+        expect(searchInput).toBeDefined();
+        searchInput.click();
+        testHostFixture.detectChanges();
+
+        const searchMenuPanel = fulltextSearchComponentDe.query(By.css('div.kui-search-menu')).nativeElement;
+        expect(searchMenuPanel).toBeDefined();
+
+        const prevSearchItem = fulltextSearchComponentDe.query(By.css('div.kui-previous-search-query')).nativeElement;
+        prevSearchItem.click();
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.fulltextSearch.doPrevSearch).toHaveBeenCalled();
+        expect(testHostComponent.fulltextSearch.doPrevSearch).toHaveBeenCalledWith(prevSearchArray[1]);
+        expect(testHostComponent.fulltextSearch.doPrevSearch).toHaveBeenCalledTimes(1);
+
+    });
+
+
+    it('should clear the search list', () => {
+        const prevSearchArray: PrevSearchItem[] = [
+            { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'thing' },
+            { projectIri: 'http://rdfh.ch/projects/0801', projectLabel: 'anything', query: 'blue thing' }
+        ];
+
+        const prevSearchStorage = localStorage.setItem('prevSearch', JSON.stringify(prevSearchArray));
+        expect(prevSearchStorage).toBeDefined();
+
+        spyOn(testHostComponent.fulltextSearch, 'resetPrevSearch');
+
+        // click in the search input to open the search panel
+        const searchInput = fulltextSearchComponentDe.query(By.css('input.kui-fulltext-search-input')).nativeElement;
+        expect(searchInput).toBeDefined();
+        searchInput.click();
+        testHostFixture.detectChanges();
+
+        // click on the Clear List button to erase the search list
+        const clearListBtn = fulltextSearchComponentDe.query(By.css('button.clear-list-btn')).nativeElement;
+        expect(clearListBtn).toBeDefined();
+        clearListBtn.click();
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.fulltextSearch.resetPrevSearch).toHaveBeenCalled();
+        expect(testHostComponent.fulltextSearch.resetPrevSearch).toHaveBeenCalledTimes(1);
+        // todo: expect(prevSearchStorage).toBeUndefined();
+
+
+    });
+
+    it('should remove one item of the search list', () => {
+        const prevSearchArray: PrevSearchItem[] = [
+            { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' }
+        ];
+
+        const prevSearchStorage = localStorage.setItem('prevSearch', JSON.stringify(prevSearchArray));
+        expect(prevSearchStorage).toBeDefined();
+
+        spyOn(testHostComponent.fulltextSearch, 'resetPrevSearch');
+
+        // click in the search input to open the search panel
+        const searchInput = fulltextSearchComponentDe.query(By.css('input.kui-fulltext-search-input')).nativeElement;
+        expect(searchInput).toBeDefined();
+        searchInput.click();
+        testHostFixture.detectChanges();
+
+        // click on the close icon to remove the item of the list
+        const closeItemBtn = fulltextSearchComponentDe.query(By.css('mat-icon.mat-list-close-icon')).nativeElement;
+        expect(closeItemBtn).toBeDefined();
+        closeItemBtn.click();
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.fulltextSearch.resetPrevSearch).toHaveBeenCalled();
+        expect(testHostComponent.fulltextSearch.resetPrevSearch).toHaveBeenCalledTimes(1);
+        expect(testHostComponent.fulltextSearch.resetPrevSearch).toHaveBeenCalledWith(prevSearchArray[0]);
+
+        // todo: expect(prevSearchStorage).toBeUndefined();
+
+    });
 
     it('should get a menu panel with the list of projects', () => {
 
@@ -136,7 +285,6 @@ describe('FulltextSearchComponent', () => {
 
         const projBtnLabelDe = projButtonDe.query(By.css('button > p.label'));
         const projBtnLabelNe = projBtnLabelDe.nativeElement;
-        console.log('projBtnLabelNe.innerHTML', projBtnLabelNe.innerHTML);
 
         expect(projBtnLabelNe.innerHTML).toEqual('All projects');
 
@@ -171,10 +319,18 @@ describe('FulltextSearchComponent', () => {
         testHostFixture.detectChanges();
 
         expect(projBtnLabelNe.innerHTML).toEqual('anything');
+        expect(testHostComponent.fulltextSearch.setProject).toHaveBeenCalled();
         expect(testHostComponent.fulltextSearch.setProject).toHaveBeenCalledTimes(1);
         expect(testHostComponent.fulltextSearch.setProject).toHaveBeenCalledWith(testHostComponent.fulltextSearch.projects[0]);
+
+        expect(testHostComponent.fulltextSearch.changeFocus).toHaveBeenCalled();
         expect(testHostComponent.fulltextSearch.changeFocus).toHaveBeenCalledTimes(1);
 
+    });
+
+    afterEach(() => {
+        fulltextSearchComponentDe.nativeElement.remove();
+        testHostFixture.destroy();
     });
 
 });
