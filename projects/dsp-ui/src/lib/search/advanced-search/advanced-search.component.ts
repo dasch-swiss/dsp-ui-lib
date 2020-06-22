@@ -71,7 +71,6 @@ export class AdvancedSearchComponent implements OnInit {
      * @returns void
      */
     initializeOntologies(): void {
-
         this.knoraApiConnection.v2.onto.getOntologiesMetadata().subscribe(
             (response: OntologiesMetadata) => {
                 this.ontologiesMetadata = response;
@@ -156,6 +155,19 @@ export class AdvancedSearchComponent implements OnInit {
     getPropertiesForResourceClass(resClassIri: string) {
 
         // TODO: init resource classes and properties, set active res class
+
+        /*this.knoraApiConnection.v2.ontologyCache.getResourceClassDefinition(resClassIri).subscribe(
+            onto => {
+
+                this.activeResourceClass = resClassIri;
+
+                this.resourceClasses = this.makeResourceClassesArray(onto.classes);
+
+
+            }
+        );*/
+
+
 
         // console.log(resClassIri);
     }

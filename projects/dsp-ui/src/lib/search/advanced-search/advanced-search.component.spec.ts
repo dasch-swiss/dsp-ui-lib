@@ -18,6 +18,10 @@ import { By } from '@angular/platform-browser';
 import { OntologyCache } from '@dasch-swiss/dsp-js/src/cache/ontology-cache/OntologyCache';
 import { MatIconModule } from '@angular/material/icon';
 import { Properties } from './select-property/select-property.component';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { MatSelectHarness } from '@angular/material/select/testing';
+import { MatButtonHarness } from '@angular/material/button/testing';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -111,6 +115,8 @@ describe('AdvancedSearchComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
 
+    let loader: HarnessLoader;
+
     beforeEach(async(() => {
 
         const dspConnSpy = {
@@ -165,6 +171,8 @@ describe('AdvancedSearchComponent', () => {
         testHostFixture = TestBed.createComponent(TestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
 
+        loader = TestbedHarnessEnvironment.loader(testHostFixture);
+
         testHostFixture.detectChanges();
     });
 
@@ -194,22 +202,19 @@ describe('AdvancedSearchComponent', () => {
 
     });
 
-    it('should disable add property button on init', () => {
-        const ele: DebugElement = testHostFixture.debugElement;
-        const addPropDe = ele.query(By.css('.add-property-button'));
+    it('should disable add property button on init', async () => {
 
-        const addProp = addPropDe.nativeElement;
+        const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
 
-        expect(addProp.disabled).toBe(true);
+        expect(await addPropButton.isDisabled()).toBe(true);
     });
 
-    it('should disable remove property button on init', () => {
-        const ele: DebugElement = testHostFixture.debugElement;
-        const rmPropDe = ele.query(By.css('.remove-property-button'));
+    it('should disable remove property button on init', async () => {
 
-        const rmProp = rmPropDe.nativeElement;
+        const rmPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.remove-property-button'}));
 
-        expect(rmProp.disabled).toBe(true);
+        expect(await rmPropButton.isDisabled()).toBe(true);
+
     });
 
     it('should react when an ontology is selected', async () => {
@@ -251,7 +256,7 @@ describe('AdvancedSearchComponent', () => {
 
     });
 
-    it('should display a property selection when the add property button has been clicked', () => {
+    it('should display a property selection when the add property button has been clicked', async () => {
 
         // simulate state after anything onto selection
         testHostComponent.advancedSearch.activeOntology = 'http://0.0.0.0:3333/ontology/0001/anything/v2';
@@ -288,16 +293,13 @@ describe('AdvancedSearchComponent', () => {
 
         expect(testHostComponent.advancedSearch.activeProperties.length).toEqual(0);
 
-        const ele: DebugElement = testHostFixture.debugElement;
-        const addPropDe = ele.query(By.css('.add-property-button'));
+        const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
 
-        const addProp = addPropDe.nativeElement;
+        expect(await addPropButton.isDisabled()).toBe(false);
 
-        expect(addProp.disabled).toBe(false);
+        await addPropButton.click();
 
-        addProp.click();
-
-        testHostFixture.detectChanges();
+        expect(testHostComponent.advancedSearch.activeProperties.length).toEqual(1);
 
         const hostCompDe = testHostFixture.debugElement;
         const selectPropComp = hostCompDe.query(By.directive(TestSelectPropertyComponent));
@@ -306,10 +308,8 @@ describe('AdvancedSearchComponent', () => {
         expect((selectPropComp.componentInstance as TestSelectPropertyComponent).index).toEqual(0);
         expect((selectPropComp.componentInstance as TestSelectPropertyComponent).properties).toEqual(resProps);
 
-        const rmPropDe = ele.query(By.css('.remove-property-button'));
+        const rmPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.remove-property-button'}));
 
-        const rmProp = rmPropDe.nativeElement;
-
-        expect(rmProp.disabled).toBe(false );
+        expect(await rmPropButton.isDisabled()).toBe(false );
     });
 });
