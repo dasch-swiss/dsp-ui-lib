@@ -4,4 +4,6 @@
             <mat-option *ngFor="let prop of propertiesAsArray" [value]="prop.id">{{ prop.label }}</mat-option>
         </mat-select>
     </mat-form-field>
+
+    <mat-checkbox *ngIf="propertySelected !== undefined && sortCriterion()" [formControlName]="'isSortCriterion'" matTooltip="Sort criterion"></mat-checkbox>
 </span>

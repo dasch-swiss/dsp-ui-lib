@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ResourceClassDefinition, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
+import { ResourceClassDefinition, ResourcePropertyDefinition, Cardinality, IHasProperty } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { SortingService } from '../../../action';
 
@@ -70,7 +70,7 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
         // build a form for the property selection
         this.form = this.fb.group({
             property: [null, Validators.required],
-            // isSortCriterion: [false, Validators.required]
+            isSortCriterion: [false, Validators.required]
         });
 
         // update the selected property
@@ -121,6 +121,36 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
 
         // sort properties by label (ascending)
         this.propertiesAsArray = this._sortingService.keySortByAlphabetical(propsArray, 'label');
+    }
+
+    /**
+     * Indicates if property can be used as a sort criterion.
+     * Property has to have cardinality or max cardinality 1 for the chosen resource class.
+     *
+     * We cannot sort by properties whose cardinality is greater than 1.
+     * Return boolean
+     */
+    sortCriterion(): boolean {
+
+        // TODO: this method is called from teh template. It is called on each change detection cycle.
+        // TODO: this is acceptable because this method has no side-effects
+        // TODO: find a better way: evaluate once and store the result in a class member
+
+        // check if a resource class is selected and if the property's cardinality is 1 for the selected resource class
+        if (this._activeResourceClass !== undefined && this.propertySelected !== undefined && !this.propertySelected.isLinkProperty) {
+
+            const cardinalities: IHasProperty[] = this._activeResourceClass.propertiesList.filter(
+                (card: IHasProperty) => {
+                    // cardinality 1 or max occurrence 1
+                    return card.propertyIndex === this.propertySelected.id
+                        && (card.cardinality === Cardinality._1 || card.cardinality === Cardinality._0_1);
+                }
+            );
+            return cardinalities.length === 1;
+        } else {
+            return false;
+        }
+
     }
 
 }

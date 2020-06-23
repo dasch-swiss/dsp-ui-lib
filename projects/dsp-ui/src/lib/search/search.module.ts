@@ -8,6 +8,8 @@ import { SelectResourceClassComponent } from './advanced-search/select-resource-
 import { SelectPropertyComponent } from './advanced-search/select-property/select-property.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
@@ -20,7 +22,9 @@ import { MatIconModule } from '@angular/material/icon';
         ReactiveFormsModule,
         MatSelectModule,
         MatOptionModule,
-        MatIconModule
+        MatIconModule,
+        MatCheckboxModule,
+        MatTooltipModule
     ],
     exports: [
         AdvancedSearchComponent

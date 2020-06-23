@@ -9,12 +9,15 @@ import { MatOptionModule } from '@angular/material/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import {
+    Cardinality,
     MockOntology,
     PropertyDefinition,
     ResourceClassDefinition,
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { MatSelectHarness } from '@angular/material/select/testing';
+import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -83,7 +86,8 @@ describe('SelectPropertyComponent', () => {
                 BrowserAnimationsModule,
                 ReactiveFormsModule,
                 MatSelectModule,
-                MatOptionModule
+                MatOptionModule,
+                MatCheckboxModule
             ],
             declarations: [
                 SelectPropertyComponent,
@@ -157,6 +161,41 @@ describe('SelectPropertyComponent', () => {
         expect(testHostComponent.selectProperty.propertySelected.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasBlueThing');
     });
 
+    it('should not show the sort checkbox when no property is selected', async () => {
+
+        const checkbox = await loader.getAllHarnesses(MatCheckboxHarness);
+
+        expect(checkbox.length).toEqual(0);
+
+    });
+
+    it('should show the sort checkbox when a property with cardinality 1 is selected', async () => {
+
+        const select = await loader.getHarness(MatSelectHarness);
+        await select.open();
+
+        const options = await select.getOptions();
+        expect(await options[4].getText()).toEqual('Date');
+
+        await options[4].click();
+
+        const resClass = new ResourceClassDefinition();
+        resClass.propertiesList = [{
+            propertyIndex: 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate',
+            cardinality: Cardinality._1,
+            isInherited: true
+        }];
+
+        testHostComponent.activeResourceClass = resClass;
+
+        testHostFixture.detectChanges();
+
+        const checkbox = await loader.getAllHarnesses(MatCheckboxHarness);
+
+        expect(checkbox.length).toEqual(1);
+
+    });
+
     it('should reinitialise the properties',  async() => {
 
         expect(testHostComponent.selectProperty.propertySelected).toBeUndefined();
@@ -179,7 +218,7 @@ describe('SelectPropertyComponent', () => {
         expect(testHostComponent.selectProperty.propertySelected).toBeUndefined();
     });
 
-    it('should remove the control from the parent form and unsunscribe from value changes when destroyed', async (() => {
+    it('should remove the control from the parent form and unsubscribe from value changes when destroyed', async (() => {
 
         expect(testHostComponent.selectProperty.propertyChangesSubscription.closed).toBe(false);
 
