@@ -20,7 +20,7 @@
             </div>
         </div>
         <!-- Add value form -->
-        <div *ngIf="addValueFormIsVisible && valueID === prop.propDef.id">
+        <div *ngIf="addValueFormIsVisible && propID === prop.propDef.id">
             <dsp-add-value
                 #addValue
                 [parentResource]="parentResource"

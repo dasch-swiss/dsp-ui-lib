@@ -2,7 +2,6 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
     PermissionUtil,
     ReadResource,
-    ReadValue,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
@@ -41,7 +40,7 @@ export class PropertyViewComponent implements OnInit {
 
     addButtonIsVisible: boolean; // used to toggle add value button
     addValueFormIsVisible: boolean; // used to toggle add value form field
-    valueID: string; // used in template to show only the add value form of the corresponding value
+    propID: string; // used in template to show only the add value form of the corresponding value
 
     constructor() { }
 
@@ -55,8 +54,9 @@ export class PropertyViewComponent implements OnInit {
             // if user has modify permissions, set createAllowed to true so the user see's the add button
             this.addButtonIsVisible = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
         }
+        console.log('resource: ', this.parentResource);
 
-        // console.log(this.propArray);
+        console.log(this.propArray);
 
     }
 
@@ -65,11 +65,11 @@ export class PropertyViewComponent implements OnInit {
      */
     showAddValueForm(prop: PropertyInfoValues) {
 
+        this.propID = prop.propDef.id;
         this.addValueFormIsVisible = true;
         this.addButtonIsVisible = false;
-        this.valueID = prop.propDef.id;
         console.log('prop: ', prop);
-        console.log('valueID ', this.valueID);
+        console.log('propID ', this.propID);
 
     }
 

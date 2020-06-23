@@ -1,23 +1,21 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import {
   Constants,
+  DeleteValue,
+  DeleteValueResponse,
   KnoraApiConnection,
   PermissionUtil,
   ReadResource,
-  ReadTextValueAsHtml,
-  ReadTextValueAsString,
-  ReadTextValueAsXml,
   ReadValue,
   UpdateResource,
   UpdateValue,
-  WriteValueResponse,
-  DeleteValue,
-  DeleteValueResponse
+  WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
+import { EmitEvent, EventBusService, Events } from '../../services/event-bus.service';
+import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
-import { EventBusService, EmitEvent, Events } from '../../services/event-bus.service';
 
 @Component({
   selector: 'dsp-display-edit',
@@ -51,15 +49,10 @@ export class DisplayEditComponent implements OnInit {
     // indicates if value can be edited
     readOnlyValue: boolean;
 
-    private readonly readTextValueAsString = 'ReadTextValueAsString';
-
-    private readonly readTextValueAsXml = 'ReadTextValueAsXml';
-
-    private readonly readTextValueAsHtml = 'ReadTextValueAsHtml';
-
     constructor(@Inject(DspApiConnectionToken)
                 private knoraApiConnection: KnoraApiConnection,
-                private eventBusService: EventBusService) {
+                private eventBusService: EventBusService,
+                private valueTypeService: ValueTypeService) {
     }
 
     ngOnInit() {
@@ -74,9 +67,9 @@ export class DisplayEditComponent implements OnInit {
         // check if comment toggle button should be shown
         this.checkCommentToggleVisibility();
 
-        this.valueTypeOrClass = this.getValueTypeOrClass(this.displayValue);
+        this.valueTypeOrClass = this.valueTypeService.getValueTypeOrClass(this.displayValue);
 
-        this.readOnlyValue = this.isReadOnly(this.valueTypeOrClass);
+        this.readOnlyValue = this.valueTypeService.isReadOnly(this.valueTypeOrClass);
     }
 
     activateEditMode() {
@@ -170,44 +163,4 @@ export class DisplayEditComponent implements OnInit {
         this.shouldShowCommentToggle = (this.mode === 'read' && this.displayValue.valueHasComment !== '' && this.displayValue.valueHasComment !== undefined);
     }
 
-    /**
-     * Given a value, determines the type or class representing it.
-     *
-     * For text values, this method determines the specific class in use.
-     * For all other types, the given type is returned.
-     *
-     * @param value the given value.
-     */
-    getValueTypeOrClass(value: ReadValue): string {
-
-        if (value.type === this.constants.TextValue) {
-            if (value instanceof ReadTextValueAsString) {
-                return this.readTextValueAsString;
-            } else if (value instanceof ReadTextValueAsXml) {
-                return this.readTextValueAsXml;
-            } else if (value instanceof ReadTextValueAsHtml) {
-                return this.readTextValueAsHtml;
-            } else {
-                throw new Error(`unknown TextValue class ${value}`);
-            }
-        } else {
-            return value.type;
-        }
-    }
-
-    /**
-     * Equality checks with constants below are TEMPORARY until component is implemented.
-     * Used so that the CRUD buttons do not show if a property doesn't have a value component.
-     */
-
-    /**
-     * Determines if the given value is readonly.
-     *
-     * @param valueTypeOrClass the type or class of the given value.
-     */
-    isReadOnly(valueTypeOrClass: string): boolean {
-        return valueTypeOrClass === this.readTextValueAsHtml ||
-                valueTypeOrClass === this.readTextValueAsXml  ||
-                valueTypeOrClass === this.constants.GeomValue;
-    }
 }
