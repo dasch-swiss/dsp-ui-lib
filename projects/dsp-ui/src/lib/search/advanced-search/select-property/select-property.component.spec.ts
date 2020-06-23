@@ -115,7 +115,7 @@ describe('SelectPropertyComponent', () => {
         expect(testHostComponent.selectProperty.propertiesAsArray.length).toEqual(22);
     });
 
-    it('should add a new control to the parent form', async(done => {
+    it('should add a new control to the parent form', async(() => {
 
         // the control is added to the form as an async operation
         // https://angular.io/guide/testing#async-test-with-async
@@ -183,15 +183,13 @@ describe('SelectPropertyComponent', () => {
 
         expect(testHostComponent.selectProperty.propertyChangesSubscription.closed).toBe(false);
 
+        // TODO: find out why testHostFixture.destroy() does not trigger the component's ngOnDestroy
         testHostComponent.selectProperty.ngOnDestroy();
-
-        testHostFixture.detectChanges();
 
         // the control is added to the form as an async operation
         // https://angular.io/guide/testing#async-test-with-async
         testHostFixture.whenStable().then(
             () => {
-
                 expect(testHostComponent.form.contains('property0')).toBe(false);
                 expect(testHostComponent.selectProperty.propertyChangesSubscription.closed).toBe(true);
             }
