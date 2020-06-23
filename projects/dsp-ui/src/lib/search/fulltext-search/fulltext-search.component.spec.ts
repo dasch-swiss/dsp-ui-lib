@@ -53,13 +53,15 @@ interface PrevSearchItem {
     query: string;
 }
 
-describe('FulltextSearchComponent', () => {
+fdescribe('FulltextSearchComponent', () => {
     let testHostComponent: TestHostFulltextSearchComponent;
     let testHostFixture: ComponentFixture<TestHostFulltextSearchComponent>;
     let fulltextSearchComponentDe;
     let hostCompDe;
+    let mockRouter;
+    let dspConnSpy;
 
-    const mockRouter = {
+    /* const mockRouter = {
         navigate: jasmine.createSpy('navigate')
     };
 
@@ -67,9 +69,20 @@ describe('FulltextSearchComponent', () => {
         admin: {
             projectsEndpoint: jasmine.createSpyObj('projectsEndpoint', ['getProjects', 'getProjectByIri'])
         }
-    };
+    }; */
 
     beforeEach(async(() => {
+
+        mockRouter = {
+            navigate: jasmine.createSpy('navigate')
+        };
+
+        dspConnSpy = {
+            admin: {
+                projectsEndpoint: jasmine.createSpyObj('projectsEndpoint', ['getProjects', 'getProjectByIri'])
+            }
+        };
+
         TestBed.configureTestingModule({
             declarations: [
                 FulltextSearchComponent,
@@ -102,6 +115,25 @@ describe('FulltextSearchComponent', () => {
 
     beforeEach(() => {
 
+        // mock local storage
+        let store = {};
+
+        spyOn(localStorage, 'getItem').and.callFake((key: string): string => {
+            return store[key] || null;
+        });
+        spyOn(localStorage, 'removeItem').and.callFake((key: string): void => {
+            delete store[key];
+        });
+        spyOn(localStorage, 'setItem').and.callFake((key: string, value: string): string => {
+            return store[key] = value as string;
+        });
+        spyOn(localStorage, 'clear').and.callFake(() => {
+            store = {};
+        });
+    });
+
+    beforeEach(() => {
+
         const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
         (valuesSpy.admin.projectsEndpoint as jasmine.SpyObj<ProjectsEndpointAdmin>).getProjects.and.callFake(
@@ -119,24 +151,6 @@ describe('FulltextSearchComponent', () => {
         fulltextSearchComponentDe = hostCompDe.query(By.directive(FulltextSearchComponent));
     });
 
-    // Mock localStorage
-    beforeEach(() => {
-        let store = {};
-
-        spyOn(localStorage, 'getItem').and.callFake((key: string): string => {
-            return store[key] || null;
-        });
-        spyOn(localStorage, 'removeItem').and.callFake((key: string): void => {
-            delete store[key];
-        });
-        spyOn(localStorage, 'setItem').and.callFake((key: string, value: string): string => {
-            return store[key] = value as string;
-        });
-        spyOn(localStorage, 'clear').and.callFake(() => {
-            store = {};
-        });
-    });
-
     it('should create', () => {
         expect(testHostComponent).toBeTruthy();
         expect(testHostComponent.fulltextSearch).toBeTruthy();
@@ -144,13 +158,12 @@ describe('FulltextSearchComponent', () => {
 
     it('should get projects on init', () => {
         const projSpy = TestBed.inject(DspApiConnectionToken);
+        expect(projSpy.admin.projectsEndpoint.getProjects).toHaveBeenCalledTimes(1);
 
         expect(testHostComponent.fulltextSearch.projects).toBeDefined();
         expect(testHostComponent.fulltextSearch.projects.length).toEqual(8);
         expect(testHostComponent.fulltextSearch.projectfilter).toEqual(true);
-
-        // TO FIX: expect(projSpy.admin.projectsEndpoint.getProjects).toHaveBeenCalledTimes(1);
-
+        expect(testHostComponent.fulltextSearch.projectLabel).toEqual('All projects');
     });
 
     it('should do a search', () => {
@@ -184,7 +197,6 @@ describe('FulltextSearchComponent', () => {
 
         // check the call of router.navigate with correct arguments
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/new thing']);
-
     });
 
     // todo: fix error: Cannot read property 'detach' of undefined CDK OVERLAY
@@ -230,7 +242,6 @@ describe('FulltextSearchComponent', () => {
         expect(testHostComponent.fulltextSearch.projectLabel).toEqual('anything');
 
         expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/purple thing/http%3A%2F%2Frdfh.ch%2Fprojects%2F0801']);
-
     });
 
     // todo: fix error: Cannot read property 'detach' of undefined CDK OVERLAY
@@ -276,7 +287,6 @@ describe('FulltextSearchComponent', () => {
         testHostFixture.detectChanges();
 
         expect(localStorage.getItem('prevSearch')).toBe(null);
-
     });
 
     it('should clear the search list - solution 2', () => {
@@ -347,6 +357,8 @@ describe('FulltextSearchComponent', () => {
 
     it('should get a menu panel with the list of projects', () => {
 
+        console.log('projectLabel', testHostComponent.fulltextSearch.projectLabel);
+
         const projButtonDe = fulltextSearchComponentDe.query(By.css('button.kui-project-filter-button'));
         const projButtonNe = projButtonDe.nativeElement;
 
@@ -364,7 +376,6 @@ describe('FulltextSearchComponent', () => {
         const projMenuPanelNe = projMenuPanelDe.nativeElement;
 
         expect(projMenuPanelNe).toBeDefined();
-
     });
 
     it('should select one project in the menu panel', () => {
@@ -388,12 +399,6 @@ describe('FulltextSearchComponent', () => {
         expect(projBtnLabelNe.innerHTML).toEqual('anything');
         expect(testHostComponent.fulltextSearch.projectIri).toEqual('http://rdfh.ch/projects/0001');
         expect(testHostComponent.fulltextSearch.projectLabel).toEqual('anything');
-
     });
-
-    /* afterEach(() => {
-        fulltextSearchComponentDe.nativeElement.remove();
-        testHostFixture.destroy();
-    }); */
 
 });
