@@ -36,7 +36,7 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
         return this._properties;
     }
 
-    _activeResourceClass?: ResourceClassDefinition;
+    private _activeResourceClass?: ResourceClassDefinition;
 
     // setter method for selected resource class
     @Input()

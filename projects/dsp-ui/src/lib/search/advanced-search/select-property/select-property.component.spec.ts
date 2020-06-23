@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectPropertyComponent } from './select-property.component';
+import { Properties, SelectPropertyComponent } from './select-property.component';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -8,7 +8,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { MockOntology, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
+import {
+    MockOntology,
+    PropertyDefinition,
+    ResourceClassDefinition,
+    ResourcePropertyDefinition
+} from '@dasch-swiss/dsp-js';
 import { MatSelectHarness } from '@angular/material/select/testing';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
@@ -18,12 +23,28 @@ const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
     return o instanceof className;
 };
 
+const makePropsArray = (props: { [index: string]: PropertyDefinition}): Properties => {
+    const propIris = Object.keys(props);
+
+    const resProps = {};
+
+    propIris.filter(
+        (propIri: string) => {
+            return typeGuard(props[propIri], ResourcePropertyDefinition);
+        }
+    ).forEach((propIri: string) => {
+        resProps[propIri] = (props[propIri] as ResourcePropertyDefinition);
+    });
+
+    return resProps;
+};
+
 /**
  * Test host component to simulate parent component.
  */
 @Component({
     template: `
-        <dsp-select-property #selectProp [formGroup]="form" [index]="0" [activeResourceClass]="undefined" [properties]="propertyDefs"></dsp-select-property>`
+        <dsp-select-property #selectProp [formGroup]="form" [index]="0" [activeResourceClass]="activeResourceClass" [properties]="propertyDefs"></dsp-select-property>`
 })
 class TestHostComponent implements OnInit {
 
@@ -33,6 +54,8 @@ class TestHostComponent implements OnInit {
 
     propertyDefs: { [index: string]: ResourcePropertyDefinition };
 
+    activeResourceClass: ResourceClassDefinition;
+
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     }
 
@@ -41,21 +64,7 @@ class TestHostComponent implements OnInit {
 
         const props = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties;
 
-        const propIris = Object.keys(props);
-
-        // console.log(props);
-
-        const resProps = {};
-
-        propIris.filter(
-            (propIri: string) => {
-                return typeGuard(props[propIri], ResourcePropertyDefinition);
-            }
-        ).forEach((propIri: string) => {
-            resProps[propIri] = (props[propIri] as ResourcePropertyDefinition);
-        });
-
-        // console.log(resProps)
+        const resProps = makePropsArray(props);
 
         this.propertyDefs = resProps;
     }
@@ -97,7 +106,16 @@ describe('SelectPropertyComponent', () => {
         expect(testHostComponent.selectProperty).toBeTruthy();
     });
 
-    it('should add a new control to the parent form', async(() => {
+    it('should initialise the Inputs correctly', () => {
+
+        expect(testHostComponent.selectProperty.formGroup).toBeDefined();
+        expect(testHostComponent.selectProperty.index).toEqual(0);
+        expect(testHostComponent.selectProperty.activeResourceClass).toBeUndefined();
+        expect(Object.keys(testHostComponent.selectProperty.properties).length).toEqual(28);
+        expect(testHostComponent.selectProperty.propertiesAsArray.length).toEqual(22);
+    });
+
+    it('should add a new control to the parent form', async(done => {
 
         // the control is added to the form as an async operation
         // https://angular.io/guide/testing#async-test-with-async
@@ -124,4 +142,60 @@ describe('SelectPropertyComponent', () => {
         expect(options.length).toEqual(22);
 
     });
+
+    it('should set the active property', async () => {
+
+        expect(testHostComponent.selectProperty.propertySelected).toBeUndefined();
+
+        const select = await loader.getHarness(MatSelectHarness);
+        await select.open();
+
+        const options = await select.getOptions();
+
+        await options[0].click();
+
+        expect(testHostComponent.selectProperty.propertySelected.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasBlueThing');
+    });
+
+    it('should reinitialise the properties',  async() => {
+
+        expect(testHostComponent.selectProperty.propertySelected).toBeUndefined();
+
+        const select = await loader.getHarness(MatSelectHarness);
+        await select.open();
+
+        const options = await select.getOptions();
+
+        await options[0].click();
+
+        expect(testHostComponent.selectProperty.propertySelected.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasBlueThing');
+
+        const props = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties;
+
+        testHostComponent.propertyDefs = makePropsArray(props);
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.selectProperty.propertySelected).toBeUndefined();
+    });
+
+    it('should remove the control from the parent form and unsunscribe from value changes when destroyed', async (() => {
+
+        expect(testHostComponent.selectProperty.propertyChangesSubscription.closed).toBe(false);
+
+        testHostComponent.selectProperty.ngOnDestroy();
+
+        testHostFixture.detectChanges();
+
+        // the control is added to the form as an async operation
+        // https://angular.io/guide/testing#async-test-with-async
+        testHostFixture.whenStable().then(
+            () => {
+
+                expect(testHostComponent.form.contains('property0')).toBe(false);
+                expect(testHostComponent.selectProperty.propertyChangesSubscription.closed).toBe(true);
+            }
+        );
+
+    }));
 });
