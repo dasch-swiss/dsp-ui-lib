@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DspApiConnectionToken } from '../../core';
 import {
@@ -8,7 +8,9 @@ import {
     OntologiesMetadata, PropertyDefinition,
     ResourceClassDefinition, ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
-import { Properties } from './select-property/select-property.component';
+import { Properties, SelectPropertyComponent } from './select-property/select-property.component';
+import { SelectResourceClassComponent } from './select-resource-class/select-resource-class.component';
+import { Subscription } from 'rxjs';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -22,7 +24,7 @@ const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
     templateUrl: './advanced-search.component.html',
     styleUrls: ['./advanced-search.component.scss']
 })
-export class AdvancedSearchComponent implements OnInit {
+export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
     ontologiesMetadata: OntologiesMetadata;
 
@@ -41,6 +43,14 @@ export class AdvancedSearchComponent implements OnInit {
     activeProperties: boolean[] = [];
 
     properties: Properties;
+
+    formChangesSubscription: Subscription;
+
+    // reference to the component that controls the resource class selection
+    @ViewChild('resourceClass') resourceClassComponent: SelectResourceClassComponent;
+
+    // reference to the component controlling the property selection
+    @ViewChildren('property') propertyComponents: QueryList<SelectPropertyComponent>;
 
     constructor(
         @Inject(FormBuilder) private fb: FormBuilder,
@@ -187,12 +197,24 @@ export class AdvancedSearchComponent implements OnInit {
     private validateForm(): boolean {
 
         // check that either a resource class is selected or at least one property is specified
-        return this.form.valid /*&&
-            (this.propertyComponents.length > 0 || (this.resourceClassComponent !== undefined && this.resourceClassComponent.getResourceClassSelected() !== false));*/
+        return this.form.valid &&
+            (this.propertyComponents.length > 0 || (this.resourceClassComponent !== undefined && this.resourceClassComponent.selectedResourceClassIri !== false));
 
     }
 
-    submit() {}
+    /**
+     * @ignore
+     * Resets the form (selected resource class and specified properties) preserving the active ontology.
+     */
+    resetForm() {
+        if (this.activeOntology !== undefined) {
+            this.getResourceClassesAndPropertiesForOntology(this.activeOntology);
+        }
+    }
+
+    submit() {
+        // TODO: check validity, create Gravsearch query, and submit query
+    }
 
 
     ngOnInit() {
@@ -201,13 +223,19 @@ export class AdvancedSearchComponent implements OnInit {
         this.form = this.fb.group({});
 
         // if form status changes, re-run validation
-        this.form.statusChanges.subscribe((data) => {
+        this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
             this.formValid = this.validateForm();
             // console.log(this.form);
         });
 
         // initialize ontologies to be used for the ontologies selection in the search form
         this.initializeOntologies();
+    }
+
+    ngOnDestroy() {
+        if (this.formChangesSubscription !== undefined) {
+            this.formChangesSubscription.unsubscribe();
+        }
     }
 
 }

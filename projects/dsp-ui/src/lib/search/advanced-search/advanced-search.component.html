@@ -32,4 +32,14 @@
         </button>
     </div>
 
+    <div class="kui-form-action">
+        <button class="reset" mat-button type="button" (click)="resetForm()" [disabled]="this.activeOntology === undefined">
+            Reset
+        </button>
+        <span class="fill-remaining-space"></span>
+        <button class="extended-search-button" mat-raised-button color="primary" type="submit" [disabled]="!formValid">
+            Search
+        </button>
+    </div>
+
 </form>
