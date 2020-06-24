@@ -76,7 +76,7 @@ export class FulltextSearchComponent implements OnInit {
     searchQuery: string;
 
     // previous search = full-text search history
-    prevSearch: PrevSearchItem[] = JSON.parse(localStorage.getItem('prevSearch'));
+    prevSearch: PrevSearchItem[];
 
     // list of projects, in case of filterproject is true
     projects: ReadProject[];
@@ -114,6 +114,13 @@ export class FulltextSearchComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+
+        const prevSearchOption = JSON.parse(localStorage.getItem('prevSearch'));
+        if (prevSearchOption !== null) {
+            this.prevSearch = prevSearchOption;
+        } else {
+            this.prevSearch = [];
+        }
 
         if (this.filterbyproject) {
             this.getProject(this.filterbyproject);
@@ -298,10 +305,10 @@ export class FulltextSearchComponent implements OnInit {
         this.overlayRef.detach();
     }
 
-    resetPrevSearch(prevSearch?: PrevSearchItem): void {
-        if (prevSearch) {
-            // delete only this item with the name ...
-            const i: number = this.prevSearch.indexOf(prevSearch);
+    resetPrevSearch(prevSearchItem?: PrevSearchItem): void {
+        if (prevSearchItem) {
+            // delete only this item with the name
+            const i: number = this.prevSearch.indexOf(prevSearchItem);
             this.prevSearch.splice(i, 1);
             localStorage.setItem('prevSearch', JSON.stringify(this.prevSearch));
         } else {

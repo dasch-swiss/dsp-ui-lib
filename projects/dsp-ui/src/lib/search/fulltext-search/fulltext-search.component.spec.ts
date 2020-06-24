@@ -1,4 +1,4 @@
-import { OverlayModule } from '@angular/cdk/overlay';
+import { OverlayModule, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -60,11 +60,17 @@ describe('FulltextSearchComponent', () => {
     let hostCompDe;
     let mockRouter;
     let dspConnSpy;
+    let mockOverlay;
+
 
     beforeEach(async(() => {
 
         mockRouter = {
             navigate: jasmine.createSpy('navigate')
+        };
+
+        mockOverlay = {
+            overlayRef: jasmine.createSpy('overlayRef')
         };
 
         dspConnSpy = {
@@ -101,6 +107,7 @@ describe('FulltextSearchComponent', () => {
             ]
         })
             .compileComponents();
+
     }));
 
     beforeEach(() => {
@@ -162,6 +169,7 @@ describe('FulltextSearchComponent', () => {
         let searchInputNativeEl;
 
         beforeEach(() => {
+
             // mock previous search data stored in the local storage
             prevSearchArray = [
                 { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' },
@@ -201,7 +209,7 @@ describe('FulltextSearchComponent', () => {
         });
 
         // todo: fix error: Cannot read property 'detach' of undefined CDK OVERLAY
-        /* xit('should reset the current search', () => {
+        /* it('should reset the current search', () => {
             expect(searchInputNativeEl).toBeDefined();
 
             searchInputNativeEl.value = 'thing to search';
@@ -267,6 +275,38 @@ describe('FulltextSearchComponent', () => {
             searchInputNativeEl = fulltextSearchComponentDe.query(By.css('input.kui-fulltext-search-input')).nativeElement;
         });
 
+        it('should remove one item of the search list - solution 1', () => {
+            // click in the search input to open the search panel
+            expect(searchInputNativeEl).toBeDefined();
+            searchInputNativeEl.click();
+            testHostFixture.detectChanges();
+
+            // click on the close icon to remove the item of the list
+            const closeItemBtn = fulltextSearchComponentDe.query(By.css('mat-icon.mat-list-close-icon')).nativeElement;
+            expect(closeItemBtn).toBeDefined();
+            closeItemBtn.click();
+            testHostFixture.detectChanges();
+
+            const newPrevSearchArray: PrevSearchItem[] = [
+                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'two things' },
+                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' }
+            ];
+            expect(localStorage.getItem('prevSearch')).toEqual(JSON.stringify(newPrevSearchArray));
+        });
+
+        // todo: fix test - ERROR: Cannot read property 'indexOf' of null
+        /* it('should remove one item of the search list - solution 2', () => {
+            // prevSearch is set correctly at this stage:
+            // console.log(localStorage.getItem('prevSearch'));
+            testHostComponent.fulltextSearch.resetPrevSearch(prevSearchArray[2]);
+
+            const newPrevSearchArray: PrevSearchItem[] = [
+                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'two things' },
+                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' }
+            ];
+            expect(localStorage.getItem('prevSearch')).toEqual(JSON.stringify(newPrevSearchArray));
+        }); */
+
         it('should clear the search list - solution 1', () => {
             // click in the search input to open the search panel
             expect(searchInputNativeEl).toBeDefined();
@@ -288,45 +328,11 @@ describe('FulltextSearchComponent', () => {
             expect(localStorage.getItem('prevSearch')).toBe(null);
         });
 
-        it('should remove one item of the search list - solution 1', () => {
-            // click in the search input to open the search panel
-            expect(searchInputNativeEl).toBeDefined();
-            searchInputNativeEl.click();
-            testHostFixture.detectChanges();
-
-            // click on the close icon to remove the item of the list
-            const closeItemBtn = fulltextSearchComponentDe.query(By.css('mat-icon.mat-list-close-icon')).nativeElement;
-            expect(closeItemBtn).toBeDefined();
-            closeItemBtn.click();
-            testHostFixture.detectChanges();
-
-            const newPrevSearchArray: PrevSearchItem[] = [
-                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'two things' },
-                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' }
-            ];
-            expect(localStorage.getItem('prevSearch')).toEqual(JSON.stringify(newPrevSearchArray));
-        });
-
-        // todo: fix test - ERROR: Cannot read property 'indexOf' of null
-        /* xit('should remove one item of the search list - solution 2', () => {
-
-            testHostComponent.fulltextSearch.resetPrevSearch(prevSearchArray[0]);
-
-            const newPrevSearchArray: PrevSearchItem[] = [
-                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'two things' },
-                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' }
-            ];
-            expect(localStorage.getItem('prevSearch')).toEqual(JSON.stringify(newPrevSearchArray));
-        }); */
-
     });
 
     describe('project menu panel', () => {
 
         it('should get a menu panel with the list of projects', () => {
-
-            console.log('projectLabel', testHostComponent.fulltextSearch.projectLabel);
-
             const projButtonDe = fulltextSearchComponentDe.query(By.css('button.kui-project-filter-button'));
             const projButtonNe = projButtonDe.nativeElement;
 
