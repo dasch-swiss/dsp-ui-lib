@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Properties, SelectPropertyComponent } from './select-property.component';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -10,7 +10,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import {
     Cardinality,
-    MockOntology,
+    MockOntology, OntologiesMetadata,
     PropertyDefinition,
     ResourceClassDefinition,
     ResourcePropertyDefinition
@@ -18,6 +18,7 @@ import {
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { By } from '@angular/platform-browser';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -74,6 +75,25 @@ class TestHostComponent implements OnInit {
 
 }
 
+/**
+ * Test component to simulate specify property value component.
+ */
+@Component({
+    selector: 'dsp-specify-property-value',
+    template: ``
+})
+class TestSpecifyPropertyValueComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    @Input() property: ResourcePropertyDefinition;
+
+    ngOnInit() {
+
+    }
+
+}
+
 describe('SelectPropertyComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
@@ -91,7 +111,8 @@ describe('SelectPropertyComponent', () => {
             ],
             declarations: [
                 SelectPropertyComponent,
-                TestHostComponent
+                TestHostComponent,
+                TestSpecifyPropertyValueComponent
             ]
         })
             .compileComponents();
@@ -159,6 +180,10 @@ describe('SelectPropertyComponent', () => {
         await options[0].click();
 
         expect(testHostComponent.selectProperty.propertySelected.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasBlueThing');
+
+        expect(testHostComponent.selectProperty.specifyPropertyValue.property).toBeDefined();
+        expect(testHostComponent.selectProperty.specifyPropertyValue.property.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasBlueThing');
+
     });
 
     it('should not show the sort checkbox when no property is selected', async () => {

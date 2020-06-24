@@ -1,8 +1,9 @@
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ResourceClassDefinition, ResourcePropertyDefinition, Cardinality, IHasProperty } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { SortingService } from '../../../action';
+import { SpecifyPropertyValueComponent } from './specifiy-property-value/specify-property-value.component';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -46,6 +47,9 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
 
     // properties that can be selected from
     private _properties: Properties;
+
+    // reference to child component: combination of comparison operator and value for chosen property
+    @ViewChild('specifyPropertyValue', { static: false }) specifyPropertyValue: SpecifyPropertyValueComponent;
 
     // properties as an Array structure (based on this.properties)
     propertiesAsArray: Array<ResourcePropertyDefinition>;

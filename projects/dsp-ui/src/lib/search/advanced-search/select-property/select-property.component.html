@@ -5,5 +5,8 @@
         </mat-select>
     </mat-form-field>
 
+    <dsp-specify-property-value #specifyPropertyValue [formGroup]="form" *ngIf="propertySelected !== undefined"
+                                [property]="propertySelected"></dsp-specify-property-value>
+
     <mat-checkbox *ngIf="propertySelected !== undefined && sortCriterion()" [formControlName]="'isSortCriterion'" matTooltip="Sort criterion"></mat-checkbox>
 </span>
