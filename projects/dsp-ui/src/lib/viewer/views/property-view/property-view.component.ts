@@ -7,6 +7,9 @@ import {
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
+import { ValueTypeService } from '../../services/value-type.service';
+import { EventBusService, Events } from '../../services/event-bus.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'dsp-property-view',
@@ -41,8 +44,12 @@ export class PropertyViewComponent implements OnInit {
     addButtonIsVisible: boolean; // used to toggle add value button
     addValueFormIsVisible: boolean; // used to toggle add value form field
     propID: string; // used in template to show only the add value form of the corresponding value
+    readOnlyProp: boolean; // used in template to not show an "add" button for properties we do not yet have a way to create/edit
 
-    constructor() { }
+    eventBusSubscription: Subscription;
+
+    constructor(private valueTypeService: ValueTypeService,
+                private eventBusService: EventBusService) { }
 
     ngOnInit() {
         if (this.parentResource) {
@@ -54,6 +61,9 @@ export class PropertyViewComponent implements OnInit {
             // if user has modify permissions, set createAllowed to true so the user see's the add button
             this.addButtonIsVisible = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
         }
+
+        this.eventBusSubscription = this.eventBusService.on(Events.ValueAdded, () => this.hideAddValueForm());
+
         console.log('resource: ', this.parentResource);
 
         console.log(this.propArray);
@@ -76,7 +86,7 @@ export class PropertyViewComponent implements OnInit {
     /**
      * Called from the template when the user clicks on the cancel button
      */
-    hideAddValueForm(emitterMessage?: string) {
+    hideAddValueForm() {
         this.addValueFormIsVisible = false;
         this.addButtonIsVisible = true;
     }

@@ -25,13 +25,13 @@
                 #addValue
                 [parentResource]="parentResource"
                 [resourcePropertyDefinition]="$any(parentResource.entityInfo.properties[prop.propDef.id])"
-                (operationCancelled)="hideAddValueForm($event)">
+                (operationCancelled)="hideAddValueForm()">
             </dsp-add-value>
         </div>
         <!-- Add button -->
         <div *ngIf="addButtonIsVisible">
-            <button class="create" (click)="showAddValueForm(prop)">
-                add
+            <button class="create" (click)="showAddValueForm(prop)" title="Add a new value">
+                <mat-icon>add_box</mat-icon>
             </button>
         </div>
     </div>

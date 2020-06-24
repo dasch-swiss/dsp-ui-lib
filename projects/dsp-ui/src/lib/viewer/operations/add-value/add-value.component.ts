@@ -11,14 +11,10 @@ import {
     Constants,
     CreateValue,
     KnoraApiConnection,
-    PermissionUtil,
     ReadResource,
-    ReadValue,
+    ResourcePropertyDefinition,
     UpdateResource,
-    WriteValueResponse,
-    PropertyDefinition,
-    ResourceClassDefinition,
-    ResourcePropertyDefinition
+    WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
@@ -50,6 +46,14 @@ export class AddValueComponent implements OnInit {
 
     createModeActive = false;
 
+    valueTypeOrClass: string;
+
+    submittingValue = false;
+
+    progressIndicatorStatus = 0;
+
+    progressIndicatorColor = 'blue';
+
     constructor(@Inject(DspApiConnectionToken)
                 private knoraApiConnection: KnoraApiConnection,
                 private eventBusService: EventBusService) { }
@@ -59,6 +63,13 @@ export class AddValueComponent implements OnInit {
 
         this.createModeActive = true;
 
+        this.valueTypeOrClass = this.resourcePropertyDefinition.objectType;
+
+        // TODO: find a way to figure out what type of text value it is
+        if (this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
+            this.resourcePropertyDefinition.objectType = 'ReadTextValueAsString';
+        }
+
         console.log(this.resourcePropertyDefinition);
 
 
@@ -66,6 +77,7 @@ export class AddValueComponent implements OnInit {
 
     saveAddValue() {
         this.createModeActive = false;
+        this.submittingValue = true;
         const createVal = this.displayValueComponent.getNewValue();
         console.log('displayValueComponent: ', this.displayValueComponent);
 
@@ -74,8 +86,6 @@ export class AddValueComponent implements OnInit {
             const updateRes = new UpdateResource();
             updateRes.id = this.parentResource.id;
             updateRes.type = this.parentResource.type;
-
-            // TODO: get the property of the corresponding value type
             updateRes.property = this.resourcePropertyDefinition.id;
             updateRes.value = createVal;
 
@@ -88,18 +98,20 @@ export class AddValueComponent implements OnInit {
                 })
                 ).subscribe(
                     (res2: ReadResource) => {
-                    // console.log(this.parentResource);
-                    this.eventBusService.emit(new EmitEvent(Events.ValueAdded));
+                        // console.log(this.parentResource);
+                        this.eventBusService.emit(new EmitEvent(Events.ValueAdded));
+                        this.submittingValue = false;
                     }
                 );
             } else {
                 console.error('invalid value');
+                this.submittingValue = false;
             }
     }
 
     cancelAddValue() {
         this.createModeActive = false;
-        this.operationCancelled.emit(null);
+        this.operationCancelled.emit();
     }
 
 }

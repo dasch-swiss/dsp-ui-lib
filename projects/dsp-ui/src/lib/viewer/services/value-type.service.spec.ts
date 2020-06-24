@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ReadIntValue, ReadTextValue, ReadTextValueAsString, ReadTextValueAsHtml } from '@dasch-swiss/dsp-js';
+import { ReadIntValue, ReadTextValueAsHtml, ReadTextValueAsString } from '@dasch-swiss/dsp-js';
 import { ValueTypeService } from './value-type.service';
 
 describe('ValueTypeService', () => {
