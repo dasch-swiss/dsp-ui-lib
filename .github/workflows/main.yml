@@ -10,6 +10,32 @@ env:
   GRAPHDB_HEAP_SIZE: 4G
 
 jobs:
+  build-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run test-lib
+      env:
+        TZ: Europe/Zurich
+    - run: ./find-ignored-tests.sh
+    - run: npm run build-lib
+    - run: npm run build-app
+    - run: npm run test
+      env:
+          TZ: Europe/Zurich
+          CI: true
+
   build-dev:
     name: Build lib in dev mode
     runs-on: ubuntu-latest
@@ -28,9 +54,8 @@ jobs:
       - run: npm run build-lib-dev
       - run: npm run build-app
 
-  build-and-test:
-    name: Build and Test
-    needs: [build-dev]
+  e2e-test:
+    name: E2E Tests
     runs-on: ubuntu-latest
 
     strategy:
@@ -51,63 +76,18 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run build-lib
-    - name: Knora API preparation
-      run: make prepare-test-env
-    - name: Unit tests lib
-      run: npm run test-lib
-      env:
-        TZ: Europe/Zurich
-    - name: Build app
-      run: npm run build-app
-    - name: Unit tests app
-      run: npm run test
+    - run: |
+        make clone-knora-stack
+        make knora-stack
+    - run: npm run webdriver-update
+    - run: npm run e2e
       env:
         TZ: Europe/Zurich
         CI: true
-    - name: e2e tests
-      run: |
-        npm run webdriver-update
-        npm run e2e
-      env:
-        TZ: Europe/Zurich
-        CI: true
-
-
-  # e2e-test:
-  #   name: E2E Tests
-  #   runs-on: ubuntu-latest
-
-  #   strategy:
-  #     matrix:
-  #       node-version: [12.x]
-
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Checkout private ci-assets
-  #     uses: actions/checkout@v2
-  #     with:
-  #       repository: dasch-swiss/dsp-ci-assets
-  #       token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
-  #       path: ci
-  #   - name: Use Node.js ${{ matrix.node-version }}
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: ${{ matrix.node-version }}
-  #   - run: npm install
-  #   - run: npm run build-lib
-  #   - run: |
-  #       make clone-knora-stack
-  #       make knora-stack
-  #   - run: npm run webdriver-update
-  #   - run: npm run e2e
-  #     env:
-  #       TZ: Europe/Zurich
-  #       CI: true
-
 
   publish:
     name: Publish to npm / Update release notes
-    needs: [build-dev, build-and-test]
+    needs: [build-test, e2e-test]
     runs-on: ubuntu-latest
     env:
       dist-directory: ./dist/@dasch-swiss/dsp-ui/
