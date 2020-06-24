@@ -26,7 +26,7 @@ const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
     return o instanceof className;
 };
 
-const makePropsArray = (props: { [index: string]: PropertyDefinition}): Properties => {
+const makeProperties = (props: { [index: string]: PropertyDefinition}): Properties => {
     const propIris = Object.keys(props);
 
     const resProps = {};
@@ -67,7 +67,7 @@ class TestHostComponent implements OnInit {
 
         const props = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties;
 
-        const resProps = makePropsArray(props);
+        const resProps = makeProperties(props);
 
         this.propertyDefs = resProps;
     }
@@ -211,7 +211,7 @@ describe('SelectPropertyComponent', () => {
 
         const props = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties;
 
-        testHostComponent.propertyDefs = makePropsArray(props);
+        testHostComponent.propertyDefs = makeProperties(props);
 
         testHostFixture.detectChanges();
 

@@ -10,13 +10,15 @@ import { AdvancedSearchComponent } from './advanced-search/advanced-search.compo
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SpecifyPropertyValueComponent } from './advanced-search/select-property/specifiy-property-value/specify-property-value.component';
 
 @NgModule({
     declarations: [
         SelectOntologyComponent,
         SelectResourceClassComponent,
         SelectPropertyComponent,
-        AdvancedSearchComponent],
+        AdvancedSearchComponent,
+        SpecifyPropertyValueComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,
