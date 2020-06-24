@@ -1,49 +1,32 @@
 import { async, TestBed } from '@angular/core/testing';
-import { KnoraApiConfig, KnoraApiConnection, ApiResponseData, LoginResponse } from '@dasch-swiss/dsp-js';
+import { KnoraApiConfig, MockUsers, UsersEndpointAdmin } from '@dasch-swiss/dsp-js';
+import { of } from 'rxjs';
 import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
-import { Session, SessionService } from './session.service';
-
-export class TestConfig {
-
-    public static CurrentSession: Session = {
-        id: 1555226377250,
-        user: {
-            jwt: 'myJsonWebToken',
-            lang: 'en',
-            name: 'root',
-            projectAdmin: [],
-            sysAdmin: false
-        }
-    };
-}
+import { SessionService, Session } from './session.service';
 
 describe('SessionService', () => {
-
     let service: SessionService;
 
-    const config = new KnoraApiConfig('http', 'localhost', 3333, undefined, undefined, true);
-    const knoraApiConnection = new KnoraApiConnection(config);
+    const dspConfSpy = new KnoraApiConfig('http', 'localhost', 3333, undefined, undefined, true);
+
+    const dspConnSpy = {
+        admin: {
+            usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUser'])
+        }
+    };
 
     beforeEach(async(() => {
-
-        const adminSpyObj = {
-            admin: {
-                usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUser'])
-            }
-        };
-
         TestBed.configureTestingModule({
             imports: [],
             providers: [
-                SessionService,
                 {
                     provide: DspApiConfigToken,
-                    useValue: config
+                    useValue: dspConfSpy
                 },
                 {
                     provide: DspApiConnectionToken,
-                    useValue: knoraApiConnection
-                },
+                    useValue: dspConnSpy
+                }
             ]
         });
         service = TestBed.inject(SessionService);
@@ -73,23 +56,39 @@ describe('SessionService', () => {
         });
     });
 
-    it('should store user information in local storage', done => {
+    beforeEach(() => {
 
-        knoraApiConnection.v2.auth.login("username", "root", "test").subscribe(
-            (response: ApiResponseData<LoginResponse>) => {
-                service.setSession(response.body.token, 'root', 'username');
-                let ls: Session;
-                setTimeout(() => {
-                    console.log(localStorage.getItem('session'));
-                    ls = JSON.parse(localStorage.getItem('session'));
-                    expect(ls.user.name).toEqual('root');
-                    expect(ls.user.lang).toEqual('de');
-                    expect(ls.user.sysAdmin).toEqual(true);
-                    expect(ls.user.projectAdmin.length).toEqual(0);
-                    done();
-                }, 800);
+        const valuesSpy = TestBed.inject(DspApiConnectionToken);
+
+        (valuesSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
+            () => {
+                const loggedInUser = MockUsers.mockUser();
+                console.log('loggedInUser', loggedInUser);
+                return of(loggedInUser);
             }
         );
+    });
+
+
+    fit('should be created', () => {
+        expect(service).toBeTruthy();
+    });
+
+    fit('should store user information in local storage', done => {
+
+        const userSpy = TestBed.inject(DspApiConnectionToken);
+        let ls: Session;
+
+        setTimeout(() => {
+            service.setSession(undefined, 'anything.user01', 'username');
+            expect(userSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
+            ls = JSON.parse(localStorage.getItem('session'));
+            expect(ls.user.name).toEqual('anything.user01');
+            expect(ls.user.lang).toEqual('de');
+            expect(ls.user.sysAdmin).toEqual(false);
+            expect(ls.user.projectAdmin.length).toEqual(0);
+            done();
+        }, 800);
 
     });
 });

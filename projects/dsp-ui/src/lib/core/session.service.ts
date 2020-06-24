@@ -1,14 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
 import {
-        ApiResponseData,
-        ApiResponseError,
-        CredentialsResponse,
-        KnoraApiConfig,
-        KnoraApiConnection,
-        UserResponse,
-        Constants
-    } from '@dasch-swiss/dsp-js';
-
+    ApiResponseData,
+    ApiResponseError,
+    Constants,
+    CredentialsResponse,
+    KnoraApiConfig,
+    KnoraApiConnection,
+    UserResponse
+} from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
 
 /**
@@ -45,10 +44,10 @@ export interface Session {
 export class SessionService {
 
     /**
-    * max session time in milliseconds
-    * default value (24h): 86400000
-    *
-    */
+     * max session time in milliseconds
+     * default value (24h): 86400000
+     *
+     */
     readonly MAX_SESSION_TIME: number = 86400000; // 1d = 24 * 60 * 60 * 1000
 
 
@@ -79,7 +78,9 @@ export class SessionService {
 
         let session: Session;
 
-        this.updateKnoraApiConnection(jwt);
+        if (jwt) {
+            this.updateKnoraApiConnection(jwt);
+        }
 
         // get user information
         this.dspApiConnection.admin.usersEndpoint.getUser(identifierType, identifier).subscribe(
@@ -227,6 +228,4 @@ export class SessionService {
     private setTimestamp(): number {
         return Math.floor(Date.now() / 1000);
     }
-
-
 }
