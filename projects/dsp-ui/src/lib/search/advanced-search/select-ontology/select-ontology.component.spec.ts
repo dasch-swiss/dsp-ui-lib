@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectOntologyComponent } from './select-ontology.component';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { OntologiesMetadata, OntologyMetadata } from '@dasch-swiss/dsp-js';
+import { OntologiesMetadata, OntologyMetadata, MockOntology } from '@dasch-swiss/dsp-js';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
@@ -35,18 +35,7 @@ class TestHostComponent implements OnInit {
     ngOnInit() {
         this.form = this.fb.group({});
 
-        // TODO: replace with MockOntology.mockOntologiesMetadata
-        this.ontoMetadata = new OntologiesMetadata();
-
-        const anythingOnto = new OntologyMetadata();
-        anythingOnto.id = 'anyid';
-        anythingOnto.label = 'anythingOnto';
-
-        const somethingOnto = new OntologyMetadata();
-        somethingOnto.id = 'someid';
-        somethingOnto.label = 'somethingOnto';
-
-        this.ontoMetadata.ontologies = [anythingOnto, somethingOnto];
+        this.ontoMetadata = MockOntology.mockOntologiesMetadata();
     }
 
     ontoSelected(ontoIri: string) {
@@ -97,7 +86,7 @@ describe('SelectOntologyComponent', () => {
     it('should initialise the ontologies\' metadata', () => {
 
         expect(testHostComponent.selectOntology.ontologiesMetadata.ontologies).toBeDefined();
-        expect(testHostComponent.selectOntology.ontologiesMetadata.ontologies.length).toEqual(2);
+        expect(testHostComponent.selectOntology.ontologiesMetadata.ontologies.length).toEqual(15);
 
     });
 
@@ -113,15 +102,15 @@ describe('SelectOntologyComponent', () => {
 
         const options = await select.getOptions();
 
-        expect(options.length).toEqual(2);
+        expect(options.length).toEqual(15);
 
         const option1 = await options[0].getText();
 
-        expect(option1).toEqual('anythingOnto');
+        expect(option1).toEqual('The anything ontology');
 
         const option2 = await options[1].getText();
 
-        expect(option2).toEqual('somethingOnto');
+        expect(option2).toEqual('A minimal ontology');
 
     });
 
@@ -133,13 +122,13 @@ describe('SelectOntologyComponent', () => {
 
         await select.open();
 
-        const options = await select.getOptions({text: 'anythingOnto'});
+        const options = await select.getOptions({text: 'The anything ontology'});
 
         expect(options.length).toEqual(1);
 
         await options[0].click();
 
-        expect(testHostComponent.selectedOntoIri).toEqual('anyid');
+        expect(testHostComponent.selectedOntoIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
     });
 
