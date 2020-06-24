@@ -63,32 +63,28 @@ describe('SessionService', () => {
         (valuesSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
             () => {
                 const loggedInUser = MockUsers.mockUser();
-                console.log('loggedInUser', loggedInUser);
                 return of(loggedInUser);
             }
         );
     });
 
 
-    fit('should be created', () => {
+    it('should be created', () => {
         expect(service).toBeTruthy();
     });
 
-    fit('should store user information in local storage', done => {
+    it('should store user information in local storage', () => {
 
         const userSpy = TestBed.inject(DspApiConnectionToken);
         let ls: Session;
 
-        setTimeout(() => {
-            service.setSession(undefined, 'anything.user01', 'username');
-            expect(userSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
-            ls = JSON.parse(localStorage.getItem('session'));
-            expect(ls.user.name).toEqual('anything.user01');
-            expect(ls.user.lang).toEqual('de');
-            expect(ls.user.sysAdmin).toEqual(false);
-            expect(ls.user.projectAdmin.length).toEqual(0);
-            done();
-        }, 800);
+        service.setSession(undefined, 'anything.user01', 'username');
+        expect(userSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
+        ls = JSON.parse(localStorage.getItem('session'));
+        expect(ls.user.name).toEqual('anything.user01');
+        expect(ls.user.lang).toEqual('de');
+        expect(ls.user.sysAdmin).toEqual(false);
+        expect(ls.user.projectAdmin.length).toEqual(0);
 
     });
 });

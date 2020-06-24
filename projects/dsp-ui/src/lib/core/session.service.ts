@@ -114,7 +114,6 @@ export class SessionService {
                     }
                 };
 
-                console.log('SESSION', session);
                 // update localStorage
                 localStorage.setItem('session', JSON.stringify(session));
             },
