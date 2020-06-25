@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SpecifyPropertyValueComponent } from './advanced-search/select-property/specifiy-property-value/specify-property-value.component';
+import { SearchIntValueComponent } from './advanced-search/select-property/specify-property-value/integer-value/search-int-value.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { SpecifyPropertyValueComponent } from './advanced-search/select-property
         SelectResourceClassComponent,
         SelectPropertyComponent,
         AdvancedSearchComponent,
-        SpecifyPropertyValueComponent],
+        SpecifyPropertyValueComponent,
+        SearchIntValueComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,
