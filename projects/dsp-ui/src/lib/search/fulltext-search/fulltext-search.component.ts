@@ -115,6 +115,7 @@ export class FulltextSearchComponent implements OnInit {
 
     ngOnInit(): void {
 
+        // initialise prevSearch
         const prevSearchOption = JSON.parse(localStorage.getItem('prevSearch'));
         if (prevSearchOption !== null) {
             this.prevSearch = prevSearchOption;
@@ -137,6 +138,9 @@ export class FulltextSearchComponent implements OnInit {
         }
     }
 
+    /**
+     * Get all public projects from DSP-API
+     */
     getAllProjects(): void {
         this.knoraApiConnection.admin.projectsEndpoint.getProjects().subscribe(
             (response: ApiResponseData<ProjectsResponse>) => {
@@ -156,6 +160,10 @@ export class FulltextSearchComponent implements OnInit {
         );
     }
 
+    /**
+     * Get project by IRI
+     * @param id Project Id
+     */
     getProject(id: string): void {
         this.knoraApiConnection.admin.projectsEndpoint.getProjectByIri(id).subscribe(
             (project: ApiResponseData<ProjectResponse>) => {
@@ -167,7 +175,10 @@ export class FulltextSearchComponent implements OnInit {
         );
     }
 
-    // set current project and switch focus to input field
+    /**
+     * Set current project and switch focus to input field.
+     * @params project
+     */
     setProject(project?: ReadProject): void {
         if (!project) {
             // set default project: all
@@ -182,7 +193,10 @@ export class FulltextSearchComponent implements OnInit {
         }
     }
 
-    openPanelWithBackdrop() {
+    /**
+     * Open the search panel with backdrop
+     */
+    openPanelWithBackdrop(): void {
         const config = new OverlayConfig({
             hasBackdrop: true,
             backdropClass: 'cdk-overlay-transparent-backdrop',
@@ -199,6 +213,9 @@ export class FulltextSearchComponent implements OnInit {
         });
     }
 
+    /**
+     * Return the correct overlay position
+     */
     getOverlayPosition(): PositionStrategy {
         const positions = [
             new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
@@ -211,6 +228,9 @@ export class FulltextSearchComponent implements OnInit {
         return overlayPosition;
     }
 
+    /**
+     * Perform a search and store the new result in the local storage
+     */
     doSearch(): void {
         if (this.searchQuery !== undefined && this.searchQuery !== null) {
             if (this.projectIri !== undefined) {
@@ -272,12 +292,18 @@ export class FulltextSearchComponent implements OnInit {
         this.showState.emit(this.show);
     }
 
+    /**
+     * Clear the whole list of search
+     */
     resetSearch(): void {
         this.searchPanelFocus = false;
         this.searchInput.nativeElement.blur();
         this.overlayRef.detach();
     }
 
+    /**
+     * Set the focus on the search panel
+     */
     setFocus(): void {
         if (localStorage.getItem('prevSearch') !== null) {
             this.prevSearch = this.sortingService.reverseArray(JSON.parse(localStorage.getItem('prevSearch')));
@@ -288,6 +314,10 @@ export class FulltextSearchComponent implements OnInit {
         this.openPanelWithBackdrop();
     }
 
+    /**
+     * Perform a search with a selected search item from the search history
+     * @params prevSearch
+     */
     doPrevSearch(prevSearch: PrevSearchItem): void {
         this.searchQuery = prevSearch.query;
 
@@ -305,6 +335,10 @@ export class FulltextSearchComponent implements OnInit {
         this.overlayRef.detach();
     }
 
+    /**
+     * Remove one search item from the search history
+     * @params prevSearchItem
+     */
     resetPrevSearch(prevSearchItem?: PrevSearchItem): void {
         if (prevSearchItem) {
             // delete only this item with the name
@@ -315,13 +349,15 @@ export class FulltextSearchComponent implements OnInit {
             // delete the whole "previous search" array
             localStorage.removeItem('prevSearch');
         }
-        if (localStorage.getItem('prevSearch') !== null) {
-            this.prevSearch = this.sortingService.reverseArray(JSON.parse(localStorage.getItem('prevSearch')));
-        } else {
+
+        if (localStorage.getItem('prevSearch') === null) {
             this.prevSearch = [];
         }
     }
 
+    /**
+     * Change the focus on the search input field
+     */
     changeFocus() {
         this.selectProject.closeMenu();
         this.searchInput.nativeElement.focus();

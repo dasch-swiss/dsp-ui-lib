@@ -1,6 +1,6 @@
-import { OverlayModule, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { OverlayModule, Overlay, OverlayRef, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,7 +28,7 @@ import { FulltextSearchComponent } from './fulltext-search.component';
             [route]="route"
             [projectfilter]="projectfilter"
             [filterbyproject]="filterbyproject"
-            class="kui-fulltext-search">
+            class="dsp-fulltext-search">
         </dsp-fulltext-search>
     `
 })
@@ -60,8 +60,7 @@ describe('FulltextSearchComponent', () => {
     let hostCompDe;
     let mockRouter;
     let dspConnSpy;
-    let mockOverlay;
-
+    let prevSearchArray: PrevSearchItem[];
 
     beforeEach(async(() => {
 
@@ -69,15 +68,12 @@ describe('FulltextSearchComponent', () => {
             navigate: jasmine.createSpy('navigate')
         };
 
-        mockOverlay = {
-            overlayRef: jasmine.createSpy('overlayRef')
-        };
-
         dspConnSpy = {
             admin: {
                 projectsEndpoint: jasmine.createSpyObj('projectsEndpoint', ['getProjects', 'getProjectByIri'])
             }
         };
+
 
         TestBed.configureTestingModule({
             declarations: [
@@ -102,7 +98,8 @@ describe('FulltextSearchComponent', () => {
                     useValue: dspConnSpy
                 },
                 {
-                    provide: Router, useValue: mockRouter
+                    provide: Router,
+                    useValue: mockRouter
                 }
             ]
         })
@@ -131,6 +128,20 @@ describe('FulltextSearchComponent', () => {
 
     beforeEach(() => {
 
+        // initiate the local storage prevSearch
+        prevSearchArray = [
+            { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' },
+            { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'two things' },
+            { projectIri: 'http://rdfh.ch/projects/0801', projectLabel: 'anything', query: 'hello world' }
+        ];
+
+        localStorage.setItem('prevSearch', JSON.stringify(prevSearchArray));
+        expect(localStorage.getItem('prevSearch')).toBeDefined();
+    });
+
+    beforeEach(() => {
+
+        // mock getProjects response
         const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
         (valuesSpy.admin.projectsEndpoint as jasmine.SpyObj<ProjectsEndpointAdmin>).getProjects.and.callFake(
@@ -147,6 +158,7 @@ describe('FulltextSearchComponent', () => {
         hostCompDe = testHostFixture.debugElement;
         fulltextSearchComponentDe = hostCompDe.query(By.directive(FulltextSearchComponent));
     });
+
 
     it('should create', () => {
         expect(testHostComponent).toBeTruthy();
@@ -165,26 +177,15 @@ describe('FulltextSearchComponent', () => {
 
     describe('perform or reset search', () => {
 
-        let prevSearchArray: PrevSearchItem[];
         let searchInputNativeEl;
 
         beforeEach(() => {
 
-            // mock previous search data stored in the local storage
-            prevSearchArray = [
-                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' },
-                { projectIri: 'http://rdfh.ch/projects/0801', projectLabel: 'anything', query: 'two things' }
-            ];
-
-            localStorage.setItem('prevSearch', JSON.stringify(prevSearchArray));
-            expect(localStorage.getItem('prevSearch')).toBeDefined();
-
-            searchInputNativeEl = fulltextSearchComponentDe.query(By.css('input.kui-fulltext-search-input')).nativeElement;
+            searchInputNativeEl = fulltextSearchComponentDe.query(By.css('input.dsp-fulltext-search-input')).nativeElement;
         });
 
         it('should do a search', () => {
-
-            const searchBtn = fulltextSearchComponentDe.query(By.css('button.kui-fulltext-search-button'));
+            const searchBtn = fulltextSearchComponentDe.query(By.css('button.dsp-fulltext-search-button'));
             expect(searchBtn).toBeDefined();
             expect(searchInputNativeEl).toBeDefined();
 
@@ -199,7 +200,8 @@ describe('FulltextSearchComponent', () => {
             expect(testHostComponent.fulltextSearch.searchQuery).toEqual('new thing');
             const newPrevSearchArray: PrevSearchItem[] = [
                 { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' },
-                { projectIri: 'http://rdfh.ch/projects/0801', projectLabel: 'anything', query: 'two things' },
+                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'two things' },
+                { projectIri: 'http://rdfh.ch/projects/0801', projectLabel: 'anything', query: 'hello world' },
                 { query: 'new thing' }
             ];
             expect(localStorage.getItem('prevSearch')).toEqual(JSON.stringify(newPrevSearchArray));
@@ -208,71 +210,34 @@ describe('FulltextSearchComponent', () => {
             expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/new thing']);
         });
 
-        // todo: fix error: Cannot read property 'detach' of undefined CDK OVERLAY
-        /* it('should reset the current search', () => {
-            expect(searchInputNativeEl).toBeDefined();
-
-            searchInputNativeEl.value = 'thing to search';
-            expect(searchInputNativeEl.value).toEqual('thing to search');
-
-            testHostFixture.detectChanges();
-
-            // searchInputNativeEl.dispatchEvent(new KeyboardEvent('keyup', { key: 'Esc' }));
-            testHostComponent.fulltextSearch.resetSearch();
-
-            expect(searchInputNativeEl.value).toEqual('');
-        }); */
-
-        it('should perform a search with a previous item - solution 1', () => {
+        it('should perform a search with a previous item', () => {
             // click in the search input to open the search panel
             expect(searchInputNativeEl).toBeDefined();
             searchInputNativeEl.click();
             testHostFixture.detectChanges();
 
-            const searchMenuPanel = fulltextSearchComponentDe.query(By.css('div.kui-search-menu')).nativeElement;
+            const searchMenuPanel = fulltextSearchComponentDe.query(By.css('div.dsp-search-menu')).nativeElement;
             expect(searchMenuPanel).toBeDefined();
 
-            const prevSearchItem = fulltextSearchComponentDe.query(By.css('div.kui-previous-search-query')).nativeElement;
+            const prevSearchItem = fulltextSearchComponentDe.query(By.css('div.dsp-previous-search-query')).nativeElement;
             prevSearchItem.click();
             testHostFixture.detectChanges();
 
-            expect(testHostComponent.fulltextSearch.searchQuery).toEqual('two things');
+            expect(testHostComponent.fulltextSearch.searchQuery).toEqual('hello world');
             expect(testHostComponent.fulltextSearch.projectIri).toEqual('http://rdfh.ch/projects/0801');
             expect(testHostComponent.fulltextSearch.projectLabel).toEqual('anything');
 
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/two things/http%3A%2F%2Frdfh.ch%2Fprojects%2F0801']);
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/hello world/http%3A%2F%2Frdfh.ch%2Fprojects%2F0801']);
         });
-
-        // todo: fix error: Cannot read property 'detach' of undefined CDK OVERLAY
-        /* xit('should perform a search with a previous item - solution 2', () => {
-            testHostComponent.fulltextSearch.doPrevSearch(prevSearchArray[0]);
-
-            expect(testHostComponent.fulltextSearch.searchQuery).toEqual('two things');
-            expect(testHostComponent.fulltextSearch.projectIri).toEqual('http://rdfh.ch/projects/0801');
-            expect(testHostComponent.fulltextSearch.projectLabel).toEqual('anything');
-
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/two things/http%3A%2F%2Frdfh.ch%2Fprojects%2F0801']);
-        }); */
 
     });
 
     describe('clear the search list', () => {
 
-        let prevSearchArray: PrevSearchItem[];
         let searchInputNativeEl;
 
         beforeEach(() => {
-            // mock previous search data stored in the local storage
-            prevSearchArray = [
-                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' },
-                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'two things' },
-                { projectIri: 'http://rdfh.ch/projects/0801', projectLabel: 'anything', query: 'hello world' }
-            ];
-
-            localStorage.setItem('prevSearch', JSON.stringify(prevSearchArray));
-            expect(localStorage.getItem('prevSearch')).toBeDefined();
-
-            searchInputNativeEl = fulltextSearchComponentDe.query(By.css('input.kui-fulltext-search-input')).nativeElement;
+            searchInputNativeEl = fulltextSearchComponentDe.query(By.css('input.dsp-fulltext-search-input')).nativeElement;
         });
 
         it('should remove one item of the search list - solution 1', () => {
@@ -294,18 +259,16 @@ describe('FulltextSearchComponent', () => {
             expect(localStorage.getItem('prevSearch')).toEqual(JSON.stringify(newPrevSearchArray));
         });
 
-        // todo: fix test - ERROR: Cannot read property 'indexOf' of null
-        /* it('should remove one item of the search list - solution 2', () => {
+        it('should remove one item of the search list - solution 2', () => {
             // prevSearch is set correctly at this stage:
-            // console.log(localStorage.getItem('prevSearch'));
             testHostComponent.fulltextSearch.resetPrevSearch(prevSearchArray[2]);
 
             const newPrevSearchArray: PrevSearchItem[] = [
-                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'two things' },
-                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' }
+                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'one thing' },
+                { projectIri: 'http://rdfh.ch/projects/0803', projectLabel: 'incunabula', query: 'two things' }
             ];
             expect(localStorage.getItem('prevSearch')).toEqual(JSON.stringify(newPrevSearchArray));
-        }); */
+        });
 
         it('should clear the search list - solution 1', () => {
             // click in the search input to open the search panel
@@ -333,7 +296,7 @@ describe('FulltextSearchComponent', () => {
     describe('project menu panel', () => {
 
         it('should get a menu panel with the list of projects', () => {
-            const projButtonDe = fulltextSearchComponentDe.query(By.css('button.kui-project-filter-button'));
+            const projButtonDe = fulltextSearchComponentDe.query(By.css('button.dsp-project-filter-button'));
             const projButtonNe = projButtonDe.nativeElement;
 
             expect(projButtonNe).toBeDefined();
@@ -354,7 +317,7 @@ describe('FulltextSearchComponent', () => {
 
         it('should select one project in the menu panel', () => {
 
-            const projButtonDe = fulltextSearchComponentDe.query(By.css('button.kui-project-filter-button'));
+            const projButtonDe = fulltextSearchComponentDe.query(By.css('button.dsp-project-filter-button'));
             const projButtonNe = projButtonDe.nativeElement;
 
             const projBtnLabelDe = projButtonDe.query(By.css('button > p.label'));
