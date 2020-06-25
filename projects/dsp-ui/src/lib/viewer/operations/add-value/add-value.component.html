@@ -1,20 +1,20 @@
 <div class="grid-container">
     <div class="value-component">
         <span [ngSwitch]="resourcePropertyDefinition.objectType">
-            <dsp-text-value-as-string #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode"></dsp-text-value-as-string>
-            <dsp-text-value-as-html #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode"></dsp-text-value-as-html>
-            <dsp-int-value #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode"></dsp-int-value>
-            <dsp-boolean-value #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode"></dsp-boolean-value>
-            <dsp-uri-value #displayVal *ngSwitchCase="constants.UriValue" [mode]="mode"></dsp-uri-value>
-            <dsp-decimal-value #displayVal *ngSwitchCase="constants.DecimalValue" [mode]="mode"></dsp-decimal-value>
-            <dsp-color-value #displayVal *ngSwitchCase="constants.ColorValue" [mode]="mode"></dsp-color-value>
-            <dsp-interval-value #displayVal *ngSwitchCase="constants.IntervalValue" [mode]="mode"></dsp-interval-value>
-            <dsp-time-value #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode"></dsp-time-value>
-            <dsp-geoname-value #displayVal *ngSwitchCase="constants.GeonameValue" [mode]="mode"></dsp-geoname-value>
-            <dsp-link-value #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode"
+            <dsp-text-value-as-string #createVal *ngSwitchCase="'ReadTextValueAsString'"></dsp-text-value-as-string>
+            <dsp-text-value-as-html #createVal *ngSwitchCase="'ReadTextValueAsHtml'"></dsp-text-value-as-html>
+            <dsp-int-value #createVal *ngSwitchCase="constants.IntValue"></dsp-int-value>
+            <dsp-boolean-value #createVal *ngSwitchCase="constants.BooleanValue"></dsp-boolean-value>
+            <dsp-uri-value #createVal *ngSwitchCase="constants.UriValue"></dsp-uri-value>
+            <dsp-decimal-value #createVal *ngSwitchCase="constants.DecimalValue"></dsp-decimal-value>
+            <dsp-color-value #createVal *ngSwitchCase="constants.ColorValue"></dsp-color-value>
+            <dsp-interval-value #createVal *ngSwitchCase="constants.IntervalValue"></dsp-interval-value>
+            <dsp-time-value #createVal *ngSwitchCase="constants.TimeValue"></dsp-time-value>
+            <dsp-geoname-value #createVal *ngSwitchCase="constants.GeonameValue"></dsp-geoname-value>
+            <dsp-link-value #createVal *ngSwitchCase="constants.LinkValue"
                         [parentResource]="parentResource" [propIri]="resourcePropertyDefinition.id"></dsp-link-value>
-            <dsp-date-value #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode"></dsp-date-value>
-            <dsp-list-value #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode"
+            <dsp-date-value #createVal *ngSwitchCase="constants.DateValue"></dsp-date-value>
+            <dsp-list-value #createVal *ngSwitchCase="constants.ListValue"
                         [propertyDef]="resourcePropertyDefinition"></dsp-list-value>
         </span>
     </div>

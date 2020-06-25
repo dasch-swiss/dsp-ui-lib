@@ -14,7 +14,7 @@ import {
     ReadResource,
     ResourcePropertyDefinition,
     UpdateResource,
-    WriteValueResponse
+    WriteValueResponse,
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
@@ -28,7 +28,7 @@ import { BaseValueComponent } from '../../values/base-value.component';
 })
 export class AddValueComponent implements OnInit {
 
-    @ViewChild('displayVal', {static: false}) displayValueComponent: BaseValueComponent;
+    @ViewChild('createVal', {static: false}) createValueComponent: BaseValueComponent;
 
     @Input() resourcePropertyDefinition: ResourcePropertyDefinition;
 
@@ -40,13 +40,9 @@ export class AddValueComponent implements OnInit {
 
     constants = Constants;
 
-    mode: 'read' | 'update' | 'create' | 'search';
-
     canModify: boolean;
 
     createModeActive = false;
-
-    valueTypeOrClass: string;
 
     submittingValue = false;
 
@@ -59,30 +55,22 @@ export class AddValueComponent implements OnInit {
                 private eventBusService: EventBusService) { }
 
     ngOnInit() {
-        this.mode = 'create';
 
         this.createModeActive = true;
-
-        this.valueTypeOrClass = this.resourcePropertyDefinition.objectType;
 
         // TODO: find a way to figure out what type of text value it is
         if (this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
             this.resourcePropertyDefinition.objectType = 'ReadTextValueAsString';
         }
-
-        console.log(this.resourcePropertyDefinition);
-
-
     }
 
     saveAddValue() {
         this.createModeActive = false;
         this.submittingValue = true;
-        const createVal = this.displayValueComponent.getNewValue();
-        console.log('displayValueComponent: ', this.displayValueComponent);
+        const createVal = this.createValueComponent.getNewValue();
+        console.log('createValueComponent: ', this.createValueComponent);
 
         if (createVal instanceof CreateValue) {
-            console.log('displayValue: ', this.resourcePropertyDefinition);
             const updateRes = new UpdateResource();
             updateRes.id = this.parentResource.id;
             updateRes.type = this.parentResource.type;

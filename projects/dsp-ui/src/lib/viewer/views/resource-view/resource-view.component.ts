@@ -56,7 +56,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit() {
         this.eventBusSubscription = this.eventBusService.on(Events.ValueAdded, () => this.getResource(this.iri));
-        this.eventBusSubscription = this.eventBusService.on(Events.ValueDeleted, () => this.getResource(this.iri));
     }
 
     ngOnChanges() {
