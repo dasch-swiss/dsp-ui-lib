@@ -72,39 +72,30 @@ fdescribe('SessionService', () => {
         expect(service).toBeTruthy();
     });
 
-    describe("Set session", () => {
+    it('should store user information in local storage', () => {
 
-        it('should store user information in local storage', () => {
+        const userSpy = TestBed.inject(DspApiConnectionToken);
+        let ls: Session;
 
-            const userSpy = TestBed.inject(DspApiConnectionToken);
-            let ls: Session;
+        service.setSession(undefined, 'anything.user01', 'username');
 
-            service.setSession(undefined, 'anything.user01', 'username');
-            expect(userSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
-            ls = JSON.parse(localStorage.getItem('session'));
-            expect(ls.user.name).toEqual('anything.user01');
-            expect(ls.user.lang).toEqual('de');
-            expect(ls.user.sysAdmin).toEqual(false);
-            expect(ls.user.projectAdmin.length).toEqual(0);
-
-        });
+        ls = JSON.parse(localStorage.getItem('session'));
+        expect(ls.user.name).toEqual('anything.user01');
+        expect(ls.user.lang).toEqual('de');
+        expect(ls.user.sysAdmin).toEqual(false);
+        expect(ls.user.projectAdmin.length).toEqual(0);
 
     });
 
-    describe("Get session", () => {
+    it('should get the session with user information', () => {
+        service.setSession(undefined, 'anything.user01', 'username');
 
-        it('should get the session with user information', () => {
-            service.setSession(undefined, 'anything.user01', 'username');
-
-            const session: Session = service.getSession();
-            expect(session.user.name).toEqual('anything.user01');
-            expect(session.user.lang).toEqual('de');
-            expect(session.user.sysAdmin).toEqual(false);
-            expect(session.user.projectAdmin.length).toEqual(0);
-        });
+        const session: Session = service.getSession();
+        expect(session.user.name).toEqual('anything.user01');
+        expect(session.user.lang).toEqual('de');
+        expect(session.user.sysAdmin).toEqual(false);
+        expect(session.user.projectAdmin.length).toEqual(0);
     });
-
-
 
     it('should destroy the session', () => {
         service.destroySession();
