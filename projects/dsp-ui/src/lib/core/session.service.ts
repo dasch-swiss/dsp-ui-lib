@@ -130,7 +130,7 @@ export class SessionService {
      *
      * @returns boolean
      */
-    validateSession(): boolean {
+    isSessionValid(): boolean {
         // mix of checks with session.validation and this.authenticate
         const session = JSON.parse(localStorage.getItem('session'));
 
@@ -149,39 +149,27 @@ export class SessionService {
                     (response: ApiResponseData<CredentialsResponse>) => {
                         // the knora api credentials are still valid
 
-                        // refresh the jwt in @dasch-swiss/dsp-js
-                        this.updateKnoraApiConnection(session.user.jwt);
-
                         // update the session.id
                         session.id = tsNow;
 
                         localStorage.setItem('session', JSON.stringify(session));
 
-                        // console.log('knora api credentials are valid; return', true);
                         return true;
                     },
                     (error: ApiResponseError) => {
                         // a user is not authenticated anymore!
-                        // console.error('session.service -- validateSession -- authenticate: the session expired on API side');
-
                         this.destroySession();
-
-                        // console.warn('knora api credentials are not valid; return', false);
                         return false;
                     }
                 );
 
             } else {
                 // the internal (dsp-ui) session is still valid
-
-                // console.log('session is valid; return', true);
                 return true;
             }
         } else {
             // no session found; update knora api connection with empty jwt
             this.updateKnoraApiConnection();
-
-            // console.warn('session is not valid; return', false);
             return false;
         }
     }
@@ -193,12 +181,9 @@ export class SessionService {
      *
      * @returns boolean
      */
-    updateSession(jwt: string, username: string): boolean {
+    updateSession(jwt: string, username: string) {
         if (jwt && username) {
             this.setSession(jwt, username, 'username');
-            return true;
-        } else {
-            return false;
         }
     }
 
