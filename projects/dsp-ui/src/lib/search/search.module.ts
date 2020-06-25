@@ -7,13 +7,16 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { ExpertSearchComponent } from './expert-search/expert-search.component';
 import { FulltextSearchComponent } from './fulltext-search/fulltext-search.component';
 import { SearchPanelComponent } from './search-panel/search-panel.component';
+
 
 @NgModule({
     declarations: [
         SearchPanelComponent,
-        FulltextSearchComponent
+        FulltextSearchComponent,
+        ExpertSearchComponent
     ],
     imports: [
         CommonModule,
@@ -26,7 +29,8 @@ import { SearchPanelComponent } from './search-panel/search-panel.component';
     ],
     exports: [
         SearchPanelComponent,
-        FulltextSearchComponent
+        FulltextSearchComponent,
+        ExpertSearchComponent
     ]
 })
 export class DspSearchModule { }
