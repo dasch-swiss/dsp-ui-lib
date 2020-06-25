@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
 import { SessionService, Session } from './session.service';
 
-fdescribe('SessionService', () => {
+describe('SessionService', () => {
     let service: SessionService;
 
     const dspConfSpy = new KnoraApiConfig('http', 'localhost', 3333, undefined, undefined, true);
