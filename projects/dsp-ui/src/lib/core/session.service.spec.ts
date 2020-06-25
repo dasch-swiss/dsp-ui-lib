@@ -68,7 +68,6 @@ describe('SessionService', () => {
         );
     });
 
-
     it('should be created', () => {
         expect(service).toBeTruthy();
     });
@@ -87,4 +86,21 @@ describe('SessionService', () => {
         expect(ls.user.projectAdmin.length).toEqual(0);
 
     });
+
+    it('should get the session with user information', () => {
+        service.setSession(undefined, 'anything.user01', 'username');
+
+        const session: Session = service.getSession();
+        expect(session.user.name).toEqual('anything.user01');
+        expect(session.user.lang).toEqual('de');
+        expect(session.user.sysAdmin).toEqual(false);
+        expect(session.user.projectAdmin.length).toEqual(0);
+    });
+
+    it('should destroy the session', () => {
+        service.destroySession();
+        const ls: Session = JSON.parse(localStorage.getItem('session'));
+        expect(ls).toEqual(null);
+    });
+
 });
