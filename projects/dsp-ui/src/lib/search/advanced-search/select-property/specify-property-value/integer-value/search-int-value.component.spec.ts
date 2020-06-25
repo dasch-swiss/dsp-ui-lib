@@ -67,7 +67,7 @@ describe('SearchIntValueComponent', () => {
         expect(testHostComponent.integerValue).toBeTruthy();
     });
 
-    fit('should get a integer literal of 1', async () => {
+    it('should get a integer literal of 1', async () => {
 
         const matInput = await loader.getHarness(MatInputHarness);
 
