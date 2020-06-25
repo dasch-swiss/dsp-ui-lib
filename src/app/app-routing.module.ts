@@ -4,18 +4,35 @@ import { ActionPlaygroundComponent } from './action-playground/action-playground
 import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
 import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
+import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
+import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/read', pathMatch: 'full' }, // readonly view is the default if no endpoint is specified
-  { path: 'read', component: ReadComponent }, // readonly view component
-  { path: 'modify', component: ModifyComponent}, // modify view component
-  { path: 'action', component: ActionPlaygroundComponent}, // action playground component
-  { path: 'advanced-search', component: AdvancedSearchPlaygroundComponent} // action playground component
+    { path: '', redirectTo: '/read', pathMatch: 'full'}, // readonly view is the default if no endpoint is specified
+    { path: 'read', component: ReadComponent}, // readonly view component
+    { path: 'modify', component: ModifyComponent}, // modify view component
+    { path: 'action', component: ActionPlaygroundComponent}, // action playground component
+    {
+        path: 'search',
+        component: SearchPlaygroundComponent, // search playground component
+        children: [
+            {
+                path: ':mode/:q',
+                component: SearchResultsComponent
+            },
+            {
+                path: ':mode/:q/:project',
+                component: SearchResultsComponent
+            }
+        ]
+    },
+    { path: 'advanced-search', component: AdvancedSearchPlaygroundComponent} // action playground component
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

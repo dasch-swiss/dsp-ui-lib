@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { SelectOntologyComponent } from './advanced-search/select-ontology/select-ontology.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectResourceClassComponent } from './advanced-search/select-resource-class/select-resource-class.component';
 import { SelectPropertyComponent } from './advanced-search/select-property/select-property.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
@@ -12,25 +12,39 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SpecifyPropertyValueComponent } from './advanced-search/select-property/specifiy-property-value/specify-property-value.component';
 import { SearchIntValueComponent } from './advanced-search/select-property/specify-property-value/integer-value/search-int-value.component';
+import { SearchPanelComponent } from './search-panel/search-panel.component';
+import { FulltextSearchComponent } from './fulltext-search/fulltext-search.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
     declarations: [
+        SearchPanelComponent,
+        FulltextSearchComponent,
         SelectOntologyComponent,
         SelectResourceClassComponent,
         SelectPropertyComponent,
         AdvancedSearchComponent,
         SpecifyPropertyValueComponent,
-        SearchIntValueComponent],
+        SearchIntValueComponent
+    ],
     imports: [
         CommonModule,
+        FormsModule,
+        MatIconModule,
+        MatMenuModule,
+        MatListModule,
+        MatButtonModule,
+        MatTooltipModule,
         ReactiveFormsModule,
         MatSelectModule,
         MatOptionModule,
-        MatIconModule,
-        MatCheckboxModule,
-        MatTooltipModule
+        MatCheckboxModule
     ],
     exports: [
+        SearchPanelComponent,
+        FulltextSearchComponent,
         AdvancedSearchComponent
     ]
 })
