@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
 import { SessionService, Session } from './session.service';
 
-describe('SessionService', () => {
+fdescribe('SessionService', () => {
     let service: SessionService;
 
     const dspConfSpy = new KnoraApiConfig('http', 'localhost', 3333, undefined, undefined, true);
@@ -72,30 +72,39 @@ describe('SessionService', () => {
         expect(service).toBeTruthy();
     });
 
-    it('should store user information in local storage', () => {
+    describe("Set session", () => {
 
-        const userSpy = TestBed.inject(DspApiConnectionToken);
-        let ls: Session;
+        it('should store user information in local storage', () => {
 
-        service.setSession(undefined, 'anything.user01', 'username');
-        expect(userSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
-        ls = JSON.parse(localStorage.getItem('session'));
-        expect(ls.user.name).toEqual('anything.user01');
-        expect(ls.user.lang).toEqual('de');
-        expect(ls.user.sysAdmin).toEqual(false);
-        expect(ls.user.projectAdmin.length).toEqual(0);
+            const userSpy = TestBed.inject(DspApiConnectionToken);
+            let ls: Session;
+
+            service.setSession(undefined, 'anything.user01', 'username');
+            expect(userSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
+            ls = JSON.parse(localStorage.getItem('session'));
+            expect(ls.user.name).toEqual('anything.user01');
+            expect(ls.user.lang).toEqual('de');
+            expect(ls.user.sysAdmin).toEqual(false);
+            expect(ls.user.projectAdmin.length).toEqual(0);
+
+        });
 
     });
 
-    it('should get the session with user information', () => {
-        service.setSession(undefined, 'anything.user01', 'username');
+    describe("Get session", () => {
 
-        const session: Session = service.getSession();
-        expect(session.user.name).toEqual('anything.user01');
-        expect(session.user.lang).toEqual('de');
-        expect(session.user.sysAdmin).toEqual(false);
-        expect(session.user.projectAdmin.length).toEqual(0);
+        it('should get the session with user information', () => {
+            service.setSession(undefined, 'anything.user01', 'username');
+
+            const session: Session = service.getSession();
+            expect(session.user.name).toEqual('anything.user01');
+            expect(session.user.lang).toEqual('de');
+            expect(session.user.sysAdmin).toEqual(false);
+            expect(session.user.projectAdmin.length).toEqual(0);
+        });
     });
+
+
 
     it('should destroy the session', () => {
         service.destroySession();
