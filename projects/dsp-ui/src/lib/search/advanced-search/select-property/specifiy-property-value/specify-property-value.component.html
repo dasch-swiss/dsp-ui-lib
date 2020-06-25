@@ -4,6 +4,13 @@
         <mat-option *ngFor="let compOp of comparisonOperators" [value]="compOp">{{ compOp.label }}</mat-option>
     </mat-select>
 </mat-form-field>
+</span>
+
+<span
+    *ngIf="comparisonOperatorSelected !== undefined && comparisonOperatorSelected !== null && comparisonOperatorSelected.getClassName() != 'Exists'" [ngSwitch]="propertyValueType">
+    <dsp-search-int-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.IntValue"></dsp-search-int-value>
+    <span *ngSwitchDefault>Not supported {{propertyValueType}}</span>
+</span>
 
 <!-- select apt component for value specification using a switch case statement-->
 <!--<span
@@ -24,4 +31,4 @@
     <span *ngSwitchDefault="">Not supported {{propertyValueType}}</span>
 </span>-->
 <!-- TODO: Resource: handle linking properties with target class restriction: access property member to get objectClass via property() getter method -->
-</span>
+

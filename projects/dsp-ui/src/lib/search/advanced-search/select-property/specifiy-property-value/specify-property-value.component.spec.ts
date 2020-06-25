@@ -5,12 +5,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { MockOntology, PropertyDefinition, ResourceClassDefinition, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
+import { Constants, MockOntology, PropertyDefinition, ResourceClassDefinition, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import { Properties, SelectPropertyComponent } from '../select-property.component';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSelectHarness } from '@angular/material/select/testing';
+import { Value, ValueLiteral } from './operator';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -65,6 +66,27 @@ class TestHostComponent implements OnInit {
 
 }
 
+/**
+ * Test component to simulate int value component.
+ */
+@Component({
+    selector: 'dsp-search-int-value',
+    template: ``
+})
+class TestSearchIntValueComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    getValue(): Value {
+        return new ValueLiteral(String(1), Constants.XsdInteger);
+    }
+
+    ngOnInit() {
+
+    }
+
+}
+
 describe('SpecifyPropertyValueComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
@@ -81,7 +103,8 @@ describe('SpecifyPropertyValueComponent', () => {
             ],
             declarations: [
                 SpecifyPropertyValueComponent,
-                TestHostComponent
+                TestHostComponent,
+                TestSearchIntValueComponent
             ]
         })
             .compileComponents();
@@ -136,6 +159,35 @@ describe('SpecifyPropertyValueComponent', () => {
         const options = await select.getOptions();
 
         expect(options.length).toEqual(7);
+
+    });
+
+    it('should set the fom to valid when an comparison operator has been chosen', async () => {
+
+        expect(testHostComponent.specifyProperty.form.valid).toBe(false);
+
+        const select = await loader.getHarness(MatSelectHarness);
+
+        await select.open();
+
+        const options = await select.getOptions();
+
+        await options[0].click();
+
+        expect(testHostComponent.specifyProperty.form.valid).toBe(true);
+
+    });
+
+    it('should read a value after a comparison operator has been chosen', async () => {
+        const select = await loader.getHarness(MatSelectHarness);
+
+        await select.open();
+
+        const options = await select.getOptions();
+
+        await options[0].click();
+
+        expect(testHostComponent.specifyProperty.propertyValueComponent.getValue()).toEqual(new ValueLiteral('1', Constants.XsdInteger));
 
     });
 

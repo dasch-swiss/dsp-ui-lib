@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
 import { Constants, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -11,7 +11,7 @@ import {
     LessThanEquals,
     Like,
     Match,
-    NotEquals, Value
+    NotEquals, PropertyValue, Value
 } from './operator';
 import { Subscription } from 'rxjs';
 
@@ -30,7 +30,7 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
     // parent FormGroup
     @Input() formGroup: FormGroup;
 
-    // @ViewChild('propertyValue', { static: false }) propertyValueComponent: PropertyValue;
+    @ViewChild('propertyValue', { static: false }) propertyValueComponent: PropertyValue;
 
     // setter method for the property chosen by the user
     @Input()
@@ -165,7 +165,7 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
 
         // comparison operator 'Exists' does not require a value
         if (this.comparisonOperatorSelected.getClassName() !== 'Exists') {
-            // value = this.propertyValueComponent.getValue();
+            value = this.propertyValueComponent.getValue();
         }
 
         // return the comparison operator and the specified value
