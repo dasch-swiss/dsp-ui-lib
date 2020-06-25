@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Constants } from '@dasch-swiss/dsp-js';
-import { PropertyValue, Value, ValueLiteral } from '../../specifiy-property-value/operator';
+import { PropertyValue, Value, ValueLiteral } from '../operator';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);

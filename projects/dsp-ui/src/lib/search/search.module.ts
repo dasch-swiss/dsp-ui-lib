@@ -10,7 +10,7 @@ import { AdvancedSearchComponent } from './advanced-search/advanced-search.compo
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SpecifyPropertyValueComponent } from './advanced-search/select-property/specifiy-property-value/specify-property-value.component';
+import { SpecifyPropertyValueComponent } from './advanced-search/select-property/specify-property-value/specify-property-value.component';
 import { SearchIntValueComponent } from './advanced-search/select-property/specify-property-value/integer-value/search-int-value.component';
 import { SearchPanelComponent } from './search-panel/search-panel.component';
 import { FulltextSearchComponent } from './fulltext-search/fulltext-search.component';

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ResourceClassDefinition, ResourcePropertyDefinition, Cardinality, IHasProperty } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { SortingService } from '../../../action';
-import { SpecifyPropertyValueComponent } from './specifiy-property-value/specify-property-value.component';
+import { SpecifyPropertyValueComponent } from './specify-property-value/specify-property-value.component';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
