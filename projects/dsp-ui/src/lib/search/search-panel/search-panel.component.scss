@@ -4,7 +4,7 @@
   margin-left: 10px;
 }
 
-.kui-search-panel {
+.dsp-search-panel {
   display: flex;
   position: relative;
   z-index: 100;
@@ -17,7 +17,7 @@
 
 // mobile device: phone
 @media (max-width: map-get($grid-breakpoints, phone)) {
-  .kui-fulltext-search {
+  .dsp-fulltext-search {
     height: 100%;
     width: 100% !important;
   }
