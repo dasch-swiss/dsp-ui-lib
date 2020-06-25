@@ -1,0 +1,54 @@
+<div class="dsp-search-panel" #fullSearchPanel cdkOverlayOrigin>
+
+    <!-- DESKTOP VERSION -->
+    <dsp-fulltext-search class="dsp-fulltext-search" [route]="route" [projectfilter]="projectfilter"
+        [filterbyproject]="filterbyproject">
+    </dsp-fulltext-search>
+
+    <!-- advanced search button: if advanced === true -->
+    <button mat-button *ngIf="advanced && !expert" color="primary"
+        (click)="openPanelWithBackdrop('advanced')">advanced</button>
+
+    <!-- expert search button: if expert === true -->
+    <button mat-button *ngIf="!advanced && expert" color="primary"
+        (click)="openPanelWithBackdrop('expert')">expert</button>
+
+    <!-- button to select advanced or expert search: if advanced AND expert === true; open menu to select -->
+    <button mat-button *ngIf="advanced && expert" [matMenuTriggerFor]="selectSearch">
+        <mat-icon>filter_list</mat-icon>
+    </button>
+    <mat-menu #selectSearch="matMenu">
+        <button mat-menu-item (click)="openPanelWithBackdrop('advanced')">
+            <span>Advanced search</span>
+        </button>
+        <button mat-menu-item (click)="openPanelWithBackdrop('expert')">
+            <span>Expert search</span>
+        </button>
+    </mat-menu>
+
+</div>
+
+<!-- full-text search menu -->
+<ng-template #searchMenu>
+    <div class="dsp-search-menu with-extended-search" [class.with-project-filter]="projectfilter">
+        <div class="dsp-menu-header">
+            <span class="dsp-menu-title">
+                <h4 *ngIf="showAdvanced">Advanced search</h4>
+                <h4 *ngIf="!showAdvanced">Expert search</h4>
+            </span>
+            <span class="fill-remaining-space"></span>
+            <span class="dsp-menu-close">
+                <button mat-icon-button (click)="closeMenu()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </span>
+        </div>
+        <div class="dsp-menu-content">
+            <!-- TODO: reactivate this tags when the components are ready -->
+            <!-- <dsp-advanced-search *ngIf="showAdvanced" [route]="route" (toggleExtendedSearchForm)="closeMenu()">
+            </dsp-advanced-search> -->
+            <!-- <dsp-expert-search *ngIf="!showAdvanced" [route]="route" (toggleExpertSearchForm)="closeMenu()">
+            </dsp-expert-search> -->
+        </div>
+    </div>
+</ng-template>
