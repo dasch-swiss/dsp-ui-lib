@@ -74,7 +74,6 @@ describe('SessionService', () => {
 
     it('should store user information in local storage', () => {
 
-        const userSpy = TestBed.inject(DspApiConnectionToken);
         let ls: Session;
 
         service.setSession(undefined, 'anything.user01', 'username');
