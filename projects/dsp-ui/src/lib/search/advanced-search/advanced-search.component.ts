@@ -11,6 +11,7 @@ import {
 import { Properties, SelectPropertyComponent } from './select-property/select-property.component';
 import { SelectResourceClassComponent } from './select-resource-class/select-resource-class.component';
 import { Subscription } from 'rxjs';
+import { PropertyWithValue } from './select-property/specify-property-value/operator';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -213,7 +214,27 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     }
 
     submit() {
-        // TODO: check validity, create Gravsearch query, and submit query
+        // TODO: create Gravsearch query using a service, and submit query.
+
+        if (!this.formValid) {
+            return; // check that form is valid
+        }
+
+        const resClassOption = this.resourceClassComponent.selectedResourceClassIri;
+
+        let resClass;
+
+        if (resClassOption !== false) {
+            resClass = resClassOption;
+        }
+
+        const properties: PropertyWithValue[] = this.propertyComponents.map(
+            (propComp) => {
+                return propComp.getPropertySelectedWithValue();
+            }
+        );
+
+        console.log(properties, resClass);
     }
 
 
