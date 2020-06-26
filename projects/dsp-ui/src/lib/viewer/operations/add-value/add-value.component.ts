@@ -40,6 +40,8 @@ export class AddValueComponent implements OnInit {
 
     constants = Constants;
 
+    mode: 'read' | 'update' | 'create' | 'search';
+
     canModify: boolean;
 
     createModeActive = false;
@@ -56,6 +58,8 @@ export class AddValueComponent implements OnInit {
 
     ngOnInit() {
 
+        this.mode = 'create';
+
         this.createModeActive = true;
 
         // TODO: find a way to figure out what type of text value it is
@@ -68,7 +72,6 @@ export class AddValueComponent implements OnInit {
         this.createModeActive = false;
         this.submittingValue = true;
         const createVal = this.createValueComponent.getNewValue();
-        console.log('createValueComponent: ', this.createValueComponent);
 
         if (createVal instanceof CreateValue) {
             const updateRes = new UpdateResource();
@@ -77,16 +80,12 @@ export class AddValueComponent implements OnInit {
             updateRes.property = this.resourcePropertyDefinition.id;
             updateRes.value = createVal;
 
-            console.log('updateRes: ', updateRes);
-
             this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
                 mergeMap((res: WriteValueResponse) => {
-                    // console.log(res);
                     return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
                 })
                 ).subscribe(
                     (res2: ReadResource) => {
-                        // console.log(this.parentResource);
                         this.eventBusService.emit(new EmitEvent(Events.ValueAdded));
                         this.submittingValue = false;
                     }

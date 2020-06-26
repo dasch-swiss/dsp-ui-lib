@@ -5,7 +5,17 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CreateIntValue, CreateValue, MockResource, ReadIntValue, ReadResource, ResourcePropertyDefinition, ValuesEndpointV2, WriteValueResponse } from '@dasch-swiss/dsp-js';
+import {
+    CreateIntValue,
+    CreateValue,
+    MockResource,
+    ReadIntValue,
+    ReadResource,
+    ResourcePropertyDefinition,
+    UpdateResource,
+    ValuesEndpointV2,
+    WriteValueResponse
+} from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
 import { AddValueComponent } from './add-value.component';
@@ -32,7 +42,7 @@ class TestIntValueComponent implements OnInit {
     getNewValue(): CreateValue {
         const createIntVal = new CreateIntValue();
 
-        createIntVal.int = 1;
+        createIntVal.int = 123;
 
         return createIntVal;
     }
@@ -103,19 +113,12 @@ describe('AddValueComponent', () => {
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
 
-        // console.log('add-value testHostFixture: ', testHostFixture);
-        // console.log('add-value testHostComponent: ', testHostComponent);
-
         expect(testHostComponent).toBeTruthy();
     });
 
     it('should choose the apt component for an integer value', () => {
 
-        console.log('testAddValueComponent: ', testHostComponent.testAddValueComponent);
-
         expect(testHostComponent.testAddValueComponent).toBeTruthy();
-
-        // console.log('createValueComponent: ', testHostComponent.testAddValueComponent.createValueComponent);
 
         expect(testHostComponent.resourcePropertyDefinition.objectType).toEqual('http://api.knora.org/ontology/knora-api/v2#IntValue');
 
@@ -131,12 +134,8 @@ describe('AddValueComponent', () => {
             expect(testHostComponent.testAddValueComponent).toBeTruthy();
 
             hostCompDe = testHostFixture.debugElement;
-            console.log(testHostFixture.debugElement);
-            console.log(testHostComponent.testAddValueComponent);
-
 
             addValueComponentDe = hostCompDe.query(By.directive(AddValueComponent));
-            console.log('addValueComponentDe: ', addValueComponentDe);
 
             expect(testHostComponent).toBeTruthy();
         });
@@ -161,15 +160,15 @@ describe('AddValueComponent', () => {
             (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).getValue.and.callFake(
                 () => {
 
-                    const createVal = new ReadIntValue();
+                    const createdVal = new ReadIntValue();
 
-                    createVal.id = 'newID';
-                    createVal.int = 123;
+                    createdVal.id = 'newID';
+                    createdVal.int = 1;
 
                     const resource = new ReadResource();
 
                     resource.properties = {
-                        'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger': [createVal]
+                        'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger': [createdVal]
                     };
 
                     return of(resource);
@@ -185,6 +184,28 @@ describe('AddValueComponent', () => {
             const saveButtonNativeElement = saveButtonDebugElement.nativeElement;
 
             expect(saveButtonNativeElement).toBeDefined();
+
+            saveButtonNativeElement.click();
+
+            testHostFixture.detectChanges();
+
+            const expectedUpdateResource = new UpdateResource();
+
+            expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+            expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
+            expectedUpdateResource.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
+
+            const expectedCreateVal = new CreateIntValue();
+            expectedCreateVal.int = 123;
+
+            expectedUpdateResource.value = expectedCreateVal;
+
+            expect(valuesSpy.v2.values.createValue).toHaveBeenCalledWith(expectedUpdateResource);
+            expect(valuesSpy.v2.values.createValue).toHaveBeenCalledTimes(1);
+
+            expect(valuesSpy.v2.values.getValue).toHaveBeenCalledTimes(1);
+            expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id, 'uuid');
+
         });
     });
 
