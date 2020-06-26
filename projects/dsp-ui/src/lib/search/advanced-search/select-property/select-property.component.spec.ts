@@ -9,7 +9,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import {
-    Cardinality,
+    Cardinality, Constants,
     MockOntology, OntologiesMetadata,
     PropertyDefinition,
     ResourceClassDefinition,
@@ -19,6 +19,7 @@ import { MatSelectHarness } from '@angular/material/select/testing';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { By } from '@angular/platform-browser';
+import { ComparisonOperatorAndValue, Equals, PropertyWithValue, ValueLiteral } from './specify-property-value/operator';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -87,6 +88,10 @@ class TestSpecifyPropertyValueComponent implements OnInit {
     @Input() formGroup: FormGroup;
 
     @Input() property: ResourcePropertyDefinition;
+
+    getComparisonOperatorAndValueLiteralForProperty(): ComparisonOperatorAndValue {
+        return new ComparisonOperatorAndValue(new Equals(), new ValueLiteral('1', 'http://www.w3.org/2001/XMLSchema#integer'));
+    }
 
     ngOnInit() {
 
@@ -218,6 +223,28 @@ describe('SelectPropertyComponent', () => {
         const checkbox = await loader.getAllHarnesses(MatCheckboxHarness);
 
         expect(checkbox.length).toEqual(1);
+
+    });
+
+    it('should get the specified value for the selected property', async () => {
+
+        const select = await loader.getHarness(MatSelectHarness);
+        await select.open();
+
+        const options = await select.getOptions();
+
+        expect(await options[11].getText()).toEqual('Integer');
+
+        await options[11].click();
+
+        const propWithVal = testHostComponent.selectProperty.getPropertySelectedWithValue();
+
+        expect(propWithVal.property.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
+
+        expect(propWithVal.valueLiteral.value).toEqual(new ValueLiteral('1', Constants.XsdInteger));
+        expect(propWithVal.valueLiteral.comparisonOperator).toEqual(new Equals());
+
+        expect(propWithVal.isSortCriterion).toBe(false);
 
     });
 

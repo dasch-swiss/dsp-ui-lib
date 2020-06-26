@@ -4,6 +4,7 @@ import { ResourceClassDefinition, ResourcePropertyDefinition, Cardinality, IHasP
 import { Subscription } from 'rxjs';
 import { SortingService } from '../../../action';
 import { SpecifyPropertyValueComponent } from './specify-property-value/specify-property-value.component';
+import { ComparisonOperatorAndValue, PropertyWithValue } from './specify-property-value/operator';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -154,6 +155,24 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
         } else {
             return false;
         }
+
+    }
+
+    /**
+     * Returns the selected property with the specified value.
+     */
+    getPropertySelectedWithValue(): PropertyWithValue {
+
+        const propVal: ComparisonOperatorAndValue = this.specifyPropertyValue.getComparisonOperatorAndValueLiteralForProperty();
+
+        let isSortCriterion = false;
+
+        // only non linking properties can be used for sorting
+        if (!this.propertySelected.isLinkProperty) {
+            isSortCriterion = this.form.value.isSortCriterion;
+        }
+
+        return new PropertyWithValue(this.propertySelected, propVal, isSortCriterion);
 
     }
 
