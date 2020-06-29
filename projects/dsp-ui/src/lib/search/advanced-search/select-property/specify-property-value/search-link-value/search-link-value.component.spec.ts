@@ -130,8 +130,12 @@ describe('SearchLinkValueComponent', () => {
         expect(testHostComponent.linkValue.resources.length).toEqual(1);
         expect(testHostComponent.linkValue.resources[0].id).toEqual('http://testIri');
 
-        // await autoCompleteHarness.selectOption({text: 'testres'});
-        // await options[0].click();
+        expect(testHostComponent.linkValue.form.valid).toBe(false);
+
+        await options[0].click();
+
+        expect(testHostComponent.linkValue.form.valid).toBe(true);
+        expect(testHostComponent.linkValue.form.controls['resource'].value.id).toEqual('http://testIri');
 
         expect(searchSpy.v2.search.doSearchByLabel).toHaveBeenCalledTimes(5); // starts sending requests when 3 chars long: 'testres' -> tes (1) + tres (4)
         expect(searchSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('testres', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'});
