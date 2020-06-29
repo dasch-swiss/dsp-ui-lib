@@ -12,6 +12,8 @@
     <dsp-search-decimal-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.DecimalValue"></dsp-search-decimal-value>
     <dsp-search-boolean-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.BooleanValue"></dsp-search-boolean-value>
     <dsp-search-date-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.DateValue"></dsp-search-date-value>
+    <dsp-search-link-value #propertyValue [formGroup]="form" [restrictResourceClass]="property.objectType"
+                *ngSwitchCase="Constants.Resource"></dsp-search-link-value>
     <span *ngSwitchDefault>Not supported {{propertyValueType}}</span>
 </span>
 

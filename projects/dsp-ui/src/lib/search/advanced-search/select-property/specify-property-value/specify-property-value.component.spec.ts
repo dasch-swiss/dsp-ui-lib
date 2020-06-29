@@ -11,7 +11,7 @@ import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSelectHarness } from '@angular/material/select/testing';
-import { Value, ValueLiteral } from './operator';
+import { IRI, Value, ValueLiteral } from './operator';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -150,6 +150,29 @@ class TestSearchDateValueComponent implements OnInit {
 
 }
 
+/**
+ * Test component to simulate date value component.
+ */
+@Component({
+    selector: 'dsp-search-link-value',
+    template: ``
+})
+class TestSearchLinkValueComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    @Input() restrictResourceClass: string;
+
+    getValue(): Value {
+        return new IRI('testIri');
+    }
+
+    ngOnInit() {
+
+    }
+
+}
+
 describe('SpecifyPropertyValueComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
@@ -170,7 +193,8 @@ describe('SpecifyPropertyValueComponent', () => {
                 TestSearchIntValueComponent,
                 TestSearchBooleanValueComponent,
                 TestSearchDateValueComponent,
-                TestSearchDecimalValueComponent
+                TestSearchDecimalValueComponent,
+                TestSearchLinkValueComponent
             ]
         })
             .compileComponents();
