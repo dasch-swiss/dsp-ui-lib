@@ -1,16 +1,18 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { By } from '@angular/platform-browser';
 import {
     ApiResponseError,
     IHasPropertyWithPropertyDefinition,
     MockResource,
     ReadResource,
     ReadValue,
+    ResourcePropertyDefinition,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 import { PropertyViewComponent } from './property-view.component';
-
 
 /**
  * Test host component to simulate parent component.
@@ -80,15 +82,33 @@ class TestDisplayValueComponent {
 
 }
 
+/**
+ * Test host component to simulate child component, here add-value.
+ */
+@Component({
+    selector: `dsp-add-value`,
+    template: ``
+  })
+  class TestAddValueComponent {
+
+    @Input() parentResource: ReadResource;
+    @Input() resourcePropertyDefinition: ResourcePropertyDefinition;
+
+  }
+
 describe('PropertyViewComponent', () => {
   let testHostComponent: TestPropertyParentComponent;
   let testHostFixture: ComponentFixture<TestPropertyParentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        MatIconModule,
+      ],
       declarations: [
         TestPropertyParentComponent,
         TestDisplayValueComponent,
+        TestAddValueComponent,
         PropertyViewComponent
       ]
     })
@@ -139,5 +159,45 @@ describe('PropertyViewComponent', () => {
 
   });
 
+  describe('Add value', () => {
+    let hostCompDe;
+    let propertyViewComponentDe;
+
+    beforeEach(() => {
+        expect(testHostComponent.propertyViewComponent).toBeTruthy();
+
+        hostCompDe = testHostFixture.debugElement;
+
+        propertyViewComponentDe = hostCompDe.query(By.directive(PropertyViewComponent));
+
+        expect(testHostComponent).toBeTruthy();
+
+        testHostComponent.propertyViewComponent.addButtonIsVisible = true;
+        testHostComponent.propertyViewComponent.addValueFormIsVisible = false;
+        testHostFixture.detectChanges();
+    });
+
+    it('should show an add button under each property that has a value component and for which the cardinality is not 1', () => {
+        const addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
+        expect(addButtons.length).toEqual(14);
+
+    });
+
+    it('should show an add value component when the add button is clicked', () => {
+        const addButtonDebugElement = propertyViewComponentDe.query(By.css('button.create'));
+        const addButtonNativeElement = addButtonDebugElement.nativeElement;
+
+        expect(propertyViewComponentDe.query(By.css('.add-value'))).toBeNull();
+
+        addButtonNativeElement.click();
+
+        testHostFixture.detectChanges();
+
+        expect(propertyViewComponentDe.query(By.css('button.create'))).toBeNull();
+
+        expect(propertyViewComponentDe.query(By.css('.add-value'))).toBeDefined();
+
+    });
+  });
 
 });

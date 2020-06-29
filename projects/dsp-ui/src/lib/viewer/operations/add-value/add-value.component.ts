@@ -90,10 +90,10 @@ export class AddValueComponent implements OnInit {
                         this.submittingValue = false;
                     }
                 );
-            } else {
-                console.error('invalid value');
-                this.submittingValue = false;
-            }
+        } else {
+            console.error('invalid value');
+            this.submittingValue = false;
+        }
     }
 
     cancelAddValue() {

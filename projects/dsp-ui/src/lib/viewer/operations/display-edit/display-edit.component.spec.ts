@@ -1,38 +1,38 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DisplayEditComponent } from './display-edit.component';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
     Constants,
     MockResource,
+    ReadBooleanValue,
+    ReadColorValue,
+    ReadDecimalValue,
+    ReadGeonameValue,
+    ReadIntervalValue,
     ReadIntValue,
+    ReadLinkValue,
+    ReadListValue,
     ReadResource,
     ReadTextValueAsHtml,
     ReadTextValueAsString,
     ReadTextValueAsXml,
+    ReadTimeValue,
+    ReadUriValue,
     ReadValue,
     UpdateIntValue,
     UpdateResource,
     UpdateValue,
     ValuesEndpointV2,
-    WriteValueResponse,
-    ReadBooleanValue,
-    ReadUriValue,
-    ReadDecimalValue,
-    ReadColorValue,
-    ReadIntervalValue,
-    ReadTimeValue,
-    ReadLinkValue,
-    ReadListValue,
-    ReadGeonameValue
+    WriteValueResponse
 } from '@dasch-swiss/dsp-js';
+import { DisplayEditComponent } from './display-edit.component';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
-import { MatIconModule } from '@angular/material/icon';
 import { ValueTypeService } from '../../services/value-type.service';
 
 @Component({

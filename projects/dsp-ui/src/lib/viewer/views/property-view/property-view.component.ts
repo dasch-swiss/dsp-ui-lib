@@ -64,10 +64,6 @@ export class PropertyViewComponent implements OnInit {
 
         this.eventBusSubscription = this.eventBusService.on(Events.ValueAdded, () => this.hideAddValueForm());
 
-        // console.log('resource: ', this.parentResource);
-
-        // console.log(this.propArray);
-
     }
 
     /**
@@ -78,8 +74,6 @@ export class PropertyViewComponent implements OnInit {
         this.propID = prop.propDef.id;
         this.addValueFormIsVisible = true;
         this.addButtonIsVisible = false;
-        // console.log('prop: ', prop);
-        // console.log('propID ', this.propID);
 
     }
 
