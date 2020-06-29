@@ -132,24 +132,24 @@ describe('SessionService', () => {
             expect(isValid).toBeTruthy();
         });
 
-        xit('should get credentials again if session has expired', () => {
-            let session: Session = service.getSession();
+        // it('should get credentials again if session has expired', () => {
+        //     let session: Session = service.getSession();
 
-            // manually set id to an expired value
-            session.id = 0;
+        //     // manually set id to an expired value
+        //     session.id = 0;
 
-            // store session again
-            localStorage.setItem('session', JSON.stringify(session));
+        //     // store session again
+        //     localStorage.setItem('session', JSON.stringify(session));
 
-            // get session info again in order to get the expired session
-            session = service.getSession();
+        //     // get session info again in order to get the expired session
+        //     session = service.getSession();
 
-            const isValid = service.isSessionValid();
+        //     const isValid = service.isSessionValid();
 
-            expect(dspConnSpy.v2.auth.checkCredentials).toHaveBeenCalledTimes(1);
+        //     expect(dspConnSpy.v2.auth.checkCredentials).toHaveBeenCalledTimes(1);
 
-            expect(isValid).toBeTruthy();
-        });
+        //     expect(isValid).toBeTruthy();
+        // });
     });
 
 });
