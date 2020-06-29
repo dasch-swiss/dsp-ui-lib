@@ -9,6 +9,7 @@
 <span
     *ngIf="comparisonOperatorSelected !== undefined && comparisonOperatorSelected !== null && comparisonOperatorSelected.getClassName() != 'Exists'" [ngSwitch]="propertyValueType">
     <dsp-search-int-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.IntValue"></dsp-search-int-value>
+    <dsp-search-decimal-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.DecimalValue"></dsp-search-decimal-value>
     <dsp-search-boolean-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.BooleanValue"></dsp-search-boolean-value>
     <dsp-search-date-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.DateValue"></dsp-search-date-value>
     <span *ngSwitchDefault>Not supported {{propertyValueType}}</span>

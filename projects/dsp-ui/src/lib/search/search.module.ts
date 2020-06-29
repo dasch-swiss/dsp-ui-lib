@@ -22,6 +22,7 @@ import { SearchBooleanValueComponent } from './advanced-search/select-property/s
 import { SearchDateValueComponent } from './advanced-search/select-property/specify-property-value/search-date-value/search-date-value.component';
 import { DspViewerModule } from '../viewer';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { SearchDecimalValueComponent } from './advanced-search/select-property/specify-property-value/search-decimal-value/search-decimal-value.component';
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
         SpecifyPropertyValueComponent,
         SearchIntValueComponent,
         SearchBooleanValueComponent,
-        SearchDateValueComponent
+        SearchDateValueComponent,
+        SearchDecimalValueComponent
     ],
     imports: [
         CommonModule,

@@ -88,6 +88,27 @@ class TestSearchIntValueComponent implements OnInit {
 }
 
 /**
+ * Test component to simulate decimal value component.
+ */
+@Component({
+    selector: 'dsp-search-decimal-value',
+    template: ``
+})
+class TestSearchDecimalValueComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    getValue(): Value {
+        return new ValueLiteral(String(1.1), Constants.XsdDecimal);
+    }
+
+    ngOnInit() {
+
+    }
+
+}
+
+/**
  * Test component to simulate Boolean value component.
  */
 @Component({
@@ -148,7 +169,8 @@ describe('SpecifyPropertyValueComponent', () => {
                 TestHostComponent,
                 TestSearchIntValueComponent,
                 TestSearchBooleanValueComponent,
-                TestSearchDateValueComponent
+                TestSearchDateValueComponent,
+                TestSearchDecimalValueComponent
             ]
         })
             .compileComponents();
