@@ -143,7 +143,7 @@ export class SessionService {
             // check if the session is still valid:
             if (session.id + this.MAX_SESSION_TIME <= tsNow) {
                 // the internal (dsp-ui) session has expired
-                // check if the api credentails are still valid
+                // check if the api credentials are still valid
 
                 this.dspApiConnection.v2.auth.checkCredentials().subscribe(
                     (response: ApiResponseData<CredentialsResponse>) => {
