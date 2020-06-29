@@ -18,6 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { SearchBooleanValueComponent } from './advanced-search/select-property/specify-property-value/search-boolean-value/search-boolean-value.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { MatInputModule } from '@angular/material/input';
         SelectPropertyComponent,
         AdvancedSearchComponent,
         SpecifyPropertyValueComponent,
-        SearchIntValueComponent
+        SearchIntValueComponent,
+        SearchBooleanValueComponent
     ],
     imports: [
         CommonModule,

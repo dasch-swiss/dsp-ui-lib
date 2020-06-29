@@ -87,6 +87,27 @@ class TestSearchIntValueComponent implements OnInit {
 
 }
 
+/**
+ * Test component to simulate Boolean value component.
+ */
+@Component({
+    selector: 'dsp-search-boolean-value',
+    template: ``
+})
+class TestSearchBooleanValueComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    getValue(): Value {
+        return new ValueLiteral(String(true), Constants.XsdBoolean);
+    }
+
+    ngOnInit() {
+
+    }
+
+}
+
 describe('SpecifyPropertyValueComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
@@ -104,7 +125,8 @@ describe('SpecifyPropertyValueComponent', () => {
             declarations: [
                 SpecifyPropertyValueComponent,
                 TestHostComponent,
-                TestSearchIntValueComponent
+                TestSearchIntValueComponent,
+                TestSearchBooleanValueComponent
             ]
         })
             .compileComponents();

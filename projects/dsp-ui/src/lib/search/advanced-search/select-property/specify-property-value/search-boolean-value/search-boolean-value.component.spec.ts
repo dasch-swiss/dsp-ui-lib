@@ -1,27 +1,26 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { SearchIntValueComponent } from './search-int-value.component';
+import { SearchBooleanValueComponent } from './search-boolean-value.component';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatInputModule } from '@angular/material/input';
 import { ValueLiteral } from '../operator';
-import { MatInputHarness } from '@angular/material/input/testing';
+import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 /**
  * Test host component to simulate parent component.
  */
 @Component({
     template: `
-        <dsp-search-int-value #intVal [formGroup]="form"></dsp-search-int-value>`
+        <dsp-search-boolean-value #boolVal [formGroup]="form"></dsp-search-boolean-value>`
 })
 class TestHostComponent implements OnInit {
 
     form;
 
-    @ViewChild('intVal', {static: false}) integerValue: SearchIntValueComponent;
+    @ViewChild('boolVal', {static: false}) booleanValue: SearchBooleanValueComponent;
 
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     }
@@ -32,7 +31,7 @@ class TestHostComponent implements OnInit {
     }
 }
 
-describe('SearchIntValueComponent', () => {
+describe('SearchBooleanValueComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
 
@@ -43,12 +42,11 @@ describe('SearchIntValueComponent', () => {
             imports: [
                 BrowserAnimationsModule,
                 ReactiveFormsModule,
-                MatInputModule
+                MatCheckboxModule
             ],
             declarations: [
-                SearchIntValueComponent,
-                TestHostComponent
-            ]
+                SearchBooleanValueComponent,
+                TestHostComponent]
         })
             .compileComponents();
     }));
@@ -63,18 +61,18 @@ describe('SearchIntValueComponent', () => {
 
     it('should create', () => {
         expect(testHostComponent).toBeTruthy();
-        expect(testHostComponent.integerValue).toBeTruthy();
+        expect(testHostComponent.booleanValue).toBeTruthy();
     });
 
-    it('should get an integer literal of 1', async () => {
+    it('should get a boolean literal true', async () => {
 
-        const matInput = await loader.getHarness(MatInputHarness);
+        const matCheckbox = await loader.getHarness(MatCheckboxHarness);
 
-        await matInput.setValue('1');
+        await matCheckbox.check();
 
-        const expectedIntLiteralVal = new ValueLiteral('1', 'http://www.w3.org/2001/XMLSchema#integer');
+        const expectedIntLiteralVal = new ValueLiteral('true', 'http://www.w3.org/2001/XMLSchema#boolean');
 
-        expect(testHostComponent.integerValue.getValue()).toEqual(expectedIntLiteralVal);
+        expect(testHostComponent.booleanValue.getValue()).toEqual(expectedIntLiteralVal);
 
     });
 
