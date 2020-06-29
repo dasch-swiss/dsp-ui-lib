@@ -87,7 +87,6 @@ export class DisplayEditComponent implements OnInit {
         const updatedVal = this.displayValueComponent.getUpdatedValue();
 
         if (updatedVal instanceof UpdateValue) {
-
             const updateRes = new UpdateResource();
             updateRes.id = this.parentResource.id;
             updateRes.type = this.parentResource.type;
