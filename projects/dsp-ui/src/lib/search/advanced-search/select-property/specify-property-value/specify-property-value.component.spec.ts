@@ -108,6 +108,27 @@ class TestSearchBooleanValueComponent implements OnInit {
 
 }
 
+/**
+ * Test component to simulate date value component.
+ */
+@Component({
+    selector: 'dsp-search-date-value',
+    template: ``
+})
+class TestSearchDateValueComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    getValue(): Value {
+        return new ValueLiteral('GREGORIAN:2018-10-30:2018-10-30', 'http://api.knora.org/ontology/knora-api/simple/v2#Date');
+    }
+
+    ngOnInit() {
+
+    }
+
+}
+
 describe('SpecifyPropertyValueComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
@@ -126,7 +147,8 @@ describe('SpecifyPropertyValueComponent', () => {
                 SpecifyPropertyValueComponent,
                 TestHostComponent,
                 TestSearchIntValueComponent,
-                TestSearchBooleanValueComponent
+                TestSearchBooleanValueComponent,
+                TestSearchDateValueComponent
             ]
         })
             .compileComponents();

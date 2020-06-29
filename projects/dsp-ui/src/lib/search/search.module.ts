@@ -19,6 +19,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { SearchBooleanValueComponent } from './advanced-search/select-property/specify-property-value/search-boolean-value/search-boolean-value.component';
+import { SearchDateValueComponent } from './advanced-search/select-property/specify-property-value/search-date-value/search-date-value.component';
+import { DspViewerModule } from '../viewer';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
     declarations: [
@@ -30,7 +33,8 @@ import { SearchBooleanValueComponent } from './advanced-search/select-property/s
         AdvancedSearchComponent,
         SpecifyPropertyValueComponent,
         SearchIntValueComponent,
-        SearchBooleanValueComponent
+        SearchBooleanValueComponent,
+        SearchDateValueComponent
     ],
     imports: [
         CommonModule,
@@ -44,7 +48,9 @@ import { SearchBooleanValueComponent } from './advanced-search/select-property/s
         MatSelectModule,
         MatOptionModule,
         MatCheckboxModule,
-        MatInputModule
+        MatInputModule,
+        MatDatepickerModule,
+        DspViewerModule
     ],
     exports: [
         SearchPanelComponent,
