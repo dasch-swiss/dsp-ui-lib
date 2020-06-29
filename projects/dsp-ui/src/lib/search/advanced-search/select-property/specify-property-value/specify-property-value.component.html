@@ -19,7 +19,7 @@
     <boolean-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.BooleanValue"></boolean-value>
     <date-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.DateValue"></date-value>
     <decimal-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.DecimalValue"></decimal-value>
-    <integer-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.IntValue"></integer-value>
+    <search-int-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.IntValue"></search-int-value>
     <link-value #propertyValue [formGroup]="form" [restrictResourceClass]="property.objectType"
                 *ngSwitchCase="Constants.Resource"></link-value>
     <text-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.TextValue"></text-value>
