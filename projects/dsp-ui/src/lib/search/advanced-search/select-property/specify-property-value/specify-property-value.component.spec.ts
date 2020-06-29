@@ -151,7 +151,7 @@ class TestSearchDateValueComponent implements OnInit {
 }
 
 /**
- * Test component to simulate date value component.
+ * Test component to simulate a link value component.
  */
 @Component({
     selector: 'dsp-search-link-value',
@@ -162,6 +162,29 @@ class TestSearchLinkValueComponent implements OnInit {
     @Input() formGroup: FormGroup;
 
     @Input() restrictResourceClass: string;
+
+    getValue(): Value {
+        return new IRI('testIri');
+    }
+
+    ngOnInit() {
+
+    }
+
+}
+
+/**
+ * Test component to simulate date value component.
+ */
+@Component({
+    selector: 'dsp-search-link-value',
+    template: ``
+})
+class TestSearchListValueComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    @Input() property: ResourcePropertyDefinition;
 
     getValue(): Value {
         return new IRI('testIri');

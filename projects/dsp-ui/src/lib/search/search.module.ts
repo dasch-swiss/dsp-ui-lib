@@ -25,6 +25,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SearchDecimalValueComponent } from './advanced-search/select-property/specify-property-value/search-decimal-value/search-decimal-value.component';
 import { SearchLinkValueComponent } from './advanced-search/select-property/specify-property-value/search-link-value/search-link-value.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { SearchListValueComponent } from './advanced-search/select-property/specify-property-value/search-list-value/search-list-value.component';
+import { SearchDisplayListComponent } from './advanced-search/select-property/specify-property-value/search-list-value/display-list/search-display-list.component';
 
 @NgModule({
     declarations: [
@@ -39,7 +41,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         SearchBooleanValueComponent,
         SearchDateValueComponent,
         SearchDecimalValueComponent,
-        SearchLinkValueComponent
+        SearchLinkValueComponent,
+        SearchListValueComponent,
+        SearchDisplayListComponent
     ],
     imports: [
         CommonModule,

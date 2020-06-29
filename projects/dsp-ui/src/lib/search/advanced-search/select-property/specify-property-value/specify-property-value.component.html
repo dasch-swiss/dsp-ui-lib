@@ -14,6 +14,7 @@
     <dsp-search-date-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.DateValue"></dsp-search-date-value>
     <dsp-search-link-value #propertyValue [formGroup]="form" [restrictResourceClass]="property.objectType"
                 *ngSwitchCase="Constants.Resource"></dsp-search-link-value>
+    <dsp-search-list-value #propertyValue [formGroup]="form" [property]="property" *ngSwitchCase="Constants.ListValue"></dsp-search-list-value>
     <span *ngSwitchDefault>Not supported {{propertyValueType}}</span>
 </span>
 
