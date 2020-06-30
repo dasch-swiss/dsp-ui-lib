@@ -11,7 +11,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { of } from 'rxjs';
-import { MatButtonModule } from '@angular/material/button';
+import { IRI } from '../operator';
+import { By } from '@angular/platform-browser';
+import { MatButtonHarness } from '@angular/material/button/testing';
 
 /**
  * Test host component to simulate parent component.
@@ -46,7 +48,7 @@ class TestHostComponent implements OnInit {
     selector: 'dsp-search-display-list',
     template: `<mat-menu #childMenu="matMenu" [overlapTrigger]="false"></mat-menu>`
 })
-class TestSearchDisplayListValueComponent implements OnInit {
+class TestSearchDisplayListComponent implements OnInit {
 
     @Input() children: ListNodeV2[];
 
@@ -84,7 +86,7 @@ describe('SearchListValueComponent', () => {
             declarations: [
                 SearchListValueComponent,
                 TestHostComponent,
-                TestSearchDisplayListValueComponent
+                TestSearchDisplayListComponent
             ],
             providers: [
                 {
@@ -118,8 +120,45 @@ describe('SearchListValueComponent', () => {
         expect(testHostComponent).toBeTruthy();
         expect(testHostComponent.listValue).toBeTruthy();
 
+        expect(testHostComponent.listValue.listRootNode).toBeDefined();
+        expect(testHostComponent.listValue.listRootNode.isRootNode).toBe(true);
+
         expect(dspSpy.v2.list.getList).toHaveBeenCalledTimes(1);
         expect(dspSpy.v2.list.getList).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList');
+
+    });
+
+    it('should emit the selected node', async () => {
+
+        const button = await loader.getHarness(MatButtonHarness);
+
+        expect(await button.getText()).toEqual('Select list value');
+
+        await button.click();
+
+        const hostCompDe = testHostFixture.debugElement;
+        const searchDisplayListComponent = hostCompDe.query(By.directive(TestSearchDisplayListComponent));
+
+        expect(searchDisplayListComponent).not.toBeNull();
+
+        const listNode = new ListNodeV2();
+        listNode.id = 'http://rdfh.ch/lists/0001/treeList03';
+
+        (searchDisplayListComponent.componentInstance as TestSearchDisplayListComponent).selectedNode.emit(listNode);
+
+        expect(testHostComponent.listValue.form.controls['listValue'].value).toEqual('http://rdfh.ch/lists/0001/treeList03');
+
+    });
+
+    it('should get the selected list node', () => {
+
+        testHostComponent.listValue.form.controls['listValue'].setValue('http://rdfh.ch/lists/0001/treeList/01');
+
+        const expectedListNode = new IRI('http://rdfh.ch/lists/0001/treeList/01');
+
+        const listNode = testHostComponent.listValue.getValue();
+
+        expect(listNode).toEqual(expectedListNode);
 
     });
 });

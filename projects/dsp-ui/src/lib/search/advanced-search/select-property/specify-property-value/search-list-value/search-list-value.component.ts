@@ -34,7 +34,7 @@ export class SearchListValueComponent implements OnInit, OnDestroy, PropertyValu
 
     selectedNode: ListNodeV2;
 
-    @ViewChild(MatMenuTrigger, { static: false }) menuTrigger: MatMenuTrigger;
+    @ViewChild(MatMenuTrigger) menuTrigger: MatMenuTrigger;
 
     constructor(
         @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
