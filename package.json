@@ -27,6 +27,7 @@
     "test-lib-local": "ng t --project @dasch-swiss/dsp-ui",
     "build-lib": "ng b --prod --project @dasch-swiss/dsp-ui",
     "build-lib-dev": "ng b --project @dasch-swiss/dsp-ui",
+    "build-watchful-lib-dev": "ng b --project @dasch-swiss/dsp-ui --watch=true",
     "yalc-publish-lib": "ng b --prod --project @dasch-swiss/dsp-ui && yalc publish dist/@dasch-swiss/dsp-ui",
     "build-app": "ng b --prod",
     "lint": "ng lint",
