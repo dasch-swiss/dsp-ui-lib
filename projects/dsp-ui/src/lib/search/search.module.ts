@@ -26,7 +26,7 @@ import { SearchDecimalValueComponent } from './advanced-search/select-property/s
 import { SearchLinkValueComponent } from './advanced-search/select-property/specify-property-value/search-link-value/search-link-value.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { SearchListValueComponent } from './advanced-search/select-property/specify-property-value/search-list-value/search-list-value.component';
-import { SearchDisplayListComponent } from './advanced-search/select-property/specify-property-value/search-list-value/display-list/search-display-list.component';
+import { SearchDisplayListComponent } from './advanced-search/select-property/specify-property-value/search-list-value/search-display-list/search-display-list.component';
 import { SearchTextValueComponent } from './advanced-search/select-property/specify-property-value/search-text-value/search-text-value.component';
 import { SearchUriValueComponent } from './advanced-search/select-property/specify-property-value/search-uri-value/search-uri-value.component';
 
