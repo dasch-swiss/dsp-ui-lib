@@ -79,7 +79,7 @@ export class SessionService {
         let session: Session;
 
         if (jwt) {
-            this.updateKnoraApiConnection(jwt);
+            this.updateDspApiConnection(jwt);
         }
 
         // get user information
@@ -138,7 +138,7 @@ export class SessionService {
 
         if (session) {
 
-            this.updateKnoraApiConnection(session.user.jwt);
+            this.updateDspApiConnection(session.user.jwt);
 
             // check if the session is still valid:
             if (session.id + this.MAX_SESSION_TIME <= tsNow) {
@@ -169,7 +169,7 @@ export class SessionService {
             }
         } else {
             // no session found; update knora api connection with empty jwt
-            this.updateKnoraApiConnection();
+            this.updateDspApiConnection();
             return false;
         }
     }
@@ -196,13 +196,13 @@ export class SessionService {
     }
 
     /**
-     * Update the knora-api-config and knora-api-connection of @dasch-swiss/dsp-js
+     * Update the dsp-api-config and dsp-api-connection of @dasch-swiss/dsp-js
      *
      * @param  {string} jwt?
      */
-    private updateKnoraApiConnection(jwt?: string) {
+    private updateDspApiConnection(jwt?: string) {
         this.dspApiConfig.jsonWebToken = (jwt ? jwt : '');
-        this.dspApiConnection = new KnoraApiConnection(this.dspApiConfig);
+        this.dspApiConnection.v2.jsonWebToken = this.dspApiConfig.jsonWebToken;
     }
 
     /**
