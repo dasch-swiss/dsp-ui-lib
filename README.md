@@ -196,6 +196,14 @@ yalc add @dasch-swiss/dsp-js
 npm install
 ```
 
+### Run the application locally in dev mode with Live Reloading
+
+To make changes to the DSP-UI and have your changes reflected immediately upon saving, follow these steps:
+
+ - run `npm run build-watchful-lib-dev` from the project root directory
+ - open a new tab and `run npm run start` from the project root directory
+ - now, anytime you make a change to DSP-UI and save, the library will be re-built and the webpage will refresh and you will see the changes
+
 ### Run the application in productive mode
 
 To simulate a production environment, the application should be built with optimization and served locally
