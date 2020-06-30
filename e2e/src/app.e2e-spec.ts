@@ -4,6 +4,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { ProtractorHarnessEnvironment } from '@angular/cdk/testing/protractor';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
+import { MatSelectHarness } from '@angular/material/select/testing';
 
 describe('Test App', () => {
     let page: AppPage;
@@ -22,7 +23,6 @@ describe('Test App', () => {
     });
 
     describe('Playground Modify Page', () => {
-        let loader: HarnessLoader;
 
         it('should display an integer value', async () => {
             await page.navigateTo('modify');
@@ -46,14 +46,7 @@ describe('Test App', () => {
 
             await editButton.click();
 
-            // loader = ProtractorHarnessEnvironment.loader({queryFn: (selector: string, root: ElementFinder) => root.all(by.css(selector))});
-            // loader = ProtractorHarnessEnvironment.loader({queryFn: (selector: string, root: ElementFinder) => displayEdit as unknown as ElementArrayFinder});
-
-            /*const editButtons = await loader.getAllHarnesses(MatButtonHarness.with({selector: '.edit'}));
-
-            await editButtons[5].click();*/
-
-            loader = ProtractorHarnessEnvironment.loader();
+            const loader = ProtractorHarnessEnvironment.loader();
 
             const matInput = await loader.getHarness(MatInputHarness.with({selector: '.value'}));
 
@@ -71,6 +64,49 @@ describe('Test App', () => {
             const readEle = await page.getReadValueFieldFromValueComponent(valueEleComp);
             expect(await readEle.getText()).toEqual('3');
 
+        });
+
+    });
+
+    describe('Playground Advanced Search Page', () => {
+
+        it('should select an ontology and a resource class', async () => {
+            await page.navigateTo('advanced-search');
+
+            const loader = ProtractorHarnessEnvironment.loader();
+
+            const submitButton = await loader.getHarness(MatButtonHarness.with({ selector: '[type="submit"]'}));
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const selectOntos = await loader.getHarness(MatSelectHarness.with({ selector: '.select-ontology' }));
+
+            await selectOntos.open();
+
+            const ontoOptions = await selectOntos.getOptions();
+
+            expect(ontoOptions.length).toEqual(15);
+
+            expect(await ontoOptions[0].getText()).toEqual('The anything ontology');
+
+            // anything onto
+            await ontoOptions[0].click();
+
+            const resClasses = await loader.getHarness(MatSelectHarness.with({ selector: '.select-resource-class' }));
+
+            await resClasses.open();
+
+            const resClassOptions = await resClasses.getOptions();
+
+            expect(resClassOptions.length).toEqual(9);
+
+            expect(await resClassOptions[2].getText()).toEqual('Thing');
+
+            await resClassOptions[2].click();
+
+            expect(await submitButton.isDisabled()).toBe(false);
+
+            // browser.sleep(200000);
         });
 
     });
