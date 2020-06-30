@@ -28,6 +28,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { SearchListValueComponent } from './advanced-search/select-property/specify-property-value/search-list-value/search-list-value.component';
 import { SearchDisplayListComponent } from './advanced-search/select-property/specify-property-value/search-list-value/display-list/search-display-list.component';
 import { SearchTextValueComponent } from './advanced-search/select-property/specify-property-value/search-text-value/search-text-value.component';
+import { SearchUriValueComponent } from './advanced-search/select-property/specify-property-value/search-uri-value/search-uri-value.component';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { SearchTextValueComponent } from './advanced-search/select-property/spec
         SearchLinkValueComponent,
         SearchListValueComponent,
         SearchDisplayListComponent,
-        SearchTextValueComponent
+        SearchTextValueComponent,
+        SearchUriValueComponent
     ],
     imports: [
         CommonModule,

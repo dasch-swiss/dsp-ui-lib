@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchTextValueComponent } from './search-text-value.component';
+import { SearchUriValueComponent } from './search-uri-value.component';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -15,13 +15,13 @@ import { ValueLiteral } from '../operator';
  */
 @Component({
     template: `
-        <dsp-search-text-value #textVal [formGroup]="form"></dsp-search-text-value>`
+        <dsp-search-uri-value #uriVal [formGroup]="form"></dsp-search-uri-value>`
 })
 class TestHostComponent implements OnInit {
 
     form;
 
-    @ViewChild('textVal') textValue: SearchTextValueComponent;
+    @ViewChild('uriVal') uriValue: SearchUriValueComponent;
 
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     }
@@ -31,7 +31,7 @@ class TestHostComponent implements OnInit {
     }
 }
 
-describe('SearchTextValueComponent', () => {
+describe('SearchUriValueComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
 
@@ -45,7 +45,7 @@ describe('SearchTextValueComponent', () => {
                 MatInputModule
             ],
             declarations: [
-                SearchTextValueComponent,
+                SearchUriValueComponent,
                 TestHostComponent
             ]
         })
@@ -62,18 +62,19 @@ describe('SearchTextValueComponent', () => {
 
     it('should create', () => {
         expect(testHostComponent).toBeTruthy();
-        expect(testHostComponent.textValue).toBeTruthy();
+        expect(testHostComponent.uriValue).toBeTruthy();
     });
 
-    it('should get a text literal "test"', async () => {
-
+    it('should get a URI literal of test', async () => {
         const matInput = await loader.getHarness(MatInputHarness);
 
-        await matInput.setValue('test');
+        await matInput.setValue('http://www.knora.org');
 
-        const textLiteralVal = new ValueLiteral('test', 'http://www.w3.org/2001/XMLSchema#string');
+        const uriLiteralVal = new ValueLiteral('http://www.knora.org', 'http://www.w3.org/2001/XMLSchema#anyURI');
 
-        expect(testHostComponent.textValue.getValue()).toEqual(textLiteralVal);
+        expect(testHostComponent.uriValue.getValue()).toEqual(uriLiteralVal);
+        expect(testHostComponent.uriValue.form.valid).toBe(true);
 
     });
+
 });

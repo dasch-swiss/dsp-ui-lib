@@ -197,7 +197,7 @@ class TestSearchListValueComponent implements OnInit {
 }
 
 /**
- * Test component to simulate date value component.
+ * Test component to simulate text value component.
  */
 @Component({
     selector: 'dsp-search-text-value',
@@ -209,6 +209,27 @@ class TestSearchTextValueComponent implements OnInit {
 
     getValue(): Value {
         return new ValueLiteral('test', 'http://www.w3.org/2001/XMLSchema#string');
+    }
+
+    ngOnInit() {
+
+    }
+
+}
+
+/**
+ * Test component to simulate uri value component.
+ */
+@Component({
+    selector: 'dsp-search-uri-value',
+    template: ``
+})
+class TestSearchUriValueComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    getValue(): Value {
+        return new ValueLiteral('http://www.knora.org', 'http://www.w3.org/2001/XMLSchema#anyURI');
     }
 
     ngOnInit() {
@@ -239,7 +260,8 @@ describe('SpecifyPropertyValueComponent', () => {
                 TestSearchDateValueComponent,
                 TestSearchDecimalValueComponent,
                 TestSearchLinkValueComponent,
-                TestSearchTextValueComponent
+                TestSearchTextValueComponent,
+                TestSearchUriValueComponent
             ]
         })
             .compileComponents();
