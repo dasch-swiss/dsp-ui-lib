@@ -1,6 +1,5 @@
 import { AppPage } from './app.po';
-import { browser, by, element, ElementArrayFinder, ElementFinder, logging, WebElement } from 'protractor';
-import { HarnessLoader } from '@angular/cdk/testing';
+import { browser, by, element, logging, WebElement } from 'protractor';
 import { ProtractorHarnessEnvironment } from '@angular/cdk/testing/protractor';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
@@ -75,11 +74,11 @@ describe('Test App', () => {
 
             const loader = ProtractorHarnessEnvironment.loader();
 
-            const submitButton = await loader.getHarness(MatButtonHarness.with({ selector: '[type="submit"]'}));
+            const submitButton = await page.getAdvancedSearchSubmitButton(loader);
 
             expect(await submitButton.isDisabled()).toBe(true);
 
-            const selectOntos = await loader.getHarness(MatSelectHarness.with({ selector: '.select-ontology' }));
+            const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
 
             await selectOntos.open();
 
@@ -92,7 +91,7 @@ describe('Test App', () => {
             // anything onto
             await ontoOptions[0].click();
 
-            const resClasses = await loader.getHarness(MatSelectHarness.with({ selector: '.select-resource-class' }));
+            const resClasses = await page.getAdvancedSearchResourceClassSelection(loader);
 
             await resClasses.open();
 
