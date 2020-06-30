@@ -6,5 +6,11 @@
     [advanced]="false">
 </dsp-search-panel>
 
+<h2>Expert Search</h2>
+<div class="content large middle expert-search-container">
+    <dsp-expert-search (gravsearch)="setGravsearch($event)">
+    </dsp-expert-search>
+</div>
+
 <br>
 <router-outlet></router-outlet>
