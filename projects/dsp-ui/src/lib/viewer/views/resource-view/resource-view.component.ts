@@ -1,4 +1,5 @@
 import { Component, Inject, Input, OnChanges } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     ApiResponseError,
     IHasPropertyWithPropertyDefinition,
@@ -38,7 +39,13 @@ export class ResourceViewComponent implements OnChanges {
 
   systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
 
-  constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) { }
+  versionArkUrl: string; // versionArkUrl value
+  message: string; // message to show in the snackbar to confirm the copy of the ARK URL
+  action: string; // label for the snackbar action
+
+  constructor(
+      @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
+      private _snackBar: MatSnackBar) { }
 
   ngOnChanges() {
     this.getResource(this.iri);
@@ -73,10 +80,28 @@ export class ResourceViewComponent implements OnChanges {
         // get system property information
         this.systemPropDefs = this.resource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
 
+        // set the arkUrl value
+        this.versionArkUrl = this.resource.versionArkUrl;
+
       },
       (error: ApiResponseError) => {
         console.error('Error to get resource: ', error);
       });
+  }
+
+  /**
+   * Display message to confirm the copy of the citation link (ARK URL)
+   * @param message
+   * @param action
+   */
+  openSnackBar(message: string, action: string) {
+    message = 'Copied to clipboard!';
+    action = 'Citation link';
+    this._snackBar.open(message, action, {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top'
+    });
   }
 
 }
