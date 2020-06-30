@@ -1,0 +1,81 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { SearchTextValueComponent } from './search-text-value.component';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { SearchIntValueComponent } from '../search-int-value/search-int-value.component';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputModule } from '@angular/material/input';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatInputHarness } from '@angular/material/input/testing';
+import { ValueLiteral } from '../operator';
+
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+        <dsp-search-text-value #textVal [formGroup]="form"></dsp-search-text-value>`
+})
+class TestHostComponent implements OnInit {
+
+    form;
+
+    @ViewChild('textVal') textValue: SearchIntValueComponent;
+
+    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    }
+
+    ngOnInit() {
+        this.form = this.fb.group({});
+
+    }
+}
+
+describe('SearchTextValueComponent', () => {
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
+
+    let loader: HarnessLoader;
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                BrowserAnimationsModule,
+                ReactiveFormsModule,
+                MatInputModule
+            ],
+            declarations: [
+                SearchTextValueComponent,
+                TestHostComponent
+            ]
+        })
+            .compileComponents();
+    }));
+
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        loader = TestbedHarnessEnvironment.loader(testHostFixture);
+
+        testHostFixture.detectChanges();
+    });
+
+    it('should create', () => {
+        expect(testHostComponent).toBeTruthy();
+        expect(testHostComponent.textValue).toBeTruthy();
+    });
+
+    it('should get a text literal "test"', async () => {
+
+        const matInput = await loader.getHarness(MatInputHarness);
+
+        await matInput.setValue('test');
+
+        const textLiteralVal = new ValueLiteral('test', 'http://www.w3.org/2001/XMLSchema#string');
+
+        expect(testHostComponent.textValue.getValue()).toEqual(textLiteralVal);
+
+    });
+});
