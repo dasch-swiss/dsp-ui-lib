@@ -1,25 +1,125 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchListValueComponent } from './search-list-value.component';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ListNodeV2, ListsEndpointV2, MockList, MockOntology, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { DspApiConnectionToken } from '../../../../../core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatMenu, MatMenuModule } from '@angular/material/menu';
+import { MatInputModule } from '@angular/material/input';
+import { of } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
 
-xdescribe('SearchListValueComponent', () => {
-  let component: SearchListValueComponent;
-  let fixture: ComponentFixture<SearchListValueComponent>;
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+        <dsp-search-list-value #listVal [formGroup]="form" [property]="property"></dsp-search-list-value>`
+})
+class TestHostComponent implements OnInit {
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ SearchListValueComponent ]
-    })
-    .compileComponents();
-  }));
+    form;
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SearchListValueComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    property: ResourcePropertyDefinition;
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    @ViewChild('listVal', {static: false}) listValue: SearchListValueComponent;
+
+    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    }
+
+    ngOnInit() {
+        this.form = this.fb.group({});
+
+        const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
+        this.property = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasListItem'] as ResourcePropertyDefinition;
+    }
+}
+
+/**
+ * Test component to simulate date value component.
+ */
+@Component({
+    selector: 'dsp-search-display-list',
+    template: `<mat-menu #childMenu="matMenu" [overlapTrigger]="false"></mat-menu>`
+})
+class TestSearchDisplayListValueComponent implements OnInit {
+
+    @Input() children: ListNodeV2[];
+
+    @Output() selectedNode: EventEmitter<ListNodeV2> = new EventEmitter<ListNodeV2>();
+
+    @ViewChild('childMenu', { static: true }) public childMenu: MatMenu;
+
+    ngOnInit() {
+
+    }
+
+}
+
+describe('SearchListValueComponent', () => {
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
+
+    let loader: HarnessLoader;
+
+    beforeEach(async(() => {
+
+        const listSpyObj = {
+            v2: {
+                list: jasmine.createSpyObj('list', ['getList'])
+            }
+        };
+
+        TestBed.configureTestingModule({
+            imports: [
+                BrowserAnimationsModule,
+                ReactiveFormsModule,
+                MatMenuModule,
+                MatInputModule
+            ],
+            declarations: [
+                SearchListValueComponent,
+                TestHostComponent,
+                TestSearchDisplayListValueComponent
+            ],
+            providers: [
+                {
+                    provide: DspApiConnectionToken,
+                    useValue: listSpyObj
+                }
+            ]
+        })
+            .compileComponents();
+    }));
+
+    beforeEach(() => {
+        const listSpy = TestBed.inject(DspApiConnectionToken);
+
+        (listSpy.v2.list as jasmine.SpyObj<ListsEndpointV2>).getList.and.callFake(
+            (rootListNodeIri) => {
+                return of(MockList.mockList('http://rdfh.ch/lists/0001/treeList'));
+            }
+        );
+
+        testHostFixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        loader = TestbedHarnessEnvironment.loader(testHostFixture);
+
+        testHostFixture.detectChanges();
+    });
+
+    it('should create', () => {
+        const dspSpy = TestBed.inject(DspApiConnectionToken);
+
+        expect(testHostComponent).toBeTruthy();
+        expect(testHostComponent.listValue).toBeTruthy();
+
+        expect(dspSpy.v2.list.getList).toHaveBeenCalledTimes(1);
+        expect(dspSpy.v2.list.getList).toHaveBeenCalledWith('http://rdfh.ch/lists/0001/treeList');
+
+    });
 });

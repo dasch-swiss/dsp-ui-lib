@@ -32,8 +32,6 @@ export class SearchListValueComponent implements OnInit, OnDestroy, PropertyValu
 
     listRootNode: ListNodeV2;
 
-    // activeNode;
-
     selectedNode: ListNodeV2;
 
     @ViewChild(MatMenuTrigger, { static: false }) menuTrigger: MatMenuTrigger;
