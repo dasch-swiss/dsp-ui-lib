@@ -196,6 +196,27 @@ class TestSearchListValueComponent implements OnInit {
 
 }
 
+/**
+ * Test component to simulate date value component.
+ */
+@Component({
+    selector: 'dsp-search-text-value',
+    template: ``
+})
+class TestSearchTextValueComponent implements OnInit {
+
+    @Input() formGroup: FormGroup;
+
+    getValue(): Value {
+        return new ValueLiteral('test', 'http://www.w3.org/2001/XMLSchema#string');
+    }
+
+    ngOnInit() {
+
+    }
+
+}
+
 describe('SpecifyPropertyValueComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
@@ -217,7 +238,8 @@ describe('SpecifyPropertyValueComponent', () => {
                 TestSearchBooleanValueComponent,
                 TestSearchDateValueComponent,
                 TestSearchDecimalValueComponent,
-                TestSearchLinkValueComponent
+                TestSearchLinkValueComponent,
+                TestSearchTextValueComponent
             ]
         })
             .compileComponents();

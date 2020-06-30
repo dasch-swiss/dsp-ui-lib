@@ -14,9 +14,11 @@
     <dsp-search-date-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.DateValue"></dsp-search-date-value>
     <dsp-search-link-value #propertyValue [formGroup]="form" [restrictResourceClass]="property.objectType"
                 *ngSwitchCase="Constants.Resource"></dsp-search-link-value>
+    <dsp-search-text-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.TextValue"></dsp-search-text-value>
     <dsp-search-list-value #propertyValue [formGroup]="form" [property]="property" *ngSwitchCase="Constants.ListValue"></dsp-search-list-value>
     <span *ngSwitchDefault>Not supported {{propertyValueType}}</span>
 </span>
+<!-- TODO: Resource: handle linking properties with target class restriction: access property member to get objectClass via property() getter method -->
 
 <!-- select apt component for value specification using a switch case statement-->
 <!--<span
@@ -36,5 +38,4 @@
 
     <span *ngSwitchDefault="">Not supported {{propertyValueType}}</span>
 </span>-->
-<!-- TODO: Resource: handle linking properties with target class restriction: access property member to get objectClass via property() getter method -->
 
