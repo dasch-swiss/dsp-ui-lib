@@ -1,6 +1,6 @@
 <span *ngIf="comparisonOperators?.length > 0" [formGroup]="form">
 <mat-form-field class="search-operator-field small-field">
-    <mat-select placeholder="Comparison Operator" [formControlName]="'comparisonOperator'">
+    <mat-select placeholder="Comparison Operator" [formControlName]="'comparisonOperator'" class="comparison-operator">
         <mat-option *ngFor="let compOp of comparisonOperators" [value]="compOp">{{ compOp.label }}</mat-option>
     </mat-select>
 </mat-form-field>

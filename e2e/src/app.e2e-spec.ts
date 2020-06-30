@@ -105,6 +105,49 @@ describe('Test App', () => {
 
             expect(await submitButton.isDisabled()).toBe(false);
 
+        });
+
+        it('should select a property', async () => {
+            await page.navigateTo('advanced-search');
+
+            const loader = ProtractorHarnessEnvironment.loader();
+
+            const submitButton = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
+
+            await selectOntos.clickOptions({ text: 'The anything ontology'});
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const addPropButton = await page.getAdvancedSearchPropertyAddButton(loader);
+
+            await addPropButton.click();
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const selectProps = await page.getAdvancedSearchPropertySelection(loader);
+
+            await selectProps.open();
+
+            await selectProps.clickOptions({text: 'Integer'});
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const selectCompOps = await page.getAdvancedSearchComparisonOperatorSelection(loader);
+
+            await selectCompOps.clickOptions({ text: 'is equal to'});
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const input = await loader.getHarness(MatInputHarness);
+
+            await input.setValue('1');
+
+            expect(await submitButton.isDisabled()).toBe(false);
+
             // browser.sleep(200000);
         });
 
