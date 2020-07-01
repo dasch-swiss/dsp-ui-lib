@@ -96,7 +96,7 @@ export class ResourceViewComponent implements OnChanges {
    */
   openSnackBar(message: string, action: string) {
     message = 'Copied to clipboard!';
-    action = 'Citation link';
+    action = 'Citation Link';
     this._snackBar.open(message, action, {
       duration: 3000,
       horizontalPosition: 'center',
