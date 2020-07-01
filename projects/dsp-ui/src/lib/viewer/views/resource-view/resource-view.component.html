@@ -1,5 +1,21 @@
 <div class="resource-view" *ngIf="resource">
 
+    <!-- citation link - ARK URL -->
+    <div class="ark-url-label">
+        <label for="clipboard-arkurl">Citation Link (ARK URL)</label>
+    </div>
+    <div class="ark-url-input">
+        <input id="clipboard-arkurl" class="clipboard-arkurl" cols="30" rows="10" [(ngModel)]="versionArkUrl" />
+        <button
+            mat-mini-fab
+            [cdkCopyToClipboard]="versionArkUrl"
+            (click)="openSnackBar(message, action)"
+            title="Copy"
+            class="btn-copy-arkurl">
+                <mat-icon class="icon-arkurl">content_copy</mat-icon>
+        </button>
+    </div>
+
   <!-- dsp-property-view -->
   <div *ngIf="resPropInfoVals.length !== 0 || systemPropDefs.length !== 0; else noProperty">
     <dsp-property-view [parentResource]="resource" [propArray]="resPropInfoVals" [systemPropArray]="systemPropDefs">

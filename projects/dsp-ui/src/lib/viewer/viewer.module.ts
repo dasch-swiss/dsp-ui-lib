@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { TextValueAsStringComponent } from './values/text-value/text-value-as-string/text-value-as-string.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
@@ -10,6 +10,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 
@@ -37,6 +40,7 @@ import { CalendarHeaderComponent } from './values/date-value/calendar-header/cal
 import { DateInputComponent } from './values/date-value/date-input/date-input.component';
 import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndatepicker.directive';
 import { DspActionModule } from '../action';
+
 
 @NgModule({
     declarations: [
@@ -67,15 +71,19 @@ import { DspActionModule } from '../action';
     imports: [
         CommonModule,
         ReactiveFormsModule,
+        FormsModule,
+        MatButtonModule,
         MatInputModule,
         MatAutocompleteModule,
         MatCheckboxModule,
         MatOptionModule,
         MatSelectModule,
+        MatSnackBarModule,
         MatDatepickerModule,
         MatIconModule,
         MatJDNConvertibleCalendarDateAdapterModule,
         MatMenuModule,
+        ClipboardModule,
         ColorPickerModule,
         DspActionModule
     ],

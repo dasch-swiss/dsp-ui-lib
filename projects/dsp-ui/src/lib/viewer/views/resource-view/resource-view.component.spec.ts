@@ -1,9 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockResource, ReadResource, PropertyDefinition, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MockResource, PropertyDefinition, ReadResource, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
 import { map } from 'rxjs/internal/operators/map';
 import { DspApiConnectionToken } from '../../../core';
-import { ResourceViewComponent, PropertyInfoValues } from './resource-view.component';
+import { PropertyInfoValues, ResourceViewComponent } from './resource-view.component';
+import { By } from '@angular/platform-browser';
 
 /**
  * Test host component to simulate child component, here property-view.
@@ -38,6 +40,8 @@ class TestParentComponent {
 describe('ResourceViewComponent', () => {
   let testHostComponent: TestParentComponent;
   let testHostFixture: ComponentFixture<TestParentComponent>;
+  let hostCompDe;
+  let resourceComponentDe;
 
   const spyObj = {
     v2: {
@@ -51,6 +55,9 @@ describe('ResourceViewComponent', () => {
         ResourceViewComponent,
         TestParentComponent,
         TestPropertyViewComponent
+      ],
+      imports: [
+          MatSnackBarModule
       ],
       providers: [
         {
@@ -82,6 +89,9 @@ describe('ResourceViewComponent', () => {
     testHostComponent = testHostFixture.componentInstance;
     testHostFixture.detectChanges();
 
+    hostCompDe = testHostFixture.debugElement;
+    resourceComponentDe = hostCompDe.query(By.directive(ResourceViewComponent));
+
     expect(testHostComponent).toBeTruthy();
   });
 
@@ -93,4 +103,8 @@ describe('ResourceViewComponent', () => {
     expect(resSpy.v2.res.getResource).toHaveBeenCalledTimes(1);
     expect(resSpy.v2.res.getResource).toHaveBeenCalledWith(testHostComponent.resourceIri);
   });
+
+  // TODO: currently not possible to test copy to clipboard from Material Angular
+  // https://stackoverflow.com/questions/60337742/test-copy-to-clipboard-function
+
 });
