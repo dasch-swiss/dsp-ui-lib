@@ -42,17 +42,6 @@ export class SearchListValueComponent implements OnInit, OnDestroy, PropertyValu
     ) {
     }
 
-    private getRootNodeIri(): string {
-        const guiAttr = this.property.guiAttributes;
-
-        if (guiAttr.length === 1 && guiAttr[0].startsWith('hlist=')) {
-            const listNodeIri = guiAttr[0].substr(7, guiAttr[0].length - (1 + 7)); // hlist=<>, get also rid of <>
-            return listNodeIri;
-        } else {
-            console.log('No root node Iri given for property');
-        }
-    }
-
     ngOnInit() {
 
         this.form = this.fb.group({
@@ -64,7 +53,7 @@ export class SearchListValueComponent implements OnInit, OnDestroy, PropertyValu
             this.formGroup.addControl('propValue', this.form);
         });
 
-        const rootNodeIri = this.getRootNodeIri();
+        const rootNodeIri = this._getRootNodeIri();
 
         this.knoraApiConnection.v2.list.getList(rootNodeIri).subscribe(
             (response: ListNodeV2) => {
@@ -84,6 +73,17 @@ export class SearchListValueComponent implements OnInit, OnDestroy, PropertyValu
             this.formGroup.removeControl('propValue');
         });
 
+    }
+
+    private _getRootNodeIri(): string {
+        const guiAttr = this.property.guiAttributes;
+
+        if (guiAttr.length === 1 && guiAttr[0].startsWith('hlist=')) {
+            const listNodeIri = guiAttr[0].substr(7, guiAttr[0].length - (1 + 7)); // hlist=<>, get also rid of <>
+            return listNodeIri;
+        } else {
+            console.log('No root node Iri given for property');
+        }
     }
 
     getValue(): Value {
