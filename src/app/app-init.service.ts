@@ -6,11 +6,9 @@ import { KnoraApiConfig, KnoraApiConnection } from '@dasch-swiss/dsp-js';
 })
 export class AppInitService {
 
-  static dspApiConnection: KnoraApiConnection;
+  dspApiConfig: KnoraApiConfig;
 
-  static dspApiConfig: KnoraApiConfig;
-
-  constructor() { }
+  constructor() {}
 
   Init() {
 
@@ -20,7 +18,7 @@ export class AppInitService {
       const dspApiConfig: KnoraApiConfig = window['tempConfigStorage'] as KnoraApiConfig;
 
       // init dsp-api configuration
-      AppInitService.dspApiConfig = new KnoraApiConfig(
+      this.dspApiConfig = new KnoraApiConfig(
         dspApiConfig.apiProtocol,
         dspApiConfig.apiHost,
         dspApiConfig.apiPort,
@@ -28,9 +26,6 @@ export class AppInitService {
         dspApiConfig.jsonWebToken,
         dspApiConfig.logErrors
       );
-
-      // set knora-api connection configuration
-      AppInitService.dspApiConnection = new KnoraApiConnection(AppInitService.dspApiConfig);
 
       resolve();
     });
