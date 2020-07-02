@@ -6,6 +6,7 @@ import {
     OnDestroy,
     OnInit
 } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     ApiResponseError,
     IHasPropertyWithPropertyDefinition,
@@ -47,15 +48,19 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
 
+    versionArkUrl: string; // versionArkUrl value
+    message: string; // message to show in the snackbar to confirm the copy of the ARK URL
+    action: string; // label for the snackbar action
+
     eventBusSubscription: Subscription;
 
-    constructor(@Inject(DspApiConnectionToken)
-                private knoraApiConnection: KnoraApiConnection,
-                public eventBusService: EventBusService) { }
-
+    constructor(
+        @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
+        private _snackBar: MatSnackBar,
+        public _eventBusService: EventBusService) { }
 
     ngOnInit() {
-        this.eventBusSubscription = this.eventBusService.on(Events.ValueAdded, () => this.getResource(this.iri));
+        this.eventBusSubscription = this._eventBusService.on(Events.ValueAdded, () => this.getResource(this.iri));
     }
 
     ngOnChanges() {
@@ -72,34 +77,51 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param iri resourceIri
      */
     getResource(iri: string): void {
-        // TODO: add this.createAllowed = CardinalityUtil.createValueForPropertyAllowed(this.testValue.property, 1, this.testthing.entityInfo.classes[this.testthing.type] as ResourceClassDefinition);
 
         this.knoraApiConnection.v2.res.getResource(iri).subscribe(
-            (response: ReadResource) => {
-                this.resource = response;
+        (response: ReadResource) => {
+            this.resource = response;
 
-                // gather resource property information
-                this.resPropInfoVals = this.resource.entityInfo.classes[this.resource.type].getResourcePropertiesList().map(
-                    (prop: IHasPropertyWithPropertyDefinition) => {
-                        const propInfoAndValues: PropertyInfoValues = {
-                            propDef: prop.propertyDefinition,
-                            guiDef: prop,
-                            values: this.resource.getValues(prop.propertyIndex)
-                        };
-                        return propInfoAndValues;
-                    }
-                );
+            // gather resource property information
+            this.resPropInfoVals = this.resource.entityInfo.classes[this.resource.type].getResourcePropertiesList().map(
+                (prop: IHasPropertyWithPropertyDefinition) => {
+                    const propInfoAndValues: PropertyInfoValues = {
+                        propDef: prop.propertyDefinition,
+                        guiDef: prop,
+                        values: this.resource.getValues(prop.propertyIndex)
+                    };
+                    return propInfoAndValues;
+                }
+            );
 
-                // sort properties by guiOrder
-                this.resPropInfoVals.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
+            // sort properties by guiOrder
+            this.resPropInfoVals.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
 
-                // get system property information
-                this.systemPropDefs = this.resource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
+            // get system property information
+            this.systemPropDefs = this.resource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
 
-            },
-            (error: ApiResponseError) => {
-                console.error('Error to get resource: ', error);
-            });
+            // set the arkUrl value
+            this.versionArkUrl = this.resource.versionArkUrl;
+
+        },
+        (error: ApiResponseError) => {
+            console.error('Error to get resource: ', error);
+        });
+    }
+
+    /**
+     * Display message to confirm the copy of the citation link (ARK URL)
+     * @param message
+     * @param action
+     */
+    openSnackBar(message: string, action: string) {
+        message = 'Copied to clipboard!';
+        action = 'Citation Link';
+        this._snackBar.open(message, action, {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
+        });
     }
 
 }
