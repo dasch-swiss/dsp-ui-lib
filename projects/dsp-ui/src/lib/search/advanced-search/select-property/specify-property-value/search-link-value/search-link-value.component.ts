@@ -39,6 +39,33 @@ export class SearchLinkValueComponent implements OnInit, OnDestroy, PropertyValu
         @Inject(FormBuilder) private fb: FormBuilder) {
     }
 
+    ngOnInit() {
+        this.form = this.fb.group({
+            resource: [null, Validators.compose([
+                Validators.required,
+                this.validateResource
+            ])]
+        });
+
+        this.form.valueChanges.subscribe((data) => {
+            this.searchByLabel(data.resource);
+        });
+
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.formGroup.addControl('propValue', this.form);
+        });
+    }
+
+    ngOnDestroy() {
+
+        // remove form from the parent form group
+        resolvedPromise.then(() => {
+            this.formGroup.removeControl('propValue');
+        });
+
+    }
+
     /**
      * Displays a selected resource using its label.
      *
@@ -95,35 +122,7 @@ export class SearchLinkValueComponent implements OnInit, OnDestroy, PropertyValu
 
     }
 
-    ngOnInit() {
-        this.form = this.fb.group({
-            resource: [null, Validators.compose([
-                Validators.required,
-                this.validateResource
-            ])]
-        });
-
-        this.form.valueChanges.subscribe((data) => {
-            this.searchByLabel(data.resource);
-        });
-
-        resolvedPromise.then(() => {
-            // add form to the parent form group
-            this.formGroup.addControl('propValue', this.form);
-        });
-    }
-
-    ngOnDestroy() {
-
-        // remove form from the parent form group
-        resolvedPromise.then(() => {
-            this.formGroup.removeControl('propValue');
-        });
-
-    }
-
     getValue(): Value {
-
         return new IRI(this.form.value.resource.id);
     }
 
