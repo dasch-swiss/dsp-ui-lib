@@ -63,6 +63,35 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     }
 
+    ngOnChanges(): void {
+
+        // build a form for comparison operator selection
+        this.form = this.fb.group({
+            comparisonOperator: [null, Validators.required]
+        });
+
+        this._closeComparisonOperatorChangesSubscription();
+
+        // store comparison operator when selected
+        this.comparisonOperatorChangesSubscription = this.form.valueChanges.subscribe((data) => {
+            this.comparisonOperatorSelected = data.comparisonOperator;
+        });
+
+        resolvedPromise.then(() => {
+
+            // remove from the parent form group (clean reset)
+            this.formGroup.removeControl('comparisonOperator');
+
+            // add form to the parent form group
+            this.formGroup.addControl('comparisonOperator', this.form);
+        });
+
+    }
+
+    ngOnDestroy() {
+        this._closeComparisonOperatorChangesSubscription();
+    }
+
     /**
      * Resets the comparison operators for this._property.
      */
@@ -119,39 +148,10 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
     /**
      * Unsubscribe from form changes.
      */
-    private closeComparisonOperatorChangesSubscription() {
+    private _closeComparisonOperatorChangesSubscription() {
         if (this.comparisonOperatorChangesSubscription !== undefined) {
             this.comparisonOperatorChangesSubscription.unsubscribe();
         }
-    }
-
-    ngOnChanges(): void {
-
-        // build a form for comparison operator selection
-        this.form = this.fb.group({
-            comparisonOperator: [null, Validators.required]
-        });
-
-        this.closeComparisonOperatorChangesSubscription();
-
-        // store comparison operator when selected
-        this.comparisonOperatorChangesSubscription = this.form.valueChanges.subscribe((data) => {
-            this.comparisonOperatorSelected = data.comparisonOperator;
-        });
-
-        resolvedPromise.then(() => {
-
-            // remove from the parent form group (clean reset)
-            this.formGroup.removeControl('comparisonOperator');
-
-            // add form to the parent form group
-            this.formGroup.addControl('comparisonOperator', this.form);
-        });
-
-    }
-
-    ngOnDestroy() {
-        this.closeComparisonOperatorChangesSubscription();
     }
 
     /**
