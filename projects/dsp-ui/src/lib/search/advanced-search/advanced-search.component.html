@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="submit()" class="kui-form-content">
+<form [formGroup]="form" (ngSubmit)="submit()" class="dsp-form-content">
 
     <div *ngIf="ontologiesMetadata?.ontologies.length > 0">
         <dsp-select-ontology [formGroup]="form" [ontologiesMetadata]="ontologiesMetadata"
@@ -32,7 +32,7 @@
         </button>
     </div>
 
-    <div class="kui-form-action">
+    <div class="dsp-form-action">
         <button class="reset" mat-button type="button" (click)="resetForm()" [disabled]="this.activeOntology === undefined">
             Reset
         </button>
