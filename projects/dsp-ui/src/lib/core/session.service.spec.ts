@@ -81,13 +81,15 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession(undefined, 'anything.user01', 'username');
+            service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
+                const ls: Session = JSON.parse(localStorage.getItem('session'));
+                expect(ls.user.name).toEqual('anything.user01');
+                expect(ls.user.lang).toEqual('de');
+                expect(ls.user.sysAdmin).toEqual(false);
+                expect(ls.user.projectAdmin.length).toEqual(0);
+            });
 
-            const ls: Session = JSON.parse(localStorage.getItem('session'));
-            expect(ls.user.name).toEqual('anything.user01');
-            expect(ls.user.lang).toEqual('de');
-            expect(ls.user.sysAdmin).toEqual(false);
-            expect(ls.user.projectAdmin.length).toEqual(0);
+
 
         });
     });
@@ -103,13 +105,13 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession(undefined, 'anything.user01', 'username');
-
-            const session: Session = service.getSession();
-            expect(session.user.name).toEqual('anything.user01');
-            expect(session.user.lang).toEqual('de');
-            expect(session.user.sysAdmin).toEqual(false);
-            expect(session.user.projectAdmin.length).toEqual(0);
+            service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
+                const session: Session = service.getSession();
+                expect(session.user.name).toEqual('anything.user01');
+                expect(session.user.lang).toEqual('de');
+                expect(session.user.sysAdmin).toEqual(false);
+                expect(session.user.projectAdmin.length).toEqual(0);
+            });
         });
     });
 
@@ -124,19 +126,20 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession(undefined, 'anything.user01', 'username');
-
-            service.destroySession();
-            const ls: Session = JSON.parse(localStorage.getItem('session'));
-            expect(ls).toEqual(null);
+            service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
+                service.destroySession();
+                const ls: Session = JSON.parse(localStorage.getItem('session'));
+                expect(ls).toEqual(null);
+            });
         });
     });
 
     describe('isSessionValid', () => {
 
         it('should return false if there is no session', () => {
-            const isValid = service.isSessionValid();
-            expect(isValid).toBeFalsy();
+            service.isSessionValid().subscribe( (isValid) => {
+                expect(isValid).toBeFalsy();
+            });
         });
 
         it('should return true if session is still valid', () => {
@@ -149,10 +152,11 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession(undefined, 'anything.user01', 'username');
-
-            const isValid = service.isSessionValid();
-            expect(isValid).toBeTruthy();
+            service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
+                service.isSessionValid().subscribe( (isValid) => {
+                    expect(isValid).toBeTruthy();
+                });
+            });
         });
 
         it('should get credentials again if session has expired', () => {
@@ -175,22 +179,26 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession(undefined, 'anything.user01', 'username');
+            service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
 
-            let session: Session = service.getSession();
+                let session: Session = service.getSession();
 
-            // manually set id to an expired value
-            session.id = 0;
+                // manually set id to an expired value
+                session.id = 0;
 
-            // store session again
-            localStorage.setItem('session', JSON.stringify(session));
+                // store session again
+                localStorage.setItem('session', JSON.stringify(session));
 
-            // get session info again in order to get the expired session
-            session = service.getSession();
+                // get session info again in order to get the expired session
+                session = service.getSession();
 
-            service.isSessionValid();
+                service.isSessionValid().subscribe( (isValid) => {
+                    expect(isValid).toBeFalsy();
+                    expect(dspSpy.v2.auth.checkCredentials).toHaveBeenCalledTimes(1);
+                });
 
-            expect(dspSpy.v2.auth.checkCredentials).toHaveBeenCalledTimes(1);
+            });
+
         });
     });
 
