@@ -58,6 +58,27 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
     }
 
+    ngOnInit() {
+
+        // parent form is empty, it gets passed to the child components
+        this.form = this.fb.group({});
+
+        // if form status changes, re-run validation
+        this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
+            this.formValid = this._validateForm();
+            // console.log(this.form);
+        });
+
+        // initialize ontologies to be used for the ontologies selection in the search form
+        this.initializeOntologies();
+    }
+
+    ngOnDestroy() {
+        if (this.formChangesSubscription !== undefined) {
+            this.formChangesSubscription.unsubscribe();
+        }
+    }
+
     /**
      * @ignore
      * Add a property to the search form.
@@ -235,28 +256,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         );
 
         console.log(properties, resClass);
-    }
-
-
-    ngOnInit() {
-
-        // parent form is empty, it gets passed to the child components
-        this.form = this.fb.group({});
-
-        // if form status changes, re-run validation
-        this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
-            this.formValid = this._validateForm();
-            // console.log(this.form);
-        });
-
-        // initialize ontologies to be used for the ontologies selection in the search form
-        this.initializeOntologies();
-    }
-
-    ngOnDestroy() {
-        if (this.formChangesSubscription !== undefined) {
-            this.formChangesSubscription.unsubscribe();
-        }
     }
 
 }
