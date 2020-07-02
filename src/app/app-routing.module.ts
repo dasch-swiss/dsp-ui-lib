@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ActionPlaygroundComponent } from './action-playground/action-playground.component';
+import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
 import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
@@ -8,13 +9,13 @@ import { SearchResultsComponent } from './search-playground/search-results/searc
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/read', pathMatch: 'full' }, // readonly view is the default if no endpoint is specified
-  { path: 'read', component: ReadComponent }, // readonly view component
-  { path: 'modify', component: ModifyComponent}, // modify view component
-  { path: 'action', component: ActionPlaygroundComponent}, // action playground component
-  {
-    path: 'search',
-    component: SearchPlaygroundComponent, // search playground component
+    { path: '', redirectTo: '/read', pathMatch: 'full'}, // readonly view is the default if no endpoint is specified
+    { path: 'read', component: ReadComponent}, // readonly view component
+    { path: 'modify', component: ModifyComponent}, // modify view component
+    { path: 'action', component: ActionPlaygroundComponent}, // action playground component
+    {
+        path: 'search',
+        component: SearchPlaygroundComponent, // search playground component
         children: [
             {
                 path: ':mode/:q',
@@ -25,11 +26,13 @@ const routes: Routes = [
                 component: SearchResultsComponent
             }
         ]
-  }
+    },
+    { path: 'advanced-search', component: AdvancedSearchPlaygroundComponent} // action playground component
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
