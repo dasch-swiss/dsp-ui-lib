@@ -78,8 +78,6 @@ export class SessionService {
      */
     setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
 
-        let session: Session;
-
         if (jwt) {
             this.updateDspApiConnection(jwt);
         }
@@ -87,43 +85,7 @@ export class SessionService {
         // get user information
         return this.dspApiConnection.admin.usersEndpoint.getUser(identifierType, identifier).pipe(
             map((response: ApiResponseData<UserResponse> | ApiResponseError) => {
-                if (response instanceof ApiResponseData) {
-                    let sysAdmin = false;
-                    const projectAdmin: string[] = [];
-
-                    // get permission information: a) is user sysadmin? b) get list of project iri's where user is project admin
-                    const groupsPerProjectKeys: string[] = Object.keys(response.body.user.permissions.groupsPerProject);
-
-                    for (const key of groupsPerProjectKeys) {
-                        if (key === Constants.SystemProjectIRI) {
-                            sysAdmin = response.body.user.permissions.groupsPerProject[key].indexOf(Constants.SystemAdminGroupIRI) > -1;
-                        }
-
-                        if (response.body.user.permissions.groupsPerProject[key].indexOf(Constants.ProjectAdminGroupIRI) > -1) {
-                            projectAdmin.push(key);
-                        }
-                    }
-
-                    // store session information in browser's localstorage
-                    // TODO: jwt will be removed, when we have a better cookie solution (DSP-261)
-                    session = {
-                        id: this.setTimestamp(),
-                        user: {
-                            name: response.body.user.username,
-                            jwt: jwt,
-                            lang: response.body.user.lang,
-                            sysAdmin: sysAdmin,
-                            projectAdmin: projectAdmin
-                        }
-                    };
-
-                    // update localStorage
-                    localStorage.setItem('session', JSON.stringify(session));
-                } else {
-                    localStorage.removeItem('session');
-                    console.error(response);
-                }
-
+                this.storeSessionInLocalStorage(response, jwt);
                 // return type is void
                 return;
             })
@@ -152,20 +114,9 @@ export class SessionService {
                 // check if the api credentials are still valid
 
                 return this.dspApiConnection.v2.auth.checkCredentials().pipe(
-                    map(
-                        (credentials: ApiResponseData<CredentialsResponse> | ApiResponseError) => {
-                            console.log(credentials);
-                            if (credentials instanceof ApiResponseData) {
-                                // the knora api credentials are still valid
-                                // update the session.id
-                                session.id = tsNow;
-                                localStorage.setItem('session', JSON.stringify(session));
-                                return true;
-                            } else {
-                                // a user is not authenticated anymore!
-                                this.destroySession();
-                                return false;
-                            }
+                    map((credentials: ApiResponseData<CredentialsResponse> | ApiResponseError) => {
+                            const idUpdated = this.updateSessionId(credentials, session, tsNow);
+                            return idUpdated;
                         }
                     )
                 );
@@ -218,5 +169,71 @@ export class SessionService {
      */
     private setTimestamp(): number {
         return Math.floor(Date.now() / 1000);
+    }
+
+    /**
+     * Store session in local storage
+     * @param response response from getUser method call
+     * @param jwt JSON web token string
+     */
+    private storeSessionInLocalStorage(response: any, jwt: string) {
+        let session: Session;
+
+        if (response instanceof ApiResponseData) {
+            let sysAdmin = false;
+            const projectAdmin: string[] = [];
+
+            // get permission information: a) is user sysadmin? b) get list of project iri's where user is project admin
+            const groupsPerProjectKeys: string[] = Object.keys(response.body.user.permissions.groupsPerProject);
+
+            for (const key of groupsPerProjectKeys) {
+                if (key === Constants.SystemProjectIRI) {
+                    sysAdmin = response.body.user.permissions.groupsPerProject[key].indexOf(Constants.SystemAdminGroupIRI) > -1;
+                }
+
+                if (response.body.user.permissions.groupsPerProject[key].indexOf(Constants.ProjectAdminGroupIRI) > -1) {
+                    projectAdmin.push(key);
+                }
+            }
+
+            // store session information in browser's localstorage
+            // TODO: jwt will be removed, when we have a better cookie solution (DSP-261)
+            session = {
+                id: this.setTimestamp(),
+                user: {
+                    name: response.body.user.username,
+                    jwt: jwt,
+                    lang: response.body.user.lang,
+                    sysAdmin: sysAdmin,
+                    projectAdmin: projectAdmin
+                }
+            };
+
+            // update localStorage
+            localStorage.setItem('session', JSON.stringify(session));
+        } else {
+            localStorage.removeItem('session');
+            console.error(response);
+        }
+    }
+
+    /**
+     * Updates the id of the current session in the local storage
+     * @param credentials response from getCredentials method call
+     * @param session the current session
+     * @param timestamp timestamp in form of a number
+     */
+    private updateSessionId(credentials: any, session: Session, timestamp: number): boolean {
+        if (credentials instanceof ApiResponseData) {
+            // the knora api credentials are still valid
+            // update the session.id
+            session.id = timestamp;
+            localStorage.setItem('session', JSON.stringify(session));
+            return true;
+        } else {
+            // a user is not authenticated anymore!
+            this.destroySession();
+            return false;
+        }
     }
 }
