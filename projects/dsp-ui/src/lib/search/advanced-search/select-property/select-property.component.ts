@@ -31,7 +31,7 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
     set properties(value: Properties) {
         this.propertySelected = undefined; // reset selected property (overwriting any previous selection)
         this._properties = value;
-        this.updatePropertiesArray();
+        this._updatePropertiesArray();
     }
 
     get properties() {
@@ -108,7 +108,7 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
     /**
      * Updates the properties array that is accessed by the template.
      */
-    private updatePropertiesArray() {
+    private _updatePropertiesArray() {
 
         // represent the properties as an array to be accessed by the template
         const propsArray = [];
