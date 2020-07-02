@@ -47,39 +47,8 @@ export class SelectResourceClassComponent implements OnInit, OnChanges, OnDestro
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
     }
 
-    /**
-     * Initialises the FormGroup for the resource class selection.
-     * The initial value is set to null.
-     */
-    private initForm() {
-        // build a form for the resource class selection
-        this.form = this.fb.group({
-            resourceClass: [null] // resource class selection is optional
-        });
-
-        // reset on updates of @Input resourceClassDefinitions
-        this._selectedResourceClassIri = undefined;
-
-        this.closeOntologyChangesSubscription();
-
-        // store and emit Iri of the resource class when selected
-        this.ontologyChangesSubscription = this.form.valueChanges.subscribe((data) => {
-            this._selectedResourceClassIri = data.resourceClass;
-            this.resourceClassSelected.emit(this._selectedResourceClassIri);
-        });
-    }
-
-    /**
-     * Unsubscribe from form changes.
-     */
-    private closeOntologyChangesSubscription() {
-        if (this.ontologyChangesSubscription !== undefined) {
-            this.ontologyChangesSubscription.unsubscribe();
-        }
-    }
-
     ngOnInit(): void {
-        this.initForm();
+        this._initForm();
 
         // add form to the parent form group
         this.formGroup.addControl('resourceClass', this.form);
@@ -96,7 +65,7 @@ export class SelectResourceClassComponent implements OnInit, OnChanges, OnDestro
                 // remove this form from the parent form group
                 this.formGroup.removeControl('resourceClass');
 
-                this.initForm();
+                this._initForm();
 
                 // add form to the parent form group
                 this.formGroup.addControl('resourceClass', this.form);
@@ -107,7 +76,38 @@ export class SelectResourceClassComponent implements OnInit, OnChanges, OnDestro
     }
 
     ngOnDestroy() {
-        this.closeOntologyChangesSubscription();
+        this._closeOntologyChangesSubscription();
+    }
+
+    /**
+     * Initialises the FormGroup for the resource class selection.
+     * The initial value is set to null.
+     */
+    private _initForm() {
+        // build a form for the resource class selection
+        this.form = this.fb.group({
+            resourceClass: [null] // resource class selection is optional
+        });
+
+        // reset on updates of @Input resourceClassDefinitions
+        this._selectedResourceClassIri = undefined;
+
+        this._closeOntologyChangesSubscription();
+
+        // store and emit Iri of the resource class when selected
+        this.ontologyChangesSubscription = this.form.valueChanges.subscribe((data) => {
+            this._selectedResourceClassIri = data.resourceClass;
+            this.resourceClassSelected.emit(this._selectedResourceClassIri);
+        });
+    }
+
+    /**
+     * Unsubscribe from form changes.
+     */
+    private _closeOntologyChangesSubscription() {
+        if (this.ontologyChangesSubscription !== undefined) {
+            this.ontologyChangesSubscription.unsubscribe();
+        }
     }
 
 }
