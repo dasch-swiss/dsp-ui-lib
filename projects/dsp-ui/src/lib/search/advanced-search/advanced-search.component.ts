@@ -97,7 +97,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      *
      * @param classDefs a map of class definitions
      */
-    private makeResourceClassesArray(classDefs: { [index: string]: ClassDefinition}): ResourceClassDefinition[] {
+    private _makeResourceClassesArray(classDefs: { [index: string]: ClassDefinition}): ResourceClassDefinition[] {
 
         const classIris = Object.keys(classDefs);
 
@@ -153,7 +153,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         this.knoraApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
             onto => {
 
-                this.resourceClasses = this.makeResourceClassesArray(onto.get(ontologyIri).classes);
+                this.resourceClasses = this._makeResourceClassesArray(onto.get(ontologyIri).classes);
 
                 this.properties = this.makeResourceProperties(onto.get(ontologyIri).properties);
             },
@@ -195,7 +195,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      * @ignore
      * Validates form and returns its status (boolean).
      */
-    private validateForm(): boolean {
+    private _validateForm(): boolean {
 
         // check that either a resource class is selected or at least one property is specified
         return this.form.valid &&
@@ -245,7 +245,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
         // if form status changes, re-run validation
         this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
-            this.formValid = this.validateForm();
+            this.formValid = this._validateForm();
             // console.log(this.form);
         });
 
