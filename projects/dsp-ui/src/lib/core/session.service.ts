@@ -9,6 +9,8 @@ import {
     UserResponse
 } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /**
  * Currently logged-in user information
@@ -74,7 +76,7 @@ export class SessionService {
      * @param jwt
      * @param username
      */
-    setSession(jwt: string, identifier: string, identifierType: 'email' | 'username') {
+    setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
 
         let session: Session;
 
@@ -83,44 +85,48 @@ export class SessionService {
         }
 
         // get user information
-        this.dspApiConnection.admin.usersEndpoint.getUser(identifierType, identifier).subscribe(
-            (response: ApiResponseData<UserResponse>) => {
-                let sysAdmin = false;
-                const projectAdmin: string[] = [];
+        return this.dspApiConnection.admin.usersEndpoint.getUser(identifierType, identifier).pipe(
+            map((response: ApiResponseData<UserResponse> | ApiResponseError) => {
+                if (response instanceof ApiResponseData) {
+                    let sysAdmin = false;
+                    const projectAdmin: string[] = [];
 
-                // get permission information: a) is user sysadmin? b) get list of project iri's where user is project admin
-                const groupsPerProjectKeys: string[] = Object.keys(response.body.user.permissions.groupsPerProject);
+                    // get permission information: a) is user sysadmin? b) get list of project iri's where user is project admin
+                    const groupsPerProjectKeys: string[] = Object.keys(response.body.user.permissions.groupsPerProject);
 
-                for (const key of groupsPerProjectKeys) {
-                    if (key === Constants.SystemProjectIRI) {
-                        sysAdmin = response.body.user.permissions.groupsPerProject[key].indexOf(Constants.SystemAdminGroupIRI) > -1;
+                    for (const key of groupsPerProjectKeys) {
+                        if (key === Constants.SystemProjectIRI) {
+                            sysAdmin = response.body.user.permissions.groupsPerProject[key].indexOf(Constants.SystemAdminGroupIRI) > -1;
+                        }
+
+                        if (response.body.user.permissions.groupsPerProject[key].indexOf(Constants.ProjectAdminGroupIRI) > -1) {
+                            projectAdmin.push(key);
+                        }
                     }
 
-                    if (response.body.user.permissions.groupsPerProject[key].indexOf(Constants.ProjectAdminGroupIRI) > -1) {
-                        projectAdmin.push(key);
-                    }
+                    // store session information in browser's localstorage
+                    // TODO: jwt will be removed, when we have a better cookie solution (DSP-261)
+                    session = {
+                        id: this.setTimestamp(),
+                        user: {
+                            name: response.body.user.username,
+                            jwt: jwt,
+                            lang: response.body.user.lang,
+                            sysAdmin: sysAdmin,
+                            projectAdmin: projectAdmin
+                        }
+                    };
+
+                    // update localStorage
+                    localStorage.setItem('session', JSON.stringify(session));
+                } else {
+                    localStorage.removeItem('session');
+                    console.error(response);
                 }
 
-                // store session information in browser's localstorage
-                // TODO: jwt will be removed, when we have a better cookie solution (DSP-261)
-                session = {
-                    id: this.setTimestamp(),
-                    user: {
-                        name: response.body.user.username,
-                        jwt: jwt,
-                        lang: response.body.user.lang,
-                        sysAdmin: sysAdmin,
-                        projectAdmin: projectAdmin
-                    }
-                };
-
-                // update localStorage
-                localStorage.setItem('session', JSON.stringify(session));
-            },
-            (error: ApiResponseError) => {
-                localStorage.removeItem('session');
-                console.error(error);
-            }
+                // return type is void
+                return;
+            })
         );
     }
 
@@ -130,7 +136,7 @@ export class SessionService {
      *
      * @returns boolean
      */
-    isSessionValid(): boolean {
+    isSessionValid(): Observable<boolean> {
         // mix of checks with session.validation and this.authenticate
         const session = JSON.parse(localStorage.getItem('session'));
 
@@ -145,32 +151,33 @@ export class SessionService {
                 // the internal (dsp-ui) session has expired
                 // check if the api credentials are still valid
 
-                this.dspApiConnection.v2.auth.checkCredentials().subscribe(
-                    (response: ApiResponseData<CredentialsResponse>) => {
-                        // the knora api credentials are still valid
-
-                        // update the session.id
-                        session.id = tsNow;
-
-                        localStorage.setItem('session', JSON.stringify(session));
-
-                        return true;
-                    },
-                    (error: ApiResponseError) => {
-                        // a user is not authenticated anymore!
-                        this.destroySession();
-                        return false;
-                    }
+                return this.dspApiConnection.v2.auth.checkCredentials().pipe(
+                    map(
+                        (credentials: ApiResponseData<CredentialsResponse> | ApiResponseError) => {
+                            console.log(credentials);
+                            if (credentials instanceof ApiResponseData) {
+                                // the knora api credentials are still valid
+                                // update the session.id
+                                session.id = tsNow;
+                                localStorage.setItem('session', JSON.stringify(session));
+                                return true;
+                            } else {
+                                // a user is not authenticated anymore!
+                                this.destroySession();
+                                return false;
+                            }
+                        }
+                    )
                 );
 
             } else {
                 // the internal (dsp-ui) session is still valid
-                return true;
+                return of(true);
             }
         } else {
             // no session found; update knora api connection with empty jwt
             this.updateDspApiConnection();
-            return false;
+            return of(false);
         }
     }
 
