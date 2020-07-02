@@ -1,9 +1,8 @@
 import { AppPage } from './app.po';
 import { browser, by, element, logging, WebElement } from 'protractor';
 import { ProtractorHarnessEnvironment } from '@angular/cdk/testing/protractor';
-import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
-import { MatSelectHarness } from '@angular/material/select/testing';
+import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
 
 describe('Test App', () => {
     let page: AppPage;
@@ -107,7 +106,7 @@ describe('Test App', () => {
 
         });
 
-        it('should select a property', async () => {
+        it('should select an integer property', async () => {
             await page.navigateTo('advanced-search');
 
             const loader = ProtractorHarnessEnvironment.loader();
@@ -145,6 +144,60 @@ describe('Test App', () => {
             const input = await loader.getHarness(MatInputHarness);
 
             await input.setValue('1');
+
+            expect(await submitButton.isDisabled()).toBe(false);
+
+            // browser.sleep(200000);
+        });
+
+        it('should select a link property', async () => {
+            await page.navigateTo('advanced-search');
+
+            const loader = ProtractorHarnessEnvironment.loader();
+
+            const submitButton = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
+
+            await selectOntos.clickOptions({ text: 'The anything ontology'});
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const addPropButton = await page.getAdvancedSearchPropertyAddButton(loader);
+
+            await addPropButton.click();
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const selectProps = await page.getAdvancedSearchPropertySelection(loader);
+
+            await selectProps.open();
+
+            await selectProps.clickOptions({text: 'Another thing'});
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const selectCompOps = await page.getAdvancedSearchComparisonOperatorSelection(loader);
+
+            await selectCompOps.clickOptions({ text: 'is equal to'});
+
+            expect(await submitButton.isDisabled()).toBe(true);
+
+            const input = await loader.getHarness(MatInputHarness);
+
+            await input.setValue('testthing');
+
+            // check the options
+            const autocomplete = await loader.getHarness(MatAutocompleteHarness);
+            const options = await autocomplete.getOptions();
+
+            expect(options.length).toEqual(3);
+
+            expect(await options[0].getText()).toEqual('testding');
+
+            await options[0].click();
 
             expect(await submitButton.isDisabled()).toBe(false);
 
