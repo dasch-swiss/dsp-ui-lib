@@ -139,7 +139,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      *
      * @param propertyDefs a map of property definitions
      */
-    private makeResourceProperties(propertyDefs: { [index: string]: PropertyDefinition}): Properties {
+    private _makeResourceProperties(propertyDefs: { [index: string]: PropertyDefinition}): Properties {
         const resProps: Properties = {};
 
         const propIris = Object.keys(propertyDefs);
@@ -176,7 +176,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
                 this.resourceClasses = this._makeResourceClassesArray(onto.get(ontologyIri).classes);
 
-                this.properties = this.makeResourceProperties(onto.get(ontologyIri).properties);
+                this.properties = this._makeResourceProperties(onto.get(ontologyIri).properties);
             },
             err => {
                 console.error(err);
@@ -205,7 +205,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
                 onto => {
                     this.activeResourceClass = onto.classes[resourceClassIri];
 
-                    this.properties = this.makeResourceProperties(onto.properties);
+                    this.properties = this._makeResourceProperties(onto.properties);
 
                 }
             );

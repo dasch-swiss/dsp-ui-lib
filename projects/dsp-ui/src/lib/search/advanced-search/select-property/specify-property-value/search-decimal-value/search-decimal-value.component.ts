@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Constants } from '@dasch-swiss/dsp-js';
 import { Value, ValueLiteral } from '../operator';
@@ -11,7 +11,7 @@ const resolvedPromise = Promise.resolve(null);
   templateUrl: './search-decimal-value.component.html',
   styleUrls: ['./search-decimal-value.component.scss']
 })
-export class SearchDecimalValueComponent implements OnInit {
+export class SearchDecimalValueComponent implements OnInit, OnDestroy {
 
     // parent FormGroup
     @Input() formGroup: FormGroup;
