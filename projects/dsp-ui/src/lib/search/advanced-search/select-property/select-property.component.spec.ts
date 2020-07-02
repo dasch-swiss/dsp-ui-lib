@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Properties, SelectPropertyComponent } from './select-property.component';
-import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -9,8 +9,9 @@ import { MatOptionModule } from '@angular/material/core';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import {
-    Cardinality, Constants,
-    MockOntology, OntologiesMetadata,
+    Cardinality,
+    Constants,
+    MockOntology,
     PropertyDefinition,
     ResourceClassDefinition,
     ResourcePropertyDefinition
@@ -18,8 +19,7 @@ import {
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { By } from '@angular/platform-browser';
-import { ComparisonOperatorAndValue, Equals, PropertyWithValue, ValueLiteral } from './specify-property-value/operator';
+import { ComparisonOperatorAndValue, Equals, ValueLiteral } from './specify-property-value/operator';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
