@@ -53,7 +53,6 @@ export function initializeApp(appInitService: AppInitService) {
     MatListModule
   ],
   providers: [
-    AppInitService,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
