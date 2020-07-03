@@ -67,8 +67,13 @@ export function initializeApp(appInitService: AppInitService) {
     },
     {
       provide: DspApiConnectionToken,
-      useFactory: (appInitServ: AppInitService) => new KnoraApiConnection(appInitServ.dspApiConfig),
+      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig),
       deps: [AppInitService]
+    },
+    {
+      provide: SessionService,
+      useClass: SessionService,
+      deps: [DspApiConnectionToken, DspApiConfigToken]
     }
   ],
   bootstrap: [AppComponent]
