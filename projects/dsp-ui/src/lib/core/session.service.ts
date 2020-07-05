@@ -15,7 +15,7 @@ import { map } from 'rxjs/operators';
 /**
  * Currently logged-in user information
  */
-export interface CurrentUser {
+interface CurrentUser {
     // username
     name: string;
 
