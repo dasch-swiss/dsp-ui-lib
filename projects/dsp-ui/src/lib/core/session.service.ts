@@ -68,10 +68,11 @@ export class SessionService {
      * set session by using the json web token (jwt) and the user object;
      * it will be used in the login process
      *
-     * @param jwt
-     * @param username
+     * @param jwt Json Web Token
+     * @param identifier  email address or username
+     * @param identifierType 'email' or 'username'
      */
-    setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
+     setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
 
         this.dspApiConnection.v2.jsonWebToken = (jwt ? jwt : '');
 
@@ -89,7 +90,6 @@ export class SessionService {
      * Validate intern session and check knora api credentials if necessary.
      * If a json web token exists, it doesn't mean that the knora api credentials are still valid.
      *
-     * @returns boolean
      */
     isSessionValid(): Observable<boolean> {
         // mix of checks with session.validation and this.authenticate
@@ -134,18 +134,8 @@ export class SessionService {
     }
 
     /**
-     * Update the dsp-api-config and dsp-api-connection of @dasch-swiss/dsp-js
-     *
-     * @param  {string} jwt?
-     */
-    // private _updateDspApiConnection(jwt?: string) {
-    //     this.dspApiConfig.jsonWebToken = (jwt ? jwt : '');
-    //     this.dspApiConnection.v2.jsonWebToken = this.dspApiConfig.jsonWebToken;
-    // }
-
-    /**
      * Returns a timestamp represented in seconds
-     * @returns number
+     *
      */
     private _setTimestamp(): number {
         return Math.floor(Date.now() / 1000);
