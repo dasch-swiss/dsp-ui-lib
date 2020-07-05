@@ -20,10 +20,8 @@ import {
 } from '@dasch-swiss/dsp-ui';
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
-import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
-import { SessionService } from '../../projects/dsp-ui/src/lib/core/session.service';
 import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
-
+import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
@@ -69,11 +67,6 @@ export function initializeApp(appInitService: AppInitService) {
       provide: DspApiConnectionToken,
       useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig),
       deps: [AppInitService]
-    },
-    {
-      provide: SessionService,
-      useClass: SessionService,
-      deps: [DspApiConnectionToken, DspApiConfigToken]
     }
   ],
   bootstrap: [AppComponent]
