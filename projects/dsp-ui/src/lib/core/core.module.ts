@@ -1,5 +1,4 @@
 import { InjectionToken, NgModule } from '@angular/core';
-// import { DspConfig } from './core.config';
 import { KnoraApiConfig, KnoraApiConnection } from '@dasch-swiss/dsp-js';
 
 // config for dsp-js-lib (@dasch-swiss/dsp-js) config object
