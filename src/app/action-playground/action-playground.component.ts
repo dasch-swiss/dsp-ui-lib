@@ -9,8 +9,8 @@ import { DspApiConnectionToken, DspMessageData, Session, SessionService, Sorting
 })
 export class ActionPlaygroundComponent implements OnInit {
 
-    loading: boolean;
-    session: Session;
+    // loading: boolean;
+    // session: Session;
 
     sortProps: any = [
         {
@@ -88,16 +88,16 @@ export class ActionPlaygroundComponent implements OnInit {
     };
 
     constructor(
-        private _sortingService: SortingService,
-        private _sessionService: SessionService,
-        @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
+        // private _sessionService: SessionService,
+        // @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
+        private _sortingService: SortingService
     ) { }
 
     ngOnInit(): void {
         this.refresh();
 
         // already logged-in user?
-        this.session = this._sessionService.getSession();
+        // this.session = this._sessionService.getSession();
     }
 
     // only for testing the change of status
@@ -119,6 +119,7 @@ export class ActionPlaygroundComponent implements OnInit {
     }
 
     // TODO: Will be replaced by login process from action module
+    /*
     login() {
         this.loading = true;
         this.dspApiConnection.v2.auth.login('username', 'root', 'test').subscribe(
@@ -154,4 +155,6 @@ export class ActionPlaygroundComponent implements OnInit {
             }
         )
     }
+    */
+
 }
