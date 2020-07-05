@@ -159,4 +159,54 @@ The expert search is a textarea which allows you to manually write Gravsearch qu
 
 ### Advanced search
 
-The advanced search is a search form in which resource class and its properties related to one specific ontology are selected to create a Gravsearch query.
+The advanced search is a search form that allows for the specification of a resource class and and the values of its properties 
+to create a Gravsearch query.
+
+#### Structure
+
+The advanced search consists of the following components:
+
+- `AdvancedSearchComponent`: Main form: Reset and submit buttons, buttons to add and remove properties.
+    - `SelectOntologyComponent`: Select an ontology from a list.
+    - `SelectResourceClassComponent`: Select a resource class from a list.
+    - `SelectPropertyComponent`: Select a property from a list.
+        - `SpecifyPropertyValueComponent`: Specify a comparison operator and a value for a chosen property.
+            - `SearchBooleanValueComponent`: Specify a Boolean value.
+            - `SearchDateValueComponent`: Specify a date value.
+            - `SearchDecimalValueComponent`: Specify a decimal value.
+            - `SearchIntegerValueComponent`: Specify an integer value.
+            - `SearchLinkValueComponent`: Specify the target of a link property.
+            - `SearchListValueComponent`: Specify a list value.
+               - `SearchDisplayListComponent`: Displays the children of a list node recursively.
+           - `TextValueComponent`: Specify a text value.
+           - `UriValueComponent`: Specify a URI value.
+
+#### Component Interaction
+
+The `AdvancedSearchComponent`' reacts to the selection of an ontology via the `@Output` of `SelectOntologyComponent`.
+When an ontology is selected, `AdvancedSearchComponent` initialises the resource classes and properties of the selected ontology. 
+These are then displayed with `SelectResourceClassComponent` and `SelectPropertyComponent` respectively.
+When initialised, `AdvancedSearchComponent` only shows the ontology selection.
+
+The choice of a resource class is optional. When a resource class is chosen, `AdvancedSearchComponent` reacts to this via the `@Output` of `SelectResourceClassComponent`.
+The properties of the chosen resource class are then displayed in `SelectPropertyComponent`. The selection of a resource class can be undone ("no selection").
+
+When a property is chosen, a comparison operator can be specified. 
+Once a comparison operator is specified other than "EXISTS", a value can be specified using `SpecifyPropertyValueComponent`.
+Depending on the value type of the property, `SpecifyPropertyValueComponent` chooses the apt component to let the user enter a value.
+
+#### Form Validation
+
+`AdvancedSearchComponent` creates the main form that is then passed down to the child components. 
+Each child component that requires form validation creates an own form which is attached to the main form using `addControl` on the main `FormGroup`.
+When a component is destroyed or reinitialised, the component's form is removed using `removeControl` on the main `FormGroup`. 
+**Both adding and removing to and from the main `FormGroup` have to be performed as async tasks 
+to avoid [check detection errors](https://indepth.dev/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error/)**.
+
+The query can only be submitted if the main form is valid. Some additional logic is handled in `AdvancedSearchComponent`'s method `validateForm`.
+
+#### Query Generation
+
+`AdvancedSearchComponent` gets the IRI of the specified resource class, if any. 
+It also gets an array of properties with their values (`PropertyWithValue[]`) to search for.
+These are then converted to a Gravsearch query using a service.

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
-import { ApiResponseError } from '@dasch-swiss/dsp-js';
+import { Component, Inject, OnInit } from '@angular/core';
+import { ApiResponseData, ApiResponseError, KnoraApiConnection, LoginResponse, LogoutResponse } from '@dasch-swiss/dsp-js';
+import { DspApiConnectionToken, DspMessageData, Session, SessionService, SortingService } from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-action-playground',
@@ -8,6 +8,9 @@ import { ApiResponseError } from '@dasch-swiss/dsp-js';
   styleUrls: ['./action-playground.component.scss']
 })
 export class ActionPlaygroundComponent implements OnInit {
+
+    loading: boolean;
+    session: Session;
 
     sortProps: any = [
         {
@@ -84,10 +87,17 @@ export class ActionPlaygroundComponent implements OnInit {
         error: 'error message'
     };
 
-    constructor(private sortingService: SortingService) { }
+    constructor(
+        private _sortingService: SortingService,
+        private _session: SessionService,
+        @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
+    ) { }
 
     ngOnInit(): void {
         this.refresh();
+
+        // already logged-in user?
+        this.session = this._session.getSession();
     }
 
     // only for testing the change of status
@@ -105,6 +115,43 @@ export class ActionPlaygroundComponent implements OnInit {
     }
 
     sortList(key) {
-        this.list = this.sortingService.keySortByAlphabetical(this.list, key);
+        this.list = this._sortingService.keySortByAlphabetical(this.list, key);
+    }
+
+    // TODO: Will be replaced by login process from action module
+    login() {
+        this.loading = true;
+        this.dspApiConnection.v2.auth.login('username', 'root', 'test').subscribe(
+            (response: ApiResponseData<LoginResponse>) => {
+                this._session.setSession(response.body.token, 'root', 'username').subscribe(
+                    () => {
+                        this.loading = false;
+                        this.session = this._session.getSession();
+                    });
+            },
+            (error: ApiResponseError) => {
+                // error handling
+                // this.loginErrorUser = (error.status === 404);
+                // this.loginErrorPw = (error.status === 401);
+                // this.loginErrorServer = (error.status === 0);
+
+                // this.errorMessage = error;
+
+                this.loading = false;
+                // TODO: update error handling similar to the old method (see commented code below)
+            }
+        );
+    }
+
+    // TODO: Will be replaced by login process from action module
+    logout() {
+        this.loading = true;
+        this.dspApiConnection.v2.auth.logout().subscribe(
+            (response: ApiResponseData<LogoutResponse>) => {
+                this._session.destroySession();
+                this.session = this._session.getSession();
+                this.loading = false;
+            }
+        )
     }
 }

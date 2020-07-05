@@ -4,18 +4,17 @@ import {
     ApiResponseError,
     Constants,
     CredentialsResponse,
-    KnoraApiConfig,
     KnoraApiConnection,
     UserResponse
 } from '@dasch-swiss/dsp-js';
-import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DspApiConnectionToken } from './core.module';
 
 /**
  * Currently logged-in user information
  */
-export interface CurrentUser {
+interface CurrentUser {
     // username
     name: string;
 
@@ -54,38 +53,32 @@ export class SessionService {
 
 
     constructor(
-        @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
-        @Inject(DspApiConfigToken) private dspApiConfig: KnoraApiConfig
+        @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection
     ) { }
 
     /**
      * get session information from localstorage
      */
-    getSession(): Session {
-        if (localStorage.getItem('session') !== null) {
-            return JSON.parse(localStorage.getItem('session'));
-        }
-
-        return undefined;
+    getSession(): Session | null {
+        return JSON.parse(localStorage.getItem('session'));
     }
 
     /**
      * set session by using the json web token (jwt) and the user object;
      * it will be used in the login process
      *
-     * @param jwt
-     * @param username
+     * @param jwt Json Web Token
+     * @param identifier  email address or username
+     * @param identifierType 'email' or 'username'
      */
-    setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
+     setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
 
-        if (jwt) {
-            this.updateDspApiConnection(jwt);
-        }
+        this.dspApiConnection.v2.jsonWebToken = (jwt ? jwt : '');
 
         // get user information
         return this.dspApiConnection.admin.usersEndpoint.getUser(identifierType, identifier).pipe(
             map((response: ApiResponseData<UserResponse> | ApiResponseError) => {
-                this.storeSessionInLocalStorage(response, jwt);
+                this._storeSessionInLocalStorage(response, jwt);
                 // return type is void
                 return;
             })
@@ -96,17 +89,16 @@ export class SessionService {
      * Validate intern session and check knora api credentials if necessary.
      * If a json web token exists, it doesn't mean that the knora api credentials are still valid.
      *
-     * @returns boolean
      */
     isSessionValid(): Observable<boolean> {
         // mix of checks with session.validation and this.authenticate
         const session = JSON.parse(localStorage.getItem('session'));
 
-        const tsNow: number = this.setTimestamp();
+        const tsNow: number = this._setTimestamp();
 
         if (session) {
 
-            this.updateDspApiConnection(session.user.jwt);
+            this.dspApiConnection.v2.jsonWebToken = session.user.jwt;
 
             // check if the session is still valid:
             if (session.id + this.MAX_SESSION_TIME <= tsNow) {
@@ -115,7 +107,7 @@ export class SessionService {
 
                 return this.dspApiConnection.v2.auth.checkCredentials().pipe(
                     map((credentials: ApiResponseData<CredentialsResponse> | ApiResponseError) => {
-                            const idUpdated = this.updateSessionId(credentials, session, tsNow);
+                            const idUpdated = this._updateSessionId(credentials, session, tsNow);
                             return idUpdated;
                         }
                     )
@@ -127,21 +119,8 @@ export class SessionService {
             }
         } else {
             // no session found; update knora api connection with empty jwt
-            this.updateDspApiConnection();
+            this.dspApiConnection.v2.jsonWebToken = '';
             return of(false);
-        }
-    }
-
-    /**
-     * update the session storage
-     * @param jwt
-     * @param username
-     *
-     * @returns boolean
-     */
-    updateSession(jwt: string, username: string) {
-        if (jwt && username) {
-            this.setSession(jwt, username, 'username');
         }
     }
 
@@ -154,20 +133,10 @@ export class SessionService {
     }
 
     /**
-     * Update the dsp-api-config and dsp-api-connection of @dasch-swiss/dsp-js
-     *
-     * @param  {string} jwt?
-     */
-    private updateDspApiConnection(jwt?: string) {
-        this.dspApiConfig.jsonWebToken = (jwt ? jwt : '');
-        this.dspApiConnection.v2.jsonWebToken = this.dspApiConfig.jsonWebToken;
-    }
-
-    /**
      * Returns a timestamp represented in seconds
-     * @returns number
+     *
      */
-    private setTimestamp(): number {
+    private _setTimestamp(): number {
         return Math.floor(Date.now() / 1000);
     }
 
@@ -176,7 +145,7 @@ export class SessionService {
      * @param response response from getUser method call
      * @param jwt JSON web token string
      */
-    private storeSessionInLocalStorage(response: any, jwt: string) {
+    private _storeSessionInLocalStorage(response: any, jwt: string) {
         let session: Session;
 
         if (response instanceof ApiResponseData) {
@@ -199,7 +168,7 @@ export class SessionService {
             // store session information in browser's localstorage
             // TODO: jwt will be removed, when we have a better cookie solution (DSP-261)
             session = {
-                id: this.setTimestamp(),
+                id: this._setTimestamp(),
                 user: {
                     name: response.body.user.username,
                     jwt: jwt,
@@ -223,7 +192,7 @@ export class SessionService {
      * @param session the current session
      * @param timestamp timestamp in form of a number
      */
-    private updateSessionId(credentials: any, session: Session, timestamp: number): boolean {
+    private _updateSessionId(credentials: any, session: Session, timestamp: number): boolean {
         if (credentials instanceof ApiResponseData) {
             // the knora api credentials are still valid
             // update the session.id

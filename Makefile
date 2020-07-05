@@ -72,33 +72,6 @@ knora-stack: ## runs the knora-stack
 	sleep 35
 	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-logs-api-no-follow
 
-.PHONY: prepare-test-env
-prepare-test-env: ## prepare test environment DSP/Knora API
-	@$(MAKE) -f $(THIS_FILE) clean
-	@$(MAKE) -f $(THIS_FILE) local-tmp
-	@$(MAKE) -f $(THIS_FILE) clone-knora-stack
-	@$(MAKE) -f $(THIS_FILE) knora-stack
-
-.PHONY: build-lib
-build-lib: ## builds the lib
-	npm run build-lib
-
-.PHONY: test-lib
-test-lib: ## runs the unit tests in lib
-	npm run test-lib
-
-.PHONY: build-app
-build-app: ## builds the app
-	npm run build-app
-
-.PHONY: local-tmp
-local-tmp:
-	@mkdir -p $(CURRENT_DIR)/.tmp
-
-.PHONY: clean
-clean:
-	@rm -rf $(CURRENT_DIR)/.tmp
-
 .PHONY: help
 help: ## this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
