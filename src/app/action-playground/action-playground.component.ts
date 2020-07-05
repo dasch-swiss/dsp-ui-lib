@@ -89,7 +89,7 @@ export class ActionPlaygroundComponent implements OnInit {
 
     constructor(
         private _sortingService: SortingService,
-        private _session: SessionService,
+        private _sessionService: SessionService,
         @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
     ) { }
 
@@ -97,7 +97,7 @@ export class ActionPlaygroundComponent implements OnInit {
         this.refresh();
 
         // already logged-in user?
-        this.session = this._session.getSession();
+        this.session = this._sessionService.getSession();
     }
 
     // only for testing the change of status
@@ -123,10 +123,10 @@ export class ActionPlaygroundComponent implements OnInit {
         this.loading = true;
         this.dspApiConnection.v2.auth.login('username', 'root', 'test').subscribe(
             (response: ApiResponseData<LoginResponse>) => {
-                this._session.setSession(response.body.token, 'root', 'username').subscribe(
+                this._sessionService.setSession(response.body.token, 'root', 'username').subscribe(
                     () => {
                         this.loading = false;
-                        this.session = this._session.getSession();
+                        this.session = this._sessionService.getSession();
                     });
             },
             (error: ApiResponseError) => {
@@ -148,8 +148,8 @@ export class ActionPlaygroundComponent implements OnInit {
         this.loading = true;
         this.dspApiConnection.v2.auth.logout().subscribe(
             (response: ApiResponseData<LogoutResponse>) => {
-                this._session.destroySession();
-                this.session = this._session.getSession();
+                this._sessionService.destroySession();
+                this.session = this._sessionService.getSession();
                 this.loading = false;
             }
         )
