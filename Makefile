@@ -72,18 +72,6 @@ knora-stack: ## runs the knora-stack
 	sleep 35
 	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-logs-api-no-follow
 
-.PHONY: build-lib
-build-lib: ## builds the lib
-	npm run build-lib
-
-.PHONY: test-lib
-test-lib: ## runs the unit tests in lib
-	npm run test-lib
-
-.PHONY: build-app
-build-app: ## builds the app
-	npm run build-app
-
 .PHONY: help
 help: ## this help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
