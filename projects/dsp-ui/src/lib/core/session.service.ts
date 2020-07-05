@@ -4,13 +4,12 @@ import {
     ApiResponseError,
     Constants,
     CredentialsResponse,
-    KnoraApiConfig,
     KnoraApiConnection,
     UserResponse
 } from '@dasch-swiss/dsp-js';
-import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DspApiConnectionToken } from './core.module';
 
 /**
  * Currently logged-in user information
