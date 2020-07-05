@@ -79,13 +79,13 @@ export class SessionService {
     setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
 
         if (jwt) {
-            this.updateDspApiConnection(jwt);
+            this._updateDspApiConnection(jwt);
         }
 
         // get user information
         return this.dspApiConnection.admin.usersEndpoint.getUser(identifierType, identifier).pipe(
             map((response: ApiResponseData<UserResponse> | ApiResponseError) => {
-                this.storeSessionInLocalStorage(response, jwt);
+                this._storeSessionInLocalStorage(response, jwt);
                 // return type is void
                 return;
             })
@@ -102,11 +102,11 @@ export class SessionService {
         // mix of checks with session.validation and this.authenticate
         const session = JSON.parse(localStorage.getItem('session'));
 
-        const tsNow: number = this.setTimestamp();
+        const tsNow: number = this._setTimestamp();
 
         if (session) {
 
-            this.updateDspApiConnection(session.user.jwt);
+            this._updateDspApiConnection(session.user.jwt);
 
             // check if the session is still valid:
             if (session.id + this.MAX_SESSION_TIME <= tsNow) {
@@ -115,7 +115,7 @@ export class SessionService {
 
                 return this.dspApiConnection.v2.auth.checkCredentials().pipe(
                     map((credentials: ApiResponseData<CredentialsResponse> | ApiResponseError) => {
-                            const idUpdated = this.updateSessionId(credentials, session, tsNow);
+                            const idUpdated = this._updateSessionId(credentials, session, tsNow);
                             return idUpdated;
                         }
                     )
@@ -127,21 +127,8 @@ export class SessionService {
             }
         } else {
             // no session found; update knora api connection with empty jwt
-            this.updateDspApiConnection();
+            this._updateDspApiConnection();
             return of(false);
-        }
-    }
-
-    /**
-     * update the session storage
-     * @param jwt
-     * @param username
-     *
-     * @returns boolean
-     */
-    updateSession(jwt: string, username: string) {
-        if (jwt && username) {
-            this.setSession(jwt, username, 'username');
         }
     }
 
@@ -158,7 +145,7 @@ export class SessionService {
      *
      * @param  {string} jwt?
      */
-    private updateDspApiConnection(jwt?: string) {
+    private _updateDspApiConnection(jwt?: string) {
         this.dspApiConfig.jsonWebToken = (jwt ? jwt : '');
         this.dspApiConnection.v2.jsonWebToken = this.dspApiConfig.jsonWebToken;
     }
@@ -167,7 +154,7 @@ export class SessionService {
      * Returns a timestamp represented in seconds
      * @returns number
      */
-    private setTimestamp(): number {
+    private _setTimestamp(): number {
         return Math.floor(Date.now() / 1000);
     }
 
@@ -176,7 +163,7 @@ export class SessionService {
      * @param response response from getUser method call
      * @param jwt JSON web token string
      */
-    private storeSessionInLocalStorage(response: any, jwt: string) {
+    private _storeSessionInLocalStorage(response: any, jwt: string) {
         let session: Session;
 
         if (response instanceof ApiResponseData) {
@@ -199,7 +186,7 @@ export class SessionService {
             // store session information in browser's localstorage
             // TODO: jwt will be removed, when we have a better cookie solution (DSP-261)
             session = {
-                id: this.setTimestamp(),
+                id: this._setTimestamp(),
                 user: {
                     name: response.body.user.username,
                     jwt: jwt,
@@ -223,7 +210,7 @@ export class SessionService {
      * @param session the current session
      * @param timestamp timestamp in form of a number
      */
-    private updateSessionId(credentials: any, session: Session, timestamp: number): boolean {
+    private _updateSessionId(credentials: any, session: Session, timestamp: number): boolean {
         if (credentials instanceof ApiResponseData) {
             // the knora api credentials are still valid
             // update the session.id
