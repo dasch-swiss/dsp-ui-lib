@@ -104,6 +104,7 @@ import { DspActionModule } from '../action';
         ResourceViewComponent,
         ListValueComponent,
         GeonameValueComponent,
+        JDNDatepickerDirective,
     ]
 })
 export class DspViewerModule {
