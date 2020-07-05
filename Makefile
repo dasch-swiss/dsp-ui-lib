@@ -26,6 +26,8 @@ define update-version
 	git push
 endef
 
+.PHONY: clean
+
 .PHONY: next-release-candidate
 next-release-candidate: ## updates version to next release candidate e.g. from 3.0.0-rc.0 to 3.0.0-rc.1 or from 3.0.0 to 3.0.1-rc.0
 	@$(call update-version,prerelease,rc)
