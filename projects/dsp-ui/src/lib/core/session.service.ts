@@ -54,8 +54,7 @@ export class SessionService {
 
 
     constructor(
-        @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
-        @Inject(DspApiConfigToken) private dspApiConfig: KnoraApiConfig
+        @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection
     ) { }
 
     /**
@@ -78,9 +77,7 @@ export class SessionService {
      */
     setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
 
-        if (jwt) {
-            this._updateDspApiConnection(jwt);
-        }
+        this.dspApiConnection.v2.jsonWebToken = (jwt ? jwt : '');
 
         // get user information
         return this.dspApiConnection.admin.usersEndpoint.getUser(identifierType, identifier).pipe(
@@ -106,7 +103,7 @@ export class SessionService {
 
         if (session) {
 
-            this._updateDspApiConnection(session.user.jwt);
+            this.dspApiConnection.v2.jsonWebToken = session.user.jwt;
 
             // check if the session is still valid:
             if (session.id + this.MAX_SESSION_TIME <= tsNow) {
@@ -127,7 +124,7 @@ export class SessionService {
             }
         } else {
             // no session found; update knora api connection with empty jwt
-            this._updateDspApiConnection();
+            this.dspApiConnection.v2.jsonWebToken = '';
             return of(false);
         }
     }
@@ -145,10 +142,10 @@ export class SessionService {
      *
      * @param  {string} jwt?
      */
-    private _updateDspApiConnection(jwt?: string) {
-        this.dspApiConfig.jsonWebToken = (jwt ? jwt : '');
-        this.dspApiConnection.v2.jsonWebToken = this.dspApiConfig.jsonWebToken;
-    }
+    // private _updateDspApiConnection(jwt?: string) {
+    //     this.dspApiConfig.jsonWebToken = (jwt ? jwt : '');
+    //     this.dspApiConnection.v2.jsonWebToken = this.dspApiConfig.jsonWebToken;
+    // }
 
     /**
      * Returns a timestamp represented in seconds
