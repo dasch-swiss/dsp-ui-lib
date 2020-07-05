@@ -60,12 +60,8 @@ export class SessionService {
     /**
      * get session information from localstorage
      */
-    getSession(): Session {
-        if (localStorage.getItem('session') !== null) {
-            return JSON.parse(localStorage.getItem('session'));
-        }
-
-        return undefined;
+    getSession(): Session | null {
+        return JSON.parse(localStorage.getItem('session'));
     }
 
     /**
