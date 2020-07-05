@@ -8,11 +8,11 @@ export const DspApiConfigToken = new InjectionToken<KnoraApiConfig>('DSP api con
 // connection config for dsp-js-lib (@dasch-swiss/dsp-js) connection
 export const DspApiConnectionToken = new InjectionToken<KnoraApiConnection>('DSP api connection instance');
 
+
 @NgModule({
     declarations: [],
     imports: [],
     exports: []
 })
 export class DspCoreModule {
-
 }
