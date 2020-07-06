@@ -30,46 +30,46 @@ export function initializeApp(appInitService: AppInitService) {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ModifyComponent,
-    ReadComponent,
-    ActionPlaygroundComponent,
-    SearchPlaygroundComponent,
-    SearchResultsComponent,
-    AdvancedSearchPlaygroundComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    DspCoreModule,
-    DspViewerModule,
-    DspActionModule,
-    DspSearchModule,
-    MatJDNConvertibleCalendarDateAdapterModule,
-    MatButtonModule,
-    MatListModule
-  ],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [AppInitService],
-      multi: true
-    },
-    {
-      provide: DspApiConfigToken,
-      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig,
-      deps: [AppInitService]
-    },
-    {
-      provide: DspApiConnectionToken,
-      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig),
-      deps: [AppInitService]
-    }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        ModifyComponent,
+        ReadComponent,
+        ActionPlaygroundComponent,
+        SearchPlaygroundComponent,
+        SearchResultsComponent,
+        AdvancedSearchPlaygroundComponent
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        DspCoreModule,
+        DspViewerModule,
+        DspActionModule,
+        DspSearchModule,
+        MatJDNConvertibleCalendarDateAdapterModule,
+        MatButtonModule,
+        MatListModule
+    ],
+    providers: [
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeApp,
+            deps: [AppInitService],
+            multi: true
+        },
+        {
+            provide: DspApiConfigToken,
+            useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig,
+            deps: [AppInitService]
+        },
+        {
+            provide: DspApiConnectionToken,
+            useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig),
+            deps: [AppInitService]
+        }
+    ],
+    bootstrap: [AppComponent]
 
 })
 export class AppModule {
