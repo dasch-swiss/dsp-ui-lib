@@ -6,6 +6,9 @@ import { map } from 'rxjs/internal/operators/map';
 import { DspApiConnectionToken } from '../../../core';
 import { PropertyInfoValues, ResourceViewComponent } from './resource-view.component';
 import { By } from '@angular/platform-browser';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 /**
  * Test host component to simulate child component, here property-view.
@@ -57,7 +60,10 @@ describe('ResourceViewComponent', () => {
         TestPropertyViewComponent
       ],
       imports: [
-          MatSnackBarModule
+        MatSnackBarModule,
+        MatIconModule,
+        FormsModule,
+        ClipboardModule
       ],
       providers: [
         {
