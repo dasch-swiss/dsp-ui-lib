@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ExtendedSearchParams, ExtendedSearchParamsService } from './extended-search-params.service';
 
-fdescribe('SearchParamsService', () => {
+describe('SearchParamsService', () => {
     let service: ExtendedSearchParamsService;
 
     beforeEach(() => {

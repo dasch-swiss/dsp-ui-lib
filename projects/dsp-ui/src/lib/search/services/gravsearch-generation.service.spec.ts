@@ -1,7 +1,7 @@
 import { GravsearchGenerationService } from './gravsearch-generation.service';
 import { ExtendedSearchParamsService } from './extended-search-params.service';
 import { TestBed } from '@angular/core/testing';
-import { ResourcePropertyDefinition, MockOntology } from '@dasch-swiss/dsp-js';
+import { MockOntology, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import {
     ComparisonOperatorAndValue,
     Equals, GreaterThan, GreaterThanEquals, IRI, LessThan, LessThanEquals, Like, Match, NotEquals,
