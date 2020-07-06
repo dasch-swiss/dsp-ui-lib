@@ -4,7 +4,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Constants } from '@dasch-swiss/dsp-js';
-import { ExtendedSearchParams, SearchParamsService } from './search-params.service';
+import { ExtendedSearchParams, ExtendedSearchParamsService } from './extended-search-params.service';
 import { PropertyWithValue } from '../advanced-search/select-property/specify-property-value/operator';
 import { ComparisonOperatorConstants } from '../advanced-search/select-property/specify-property-value/operator-constants';
 
@@ -22,7 +22,7 @@ export class GravsearchGenerationService {
         'http://api.knora.org/ontology/knora-api/v2#ListValue': Constants.ListValueAsListNode
     };
 
-    constructor(private _searchParamsService: SearchParamsService) { }
+    constructor(private _searchParamsService: ExtendedSearchParamsService) { }
 
     /**
      *

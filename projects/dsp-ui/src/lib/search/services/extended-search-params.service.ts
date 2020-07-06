@@ -23,7 +23,7 @@ export class ExtendedSearchParams {
 @Injectable({
   providedIn: 'root'
 })
-export class SearchParamsService {
+export class ExtendedSearchParamsService {
 
     private _currentSearchParams;
 

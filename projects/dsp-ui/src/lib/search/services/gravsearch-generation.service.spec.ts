@@ -1,5 +1,5 @@
 import { GravsearchGenerationService } from './gravsearch-generation.service';
-import { SearchParamsService } from './search-params.service';
+import { ExtendedSearchParamsService } from './extended-search-params.service';
 import { TestBed } from '@angular/core/testing';
 import { ResourcePropertyDefinition, MockOntology } from '@dasch-swiss/dsp-js';
 import {
@@ -12,19 +12,19 @@ import {
 
 describe('GravsearchGenerationService', () => {
     let gravSearchGenerationServ: GravsearchGenerationService;
-    let searchParamsServiceSpy: jasmine.SpyObj<SearchParamsService>; // see https://angular.io/guide/testing#angular-testbed
+    let searchParamsServiceSpy: jasmine.SpyObj<ExtendedSearchParamsService>; // see https://angular.io/guide/testing#angular-testbed
 
     beforeEach(() => {
         const spy = jasmine.createSpyObj('SearchParamsService', ['changeSearchParamsMsg']);
 
         TestBed.configureTestingModule({
             providers: [
-                { provide: SearchParamsService, useValue: spy }
+                { provide: ExtendedSearchParamsService, useValue: spy }
             ]
         });
 
         gravSearchGenerationServ = TestBed.inject(GravsearchGenerationService);
-        searchParamsServiceSpy = TestBed.inject(SearchParamsService) as jasmine.SpyObj<SearchParamsService>;
+        searchParamsServiceSpy = TestBed.inject(ExtendedSearchParamsService) as jasmine.SpyObj<ExtendedSearchParamsService>;
         searchParamsServiceSpy.changeSearchParamsMsg.and.stub();
     });
 
