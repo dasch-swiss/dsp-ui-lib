@@ -165,7 +165,7 @@ ${orderByStatement}`;
 OFFSET ${offset}
 `;
 
-        // function that generates the same KnarQL query with the given offset
+        // function that generates the same Gravsearch query with the given offset
         const generateGravsearchQueryWithCustomOffset = (localOffset: number): string => {
             const offsetCustomTemplate = `
 OFFSET ${localOffset}
@@ -175,7 +175,7 @@ OFFSET ${localOffset}
         };
 
         if (offset === 0) {
-            // store the function so another KnarQL query can be created with an increased offset
+            // store the function so another Gravsearch query can be created with an increased offset
             this._searchParamsService.changeSearchParamsMsg(new ExtendedSearchParams(generateGravsearchQueryWithCustomOffset));
         }
 
