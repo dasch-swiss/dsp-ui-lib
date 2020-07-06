@@ -164,7 +164,7 @@ OFFSET 0
 
     });
 
-    it('should create a Gravsearch query string with a text property matching a value', () => {
+    it('should create a Gravsearch query string with a text property that equals a value', () => {
 
         const prop = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasText'] as ResourcePropertyDefinition;
 
@@ -718,7 +718,7 @@ OFFSET 0
         const prop = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing'] as ResourcePropertyDefinition;
 
 
-        const value = new ComparisonOperatorAndValue(new Equals(), new IRI('http://rdfh.ch/biblio/QNWEqmjxQ9W-_hTwKlKP-Q'));
+        const value = new ComparisonOperatorAndValue(new Equals(), new IRI('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ'));
 
         const propWithVal = new PropertyWithValue(prop, value, false);
 
@@ -730,7 +730,7 @@ CONSTRUCT {
 
 ?mainRes knora-api:isMainResource true .
 
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> <http://rdfh.ch/biblio/QNWEqmjxQ9W-_hTwKlKP-Q> .
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> <http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ> .
 
 } WHERE {
 
@@ -739,7 +739,7 @@ CONSTRUCT {
 
 
 
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> <http://rdfh.ch/biblio/QNWEqmjxQ9W-_hTwKlKP-Q> .
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> <http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ> .
 
 
 
@@ -761,7 +761,7 @@ OFFSET 0
 
         const prop = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing'] as ResourcePropertyDefinition;
 
-        const value = new ComparisonOperatorAndValue(new NotEquals(), new IRI('http://rdfh.ch/biblio/QNWEqmjxQ9W-_hTwKlKP-Q'));
+        const value = new ComparisonOperatorAndValue(new NotEquals(), new IRI('http://rdfh.ch/0001/thing_with_richtext_with_markup'));
 
         const propWithVal = new PropertyWithValue(prop, value, false);
 
@@ -782,7 +782,7 @@ CONSTRUCT {
 
 
 FILTER NOT EXISTS {
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> <http://rdfh.ch/biblio/QNWEqmjxQ9W-_hTwKlKP-Q> .
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> <http://rdfh.ch/0001/thing_with_richtext_with_markup> .
 
 
 }
@@ -850,7 +850,7 @@ OFFSET 0
 
         const prop = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal'] as ResourcePropertyDefinition;
 
-        const value = new ComparisonOperatorAndValue(new Equals(), new ValueLiteral('1.1', 'http://www.w3.org/2001/XMLSchema#decimal'));
+        const value = new ComparisonOperatorAndValue(new Equals(), new ValueLiteral('2.1', 'http://www.w3.org/2001/XMLSchema#decimal'));
 
         const propWithVal = new PropertyWithValue(prop, value, true);
 
@@ -876,7 +876,7 @@ CONSTRUCT {
 
 
 ?propVal0 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVal0Literal
-FILTER(?propVal0Literal = "1.1"^^<http://www.w3.org/2001/XMLSchema#decimal>)
+FILTER(?propVal0Literal = "2.1"^^<http://www.w3.org/2001/XMLSchema#decimal>)
 
 
 }
