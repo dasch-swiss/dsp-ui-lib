@@ -54,6 +54,7 @@ jobs:
       - run: npm run build-lib-dev
       - run: npm run build-app
 
+
   e2e-test:
     name: E2E Tests
     runs-on: ubuntu-latest
