@@ -18,7 +18,6 @@ export class AppInitService {
             (response: Response) => {
                 return response.json();
             }).then(dspApiConfig => {
-                console.log(dspApiConfig);
 
                 return new Promise<void>((resolve) => {
 

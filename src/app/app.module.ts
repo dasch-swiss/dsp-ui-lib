@@ -61,12 +61,12 @@ export function initializeApp(appInitService: AppInitService) {
     },
     {
       provide: DspApiConfigToken,
-      useFactory: (appInitService: AppInitService) => { console.log('config, ', appInitService.dspApiConfig); return appInitService.dspApiConfig },
+      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig,
       deps: [AppInitService]
     },
     {
       provide: DspApiConnectionToken,
-      useFactory: (appInitService: AppInitService) => { console.log('connection, ', appInitService.dspApiConfig); return new KnoraApiConnection(appInitService.dspApiConfig); },
+      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig),
       deps: [AppInitService]
     }
   ],

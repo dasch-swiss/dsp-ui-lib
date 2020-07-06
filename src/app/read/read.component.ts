@@ -17,12 +17,10 @@ export class ReadComponent implements OnInit {
   resourceIri: string;
   loading: boolean;
 
-  constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
-              @Inject(DspApiConfigToken) private knoraApiConfig: KnoraApiConfig) {
+  constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
   }
 
   ngOnInit(): void {
-      console.log('read component', this.knoraApiConnection, this.knoraApiConfig);
     this.loading = true;
     this.knoraApiConnection.v2.auth.logout().subscribe(
       (response: ApiResponseData<LogoutResponse>) => {
