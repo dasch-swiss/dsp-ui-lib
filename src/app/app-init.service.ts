@@ -15,7 +15,7 @@ export class AppInitService {
     Init() {
 
         return new Promise<void>((resolve, reject) => {
-            return fetch(`config/config.${environment.name}.json`).then(
+            fetch(`config/config.${environment.name}.json`).then(
                 (response: Response) => {
                     return response.json();
                 }).then(dspApiConfig => {
