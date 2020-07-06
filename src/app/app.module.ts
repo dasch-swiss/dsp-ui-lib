@@ -25,7 +25,6 @@ import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
-        console.log('initializing app');
         return appInitService.Init();
     };
 }
