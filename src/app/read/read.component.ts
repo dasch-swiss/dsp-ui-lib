@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
+import { DspApiConfigToken, DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
 import {
-  ApiResponseData,
-  ApiResponseError,
-  KnoraApiConnection,
-  LogoutResponse
+    ApiResponseData,
+    ApiResponseError, KnoraApiConfig,
+    KnoraApiConnection,
+    LogoutResponse
 } from '@dasch-swiss/dsp-js';
 
 @Component({
@@ -17,10 +17,12 @@ export class ReadComponent implements OnInit {
   resourceIri: string;
   loading: boolean;
 
-  constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+  constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
+              @Inject(DspApiConfigToken) private knoraApiConfig: KnoraApiConfig) {
   }
 
   ngOnInit(): void {
+      console.log('read component', this.knoraApiConnection, this.knoraApiConfig);
     this.loading = true;
     this.knoraApiConnection.v2.auth.logout().subscribe(
       (response: ApiResponseData<LogoutResponse>) => {

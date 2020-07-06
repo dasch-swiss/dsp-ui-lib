@@ -25,6 +25,7 @@ import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
+        console.log('initializing app');
         return appInitService.Init();
     };
 }
@@ -60,12 +61,12 @@ export function initializeApp(appInitService: AppInitService) {
     },
     {
       provide: DspApiConfigToken,
-      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig,
+      useFactory: (appInitService: AppInitService) => { console.log('config, ', appInitService.dspApiConfig); return appInitService.dspApiConfig },
       deps: [AppInitService]
     },
     {
       provide: DspApiConnectionToken,
-      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig),
+      useFactory: (appInitService: AppInitService) => { console.log('connection, ', appInitService.dspApiConfig); return new KnoraApiConnection(appInitService.dspApiConfig); },
       deps: [AppInitService]
     }
   ],

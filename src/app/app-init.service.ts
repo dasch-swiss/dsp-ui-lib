@@ -1,33 +1,41 @@
 import { Injectable } from '@angular/core';
 import { KnoraApiConfig } from '@dasch-swiss/dsp-js';
+import { environment } from '../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AppInitService {
 
-  dspApiConfig: KnoraApiConfig;
+    dspApiConfig: KnoraApiConfig;
 
-  constructor() {}
+    constructor() {
+    }
 
-  Init() {
+    Init() {
 
-    return new Promise<void>((resolve) => {
+        return fetch(`config/config.${environment.name}.json`).then(
+            (response: Response) => {
+                return response.json();
+            }).then(dspApiConfig => {
+                console.log(dspApiConfig);
 
-      // get api config information from temp storage
-      const dspApiConfig: KnoraApiConfig = window['tempConfigStorage'] as KnoraApiConfig;
+                return new Promise<void>((resolve) => {
 
-      // init dsp-api configuration
-      this.dspApiConfig = new KnoraApiConfig(
-        dspApiConfig.apiProtocol,
-        dspApiConfig.apiHost,
-        dspApiConfig.apiPort,
-        dspApiConfig.apiPath,
-        dspApiConfig.jsonWebToken,
-        dspApiConfig.logErrors
-      );
+                    // init dsp-api configuration
+                    this.dspApiConfig = new KnoraApiConfig(
+                        dspApiConfig.apiProtocol,
+                        dspApiConfig.apiHost,
+                        dspApiConfig.apiPort,
+                        dspApiConfig.apiPath,
+                        dspApiConfig.jsonWebToken,
+                        dspApiConfig.logErrors
+                    );
 
-      resolve();
-    });
-  }
+                    resolve();
+
+                });
+            }
+        );
+    }
 }
