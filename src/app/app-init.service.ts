@@ -12,7 +12,7 @@ export class AppInitService {
     constructor() {
     }
 
-    Init() {
+    Init(): Promise<void> {
 
         return new Promise<void>((resolve, reject) => {
             fetch(`config/config.${environment.name}.json`).then(
