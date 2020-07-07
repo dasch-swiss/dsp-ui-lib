@@ -474,7 +474,7 @@ OFFSET 0
 
     it('should create a Gravsearch query string with restriction to a resource class using offset 0', () => {
 
-        const gravsearch = gravSearchGenerationServ.createGravsearchQuery([], 'http://0.0.0.0:3333/ontology/0801/beol/v2#letter', 0);
+        const gravsearch = gravSearchGenerationServ.createGravsearchQuery([], 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing', 0);
 
         const expectedGravsearch = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -488,7 +488,7 @@ CONSTRUCT {
 
 ?mainRes a knora-api:Resource .
 
-?mainRes a <http://0.0.0.0:3333/ontology/0801/beol/v2#letter> .
+?mainRes a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
 
 
 
@@ -505,7 +505,7 @@ OFFSET 0
 
     it('should create a Gravsearch query string with restriction to a resource class using offset 1', () => {
 
-        const gravsearch = gravSearchGenerationServ.createGravsearchQuery([], 'http://0.0.0.0:3333/ontology/0801/beol/v2#letter', 1);
+        const gravsearch = gravSearchGenerationServ.createGravsearchQuery([], 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing', 1);
 
         const expectedGravsearch = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -519,7 +519,7 @@ CONSTRUCT {
 
 ?mainRes a knora-api:Resource .
 
-?mainRes a <http://0.0.0.0:3333/ontology/0801/beol/v2#letter> .
+?mainRes a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
 
 
 
@@ -538,7 +538,7 @@ OFFSET 1
 
         const prop = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasText'] as ResourcePropertyDefinition;
 
-        const value = new ComparisonOperatorAndValue(new Like(), new ValueLiteral('Bernoulli', 'http://www.w3.org/2001/XMLSchema#string'));
+        const value = new ComparisonOperatorAndValue(new Like(), new ValueLiteral('test', 'http://www.w3.org/2001/XMLSchema#string'));
 
         const propWithVal = new PropertyWithValue(prop, value, false);
 
@@ -564,7 +564,7 @@ CONSTRUCT {
 
 
 ?propVal0 <http://api.knora.org/ontology/knora-api/v2#valueAsString> ?propVal0Literal
-FILTER regex(?propVal0Literal, "Bernoulli"^^<http://www.w3.org/2001/XMLSchema#string>, "i")
+FILTER regex(?propVal0Literal, "test"^^<http://www.w3.org/2001/XMLSchema#string>, "i")
 
 
 }

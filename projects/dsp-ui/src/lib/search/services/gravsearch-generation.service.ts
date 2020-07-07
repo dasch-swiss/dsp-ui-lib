@@ -13,7 +13,7 @@ import { ComparisonOperatorConstants } from '../advanced-search/select-property/
 })
 export class GravsearchGenerationService {
 
-    public static complexTypeToProp = {
+    static complexTypeToProp = {
         [Constants.IntValue]: Constants.IntValueAsInt,
         [Constants.DecimalValue]: Constants.DecimalValueAsDecimal,
         [Constants.BooleanValue]: Constants.BooleanValueAsBoolean,
