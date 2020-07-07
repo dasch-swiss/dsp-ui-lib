@@ -123,6 +123,8 @@ describe('SessionService', () => {
                 expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
                 expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'anything.user01');
 
+                expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+
                 done();
             });
 
