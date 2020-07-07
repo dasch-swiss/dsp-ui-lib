@@ -1,5 +1,5 @@
 import { GravsearchGenerationService } from './gravsearch-generation.service';
-import { AdvancedSearchParamsService } from './advanced-search-params.service';
+import { AdvancedSearchParams, AdvancedSearchParamsService } from './advanced-search-params.service';
 import { TestBed } from '@angular/core/testing';
 import { MockOntology, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import {
@@ -13,6 +13,7 @@ import {
 describe('GravsearchGenerationService', () => {
     let gravSearchGenerationServ: GravsearchGenerationService;
     let searchParamsServiceSpy: jasmine.SpyObj<AdvancedSearchParamsService>; // see https://angular.io/guide/testing#angular-testbed
+    let advancedSearchParams: AdvancedSearchParams;
 
     beforeEach(() => {
         const spy = jasmine.createSpyObj('SearchParamsService', ['changeSearchParamsMsg']);
@@ -25,7 +26,9 @@ describe('GravsearchGenerationService', () => {
 
         gravSearchGenerationServ = TestBed.inject(GravsearchGenerationService);
         searchParamsServiceSpy = TestBed.inject(AdvancedSearchParamsService) as jasmine.SpyObj<AdvancedSearchParamsService>;
-        searchParamsServiceSpy.changeSearchParamsMsg.and.stub();
+        searchParamsServiceSpy.changeSearchParamsMsg.and.callFake((searchParams: AdvancedSearchParams) => {
+            advancedSearchParams = searchParams;
+        });
     });
 
     it('should be created', () => {
@@ -72,7 +75,9 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
+        expect(advancedSearchParams).toBeDefined();
+        expect(advancedSearchParams.generateGravsearch(0)).toEqual(expectedGravsearch);
 
     });
 
@@ -116,7 +121,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -160,7 +165,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -204,7 +209,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -248,7 +253,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -291,7 +296,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -335,7 +340,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -378,7 +383,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -422,7 +427,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -468,7 +473,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -499,7 +504,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -530,7 +535,7 @@ OFFSET 1
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(0);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -574,7 +579,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -617,7 +622,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
 
     });
@@ -663,7 +668,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
 
     });
@@ -709,7 +714,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -753,7 +758,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -796,7 +801,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -842,7 +847,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -888,7 +893,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -933,7 +938,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
@@ -992,7 +997,7 @@ OFFSET 0
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg.calls.count()).toEqual(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
 
     });
 
