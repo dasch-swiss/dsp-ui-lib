@@ -68,7 +68,7 @@ describe('SessionService', () => {
 
     describe('Method setSession', () => {
 
-        it('should store user information in local storage without a jwt', () => {
+        it('should store user information in local storage without a jwt', done => {
             const dspSpy = TestBed.inject(DspApiConnectionToken);
 
             (dspSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
@@ -92,11 +92,12 @@ describe('SessionService', () => {
                 expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
                 expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'anything.user01');
 
+                done();
             });
 
         });
 
-        it('should store user information in local storage with a jwt', () => {
+        it('should store user information in local storage with a jwt', done => {
             const dspSpy = TestBed.inject(DspApiConnectionToken);
 
             (dspSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
@@ -120,6 +121,7 @@ describe('SessionService', () => {
                 expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
                 expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'anything.user01');
 
+                done();
             });
 
         });
