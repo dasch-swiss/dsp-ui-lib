@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 import { DspApiConnectionToken } from './core.module';
 
 /**
- * Currently logged-in user information
+ * information about the current user
  */
 interface CurrentUser {
     // username
