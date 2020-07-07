@@ -66,59 +66,18 @@ The config files have to be integrated in `angular.json` in all "assets"-section
 ]
 ```
 
-Then we can make a service that will fetch the configs:
-
-```shell
-ng generate service app-init
-```
-
-```typescript
-import { Injectable } from '@angular/core';
-import { KnoraApiConfig, KnoraApiConnection } from '@dasch-swiss/dsp-js';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AppInitService {
-
-  static dspApiConnection: KnoraApiConnection;
-
-  static dspApiConfig: KnoraApiConfig;
-
-  constructor() { }
-
-  Init() {
-
-    return new Promise<void>((resolve) => {
-
-      // get api config information from temp storage
-      const dspApiConfig: KnoraApiConfig = window['tempConfigStorage'] as KnoraApiConfig;
-
-      // init dsp-api configuration
-      AppInitService.dspApiConfig = new KnoraApiConfig(
-        dspApiConfig.apiProtocol,
-        dspApiConfig.apiHost,
-        dspApiConfig.apiPort,
-        dspApiConfig.apiPath,
-        dspApiConfig.jsonWebToken,
-        dspApiConfig.logErrors
-      );
-
-      // set knora-api connection configuration
-      AppInitService.dspApiConnection = new KnoraApiConnection(AppInitService.dspApiConfig);
-
-      resolve();
-    });
-  }
-}
-```
-
-Once we have this service, we have to edit the `app.module.ts` with a function to load the config:
+Add the function `initializeApp` to `app.module.ts` to load the configuration file when the application is initialised:
+`initializeApp` calls `AppInitService`'s method `Init` and returns its return value which is a `Promise`.
+Angular waits for this `Promise` to be resolved. 
+The `Promise` will be resolved once the configuration file has been fetched and its contents have been assigned.
 
 ```typescript
+import { environment } from '../environments/environment';
+
 export function initializeApp(appInitService: AppInitService) {
   return (): Promise<any> => {
-    return appInitService.Init();
+    // the configuration file is in a directory called "config"
+    return appInitService.Init('config', environment);
   };
 }
 ```
@@ -138,21 +97,22 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
     DspViewerModule
   ],
   providers: [
-      // add the following code block
-    AppInitService,
+     // add the following code block
     {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [AppInitService],
+      provide: APP_INITIALIZER, // see https://angular.io/api/core/APP_INITIALIZER
+      useFactory: initializeApp, // calls initializeApp
+      deps: [AppInitService], // depends on AppInitService
       multi: true
     },
     {
       provide: DspApiConfigToken,
-      useFactory: () => AppInitService.dspApiConfig
+      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig, // AppInitService is passed to the factory method
+      deps: [AppInitService] // depends on AppInitService
     },
     {
-      provide: DspApiConnectionToken,
-      useFactory: () => AppInitService.dspApiConnection
+      provide: DspApiConfigToken,
+      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig, // AppInitService is passed to the factory method
+      deps: [AppInitService] // depends on AppInitService
     }
   ],
   bootstrap: [AppComponent]
@@ -161,41 +121,6 @@ export class AppModule { }
 ```
 
 Do not forget to import `APP_INITIALIZER` from `@angular/core` and the desired DSP-UI modules from `@dasch-swiss/dsp-ui`.
-
-Finally, the main.ts file must be modified to load the environment specific config file and test that the config is correct:
-
-```typescript
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
-
-if (environment.production) {
-  enableProdMode();
-}
-
-function bootstrapFailed(result) {
-  console.error('bootstrap-fail! Config is missing or api parameters are not defined', result);
-}
-
-fetch(`config/config.${environment.name}.json`)
-  .then(response => response.json())
-  .then(config => {
-    if (!config) {
-      bootstrapFailed(config);
-      return;
-    }
-
-    // store the response somewhere that the AppInitService can read it.
-    window['tempConfigStorage'] = config;
-
-    platformBrowserDynamic()
-      .bootstrapModule(AppModule)
-      .catch(err => bootstrapFailed(err));
-  })
-  .catch(bootstrapFailed);
-
-```
 
 ## Usage
 <!-- TODO: add the modules to app.modules and use them as usual  -->

@@ -5,12 +5,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 import { ActionPlaygroundComponent } from './action-playground/action-playground.component';
-import { AppInitService } from './app-init.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
 import {
+    AppInitService,
     DspActionModule,
     DspApiConfigToken,
     DspApiConnectionToken,
@@ -21,11 +21,12 @@ import {
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
 import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
-
+import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
+import { environment } from '../environments/environment';
 
 export function initializeApp(appInitService: AppInitService) {
     return (): Promise<any> => {
-        return appInitService.Init();
+        return appInitService.Init('config', environment);
     };
 }
 
@@ -52,7 +53,6 @@ export function initializeApp(appInitService: AppInitService) {
         MatListModule
     ],
     providers: [
-        AppInitService,
         {
             provide: APP_INITIALIZER,
             useFactory: initializeApp,
@@ -61,14 +61,17 @@ export function initializeApp(appInitService: AppInitService) {
         },
         {
             provide: DspApiConfigToken,
-            useFactory: () => AppInitService.dspApiConfig
+            useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig,
+            deps: [AppInitService]
         },
         {
             provide: DspApiConnectionToken,
-            useFactory: () => AppInitService.dspApiConnection
+            useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig),
+            deps: [AppInitService]
         }
     ],
     bootstrap: [AppComponent]
+
 })
 export class AppModule {
 }
