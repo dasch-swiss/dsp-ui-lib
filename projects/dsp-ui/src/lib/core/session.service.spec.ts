@@ -15,24 +15,20 @@ describe('SessionService', () => {
     let service: SessionService;
 
     beforeEach(async(() => {
-        const dspConfSpy = new KnoraApiConfig('http', 'localhost', 3333, undefined, undefined, true);
 
         const dspConnSpy = {
             admin: {
                 usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUser'])
             },
             v2: {
-                auth: jasmine.createSpyObj('auth', ['checkCredentials', 'login'])
-            }
+                auth: jasmine.createSpyObj('auth', ['checkCredentials', 'login']),
+                jsonWebToken: ''
+            },
+
         };
 
         TestBed.configureTestingModule({
-            imports: [],
             providers: [
-                {
-                    provide: DspApiConfigToken,
-                    useValue: dspConfSpy
-                },
                 {
                     provide: DspApiConnectionToken,
                     useValue: dspConnSpy
@@ -57,8 +53,8 @@ describe('SessionService', () => {
             }
         );
         spyOn(localStorage, 'setItem').and.callFake(
-            (key: string, value: string): string => {
-                return (store[key] = value as any);
+            (key: string, value: string): void => {
+                store[key] = value;
             }
         );
         spyOn(localStorage, 'clear').and.callFake(() => {
@@ -70,8 +66,9 @@ describe('SessionService', () => {
         expect(service).toBeTruthy();
     });
 
-    describe('mocked local storage', () => {
-        it('should store user information in local storage', () => {
+    describe('Method setSession', () => {
+
+        it('should store user information in local storage without a jwt', () => {
             const dspSpy = TestBed.inject(DspApiConnectionToken);
 
             (dspSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
@@ -83,18 +80,53 @@ describe('SessionService', () => {
 
             service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
                 const ls: Session = JSON.parse(localStorage.getItem('session'));
+
+                expect(dspSpy.v2.jsonWebToken).toEqual('');
+
                 expect(ls.user.name).toEqual('anything.user01');
+                expect(ls.user.jwt).toBeUndefined();
                 expect(ls.user.lang).toEqual('de');
                 expect(ls.user.sysAdmin).toEqual(false);
                 expect(ls.user.projectAdmin.length).toEqual(0);
+
+                expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
+                expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'anything.user01');
+
             });
 
+        });
 
+        it('should store user information in local storage with a jwt', () => {
+            const dspSpy = TestBed.inject(DspApiConnectionToken);
+
+            (dspSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
+                () => {
+                    const loggedInUser = MockUsers.mockUser();
+                    return of(loggedInUser);
+                }
+            );
+
+            service.setSession('mytoken', 'anything.user01', 'username').subscribe( () => {
+                const ls: Session = JSON.parse(localStorage.getItem('session'));
+
+                expect(dspSpy.v2.jsonWebToken).toEqual('mytoken');
+
+                expect(ls.user.name).toEqual('anything.user01');
+                expect(ls.user.jwt).toEqual('mytoken');
+                expect(ls.user.lang).toEqual('de');
+                expect(ls.user.sysAdmin).toEqual(false);
+                expect(ls.user.projectAdmin.length).toEqual(0);
+
+                expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
+                expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'anything.user01');
+
+            });
 
         });
     });
 
-    describe('getSession', () => {
+    describe('Method getSession', () => {
+
         it('should get the session with user information', () => {
             const dspSpy = TestBed.inject(DspApiConnectionToken);
 
@@ -116,6 +148,7 @@ describe('SessionService', () => {
     });
 
     describe('destroySession', () => {
+
         it('should destroy the session', () => {
             const dspSpy = TestBed.inject(DspApiConnectionToken);
 

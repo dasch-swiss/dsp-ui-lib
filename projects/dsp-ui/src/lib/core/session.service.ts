@@ -19,7 +19,7 @@ interface CurrentUser {
     name: string;
 
     // json web token
-    jwt: string;
+    jwt?: string;
 
     // default language for ui
     lang: string;
