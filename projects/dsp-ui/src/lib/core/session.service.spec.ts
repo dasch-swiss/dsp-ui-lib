@@ -149,6 +149,7 @@ describe('SessionService', () => {
             localStorage.setItem('session', JSON.stringify(session));
 
             const ls: Session = service.getSession();
+            expect(ls.id).toEqual(12345);
             expect(ls.user.name).toEqual('username');
             expect(ls.user.lang).toEqual('en');
             expect(ls.user.jwt).toEqual('myToken');
@@ -201,10 +202,11 @@ describe('SessionService', () => {
 
         it('should return true if session is still valid', done => {
 
+            // mocks Date.now() so every call will return this timestamp
             const baseTime = new Date(2020, 6, 7);
             jasmine.clock().mockDate(baseTime);
 
-            // create a session with the current time to ensure the session is valid
+            // create a session with the mocked date to ensure the session is valid
             const session: Session = {
                 id: (Date.now() / 1000) - service.MAX_SESSION_TIME + 1, // still valid
                 user: {
@@ -243,7 +245,7 @@ describe('SessionService', () => {
             const baseTime = new Date(2020, 6, 7);
             jasmine.clock().mockDate(baseTime);
 
-            // create a session with with an id set to 0 to ensure the session will be expired
+            // create a session with an expired id
             const session: Session = {
                 id: (Date.now() / 1000) - service.MAX_SESSION_TIME, // expired
                 user: {
