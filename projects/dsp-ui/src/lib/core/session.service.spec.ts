@@ -92,6 +92,8 @@ describe('SessionService', () => {
                 expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
                 expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'anything.user01');
 
+                expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+
                 done();
             });
 
@@ -129,7 +131,7 @@ describe('SessionService', () => {
 
     describe('Method getSession', () => {
 
-        it('should get the session with user information', () => {
+        it('should get the session with user information', done => {
             const dspSpy = TestBed.inject(DspApiConnectionToken);
 
             (dspSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
@@ -145,6 +147,8 @@ describe('SessionService', () => {
                 expect(session.user.lang).toEqual('de');
                 expect(session.user.sysAdmin).toEqual(false);
                 expect(session.user.projectAdmin.length).toEqual(0);
+
+                done();
             });
         });
     });
