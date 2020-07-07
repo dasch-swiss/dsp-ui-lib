@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ExtendedSearchParamsService } from '@dasch-swiss/dsp-ui';
+import { AdvancedSearchParamsService } from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-advanced-search-playground',
@@ -8,7 +8,7 @@ import { ExtendedSearchParamsService } from '@dasch-swiss/dsp-ui';
 })
 export class AdvancedSearchPlaygroundComponent implements OnInit {
 
-  constructor(private _extendedSearchParamsService: ExtendedSearchParamsService) { }
+  constructor(private _advancedSearchParamsService: AdvancedSearchParamsService) { }
 
   ngOnInit(): void {
 
@@ -17,7 +17,7 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
   submitQuery(gravsearchQuery: string) {
       console.log('Output: ', gravsearchQuery);
 
-      console.log('search params', this._extendedSearchParamsService.getSearchParams().generateGravsearch(1));
+      console.log('search params', this._advancedSearchParamsService.getSearchParams().generateGravsearch(1));
   }
 
 }

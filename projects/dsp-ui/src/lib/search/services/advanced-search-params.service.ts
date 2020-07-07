@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 /*
  * Represents the parameters of an extended search.
  */
-export class ExtendedSearchParams {
+export class AdvancedSearchParams {
 
     /**
      *
@@ -23,14 +23,14 @@ export class ExtendedSearchParams {
 @Injectable({
   providedIn: 'root'
 })
-export class ExtendedSearchParamsService {
+export class AdvancedSearchParamsService {
 
     private _currentSearchParams;
 
     constructor() {
         // init with a dummy function that returns false
         // if the application is reloaded, this will be returned
-        this._currentSearchParams = new BehaviorSubject<ExtendedSearchParams>(new ExtendedSearchParams((offset: number) => false));
+        this._currentSearchParams = new BehaviorSubject<AdvancedSearchParams>(new AdvancedSearchParams((offset: number) => false));
     }
 
     /**
@@ -38,7 +38,7 @@ export class ExtendedSearchParamsService {
      *
      * @param searchParams new extended search params.
      */
-    changeSearchParamsMsg(searchParams: ExtendedSearchParams): void {
+    changeSearchParamsMsg(searchParams: AdvancedSearchParams): void {
         this._currentSearchParams.next(searchParams);
     }
 
@@ -46,7 +46,7 @@ export class ExtendedSearchParamsService {
      * Gets the search params of an extended search.
      *
      */
-    getSearchParams(): ExtendedSearchParams {
+    getSearchParams(): AdvancedSearchParams {
         return this._currentSearchParams.getValue();
     }
 

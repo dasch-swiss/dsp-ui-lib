@@ -4,7 +4,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Constants } from '@dasch-swiss/dsp-js';
-import { ExtendedSearchParams, ExtendedSearchParamsService } from './extended-search-params.service';
+import { AdvancedSearchParams, AdvancedSearchParamsService } from './advanced-search-params.service';
 import { PropertyWithValue } from '../advanced-search/select-property/specify-property-value/operator';
 import { ComparisonOperatorConstants } from '../advanced-search/select-property/specify-property-value/operator-constants';
 
@@ -22,7 +22,7 @@ export class GravsearchGenerationService {
         [Constants.ListValue]: Constants.ListValueAsListNode
     };
 
-    constructor(private _searchParamsService: ExtendedSearchParamsService) { }
+    constructor(private _searchParamsService: AdvancedSearchParamsService) { }
 
     /**
      *
@@ -176,7 +176,7 @@ OFFSET ${localOffset}
 
         if (offset === 0) {
             // store the function so another Gravsearch query can be created with an increased offset
-            this._searchParamsService.changeSearchParamsMsg(new ExtendedSearchParams(generateGravsearchQueryWithCustomOffset));
+            this._searchParamsService.changeSearchParamsMsg(new AdvancedSearchParams(generateGravsearchQueryWithCustomOffset));
         }
 
 

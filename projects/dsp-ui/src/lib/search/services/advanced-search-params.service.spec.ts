@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ExtendedSearchParams, ExtendedSearchParamsService } from './extended-search-params.service';
+import { AdvancedSearchParams, AdvancedSearchParamsService } from './advanced-search-params.service';
 
 describe('SearchParamsService', () => {
-    let service: ExtendedSearchParamsService;
+    let service: AdvancedSearchParamsService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(ExtendedSearchParamsService);
+        service = TestBed.inject(AdvancedSearchParamsService);
     });
 
     it('should be created', () => {
@@ -15,7 +15,7 @@ describe('SearchParamsService', () => {
     });
 
     it('should return false when initialized', () => {
-        const searchParams: ExtendedSearchParams = service.getSearchParams();
+        const searchParams: AdvancedSearchParams = service.getSearchParams();
 
         expect(searchParams.generateGravsearch(0)).toBeFalsy();
     });
@@ -25,9 +25,9 @@ describe('SearchParamsService', () => {
             return 'test1';
         };
 
-        service.changeSearchParamsMsg(new ExtendedSearchParams(testMethod1));
+        service.changeSearchParamsMsg(new AdvancedSearchParams(testMethod1));
 
-        const searchParams: ExtendedSearchParams = service.getSearchParams();
+        const searchParams: AdvancedSearchParams = service.getSearchParams();
 
         expect(searchParams.generateGravsearch(0)).toEqual('test1');
 
@@ -38,9 +38,9 @@ describe('SearchParamsService', () => {
             return 'test2';
         };
 
-        service.changeSearchParamsMsg(new ExtendedSearchParams(testMethod2));
+        service.changeSearchParamsMsg(new AdvancedSearchParams(testMethod2));
 
-        const searchParams2: ExtendedSearchParams = service.getSearchParams();
+        const searchParams2: AdvancedSearchParams = service.getSearchParams();
 
         expect(searchParams2.generateGravsearch(0)).toEqual('test2');
 
