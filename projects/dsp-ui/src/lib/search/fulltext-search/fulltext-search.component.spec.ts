@@ -230,6 +230,16 @@ describe('FulltextSearchComponent', () => {
             expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/hello world/http%3A%2F%2Frdfh.ch%2Fprojects%2F0801']);
         });
 
+        it('should perform a search with a previous item - solution 2', () => {
+            testHostComponent.fulltextSearch.doPrevSearch(prevSearchArray[0]);
+
+            expect(testHostComponent.fulltextSearch.searchQuery).toEqual('one thing');
+            expect(testHostComponent.fulltextSearch.projectIri).toEqual('http://rdfh.ch/projects/0803');
+            expect(testHostComponent.fulltextSearch.projectLabel).toEqual('incunabula');
+
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/one thing/http%3A%2F%2Frdfh.ch%2Fprojects%2F0803']);
+        });
+
     });
 
     describe('clear the search list', () => {
