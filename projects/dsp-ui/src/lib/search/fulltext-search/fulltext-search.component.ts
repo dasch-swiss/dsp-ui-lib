@@ -209,7 +209,9 @@ export class FulltextSearchComponent implements OnInit {
         this.overlayRef.attach(new TemplatePortal(this.searchMenu, this._viewContainerRef));
         this.overlayRef.backdropClick().subscribe(() => {
             this.searchPanelFocus = false;
-            this.overlayRef.detach();
+            if (this.overlayRef) {
+                this.overlayRef.detach();
+            }
         });
     }
 
@@ -286,7 +288,10 @@ export class FulltextSearchComponent implements OnInit {
             }
         }
         this.resetSearch();
-        this.overlayRef.detach();
+
+        if (this.overlayRef) {
+            this.overlayRef.detach();
+         }
 
         this.show = false;
         this.showState.emit(this.show);
@@ -298,7 +303,9 @@ export class FulltextSearchComponent implements OnInit {
     resetSearch(): void {
         this.searchPanelFocus = false;
         this.searchInput.nativeElement.blur();
-        this.overlayRef.detach();
+        if (this.overlayRef) {
+            this.overlayRef.detach();
+        }
     }
 
     /**
@@ -332,7 +339,10 @@ export class FulltextSearchComponent implements OnInit {
         }
 
         this.resetSearch();
-        this.overlayRef.detach();
+
+        if (this.overlayRef) {
+            this.overlayRef.detach();
+        }
     }
 
     /**

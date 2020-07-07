@@ -106,7 +106,8 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
         ResourceViewComponent,
         ListValueComponent,
         GeonameValueComponent,
-        AddValueComponent
+        AddValueComponent,
+        JDNDatepickerDirective
     ]
 })
 export class DspViewerModule {
