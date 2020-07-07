@@ -133,7 +133,7 @@ describe('SessionService', () => {
 
     describe('Method getSession', () => {
 
-        it('should get the session with user information', done => {
+        it('should get the session with user information', () => {
             const dspSpy = TestBed.inject(DspApiConnectionToken);
 
             (dspSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
@@ -143,15 +143,29 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
-                const session: Session = service.getSession();
-                expect(session.user.name).toEqual('anything.user01');
-                expect(session.user.lang).toEqual('de');
-                expect(session.user.sysAdmin).toEqual(false);
-                expect(session.user.projectAdmin.length).toEqual(0);
+            const session: Session = {
+                id: 12345,
+                user: {
+                    name: 'username',
+                    jwt: 'myToken',
+                    lang: 'en',
+                    sysAdmin: false,
+                    projectAdmin: []
+                }
+            };
 
-                done();
-            });
+            // update localStorage
+            localStorage.setItem('session', JSON.stringify(session));
+
+            const ls: Session = service.getSession();
+            expect(ls.user.name).toEqual('username');
+            expect(ls.user.lang).toEqual('en');
+            expect(ls.user.jwt).toEqual('myToken');
+            expect(ls.user.sysAdmin).toEqual(false);
+            expect(ls.user.projectAdmin.length).toEqual(0);
+
+            expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+
         });
     });
 
