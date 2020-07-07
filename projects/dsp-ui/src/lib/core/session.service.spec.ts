@@ -3,12 +3,11 @@ import {
     ApiResponseData,
     AuthenticationEndpointV2,
     CredentialsResponse,
-    KnoraApiConfig,
     MockUsers,
     UsersEndpointAdmin
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
-import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
+import { DspApiConnectionToken } from './core.module';
 import { Session, SessionService } from './session.service';
 
 describe('SessionService', () => {
@@ -134,14 +133,6 @@ describe('SessionService', () => {
     describe('Method getSession', () => {
 
         it('should get the session with user information', () => {
-            const dspSpy = TestBed.inject(DspApiConnectionToken);
-
-            (dspSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
-                () => {
-                    const loggedInUser = MockUsers.mockUser();
-                    return of(loggedInUser);
-                }
-            );
 
             const session: Session = {
                 id: 12345,
@@ -154,7 +145,7 @@ describe('SessionService', () => {
                 }
             };
 
-            // update localStorage
+            // store session in localStorage
             localStorage.setItem('session', JSON.stringify(session));
 
             const ls: Session = service.getSession();
@@ -169,27 +160,33 @@ describe('SessionService', () => {
         });
     });
 
-    describe('destroySession', () => {
+    describe('Method destroySession', () => {
 
         it('should destroy the session', () => {
-            const dspSpy = TestBed.inject(DspApiConnectionToken);
 
-            (dspSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
-                () => {
-                    const loggedInUser = MockUsers.mockUser();
-                    return of(loggedInUser);
+            const session: Session = {
+                id: 12345,
+                user: {
+                    name: 'username',
+                    jwt: 'myToken',
+                    lang: 'en',
+                    sysAdmin: false,
+                    projectAdmin: []
                 }
-            );
+            };
 
-            service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
-                service.destroySession();
-                const ls: Session = JSON.parse(localStorage.getItem('session'));
-                expect(ls).toEqual(null);
-            });
+            // store session in localStorage
+            localStorage.setItem('session', JSON.stringify(session));
+
+            service.destroySession();
+            const ls: Session = JSON.parse(localStorage.getItem('session'));
+            expect(ls).toEqual(null);
+
+            expect(localStorage.removeItem).toHaveBeenCalledTimes(1);
         });
     });
 
-    describe('isSessionValid', () => {
+    describe('Method isSessionValid', () => {
 
         it('should return false if there is no session', done => {
             const dspSpy = TestBed.inject(DspApiConnectionToken);
@@ -202,32 +199,32 @@ describe('SessionService', () => {
             });
         });
 
-        it('should return true if session is still valid', () => {
-            const dspSpy = TestBed.inject(DspApiConnectionToken);
+        it('should return true if session is still valid', done => {
 
-            (dspSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
-                () => {
-                    const loggedInUser = MockUsers.mockUser();
-                    return of(loggedInUser);
+            // create a session with the current time to ensure the session is valid
+            const session: Session = {
+                id: Date.now(),
+                user: {
+                    name: 'username',
+                    jwt: 'myToken',
+                    lang: 'en',
+                    sysAdmin: false,
+                    projectAdmin: []
                 }
-            );
+            };
 
-            service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
-                service.isSessionValid().subscribe( (isValid) => {
-                    expect(isValid).toBeTruthy();
-                });
+            // store session in localStorage
+            localStorage.setItem('session', JSON.stringify(session));
+
+            service.isSessionValid().subscribe( isValid => {
+                expect(isValid).toBeTruthy();
+
+                done();
             });
         });
 
-        it('should get credentials again if session has expired', () => {
+        it('should get credentials again if session has expired', done => {
             const dspSpy = TestBed.inject(DspApiConnectionToken);
-
-            (dspSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
-                () => {
-                    const loggedInUser = MockUsers.mockUser();
-                    return of(loggedInUser);
-                }
-            );
 
             (dspSpy.v2.auth as jasmine.SpyObj<AuthenticationEndpointV2>).checkCredentials.and.callFake(
                 () => {
@@ -239,24 +236,26 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
+            // create a session with with an id set to 0 to ensure the session will be expired
+            const session: Session = {
+                id: 0,
+                user: {
+                    name: 'username',
+                    jwt: 'myToken',
+                    lang: 'en',
+                    sysAdmin: false,
+                    projectAdmin: []
+                }
+            };
 
-                let session: Session = service.getSession();
+            // store session in localStorage
+            localStorage.setItem('session', JSON.stringify(session));
 
-                // manually set id to an expired value
-                session.id = 0;
+            service.isSessionValid().subscribe( isValid => {
+                expect(isValid).toBeFalsy();
+                expect(dspSpy.v2.auth.checkCredentials).toHaveBeenCalledTimes(1);
 
-                // store session again
-                localStorage.setItem('session', JSON.stringify(session));
-
-                // get session info again in order to get the expired session
-                session = service.getSession();
-
-                service.isSessionValid().subscribe( (isValid) => {
-                    expect(isValid).toBeFalsy();
-                    expect(dspSpy.v2.auth.checkCredentials).toHaveBeenCalledTimes(1);
-                });
-
+                done();
             });
 
         });
