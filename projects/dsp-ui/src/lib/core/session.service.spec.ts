@@ -191,9 +191,14 @@ describe('SessionService', () => {
 
     describe('isSessionValid', () => {
 
-        it('should return false if there is no session', () => {
-            service.isSessionValid().subscribe( (isValid) => {
+        it('should return false if there is no session', done => {
+            const dspSpy = TestBed.inject(DspApiConnectionToken);
+
+            service.isSessionValid().subscribe( isValid => {
                 expect(isValid).toBeFalsy();
+                expect(dspSpy.v2.jsonWebToken).toEqual('');
+
+                done();
             });
         });
 
