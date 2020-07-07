@@ -535,7 +535,7 @@ OFFSET 1
 
         expect(gravsearch).toEqual(expectedGravsearch);
 
-        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(0);
 
     });
 
