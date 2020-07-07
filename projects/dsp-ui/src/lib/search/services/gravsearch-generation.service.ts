@@ -13,7 +13,7 @@ import { ComparisonOperatorConstants } from '../advanced-search/select-property/
 })
 export class GravsearchGenerationService {
 
-    static complexTypeToProp = {
+    complexTypeToProp = {
         [Constants.IntValue]: Constants.IntValueAsInt,
         [Constants.DecimalValue]: Constants.DecimalValueAsDecimal,
         [Constants.BooleanValue]: Constants.BooleanValueAsBoolean,
@@ -95,7 +95,7 @@ ${statement}
 
                     if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Like') {
                         // generate statement to value literal
-                        restriction = `${propValue} <${GravsearchGenerationService.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
+                        restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
                         // use regex function for LIKE
                         restriction += `FILTER regex(${propValueLiteral}, ${propWithVal.valueLiteral.value.toSparql()}, "i")`;
                     } else if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Match') {
@@ -106,7 +106,7 @@ ${statement}
                         restriction = `FILTER(knora-api:toSimpleDate(${propValue}) ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
                     } else if (propWithVal.property.objectType === Constants.ListValue) {
                         // handle list node
-                        restriction = `${propValue} <${GravsearchGenerationService.complexTypeToProp[propWithVal.property.objectType]}> ${propWithVal.valueLiteral.value.toSparql()}` + '\n';
+                        restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propWithVal.valueLiteral.value.toSparql()}` + '\n';
                         // check for comparison operator "not equals"
                         if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
                             restriction = `FILTER NOT EXISTS {
@@ -115,7 +115,7 @@ ${statement}
                         }
                     } else {
                         // generate statement to value literal
-                        restriction = `${propValue} <${GravsearchGenerationService.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
+                        restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
                         // generate filter expression
                         restriction += `FILTER(${propValueLiteral} ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
                     }

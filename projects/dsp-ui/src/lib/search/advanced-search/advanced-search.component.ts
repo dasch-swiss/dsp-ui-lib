@@ -12,6 +12,7 @@ import { Properties, SelectPropertyComponent } from './select-property/select-pr
 import { SelectResourceClassComponent } from './select-resource-class/select-resource-class.component';
 import { Subscription } from 'rxjs';
 import { PropertyWithValue } from './select-property/specify-property-value/operator';
+import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -55,7 +56,8 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
     constructor(
         @Inject(FormBuilder) private fb: FormBuilder,
-        @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+        @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
+        private _gravsearchGenerationService: GravsearchGenerationService) {
     }
 
     ngOnInit() {
@@ -255,7 +257,9 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
             }
         );
 
-        console.log(properties, resClass);
+        const gravsearchQuery = this._gravsearchGenerationService.createGravsearchQuery(properties, resClass);
+
+        console.log(gravsearchQuery);
     }
 
 }
