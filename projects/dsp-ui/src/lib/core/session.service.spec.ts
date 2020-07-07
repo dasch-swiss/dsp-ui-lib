@@ -201,9 +201,12 @@ describe('SessionService', () => {
 
         it('should return true if session is still valid', done => {
 
+            const baseTime = new Date(2020, 6, 7);
+            jasmine.clock().mockDate(baseTime);
+
             // create a session with the current time to ensure the session is valid
             const session: Session = {
-                id: Date.now(),
+                id: (Date.now() / 1000) - service.MAX_SESSION_TIME + 1, // still valid
                 user: {
                     name: 'username',
                     jwt: 'myToken',
@@ -224,6 +227,7 @@ describe('SessionService', () => {
         });
 
         it('should get credentials again if session has expired', done => {
+
             const dspSpy = TestBed.inject(DspApiConnectionToken);
 
             (dspSpy.v2.auth as jasmine.SpyObj<AuthenticationEndpointV2>).checkCredentials.and.callFake(
@@ -236,9 +240,12 @@ describe('SessionService', () => {
                 }
             );
 
+            const baseTime = new Date(2020, 6, 7);
+            jasmine.clock().mockDate(baseTime);
+
             // create a session with with an id set to 0 to ensure the session will be expired
             const session: Session = {
-                id: 0,
+                id: (Date.now() / 1000) - service.MAX_SESSION_TIME, // expired
                 user: {
                     name: 'username',
                     jwt: 'myToken',
