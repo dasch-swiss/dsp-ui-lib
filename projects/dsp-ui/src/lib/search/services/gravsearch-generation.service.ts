@@ -14,12 +14,12 @@ import { ComparisonOperatorConstants } from '../advanced-search/select-property/
 export class GravsearchGenerationService {
 
     public static complexTypeToProp = {
-        'http://api.knora.org/ontology/knora-api/v2#IntValue': Constants.IntValueAsInt,
-        'http://api.knora.org/ontology/knora-api/v2#DecimalValue': Constants.DecimalValueAsDecimal,
-        'http://api.knora.org/ontology/knora-api/v2#BooleanValue': Constants.BooleanValueAsBoolean,
-        'http://api.knora.org/ontology/knora-api/v2#TextValue': Constants.ValueAsString,
-        'http://api.knora.org/ontology/knora-api/v2#UriValue': Constants.UriValueAsUri,
-        'http://api.knora.org/ontology/knora-api/v2#ListValue': Constants.ListValueAsListNode
+        [Constants.IntValue]: Constants.IntValueAsInt,
+        [Constants.DecimalValue]: Constants.DecimalValueAsDecimal,
+        [Constants.BooleanValue]: Constants.BooleanValueAsBoolean,
+        [Constants.TextValue]: Constants.ValueAsString,
+        [Constants.UriValue]: Constants.UriValueAsUri,
+        [Constants.ListValue]: Constants.ListValueAsListNode
     };
 
     constructor(private _searchParamsService: ExtendedSearchParamsService) { }
