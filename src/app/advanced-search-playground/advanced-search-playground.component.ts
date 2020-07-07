@@ -12,4 +12,8 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  submitQuery(gravsearchQuery: string) {
+      console.log('Output: ', gravsearchQuery);
+  }
+
 }

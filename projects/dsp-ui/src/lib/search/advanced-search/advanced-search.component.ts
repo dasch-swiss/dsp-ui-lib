@@ -1,4 +1,14 @@
-import { Component, Inject, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Inject,
+    OnDestroy,
+    OnInit,
+    Output,
+    QueryList,
+    ViewChild,
+    ViewChildren
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DspApiConnectionToken } from '../../core';
 import {
@@ -27,6 +37,8 @@ const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
     styleUrls: ['./advanced-search.component.scss']
 })
 export class AdvancedSearchComponent implements OnInit, OnDestroy {
+
+    @Output() gravsearchQuery = new EventEmitter<string>();
 
     ontologiesMetadata: OntologiesMetadata;
 
@@ -237,7 +249,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     }
 
     submit() {
-        // TODO: create Gravsearch query using a service, and submit query.
 
         if (!this.formValid) {
             return; // check that form is valid
@@ -259,7 +270,8 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
         const gravsearchQuery = this._gravsearchGenerationService.createGravsearchQuery(properties, resClass);
 
-        console.log(gravsearchQuery);
+        // emit query
+        this.gravsearchQuery.emit(gravsearchQuery);
     }
 
 }
