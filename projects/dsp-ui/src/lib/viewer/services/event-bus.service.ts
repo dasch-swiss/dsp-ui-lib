@@ -8,9 +8,9 @@ import { filter, map } from 'rxjs/operators';
 
 /**
  * https://stackoverflow.com/questions/56290722/how-pass-a-event-from-deep-nested-child-to-parent-in-angular-2
- * This service is used as a way to enable components to communicate with each other not matter how nested they are.
+ * This service is used as a way to enable components to communicate with each other no matter how nested they are.
  * This is intended to provide a cleaner way to emit events from nested components than chaining '@Outputs'.
- * The EventBuss essentially creates a direct communication channel between the emitting component and the listening component.
+ * The EventBus essentially creates a direct communication channel between the emitting component and the listening component.
  */
 export class EventBusService {
 
