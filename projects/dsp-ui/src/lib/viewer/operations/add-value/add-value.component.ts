@@ -69,6 +69,9 @@ export class AddValueComponent implements OnInit {
         }
     }
 
+    /**
+     * Add a new value to an existing property of a resource.
+     */
     saveAddValue() {
         // hide the CRUD buttons
         this.createModeActive = false;
@@ -114,6 +117,9 @@ export class AddValueComponent implements OnInit {
         }
     }
 
+    /**
+     * Cancel the add value operation and hide the add value form.
+     */
     cancelAddValue() {
         // show the CRUD buttons
         this.createModeActive = false;
