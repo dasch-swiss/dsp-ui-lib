@@ -24,12 +24,6 @@ import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/
 import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
 import { environment } from '../environments/environment';
 
-export function initializeApp(appInitService: AppInitService) {
-    return (): Promise<any> => {
-        return appInitService.Init('config', environment);
-    };
-}
-
 @NgModule({
     declarations: [
         AppComponent,
@@ -55,7 +49,10 @@ export function initializeApp(appInitService: AppInitService) {
     providers: [
         {
             provide: APP_INITIALIZER,
-            useFactory: initializeApp,
+            useFactory: (appInitService: AppInitService) =>
+                (): Promise<void> => {
+                    return appInitService.Init('config', environment);
+                },
             deps: [AppInitService],
             multi: true
         },

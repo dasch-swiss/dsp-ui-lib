@@ -66,21 +66,12 @@ The config files have to be integrated in `angular.json` in all "assets"-section
 ]
 ```
 
-Add the function `initializeApp` to `app.module.ts` to load the configuration file when the application is initialised:
-`initializeApp` calls `AppInitService`'s method `Init` and returns its return value which is a `Promise`.
-Angular waits for this `Promise` to be resolved. 
-The `Promise` will be resolved once the configuration file has been fetched and its contents have been assigned.
-
-```typescript
-import { environment } from '../environments/environment';
-
-export function initializeApp(appInitService: AppInitService) {
-  return (): Promise<any> => {
-    // the configuration file is in a directory called "config"
-    return appInitService.Init('config', environment);
-  };
-}
-```
+Define the following three factory methods in `app.module.ts`:
+ 1. Return a function that calls `AppInitService`'s method `Init` and return its return value which is a `Promise`. 
+   Angular waits for this `Promise` to be resolved. 
+   The `Promise` will be resolved once the configuration file has been fetched and its contents have been assigned.
+ 2. Get the config from the `AppInitService` instance and provide it as `DspApiConfigToken`.
+ 3. Create an KnoraApiConnection instance with the config and provide it as `DspApiConnectionToken`.  
 
 Provide it in the main module and include the desired DSP-UI modules in the imports:
 
@@ -97,23 +88,28 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
     DspViewerModule
   ],
   providers: [
-     // add the following code block
+     // 1. 
     {
       provide: APP_INITIALIZER, // see https://angular.io/api/core/APP_INITIALIZER
-      useFactory: initializeApp, // calls initializeApp
+      useFactory: (appInitService: AppInitService) =>
+                      (): Promise<any> => {
+                          return appInitService.Init('config', environment);
+                      },
       deps: [AppInitService], // depends on AppInitService
       multi: true
     },
+    // 2.
     {
       provide: DspApiConfigToken,
       useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig, // AppInitService is passed to the factory method
       deps: [AppInitService] // depends on AppInitService
     },
+    // 3. 
     {
-      provide: DspApiConfigToken,
-      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig, // AppInitService is passed to the factory method
+      provide: DspApiConnectionToken,
+      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig), // AppInitService is passed to the factory method
       deps: [AppInitService] // depends on AppInitService
-    }
+   }
   ],
   bootstrap: [AppComponent]
 })
