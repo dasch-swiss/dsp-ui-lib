@@ -43,8 +43,7 @@ export class ExpertSearchComponent implements OnInit {
     private initForm() {
         this.expertSearchForm = this.fb.group({
             gravquery: [
-                `
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+`PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
 PREFIX incunabula: <${this.dspApiConfig.apiUrl}/ontology/0803/incunabula/simple/v2#>
 
 CONSTRUCT {
