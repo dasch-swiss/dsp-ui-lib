@@ -189,6 +189,13 @@ describe('Test App', () => {
 
             await input.setValue('testthing');
 
+            // check for the async response from Knora: search by label
+
+            const EC = browser.ExpectedConditions;
+
+            await browser.wait(EC.presenceOf(element(by.css('.resource'))), 3000,
+                'Wait for resource options to be visible.');
+
             // check the options
             const autocomplete = await loader.getHarness(MatAutocompleteHarness);
             const options = await autocomplete.getOptions();
