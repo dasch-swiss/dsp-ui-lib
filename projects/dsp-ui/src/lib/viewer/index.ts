@@ -20,3 +20,4 @@ export * from './operations/display-edit/display-edit.component';
 // view components
 export * from './views/resource-view/resource-view.component';
 export * from './views/property-view/property-view.component';
+export * from './views/list-view/resource-list/resource-list.component';
