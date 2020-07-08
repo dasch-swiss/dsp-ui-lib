@@ -8,6 +8,8 @@ export class AppInitService {
 
     dspApiConfig: KnoraApiConfig;
 
+    config: object;
+
     constructor() {
     }
 
@@ -24,15 +26,37 @@ export class AppInitService {
                 (response: Response) => {
                     return response.json();
                 }).then(dspApiConfig => {
+
+                    // check for presence of apiProtocol and apiHost
+                    if (typeof dspApiConfig.apiProtocol !== 'string' || typeof dspApiConfig.apiHost  !== 'string') {
+                        throw new Error('config misses required members: apiProtocol and/or apiHost');
+                    }
+
+                    // make input type safe
+                    const apiPort = (typeof dspApiConfig.apiPort === 'number' ? dspApiConfig.apiPort : null);
+                    const apiPath = (typeof dspApiConfig.apiPath === 'string' ? dspApiConfig.apiPath : '');
+                    const jsonWebToken = (typeof dspApiConfig.jsonWebToken === 'string' ? dspApiConfig.jsonWebToken : '');
+                    const logErrors = (typeof dspApiConfig.logErrors === 'boolean' ? dspApiConfig.logErrors : false);
+
                     // init dsp-api configuration
                     this.dspApiConfig = new KnoraApiConfig(
                         dspApiConfig.apiProtocol,
                         dspApiConfig.apiHost,
-                        dspApiConfig.apiPort,
-                        dspApiConfig.apiPath,
-                        dspApiConfig.jsonWebToken,
-                        dspApiConfig.logErrors
+                        apiPort,
+                        apiPath,
+                        jsonWebToken,
+                        logErrors
                     );
+
+                    // preserver config object (sanitized)
+                    this.config = {
+                        apiProtocol: dspApiConfig.apiProtocol,
+                        apiHost: dspApiConfig.apiHost,
+                        apiPort: apiPort,
+                        apiPath: apiPath,
+                        jsonWebToken: jsonWebToken,
+                        logErrors: logErrors
+                    };
 
                     resolve();
                 }
