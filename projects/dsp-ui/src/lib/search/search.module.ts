@@ -13,6 +13,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 import { DspViewerModule } from '../viewer';
 
@@ -74,7 +75,8 @@ import { SearchUriValueComponent } from './advanced-search/select-property/speci
         MatInputModule,
         MatDatepickerModule,
         MatAutocompleteModule,
-        DspViewerModule
+        DspViewerModule,
+        TextFieldModule
     ],
     exports: [
         SearchPanelComponent,

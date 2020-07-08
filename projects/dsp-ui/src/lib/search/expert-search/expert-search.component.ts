@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken } from '../../core/core.module';
+import { AdvancedSearchParams, AdvancedSearchParamsService } from '../services/advanced-search-params.service';
 
 @Component({
     selector: 'dsp-expert-search',
@@ -12,14 +13,9 @@ import { DspApiConfigToken } from '../../core/core.module';
 export class ExpertSearchComponent implements OnInit {
 
     /**
-     * @param route Route to navigate after search. This route path should contain a component for search results.
+     * @param gravsearchQuery Send the gravsearch query back.
      */
-    @Input() route?;
-
-    /**
-     * @param gravsearch Send the gravsearch query back.
-     */
-    @Output() gravsearch = new EventEmitter<string>();
+    @Output() gravsearchQuery = new EventEmitter<string>();
 
     /**
      * @param toggleExtendedSearchForm Trigger toggle for extended search form.
@@ -30,6 +26,7 @@ export class ExpertSearchComponent implements OnInit {
 
     constructor(
         @Inject(DspApiConfigToken) private dspApiConfig: KnoraApiConfig,
+        private _searchParamsService: AdvancedSearchParamsService,
         private fb: FormBuilder,
         private _route: ActivatedRoute,
         private _router: Router
@@ -79,11 +76,9 @@ CONSTRUCT {
     submitQuery() {
         const gravsearch = this.generateGravsearch(0);
 
-        // does it make sense to keep this._router.navigate(...)??
-        if (this.route) {
-            this._router.navigate([this.route + '/extended/', gravsearch], { relativeTo: this._route });
-        } else {
-            this.gravsearch.emit(gravsearch);
+        if (gravsearch) {
+            console.log('submitQuery gravsearch', gravsearch);
+            this.gravsearchQuery.emit(gravsearch);
         }
 
         // toggle expert search form
@@ -115,10 +110,7 @@ CONSTRUCT {
 
         if (offset === 0) {
             // store the function so another Gravsearch query can be created with an increased offset
-            // TODO: replace _searchParamsService with the new way fron DSP-JS
-            /* this._searchParamsService.changeSearchParamsMsg(
-                new ExtendedSearchParams(generateGravsearchWithCustomOffset) // caution: need to unsubscribe to this behaviour subject
-            ); */
+            this._searchParamsService.changeSearchParamsMsg(new AdvancedSearchParams(generateGravsearchWithCustomOffset));
         }
         return queryTemplate + offsetTemplate;
     }

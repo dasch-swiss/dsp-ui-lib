@@ -1,8 +1,14 @@
 <div class="expert-search-container">
     <form [formGroup]="expertSearchForm" class="expert-search-form kui-form-content">
         <mat-form-field class="textarea-field large-field">
-            <textarea matInput formControlName="gravquery" matTextareaAutosize matAutosizeMinRows="12"
-                matAutosizeMaxRows="24" placeholder="Write your gravsearch query"></textarea>
+            <textarea
+                matInput
+                formControlName="gravquery"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="12"
+                cdkAutosizeMaxRows="24"
+                placeholder="Write your gravsearch query">
+            </textarea>
         </mat-form-field>
 
         <div class="kui-form-action">
@@ -10,9 +16,13 @@
                 Reset
             </button>
             <span class="fill-remaining-space"></span>
-            <button mat-raised-button color="primary" type="submit" [disabled]="!expertSearchForm.valid"
+            <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="!expertSearchForm.valid"
                 (click)="submitQuery()">
-                Search
+                    Search
             </button>
         </div>
 
