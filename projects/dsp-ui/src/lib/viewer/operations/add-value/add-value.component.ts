@@ -55,7 +55,7 @@ export class AddValueComponent implements OnInit {
 
     constructor(@Inject(DspApiConnectionToken)
                 private knoraApiConnection: KnoraApiConnection,
-                private eventBusService: EventBusService) { }
+                private _eventBusService: EventBusService) { }
 
     ngOnInit() {
 
@@ -103,7 +103,7 @@ export class AddValueComponent implements OnInit {
                         // emit a ValueAdded event to the listeners in:
                         // property-view component to hide the add value form
                         // resource-view component to trigger a refresh of the resource
-                        this.eventBusService.emit(new EmitEvent(Events.ValueAdded));
+                        this._eventBusService.emit(new EmitEvent(Events.ValueAdded));
 
                         // hide the progress indicator
                         this.submittingValue = false;

@@ -31,7 +31,8 @@ export interface PropertyInfoValues {
 @Component({
   selector: 'dsp-resource-view',
   templateUrl: './resource-view.component.html',
-  styleUrls: ['./resource-view.component.scss']
+  styleUrls: ['./resource-view.component.scss'],
+  providers: [EventBusService]
 })
 export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -57,7 +58,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
         private _snackBar: MatSnackBar,
-        public _eventBusService: EventBusService) { }
+        private _eventBusService: EventBusService) { }
 
     ngOnInit() {
         // subscribe to the event bus and listen for the ValueAdded event to be emitted

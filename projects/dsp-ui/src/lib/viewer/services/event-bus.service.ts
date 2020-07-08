@@ -2,10 +2,6 @@ import { Injectable } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
-
 /**
  * https://stackoverflow.com/questions/56290722/how-pass-a-event-from-deep-nested-child-to-parent-in-angular-2
  * This service is used as a way to enable components to communicate with each other no matter how nested they are.

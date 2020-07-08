@@ -4,12 +4,11 @@ import {
     ReadResource,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
+import { Subscription } from 'rxjs';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
-import { PropertyInfoValues } from '../resource-view/resource-view.component';
-import { ValueTypeService } from '../../services/value-type.service';
 import { EventBusService, Events } from '../../services/event-bus.service';
-import { Subscription } from 'rxjs';
+import { PropertyInfoValues } from '../resource-view/resource-view.component';
 
 @Component({
   selector: 'dsp-property-view',
@@ -48,7 +47,7 @@ export class PropertyViewComponent implements OnInit {
 
     eventBusSubscription: Subscription;
 
-    constructor(private eventBusService: EventBusService) { }
+    constructor(private _eventBusService: EventBusService) { }
 
     ngOnInit() {
         if (this.parentResource) {
@@ -62,7 +61,7 @@ export class PropertyViewComponent implements OnInit {
         }
 
         // listen for the AddValue event to be emitted and call hideAddValueForm()
-        this.eventBusSubscription = this.eventBusService.on(Events.ValueAdded, () => this.hideAddValueForm());
+        this.eventBusSubscription = this._eventBusService.on(Events.ValueAdded, () => this.hideAddValueForm());
 
     }
 
