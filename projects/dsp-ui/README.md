@@ -118,6 +118,9 @@ export class AppModule { }
 
 Do not forget to import `APP_INITIALIZER` from `@angular/core` and the desired DSP-UI modules from `@dasch-swiss/dsp-ui`.
 
+The contents of the configuration can be accessed via `AppInitService`s member `config`.
+Just include `AppInitService` in you service's or component's constructor.
+
 ## Usage
 <!-- TODO: add the modules to app.modules and use them as usual  -->
 <!-- app.modules -->
