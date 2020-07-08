@@ -18,7 +18,6 @@ import {
 
 import { ActionPlaygroundComponent } from './action-playground/action-playground.component';
 import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
-import { AppInitService } from './app-init.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ModifyComponent } from './modify/modify.component';
