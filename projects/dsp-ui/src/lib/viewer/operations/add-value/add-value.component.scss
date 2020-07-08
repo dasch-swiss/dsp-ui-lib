@@ -24,19 +24,6 @@
   padding-top: 0.5em;
 }
 
-:host ::ng-deep .child-value-component,
-:host ::ng-deep .value-component-comment {
-  display: block;
-}
-
-:host ::ng-deep .parent-component-wrapper .value-component-comment {
-  margin-top: -2em;
-}
-
-:host ::ng-deep .parent-value-component .child-value-component .mat-form-field-wrapper .mat-form-field-infix {
-  border-top: 0em solid transparent;
-}
-
 .save,
 .cancel {
     cursor: pointer;

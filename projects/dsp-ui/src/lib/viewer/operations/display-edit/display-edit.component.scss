@@ -31,34 +31,6 @@
     grid-column-end: end;
 }
 
-:host ::ng-deep .read-mode-view {
-    font: 400 15px/24px Roboto,"Helvetica Neue",sans-serif;
-}
-
-:host ::ng-deep .read-mode-view p {
-    margin: 0px;
-}
-
-:host ::ng-deep .child-value-component,
-:host ::ng-deep .value-component-comment {
-    display: block;
-}
-
-:host ::ng-deep .parent-component-wrapper .value-component-comment {
-    margin-top: -2em;
-}
-
-:host ::ng-deep .parent-value-component .child-value-component .mat-form-field-wrapper .mat-form-field-infix {
-    border-top: 0em solid transparent;
-}
-
-:host ::ng-deep .custom-error-message {
-    font-family: Roboto,"Helvetica Neue",sans-serif;
-    font-size: 12px;
-    margin-top: -1em;
-    padding-bottom: 1em;
-}
-
 .comment-toggle,
 .edit,
 .save,
