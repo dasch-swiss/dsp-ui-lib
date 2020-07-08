@@ -81,6 +81,40 @@ describe('TestService', () => {
 
     });
 
+    it('should fetch the config file with additional options when method Init is called', async () => {
+
+        const fetchSpy = spyOn(window, 'fetch').and.callFake(
+            path => {
+                return Promise.resolve(new Response(JSON.stringify({
+                    apiProtocol: 'http',
+                    apiHost: '0.0.0.0',
+                    myOption: true
+                })));
+            }
+        );
+
+        await service.Init('config', {name: 'prod', production: true});
+
+        expect(service.dspApiConfig.apiProtocol).toEqual('http');
+        expect(service.dspApiConfig.apiHost).toEqual('0.0.0.0');
+        expect(service.dspApiConfig.apiPort).toEqual(null);
+        expect(service.dspApiConfig.apiPath).toEqual('');
+        expect(service.dspApiConfig.jsonWebToken).toEqual('');
+        expect(service.dspApiConfig.logErrors).toEqual(false);
+
+        expect(service.config['apiProtocol']).toEqual('http');
+        expect(service.config['apiHost']).toEqual('0.0.0.0');
+        expect(service.config['apiPort']).toEqual(null);
+        expect(service.config['apiPath']).toEqual('');
+        expect(service.config['jsonWebToken']).toEqual('');
+        expect(service.config['logErrors']).toEqual(false);
+        expect(service.config['myOption']).toEqual(true);
+
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(fetchSpy).toHaveBeenCalledWith('config/config.prod.json');
+
+    });
+
     it('should throw an error if required members are missing on the config object', async () => {
 
         const fetchSpy = spyOn(window, 'fetch').and.callFake(

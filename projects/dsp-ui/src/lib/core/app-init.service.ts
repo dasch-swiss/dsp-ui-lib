@@ -48,15 +48,16 @@ export class AppInitService {
                         logErrors
                     );
 
-                    // preserver config object (sanitized)
-                    this.config = {
-                        apiProtocol: dspApiConfig.apiProtocol,
-                        apiHost: dspApiConfig.apiHost,
-                        apiPort: apiPort,
-                        apiPath: apiPath,
-                        jsonWebToken: jsonWebToken,
-                        logErrors: logErrors
-                    };
+                    // get all options from config
+                    this.config = dspApiConfig;
+
+                    // set sanitized standard config options
+                    this.config['apiProtocol'] = dspApiConfig.apiProtocol;
+                    this.config['apiHost'] = dspApiConfig.apiHost;
+                    this.config['apiPort'] = apiPort;
+                    this.config['apiPath'] = apiPath;
+                    this.config['jsonWebToken'] = jsonWebToken;
+                    this.config['logErrors'] = logErrors;
 
                     resolve();
                 }
