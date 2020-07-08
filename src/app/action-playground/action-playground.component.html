@@ -1,3 +1,18 @@
+<!-- TODO: Will be replaced by login form from action module -->
+<!--
+<p>Login / Logout / Session</p>
+<p>
+This is an automatic login button for the moment just to test the session service.
+We will implement the login form here as soon its moved from the old knora-ui.
+</p>
+<button mat-raised-button color="primary" *ngIf="!loading && !session" (click)=login()>Login as test user</button>
+<button mat-raised-button color="warn" *ngIf="!loading && session" (click)=logout()>Logout</button>
+<dsp-progress-indicator *ngIf="loading"></dsp-progress-indicator>
+-->
+
+
+<hr>
+
 <p>Sorting</p>
 <dsp-sort-button [sortProps]="sortProps" [position]="'right'" (sortKeyChange)="sortList($event)"></dsp-sort-button>
 <ul>
@@ -7,6 +22,8 @@
         <span>{{item.creator}}</span>
     </li>
 </ul>
+
+<hr>
 
 <p>Progress indicator</p>
 <mat-list>
@@ -23,8 +40,12 @@
     </mat-list-item>
 </mat-list>
 
+<hr>
+
 <p>Loading animation</p>
 <dsp-progress-indicator></dsp-progress-indicator>
+
+<hr>
 
 <p>Message Component</p>
 <dsp-message [message]="shortMessage" [short]="true"></dsp-message>

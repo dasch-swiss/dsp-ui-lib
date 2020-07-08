@@ -237,6 +237,21 @@ To simulate a production environment, the application should be built with optim
 - Build the test app with optimization: `npm run build-app`
 - Access it via <http://dspuiapp.local:8090>
 
+### Build and run the application in Docker
+
+To build and run the application in Docker, do the following:
+
+1. `docker build --tag app:0.1 .` (you can use any tag name you want)
+2. `docker run -v ~/localdir/config.prod.json:/public/config/config.prod.json --publish 4200:4200 --detach --name myname app:0.1`
+
+The first step builds the lib and app in Docker. Make sure to delete the contents of the `dist` folder on your local system first.
+
+The second step runs a container based on the image built in the previous step:
+- `-v` mounts a config file from your local file system in the Docker container, so you can set the config.
+- `--publish` maps the port on your local machine to the port in the Docker container.
+
+You can now access the app on your local machine under <http://localhost:4200/>.
+
 ### Publish a new version to NPM
 
 A new version will be published with each github release as it's part of Github actions' workflow. Please follow the steps below to prepare the next release:

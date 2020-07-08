@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
+import { DspApiConfigToken, DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
 import {
-  ApiResponseData,
-  ApiResponseError,
-  KnoraApiConnection,
-  LogoutResponse
+    ApiResponseData,
+    ApiResponseError, KnoraApiConfig,
+    KnoraApiConnection,
+    LogoutResponse
 } from '@dasch-swiss/dsp-js';
 
 @Component({
