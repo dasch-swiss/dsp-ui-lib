@@ -3,13 +3,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
-import { ActionPlaygroundComponent } from './action-playground/action-playground.component';
-import { AppInitService } from './app-init.service';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ModifyComponent } from './modify/modify.component';
-import { ReadComponent } from './read/read.component';
 import {
     DspActionModule,
     DspApiConfigToken,
@@ -18,9 +11,16 @@ import {
     DspSearchModule,
     DspViewerModule
 } from '@dasch-swiss/dsp-ui';
+import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
+import { ActionPlaygroundComponent } from './action-playground/action-playground.component';
+import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
+import { AppInitService } from './app-init.service';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ModifyComponent } from './modify/modify.component';
+import { ReadComponent } from './read/read.component';
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
-import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
 
 
 export function initializeApp(appInitService: AppInitService) {
