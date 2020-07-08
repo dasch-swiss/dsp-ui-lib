@@ -109,6 +109,8 @@ describe('Test App', () => {
         it('should select an integer property', async () => {
             await page.navigateTo('advanced-search');
 
+            const EC = browser.ExpectedConditions;
+
             const loader = ProtractorHarnessEnvironment.loader();
 
             const submitButton = await page.getAdvancedSearchSubmitButton(loader);
@@ -118,6 +120,10 @@ describe('Test App', () => {
             const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
 
             await selectOntos.clickOptions({ text: 'The anything ontology'});
+
+            // check for the async response from Knora: anything and knora-api ontology
+            await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), 3000,
+                'Wait for resource class options to be visible.');
 
             expect(await submitButton.isDisabled()).toBe(true);
 
@@ -153,6 +159,8 @@ describe('Test App', () => {
         it('should select a link property', async () => {
             await page.navigateTo('advanced-search');
 
+            const EC = browser.ExpectedConditions;
+
             const loader = ProtractorHarnessEnvironment.loader();
 
             const submitButton = await page.getAdvancedSearchSubmitButton(loader);
@@ -162,6 +170,10 @@ describe('Test App', () => {
             const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
 
             await selectOntos.clickOptions({ text: 'The anything ontology'});
+
+            // check for the async response from Knora: anything and knora-api ontology
+            await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), 3000,
+                'Wait for resource class options to be visible.');
 
             expect(await submitButton.isDisabled()).toBe(true);
 
@@ -190,9 +202,6 @@ describe('Test App', () => {
             await input.setValue('testthing');
 
             // check for the async response from Knora: search by label
-
-            const EC = browser.ExpectedConditions;
-
             await browser.wait(EC.presenceOf(element(by.css('.resource'))), 3000,
                 'Wait for resource options to be visible.');
 
