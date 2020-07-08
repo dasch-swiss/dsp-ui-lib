@@ -28,7 +28,7 @@ import { BaseValueComponent } from '../../values/base-value.component';
 })
 export class AddValueComponent implements OnInit {
 
-    @ViewChild('createVal', {static: false}) createValueComponent: BaseValueComponent;
+    @ViewChild('createVal') createValueComponent: BaseValueComponent;
 
     @Input() resourcePropertyDefinition: ResourcePropertyDefinition;
 
@@ -48,6 +48,7 @@ export class AddValueComponent implements OnInit {
 
     submittingValue = false;
 
+    // 0 will display a loading animation
     progressIndicatorStatus = 0;
 
     progressIndicatorColor = 'blue';
@@ -69,35 +70,55 @@ export class AddValueComponent implements OnInit {
     }
 
     saveAddValue() {
+        // hide the CRUD buttons
         this.createModeActive = false;
+
+        // show the progress indicator
         this.submittingValue = true;
+
+        // get a new CreateValue from the base class and grab the values from the form
         const createVal = this.createValueComponent.getNewValue();
 
         if (createVal instanceof CreateValue) {
+
+            // create a new UpdateResource with the same properties as the parent resource
             const updateRes = new UpdateResource();
             updateRes.id = this.parentResource.id;
             updateRes.type = this.parentResource.type;
             updateRes.property = this.resourcePropertyDefinition.id;
+
+            // assign the new value to the UpdateResource value
             updateRes.value = createVal;
 
             this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
                 mergeMap((res: WriteValueResponse) => {
+                    // if successful, get the newly created value
                     return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
                 })
                 ).subscribe(
                     (res2: ReadResource) => {
+                        // emit a ValueAdded event to the listeners in:
+                        // property-view component to hide the add value form
+                        // resource-view component to trigger a refresh of the resource
                         this.eventBusService.emit(new EmitEvent(Events.ValueAdded));
+
+                        // hide the progress indicator
                         this.submittingValue = false;
                     }
                 );
         } else {
             console.error('invalid value');
+
+            // hide the progress indicator
             this.submittingValue = false;
         }
     }
 
     cancelAddValue() {
+        // show the CRUD buttons
         this.createModeActive = false;
+
+        // emit an event to trigger hideAddValueForm() in property-view component to hide the create value form
         this.operationCancelled.emit();
     }
 

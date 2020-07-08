@@ -18,8 +18,8 @@ import { Subscription } from 'rxjs';
 })
 export class PropertyViewComponent implements OnInit {
 
-    @ViewChild('displayEdit', { static: false}) displayEditComponent: DisplayEditComponent;
-    @ViewChild('addValue', { static: false}) addValueComponent: AddValueComponent;
+    @ViewChild('displayEdit') displayEditComponent: DisplayEditComponent;
+    @ViewChild('addValue') addValueComponent: AddValueComponent;
     /**
      * Parent resource
      *
@@ -48,8 +48,7 @@ export class PropertyViewComponent implements OnInit {
 
     eventBusSubscription: Subscription;
 
-    constructor(private valueTypeService: ValueTypeService,
-                private eventBusService: EventBusService) { }
+    constructor(private eventBusService: EventBusService) { }
 
     ngOnInit() {
         if (this.parentResource) {
@@ -62,6 +61,7 @@ export class PropertyViewComponent implements OnInit {
             this.addButtonIsVisible = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
         }
 
+        // listen for the AddValue event to be emitted and call hideAddValueForm()
         this.eventBusSubscription = this.eventBusService.on(Events.ValueAdded, () => this.hideAddValueForm());
 
     }

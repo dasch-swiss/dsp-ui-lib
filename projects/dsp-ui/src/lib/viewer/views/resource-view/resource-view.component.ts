@@ -60,6 +60,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         public _eventBusService: EventBusService) { }
 
     ngOnInit() {
+        // subscribe to the event bus and listen for the ValueAdded event to be emitted
+        // when a ValueAdded event is emitted, get the resource again to display the newly created value
+        // TODO: find a better way to show the new value than having to get the entire resource again
         this.eventBusSubscription = this._eventBusService.on(Events.ValueAdded, () => this.getResource(this.iri));
     }
 
@@ -68,6 +71,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy() {
+        // unsubscribe from the event bus when component is destroyed
         this.eventBusSubscription.unsubscribe();
     }
 
