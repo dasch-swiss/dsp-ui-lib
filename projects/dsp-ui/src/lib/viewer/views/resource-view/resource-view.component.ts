@@ -32,7 +32,7 @@ export interface PropertyInfoValues {
   selector: 'dsp-resource-view',
   templateUrl: './resource-view.component.html',
   styleUrls: ['./resource-view.component.scss'],
-  providers: [EventBusService]
+  providers: [EventBusService] // provide service on the component level so that each implementation of this component has its own instance.
 })
 export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
