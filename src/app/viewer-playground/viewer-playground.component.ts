@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { ReadResource, KnoraApiConnection, ReadResourceSequence, ApiResponseError } from '@dasch-swiss/dsp-js';
+import { Component, Inject, OnInit } from '@angular/core';
+import { ApiResponseError, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
 
 @Component({
@@ -21,7 +21,6 @@ export class ViewerPlaygroundComponent implements OnInit {
     ngOnInit(): void {
         this._dspApiConnection.v2.search.doFulltextSearch('kreuz').subscribe(
             (response: ReadResourceSequence) => {
-                console.log(response);
                 this.resources = response;
             },
             (error: ApiResponseError) => {
@@ -30,7 +29,7 @@ export class ViewerPlaygroundComponent implements OnInit {
         )
     }
 
-    openResource(ev: Event) {
+    openResource(ev: string) {
         console.log('Open Resource:', ev);
     }
 
