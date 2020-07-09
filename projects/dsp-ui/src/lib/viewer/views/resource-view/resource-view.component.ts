@@ -73,7 +73,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnDestroy() {
         // unsubscribe from the event bus when component is destroyed
-        this.eventBusSubscription.unsubscribe();
+        if (this.eventBusSubscription !== undefined) {
+            this.eventBusSubscription.unsubscribe();
+        }
     }
 
     /**

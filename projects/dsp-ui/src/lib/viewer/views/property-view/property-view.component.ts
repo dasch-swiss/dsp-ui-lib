@@ -1,9 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
-    PermissionUtil,
-    ReadResource,
-    SystemPropertyDefinition
-} from '@dasch-swiss/dsp-js';
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core';
+import { PermissionUtil, ReadResource, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
@@ -15,7 +17,7 @@ import { PropertyInfoValues } from '../resource-view/resource-view.component';
   templateUrl: './property-view.component.html',
   styleUrls: ['./property-view.component.scss']
 })
-export class PropertyViewComponent implements OnInit {
+export class PropertyViewComponent implements OnInit, OnDestroy {
 
     @ViewChild('displayEdit') displayEditComponent: DisplayEditComponent;
     @ViewChild('addValue') addValueComponent: AddValueComponent;
@@ -63,6 +65,13 @@ export class PropertyViewComponent implements OnInit {
         // listen for the AddValue event to be emitted and call hideAddValueForm()
         this.eventBusSubscription = this._eventBusService.on(Events.ValueAdded, () => this.hideAddValueForm());
 
+    }
+
+    ngOnDestroy() {
+        // unsubscribe from the event bus when component is destroyed
+        if (this.eventBusSubscription !== undefined) {
+            this.eventBusSubscription.unsubscribe();
+        }
     }
 
     /**
