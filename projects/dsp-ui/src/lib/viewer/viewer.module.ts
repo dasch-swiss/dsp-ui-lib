@@ -6,6 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
@@ -83,6 +84,7 @@ import { DspActionModule } from '../action';
         MatDatepickerModule,
         MatIconModule,
         MatJDNConvertibleCalendarDateAdapterModule,
+        MatListModule,
         MatMenuModule,
         ClipboardModule,
         ColorPickerModule,

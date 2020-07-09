@@ -1,1 +1,2 @@
-<dsp-resource-list></dsp-resource-list>
+<h3>Simple list of resources: dsp-resource-list</h3>
+<dsp-resource-list *ngIf="resources" [resources]="resources" (resourceSelected)="openResource($event)"></dsp-resource-list>
