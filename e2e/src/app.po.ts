@@ -12,7 +12,13 @@ export class AppPage {
         return element(by.css('app-root span')).getText() as Promise<string>;
     }
 
-    getComponentBySelector(selector: string): WebElement {
+    async getComponentBySelector(selector: string): Promise<WebElement> {
+        const EC = browser.ExpectedConditions;
+
+        // wait for the specified element to be present
+        await browser.wait(EC.presenceOf(element(by.css('app-root ' + selector))), 3000,
+            `Wait for ${selector} to be visible.`);
+
         return element(by.css('app-root ' + selector)).getWebElement();
     }
 
