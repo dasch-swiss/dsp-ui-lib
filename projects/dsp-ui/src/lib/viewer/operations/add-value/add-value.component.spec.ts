@@ -51,13 +51,23 @@ class TestIntValueComponent implements OnInit {
     updateCommentVisibility(): void { }
 }
 
+@Component({
+    selector: `dsp-time-value`,
+    template: ``
+  })
+  class TestTimeValueComponent {
+    @Input() mode;
+
+    @Input() displayValue;
+  }
+
 /**
  * Test host component to simulate parent component.
  */
 @Component({
     selector: `dsp-add-value-host-component`,
     template: `
-      <dsp-add-value #testAddVal [resourcePropertyDefinition]="resourcePropertyDefinition" [parentResource]="readResource"></dsp-add-value>`
+      <dsp-add-value *ngIf="resourcePropertyDefinition" #testAddVal [resourcePropertyDefinition]="resourcePropertyDefinition" [parentResource]="readResource"></dsp-add-value>`
   })
 class DspAddValueTestComponent implements OnInit {
 
@@ -72,7 +82,19 @@ class DspAddValueTestComponent implements OnInit {
             this.readResource = res;
         });
 
-        this.resourcePropertyDefinition = this.readResource.entityInfo.getAllPropertyDefinitions()[9] as ResourcePropertyDefinition;
+    }
+
+    assignResourcePropDef(propIri: string) {
+        const definitionForProp = this.readResource.entityInfo.getAllPropertyDefinitions()
+        .filter( (resourcePropDef: ResourcePropertyDefinition) => {
+            return resourcePropDef.id === propIri;
+        }) as ResourcePropertyDefinition[];
+
+        if (definitionForProp.length !== 1) {
+            throw console.error('Property definition not found');
+        }
+
+        this.resourcePropertyDefinition = definitionForProp[0];
     }
 
 }
@@ -97,7 +119,8 @@ describe('AddValueComponent', () => {
             declarations: [
                 AddValueComponent,
                 DspAddValueTestComponent,
-                TestIntValueComponent
+                TestIntValueComponent,
+                TestTimeValueComponent
             ],
             providers: [
                 {
@@ -120,11 +143,28 @@ describe('AddValueComponent', () => {
 
     it('should choose the apt component for an integer value', () => {
 
+        testHostComponent.assignResourcePropDef('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
+
+        testHostFixture.detectChanges();
+
         expect(testHostComponent.testAddValueComponent).toBeTruthy();
 
         expect(testHostComponent.resourcePropertyDefinition.objectType).toEqual('http://api.knora.org/ontology/knora-api/v2#IntValue');
 
         expect(testHostComponent.testAddValueComponent.createValueComponent instanceof TestIntValueComponent).toBeTruthy();
+    });
+
+    it('should choose the apt component for a time value', () => {
+
+        testHostComponent.assignResourcePropDef('http://0.0.0.0:3333/ontology/0001/anything/v2#hasTimeStamp');
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.testAddValueComponent).toBeTruthy();
+
+        expect(testHostComponent.resourcePropertyDefinition.objectType).toEqual('http://api.knora.org/ontology/knora-api/v2#TimeValue');
+
+        expect(testHostComponent.testAddValueComponent.createValueComponent instanceof TestTimeValueComponent).toBeTruthy();
     });
 
     describe('add new value', () => {
@@ -133,6 +173,10 @@ describe('AddValueComponent', () => {
         let addValueComponentDe;
 
         beforeEach(() => {
+            testHostComponent.assignResourcePropDef('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
+
+            testHostFixture.detectChanges();
+
             expect(testHostComponent.testAddValueComponent).toBeTruthy();
 
             hostCompDe = testHostFixture.debugElement;
