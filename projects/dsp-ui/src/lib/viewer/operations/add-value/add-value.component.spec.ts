@@ -221,10 +221,7 @@ describe('AddValueComponent', () => {
                 }
             );
 
-            testHostComponent.testAddValueComponent.canModify = true;
-            testHostComponent.testAddValueComponent.createModeActive = true;
-
-            testHostFixture.detectChanges();
+            expect(testHostComponent.testAddValueComponent.createModeActive).toBeTruthy();
 
             const saveButtonDebugElement = addValueComponentDe.query(By.css('button.save'));
             const saveButtonNativeElement = saveButtonDebugElement.nativeElement;
