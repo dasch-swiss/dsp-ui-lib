@@ -217,7 +217,6 @@ class TestHostDisplayValueComponent implements OnInit {
 
   @ViewChild('displayEditVal') displayEditValueComponent: DisplayEditComponent;
 
-  valueTypeService: ValueTypeService = new ValueTypeService();
   readResource: ReadResource;
   readValue: ReadValue;
 
@@ -247,6 +246,7 @@ class TestHostDisplayValueComponent implements OnInit {
 describe('DisplayEditComponent', () => {
   let testHostComponent: TestHostDisplayValueComponent;
   let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
+  let valueTypeService: ValueTypeService;
 
   beforeEach(async(() => {
 
@@ -282,11 +282,13 @@ describe('DisplayEditComponent', () => {
         {
           provide: DspApiConnectionToken,
           useValue: valuesSpyObj
-        }
+        },
+        ValueTypeService
       ]
     })
       .compileComponents();
 
+    valueTypeService = TestBed.inject(ValueTypeService);
   }));
 
   beforeEach(() => {
@@ -455,9 +457,9 @@ describe('DisplayEditComponent', () => {
     });
 
     it('should return the type of a integer value as not readonly', () => {
-      expect(testHostComponent.valueTypeService.getValueTypeOrClass(testHostComponent.displayEditValueComponent.displayValue)).toEqual(Constants.IntValue);
+      expect(valueTypeService.getValueTypeOrClass(testHostComponent.displayEditValueComponent.displayValue)).toEqual(Constants.IntValue);
 
-      expect(testHostComponent.valueTypeService.isReadOnly(Constants.IntValue)).toBe(false);
+      expect(valueTypeService.isReadOnly(Constants.IntValue)).toBe(false);
     });
 
     it('should return the class of a html text value as readonly', () => {
@@ -465,9 +467,9 @@ describe('DisplayEditComponent', () => {
       const htmlTextVal = new ReadTextValueAsHtml();
       htmlTextVal.type = Constants.TextValue;
 
-      expect(testHostComponent.valueTypeService.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsHtml');
+      expect(valueTypeService.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsHtml');
 
-      expect(testHostComponent.valueTypeService.isReadOnly('ReadTextValueAsHtml')).toBe(true);
+      expect(valueTypeService.isReadOnly('ReadTextValueAsHtml')).toBe(true);
 
     });
 
@@ -476,9 +478,9 @@ describe('DisplayEditComponent', () => {
       const xmlTextVal = new ReadTextValueAsXml();
       xmlTextVal.type = Constants.TextValue;
 
-      expect(testHostComponent.valueTypeService.getValueTypeOrClass(xmlTextVal)).toEqual('ReadTextValueAsXml');
+      expect(valueTypeService.getValueTypeOrClass(xmlTextVal)).toEqual('ReadTextValueAsXml');
 
-      expect(testHostComponent.valueTypeService.isReadOnly('ReadTextValueAsXml')).toBe(true);
+      expect(valueTypeService.isReadOnly('ReadTextValueAsXml')).toBe(true);
 
     });
 
@@ -487,9 +489,9 @@ describe('DisplayEditComponent', () => {
       const plainTextVal = new ReadTextValueAsString();
       plainTextVal.type = Constants.TextValue;
 
-      expect(testHostComponent.valueTypeService.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsString');
+      expect(valueTypeService.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsString');
 
-      expect(testHostComponent.valueTypeService.isReadOnly('ReadTextValueAsString')).toBe(false);
+      expect(valueTypeService.isReadOnly('ReadTextValueAsString')).toBe(false);
 
     });
 
