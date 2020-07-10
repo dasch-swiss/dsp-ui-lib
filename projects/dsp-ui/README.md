@@ -208,6 +208,41 @@ And use it in the component template as follows. The example shows how to displa
 <dsp-resource-view [iri]="'http://rdfh.ch/0803/18a671b8a601'"></dsp-resource-view>
 ```
 
+The **DspSearchModule** allows different ways of searching in order to make simple or complex searches in DSP-API. This module contains various components you can use to search and all of them can either be used individually or in combination with one another using the search panel.
+
+Import DspSearchModule in the `app.module.ts`:
+
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent,
+    ProjectsComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    DspCoreModule,
+    DspSearchModule     // <-- add the dsp-ui search module here
+  ],
+  providers: [ ... ]    // <-- add providers as mentioned in section above
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+<!-- example of search panel -->
+
+And use it in the component template as follows.
+The example shows how to display the search panel that includes the full text search bar. It can be customized by setting the parameters with your configuration.
+
+```html
+<dsp-search-panel
+    [route]="'/search'"
+    [projectfilter]="true"
+    [expert]="false"
+    [advanced]="false">
+</dsp-search-panel>
+```
+
 <!-- TODO: link to main documentation or playground: e.g. https://docs.dasch.swiss/developers/knora-ui/documentation/ -->
 
 ## Contribution
