@@ -6,6 +6,7 @@ import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
 
 describe('Test App', () => {
     let page: AppPage;
+    const timeout = 6000;
 
     beforeEach(() => {
         page = new AppPage();
@@ -25,7 +26,7 @@ describe('Test App', () => {
         it('should display an integer value', async () => {
             await page.navigateTo('modify');
 
-            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value');
+            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value', timeout);
 
             const intValEleField = await page.getReadValueFieldFromValueComponent(valueEleComp);
             expect(await intValEleField.getText()).toEqual('1');
@@ -36,7 +37,7 @@ describe('Test App', () => {
 
             await page.navigateTo('modify');
 
-            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value');
+            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value', timeout);
 
             const displayEditComp: WebElement = await page.getDisplayEditComponentFromValueComponent(valueEleComp);
 
@@ -56,7 +57,7 @@ describe('Test App', () => {
 
             const EC = browser.ExpectedConditions;
 
-            await browser.wait(EC.presenceOf(element(by.css('.rm-value'))), 3000,
+            await browser.wait(EC.presenceOf(element(by.css('.rm-value'))), timeout,
                 'Wait for read value to be visible.');
 
             const readEle = await page.getReadValueFieldFromValueComponent(valueEleComp);
@@ -122,7 +123,7 @@ describe('Test App', () => {
             await selectOntos.clickOptions({ text: 'The anything ontology'});
 
             // check for the async response from Knora: anything and knora-api ontology
-            await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), 3000,
+            await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,
                 'Wait for resource class options to be visible.');
 
             expect(await submitButton.isDisabled()).toBe(true);
@@ -172,7 +173,7 @@ describe('Test App', () => {
             await selectOntos.clickOptions({ text: 'The anything ontology'});
 
             // check for the async response from Knora: anything and knora-api ontology
-            await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), 3000,
+            await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,
                 'Wait for resource class options to be visible.');
 
             expect(await submitButton.isDisabled()).toBe(true);
@@ -202,7 +203,7 @@ describe('Test App', () => {
             await input.setValue('testthing');
 
             // check for the async response from Knora: search by label
-            await browser.wait(EC.presenceOf(element(by.css('.resource'))), 3000,
+            await browser.wait(EC.presenceOf(element(by.css('.resource'))), timeout,
                 'Wait for resource options to be visible.');
 
             // check the options

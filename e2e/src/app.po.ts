@@ -4,6 +4,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
 
 export class AppPage {
+
     navigateTo(segment: string) {
         return browser.get(browser.baseUrl + segment) as Promise<any>;
     }
@@ -12,11 +13,11 @@ export class AppPage {
         return element(by.css('app-root span')).getText() as Promise<string>;
     }
 
-    async getComponentBySelector(selector: string): Promise<WebElement> {
+    async getComponentBySelector(selector: string, timeout: number): Promise<WebElement> {
         const EC = browser.ExpectedConditions;
 
         // wait for the specified element to be present
-        await browser.wait(EC.presenceOf(element(by.css('app-root ' + selector))), 3000,
+        await browser.wait(EC.presenceOf(element(by.css('app-root ' + selector))), timeout,
             `Wait for ${selector} to be visible.`);
 
         return element(by.css('app-root ' + selector)).getWebElement();
