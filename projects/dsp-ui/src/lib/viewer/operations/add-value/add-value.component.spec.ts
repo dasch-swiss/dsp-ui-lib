@@ -19,7 +19,7 @@ import {
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
 import { AddValueComponent } from './add-value.component';
-import { ValueOperationEventService } from '../../services/value-operation-event.service';
+import { ValueOperationEventService, EmitEvent, Events } from '../../services/value-operation-event.service';
 
 @Component({
     selector: `dsp-int-value`,
@@ -111,6 +111,8 @@ describe('AddValueComponent', () => {
             }
         };
 
+        const eventSpy = jasmine.createSpyObj('ValueOperationEventService', ['emit']);
+
         TestBed.configureTestingModule({
             imports: [
                 BrowserAnimationsModule,
@@ -127,13 +129,21 @@ describe('AddValueComponent', () => {
                     provide: DspApiConnectionToken,
                     useValue: valuesSpyObj
                 },
-                ValueOperationEventService
+                {
+                    provide: ValueOperationEventService,
+                    useValue: eventSpy
+                },
             ]
         })
         .compileComponents();
     }));
 
     beforeEach(() => {
+
+        const valueEventSpy = TestBed.inject(ValueOperationEventService);
+
+        (valueEventSpy as jasmine.SpyObj<ValueOperationEventService>).emit.and.stub();
+
         testHostFixture = TestBed.createComponent(DspAddValueTestComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
@@ -189,6 +199,8 @@ describe('AddValueComponent', () => {
         it('should add a new value to a property', () => {
 
             const valuesSpy = TestBed.inject(DspApiConnectionToken);
+
+            const valueEventSpy = TestBed.inject(ValueOperationEventService);
 
             (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).createValue.and.callFake(
                 () => {
@@ -248,6 +260,9 @@ describe('AddValueComponent', () => {
 
             expect(valuesSpy.v2.values.getValue).toHaveBeenCalledTimes(1);
             expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id, 'uuid');
+
+            expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
+            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueAdded));
 
         });
     });
