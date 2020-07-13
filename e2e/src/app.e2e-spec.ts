@@ -72,6 +72,8 @@ describe('Test App', () => {
         it('should select an ontology and a resource class', async () => {
             await page.navigateTo('advanced-search');
 
+            const EC = browser.ExpectedConditions;
+
             const loader = ProtractorHarnessEnvironment.loader();
 
             const submitButton = await page.getAdvancedSearchSubmitButton(loader);
@@ -90,6 +92,10 @@ describe('Test App', () => {
 
             // anything onto
             await ontoOptions[0].click();
+
+            // check for the async response from Knora: anything and knora-api ontology
+            await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,
+                'Wait for resource class options to be visible.');
 
             const resClasses = await page.getAdvancedSearchResourceClassSelection(loader);
 
