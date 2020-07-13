@@ -16,7 +16,7 @@ export class ValueOperationEventService {
 
     // Used in the listening component.
     // i.e. this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => doSomething());
-    on(event: Events, action: any): Subscription {
+    on(event: Events, action: () => void): Subscription {
         return this.subject$
             .pipe(
                 // Filter down based on event name to any events that are emitted out of the subject from the emit method below.
@@ -34,7 +34,7 @@ export class ValueOperationEventService {
 }
 
 export class EmitEvent {
-    constructor(public name: any, public value?: any) { }
+    constructor(public name: any, public value?: () => void) { }
 }
 
 // Possible events that can be emitted.
