@@ -13,7 +13,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 import { PropertyViewComponent } from './property-view.component';
-import { ValueOperationEventService } from '../../services/event-bus.service';
+import { ValueOperationEventService } from '../../services/value-operation-event.service';
 
 /**
  * Test host component to simulate parent component.

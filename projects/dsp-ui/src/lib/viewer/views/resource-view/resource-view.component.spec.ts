@@ -9,7 +9,7 @@ import { MockResource, PropertyDefinition, ReadResource, ResourcesEndpointV2 } f
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { DspApiConnectionToken } from '../../../core';
-import { EmitEvent, Events, ValueOperationEventService } from '../../services/event-bus.service';
+import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { PropertyInfoValues, ResourceViewComponent } from './resource-view.component';
 
 /**
@@ -52,7 +52,7 @@ class TestParentComponent implements OnInit {
     }
 }
 
-fdescribe('ResourceViewComponent', () => {
+describe('ResourceViewComponent', () => {
     let testHostComponent: TestParentComponent;
     let testHostFixture: ComponentFixture<TestParentComponent>;
     let hostCompDe;

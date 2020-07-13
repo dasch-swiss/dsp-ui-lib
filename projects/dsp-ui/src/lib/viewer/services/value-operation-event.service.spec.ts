@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
-import { EmitEvent, Events, ValueOperationEventService } from './event-bus.service';
+import { EmitEvent, Events, ValueOperationEventService } from './value-operation-event.service';
 
 describe('ValueOperationEventService', () => {
     let service: ValueOperationEventService;

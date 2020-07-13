@@ -9,7 +9,7 @@ import { PermissionUtil, ReadResource, SystemPropertyDefinition } from '@dasch-s
 import { Subscription } from 'rxjs';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
-import { ValueOperationEventService, Events } from '../../services/event-bus.service';
+import { ValueOperationEventService, Events } from '../../services/value-operation-event.service';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 
 @Component({
