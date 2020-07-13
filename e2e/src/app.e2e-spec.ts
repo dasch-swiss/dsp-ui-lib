@@ -208,7 +208,7 @@ describe('Test App', () => {
 
             const input = await loader.getHarness(MatInputHarness);
 
-            await input.setValue('testthing');
+            await input.setValue('test');
 
             // check for the async response from Knora: search by label
             await browser.wait(EC.presenceOf(element(by.css('.resource'))), timeout,
