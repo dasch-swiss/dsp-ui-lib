@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
-import { EmitEvent, EventBusService, Events } from './event-bus.service';
+import { EmitEvent, ValueOperationEventService, Events } from './event-bus.service';
 
-describe('EventBusService', () => {
-    let service: EventBusService;
+describe('ValueOperationEventService', () => {
+    let service: ValueOperationEventService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [EventBusService]
+            providers: [ValueOperationEventService]
         });
-        service = TestBed.inject(EventBusService);
+        service = TestBed.inject(ValueOperationEventService);
     });
 
     it('should be created', () => {
@@ -38,17 +38,17 @@ describe('EventBusService', () => {
 
     it('should no longer execute the callback code when an event is emitted after unsubscribing', () => {
         let valuesCount = 2;
-        let eventBusSubscription: Subscription;
+        let valueOperationEventSubscription: Subscription;
 
         // listen for ValueAdded event
-        eventBusSubscription = service.on(Events.ValueAdded, () => valuesCount += 1);
+        valueOperationEventSubscription = service.on(Events.ValueAdded, () => valuesCount += 1);
 
         // emit ValueAdded event
         service.emit(new EmitEvent(Events.ValueAdded));
 
         expect(valuesCount).toEqual(3);
 
-        eventBusSubscription.unsubscribe();
+        valueOperationEventSubscription.unsubscribe();
 
         // emit ValueAdded event again, this time it should not trigger the callback
         service.emit(new EmitEvent(Events.ValueAdded));

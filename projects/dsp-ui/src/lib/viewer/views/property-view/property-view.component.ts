@@ -9,7 +9,7 @@ import { PermissionUtil, ReadResource, SystemPropertyDefinition } from '@dasch-s
 import { Subscription } from 'rxjs';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
-import { EventBusService, Events } from '../../services/event-bus.service';
+import { ValueOperationEventService, Events } from '../../services/event-bus.service';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 
 @Component({
@@ -47,9 +47,9 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     propID: string; // used in template to show only the add value form of the corresponding value
     readOnlyProp: boolean; // used in template to not show an "add" button for properties we do not yet have a way to create/edit
 
-    eventBusSubscription: Subscription;
+    valueOperationEventSubscription: Subscription;
 
-    constructor(private _eventBusService: EventBusService) { }
+    constructor(private _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
         if (this.parentResource) {
@@ -63,14 +63,14 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
         }
 
         // listen for the AddValue event to be emitted and call hideAddValueForm()
-        this.eventBusSubscription = this._eventBusService.on(Events.ValueAdded, () => this.hideAddValueForm());
+        this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.hideAddValueForm());
 
     }
 
     ngOnDestroy() {
         // unsubscribe from the event bus when component is destroyed
-        if (this.eventBusSubscription !== undefined) {
-            this.eventBusSubscription.unsubscribe();
+        if (this.valueOperationEventSubscription !== undefined) {
+            this.valueOperationEventSubscription.unsubscribe();
         }
     }
 

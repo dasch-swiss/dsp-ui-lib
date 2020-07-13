@@ -5,16 +5,17 @@ import { filter, map } from 'rxjs/operators';
  * https://stackoverflow.com/questions/56290722/how-pass-a-event-from-deep-nested-child-to-parent-in-angular-2
  * This service is used as a way to enable components to communicate with each other no matter how nested they are.
  * This is intended to provide a cleaner way to emit events from nested components than chaining '@Outputs'.
- * The EventBus essentially creates a direct communication channel between the emitting component and the listening component.
+ * The ValueOperationEventService essentially creates a direct communication channel between
+ * the emitting component and the listening component.
  */
-export class EventBusService {
+export class ValueOperationEventService {
 
     // Create a subject to hold data which can be subscribed to.
     // You only get the data after you subscribe.
     private subject$ = new Subject();
 
     // Used in the listening component.
-    // i.e. this.eventBusSubscription = this._eventBusService.on(Events.ValueAdded, () => doSomething());
+    // i.e. this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => doSomething());
     on(event: Events, action: any): Subscription {
         return this.subject$
             .pipe(
@@ -26,7 +27,7 @@ export class EventBusService {
         }
 
     // Used in the emitting component.
-    // i.e. this.eventBusService.emit(new EmitEvent(Events.ValueAdded));
+    // i.e. this.valueOperationEventService.emit(new EmitEvent(Events.ValueAdded));
     emit(event: EmitEvent) {
         this.subject$.next(event);
     }

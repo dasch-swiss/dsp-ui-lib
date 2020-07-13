@@ -18,7 +18,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EventBusService, Events } from '../../services/event-bus.service';
+import { ValueOperationEventService, Events } from '../../services/event-bus.service';
 
 
 // object of property information from ontology class, properties and property values
@@ -32,7 +32,7 @@ export interface PropertyInfoValues {
   selector: 'dsp-resource-view',
   templateUrl: './resource-view.component.html',
   styleUrls: ['./resource-view.component.scss'],
-  providers: [EventBusService] // provide service on the component level so that each implementation of this component has its own instance.
+  providers: [ValueOperationEventService] // provide service on the component level so that each implementation of this component has its own instance.
 })
 export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -53,18 +53,18 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     message: string; // message to show in the snackbar to confirm the copy of the ARK URL
     action: string; // label for the snackbar action
 
-    eventBusSubscription: Subscription;
+    valueOperationEventSubscription: Subscription;
 
     constructor(
         @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
         private _snackBar: MatSnackBar,
-        private _eventBusService: EventBusService) { }
+        private _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
         // subscribe to the event bus and listen for the ValueAdded event to be emitted
         // when a ValueAdded event is emitted, get the resource again to display the newly created value
         // TODO: find a better way to show the new value than having to get the entire resource again
-        this.eventBusSubscription = this._eventBusService.on(Events.ValueAdded, () => this.getResource(this.iri));
+        this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.getResource(this.iri));
     }
 
     ngOnChanges() {
@@ -73,8 +73,8 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnDestroy() {
         // unsubscribe from the event bus when component is destroyed
-        if (this.eventBusSubscription !== undefined) {
-            this.eventBusSubscription.unsubscribe();
+        if (this.valueOperationEventSubscription !== undefined) {
+            this.valueOperationEventSubscription.unsubscribe();
         }
     }
 

@@ -19,7 +19,7 @@ import {
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
 import { AddValueComponent } from './add-value.component';
-import { EventBusService } from '../../services/event-bus.service';
+import { ValueOperationEventService } from '../../services/event-bus.service';
 
 @Component({
     selector: `dsp-int-value`,
@@ -127,7 +127,7 @@ describe('AddValueComponent', () => {
                     provide: DspApiConnectionToken,
                     useValue: valuesSpyObj
                 },
-                EventBusService
+                ValueOperationEventService
             ]
         })
         .compileComponents();

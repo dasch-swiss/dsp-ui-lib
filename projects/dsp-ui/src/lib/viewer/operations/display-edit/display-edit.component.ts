@@ -13,7 +13,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, EventBusService, Events } from '../../services/event-bus.service';
+import { EmitEvent, ValueOperationEventService, Events } from '../../services/event-bus.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 

@@ -18,7 +18,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, EventBusService, Events } from '../../services/event-bus.service';
+import { EmitEvent, ValueOperationEventService, Events } from '../../services/event-bus.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
 @Component({
@@ -55,7 +55,7 @@ export class AddValueComponent implements OnInit {
 
     constructor(@Inject(DspApiConnectionToken)
                 private knoraApiConnection: KnoraApiConnection,
-                private _eventBusService: EventBusService) { }
+                private _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
 
@@ -103,7 +103,7 @@ export class AddValueComponent implements OnInit {
                         // emit a ValueAdded event to the listeners in:
                         // property-view component to hide the add value form
                         // resource-view component to trigger a refresh of the resource
-                        this._eventBusService.emit(new EmitEvent(Events.ValueAdded));
+                        this._valueOperationEventService.emit(new EmitEvent(Events.ValueAdded));
 
                         // hide the progress indicator
                         this.submittingValue = false;
