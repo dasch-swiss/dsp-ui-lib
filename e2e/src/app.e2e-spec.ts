@@ -91,7 +91,7 @@ describe('Test App', () => {
             expect(await ontoOptions[0].getText()).toEqual('The anything ontology');
 
             // anything onto
-            await ontoOptions[0].click();
+            await selectOntos.clickOptions({ text: 'The anything ontology'});
 
             // check for the async response from Knora: anything and knora-api ontology
             await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,
@@ -107,9 +107,11 @@ describe('Test App', () => {
 
             expect(await resClassOptions[2].getText()).toEqual('Thing');
 
-            await resClassOptions[2].click();
+            await resClasses.clickOptions({ text: 'Thing'});
 
             expect(await submitButton.isDisabled()).toBe(false);
+
+            // browser.sleep(200000);
 
         });
 
