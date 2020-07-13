@@ -47,7 +47,13 @@ export class AppPage {
         return loader.getHarness(MatButtonHarness.with({ selector: '.add-property-button'}));
     }
 
-    getAdvancedSearchOntologySelection(loader: HarnessLoader): Promise<MatSelectHarness> {
+    async getAdvancedSearchOntologySelection(loader: HarnessLoader, timeout): Promise<MatSelectHarness> {
+        const EC = browser.ExpectedConditions;
+
+        // wait for the specified element to be present
+        await browser.wait(EC.presenceOf(element(by.css('app-root .select-ontology'))), timeout,
+            `Wait for .select-ontology to be visible.`);
+
         return loader.getHarness(MatSelectHarness.with({ selector: '.select-ontology' }));
     }
 

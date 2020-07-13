@@ -80,7 +80,7 @@ describe('Test App', () => {
 
             expect(await submitButton.isDisabled()).toBe(true);
 
-            const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
+            const selectOntos = await page.getAdvancedSearchOntologySelection(loader, timeout);
 
             await selectOntos.open();
 
@@ -126,7 +126,7 @@ describe('Test App', () => {
 
             expect(await submitButton.isDisabled()).toBe(true);
 
-            const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
+            const selectOntos = await page.getAdvancedSearchOntologySelection(loader, timeout);
 
             await selectOntos.clickOptions({ text: 'The anything ontology'});
 
@@ -176,7 +176,7 @@ describe('Test App', () => {
 
             expect(await submitButton.isDisabled()).toBe(true);
 
-            const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
+            const selectOntos = await page.getAdvancedSearchOntologySelection(loader, timeout);
 
             await selectOntos.clickOptions({ text: 'The anything ontology'});
 
