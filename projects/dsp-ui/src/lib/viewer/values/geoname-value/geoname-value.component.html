@@ -22,10 +22,6 @@
             <mat-error *ngIf="form.controls.geonameValue.hasError('required')">
                 A GeoName value is <strong>required</strong>.
             </mat-error>
-            <button class="more-info" mat-icon-button matSuffix (click)="openInfo()"
-                [attr.aria-label]="'Open in geonames.org'" title="Open in geonames.org">
-                <mat-icon>launch</mat-icon>
-            </button>
         </mat-form-field>
         <mat-form-field class="large-field value-component-comment">
             <textarea matInput
