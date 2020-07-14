@@ -37,7 +37,7 @@ class TestParentComponent implements OnInit {
 
     ngOnInit() {
 
-        MockResource.getTesthings().subscribe(res => {
+        MockResource.getTesthings(5).subscribe(res => {
             this.resources = res;
         });
     }
@@ -48,7 +48,7 @@ class TestParentComponent implements OnInit {
 
 }
 
-fdescribe('ResourceListComponent', () => {
+describe('ResourceListComponent', () => {
     let testHostComponent: TestParentComponent;
     let testHostFixture: ComponentFixture<TestParentComponent>;
 
@@ -79,7 +79,7 @@ fdescribe('ResourceListComponent', () => {
 
     it('expect 2 resources', () => {
         expect(testHostComponent.resources).toBeTruthy();
-        expect(testHostComponent.resources.resources.length).toBe(25);
+        expect(testHostComponent.resources.resources.length).toBe(5);
     });
 
     it('should open first resource', () => {
