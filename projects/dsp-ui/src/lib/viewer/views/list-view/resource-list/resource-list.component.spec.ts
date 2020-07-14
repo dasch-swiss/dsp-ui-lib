@@ -1,9 +1,10 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatLineModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MockList, ReadResourceSequence, SearchEndpointV2, MockResource, MockResources, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
-import { map } from 'rxjs/internal/operators/map';
-import { DspApiConnectionToken } from '../../../../core';
+import { MockResources, ReadResourceSequence } from '@dasch-swiss/dsp-js';
+import { DspActionModule } from 'projects/dsp-ui/src/lib/action';
 import { ResourceListComponent } from './resource-list.component';
 
 /**
@@ -24,79 +25,76 @@ class TestResourceListComponent {
  */
 @Component({
     template: `
-      <dsp-resource-view #resList [iri]="resourceIri"></dsp-resource-view>`
+      <dsp-resource-list #resList [resources]="resources" (resourceSelected)="openResource($event)"></dsp-resource-list>`
 })
-class TestParentComponent {
+class TestParentComponent implements OnInit {
 
     @ViewChild('resList') resourceListComponent: ResourceListComponent;
 
-    resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+    resources: ReadResourceSequence;
+
+    resIri: string;
+
+    ngOnInit() {
+
+        MockResources.getTestthings().subscribe(res => {
+            this.resources = res;
+        });
+    }
+
+    openResource(id: string) {
+        console.log(id);
+        this.resIri = id;
+    }
+
 }
 
 describe('ResourceListComponent', () => {
-    let component: ResourceListComponent;
-    let fixture: ComponentFixture<ResourceListComponent>;
-
-    const spyObj = {
-        v2: {
-            res: jasmine.createSpyObj('res', ['doFulltextSearch'])
-        }
-    };
+    let testHostComponent: TestParentComponent;
+    let testHostFixture: ComponentFixture<TestParentComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
                 ResourceListComponent,
-                TestParentComponent,
-                TestResourceListComponent
+                TestParentComponent
             ],
             imports: [
+                DspActionModule,
+                MatIconModule,
+                MatLineModule,
                 MatListModule
             ],
-            providers: [
-                {
-                    provide: DspApiConnectionToken,
-                    useValue: spyObj
-                }
-            ]
+            providers: []
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        const resSpy = TestBed.inject(DspApiConnectionToken);
+        testHostFixture = TestBed.createComponent(TestParentComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
 
-        (resSpy.v2.res as jasmine.SpyObj<ResourcesEndpointV2>).getResources.and.callFake(
-            (ids: string[]) => {
-
-              return MockResources.getTestthings().pipe(
-                map(
-                  (res: ReadResourceSequence) => {
-                    console.log(res);
-                    return res;
-                  }
-                ));
-            }
-          );
-
-
-
-        // (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doFulltextSearch.and.callFake(
-        //   (query: string) => {
-
-        //     return MockResources.getTestthings().pipe(
-        //       map(
-        //         (res: ReadResourceSequence) => {
-        //             console.log(res);
-        //         //   res.id = id;
-        //           return res;
-        //         }
-        //       ));
-        //   }
-        // );
+        expect(testHostComponent).toBeTruthy();
     });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
+    it('expect 2 resources', () => {
+        expect(testHostComponent.resources).toBeTruthy();
+        expect(testHostComponent.resources.resources.length).toBe(2);
     });
+
+    it('should open first resource', () => {
+        // trigger the click
+        const nativeElement = testHostFixture.nativeElement;
+        const item = nativeElement.querySelector('mat-list-item');
+        item.dispatchEvent(new Event('click'));
+
+        spyOn(testHostComponent, 'openResource').call('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+        expect(testHostComponent.openResource).toHaveBeenCalled();
+        expect(testHostComponent.openResource).toHaveBeenCalledTimes(1);
+
+        expect(testHostComponent.resIri).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+
+    });
+
 });
