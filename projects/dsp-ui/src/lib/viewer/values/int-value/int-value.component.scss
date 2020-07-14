@@ -1,12 +1,14 @@
-// Firefox: 
-// Hide number picker 
-input[type=number] { 
-    -moz-appearance:textfield; 
-} 
+@import "../../../assets/style/viewer-parent";
 
-// Show number picker on focus 
-input[type=number]:focus{ 
-    -moz-appearance:number-input; 
+// Firefox:
+// Hide number picker
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+// Show number picker on focus
+input[type=number]:focus{
+    -moz-appearance:number-input;
 }
 
 input:read-only {
