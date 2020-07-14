@@ -3,7 +3,8 @@ import { browser, by, element, logging, WebElement } from 'protractor';
 import { ProtractorHarnessEnvironment } from '@angular/cdk/testing/protractor';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
-import { SelectOntologyHarness } from '../../projects/dsp-ui/src/lib/search/advanced-search/select-ontology/select-ontology.harness'; // TODO: use module export
+import { SelectOntologyHarness } from '../../projects/dsp-ui/src/lib/search/advanced-search/select-ontology/select-ontology.harness'; // TODO: import from lib path
+// import { SelectOntologyHarness } from '@dasch-swiss/dsp-ui';
 
 describe('Test App', () => {
     let page: AppPage;
