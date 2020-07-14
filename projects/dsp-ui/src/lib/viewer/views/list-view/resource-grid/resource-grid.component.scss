@@ -1,19 +1,17 @@
 @import "../../../../assets/style/viewer";
 
-.resource-list {
-  .mat-list-item {
-    height: auto;
-    min-height: 40px;
-    padding: 8px 0;
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  gap: 8px 8px;
+  justify-items: stretch;
+  align-items: stretch;
+  align-content: space-evenly;
+}
 
-    &.border-bottom {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    }
-
-    .mat-line {
-      white-space: normal !important;
-    }
-  }
+.grid-card-header {
+  margin: 0 0 !important;
 }
 
 .res-class-label,
@@ -23,6 +21,7 @@
 
 .res-class-label {
   font-size: 14px !important;
+  color: red !important;
 }
 
 .res-class-value {
@@ -34,4 +33,3 @@
 .res-prop-label {
   font-style: italic;
 }
-
