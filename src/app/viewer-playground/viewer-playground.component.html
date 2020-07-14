@@ -1,2 +1,15 @@
+<button mat-raised-button [color]="'accent'" (click)="showGrid = !showGrid">
+    Display as {{showGrid ? "LIST" : "GRID"}}
+</button>
+
+<div class="resource-list" *ngIf="!showGrid">
 <h3>Simple list of resources: dsp-resource-list</h3>
 <dsp-resource-list *ngIf="resources" [resources]="resources" (resourceSelected)="openResource($event)"></dsp-resource-list>
+</div>
+
+<div class="resource-grid" *ngIf="showGrid">
+    <h3>Grid list of resources: dsp-resource-grid</h3>
+    <!-- TODO: uncomment as soon the dsp-resource-grid component exists -->
+    <!-- <dsp-resource-grid *ngIf="resources" [resources]="resources" (resourceSelected)="openResource($event)"></dsp-resource-grid> -->
+    DSP Resource Grid is not yet implemented
+</div>
