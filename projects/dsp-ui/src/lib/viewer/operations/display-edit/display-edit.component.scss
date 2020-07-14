@@ -4,39 +4,20 @@
     grid-template-rows: auto auto;
 }
 
-.property-header {
-    grid-row-start: 1;
-    grid-row-end: 2;
-    grid-column-start: 1;
-    grid-column-end: 2;
-}
-
-.property-header .label,
-.property-header .info {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.property-header .label {
-    margin: 0em;
-    font: 400 15px/24px Roboto, "Helvetica Neue", sans-serif;
-    color: #0000008a;
-}
-
 .value-component,
 .crud-buttons {
     vertical-align: top;
 }
 
 .value-component {
-    grid-row-start: 2;
+    grid-row-start: 1;
     grid-row-end: auto;
     grid-column-start: 1;
     grid-column-end: 2;
 }
 
 .crud-buttons {
-    grid-row-start: 2;
+    grid-row-start: 1;
     grid-row-end: auto;
     grid-column-start: 2;
     grid-column-end: 3;
@@ -50,35 +31,6 @@
     grid-column-end: end;
 }
 
-:host ::ng-deep .read-mode-view {
-    font: 400 15px/24px Roboto,"Helvetica Neue",sans-serif;
-}
-
-:host ::ng-deep .read-mode-view p {
-    margin: 0px;
-}
-
-:host ::ng-deep .child-value-component,
-:host ::ng-deep .value-component-comment {
-    display: block;
-}
-
-:host ::ng-deep .parent-component-wrapper .value-component-comment {
-    margin-top: -2em;
-}
-
-:host ::ng-deep .parent-value-component .child-value-component .mat-form-field-wrapper .mat-form-field-infix {
-    border-top: 0em solid transparent;
-}
-
-:host ::ng-deep .custom-error-message {
-    font-family: Roboto,"Helvetica Neue",sans-serif;
-    font-size: 12px;
-    margin-top: -1em;
-    padding-bottom: 1em;
-}
-
-.info,
 .comment-toggle,
 .edit,
 .save,
@@ -97,7 +49,6 @@
     cursor: default;
 }
 
-.info .material-icons,
 .comment-toggle .material-icons,
 .edit .material-icons,
 .save .material-icons,
@@ -105,7 +56,6 @@
     font-size: 18px;
 }
 
-.info .mat-icon,
 .comment-toggle .mat-icon,
 .edit .mat-icon,
 .save .mat-icon,
