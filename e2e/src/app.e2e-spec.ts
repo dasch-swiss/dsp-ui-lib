@@ -6,6 +6,7 @@ import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
 
 describe('Test App', () => {
     let page: AppPage;
+    const timeout = 6000;
 
     beforeEach(() => {
         page = new AppPage();
@@ -25,7 +26,7 @@ describe('Test App', () => {
         it('should display an integer value', async () => {
             await page.navigateTo('modify');
 
-            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value');
+            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value', timeout);
 
             const intValEleField = await page.getReadValueFieldFromValueComponent(valueEleComp);
             expect(await intValEleField.getText()).toEqual('1');
@@ -36,7 +37,7 @@ describe('Test App', () => {
 
             await page.navigateTo('modify');
 
-            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value');
+            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value', timeout);
 
             const displayEditComp: WebElement = await page.getDisplayEditComponentFromValueComponent(valueEleComp);
 
@@ -56,7 +57,7 @@ describe('Test App', () => {
 
             const EC = browser.ExpectedConditions;
 
-            await browser.wait(EC.presenceOf(element(by.css('.rm-value'))), 3000,
+            await browser.wait(EC.presenceOf(element(by.css('.rm-value'))), timeout,
                 'Wait for read value to be visible.');
 
             const readEle = await page.getReadValueFieldFromValueComponent(valueEleComp);
@@ -71,13 +72,15 @@ describe('Test App', () => {
         it('should select an ontology and a resource class', async () => {
             await page.navigateTo('advanced-search');
 
+            const EC = browser.ExpectedConditions;
+
             const loader = ProtractorHarnessEnvironment.loader();
 
             const submitButton = await page.getAdvancedSearchSubmitButton(loader);
 
             expect(await submitButton.isDisabled()).toBe(true);
 
-            const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
+            const selectOntos = await page.getAdvancedSearchOntologySelection(loader, timeout);
 
             await selectOntos.open();
 
@@ -88,7 +91,11 @@ describe('Test App', () => {
             expect(await ontoOptions[0].getText()).toEqual('The anything ontology');
 
             // anything onto
-            await ontoOptions[0].click();
+            await selectOntos.clickOptions({ text: 'The anything ontology'});
+
+            // check for the async response from Knora: anything and knora-api ontology
+            await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,
+                'Wait for resource class options to be visible.');
 
             const resClasses = await page.getAdvancedSearchResourceClassSelection(loader);
 
@@ -100,14 +107,18 @@ describe('Test App', () => {
 
             expect(await resClassOptions[2].getText()).toEqual('Thing');
 
-            await resClassOptions[2].click();
+            await resClasses.clickOptions({ text: 'Thing'});
 
             expect(await submitButton.isDisabled()).toBe(false);
+
+            // browser.sleep(200000);
 
         });
 
         it('should select an integer property', async () => {
             await page.navigateTo('advanced-search');
+
+            const EC = browser.ExpectedConditions;
 
             const loader = ProtractorHarnessEnvironment.loader();
 
@@ -115,9 +126,13 @@ describe('Test App', () => {
 
             expect(await submitButton.isDisabled()).toBe(true);
 
-            const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
+            const selectOntos = await page.getAdvancedSearchOntologySelection(loader, timeout);
 
             await selectOntos.clickOptions({ text: 'The anything ontology'});
+
+            // check for the async response from Knora: anything and knora-api ontology
+            await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,
+                'Wait for resource class options to be visible.');
 
             expect(await submitButton.isDisabled()).toBe(true);
 
@@ -153,15 +168,21 @@ describe('Test App', () => {
         it('should select a link property', async () => {
             await page.navigateTo('advanced-search');
 
+            const EC = browser.ExpectedConditions;
+
             const loader = ProtractorHarnessEnvironment.loader();
 
             const submitButton = await page.getAdvancedSearchSubmitButton(loader);
 
             expect(await submitButton.isDisabled()).toBe(true);
 
-            const selectOntos = await page.getAdvancedSearchOntologySelection(loader);
+            const selectOntos = await page.getAdvancedSearchOntologySelection(loader, timeout);
 
             await selectOntos.clickOptions({ text: 'The anything ontology'});
+
+            // check for the async response from Knora: anything and knora-api ontology
+            await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,
+                'Wait for resource class options to be visible.');
 
             expect(await submitButton.isDisabled()).toBe(true);
 
@@ -187,7 +208,11 @@ describe('Test App', () => {
 
             const input = await loader.getHarness(MatInputHarness);
 
-            await input.setValue('testthing');
+            await input.setValue('test');
+
+            // check for the async response from Knora: search by label
+            await browser.wait(EC.presenceOf(element(by.css('.resource'))), timeout,
+                'Wait for resource options to be visible.');
 
             // check the options
             const autocomplete = await loader.getHarness(MatAutocompleteHarness);

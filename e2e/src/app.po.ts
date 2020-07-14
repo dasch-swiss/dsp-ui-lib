@@ -4,6 +4,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
 
 export class AppPage {
+
     navigateTo(segment: string) {
         return browser.get(browser.baseUrl + segment) as Promise<any>;
     }
@@ -12,7 +13,13 @@ export class AppPage {
         return element(by.css('app-root span')).getText() as Promise<string>;
     }
 
-    getComponentBySelector(selector: string): WebElement {
+    async getComponentBySelector(selector: string, timeout: number): Promise<WebElement> {
+        const EC = browser.ExpectedConditions;
+
+        // wait for the specified element to be present
+        await browser.wait(EC.presenceOf(element(by.css('app-root ' + selector))), timeout,
+            `Wait for ${selector} to be visible.`);
+
         return element(by.css('app-root ' + selector)).getWebElement();
     }
 
@@ -40,7 +47,13 @@ export class AppPage {
         return loader.getHarness(MatButtonHarness.with({ selector: '.add-property-button'}));
     }
 
-    getAdvancedSearchOntologySelection(loader: HarnessLoader): Promise<MatSelectHarness> {
+    async getAdvancedSearchOntologySelection(loader: HarnessLoader, timeout): Promise<MatSelectHarness> {
+        const EC = browser.ExpectedConditions;
+
+        // wait for the specified element to be present
+        await browser.wait(EC.presenceOf(element(by.css('app-root .select-ontology'))), timeout,
+            `Wait for .select-ontology to be visible.`);
+
         return loader.getHarness(MatSelectHarness.with({ selector: '.select-ontology' }));
     }
 
