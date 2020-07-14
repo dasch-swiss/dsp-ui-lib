@@ -15,6 +15,9 @@ import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe';
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -28,14 +31,18 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     GndDirective,
     ProgressIndicatorComponent,
     MessageComponent,
-    SortButtonComponent
+    SortButtonComponent,
+    LoginFormComponent
   ],
   imports: [
     CommonModule,
     MatIconModule,
+    MatInputModule,
     MatMenuModule,
     MatCardModule,
-    MatListModule
+    MatListModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
     FormattedBooleanPipe,
@@ -47,7 +54,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     ExistingNameDirective,
     ProgressIndicatorComponent,
     MessageComponent,
-    SortButtonComponent
+    SortButtonComponent,
+    LoginFormComponent
   ]
 })
 
