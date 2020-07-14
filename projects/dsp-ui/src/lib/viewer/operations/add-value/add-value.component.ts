@@ -42,8 +42,6 @@ export class AddValueComponent implements OnInit {
 
     mode: 'read' | 'update' | 'create' | 'search';
 
-    canModify: boolean;
-
     createModeActive = false;
 
     submittingValue = false;
