@@ -42,6 +42,7 @@ import { DateInputComponent } from './values/date-value/date-input/date-input.co
 import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndatepicker.directive';
 import { ResourceListComponent } from './views/list-view/resource-list/resource-list.component';
 import { DspActionModule } from '../action';
+import { AddValueComponent } from './operations/add-value/add-value.component';
 
 @NgModule({
     declarations: [
@@ -68,6 +69,7 @@ import { DspActionModule } from '../action';
         ListValueComponent,
         SublistValueComponent,
         GeonameValueComponent,
+        AddValueComponent,
         ResourceListComponent
     ],
     imports: [
@@ -107,6 +109,8 @@ import { DspActionModule } from '../action';
         ResourceViewComponent,
         ListValueComponent,
         GeonameValueComponent,
+        JDNDatepickerDirective,
+        AddValueComponent,
         JDNDatepickerDirective,
         ResourceListComponent
     ]
