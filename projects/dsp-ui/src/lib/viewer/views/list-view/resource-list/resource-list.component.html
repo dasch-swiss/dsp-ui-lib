@@ -11,9 +11,7 @@
         <div matLine *ngFor="let prop of res.properties | keyvalue">
             <div matLine *ngFor="let val of prop.value | keyvalue">
                 <span class="res-prop-label">
-                    {{
-                        res.entityInfo.properties[val.value.property].label
-                    }}:&nbsp;
+                    {{ res.entityInfo.properties[val.value.property].label }}
                 </span>
 
                 <div class="res-prop-value">
