@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLineModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MockResources, ReadResourceSequence } from '@dasch-swiss/dsp-js';
+import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { DspActionModule } from 'projects/dsp-ui/src/lib/action';
 import { ResourceListComponent } from './resource-list.component';
 
@@ -37,19 +37,18 @@ class TestParentComponent implements OnInit {
 
     ngOnInit() {
 
-        MockResources.getTestthings().subscribe(res => {
+        MockResource.getTesthings().subscribe(res => {
             this.resources = res;
         });
     }
 
     openResource(id: string) {
-        console.log(id);
         this.resIri = id;
     }
 
 }
 
-describe('ResourceListComponent', () => {
+fdescribe('ResourceListComponent', () => {
     let testHostComponent: TestParentComponent;
     let testHostFixture: ComponentFixture<TestParentComponent>;
 
@@ -80,7 +79,7 @@ describe('ResourceListComponent', () => {
 
     it('expect 2 resources', () => {
         expect(testHostComponent.resources).toBeTruthy();
-        expect(testHostComponent.resources.resources.length).toBe(2);
+        expect(testHostComponent.resources.resources.length).toBe(25);
     });
 
     it('should open first resource', () => {
