@@ -1,5 +1,5 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,7 +35,7 @@ class TestPropertyViewComponent implements OnInit {
 template: `
     <dsp-resource-view #resView [iri]="resourceIri"></dsp-resource-view>`
 })
-class TestParentComponent implements OnInit {
+class TestParentComponent implements OnInit, OnDestroy {
 
     @ViewChild('resView') resourceViewComponent: ResourceViewComponent;
 
@@ -45,10 +45,16 @@ class TestParentComponent implements OnInit {
 
     myNum = 0;
 
-    constructor(public _valueOperationEventService: ValueOperationEventService) { };
+    constructor(public _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
         this.voeSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.myNum += 1);
+    }
+
+    ngOnDestroy() {
+        if (this.voeSubscription) {
+            this.voeSubscription.unsubscribe();
+        }
     }
 }
 
@@ -134,6 +140,14 @@ describe('ResourceViewComponent', () => {
         voeService.emit(new EmitEvent(Events.ValueAdded));
 
         expect(testHostComponent.myNum).toEqual(1);
+    });
+
+    it('should unsubscribe from changes when destroyed', () => {
+        expect(testHostComponent.voeSubscription.closed).toBe(false);
+
+        testHostFixture.destroy();
+
+        expect(testHostComponent.voeSubscription.closed).toBe(true);
     });
 
     // TODO: currently not possible to test copy to clipboard from Material Angular
