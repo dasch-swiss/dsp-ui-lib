@@ -1,5 +1,5 @@
 <div class="resource-grid">
-    <div *ngFor="let res of resources.resources" (click)="resourceSelected.emit(res.id)" class="link">
+    <div *ngFor="let res of resources.resources" (click)="resourceSelected.emit(res.id)" class="link res-grid-item">
         <mat-card class="grid-card">
             <div class="grid-card-header">
                 <mat-card-subtitle class="res-class-label">{{ res.entityInfo.classes[res.type].label }}</mat-card-subtitle>

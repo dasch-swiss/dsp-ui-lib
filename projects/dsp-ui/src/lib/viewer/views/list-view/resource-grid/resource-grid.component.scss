@@ -4,10 +4,15 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto;
+  grid-auto-rows: 1fr;
   gap: 8px 8px;
   justify-items: stretch;
   align-items: stretch;
   align-content: space-evenly;
+}
+
+.grid-card {
+  height: calc(100% - 32px);
 }
 
 .grid-card-header {
@@ -21,7 +26,6 @@
 
 .res-class-label {
   font-size: 14px !important;
-  color: red !important;
 }
 
 .res-class-value {
