@@ -19,7 +19,6 @@ export class ViewerPlaygroundComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-
         this._dspApiConnection.v2.search.doFulltextSearch('thing').subscribe(
             (response: ReadResourceSequence) => {
                 this.resources = response;
@@ -33,4 +32,5 @@ export class ViewerPlaygroundComponent implements OnInit {
     openResource(id: string) {
         console.log('Open Resource:', id);
     }
+
 }

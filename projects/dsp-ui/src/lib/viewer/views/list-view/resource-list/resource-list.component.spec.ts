@@ -8,7 +8,7 @@ import { DspActionModule } from 'projects/dsp-ui/src/lib/action';
 import { ResourceListComponent } from './resource-list.component';
 
 /**
- * Test host component to simulate child component, here property-view.
+ * Test host component to simulate child component, here resource-list.
  */
 @Component({
     selector: `dsp-resource-list`,
@@ -43,7 +43,6 @@ class TestParentComponent implements OnInit {
     }
 
     openResource(id: string) {
-        console.log(id);
         this.resIri = id;
     }
 

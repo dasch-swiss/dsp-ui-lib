@@ -7,7 +7,6 @@ import { DspApiConnectionToken, DspViewerModule } from '@dasch-swiss/dsp-ui';
 import { of } from 'rxjs';
 import { ViewerPlaygroundComponent } from './viewer-playground.component';
 
-
 describe('ViewerPlaygroundComponent', () => {
     let component: ViewerPlaygroundComponent;
     let fixture: ComponentFixture<ViewerPlaygroundComponent>;
@@ -47,9 +46,9 @@ describe('ViewerPlaygroundComponent', () => {
             of({} as ReadResourceSequence)
         );
 
-        fixture = TestBed.createComponent(ViewerPlaygroundComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+      fixture = TestBed.createComponent(ViewerPlaygroundComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
     });
 
     it('should create', () => {
