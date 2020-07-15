@@ -18,7 +18,7 @@ export class ExpertSearchComponent implements OnInit {
     @Output() gravsearchQuery = new EventEmitter<string>();
 
     /**
-     * @param toggleExtendedSearchForm Trigger toggle for extended search form.
+     * @param toggleExpertSearchForm Trigger toggle for extended search form.
      */
     @Output() toggleExpertSearchForm = new EventEmitter<boolean>();
 
