@@ -23,6 +23,7 @@ import { SearchResultsComponent } from './search-playground/search-results/searc
 import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
 import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
 import { environment } from '../environments/environment';
+import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
 
 @NgModule({
     declarations: [
@@ -32,7 +33,8 @@ import { environment } from '../environments/environment';
         ActionPlaygroundComponent,
         SearchPlaygroundComponent,
         SearchResultsComponent,
-        AdvancedSearchPlaygroundComponent
+        AdvancedSearchPlaygroundComponent,
+        StillImagePlaygroundComponent
     ],
     imports: [
         BrowserModule,
