@@ -37,3 +37,17 @@
 .res-prop-label {
   font-style: italic;
 }
+
+// responsive for phone device
+@media (max-width: map-get($grid-breakpoints, phone)) {
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    grid-auto-rows: 1fr;
+    gap: 4px 4px;
+    justify-items: stretch;
+    align-items: stretch;
+    align-content: space-evenly;
+  }
+}
