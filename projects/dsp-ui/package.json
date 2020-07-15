@@ -18,6 +18,7 @@
     "@dasch-swiss/dsp-js": "1.0.0-rc.4",
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.13",
-    "ngx-color-picker": "^9.1.0"
+    "ngx-color-picker": "^9.1.0",
+    "openseadragon": "^2.4.2"
   }
 }

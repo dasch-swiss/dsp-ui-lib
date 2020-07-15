@@ -41,6 +41,8 @@ import { DateInputComponent } from './values/date-value/date-input/date-input.co
 import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndatepicker.directive';
 import { DspActionModule } from '../action';
 import { AddValueComponent } from './operations/add-value/add-value.component';
+import { StillImageComponent } from './representation/still-image/still-image.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 @NgModule({
@@ -69,6 +71,7 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
         SublistValueComponent,
         GeonameValueComponent,
         AddValueComponent,
+        StillImageComponent,
     ],
     imports: [
         CommonModule,
@@ -85,6 +88,7 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
         MatIconModule,
         MatJDNConvertibleCalendarDateAdapterModule,
         MatMenuModule,
+        MatToolbarModule,
         ClipboardModule,
         ColorPickerModule,
         DspActionModule
@@ -107,7 +111,8 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
         ListValueComponent,
         GeonameValueComponent,
         AddValueComponent,
-        JDNDatepickerDirective
+        JDNDatepickerDirective,
+        StillImageComponent
     ]
 })
 export class DspViewerModule {
