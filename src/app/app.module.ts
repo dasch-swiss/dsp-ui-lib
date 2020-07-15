@@ -26,6 +26,7 @@ import { SearchPlaygroundComponent } from './search-playground/search-playground
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
 
 import { environment } from '../environments/environment';
+import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { environment } from '../environments/environment';
         ActionPlaygroundComponent,
         SearchPlaygroundComponent,
         SearchResultsComponent,
-        AdvancedSearchPlaygroundComponent
+        AdvancedSearchPlaygroundComponent,
+        ViewerPlaygroundComponent
     ],
     imports: [
         BrowserModule,
