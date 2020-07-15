@@ -19,7 +19,7 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
     @Input() images: ReadStillImageFileValue[];
     @Input() imageCaption?: string;
 
-    private viewer;
+    private _viewer;
 
     constructor(private elementRef: ElementRef) {
     }
@@ -27,7 +27,7 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
     ngOnChanges(changes: { [key: string]: SimpleChange }) {
         if (changes['images'] && changes['images'].isFirstChange()) {
             this.setupViewer();
-            // this.currentImageIri.emit(this.images[this.viewer.currentPage()].stillImageFileValue.id);
+            // this.currentImageIri.emit(this.images[this._viewer.currentPage()].stillImageFileValue.id);
         }
         if (changes['images']) {
             this.openImages();
@@ -43,9 +43,9 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
             }*/
         }
 
-        if (this.viewer) {
-            // console.log(this.viewer);
-            //            this.currentImageIndex.emit(this.viewer.currentPage());
+        if (this._viewer) {
+            // console.log(this._viewer);
+            //            this.currentImageIndex.emit(this._viewer.currentPage());
         }
     }
 
@@ -54,14 +54,14 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.viewer) {
-            this.viewer.destroy();
-            this.viewer = undefined;
+        if (this._viewer) {
+            this._viewer.destroy();
+            this._viewer = undefined;
         }
     }
 
     /**
-     * Initializes the OpenSeadragon viewer
+     * Initializes the OpenSeadragon _viewer
      */
     private setupViewer(): void {
         const viewerContainer = this.elementRef.nativeElement.getElementsByClassName('osd-container')[0];
@@ -79,16 +79,16 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
             rotateLeftButton: 'KUI_OSD_ROTATE_LEFT',        // doesn't work yet
             rotateRightButton: 'KUI_OSD_ROTATE_RIGHT'       // doesn't work yet
         };
-        this.viewer = new OpenSeadragon.Viewer(osdOptions);
+        this._viewer = new OpenSeadragon.Viewer(osdOptions);
 
-        this.viewer.addHandler('full-screen', (args) => {
+        this._viewer.addHandler('full-screen', (args) => {
             if (args.fullScreen) {
                 viewerContainer.classList.add('fullscreen');
             } else {
                 viewerContainer.classList.remove('fullscreen');
             }
         });
-        this.viewer.addHandler('resize', (args) => {
+        this._viewer.addHandler('resize', (args) => {
             // args.eventSource.svgOverlay().resize();
         });
 
@@ -97,7 +97,7 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
                 return img;
             });
 
-        this.viewer.addHandler('page', (event) => {
+        this._viewer.addHandler('page', (event) => {
             console.log('event on page', event);
             console.log('Now on page', event.page);
             const index: number = event.page;
@@ -110,7 +110,7 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
-     * Adds all images in this.images to the viewer.
+     * Adds all images in this.images to the _viewer.
      * Images are positioned in a horizontal row next to each other.
      */
     private openImages(): void {
@@ -127,7 +127,7 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
         const tileSources: object[] = this.prepareTileSourcesFromFileValues(fileValues);
 
         // this.removeOverlays();
-        this.viewer.open(tileSources);
+        this._viewer.open(tileSources);
 
     }
 
@@ -135,7 +135,7 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
      * Prepare tile sources from the given sequence of [[ReadStillImageFileValue]].
      *
      * @param imagesToDisplay the given file values to de displayed.
-     * @returns the tile sources to be passed to OSD viewer.
+     * @returns the tile sources to be passed to OSD _viewer.
      */
     private prepareTileSourcesFromFileValues(imagesToDisplay: ReadStillImageFileValue[]): object[] {
         let imageXOffset = 0;

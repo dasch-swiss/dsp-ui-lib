@@ -58,17 +58,17 @@ describe('StillImageComponent', () => {
     // this prevents TS compiler from restricting access, while still checking type safety.
 
     it('should have initialized viewer after resources change', () => {
-        expect(testHostComponent.osdViewerComp['viewer']).toBeTruthy();
+        expect(testHostComponent.osdViewerComp['_viewer']).toBeTruthy();
     });
 
     it('should have OpenSeadragon.Viewer.isVisible() == true after resources change', () => {
-        expect(testHostComponent.osdViewerComp['viewer'].isVisible()).toBeTruthy();
+        expect(testHostComponent.osdViewerComp['_viewer'].isVisible()).toBeTruthy();
     });
 
     it('should have 1 image loaded after resources change with 1 full size image', done => {
 
-        testHostComponent.osdViewerComp['viewer'].addHandler('open', (args) => {
-            expect(testHostComponent.osdViewerComp['viewer'].world.getItemCount()).toEqual(1);
+        testHostComponent.osdViewerComp['_viewer'].addHandler('open', (args) => {
+            expect(testHostComponent.osdViewerComp['_viewer'].world.getItemCount()).toEqual(1);
             done();
         });
 
