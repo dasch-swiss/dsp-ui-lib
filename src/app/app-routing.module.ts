@@ -6,6 +6,7 @@ import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
+import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
 
 
 const routes: Routes = [
@@ -27,7 +28,8 @@ const routes: Routes = [
             }
         ]
     },
-    { path: 'advanced-search', component: AdvancedSearchPlaygroundComponent} // action playground component
+    { path: 'advanced-search', component: AdvancedSearchPlaygroundComponent}, // advanced search playground component
+    { path: 'viewer', component: ViewerPlaygroundComponent}, // viewer playground component
 ];
 
 @NgModule({

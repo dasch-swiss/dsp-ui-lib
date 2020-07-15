@@ -6,6 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
@@ -39,9 +40,9 @@ import { DateValueComponent } from './values/date-value/date-value.component';
 import { CalendarHeaderComponent } from './values/date-value/calendar-header/calendar-header.component';
 import { DateInputComponent } from './values/date-value/date-input/date-input.component';
 import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndatepicker.directive';
+import { ResourceListComponent } from './views/list-view/resource-list/resource-list.component';
 import { DspActionModule } from '../action';
 import { AddValueComponent } from './operations/add-value/add-value.component';
-
 
 @NgModule({
     declarations: [
@@ -69,6 +70,7 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
         SublistValueComponent,
         GeonameValueComponent,
         AddValueComponent,
+        ResourceListComponent
     ],
     imports: [
         CommonModule,
@@ -84,6 +86,7 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
         MatDatepickerModule,
         MatIconModule,
         MatJDNConvertibleCalendarDateAdapterModule,
+        MatListModule,
         MatMenuModule,
         ClipboardModule,
         ColorPickerModule,
@@ -106,8 +109,10 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
         ResourceViewComponent,
         ListValueComponent,
         GeonameValueComponent,
+        JDNDatepickerDirective,
         AddValueComponent,
-        JDNDatepickerDirective
+        JDNDatepickerDirective,
+        ResourceListComponent
     ]
 })
 export class DspViewerModule {
