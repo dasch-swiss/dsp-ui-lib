@@ -70,14 +70,14 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
             sequenceMode: true,
             showReferenceStrip: true,
             showNavigator: true,
-            zoomInButton: 'KUI_OSD_ZOOM_IN',
-            zoomOutButton: 'KUI_OSD_ZOOM_OUT',
-            previousButton: 'KUI_OSD_PREV_PAGE',
-            nextButton: 'KUI_OSD_NEXT_PAGE',
-            homeButton: 'KUI_OSD_HOME',
-            fullPageButton: 'KUI_OSD_FULL_PAGE',
-            rotateLeftButton: 'KUI_OSD_ROTATE_LEFT',        // doesn't work yet
-            rotateRightButton: 'KUI_OSD_ROTATE_RIGHT'       // doesn't work yet
+            zoomInButton: 'DSP_OSD_ZOOM_IN',
+            zoomOutButton: 'DSP_OSD_ZOOM_OUT',
+            previousButton: 'DSP_OSD_PREV_PAGE',
+            nextButton: 'DSP_OSD_NEXT_PAGE',
+            homeButton: 'DSP_OSD_HOME',
+            fullPageButton: 'DSP_OSD_FULL_PAGE'/*,
+            rotateLeftButton: 'DSP_OSD_ROTATE_LEFT',        // doesn't work yet
+            rotateRightButton: 'DSP_OSD_ROTATE_RIGHT'*/       // doesn't work yet
         };
         this._viewer = new OpenSeadragon.Viewer(osdOptions);
 
