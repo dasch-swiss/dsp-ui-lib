@@ -19,7 +19,7 @@ class TestHostComponent implements OnInit {
     stillImageFileValues: ReadStillImageFileValue[] = [];
     caption = 'test image';
 
-    @ViewChild(StillImageComponent, { static: true }) osdViewerComp: StillImageComponent;
+    @ViewChild(StillImageComponent) osdViewerComp: StillImageComponent;
 
     ngOnInit() {
         this.stillImageFileValues = [stillImageFileValue as ReadStillImageFileValue];
@@ -49,5 +49,30 @@ describe('StillImageComponent', () => {
 
     it('should create', () => {
         expect(testHostComponent).toBeTruthy();
+        expect(testHostComponent.osdViewerComp).toBeTruthy();
     });
+
+    // atm StillImageOSDViewerComponent has not many public methods or members.
+    // to be able to still test state of StillImageOSDViewerComponent we use the following technique for the first couple of tests:
+    // test private methods, members with: component["method"](param), or component["member"]
+    // this prevents TS compiler from restricting access, while still checking type safety.
+
+    it('should have initialized viewer after resources change', () => {
+        expect(testHostComponent.osdViewerComp['viewer']).toBeTruthy();
+    });
+
+    it('should have OpenSeadragon.Viewer.isVisible() == true after resources change', () => {
+        expect(testHostComponent.osdViewerComp['viewer'].isVisible()).toBeTruthy();
+    });
+
+    it('should have 1 image loaded after resources change with 1 full size image', done => {
+
+        testHostComponent.osdViewerComp['viewer'].addHandler('open', (args) => {
+            expect(testHostComponent.osdViewerComp['viewer'].world.getItemCount()).toEqual(1);
+            done();
+        });
+
+    });
+
+
 });
