@@ -25,7 +25,6 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(changes: { [key: string]: SimpleChange }) {
-        console.log(this.images);
         if (changes['images'] && changes['images'].isFirstChange()) {
             this.setupViewer();
             // this.currentImageIri.emit(this.images[this.viewer.currentPage()].stillImageFileValue.id);
@@ -81,14 +80,15 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
             rotateRightButton: 'KUI_OSD_ROTATE_RIGHT'       // doesn't work yet
         };
         this.viewer = new OpenSeadragon.Viewer(osdOptions);
-        this.viewer.addHandler('full-screen', function (args) {
+
+        this.viewer.addHandler('full-screen', (args) => {
             if (args.fullScreen) {
                 viewerContainer.classList.add('fullscreen');
             } else {
                 viewerContainer.classList.remove('fullscreen');
             }
         });
-        this.viewer.addHandler('resize', function (args) {
+        this.viewer.addHandler('resize', (args) => {
             // args.eventSource.svgOverlay().resize();
         });
 
@@ -97,7 +97,7 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
                 return img;
             });
 
-        this.viewer.addHandler('page', function (event) {
+        this.viewer.addHandler('page', (event) => {
             console.log('event on page', event);
             console.log('Now on page', event.page);
             const index: number = event.page;
@@ -107,11 +107,6 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
             // return id;
 
         });
-        //
-
-        // this.currentImageIri.emit(this.viewer.getCurrentImage());
-
-
     }
 
     /**
@@ -129,7 +124,7 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
             });
 
         // display only the defined range of this.images
-        const tileSources: Object[] = StillImageComponent.prepareTileSourcesFromFileValues(fileValues);
+        const tileSources: object[] = this.prepareTileSourcesFromFileValues(fileValues);
 
         // this.removeOverlays();
         this.viewer.open(tileSources);
@@ -142,7 +137,7 @@ export class StillImageComponent implements OnInit, OnChanges, OnDestroy {
      * @param imagesToDisplay the given file values to de displayed.
      * @returns the tile sources to be passed to OSD viewer.
      */
-    private static prepareTileSourcesFromFileValues(imagesToDisplay: ReadStillImageFileValue[]): Object[] {
+    private prepareTileSourcesFromFileValues(imagesToDisplay: ReadStillImageFileValue[]): object[] {
         let imageXOffset = 0;
         const imageYOffset = 0;
         const tileSources = [];

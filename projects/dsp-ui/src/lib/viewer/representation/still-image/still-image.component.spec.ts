@@ -3,14 +3,36 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { StillImageComponent } from './still-image.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ReadStillImageFileValue } from '@dasch-swiss/dsp-js';
+
+// TODO: get this from dsp-js
+const stillImageFileValue = {"type":"http://api.knora.org/ontology/knora-api/v2#StillImageFileValue","id":"http://rdfh.ch/0803/00014b43f902/values/18dc0912cd05","attachedToUser":"http://rdfh.ch/users/91e19f1e01","arkUrl":"http://0.0.0.0:3336/ark:/72163/1/0803/00014b43f902l/000000000018dc0912cd0wl","versionArkUrl":"http://0.0.0.0:3336/ark:/72163/1/0803/00014b43f902l/000000000018dc0912cd0wl.20121121T165038Z","valueCreationDate":"2012-11-21T16:50:38Z","hasPermissions":"CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser","userHasPermission":"RV","uuid":"000000000018dc0912cd0w","filename":"incunabula_0000003328.jp2","fileUrl":"http://0.0.0.0:1024/0803/incunabula_0000003328.jp2/full/1312,1815/0/default.jpg","dimX":1312,"dimY":1815,"iiifBaseUrl":"http://0.0.0.0:1024/0803","strval":"http://0.0.0.0:1024/0803/incunabula_0000003328.jp2/full/1312,1815/0/default.jpg","property":"http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue","propertyLabel":"has image file","propertyComment":"Connects a Representation to an image file"};
+
+@Component({
+    template: `
+        <dsp-still-image [images]="stillImageFileValues"
+                         [imageCaption]="caption">
+        </dsp-still-image>`
+})
+class TestHostComponent implements OnInit {
+    stillImageFileValues: ReadStillImageFileValue[] = [];
+    caption = 'test image';
+
+    @ViewChild(StillImageComponent, { static: true }) osdViewerComp: StillImageComponent;
+
+    ngOnInit() {
+        this.stillImageFileValues = [stillImageFileValue as ReadStillImageFileValue];
+    }
+}
 
 describe('StillImageComponent', () => {
-    let component: StillImageComponent;
-    let fixture: ComponentFixture<StillImageComponent>;
+    let testHostComponent: TestHostComponent;
+    let testHostfixture: ComponentFixture<TestHostComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [StillImageComponent],
+            declarations: [StillImageComponent, TestHostComponent],
             imports: [
                 MatIconModule,
                 MatToolbarModule
@@ -20,12 +42,12 @@ describe('StillImageComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(StillImageComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+        testHostfixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostfixture.componentInstance;
+        testHostfixture.detectChanges();
     });
 
     it('should create', () => {
-        expect(component).toBeTruthy();
+        expect(testHostComponent).toBeTruthy();
     });
 });
