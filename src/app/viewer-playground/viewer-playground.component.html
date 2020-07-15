@@ -3,14 +3,13 @@
 </button>
 
 <div class="resource-list" *ngIf="!showGrid">
-<h3>Simple list of resources: dsp-resource-list</h3>
-<dsp-resource-list *ngIf="resources" [resources]="resources" (resourceSelected)="openResource($event)"></dsp-resource-list>
+    <h3>Simple list of resources: dsp-resource-list</h3>
+    <dsp-resource-list *ngIf="resources" [resources]="resources" (resourceSelected)="openResource($event)">
+    </dsp-resource-list>
 </div>
 
 <div class="resource-grid" *ngIf="showGrid">
     <h3>Simple grid of resources: dsp-resource-grid</h3>
-    <dsp-resource-grid *ngIf="resources" [resources]="resources" (resourceSelected)="openResource($event)"></dsp-resource-grid>
+    <dsp-resource-grid *ngIf="resources" [resources]="resources" (resourceSelected)="openResource($event)">
+    </dsp-resource-grid>
 </div>
-<hr>
-
-
