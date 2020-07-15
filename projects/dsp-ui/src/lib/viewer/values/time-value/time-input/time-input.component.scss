@@ -1,14 +1,1 @@
-/**
- * CSS changed here must also be changed in each child component of a wrapped component
- * time-input.component.scss, interval-input.component.scss, etc.
- */
-
-.child-input-component {
-    display: inline-block;
-    vertical-align: bottom;
-    width: 49%;
-}
-
-.child-input-component:nth-child(2) {
-    padding-left: 2%;
-}
+@import "../../../../assets/style/viewer-child";
