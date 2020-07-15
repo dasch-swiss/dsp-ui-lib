@@ -8,7 +8,7 @@ import { DspActionModule } from 'projects/dsp-ui/src/lib/action';
 import { ResourceListComponent } from './resource-list.component';
 
 /**
- * Test host component to simulate child component, here property-view.
+ * Test host component to simulate child component, here resource-list.
  */
 @Component({
     selector: `dsp-resource-list`,
@@ -77,7 +77,7 @@ describe('ResourceListComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('expect 2 resources', () => {
+    it('expect 5 resources', () => {
         expect(testHostComponent.resources).toBeTruthy();
         expect(testHostComponent.resources.resources.length).toBe(5);
     });
