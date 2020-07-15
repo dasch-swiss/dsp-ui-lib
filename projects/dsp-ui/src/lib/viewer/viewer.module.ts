@@ -44,6 +44,7 @@ import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndat
 import { ResourceListComponent } from './views/list-view/resource-list/resource-list.component';
 import { ResourceGridComponent } from './views/list-view/resource-grid/resource-grid.component';
 import { DspActionModule } from '../action';
+import { AddValueComponent } from './operations/add-value/add-value.component';
 
 @NgModule({
     declarations: [
@@ -71,7 +72,8 @@ import { DspActionModule } from '../action';
         SublistValueComponent,
         GeonameValueComponent,
         ResourceListComponent,
-        ResourceGridComponent
+        ResourceGridComponent,
+        AddValueComponent
     ],
     imports: [
         CommonModule,
@@ -113,7 +115,8 @@ import { DspActionModule } from '../action';
         GeonameValueComponent,
         JDNDatepickerDirective,
         ResourceListComponent,
-        ResourceGridComponent
+        ResourceGridComponent,
+        AddValueComponent
     ]
 })
 export class DspViewerModule {
