@@ -33,7 +33,8 @@
               "src/assets/main.scss"
             ],
             "scripts": [
-              "node_modules/openseadragon/build/openseadragon/openseadragon.min.js"
+              "node_modules/openseadragon/build/openseadragon/openseadragon.min.js",
+              "node_modules/svg-overlay/openseadragon-svg-overlay.js"
             ]
           },
           "configurations": {
@@ -100,7 +101,8 @@
               "src/assets/main.scss"
             ],
             "scripts": [
-              "node_modules/openseadragon/build/openseadragon/openseadragon.min.js"
+              "node_modules/openseadragon/build/openseadragon/openseadragon.min.js",
+              "node_modules/svg-overlay/openseadragon-svg-overlay.js"
             ]
           }
         },
