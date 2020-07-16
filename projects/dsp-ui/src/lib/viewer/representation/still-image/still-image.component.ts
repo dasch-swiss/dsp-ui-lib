@@ -122,20 +122,20 @@ export class StillImageComponent implements OnChanges, OnDestroy {
                 // construct IIIF tileSource configuration according to
                 // http://iiif.io/api/image/2.1/#technical-properties
                 // see also http://iiif.io/api/image/2.0/#a-implementation-notes
-                'tileSource': {
+                tileSource: {
                     '@context': 'http://iiif.io/api/image/2/context.json',
                     '@id': sipiBasePath,
-                    'height': height,
-                    'width': width,
-                    'profile': ['http://iiif.io/api/image/2/level2.json'],
-                    'protocol': 'http://iiif.io/api/image',
-                    'tiles': [{
-                        'scaleFactors': [1, 2, 4, 8, 16, 32],
-                        'width': 1024
+                    height: height,
+                    width: width,
+                    profile: ['http://iiif.io/api/image/2/level2.json'],
+                    protocol: 'http://iiif.io/api/image',
+                    tiles: [{
+                        scaleFactors: [1, 2, 4, 8, 16, 32],
+                        width: 1024
                     }]
                 },
-                'x': imageXOffset,
-                'y': imageYOffset
+                x: imageXOffset,
+                y: imageYOffset
             });
 
             imageXOffset++;
