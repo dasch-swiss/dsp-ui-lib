@@ -1,49 +1,205 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { LoginFormComponent } from './login-form.component';
-import { DspApiConnectionToken } from '../../../core';
-import { FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+    ApiResponseData,
+    AuthenticationEndpointV2,
+    LoginResponse,
+    LogoutResponse,
+    MockUsers,
+    UsersEndpointAdmin
+} from '@dasch-swiss/dsp-js';
+import { of } from 'rxjs';
+import { AjaxResponse } from 'rxjs/ajax';
+import { DspApiConnectionToken, Session, SessionService } from '../../../core';
+import { LoginFormComponent } from './login-form.component';
+
+/**
+ * Test host component to simulate login-form component.
+ */
+@Component({
+    template: `<dsp-login-form #loginForm></dsp-login-form>`
+})
+class TestHostComponent implements OnInit {
+
+    @ViewChild('loginForm') loginFormComponent: LoginFormComponent;
+
+    ngOnInit() { }
+
+}
 
 describe('LoginFormComponent', () => {
-  let component: LoginFormComponent;
-  let fixture: ComponentFixture<LoginFormComponent>;
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(async(() => {
-    const dspConnSpy = {
-        admin: {
-            usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUser'])
-        },
-        v2: {
-            auth: jasmine.createSpyObj('auth', ['checkCredentials', 'login']),
-            jsonWebToken: ''
-        },
+    let sessionService: SessionService;
 
-    };
+    beforeEach(async(() => {
+        const dspConnSpy = {
+            admin: {
+                usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUser'])
+            },
+            v2: {
+                auth: jasmine.createSpyObj('auth', ['login', 'logout']),
+                jsonWebToken: ''
+            },
+        };
 
-    TestBed.configureTestingModule({
-      declarations: [ LoginFormComponent ],
-      providers: [
-        {
-            provide: DspApiConnectionToken,
-            useValue: dspConnSpy
-        },
-        FormBuilder,
-        ReactiveFormsModule,
-        FormsModule,
-        MatInputModule
-    ]
-    })
-    .compileComponents();
-  }));
+        TestBed.configureTestingModule({
+        declarations: [
+            LoginFormComponent,
+            TestHostComponent
+        ],
+        providers: [
+            {
+                provide: DspApiConnectionToken,
+                useValue: dspConnSpy
+            },
+            FormBuilder,
+            SessionService
+        ],
+        imports: [
+            ReactiveFormsModule,
+            MatInputModule,
+            BrowserAnimationsModule
+        ]
+        })
+        .compileComponents();
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LoginFormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        sessionService = TestBed.inject(SessionService);
+    }));
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    // mock localStorage
+    beforeEach(() => {
+        let store = {};
+
+        spyOn(localStorage, 'getItem').and.callFake(
+            (key: string): string => {
+                return store[key] || null;
+            }
+        );
+        spyOn(localStorage, 'removeItem').and.callFake(
+            (key: string): void => {
+                delete store[key];
+            }
+        );
+        spyOn(localStorage, 'setItem').and.callFake(
+            (key: string, value: string): void => {
+                store[key] = value;
+            }
+        );
+        spyOn(localStorage, 'clear').and.callFake(() => {
+            store = {};
+        });
+    });
+
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should create an instance', () => {
+        expect(testHostComponent.loginFormComponent).toBeTruthy();
+    });
+
+    describe('Login', () => {
+
+        beforeEach(() => {
+            const dspConnSpy = TestBed.inject(DspApiConnectionToken);
+
+            (dspConnSpy.v2.auth as jasmine.SpyObj<AuthenticationEndpointV2>).login.and.callFake(
+                () => {
+                    const response: LoginResponse = new LoginResponse();
+
+                    response.token = 'myToken';
+
+                    return of(ApiResponseData.fromAjaxResponse({response} as AjaxResponse));
+                }
+            );
+
+            (dspConnSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUser.and.callFake(
+                () => {
+                    const loggedInUser = MockUsers.mockUser();
+                    return of(loggedInUser);
+                }
+            );
+        });
+
+        it('should log the user in if the credentials are correct', () => {
+
+            const dspConnSpy = TestBed.inject(DspApiConnectionToken);
+
+            testHostComponent.loginFormComponent.form.get('username').setValue('root');
+
+            testHostComponent.loginFormComponent.form.get('password').setValue('test');
+
+            testHostFixture.detectChanges();
+
+            testHostComponent.loginFormComponent.login();
+
+            expect(dspConnSpy.v2.auth.login).toHaveBeenCalledTimes(1);
+
+            expect(dspConnSpy.v2.auth.login).toHaveBeenCalledWith('username', 'root', 'test');
+
+            expect(dspConnSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
+
+            expect(dspConnSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'root');
+
+            const session = JSON.parse(localStorage.getItem('session'));
+
+            expect(session.user.name).toEqual('anything.user01');
+
+            expect(session.user.jwt).toEqual('myToken');
+
+        });
+    });
+
+    describe('Logout', () => {
+        beforeEach(() => {
+            const dspConnSpy = TestBed.inject(DspApiConnectionToken);
+
+            (dspConnSpy.v2.auth as jasmine.SpyObj<AuthenticationEndpointV2>).logout.and.callFake(
+                () => {
+                    const response: LogoutResponse = new LogoutResponse();
+
+                    response.status = 0;
+
+                    return of(ApiResponseData.fromAjaxResponse({response} as AjaxResponse));
+                }
+            );
+        });
+
+        it('should log the user out', () => {
+            const dspConnSpy = TestBed.inject(DspApiConnectionToken);
+
+            // mock session directly instead of calling the login method
+            const session: Session = {
+                id: 12345,
+                user: {
+                    name: 'username',
+                    jwt: 'myToken',
+                    lang: 'en',
+                    sysAdmin: false,
+                    projectAdmin: []
+                }
+            };
+
+            // store session in localStorage
+            localStorage.setItem('session', JSON.stringify(session));
+
+            expect(JSON.parse(localStorage.getItem('session')).user.name).toEqual('username');
+
+            testHostComponent.loginFormComponent.logout();
+
+            expect(dspConnSpy.v2.auth.logout).toHaveBeenCalledTimes(1);
+
+            expect(JSON.parse(localStorage.getItem('session'))).toBeNull();
+
+        });
+    });
 });

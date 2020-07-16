@@ -86,13 +86,13 @@ export class LoginFormComponent implements OnInit {
 
     constructor(
         @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
-        private _session: SessionService,
+        private _sessionService: SessionService,
         private _fb: FormBuilder
     ) { }
 
     ngOnInit() {
         // if session is valid (a user is logged-in) show a message, otherwise build the form
-        this._session.isSessionValid().subscribe(
+        this._sessionService.isSessionValid().subscribe(
             result => {
                 // returns a result if session is still valid
                 if (result) {
@@ -132,8 +132,8 @@ export class LoginFormComponent implements OnInit {
 
         this.knoraApiConnection.v2.auth.login(identifierType, identifier, password).subscribe(
             (response: ApiResponseData<LoginResponse>) => {
-                this._session.setSession(response.body.token, identifier, identifierType).subscribe(
-                    () => this.session = this._session.getSession()
+                this._sessionService.setSession(response.body.token, identifier, identifierType).subscribe(
+                    () => this.session = this._sessionService.getSession()
                 );
 
                 setTimeout(() => {
@@ -167,7 +167,7 @@ export class LoginFormComponent implements OnInit {
         this.knoraApiConnection.v2.auth.logout().subscribe(
             (response: ApiResponseData<LogoutResponse>) => {
                 this.status.emit(response.body.status === 0);
-                this._session.destroySession();
+                this._sessionService.destroySession();
                 this.loading = false;
                 this.session = undefined;
                 this.form.get('password').setValue('');
