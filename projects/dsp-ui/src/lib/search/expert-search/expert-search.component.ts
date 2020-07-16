@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken } from '../../core/core.module';
 import { AdvancedSearchParams, AdvancedSearchParamsService } from '../services/advanced-search-params.service';
@@ -27,9 +26,7 @@ export class ExpertSearchComponent implements OnInit {
     constructor(
         @Inject(DspApiConfigToken) private dspApiConfig: KnoraApiConfig,
         private _searchParamsService: AdvancedSearchParamsService,
-        private fb: FormBuilder,
-        private _route: ActivatedRoute,
-        private _router: Router
+        private fb: FormBuilder
     ) { }
 
     ngOnInit(): void {
@@ -43,7 +40,7 @@ export class ExpertSearchComponent implements OnInit {
     private initForm() {
         this.expertSearchForm = this.fb.group({
             gravquery: [
-`PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+                `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
 PREFIX incunabula: <${this.dspApiConfig.apiUrl}/ontology/0803/incunabula/simple/v2#>
 
 CONSTRUCT {
@@ -70,7 +67,7 @@ CONSTRUCT {
 
     /**
      * @ignore
-     * Send the gravsearch query to the result view, either through the route or by emitting the gravsearch as an output.
+     * Send the gravsearch query to the result view by emitting the gravsearch as an output.
      */
     submitQuery() {
         const gravsearch = this.generateGravsearch(0);
