@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken } from '../../core/core.module';
+import { AdvancedSearchParams, AdvancedSearchParamsService } from '../services/advanced-search-params.service';
 import { ExpertSearchComponent } from './expert-search.component';
 
 /**
@@ -16,13 +17,19 @@ import { ExpertSearchComponent } from './expert-search.component';
  */
 @Component({
     template: `
-        <dsp-expert-search #expSearch></dsp-expert-search>`
+        <dsp-expert-search #expSearch (gravsearchQuery)="gravsearchQuery($event)"></dsp-expert-search>`
 })
 class TestHostComponent implements OnInit {
 
     @ViewChild('expSearch') expertSearch: ExpertSearchComponent;
 
+    gravsearchQ: string;
+
     ngOnInit() {
+    }
+
+    gravsearchQuery(query: string) {
+        this.gravsearchQ = query;
     }
 
 }
@@ -32,9 +39,15 @@ describe('ExpertSearchComponent', () => {
   let testHostFixture: ComponentFixture<TestHostComponent>;
   let hostCompDe: DebugElement;
 
-  const dspConfSpy = new KnoraApiConfig('http', 'localhost', 3333, undefined, undefined, true);
+  let searchParamsServiceSpy: jasmine.SpyObj<AdvancedSearchParamsService>;
+  let advancedSearchParams: AdvancedSearchParams;
 
   beforeEach(async(() => {
+
+    const dspConfSpy = new KnoraApiConfig('http', 'localhost', 3333, undefined, undefined, true);
+
+    const spy = jasmine.createSpyObj('SearchParamsService', ['changeSearchParamsMsg']);
+
     TestBed.configureTestingModule({
         declarations: [
             ExpertSearchComponent,
@@ -58,6 +71,10 @@ describe('ExpertSearchComponent', () => {
                 useValue: {
                 params: null
                 }
+            },
+            {
+                provide: AdvancedSearchParamsService,
+                useValue: spy
             }
         ]
     })
@@ -67,6 +84,11 @@ describe('ExpertSearchComponent', () => {
   beforeEach(() => {
     testHostFixture = TestBed.createComponent(TestHostComponent);
     testHostComponent = testHostFixture.componentInstance;
+
+    searchParamsServiceSpy = TestBed.inject(AdvancedSearchParamsService) as jasmine.SpyObj<AdvancedSearchParamsService>;
+    searchParamsServiceSpy.changeSearchParamsMsg.and.callFake((searchParams: AdvancedSearchParams) => {
+        advancedSearchParams = searchParams;
+    });
 
     testHostFixture.detectChanges();
 
@@ -129,6 +151,64 @@ CONSTRUCT {
 }
 `
     );
+  });
+
+  it('should register the query in the params service', () => {
+    const expectedGravsearch =
+`PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
+
+CONSTRUCT {
+    ?book knora-api:isMainResource true .
+    ?book incunabula:title ?title .
+
+} WHERE {
+    ?book a incunabula:book .
+    ?book incunabula:title ?title .
+}
+
+             OFFSET 0
+             `
+;
+    const submitBtn = hostCompDe.query(By.css('button[type="submit"]'));
+    const submitBtnEle = submitBtn.nativeElement;
+
+    submitBtnEle.click();
+    testHostFixture.detectChanges();
+
+    expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
+    expect(advancedSearchParams).toBeDefined();
+    expect(advancedSearchParams.generateGravsearch(0)).toEqual(expectedGravsearch);
+  });
+
+  it('should emit the Gravsearch query', () => {
+    const expectedGravsearch =
+`PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
+
+CONSTRUCT {
+    ?book knora-api:isMainResource true .
+    ?book incunabula:title ?title .
+
+} WHERE {
+    ?book a incunabula:book .
+    ?book incunabula:title ?title .
+}
+
+         OFFSET 0
+         `;
+
+    const submitBtn = hostCompDe.query(By.css('button[type="submit"]'));
+    const submitBtnEle = submitBtn.nativeElement;
+
+    expect(testHostComponent.gravsearchQ).toBeUndefined();
+
+    submitBtnEle.click();
+    testHostFixture.detectChanges();
+
+    expect(testHostComponent.gravsearchQ).toBeDefined();
+    expect(testHostComponent.gravsearchQ).toEqual(expectedGravsearch);
+
   });
 
 });
