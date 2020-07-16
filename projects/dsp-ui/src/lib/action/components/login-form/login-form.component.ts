@@ -169,6 +169,7 @@ export class LoginFormComponent implements OnInit {
                 this.status.emit(response.body.status === 0);
                 this._sessionService.destroySession();
                 this.loading = false;
+                this.buildLoginForm();
                 this.session = undefined;
                 this.form.get('password').setValue('');
             },
