@@ -1,21 +1,19 @@
 <div class="resource-grid">
-    <div *ngFor="let res of resources.resources" (click)="resourceSelected.emit(res.id)" class="link res-grid-item">
-        <mat-card class="grid-card">
-            <div class="grid-card-header">
-                <mat-card-subtitle class="res-class-label">{{ res.entityInfo.classes[res.type].label }}</mat-card-subtitle>
-                <mat-card-title class="res-class-value">{{ res.label }}</mat-card-title>
-            </div>
-            <mat-card-content class="grid-card-content"*ngFor="let prop of res.properties | keyvalue">
-                <div *ngFor="let val of prop.value | keyvalue">
-                    <span class="res-prop-label">
-                        {{ res.entityInfo.properties[val.value.property].label }}
-                    </span>
+    <mat-card class="grid-card link" *ngFor="let res of resources.resources" (click)="resourceSelected.emit(res.id)">
+        <mat-card-header class="grid-card-header">
+            <mat-card-subtitle class="res-class-label">{{ res.entityInfo.classes[res.type].label }}</mat-card-subtitle>
+            <mat-card-title class="res-class-value">{{ res.label }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="grid-card-content" *ngFor="let prop of res.properties | keyvalue">
+            <div *ngFor="let val of prop.value | keyvalue">
+                <span class="res-prop-label">
+                    {{ res.entityInfo.properties[val.value.property].label }}
+                </span>
 
-                    <div class="res-prop-value">
-                        {{ val.value.strval | dspTruncate: 256:"..." }}
-                    </div>
+                <div class="res-prop-value">
+                    {{ val.value.strval | dspTruncate: 256:"..." }}
                 </div>
-            </mat-card-content>
-        </mat-card>
-    </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>

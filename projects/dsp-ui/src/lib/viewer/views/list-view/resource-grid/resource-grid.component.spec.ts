@@ -42,7 +42,6 @@ class TestParentComponent implements OnInit {
     }
 
     openResource(id: string) {
-        console.log(id);
         this.resIri = id;
     }
 
@@ -61,7 +60,8 @@ describe('ResourceGridComponent', () => {
             imports: [
                 DspActionModule,
                 MatCardModule
-            ]
+            ],
+            providers: []
         })
             .compileComponents();
     }));
@@ -89,11 +89,7 @@ describe('ResourceGridComponent', () => {
         expect(testHostComponent.openResource).toHaveBeenCalled();
         expect(testHostComponent.openResource).toHaveBeenCalledTimes(1);
 
-        // console.log('resIri', testHostComponent.resources.resources[0].id);
-        // console.log('resIri', testHostComponent.resIri);
-        expect(testHostComponent.resources.resources[0].id).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
-        // expect(testHostComponent.resIri).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
-
+        expect(testHostComponent.resIri).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
     });
 
 });
