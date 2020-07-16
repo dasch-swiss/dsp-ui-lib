@@ -21,3 +21,4 @@ export * from './operations/add-value/add-value.component';
 // view components
 export * from './views/resource-view/resource-view.component';
 export * from './views/property-view/property-view.component';
+export * from './views/list-view/resource-list/resource-list.component';
