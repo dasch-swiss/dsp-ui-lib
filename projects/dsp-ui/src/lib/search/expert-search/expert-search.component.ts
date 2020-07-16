@@ -18,6 +18,20 @@ export class ExpertSearchComponent implements OnInit {
 
     expertSearchForm: FormGroup;
 
+    defaultGravsearchQuery =
+`PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+PREFIX incunabula: <${this.dspApiConfig.apiUrl}/ontology/0803/incunabula/simple/v2#>
+
+CONSTRUCT {
+    ?book knora-api:isMainResource true .
+    ?book incunabula:title ?title .
+
+} WHERE {
+    ?book a incunabula:book .
+    ?book incunabula:title ?title .
+}
+`;
+
     constructor(
         @Inject(DspApiConfigToken) private dspApiConfig: KnoraApiConfig,
         private _searchParamsService: AdvancedSearchParamsService,
@@ -35,18 +49,7 @@ export class ExpertSearchComponent implements OnInit {
     private initForm() {
         this.expertSearchForm = this.fb.group({
             gravquery: [
-                `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
-PREFIX incunabula: <${this.dspApiConfig.apiUrl}/ontology/0803/incunabula/simple/v2#>
-
-CONSTRUCT {
-    ?book knora-api:isMainResource true .
-    ?book incunabula:title ?title .
-
-} WHERE {
-    ?book a incunabula:book .
-    ?book incunabula:title ?title .
-}
-`,
+                this.defaultGravsearchQuery,
                 Validators.required
             ]
         });
