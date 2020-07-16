@@ -1,5 +1,3 @@
-// TODO: can we merge this file with viewer-child in one main viewer stylesheet?
-
 // css for parent value components
 
 .read-mode-view {
@@ -21,6 +19,20 @@
 .parent-value-component .child-value-component .mat-form-field-wrapper .mat-form-field-infix {
   border-top: 0em solid transparent;
 }
+
+
+// css for child components of a parent value component
+
+.child-input-component {
+  display: inline-block;
+  vertical-align: bottom;
+  width: 49%;
+  &:nth-child(2) {
+    padding-left: 2%;
+  }
+}
+
+// custom error message
 
 .custom-error-message {
   font-size: 12px;
