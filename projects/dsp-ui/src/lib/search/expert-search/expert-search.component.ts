@@ -4,6 +4,19 @@ import { KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken } from '../../core/core.module';
 import { AdvancedSearchParams, AdvancedSearchParamsService } from '../services/advanced-search-params.service';
 
+/**
+ * @ignore
+ * Validator checking that the query does not contain a certain term, here OFFSET
+ *
+ * @param {RegExp} termRe
+ */
+export function forbiddenTermValidator(termRe: RegExp): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+        const forbidden = termRe.test(control.value);
+        return forbidden ? { forbiddenName: { value: control.value } } : null;
+    };
+}
+
 @Component({
     selector: 'dsp-expert-search',
     templateUrl: './expert-search.component.html',
@@ -20,7 +33,7 @@ export class ExpertSearchComponent implements OnInit {
     queryFormControl: FormControl;
 
     defaultGravsearchQuery =
-`PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+        `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
 PREFIX incunabula: <${this.dspApiConfig.apiUrl}/ontology/0803/incunabula/simple/v2#>
 
 CONSTRUCT {
@@ -48,7 +61,7 @@ CONSTRUCT {
                 this.defaultGravsearchQuery,
                 [
                     Validators.required,
-                    this._forbiddenTermValidator(/OFFSET/i)
+                    forbiddenTermValidator(/OFFSET/i)
                 ]
             ]
         });
@@ -59,7 +72,7 @@ CONSTRUCT {
      * Reset the form to the initial state.
      */
     resetForm() {
-        this.expertSearchForm.reset({gravsearchquery: this.defaultGravsearchQuery});
+        this.expertSearchForm.reset({ gravsearchquery: this.defaultGravsearchQuery });
     }
 
     /**
@@ -102,19 +115,6 @@ CONSTRUCT {
             this._searchParamsService.changeSearchParamsMsg(new AdvancedSearchParams(generateGravsearchWithCustomOffset));
         }
         return queryTemplate + offsetTemplate;
-    }
-
-    /**
-     * @ignore
-     * The query must not contain a certain term, here OFFSET
-     *
-     * @param {RegExp} termRe
-     */
-    private _forbiddenTermValidator(termRe: RegExp): ValidatorFn {
-        return (control: AbstractControl): {[key: string]: any} | null => {
-          const forbidden = termRe.test(control.value);
-          return forbidden ? {forbiddenName: {value: control.value}} : null;
-        };
     }
 
 }

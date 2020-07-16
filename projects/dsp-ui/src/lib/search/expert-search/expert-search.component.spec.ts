@@ -35,77 +35,77 @@ class TestHostComponent implements OnInit {
 }
 
 describe('ExpertSearchComponent', () => {
-  let testHostComponent: TestHostComponent;
-  let testHostFixture: ComponentFixture<TestHostComponent>;
-  let hostCompDe: DebugElement;
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
+    let hostCompDe: DebugElement;
 
-  let searchParamsServiceSpy: jasmine.SpyObj<AdvancedSearchParamsService>;
-  let advancedSearchParams: AdvancedSearchParams;
+    let searchParamsServiceSpy: jasmine.SpyObj<AdvancedSearchParamsService>;
+    let advancedSearchParams: AdvancedSearchParams;
 
-  beforeEach(async(() => {
+    beforeEach(async(() => {
 
-    const dspConfSpy = new KnoraApiConfig('http', 'localhost', 3333, undefined, undefined, true);
+        const dspConfSpy = new KnoraApiConfig('http', 'localhost', 3333, undefined, undefined, true);
 
-    const spy = jasmine.createSpyObj('SearchParamsService', ['changeSearchParamsMsg']);
+        const spy = jasmine.createSpyObj('SearchParamsService', ['changeSearchParamsMsg']);
 
-    TestBed.configureTestingModule({
-        declarations: [
-            ExpertSearchComponent,
-            TestHostComponent
-        ],
-        imports: [
-            FormsModule,
-            ReactiveFormsModule,
-            RouterTestingModule,
-            BrowserAnimationsModule,
-            MatFormFieldModule,
-            MatInputModule
-        ],
-        providers: [
-            {
-                provide: DspApiConfigToken,
-                useValue: dspConfSpy
-            },
-            {
-                provide: ActivatedRoute,
-                useValue: {
-                params: null
+        TestBed.configureTestingModule({
+            declarations: [
+                ExpertSearchComponent,
+                TestHostComponent
+            ],
+            imports: [
+                FormsModule,
+                ReactiveFormsModule,
+                RouterTestingModule,
+                BrowserAnimationsModule,
+                MatFormFieldModule,
+                MatInputModule
+            ],
+            providers: [
+                {
+                    provide: DspApiConfigToken,
+                    useValue: dspConfSpy
+                },
+                {
+                    provide: ActivatedRoute,
+                    useValue: {
+                        params: null
+                    }
+                },
+                {
+                    provide: AdvancedSearchParamsService,
+                    useValue: spy
                 }
-            },
-            {
-                provide: AdvancedSearchParamsService,
-                useValue: spy
-            }
-        ]
-    })
-    .compileComponents();
-  }));
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    testHostFixture = TestBed.createComponent(TestHostComponent);
-    testHostComponent = testHostFixture.componentInstance;
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
 
-    searchParamsServiceSpy = TestBed.inject(AdvancedSearchParamsService) as jasmine.SpyObj<AdvancedSearchParamsService>;
-    searchParamsServiceSpy.changeSearchParamsMsg.and.callFake((searchParams: AdvancedSearchParams) => {
-        advancedSearchParams = searchParams;
+        searchParamsServiceSpy = TestBed.inject(AdvancedSearchParamsService) as jasmine.SpyObj<AdvancedSearchParamsService>;
+        searchParamsServiceSpy.changeSearchParamsMsg.and.callFake((searchParams: AdvancedSearchParams) => {
+            advancedSearchParams = searchParams;
+        });
+
+        testHostFixture.detectChanges();
+
+        hostCompDe = testHostFixture.debugElement;
     });
 
-    testHostFixture.detectChanges();
+    it('should create', () => {
+        expect(testHostComponent).toBeTruthy();
+        expect(testHostComponent.expertSearch).toBeTruthy();
+    });
 
-    hostCompDe = testHostFixture.debugElement;
-  });
+    it('should init the form with the default query', () => {
+        const textarea = hostCompDe.query(By.css('textarea.textarea-field-content'));
+        const textareaEle = textarea.nativeElement;
 
-  it('should create', () => {
-    expect(testHostComponent).toBeTruthy();
-    expect(testHostComponent.expertSearch).toBeTruthy();
-  });
-
-  it('should init the form with the default query', () => {
-    const textarea = hostCompDe.query(By.css('textarea.textarea-field-content'));
-    const textareaEle = textarea.nativeElement;
-
-    expect(textareaEle.value).toBe(
-        `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+        expect(textareaEle.value).toBe(
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
 PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
 
 CONSTRUCT {
@@ -117,28 +117,28 @@ CONSTRUCT {
     ?book incunabula:title ?title .
 }
 `
-    );
-  });
+        );
+    });
 
-  it('should reset the form', () => {
+    it('should reset the form', () => {
 
-    const resetBtn = hostCompDe.query(By.css('button.reset'));
-    const textarea = hostCompDe.query(By.css('textarea.textarea-field-content'));
+        const resetBtn = hostCompDe.query(By.css('button.reset'));
+        const textarea = hostCompDe.query(By.css('textarea.textarea-field-content'));
 
-    const resetEle = resetBtn.nativeElement;
-    const textareaEle = textarea.nativeElement;
+        const resetEle = resetBtn.nativeElement;
+        const textareaEle = textarea.nativeElement;
 
-    // delete textarea content displayed by default to make a change
-    textareaEle.value = '';
-    expect(textareaEle.value).toBe('');
+        // delete textarea content displayed by default to make a change
+        textareaEle.value = '';
+        expect(textareaEle.value).toBe('');
 
-    resetEle.click();
+        resetEle.click();
 
-    testHostFixture.detectChanges();
+        testHostFixture.detectChanges();
 
-    // reset the textarea content
-    expect(textareaEle.value).toBe(
-        `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+        // reset the textarea content
+        expect(textareaEle.value).toBe(
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
 PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
 
 CONSTRUCT {
@@ -150,12 +150,12 @@ CONSTRUCT {
     ?book incunabula:title ?title .
 }
 `
-    );
-  });
+        );
+    });
 
-  it('should register the query in the params service', () => {
-    const expectedGravsearch =
-`PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+    it('should register the query in the params service', () => {
+        const expectedGravsearch =
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
 PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
 
 CONSTRUCT {
@@ -169,21 +169,21 @@ CONSTRUCT {
 
              OFFSET 0
              `
-;
-    const submitBtn = hostCompDe.query(By.css('button[type="submit"]'));
-    const submitBtnEle = submitBtn.nativeElement;
+            ;
+        const submitBtn = hostCompDe.query(By.css('button[type="submit"]'));
+        const submitBtnEle = submitBtn.nativeElement;
 
-    submitBtnEle.click();
-    testHostFixture.detectChanges();
+        submitBtnEle.click();
+        testHostFixture.detectChanges();
 
-    expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
-    expect(advancedSearchParams).toBeDefined();
-    expect(advancedSearchParams.generateGravsearch(0)).toEqual(expectedGravsearch);
-  });
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
+        expect(advancedSearchParams).toBeDefined();
+        expect(advancedSearchParams.generateGravsearch(0)).toEqual(expectedGravsearch);
+    });
 
-  it('should emit the Gravsearch query', () => {
-    const expectedGravsearch =
-`PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+    it('should emit the Gravsearch query', () => {
+        const expectedGravsearch =
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
 PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
 
 CONSTRUCT {
@@ -198,27 +198,27 @@ CONSTRUCT {
          OFFSET 0
          `;
 
-    const submitBtn = hostCompDe.query(By.css('button[type="submit"]'));
-    const submitBtnEle = submitBtn.nativeElement;
+        const submitBtn = hostCompDe.query(By.css('button[type="submit"]'));
+        const submitBtnEle = submitBtn.nativeElement;
 
-    expect(testHostComponent.gravsearchQ).toBeUndefined();
+        expect(testHostComponent.gravsearchQ).toBeUndefined();
 
-    submitBtnEle.click();
-    testHostFixture.detectChanges();
+        submitBtnEle.click();
+        testHostFixture.detectChanges();
 
-    expect(testHostComponent.gravsearchQ).toBeDefined();
-    expect(testHostComponent.gravsearchQ).toEqual(expectedGravsearch);
+        expect(testHostComponent.gravsearchQ).toBeDefined();
+        expect(testHostComponent.gravsearchQ).toEqual(expectedGravsearch);
 
-  });
+    });
 
-  it('should not return an invalid query', () => {
-    expect(testHostComponent.expertSearch.expertSearchForm.valid).toBeTruthy();
+    it('should not return an invalid query', () => {
+        expect(testHostComponent.expertSearch.expertSearchForm.valid).toBeTruthy();
 
-    const textarea = hostCompDe.query(By.css('textarea.textarea-field-content'));
-    const textareaEle = textarea.nativeElement;
+        const textarea = hostCompDe.query(By.css('textarea.textarea-field-content'));
+        const textareaEle = textarea.nativeElement;
 
-    expect(textareaEle.value).toBe(
-`PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+        expect(textareaEle.value).toBe(
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
 PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
 
 CONSTRUCT {
@@ -230,10 +230,10 @@ CONSTRUCT {
     ?book incunabula:title ?title .
 }
 `
-    );
+        );
 
-    textareaEle.value =
-`PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+        textareaEle.value =
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
 PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
 
 CONSTRUCT {
@@ -248,15 +248,14 @@ CONSTRUCT {
 OFFSET 0
 `;
 
-    textareaEle.dispatchEvent(new Event('textarea'));
-    testHostFixture.detectChanges();
+        textareaEle.dispatchEvent(new Event('input'));
+        testHostFixture.detectChanges();
 
-    // TODO: to fix > the form should be invalid...
-    // expect(testHostComponent.expertSearch.expertSearchForm.valid).toBeFalsy();
+        expect(testHostComponent.expertSearch.expertSearchForm.valid).toBeFalsy();
 
-    const submitForm = testHostComponent.expertSearch.submitQuery();
+        const submitForm = testHostComponent.expertSearch.submitQuery();
 
-    expect(submitForm).toBeFalsy();
-  });
+        expect(submitForm).toBeFalsy();
+    });
 
 });
