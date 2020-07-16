@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken } from '../../core/core.module';
 import { AdvancedSearchParams, AdvancedSearchParamsService } from '../services/advanced-search-params.service';
@@ -46,7 +46,10 @@ CONSTRUCT {
         this.expertSearchForm = this.fb.group({
             gravsearchquery: [
                 this.defaultGravsearchQuery,
-                Validators.required
+                [
+                    Validators.required,
+                    this._forbiddenTermValidator(/OFFSET/i)
+                ]
             ]
         });
     }
@@ -64,7 +67,7 @@ CONSTRUCT {
      * Send the gravsearch query to the result view by emitting the gravsearch as an output.
      */
     submitQuery() {
-        const gravsearch = this.generateGravsearch(0);
+        const gravsearch = this._generateGravsearch(0);
 
         if (gravsearch) {
             this.gravsearchQuery.emit(gravsearch);
@@ -75,7 +78,7 @@ CONSTRUCT {
      * @ignore
      * Generate the whole gravsearch query matching the query given by the form.
      */
-    private generateGravsearch(offset: number = 0): string {
+    private _generateGravsearch(offset: number = 0): string {
         const queryTemplate = this.expertSearchForm.controls['gravsearchquery'].value;
 
         // offset component of the Gravsearch query
@@ -99,6 +102,19 @@ CONSTRUCT {
             this._searchParamsService.changeSearchParamsMsg(new AdvancedSearchParams(generateGravsearchWithCustomOffset));
         }
         return queryTemplate + offsetTemplate;
+    }
+
+    /**
+     * @ignore
+     * The query must not contain a certain term, here OFFSET
+     *
+     * @param {RegExp} termRe
+     */
+    private _forbiddenTermValidator(termRe: RegExp): ValidatorFn {
+        return (control: AbstractControl): {[key: string]: any} | null => {
+          const forbidden = termRe.test(control.value);
+          return forbidden ? {forbiddenName: {value: control.value}} : null;
+        };
     }
 
 }
