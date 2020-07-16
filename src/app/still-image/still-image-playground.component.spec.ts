@@ -4,7 +4,7 @@ import { StillImagePlaygroundComponent } from './still-image-playground.componen
 import { DspApiConnectionToken, DspViewerModule } from '@dasch-swiss/dsp-ui';
 import {
     ApiResponseData,
-    AuthenticationEndpointV2,
+    AuthenticationEndpointV2, LogoutResponse,
     MockResource, ReadResource,
     ResourcesEndpointV2
 } from '@dasch-swiss/dsp-js';
@@ -42,8 +42,12 @@ describe('StillImageComponent', () => {
     beforeEach(() => {
         const dspSpy = TestBed.inject(DspApiConnectionToken);
 
-        (dspSpy.v2.auth as jasmine.SpyObj<AuthenticationEndpointV2>).logout.and.returnValue(
-            of(ApiResponseData.fromAjaxResponse({} as AjaxResponse))
+        (dspSpy.v2.auth as jasmine.SpyObj<AuthenticationEndpointV2>).logout.and.callFake(
+            () => {
+                const rd = ApiResponseData.fromAjaxResponse({} as AjaxResponse);
+                rd.body = new LogoutResponse();
+                return of(rd as ApiResponseData<LogoutResponse>);
+            }
         );
 
         (dspSpy.v2.res as jasmine.SpyObj<ResourcesEndpointV2>).getResource.and.callFake(
