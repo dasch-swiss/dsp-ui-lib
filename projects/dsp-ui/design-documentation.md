@@ -155,7 +155,7 @@ The full text search quickly finds all instances of a term in DSP-API. It can be
 
 ### Expert search
 
-The expert search is a textarea which allows you to manually write Gravsearch queries if you are comfortable with the language and want more precise results. The textarea content contains a default Gravsearch query as an example for the user. It is possible to reset the field, back to the default query.
+The expert search is a textarea which allows you to manually write Gravsearch queries if you are comfortable with the language and want more precise results. The textarea content contains a default Gravsearch query as an example for the user. It is possible to reset the field back to the default query.
 
 ### Advanced search
 
