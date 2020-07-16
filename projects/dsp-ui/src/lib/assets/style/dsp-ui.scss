@@ -1,5 +1,6 @@
-/* Main dsp-ui stylesheet which has to be imported in
- * angular.json in your angular application.
+/*
+ * Main dsp-ui stylesheet which has to be imported in
+ * angular.json in the angular application.
  */
 
 @import "./config";
@@ -25,6 +26,8 @@
   margin-top: -1em;
   padding-bottom: 1em;
 }
+
+// The following styles will override material design!
 
 // jdnconvertiblecalendar main style
 .mat-datepicker-content {
