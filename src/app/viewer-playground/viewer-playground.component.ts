@@ -9,7 +9,7 @@ import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
 })
 export class ViewerPlaygroundComponent implements OnInit {
 
-    showGrid = false;
+    showGrid = true;
 
     // test data
     resources: ReadResourceSequence;
