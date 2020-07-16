@@ -86,5 +86,5 @@ describe('StillImageComponent', () => {
         expect(captionEle.innerText).toEqual('test image');
 
     });
-    
+
 });

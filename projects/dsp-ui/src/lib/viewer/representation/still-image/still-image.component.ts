@@ -52,6 +52,18 @@ export class StillImageComponent implements OnChanges, OnDestroy {
     }
 
     /**
+     * Renders all ReadStillImageFileValues to be found in [[this.images]].
+     * (Although this.images is a Angular Input property, the built-in change detection of Angular does not detect changes in complex objects or arrays, only reassignment of objects/arrays.
+     * Use this method if additional ReadStillImageFileValues were added to this.images after creation/assignment of the this.images array.)
+     */
+    updateImages() {
+        if (!this._viewer) {
+            this._setupViewer();
+        }
+        this._openImages();
+    }
+
+    /**
      * Initializes the OpenSeadragon _viewer
      */
     private _setupViewer(): void {
