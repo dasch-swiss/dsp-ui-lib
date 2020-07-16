@@ -1,11 +1,12 @@
+// TODO: can we merge this file with viewer-child in one main viewer stylesheet?
+
 // css for parent value components
 
 .read-mode-view {
-  font: 400 15px/24px Roboto,"Helvetica Neue",sans-serif;
-}
-
-.read-mode-view p {
-  margin: 0px;
+  font: 400 15px/24px sans-serif;
+  p {
+    margin: 0px;
+  }
 }
 
 .child-value-component,
@@ -22,7 +23,6 @@
 }
 
 .custom-error-message {
-  font-family: Roboto,"Helvetica Neue",sans-serif;
   font-size: 12px;
   margin-top: -1em;
   padding-bottom: 1em;

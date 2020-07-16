@@ -1,11 +1,12 @@
+// TODO: can we merge this file with viewer-parent in one main viewer stylesheet?
+
 // css for child components of a parent value component
 
 .child-input-component {
   display: inline-block;
   vertical-align: bottom;
   width: 49%;
-}
-
-.child-input-component:nth-child(2) {
-  padding-left: 2%;
+  &:nth-child(2) {
+    padding-left: 2%;
+  }
 }
