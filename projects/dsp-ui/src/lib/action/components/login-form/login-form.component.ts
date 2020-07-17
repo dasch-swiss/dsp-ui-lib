@@ -26,6 +26,13 @@ export class LoginFormComponent implements OnInit {
     @Input() color?: string;
 
     /**
+     * Set whether or not you want icons to display in the input fields
+     *
+     * @param icons
+     */
+    @Input() icons?: boolean;
+
+    /**
      * Emits true when the login process was successful and false in case of error on login or false after logout process
      *
      * @param status
@@ -133,13 +140,12 @@ export class LoginFormComponent implements OnInit {
         this.knoraApiConnection.v2.auth.login(identifierType, identifier, password).subscribe(
             (response: ApiResponseData<LoginResponse>) => {
                 this._sessionService.setSession(response.body.token, identifier, identifierType).subscribe(
-                    () => this.session = this._sessionService.getSession()
+                    () => {
+                        this.session = this._sessionService.getSession();
+                        this.status.emit(true);
+                        this.loading = false;
+                    }
                 );
-
-                setTimeout(() => {
-                    this.status.emit(true);
-                    this.loading = false;
-                }, 2200);
             },
             (error: ApiResponseError) => {
                 // error handling
@@ -166,7 +172,7 @@ export class LoginFormComponent implements OnInit {
 
         this.knoraApiConnection.v2.auth.logout().subscribe(
             (response: ApiResponseData<LogoutResponse>) => {
-                this.status.emit(response.body.status === 0);
+                this.status.emit(false);
                 this._sessionService.destroySession();
                 this.loading = false;
                 this.buildLoginForm();

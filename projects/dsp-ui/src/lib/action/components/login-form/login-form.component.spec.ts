@@ -162,7 +162,7 @@ describe('LoginFormComponent', () => {
 
             expect(session.user.jwt).toEqual('myToken');
 
-            // expect(testHostComponent.loggedIn).toBeTruthy();
+            expect(testHostComponent.loggedIn).toBeTruthy();
 
         });
     });
@@ -207,6 +207,8 @@ describe('LoginFormComponent', () => {
             expect(dspConnSpy.v2.auth.logout).toHaveBeenCalledTimes(1);
 
             expect(JSON.parse(localStorage.getItem('session'))).toBeNull();
+
+            expect(testHostComponent.loggedIn).toBeFalsy();
 
         });
     });

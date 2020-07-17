@@ -7,7 +7,7 @@
 
         <!-- Username -->
         <mat-form-field class="full-width login-field">
-            <!-- <mat-icon matPrefix>person</mat-icon> -->
+            <mat-icon *ngIf="icons" matPrefix>person</mat-icon>
 
             <input
                 matInput
@@ -21,7 +21,7 @@
         <!-- Password -->
         <mat-form-field class="full-width login-field">
 
-            <!-- <mat-icon matPrefix>lock</mat-icon> -->
+            <mat-icon *ngIf="icons" matPrefix>lock</mat-icon>
 
             <input
                 matInput
