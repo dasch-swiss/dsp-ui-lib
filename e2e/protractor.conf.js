@@ -5,6 +5,11 @@
 const {SpecReporter} = require('jasmine-spec-reporter');
 const tsConfig = require('../tsconfig.json'); // https://github.com/nrwl/nx/issues/263#issuecomment-485889032
 
+// define the global window object because jsonld needs it
+global['window'] = {
+    addEventListener: () => {}
+};
+
 /**
  * @type { import("protractor").Config }
  */
