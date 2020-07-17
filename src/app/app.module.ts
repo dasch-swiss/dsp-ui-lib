@@ -4,11 +4,8 @@ import { MatListModule } from '@angular/material/list';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
-import { ActionPlaygroundComponent } from './action-playground/action-playground.component';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ModifyComponent } from './modify/modify.component';
-import { ReadComponent } from './read/read.component';
+
+import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
 import {
     AppInitService,
     DspActionModule,
@@ -18,10 +15,16 @@ import {
     DspSearchModule,
     DspViewerModule
 } from '@dasch-swiss/dsp-ui';
+
+import { ActionPlaygroundComponent } from './action-playground/action-playground.component';
+import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ModifyComponent } from './modify/modify.component';
+import { ReadComponent } from './read/read.component';
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
-import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
-import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
+
 import { environment } from '../environments/environment';
 import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';

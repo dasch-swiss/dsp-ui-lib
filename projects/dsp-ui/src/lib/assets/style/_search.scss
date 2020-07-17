@@ -1,3 +1,4 @@
+@import "./config";
 @import "./mixins";
 @import "./responsive";
 
@@ -12,18 +13,6 @@ input[type="search"] {
   -moz-appearance: none;
   -webkit-appearance: none;
 }
-
-//
-// color variables
-//
-$bright: rgba(249, 249, 249, 1);
-$grey: rgba(184, 184, 184, 1);
-$dark: rgba(41, 41, 41, 1);
-$black: rgb(11, 11, 11);
-$black-12-opacity: rgba($black, 0.12);
-$black-14-opacity: rgba($black, 0.14);
-$black-20-opacity: rgba($black, 0.2);
-$black-60-opacity: rgba($black, 0.6);
 
 // sizes for search element
 // input field
@@ -40,15 +29,6 @@ $project-filter-width: 160px;
 // width of project filter
 $project-filter-width-small-device: 120px;
 
-// general border color
-$border-color: #ebebeb;
-
-// general border radius
-$border-radius: 4px;
-
-.fill-remaining-space {
-  flex: 1 1 auto;
-}
 
 .dsp-search-menu {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
