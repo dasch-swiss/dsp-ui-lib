@@ -19,7 +19,7 @@ export class ViewerPlaygroundComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this._dspApiConnection.v2.search.doFulltextSearch('thing').subscribe(
+        this._dspApiConnection.v2.search.doFulltextSearch('kreuz').subscribe(
             (response: ReadResourceSequence) => {
                 this.resources = response;
             },
