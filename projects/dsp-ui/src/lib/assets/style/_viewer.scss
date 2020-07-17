@@ -1,14 +1,49 @@
+@import "./config";
 @import "./mixins";
 @import "./responsive";
 
-.link {
-  cursor: pointer;
-  &:hover {
-    background: rgba(0, 0, 0, 0.12);
+.link:hover {
+  background-color: $black-12-opacity;
+}
+
+// css for parent value components
+
+.read-mode-view {
+  font: 400 15px/24px sans-serif;
+  p {
+    margin: 0px;
   }
 }
 
-mat-card-header > div.mat-card-header-text {
-  margin: 0 0 !important;
-  background-color: aquamarine;
+.child-value-component,
+.value-component-comment {
+  display: block;
+}
+
+.parent-component-wrapper .value-component-comment {
+  margin-top: -2em;
+}
+
+.parent-value-component .child-value-component .mat-form-field-wrapper .mat-form-field-infix {
+  border-top: 0em solid transparent;
+}
+
+
+// css for child components of a parent value component
+
+.child-input-component {
+  display: inline-block;
+  vertical-align: bottom;
+  width: 49%;
+  &:nth-child(2) {
+    padding-left: 2%;
+  }
+}
+
+// custom error message
+
+.custom-error-message {
+  font-size: 12px;
+  margin-top: -1em;
+  padding-bottom: 1em;
 }
