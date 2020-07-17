@@ -67,11 +67,12 @@ The config files have to be integrated in `angular.json` in all "assets"-section
 ```
 
 Define the following three factory methods in `app.module.ts`:
- 1. Return a function that calls `AppInitService`'s method `Init` and return its return value which is a `Promise`. 
-   Angular waits for this `Promise` to be resolved. 
+
+ 1. Return a function that calls `AppInitService`'s method `Init` and return its return value which is a `Promise`.
+   Angular waits for this `Promise` to be resolved.
    The `Promise` will be resolved once the configuration file has been fetched and its contents have been assigned.
- 2. Get the config from the `AppInitService` instance and provide it as `DspApiConfigToken`.
- 3. Create an KnoraApiConnection instance with the config and provide it as `DspApiConnectionToken`.  
+ 1. Get the config from the `AppInitService` instance and provide it as `DspApiConfigToken`.
+ 1. Create an KnoraApiConnection instance with the config and provide it as `DspApiConnectionToken`.  
 
 Provide it in the main module and include the desired DSP-UI modules in the imports:
 
@@ -88,7 +89,7 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
     DspViewerModule
   ],
   providers: [
-     // 1. 
+     // 1.
     {
       provide: APP_INITIALIZER, // see https://angular.io/api/core/APP_INITIALIZER
       useFactory: (appInitService: AppInitService) =>
@@ -104,7 +105,7 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
       useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig, // AppInitService is passed to the factory method
       deps: [AppInitService] // depends on AppInitService
     },
-    // 3. 
+    // 3.
     {
       provide: DspApiConnectionToken,
       useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig), // AppInitService is passed to the factory method
@@ -120,6 +121,17 @@ Do not forget to import `APP_INITIALIZER` from `@angular/core` and the desired D
 
 The contents of the configuration can be accessed via `AppInitService`s member `config`.
 Just include `AppInitService` in you service's or component's constructor.
+
+The module needs a global styling in the app to override some material design rules. Please update your `angular.json` file as follow:
+
+```json
+...
+    "styles": [
+        "src/styles.scss",
+        "node_modules/@dasch-swiss/dsp-ui/lib/assets/style/dsp-ui.scss" // <- add this line
+    ],
+...
+```
 
 ## Usage
 <!-- TODO: add the modules to app.modules and use them as usual  -->
