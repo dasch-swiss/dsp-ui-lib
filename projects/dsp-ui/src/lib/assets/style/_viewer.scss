@@ -1,11 +1,10 @@
 // css for parent value components
 
 .read-mode-view {
-  font: 400 15px/24px Roboto,"Helvetica Neue",sans-serif;
-}
-
-.read-mode-view p {
-  margin: 0px;
+  font: 400 15px/24px sans-serif;
+  p {
+    margin: 0px;
+  }
 }
 
 .child-value-component,
@@ -21,8 +20,21 @@
   border-top: 0em solid transparent;
 }
 
+
+// css for child components of a parent value component
+
+.child-input-component {
+  display: inline-block;
+  vertical-align: bottom;
+  width: 49%;
+  &:nth-child(2) {
+    padding-left: 2%;
+  }
+}
+
+// custom error message
+
 .custom-error-message {
-  font-family: Roboto,"Helvetica Neue",sans-serif;
   font-size: 12px;
   margin-top: -1em;
   padding-bottom: 1em;

@@ -30,7 +30,8 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/assets/main.scss"
+              "src/assets/main.scss",
+              "dist/@dasch-swiss/dsp-ui/lib/assets/style/dsp-ui.scss"
             ],
             "scripts": []
           },
