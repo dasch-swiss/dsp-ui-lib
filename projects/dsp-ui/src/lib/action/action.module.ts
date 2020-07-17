@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 import { MessageComponent } from './components/message/message.component';
 import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator.component';
 import { SortButtonComponent } from './components/sort-button/sort-button.component';
@@ -15,9 +18,6 @@ import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe';
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [

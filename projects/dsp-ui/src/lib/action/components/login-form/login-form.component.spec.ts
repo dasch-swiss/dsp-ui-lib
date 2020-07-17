@@ -20,13 +20,19 @@ import { LoginFormComponent } from './login-form.component';
  * Test host component to simulate login-form component.
  */
 @Component({
-    template: `<dsp-login-form #loginForm></dsp-login-form>`
+    template: `<dsp-login-form #loginForm (status)="statusChanged($event)"></dsp-login-form>`
 })
 class TestHostComponent implements OnInit {
 
     @ViewChild('loginForm') loginFormComponent: LoginFormComponent;
 
+    loggedIn: boolean;
+
     ngOnInit() { }
+
+    statusChanged(status: boolean) {
+        this.loggedIn = status;
+    }
 
 }
 
@@ -155,6 +161,8 @@ describe('LoginFormComponent', () => {
             expect(session.user.name).toEqual('anything.user01');
 
             expect(session.user.jwt).toEqual('myToken');
+
+            // expect(testHostComponent.loggedIn).toBeTruthy();
 
         });
     });
