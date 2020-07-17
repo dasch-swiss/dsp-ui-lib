@@ -92,7 +92,7 @@ CONSTRUCT {
      * Generate the whole gravsearch query matching the query given by the form.
      */
     private _generateGravsearch(offset: number = 0): string {
-        const queryTemplate = this.expertSearchForm.controls['gravsearchquery'].value;
+        // const queryTemplate = this.expertSearchForm.controls['gravsearchquery'].value;
 
         // offset component of the Gravsearch query
         const offsetTemplate = `
@@ -107,14 +107,14 @@ CONSTRUCT {
              OFFSET ${localOffset}
              `;
 
-            return queryTemplate + offsetCustomTemplate;
+            return this.queryFormControl.value + offsetCustomTemplate;
         };
 
         if (offset === 0) {
             // store the function so another Gravsearch query can be created with an increased offset
             this._searchParamsService.changeSearchParamsMsg(new AdvancedSearchParams(generateGravsearchWithCustomOffset));
         }
-        return queryTemplate + offsetTemplate;
+        return this.queryFormControl.value + offsetTemplate;
     }
 
 }
