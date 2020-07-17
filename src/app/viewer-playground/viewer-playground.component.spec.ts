@@ -1,12 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ViewerPlaygroundComponent } from './viewer-playground.component';
-import { DspViewerModule, DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
-import { SearchEndpointV2, ReadResourceSequence, ApiResponseData } from '@dasch-swiss/dsp-js';
-import { of } from 'rxjs';
-import { MatListModule } from '@angular/material/list';
 import { MatLineModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { ReadResourceSequence, SearchEndpointV2 } from '@dasch-swiss/dsp-js';
+import { DspApiConnectionToken, DspViewerModule } from '@dasch-swiss/dsp-ui';
+import { of } from 'rxjs';
+import { ViewerPlaygroundComponent } from './viewer-playground.component';
 
 describe('ViewerPlaygroundComponent', () => {
     let component: ViewerPlaygroundComponent;
