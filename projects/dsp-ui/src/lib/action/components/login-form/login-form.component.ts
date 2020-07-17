@@ -33,12 +33,20 @@ export class LoginFormComponent implements OnInit {
     @Input() icons?: boolean;
 
     /**
-     * Emits true when the login process was successful and false in case of error on login or false after logout process
+     * Emits true when the login process was successful and false in case of error
      *
-     * @param status
+     * @param loginSuccess
      *
      */
-    @Output() status: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() loginSuccess: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+    /**
+     * Emits true when the logout process was successful and false in case of error
+     *
+     * @param logoutSuccess
+     *
+     */
+    @Output() logoutSuccess: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     // is there already a valid session?
     session: Session;
@@ -142,7 +150,7 @@ export class LoginFormComponent implements OnInit {
                 this._sessionService.setSession(response.body.token, identifier, identifierType).subscribe(
                     () => {
                         this.session = this._sessionService.getSession();
-                        this.status.emit(true);
+                        this.loginSuccess.emit(true);
                         this.loading = false;
                     }
                 );
@@ -153,6 +161,7 @@ export class LoginFormComponent implements OnInit {
                 this.loginErrorPw = (error.status === 401);
                 this.loginErrorServer = (error.status === 0);
 
+                this.loginSuccess.emit(false);
                 this.errorMessage = error;
 
                 this.loading = false;
@@ -172,7 +181,7 @@ export class LoginFormComponent implements OnInit {
 
         this.knoraApiConnection.v2.auth.logout().subscribe(
             (response: ApiResponseData<LogoutResponse>) => {
-                this.status.emit(false);
+                this.logoutSuccess.emit(true);
                 this._sessionService.destroySession();
                 this.loading = false;
                 this.buildLoginForm();
@@ -181,6 +190,7 @@ export class LoginFormComponent implements OnInit {
             },
             (error: ApiResponseError) => {
                 console.error(error);
+                this.loginSuccess.emit(false);
                 this.loading = false;
             }
         );

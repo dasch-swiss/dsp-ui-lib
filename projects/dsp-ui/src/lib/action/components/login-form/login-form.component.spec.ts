@@ -20,7 +20,7 @@ import { LoginFormComponent } from './login-form.component';
  * Test host component to simulate login-form component.
  */
 @Component({
-    template: `<dsp-login-form #loginForm (status)="statusChanged($event)"></dsp-login-form>`
+    template: `<dsp-login-form #loginForm (loginSuccess)="onLogin($event)" (logoutSuccess)="onLogout($event)"></dsp-login-form>`
 })
 class TestHostComponent implements OnInit {
 
@@ -30,8 +30,16 @@ class TestHostComponent implements OnInit {
 
     ngOnInit() { }
 
-    statusChanged(status: boolean) {
-        this.loggedIn = status;
+    // if response is true, the login was successful
+    // assign loggedIn to the response
+    onLogin(response: boolean) {
+        this.loggedIn = response;
+    }
+
+    // if response is true, the logout was successful
+    // assign loggedIn to the opposite of the response
+    onLogout(response: boolean) {
+        this.loggedIn = !response;
     }
 
 }
