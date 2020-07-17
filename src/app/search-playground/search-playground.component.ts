@@ -1,5 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-search-playground',
@@ -9,5 +8,9 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class SearchPlaygroundComponent {
 
     constructor() { }
+
+    submitQuery(query: string) {
+        console.log('output', query);
+    }
 
 }
