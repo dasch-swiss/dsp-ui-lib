@@ -32,7 +32,7 @@ export class StringLiteralInputComponent implements OnInit {
      *
      * @param  {boolean} [textarea=false]
      */
-    @Input() textarea?: boolean = false;
+    @Input() textarea?: boolean;
 
     /**
      * Optional form field value of type StringLiteral[]
@@ -46,14 +46,14 @@ export class StringLiteralInputComponent implements OnInit {
      *
      * @param {boolean}: [disabled=false]
      */
-    @Input() disabled?: boolean = false;
+    @Input() disabled?: boolean;
 
     /**
      * The readonly attribute specifies whether the control may be modified by the user.
      *
      * @param {boolean}: [readonly=false]
      */
-    @Input() readonly?: boolean = false;
+    @Input() readonly?: boolean;
 
     /**
      * Returns (output) an array of StringLiteral on any change on the input field.
@@ -82,9 +82,7 @@ export class StringLiteralInputComponent implements OnInit {
 
     form: FormGroup;
 
-    constructor (
-        private _fb: FormBuilder
-    ) {
+    constructor(private _fb: FormBuilder) {
 
         // set selected language, if it's not defined yet
         if (!this.language) {
