@@ -2,7 +2,7 @@
     <form [formGroup]="expertSearchForm" class="expert-search-form kui-form-content">
         <mat-form-field class="textarea-field large-field">
             <textarea matInput [formControlName]="'gravsearchquery'" cdkTextareaAutosize cdkAutosizeMinRows="12"
-                cdkAutosizeMaxRows="24" class="textarea-field-content" placeholder="Write your gravsearch query">
+                cdkAutosizeMaxRows="24" class="textarea-field-content" placeholder="Write your Gravsearch query">
             </textarea>
             <mat-error *ngIf="expertSearchForm.controls.gravsearchquery.hasError('forbiddenName')">
                 The <strong>OFFSET</strong> should not be provided in the query as it will be added automatically during
