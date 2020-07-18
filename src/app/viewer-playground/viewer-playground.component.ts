@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ApiResponseError, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
+import { DspApiConnectionToken, ListViewParam } from '@dasch-swiss/dsp-ui';
 
 @Component({
     selector: 'app-viewer-playground',
@@ -8,6 +8,12 @@ import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
     styleUrls: ['./viewer-playground.component.scss']
 })
 export class ViewerPlaygroundComponent implements OnInit {
+
+    listParams: ListViewParam = {
+        query: 'kreuz',
+        mode: 'fulltext'
+    }
+
 
     showGrid = true;
 
