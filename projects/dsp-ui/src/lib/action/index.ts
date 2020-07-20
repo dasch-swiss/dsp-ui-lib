@@ -6,6 +6,7 @@ export * from './pipes/formatting/knoradate.pipe';
 export * from './pipes/array-transformation/reverse.pipe';
 export * from './pipes/array-transformation/sort-by.pipe';
 export * from './pipes/string-transformation/truncate.pipe';
+export * from './pipes/string-transformation/stringify-string-literal.pipe';
 
 // services
 export * from './services/sorting.service';

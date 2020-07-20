@@ -18,6 +18,7 @@ import { ReversePipe } from './pipes/array-transformation/reverse.pipe';
 import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe';
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
+import { StringifyStringLiteralPipe } from './pipes/string-transformation/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
 
 @NgModule({
@@ -27,6 +28,7 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     ReversePipe,
     SortByPipe,
     TruncatePipe,
+    StringifyStringLiteralPipe,
     AdminImageDirective,
     ExistingNameDirective,
     GndDirective,
@@ -52,6 +54,7 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     ReversePipe,
     SortByPipe,
     TruncatePipe,
+    StringifyStringLiteralPipe,
     AdminImageDirective,
     ExistingNameDirective,
     ProgressIndicatorComponent,
