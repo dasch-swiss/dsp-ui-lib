@@ -6,7 +6,7 @@ import {
     ReadResource,
     ReadStillImageFileValue
 } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
+import { DspApiConnectionToken, StillImageRepresentation } from '@dasch-swiss/dsp-ui';
 import { mergeMap } from 'rxjs/operators';
 
 @Component({
@@ -19,7 +19,7 @@ export class StillImagePlaygroundComponent implements OnInit {
     resourceIri = 'http://rdfh.ch/0803/00014b43f902'; // incunabula
     loading: boolean;
 
-    stillImageFileValues: ReadStillImageFileValue[];
+    stillImageRepresentations: StillImageRepresentation[];
     caption = 'test image';
 
     constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
@@ -38,8 +38,10 @@ export class StillImagePlaygroundComponent implements OnInit {
                     }
                 })).subscribe(
             (res: ReadResource) => {
-                this.stillImageFileValues =
-                    res.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue', ReadStillImageFileValue);
+
+                this.stillImageRepresentations
+                    = [new StillImageRepresentation(res.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue', ReadStillImageFileValue)[0], [])];
+
                 this.loading = false;
             },
             err => {

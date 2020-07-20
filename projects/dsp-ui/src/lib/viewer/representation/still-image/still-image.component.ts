@@ -9,7 +9,14 @@ import {
     Output,
     SimpleChange
 } from '@angular/core';
-import { Point2D, ReadGeomValue, ReadStillImageFileValue, RegionGeometry } from '@dasch-swiss/dsp-js';
+import {
+    Constants,
+    Point2D,
+    ReadGeomValue,
+    ReadResource,
+    ReadStillImageFileValue,
+    RegionGeometry
+} from '@dasch-swiss/dsp-js';
 import { ParseReadGeomValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-geom-value';
 
 // This component needs the openseadragon library itself, as well as the openseadragon plugin openseadragon-svg-overlay
@@ -19,6 +26,46 @@ import { ParseReadGeomValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/
 // it is loaded globally in scripts tag of angular-cli.json,
 // we still need to declare the namespace to make TypeScript compiler happy.
 declare let OpenSeadragon: any;
+
+/**
+ * Represents a region.
+ * Contains a reference to the resource representing the region and its geometries.
+ */
+
+export class Region {
+
+    /**
+     *
+     * @param regionResource a resource of type Region
+     */
+    constructor(readonly regionResource: ReadResource) {
+
+    }
+
+    /**
+     * Get all geometry information belonging to this region.
+     *
+     */
+    getGeometries() {
+        return this.regionResource.properties[Constants.HasGeometry] as ReadGeomValue[];
+    }
+}
+
+/**
+ * Represents an image including its regions.
+ */
+export class StillImageRepresentation {
+
+    /**
+     *
+     * @param stillImageFileValue a [[ReadStillImageFileValue]] representing an image.
+     * @param regions the regions belonging to the image.
+     */
+    constructor(readonly stillImageFileValue: ReadStillImageFileValue, readonly regions: Region[]) {
+
+    }
+
+}
 
 /**
  * Collection of `SVGPolygonElement` for individual regions.
@@ -36,7 +83,7 @@ interface PolygonsForRegion {
 })
 export class StillImageComponent implements OnChanges, OnDestroy {
 
-    @Input() images: ReadStillImageFileValue[];
+    @Input() images: StillImageRepresentation[];
     @Input() imageCaption?: string;
     @Output() regionHovered = new EventEmitter<string>();
 
@@ -177,7 +224,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
             }
         });
         this._viewer.addHandler('resize', (args) => {
-            // args.eventSource.svgOverlay().resize();
+            args.eventSource.svgOverlay().resize();
         });
     }
 
@@ -190,8 +237,13 @@ export class StillImageComponent implements OnChanges, OnDestroy {
         // The first image has its left side at x = 0, and all images are scaled to have a width of 1 in viewport coordinates.
         // see also: https://openseadragon.github.io/examples/viewport-coordinates/
 
+        const fileValues: ReadStillImageFileValue[] = this.images.map(
+            (img) => {
+                return img.stillImageFileValue;
+            });
+
         // display only the defined range of this.images
-        const tileSources: object[] = this._prepareTileSourcesFromFileValues(this.images);
+        const tileSources: object[] = this._prepareTileSourcesFromFileValues(fileValues);
 
         this.removeOverlays();
         this._viewer.open(tileSources);
@@ -253,7 +305,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
         const imageXOffset = 0; // see documentation in this.openImages() for the usage of imageXOffset
 
         for (const image of this.images) {
-            const aspectRatio = (image.dimY / image.dimX);
+            const aspectRatio = (image.stillImageFileValue.dimY / image.stillImageFileValue.dimX);
 
             // TODO: remove dummy region
             const geomStr
