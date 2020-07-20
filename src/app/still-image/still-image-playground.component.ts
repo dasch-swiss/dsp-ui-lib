@@ -4,12 +4,15 @@ import {
     KnoraApiConnection,
     LogoutResponse, ReadGeomValue,
     ReadResource,
-    ReadStillImageFileValue
+    ReadStillImageFileValue, ReadValue
 } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken, Region, StillImageRepresentation } from '@dasch-swiss/dsp-ui';
 import { mergeMap } from 'rxjs/operators';
+
 // TODO: get test data from Knora resource
-import { ParseReadGeomValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-geom-value';
+class Geom extends ReadValue {
+    geometryString: string;
+}
 
 @Component({
     selector: 'app-still-image',
@@ -45,7 +48,7 @@ export class StillImagePlaygroundComponent implements OnInit {
                 const geomStr
                     = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.0989010989010989,"y":0.18055555555555555},{"x":0.7252747252747253,"y":0.7245370370370371}],"type":"rectangle"}';
 
-                const parseReg = new ParseReadGeomValue();
+                const parseReg = new Geom();
                 parseReg.geometryString = geomStr;
 
                 const geometry = new ReadGeomValue(parseReg);

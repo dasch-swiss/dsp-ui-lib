@@ -4,10 +4,9 @@ import { Region, StillImageComponent, StillImageRepresentation } from './still-i
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Constants, ReadGeomValue, ReadResource } from '@dasch-swiss/dsp-js';
+import { Constants, ReadGeomValue, ReadResource, ReadValue } from '@dasch-swiss/dsp-js';
 import { By } from '@angular/platform-browser';
 // TODO: get test data from dsp-js
-import { ParseReadGeomValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-geom-value';
 
 
 // TODO: get this from dsp-js
@@ -27,11 +26,15 @@ const circleGeom = '{"status":"active","lineColor":"#3333ff","lineWidth":2,"poin
 
 const circleGeom2 = '{"status":"active","lineColor":"#3333ff","lineWidth":2,"points":[{"x":0.5305232558139537,"y":0.3126142595978062}],"type":"circle","radius":{"x":0.18023255813953487,"y":0.08957952468007313},"original_index":1}';
 
+class Geom extends ReadValue {
+    geometryString: string;
+}
 
 function makeRegion(geomString: string[], iri: string): ReadResource {
 
     const geomVals = geomString.map(geom => {
-        const parseReg = new ParseReadGeomValue();
+
+        const parseReg = new Geom();
         parseReg.geometryString = geom;
 
         return new ReadGeomValue(parseReg);
