@@ -1,13 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
-    ApiResponseData, ApiResponseError,
+    ApiResponseData, ApiResponseError, Constants,
     KnoraApiConnection,
-    LogoutResponse,
+    LogoutResponse, ReadGeomValue,
     ReadResource,
     ReadStillImageFileValue
 } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken, StillImageRepresentation } from '@dasch-swiss/dsp-ui';
+import { DspApiConnectionToken, Region, StillImageRepresentation } from '@dasch-swiss/dsp-ui';
 import { mergeMap } from 'rxjs/operators';
+import { ParseReadGeomValue } from '../../../.yalc/@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-geom-value';
 
 @Component({
     selector: 'app-still-image',
@@ -39,8 +40,24 @@ export class StillImagePlaygroundComponent implements OnInit {
                 })).subscribe(
             (res: ReadResource) => {
 
+                // TODO: remove dummy region
+                const geomStr
+                    = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.0989010989010989,"y":0.18055555555555555},{"x":0.7252747252747253,"y":0.7245370370370371}],"type":"rectangle"}';
+
+                const parseReg = new ParseReadGeomValue();
+                parseReg.geometryString = geomStr;
+
+                const geometry = new ReadGeomValue(parseReg);
+
+                const regionRes = new ReadResource();
+                regionRes.properties[Constants.HasGeometry] = [geometry];
+
                 this.stillImageRepresentations
-                    = [new StillImageRepresentation(res.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue', ReadStillImageFileValue)[0], [])];
+                    = [new StillImageRepresentation(res.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue', ReadStillImageFileValue)[0], [new Region(regionRes)])];
+
+
+
+
 
                 this.loading = false;
             },

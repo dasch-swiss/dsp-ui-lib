@@ -5,7 +5,6 @@ import {
     Input,
     OnChanges,
     OnDestroy,
-    OnInit,
     Output,
     SimpleChange
 } from '@angular/core';
@@ -17,7 +16,6 @@ import {
     ReadStillImageFileValue,
     RegionGeometry
 } from '@dasch-swiss/dsp-js';
-import { ParseReadGeomValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-geom-value';
 
 // This component needs the openseadragon library itself, as well as the openseadragon plugin openseadragon-svg-overlay
 // Both libraries are installed via package.json, and loaded globally via the script tag in .angular-cli.json
@@ -49,6 +47,44 @@ export class Region {
     getGeometries() {
         return this.regionResource.properties[Constants.HasGeometry] as ReadGeomValue[];
     }
+}
+
+/**
+ * Represents a region.
+ * Contains a reference to the resource representing the region and its geometries.
+ */
+export class ImageRegion {
+
+    /**
+     *
+     * @param regionResource a resource of type Region
+     */
+    constructor(readonly regionResource: ReadResource) {
+
+    }
+
+    /**
+     * Get all geometry information belonging to this region.
+     *
+     */
+    getGeometries() {
+        return this.regionResource.properties[Constants.HasGeometry] as ReadGeomValue[];
+    }
+}
+
+/**
+ * Represents a geometry belonging to a specific region.
+ */
+export class GeometryForRegion {
+
+    /**
+     *
+     * @param geometry the geometrical information.
+     * @param region the region the geometry belongs to.
+     */
+    constructor(readonly geometry: RegionGeometry, readonly region: ReadResource) {
+    }
+
 }
 
 /**
@@ -294,6 +330,26 @@ export class StillImageComponent implements OnChanges, OnDestroy {
     }
 
     /**
+     * Calculates the surface of a rectangular region.
+     *
+     * @param geom the region's geometry.
+     * @returns the surface.
+     */
+    private surfaceOfRectangularRegion(geom: RegionGeometry): number {
+
+        if (geom.type !== 'rectangle') {
+            console.log('expected rectangular region, but ' + geom.type + ' given');
+            return 0;
+        }
+
+        const w = Math.max(geom.points[0].x, geom.points[1].x) - Math.min(geom.points[0].x, geom.points[1].x);
+        const h = Math.max(geom.points[0].y, geom.points[1].y) - Math.min(geom.points[0].y, geom.points[1].y);
+
+        return w * h;
+
+    }
+
+    /**
      * Adds a ROI-overlay to the viewer for every region of every image in this.images
      */
     private renderRegions(): void {
@@ -302,27 +358,8 @@ export class StillImageComponent implements OnChanges, OnDestroy {
 
         this.removeOverlays();
 
-        const imageXOffset = 0; // see documentation in this.openImages() for the usage of imageXOffset
+        let imageXOffset = 0; // see documentation in this.openImages() for the usage of imageXOffset
 
-        for (const image of this.images) {
-            const aspectRatio = (image.stillImageFileValue.dimY / image.stillImageFileValue.dimX);
-
-            // TODO: remove dummy region
-            const geomStr
-                = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.0989010989010989,"y":0.18055555555555555},{"x":0.7252747252747253,"y":0.7245370370370371}],"type":"rectangle"}';
-
-            const parseReg = new ParseReadGeomValue();
-            parseReg.geometryString = geomStr;
-
-            const geometry = new ReadGeomValue(parseReg);
-
-            this.regions['id'] = [];
-
-            this.createSVGOverlay('id', geometry.geometry, aspectRatio, imageXOffset, 'label');
-
-        }
-
-        /*
         for (const image of this.images) {
             const aspectRatio = (image.stillImageFileValue.dimY / image.stillImageFileValue.dimX);
 
@@ -345,8 +382,8 @@ export class StillImageComponent implements OnChanges, OnDestroy {
 
                 if (geom1.geometry.type === 'rectangle' && geom2.geometry.type === 'rectangle') {
 
-                    const surf1 = StillImageComponent.surfaceOfRectangularRegion(geom1.geometry);
-                    const surf2 = StillImageComponent.surfaceOfRectangularRegion(geom2.geometry);
+                    const surf1 = this.surfaceOfRectangularRegion(geom1.geometry);
+                    const surf2 = this.surfaceOfRectangularRegion(geom2.geometry);
 
                     // if reg1 is smaller than reg2, return 1
                     // reg1 then comes after reg2 and thus is rendered later
@@ -360,7 +397,6 @@ export class StillImageComponent implements OnChanges, OnDestroy {
                     return 0;
                 }
 
-
             });
 
             // render all geometries for this page
@@ -372,7 +408,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
             }
 
             imageXOffset++;
-        }*/
+        }
 
     }
 
