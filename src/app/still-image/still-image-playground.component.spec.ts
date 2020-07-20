@@ -11,10 +11,21 @@ import {
 import { of } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { AjaxResponse } from 'rxjs/ajax';
+import { Component, OnInit } from '@angular/core';
+import { Test } from 'tslint';
+
+@Component({
+    template: `
+        <dsp-still-image [images]="[]"
+                         [imageCaption]="">
+        </dsp-still-image>`
+})
+class TestHostComponent {
+}
 
 describe('StillImageComponent', () => {
-    let component: StillImagePlaygroundComponent;
-    let fixture: ComponentFixture<StillImagePlaygroundComponent>;
+    let component: TestHostComponent;
+    let fixture: ComponentFixture<TestHostComponent>;
 
     beforeEach(async(() => {
         const authSpyObj = {
@@ -25,7 +36,7 @@ describe('StillImageComponent', () => {
         };
 
         TestBed.configureTestingModule({
-            declarations: [StillImagePlaygroundComponent],
+            declarations: [StillImagePlaygroundComponent, TestHostComponent],
             providers: [
                 {
                     provide: DspApiConnectionToken,
@@ -63,7 +74,7 @@ describe('StillImageComponent', () => {
             }
         );
 
-        fixture = TestBed.createComponent(StillImagePlaygroundComponent);
+        fixture = TestBed.createComponent(TestHostComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
