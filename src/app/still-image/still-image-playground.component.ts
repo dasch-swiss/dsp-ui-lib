@@ -53,16 +53,21 @@ export class StillImagePlaygroundComponent implements OnInit {
 
                 const geometry = new ReadGeomValue(parseReg);
 
+                const geomStr2
+                    = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.17532467532467533,"y":0.18049792531120332},{"x":0.8051948051948052,"y":0.17012448132780084},{"x":0.8311688311688312,"y":0.7261410788381742},{"x":0.19480519480519481,"y":0.7323651452282157},{"x":0.17857142857142858,"y":0.17842323651452283},{"x":0.18506493506493507,"y":0.1825726141078838},{"x":0.17857142857142858,"y":0.1825726141078838}],"type":"polygon"}';
+
+                const parseReg2 = new Geom();
+                parseReg2.geometryString = geomStr2;
+
+                const geometry2 = new ReadGeomValue(parseReg2);
+
                 const regionRes = new ReadResource();
-                regionRes.id = 'activeRegion';
-                regionRes.properties[Constants.HasGeometry] = [geometry];
+                regionRes.id = 'activeRegion2';
+                regionRes.label = 'test region 2';
+                regionRes.properties[Constants.HasGeometry] = [geometry, geometry2];
 
                 this.stillImageRepresentations
                     = [new StillImageRepresentation(res.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue', ReadStillImageFileValue)[0], [new Region(regionRes)])];
-
-
-
-
 
                 this.loading = false;
             },
@@ -70,5 +75,9 @@ export class StillImagePlaygroundComponent implements OnInit {
                 console.error(err);
             }
         );
+    }
+
+    regionClicked(regionIri: string) {
+        console.log(regionIri);
     }
 }

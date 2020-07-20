@@ -50,7 +50,8 @@ function makeRegion(geomString: string[], iri: string): ReadResource {
 @Component({
     template: `
         <dsp-still-image [images]="stillImageFileRepresentations"
-                         [imageCaption]="caption" [activateRegion]="inputActivateRegion" (regionHovered)="regHovered($event)">
+                         [imageCaption]="caption" [activateRegion]="inputActivateRegion"
+                         (regionClicked)="regHovered($event)">
         </dsp-still-image>`
 })
 class TestHostComponent implements OnInit {

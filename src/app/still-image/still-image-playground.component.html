@@ -1,1 +1,1 @@
-<dsp-still-image *ngIf="!loading" [images]="stillImageRepresentations" [imageCaption]="caption" activateRegion="activeRegion"></dsp-still-image>
+<dsp-still-image *ngIf="!loading" [images]="stillImageRepresentations" [imageCaption]="caption" (regionClicked)="regionClicked($event)"></dsp-still-image>

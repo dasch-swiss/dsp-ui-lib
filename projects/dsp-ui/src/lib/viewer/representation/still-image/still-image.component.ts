@@ -50,29 +50,6 @@ export class Region {
 }
 
 /**
- * Represents a region.
- * Contains a reference to the resource representing the region and its geometries.
- */
-export class ImageRegion {
-
-    /**
-     *
-     * @param regionResource a resource of type Region
-     */
-    constructor(readonly regionResource: ReadResource) {
-
-    }
-
-    /**
-     * Get all geometry information belonging to this region.
-     *
-     */
-    getGeometries() {
-        return this.regionResource.properties[Constants.HasGeometry] as ReadGeomValue[];
-    }
-}
-
-/**
  * Represents a geometry belonging to a specific region.
  */
 export class GeometryForRegion {
@@ -121,9 +98,9 @@ export class StillImageComponent implements OnChanges, OnDestroy {
 
     @Input() images: StillImageRepresentation[];
     @Input() imageCaption?: string;
-    @Input() activateRegion: string; // highlight a region
+    @Input() activateRegion?: string; // highlight a region
 
-    @Output() regionHovered = new EventEmitter<string>();
+    @Output() regionClicked = new EventEmitter<string>();
 
     private _viewer;
     private regions: PolygonsForRegion = {};
@@ -450,7 +427,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
 
         // event when a region is clicked (output)
         svgElement.addEventListener('click', () => {
-            this.regionHovered.emit(regionIri);
+            this.regionClicked.emit(regionIri);
         }, false);
 
         const svgTitle = document.createElementNS('http://www.w3.org/2000/svg', 'title');
