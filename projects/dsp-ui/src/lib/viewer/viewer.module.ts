@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatCardModule } from '@angular/material/card';
 
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 
@@ -41,6 +42,7 @@ import { CalendarHeaderComponent } from './values/date-value/calendar-header/cal
 import { DateInputComponent } from './values/date-value/date-input/date-input.component';
 import { JDNDatepickerDirective } from './values/jdn-datepicker-directive/jdndatepicker.directive';
 import { ResourceListComponent } from './views/list-view/resource-list/resource-list.component';
+import { ResourceGridComponent } from './views/list-view/resource-grid/resource-grid.component';
 import { DspActionModule } from '../action';
 import { AddValueComponent } from './operations/add-value/add-value.component';
 import { StillImageComponent } from './representation/still-image/still-image.component';
@@ -71,15 +73,17 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         ListValueComponent,
         SublistValueComponent,
         GeonameValueComponent,
-        AddValueComponent,
         StillImageComponent,
-        ResourceListComponent
+        ResourceListComponent,
+        ResourceGridComponent,
+        AddValueComponent
     ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
         MatButtonModule,
+        MatCardModule,
         MatInputModule,
         MatAutocompleteModule,
         MatCheckboxModule,
@@ -114,10 +118,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         ListValueComponent,
         GeonameValueComponent,
         JDNDatepickerDirective,
+        ResourceListComponent,
+        ResourceGridComponent,
         AddValueComponent,
-        JDNDatepickerDirective,
-        StillImageComponent,
-        ResourceListComponent
+		StillImageComponent
     ]
 })
 export class DspViewerModule {

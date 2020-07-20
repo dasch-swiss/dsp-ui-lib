@@ -1,3 +1,11 @@
+@import "./config";
+@import "./mixins";
+@import "./responsive";
+
+.link:hover {
+  background-color: $black-12-opacity;
+}
+
 // css for parent value components
 
 .read-mode-view {
