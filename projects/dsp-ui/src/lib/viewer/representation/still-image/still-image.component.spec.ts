@@ -47,12 +47,13 @@ function makeRegion(geomString: string[], iri: string): ReadResource {
 @Component({
     template: `
         <dsp-still-image [images]="stillImageFileRepresentations"
-                         [imageCaption]="caption">
+                         [imageCaption]="caption" (regionHovered)="regHovered($event)">
         </dsp-still-image>`
 })
 class TestHostComponent implements OnInit {
     stillImageFileRepresentations: StillImageRepresentation[] = [];
     caption = 'test image';
+    activeRegion: string;
 
     @ViewChild(StillImageComponent) osdViewerComp: StillImageComponent;
 
@@ -68,6 +69,10 @@ class TestHostComponent implements OnInit {
                         new Region(makeRegion([circleGeom2, rectangleGeom2], 'fourth'))
                     ])
         ];
+    }
+
+    regHovered(regIri: string) {
+        this.activeRegion = regIri;
     }
 }
 
@@ -128,6 +133,33 @@ describe('StillImageComponent', () => {
         const captionEle = captionDebugElement.nativeElement;
 
         expect(captionEle.innerText).toEqual('test image');
+
+    });
+
+    it('should have 5 test regions loaded (rectangle, polygon, circle, [circle, rectangle])', () => {
+
+        const overlay = testHostComponent.osdViewerComp['_viewer'].svgOverlay();
+        expect(overlay.node().childElementCount).toEqual(5);
+    });
+
+    fit('should emit the region\'s Iri when a region is hovered', () => {
+
+        const overlay = testHostComponent.osdViewerComp['_viewer'].svgOverlay();
+
+        // first region -> polygon element (second element in <g> element)
+        const regionSvgEle: HTMLElement = overlay.node().childNodes[0].childNodes[1];
+
+        const event = new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
+            view: window
+        });
+
+        regionSvgEle.dispatchEvent(event);
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.activeRegion).toEqual('first');
 
     });
 
