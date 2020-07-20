@@ -2,7 +2,21 @@ import { Component, OnInit, Input, Inject, Output, EventEmitter } from '@angular
 import { ReadResourceSequence, KnoraApiConnection, CountQueryResponse, ApiResponseError } from '@dasch-swiss/dsp-js';
 import { PageEvent } from '@angular/material/paginator';
 import { DspApiConnectionToken } from '../../../core';
-import { IFulltextSearchParams } from '@dasch-swiss/dsp-js/src/api/v2/search/search-endpoint-v2';
+
+export interface fulltextSearchParams {
+    /**
+     * Iri of resource class the fulltext search is restricted to, if any.
+     */
+    limitToResourceClass?: string;
+    /**
+     * Iri of the project the fulltext search is restricted to, if any.
+     */
+    limitToProject?: string;
+    /**
+     * Iri of standoff class the fulltext search is restricted to, if any.
+     */
+    limitToStandoffClass?: string;
+}
 
 /**
  * query: search query. It can be gravserch query or fulltext string query.
@@ -18,7 +32,7 @@ import { IFulltextSearchParams } from '@dasch-swiss/dsp-js/src/api/v2/search/sea
 export interface ListViewParam {
     query: string;
     mode: 'fulltext' | 'gravsearch';
-    params?: IFulltextSearchParams;
+    params?: fulltextSearchParams;
 }
 
 @Component({

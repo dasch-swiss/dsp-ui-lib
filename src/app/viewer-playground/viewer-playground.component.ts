@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { ApiResponseError, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken, ListViewParam } from '@dasch-swiss/dsp-ui';
+import { Component, OnInit } from '@angular/core';
+import { ListViewParam } from '@dasch-swiss/dsp-ui';
 
 @Component({
     selector: 'app-viewer-playground',
@@ -14,25 +13,10 @@ export class ViewerPlaygroundComponent implements OnInit {
         mode: 'fulltext'
     }
 
-
-    showGrid = true;
-
-    // test data
-    resources: ReadResourceSequence;
-
-    constructor(
-        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection
-    ) { }
+    constructor( ) { }
 
     ngOnInit(): void {
-        this._dspApiConnection.v2.search.doFulltextSearch('kreuz').subscribe(
-            (response: ReadResourceSequence) => {
-                this.resources = response;
-            },
-            (error: ApiResponseError) => {
-                console.error(error);
-            }
-        );
+
     }
 
     openResource(id: string) {

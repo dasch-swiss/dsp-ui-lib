@@ -56,7 +56,7 @@ describe('ListViewComponent', () => {
 
         const spyObj = {
             v2: {
-                search: jasmine.createSpyObj('search', ['doFulltextSearch'])
+                search: jasmine.createSpyObj('search', ['doFulltextSearch', 'doFulltextSearchCountQuery', 'doExtendedSearch', 'doExtendedSearchCountQuery'])
             }
         };
 
