@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StillImageComponent } from './still-image.component';
+import { StillImageComponent, StillImageRepresentation } from './still-image.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -12,18 +12,19 @@ const stillImageFileValue = {"type":"http://api.knora.org/ontology/knora-api/v2#
 
 @Component({
     template: `
-        <dsp-still-image [images]="stillImageFileValues"
+        <dsp-still-image [images]="stillImageFileRepresentations"
                          [imageCaption]="caption">
         </dsp-still-image>`
 })
 class TestHostComponent implements OnInit {
-    stillImageFileValues: ReadStillImageFileValue[] = [];
+    stillImageFileRepresentations: StillImageRepresentation[] = [];
     caption = 'test image';
 
     @ViewChild(StillImageComponent) osdViewerComp: StillImageComponent;
 
     ngOnInit() {
-        this.stillImageFileValues = [stillImageFileValue as ReadStillImageFileValue];
+
+        this.stillImageFileRepresentations = [new StillImageRepresentation(stillImageFileValue, [])];
     }
 }
 
