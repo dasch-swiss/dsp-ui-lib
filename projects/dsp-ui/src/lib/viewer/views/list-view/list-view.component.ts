@@ -29,8 +29,6 @@ export interface ListViewParam {
 export class ListViewComponent implements OnInit {
 
     @Input() search: ListViewParam;
-    // OR (?)
-    @Input() resources: ReadResourceSequence;
 
     @Input() view?: 'list' | 'grid' = 'list';    // TODO: will be expanded with 'table' as soon as resource-table component is done
 
@@ -40,6 +38,8 @@ export class ListViewComponent implements OnInit {
      * @param {EventEmitter<string>} resourceSelected
      */
     @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
+
+    resources: ReadResourceSequence;
 
     // MatPaginator Output
     pageEvent: PageEvent;
