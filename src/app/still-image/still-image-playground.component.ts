@@ -8,7 +8,8 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken, Region, StillImageRepresentation } from '@dasch-swiss/dsp-ui';
 import { mergeMap } from 'rxjs/operators';
-import { ParseReadGeomValue } from '../../../.yalc/@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-geom-value';
+// TODO: get test data from Knora resource
+import { ParseReadGeomValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-geom-value';
 
 @Component({
     selector: 'app-still-image',

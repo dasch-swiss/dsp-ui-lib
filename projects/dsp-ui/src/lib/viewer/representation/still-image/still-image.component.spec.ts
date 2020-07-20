@@ -4,11 +4,30 @@ import { StillImageComponent, StillImageRepresentation } from './still-image.com
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ReadStillImageFileValue } from '@dasch-swiss/dsp-js';
+import { Constants, ReadGeomValue, ReadResource } from '@dasch-swiss/dsp-js';
 import { By } from '@angular/platform-browser';
+// TODO: get test data from dsp-js
+import { ParseReadGeomValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/read/read-geom-value';
 
 // TODO: get this from dsp-js
 const stillImageFileValue = {"type":"http://api.knora.org/ontology/knora-api/v2#StillImageFileValue","id":"http://rdfh.ch/0803/00014b43f902/values/18dc0912cd05","attachedToUser":"http://rdfh.ch/users/91e19f1e01","arkUrl":"http://0.0.0.0:3336/ark:/72163/1/0803/00014b43f902l/000000000018dc0912cd0wl","versionArkUrl":"http://0.0.0.0:3336/ark:/72163/1/0803/00014b43f902l/000000000018dc0912cd0wl.20121121T165038Z","valueCreationDate":"2012-11-21T16:50:38Z","hasPermissions":"CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser","userHasPermission":"RV","uuid":"000000000018dc0912cd0w","filename":"incunabula_0000003328.jp2","fileUrl":"http://0.0.0.0:1024/0803/incunabula_0000003328.jp2/full/1312,1815/0/default.jpg","dimX":1312,"dimY":1815,"iiifBaseUrl":"http://0.0.0.0:1024/0803","strval":"http://0.0.0.0:1024/0803/incunabula_0000003328.jp2/full/1312,1815/0/default.jpg","property":"http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue","propertyLabel":"has image file","propertyComment":"Connects a Representation to an image file"};
+
+// TODO: remove dummy region
+const rectangleGeom
+    = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.0989010989010989,"y":0.18055555555555555},{"x":0.7252747252747253,"y":0.7245370370370371}],"type":"rectangle"}';
+
+function makeRegion(geomString: string, iri: string) {
+
+
+    const parseReg = new ParseReadGeomValue();
+    parseReg.geometryString = geomString;
+
+    const geometry = new ReadGeomValue(parseReg);
+
+    const regionRes = new ReadResource();
+    regionRes.id = iri;
+    regionRes.properties[Constants.HasGeometry] = [geometry];
+}
 
 @Component({
     template: `
