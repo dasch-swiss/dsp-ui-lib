@@ -142,7 +142,7 @@ describe('StillImageComponent', () => {
         expect(overlay.node().childElementCount).toEqual(5);
     });
 
-    fit('should emit the region\'s Iri when a region is hovered', () => {
+    it('should emit the region\'s Iri when a region is hovered', () => {
 
         const overlay = testHostComponent.osdViewerComp['_viewer'].svgOverlay();
 
@@ -160,6 +160,27 @@ describe('StillImageComponent', () => {
         testHostFixture.detectChanges();
 
         expect(testHostComponent.activeRegion).toEqual('first');
+
+    });
+
+    it('should highlight a region', () => {
+
+        testHostComponent.osdViewerComp['highlightRegion']('first');
+        testHostFixture.detectChanges();
+
+        const overlay = testHostComponent.osdViewerComp['_viewer'].svgOverlay();
+
+        // first region -> polygon element (second element in <g> element)
+        const regionSvgEle: HTMLElement = overlay.node().childNodes[0].childNodes[1];
+
+        let attr = regionSvgEle.getAttribute('class');
+        expect(attr).toEqual('roi-svgoverlay active');
+
+        testHostComponent.osdViewerComp['unhighlightAllRegions']();
+        testHostFixture.detectChanges();
+
+        attr = regionSvgEle.getAttribute('class');
+        expect(attr).toEqual('roi-svgoverlay');
 
     });
 
