@@ -47,13 +47,17 @@ function makeRegion(geomString: string[], iri: string): ReadResource {
 @Component({
     template: `
         <dsp-still-image [images]="stillImageFileRepresentations"
-                         [imageCaption]="caption" (regionHovered)="regHovered($event)">
+                         [imageCaption]="caption" [activateRegion]="inputActivateRegion" (regionHovered)="regHovered($event)">
         </dsp-still-image>`
 })
 class TestHostComponent implements OnInit {
     stillImageFileRepresentations: StillImageRepresentation[] = [];
     caption = 'test image';
+    inputActivateRegion: string;
+
     activeRegion: string;
+
+
 
     @ViewChild(StillImageComponent) osdViewerComp: StillImageComponent;
 
@@ -182,6 +186,19 @@ describe('StillImageComponent', () => {
         attr = regionSvgEle.getAttribute('class');
         expect(attr).toEqual('roi-svgoverlay');
 
+    });
+
+    it('should highlight a region using the input "activateRegion"', () => {
+        testHostComponent.inputActivateRegion = 'first';
+        testHostFixture.detectChanges();
+
+        const overlay = testHostComponent.osdViewerComp['_viewer'].svgOverlay();
+
+        // first region -> polygon element (second element in <g> element)
+        const regionSvgEle: HTMLElement = overlay.node().childNodes[0].childNodes[1];
+
+        const attr = regionSvgEle.getAttribute('class');
+        expect(attr).toEqual('roi-svgoverlay active');
     });
 
 });
