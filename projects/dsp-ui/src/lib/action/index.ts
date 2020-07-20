@@ -14,6 +14,7 @@ export * from './services/sorting.service';
 export * from './components/progress-indicator/progress-indicator.component';
 export * from './components/message/message.component';
 export * from './components/sort-button/sort-button.component';
+export * from './components/login-form/login-form.component';
 
 export * from './components/string-literal-input/string-literal-input.component';
 

@@ -67,11 +67,12 @@ The config files have to be integrated in `angular.json` in all "assets"-section
 ```
 
 Define the following three factory methods in `app.module.ts`:
- 1. Return a function that calls `AppInitService`'s method `Init` and return its return value which is a `Promise`. 
-   Angular waits for this `Promise` to be resolved. 
+
+ 1. Return a function that calls `AppInitService`'s method `Init` and return its return value which is a `Promise`.
+   Angular waits for this `Promise` to be resolved.
    The `Promise` will be resolved once the configuration file has been fetched and its contents have been assigned.
- 2. Get the config from the `AppInitService` instance and provide it as `DspApiConfigToken`.
- 3. Create an KnoraApiConnection instance with the config and provide it as `DspApiConnectionToken`.  
+ 1. Get the config from the `AppInitService` instance and provide it as `DspApiConfigToken`.
+ 1. Create an KnoraApiConnection instance with the config and provide it as `DspApiConnectionToken`.  
 
 Provide it in the main module and include the desired DSP-UI modules in the imports:
 
@@ -88,7 +89,7 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
     DspViewerModule
   ],
   providers: [
-     // 1. 
+     // 1.
     {
       provide: APP_INITIALIZER, // see https://angular.io/api/core/APP_INITIALIZER
       useFactory: (appInitService: AppInitService) =>
@@ -104,7 +105,7 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
       useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig, // AppInitService is passed to the factory method
       deps: [AppInitService] // depends on AppInitService
     },
-    // 3. 
+    // 3.
     {
       provide: DspApiConnectionToken,
       useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig), // AppInitService is passed to the factory method
@@ -120,6 +121,17 @@ Do not forget to import `APP_INITIALIZER` from `@angular/core` and the desired D
 
 The contents of the configuration can be accessed via `AppInitService`s member `config`.
 Just include `AppInitService` in you service's or component's constructor.
+
+The module needs a global styling in the app to override some material design rules. Please update your `angular.json` file as follow:
+
+```json
+...
+    "styles": [
+        "src/styles.scss",
+        "node_modules/@dasch-swiss/dsp-ui/lib/assets/style/dsp-ui.scss" // <- add this line
+    ],
+...
+```
 
 ## Usage
 <!-- TODO: add the modules to app.modules and use them as usual  -->
@@ -206,6 +218,41 @@ And use it in the component template as follows. The example shows how to displa
 
 ```html
 <dsp-resource-view [iri]="'http://rdfh.ch/0803/18a671b8a601'"></dsp-resource-view>
+```
+
+The **DspSearchModule** allows different ways of searching in order to make simple or complex searches in DSP-API. This module contains various components you can use to search and all of them can either be used individually or in combination with one another using the search panel.
+
+Import DspSearchModule in the `app.module.ts`:
+
+```typescript
+@NgModule({
+  declarations: [
+    AppComponent,
+    ProjectsComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    DspCoreModule,
+    DspSearchModule     // <-- add the dsp-ui search module here
+  ],
+  providers: [ ... ]    // <-- add providers as mentioned in section above
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+<!-- example of search panel -->
+
+And use it in the component template as follows.
+The example shows how to display the search panel that includes the full text search bar. It can be customized by setting the parameters with your configuration.
+
+```html
+<dsp-search-panel
+    [route]="'/search'"
+    [projectfilter]="true"
+    [expert]="false"
+    [advanced]="false">
+</dsp-search-panel>
 ```
 
 <!-- TODO: link to main documentation or playground: e.g. https://docs.dasch.swiss/developers/knora-ui/documentation/ -->

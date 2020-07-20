@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { LoginFormComponent } from './components/login-form/login-form.component';
 import { MessageComponent } from './components/message/message.component';
 import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator.component';
 import { SortButtonComponent } from './components/sort-button/sort-button.component';
@@ -34,11 +35,12 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     ProgressIndicatorComponent,
     MessageComponent,
     SortButtonComponent,
-
-    StringLiteralInputComponent
+    StringLiteralInputComponent,
+    LoginFormComponent
   ],
   imports: [
     CommonModule,
+    MatButtonModule,
     MatIconModule,
     MatInputModule,
     MatMenuModule,
@@ -60,8 +62,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     ProgressIndicatorComponent,
     MessageComponent,
     SortButtonComponent,
-
-    StringLiteralInputComponent
+    StringLiteralInputComponent,
+    LoginFormComponent
   ]
 })
 

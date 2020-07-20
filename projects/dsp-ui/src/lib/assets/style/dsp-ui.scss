@@ -1,0 +1,41 @@
+/*
+ * Main dsp-ui stylesheet which has to be imported in
+ * angular.json in the angular application.
+ */
+
+@import "./config";
+@import "./mixins";
+@import "./responsive";
+
+// general reusable classes
+
+.center {
+  text-align: center;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.link {
+   cursor: pointer;
+}
+
+.custom-error-message {
+  font-size: 12px;
+  margin-top: -1em;
+  padding-bottom: 1em;
+}
+
+// The following styles will override material design!
+
+// jdnconvertiblecalendar main style
+.mat-datepicker-content {
+  .mat-calendar {
+    height: auto !important;
+  }
+}
+
+.grid-card .mat-card-header > div.mat-card-header-text {
+  margin: 0 0 !important;
+}
