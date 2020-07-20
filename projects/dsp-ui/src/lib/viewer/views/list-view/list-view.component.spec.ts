@@ -1,12 +1,10 @@
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DspApiConnectionToken } from '../../../core';
-import { ListViewComponent } from './list-view.component';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ReadResourceSequence, MockResource } from '@dasch-swiss/dsp-js';
-import { ListViewParam } from '@dasch-swiss/dsp-ui/lib/viewer';
+import { ListViewComponent, ListViewParam } from './list-view.component';
 
 /**
  * Test host component to simulate child component, here resource-list.
