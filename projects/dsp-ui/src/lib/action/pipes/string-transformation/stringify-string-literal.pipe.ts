@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { StringLiteral } from '@dasch-swiss/dsp-js';
+import { SessionService } from '../../../core';
 
 /**
  * This pipe stringifies an array of StringLiterals.
@@ -14,6 +15,8 @@ import { StringLiteral } from '@dasch-swiss/dsp-js';
   name: 'dspStringifyStringLiteral'
 })
 export class StringifyStringLiteralPipe implements PipeTransform {
+
+    constructor(private _sessionService: SessionService) { }
 
     transform(value: StringLiteral[], args?: string): string {
         let stringified = '';
@@ -38,9 +41,9 @@ export class StringifyStringLiteralPipe implements PipeTransform {
             // show only one value, depending on default language
             // the language is defined in user profile if a user is logged-in
             // otherwise it takes the language from browser
-            if (localStorage.getItem('session') !== null) {
+            if (this._sessionService.getSession() !== null) {
                 // get language from the logged-in user profile data
-                language = JSON.parse(localStorage.getItem('session')).user.lang;
+                language = this._sessionService.getSession().user.lang;
             } else {
                 // get default language from browser
                 language = navigator.language.substr(0, 2);
