@@ -50,6 +50,7 @@ export class StillImagePlaygroundComponent implements OnInit {
                 const geometry = new ReadGeomValue(parseReg);
 
                 const regionRes = new ReadResource();
+                regionRes.id = 'activeRegion';
                 regionRes.properties[Constants.HasGeometry] = [geometry];
 
                 this.stillImageRepresentations

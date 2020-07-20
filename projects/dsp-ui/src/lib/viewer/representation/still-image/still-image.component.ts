@@ -121,6 +121,8 @@ export class StillImageComponent implements OnChanges, OnDestroy {
 
     @Input() images: StillImageRepresentation[];
     @Input() imageCaption?: string;
+    @Input() activateRegion: string; // highlight a region
+
     @Output() regionHovered = new EventEmitter<string>();
 
     private _viewer;
@@ -137,14 +139,14 @@ export class StillImageComponent implements OnChanges, OnDestroy {
             this._openImages();
             this.renderRegions();
             this.unhighlightAllRegions();
-            /*if (this.activateRegion !== undefined) {
+            if (this.activateRegion !== undefined) {
                 this.highlightRegion(this.activateRegion);
-            }*/
+            }
         } else if (changes['activateRegion']) {
             this.unhighlightAllRegions();
-            /*if (this.activateRegion !== undefined) {
+            if (this.activateRegion !== undefined) {
                 this.highlightRegion(this.activateRegion);
-            }*/
+            }
         }
     }
 
