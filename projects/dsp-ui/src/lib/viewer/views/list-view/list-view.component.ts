@@ -115,6 +115,31 @@ export class ListViewComponent implements OnInit {
 
         } else {
             // search mode: gravsearch
+            if (this.pageEvent.pageIndex === 0) {
+                // perform count query
+                this._dspApiConnection.v2.search.doExtendedSearchCountQuery(this.search.query).subscribe(
+                    (response: CountQueryResponse) => {
+                        this.numberOfAllResults = response.numberOfResults;
+                    },
+                    (error: ApiResponseError) => {
+                        this.errorMessage = error;
+                        console.error(error);
+                    }
+                )
+            }
+
+            // perform extended search
+            this._dspApiConnection.v2.search.doExtendedSearch(this.search.query).subscribe(
+                (response: ReadResourceSequence) => {
+                    this.resources = response;
+                    this.loading = false;
+                },
+                (error: ApiResponseError) => {
+                    this.errorMessage = error;
+                    console.error(error);
+                    this.loading = false;
+                }
+            );
 
         }
 
