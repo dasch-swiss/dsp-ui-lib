@@ -17,8 +17,16 @@ const stillImageFileValue = {"type":"http://api.knora.org/ontology/knora-api/v2#
 const rectangleGeom
     = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.0989010989010989,"y":0.18055555555555555},{"x":0.7252747252747253,"y":0.7245370370370371}],"type":"rectangle"}';
 
+const rectangleGeom2
+    = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.17296511627906977,"y":0.08226691042047532},{"x":0.7122093023255814,"y":0.16544789762340037}],"type":"rectangle"}';
+
 const polygonGeom
     = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.17532467532467533,"y":0.18049792531120332},{"x":0.8051948051948052,"y":0.17012448132780084},{"x":0.8311688311688312,"y":0.7261410788381742},{"x":0.19480519480519481,"y":0.7323651452282157},{"x":0.17857142857142858,"y":0.17842323651452283},{"x":0.18506493506493507,"y":0.1825726141078838},{"x":0.17857142857142858,"y":0.1825726141078838}],"type":"polygon"}';
+
+const circleGeom = '{"status":"active","lineColor":"#3333ff","lineWidth":2,"points":[{"x":0.3400735294117647,"y":0.45376078914919854}],"type":"circle","radius":{"x":0.04595588235294118,"y":0.03082614056720101},"original_index":1}';
+
+const circleGeom2 = '{"status":"active","lineColor":"#3333ff","lineWidth":2,"points":[{"x":0.5305232558139537,"y":0.3126142595978062}],"type":"circle","radius":{"x":0.18023255813953487,"y":0.08957952468007313},"original_index":1}';
+
 
 function makeRegion(geomString: string[], iri: string): ReadResource {
 
@@ -50,7 +58,16 @@ class TestHostComponent implements OnInit {
 
     ngOnInit() {
 
-        this.stillImageFileRepresentations = [new StillImageRepresentation(stillImageFileValue, [new Region(makeRegion([rectangleGeom], 'first')), new Region(makeRegion([polygonGeom], 'second'))])];
+        this.stillImageFileRepresentations
+            = [
+                new StillImageRepresentation(stillImageFileValue,
+                    [
+                        new Region(makeRegion([rectangleGeom], 'first')),
+                        new Region(makeRegion([polygonGeom], 'second')),
+                        new Region(makeRegion([circleGeom], 'third')),
+                        new Region(makeRegion([circleGeom2, rectangleGeom2], 'fourth'))
+                    ])
+        ];
     }
 }
 
