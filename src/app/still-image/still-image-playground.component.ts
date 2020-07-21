@@ -21,7 +21,7 @@ class Geom extends ReadValue {
 })
 export class StillImagePlaygroundComponent implements OnInit {
 
-    resourceIri = 'http://rdfh.ch/0803/00014b43f902'; // incunabula
+    resourceIri = 'http://rdfh.ch/0803/00014b43f902'; // incunabula, TODO: use resource from anything project https://dasch.myjetbrains.com/youtrack/issue/DSP-506
     loading: boolean;
 
     stillImageRepresentations: StillImageRepresentation[];

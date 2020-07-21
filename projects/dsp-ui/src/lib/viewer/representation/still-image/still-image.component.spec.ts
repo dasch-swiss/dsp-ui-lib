@@ -9,10 +9,10 @@ import { By } from '@angular/platform-browser';
 // TODO: get test data from dsp-js
 
 
-// TODO: get this from dsp-js
+// TODO: get this from dsp-js: https://dasch.myjetbrains.com/youtrack/issue/DSP-506
 const stillImageFileValue = {"type":"http://api.knora.org/ontology/knora-api/v2#StillImageFileValue","id":"http://rdfh.ch/0803/00014b43f902/values/18dc0912cd05","attachedToUser":"http://rdfh.ch/users/91e19f1e01","arkUrl":"http://0.0.0.0:3336/ark:/72163/1/0803/00014b43f902l/000000000018dc0912cd0wl","versionArkUrl":"http://0.0.0.0:3336/ark:/72163/1/0803/00014b43f902l/000000000018dc0912cd0wl.20121121T165038Z","valueCreationDate":"2012-11-21T16:50:38Z","hasPermissions":"CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser","userHasPermission":"RV","uuid":"000000000018dc0912cd0w","filename":"incunabula_0000003328.jp2","fileUrl":"http://0.0.0.0:1024/0803/incunabula_0000003328.jp2/full/1312,1815/0/default.jpg","dimX":1312,"dimY":1815,"iiifBaseUrl":"http://0.0.0.0:1024/0803","strval":"http://0.0.0.0:1024/0803/incunabula_0000003328.jp2/full/1312,1815/0/default.jpg","property":"http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue","propertyLabel":"has image file","propertyComment":"Connects a Representation to an image file"};
 
-// TODO: remove dummy region
+// TODO: remove dummy regions: https://dasch.myjetbrains.com/youtrack/issue/DSP-506
 const rectangleGeom
     = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.0989010989010989,"y":0.18055555555555555},{"x":0.7252747252747253,"y":0.7245370370370371}],"type":"rectangle"}';
 
