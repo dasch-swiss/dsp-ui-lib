@@ -1,1 +1,6 @@
-<dsp-still-image *ngIf="!loading" [images]="stillImageRepresentations" [imageCaption]="caption" [activateRegion]="'activeRegion'" (regionClicked)="regionClicked($event)"></dsp-still-image>
+<dsp-still-image *ngIf="!loading" [images]="stillImageRepresentations" [imageCaption]="caption" [activateRegion]="actReg" (regionClicked)="regionClicked($event)"></dsp-still-image>
+
+<br/>
+<button style="margin-top: 100px;" (click)="actReg = 'activeRegion'">Activate Region 1</button>
+<br/>
+<button style="margin-top: 10px;" (click)="actReg = 'activeRegion2'">Activate Region 2</button>

@@ -27,6 +27,8 @@ export class StillImagePlaygroundComponent implements OnInit {
     stillImageRepresentations: StillImageRepresentation[];
     caption = 'test image';
 
+    actReg: string;
+
     constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
     }
 

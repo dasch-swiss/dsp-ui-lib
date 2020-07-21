@@ -1,4 +1,13 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChange } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    Output,
+    SimpleChanges
+} from '@angular/core';
 import {
     Constants,
     Point2D,
@@ -117,7 +126,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
     constructor(private _elementRef: ElementRef) {
     }
 
-    ngOnChanges(changes: { [key: string]: SimpleChange }) {
+    ngOnChanges(changes: SimpleChanges) {
         if (changes['images'] && changes['images'].isFirstChange()) {
             this._setupViewer();
         }
@@ -125,6 +134,8 @@ export class StillImageComponent implements OnChanges, OnDestroy {
             this._openImages();
             this._renderRegions();
             this._unhighlightAllRegions();
+            // TODO: check if this is necessary or could be handled below
+            //  (remove the 'else' before the 'if', so changes['activateRegion'] is always checked for)
             if (this.activateRegion !== undefined) {
                 this._highlightRegion(this.activateRegion);
             }
