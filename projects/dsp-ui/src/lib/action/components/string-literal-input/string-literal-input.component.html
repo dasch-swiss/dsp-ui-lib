@@ -35,7 +35,7 @@
         <input
             matInput
             [placeholder]="placeholder"
-            [formControl]="form.controls['text']"
+            [formControlName]="'text'"
             #textInput
             [readonly]="readonly"
             (keyup.enter)="enter.emit(true)"
@@ -62,7 +62,7 @@
             <textarea
                 matInput
                 [placeholder]="placeholder"
-                [formControl]="form.controls['text']"
+                [formControlName]="'text'"
                 #textInput
                 [readonly]="readonly">
             </textarea>
