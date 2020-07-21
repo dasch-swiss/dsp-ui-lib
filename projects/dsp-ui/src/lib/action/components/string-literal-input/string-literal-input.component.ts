@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { StringLiteral } from '@dasch-swiss/dsp-js';
+import { SessionService } from '../../../core';
 
 @Component({
   selector: 'dsp-string-literal-input',
@@ -82,13 +83,14 @@ export class StringLiteralInputComponent implements OnInit {
 
     form: FormGroup;
 
-    constructor(private _fb: FormBuilder) {
+    constructor(private _fb: FormBuilder,
+                private _sessionService: SessionService) {
 
         // set selected language, if it's not defined yet
         if (!this.language) {
-            if (localStorage.getItem('session') !== null) {
+            if (_sessionService.getSession() !== null) {
                 // get language from the logged-in user profile data
-                this.language = JSON.parse(localStorage.getItem('session')).user.lang;
+                this.language = _sessionService.getSession().user.lang;
             } else {
                 // get default language from browser
                 this.language = navigator.language.substr(0, 2);
