@@ -103,7 +103,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
     @Output() regionClicked = new EventEmitter<string>();
 
     private _viewer;
-    private regions: PolygonsForRegion = {};
+    private _regions: PolygonsForRegion = {};
 
     constructor(private _elementRef: ElementRef) {
     }
@@ -114,15 +114,15 @@ export class StillImageComponent implements OnChanges, OnDestroy {
         }
         if (changes['images']) {
             this._openImages();
-            this.renderRegions();
-            this.unhighlightAllRegions();
+            this._renderRegions();
+            this._unhighlightAllRegions();
             if (this.activateRegion !== undefined) {
-                this.highlightRegion(this.activateRegion);
+                this._highlightRegion(this.activateRegion);
             }
         } else if (changes['activateRegion']) {
-            this.unhighlightAllRegions();
+            this._unhighlightAllRegions();
             if (this.activateRegion !== undefined) {
-                this.highlightRegion(this.activateRegion);
+                this._highlightRegion(this.activateRegion);
             }
         }
     }
@@ -155,7 +155,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
         if (!this._viewer) {
             this._setupViewer();
         }
-        this.renderRegions();
+        this._renderRegions();
     }
 
     /**
@@ -163,9 +163,9 @@ export class StillImageComponent implements OnChanges, OnDestroy {
      *
      * @param regionIri the Iri of the region whose polygon elements should be highlighted..
      */
-    private highlightRegion(regionIri) {
+    private _highlightRegion(regionIri) {
 
-        const activeRegion: SVGPolygonElement[] = this.regions[regionIri];
+        const activeRegion: SVGPolygonElement[] = this._regions[regionIri];
 
         if (activeRegion !== undefined) {
             for (const pol of activeRegion) {
@@ -178,11 +178,11 @@ export class StillImageComponent implements OnChanges, OnDestroy {
      * Unhighlights the polygon elements of all regions.
      *
      */
-    private unhighlightAllRegions() {
+    private _unhighlightAllRegions() {
 
-        for (const reg in this.regions) {
-            if (this.regions.hasOwnProperty(reg)) {
-                for (const pol of this.regions[reg]) {
+        for (const reg in this._regions) {
+            if (this._regions.hasOwnProperty(reg)) {
+                for (const pol of this._regions[reg]) {
                     pol.setAttribute('class', 'roi-svgoverlay');
                 }
             }
@@ -192,11 +192,11 @@ export class StillImageComponent implements OnChanges, OnDestroy {
     /**
      * Removes SVG overlays from the DOM.
      */
-    private removeOverlays() {
+    private _removeOverlays() {
 
-        for (const reg in this.regions) {
-            if (this.regions.hasOwnProperty(reg)) {
-                for (const pol of this.regions[reg]) {
+        for (const reg in this._regions) {
+            if (this._regions.hasOwnProperty(reg)) {
+                for (const pol of this._regions[reg]) {
                     if (pol instanceof SVGPolygonElement) {
                         pol.remove();
                     }
@@ -204,7 +204,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
             }
         }
 
-        this.regions = {};
+        this._regions = {};
 
         // TODO: make this work by using osdviewer's addOverlay method
         this._viewer.clearOverlays();
@@ -260,7 +260,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
         // display only the defined range of this.images
         const tileSources: object[] = this._prepareTileSourcesFromFileValues(fileValues);
 
-        this.removeOverlays();
+        this._removeOverlays();
         this._viewer.open(tileSources);
 
     }
@@ -314,7 +314,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
      * @param geom the region's geometry.
      * @returns the surface.
      */
-    private surfaceOfRectangularRegion(geom: RegionGeometry): number {
+    private _surfaceOfRectangularRegion(geom: RegionGeometry): number {
 
         if (geom.type !== 'rectangle') {
             console.log('expected rectangular region, but ' + geom.type + ' given');
@@ -331,11 +331,11 @@ export class StillImageComponent implements OnChanges, OnDestroy {
     /**
      * Adds a ROI-overlay to the viewer for every region of every image in this.images
      */
-    private renderRegions(): void {
+    private _renderRegions(): void {
 
         // TODO: get regions from @Input
 
-        this.removeOverlays();
+        this._removeOverlays();
 
         let imageXOffset = 0; // see documentation in this.openImages() for the usage of imageXOffset
 
@@ -346,7 +346,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
             const geometries: GeometryForRegion[] = [];
             image.regions.map((reg) => {
 
-                this.regions[reg.regionResource.id] = [];
+                this._regions[reg.regionResource.id] = [];
                 const geoms = reg.getGeometries();
 
                 geoms.map((geom) => {
@@ -361,8 +361,8 @@ export class StillImageComponent implements OnChanges, OnDestroy {
 
                 if (geom1.geometry.type === 'rectangle' && geom2.geometry.type === 'rectangle') {
 
-                    const surf1 = this.surfaceOfRectangularRegion(geom1.geometry);
-                    const surf2 = this.surfaceOfRectangularRegion(geom2.geometry);
+                    const surf1 = this._surfaceOfRectangularRegion(geom1.geometry);
+                    const surf2 = this._surfaceOfRectangularRegion(geom2.geometry);
 
                     // if reg1 is smaller than reg2, return 1
                     // reg1 then comes after reg2 and thus is rendered later
@@ -382,7 +382,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
             for (const geom of geometries) {
 
                 const geometry = geom.geometry;
-                this.createSVGOverlay(geom.region.id, geometry, aspectRatio, imageXOffset, geom.region.label);
+                this._createSVGOverlay(geom.region.id, geometry, aspectRatio, imageXOffset, geom.region.label);
 
             }
 
@@ -399,7 +399,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
      * @param xOffset -  the x-offset in Openseadragon viewport coordinates of the image on which the geometry should be placed
      * @param toolTip -  the tooltip which should be displayed on mousehover of the svg element
      */
-    private createSVGOverlay(regionIri: string, geometry: RegionGeometry, aspectRatio: number, xOffset: number, toolTip: string): void {
+    private _createSVGOverlay(regionIri: string, geometry: RegionGeometry, aspectRatio: number, xOffset: number, toolTip: string): void {
         const lineColor = geometry.lineColor;
         const lineWidth = geometry.lineWidth;
 
@@ -407,15 +407,15 @@ export class StillImageComponent implements OnChanges, OnDestroy {
         switch (geometry.type) {
             case 'rectangle':
                 svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');  // yes, we render rectangles as svg polygon elements
-                this.addSVGAttributesRectangle(svgElement, geometry, aspectRatio, xOffset);
+                this._addSVGAttributesRectangle(svgElement, geometry, aspectRatio, xOffset);
                 break;
             case 'polygon':
                 svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-                this.addSVGAttributesPolygon(svgElement, geometry, aspectRatio, xOffset);
+                this._addSVGAttributesPolygon(svgElement, geometry, aspectRatio, xOffset);
                 break;
             case 'circle':
                 svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                this.addSVGAttributesCircle(svgElement, geometry, aspectRatio, xOffset);
+                this._addSVGAttributesCircle(svgElement, geometry, aspectRatio, xOffset);
                 break;
             default:
                 console.log('ERROR: StillImageOSDViewerComponent.createSVGOverlay: unknown geometryType: ' + geometry.type);
@@ -440,7 +440,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
         const overlay = this._viewer.svgOverlay();
         overlay.node().appendChild(svgGroup); // TODO: use method osdviewer's method addOverlay
 
-        this.regions[regionIri].push(svgElement);
+        this._regions[regionIri].push(svgElement);
     }
 
     /**
@@ -450,7 +450,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
      * @param aspectRatio - the aspectRatio (h/w) of the image on which the circle should be placed
      * @param xOffset - the x-offset in Openseadragon viewport coordinates of the image on which the circle should be placed
      */
-    private addSVGAttributesRectangle(svgElement: SVGElement, geometry: RegionGeometry, aspectRatio: number, xOffset: number): void {
+    private _addSVGAttributesRectangle(svgElement: SVGElement, geometry: RegionGeometry, aspectRatio: number, xOffset: number): void {
         const pointA = geometry.points[0];
         const pointB = geometry.points[1];
 
@@ -462,8 +462,8 @@ export class StillImageComponent implements OnChanges, OnDestroy {
         const positionLL = new Point2D(Math.min(pointA.x, pointB.x), Math.max(pointA.y, pointB.y));
 
         const points = [positionUL, positionUR, positionLR, positionLL];
-        const viewCoordPoints = this.image2ViewPortCoords(points, aspectRatio, xOffset);
-        const pointsString = this.createSVGPolygonPointsAttribute(viewCoordPoints);
+        const viewCoordPoints = this._image2ViewPortCoords(points, aspectRatio, xOffset);
+        const pointsString = this._createSVGPolygonPointsAttribute(viewCoordPoints);
         svgElement.setAttribute('points', pointsString);
     }
 
@@ -474,9 +474,9 @@ export class StillImageComponent implements OnChanges, OnDestroy {
      * @param aspectRatio - the aspectRatio (h/w) of the image on which the circle should be placed
      * @param xOffset - the x-offset in Openseadragon viewport coordinates of the image on which the circle should be placed
      */
-    private addSVGAttributesPolygon(svgElement: SVGElement, geometry: RegionGeometry, aspectRatio: number, xOffset: number): void {
-        const viewCoordPoints = this.image2ViewPortCoords(geometry.points, aspectRatio, xOffset);
-        const pointsString = this.createSVGPolygonPointsAttribute(viewCoordPoints);
+    private _addSVGAttributesPolygon(svgElement: SVGElement, geometry: RegionGeometry, aspectRatio: number, xOffset: number): void {
+        const viewCoordPoints = this._image2ViewPortCoords(geometry.points, aspectRatio, xOffset);
+        const pointsString = this._createSVGPolygonPointsAttribute(viewCoordPoints);
         svgElement.setAttribute('points', pointsString);
     }
 
@@ -487,8 +487,8 @@ export class StillImageComponent implements OnChanges, OnDestroy {
      * @param aspectRatio - the aspectRatio (h/w) of the image on which the circle should be placed
      * @param xOffset - the x-offset in Openseadragon viewport coordinates of the image on which the circle should be placed
      */
-    private addSVGAttributesCircle(svgElement: SVGElement, geometry: RegionGeometry, aspectRatio: number, xOffset: number): void {
-        const viewCoordPoints = this.image2ViewPortCoords(geometry.points, aspectRatio, xOffset);
+    private _addSVGAttributesCircle(svgElement: SVGElement, geometry: RegionGeometry, aspectRatio: number, xOffset: number): void {
+        const viewCoordPoints = this._image2ViewPortCoords(geometry.points, aspectRatio, xOffset);
         const cx = String(viewCoordPoints[0].x);
         const cy = String(viewCoordPoints[0].y);
         // geometry.radius contains not the radius itself, but the coordinates of a (arbitrary) point on the circle.
@@ -509,7 +509,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
      * @param xOffset - the x-offset in viewport coordinates of the image
      * @returns - a new Point2D[] with coordinates in the viewport coordinate system of Openseadragon
      */
-    private image2ViewPortCoords(points: Point2D[], aspectRatio: number, xOffset: number): Point2D[] {
+    private _image2ViewPortCoords(points: Point2D[], aspectRatio: number, xOffset: number): Point2D[] {
         return points.map((point) => {
             return new Point2D(point.x + xOffset, point.y * aspectRatio);
         });
@@ -520,7 +520,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
      * @param points - an array of points to be serialized to a string
      * @returns - the points serialized to a string in the format expected by the 'points' attribute of a SVGElement
      */
-    private createSVGPolygonPointsAttribute(points: Point2D[]): string {
+    private _createSVGPolygonPointsAttribute(points: Point2D[]): string {
         let pointsString = '';
         for (const i in points) {
             if (points.hasOwnProperty(i)) {

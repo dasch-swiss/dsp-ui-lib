@@ -173,7 +173,7 @@ describe('StillImageComponent', () => {
 
     it('should highlight a region', () => {
 
-        testHostComponent.osdViewerComp['highlightRegion']('first');
+        testHostComponent.osdViewerComp['_highlightRegion']('first');
         testHostFixture.detectChanges();
 
         const overlay = testHostComponent.osdViewerComp['_viewer'].svgOverlay();
@@ -184,7 +184,7 @@ describe('StillImageComponent', () => {
         let attr = regionSvgEle.getAttribute('class');
         expect(attr).toEqual('roi-svgoverlay active');
 
-        testHostComponent.osdViewerComp['unhighlightAllRegions']();
+        testHostComponent.osdViewerComp['_unhighlightAllRegions']();
         testHostFixture.detectChanges();
 
         attr = regionSvgEle.getAttribute('class');
