@@ -91,9 +91,6 @@ export class ListViewComponent implements OnInit {
 
     loadMoreResults(page: PageEvent) {
         this.pageEvent = page;
-        // if (this.searchMode === 'extended') {
-        //     this.generateGravsearchQuery();
-        // }
         this._doSearch();
     }
 
@@ -131,7 +128,7 @@ export class ListViewComponent implements OnInit {
             // search mode: gravsearch
             if (this.pageEvent.pageIndex === 0) {
                 // perform count query
-                this._dspApiConnection.v2.search.doExtendedSearchCountQuery(this.search.query).subscribe(
+                this._dspApiConnection.v2.search.doExtendedSearchCountQuery(JSON.parse(this.search.query)).subscribe(
                     (response: CountQueryResponse) => {
                         this.numberOfAllResults = response.numberOfResults;
                     },
@@ -143,7 +140,7 @@ export class ListViewComponent implements OnInit {
             }
 
             // perform extended search
-            this._dspApiConnection.v2.search.doExtendedSearch(this.search.query).subscribe(
+            this._dspApiConnection.v2.search.doExtendedSearch(JSON.parse(this.search.query)).subscribe(
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;

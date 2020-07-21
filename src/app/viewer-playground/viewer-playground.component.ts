@@ -8,9 +8,26 @@ import { ListViewParam } from '@dasch-swiss/dsp-ui';
 })
 export class ViewerPlaygroundComponent implements OnInit {
 
-    listParams: ListViewParam = {
-        query: 'kreuz',
+    gravSearchExample = `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+    PREFIX incunabula: <http://0.0.0.0:3333/ontology/0803/incunabula/simple/v2#>
+
+    CONSTRUCT {
+        ?book knora-api:isMainResource true .
+        ?book incunabula:title ?title .
+
+    } WHERE {
+        ?book a incunabula:book .
+        ?book incunabula:title ?title .
+    }`;
+
+    fulltextSearch: ListViewParam = {
+        query: 'hand',
         mode: 'fulltext'
+    }
+
+    gravSearch: ListViewParam = {
+        query: JSON.stringify(this.gravSearchExample),
+        mode: 'gravsearch'
     }
 
     constructor( ) { }
