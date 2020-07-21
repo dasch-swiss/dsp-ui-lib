@@ -38,10 +38,11 @@
             [formControl]="form.controls['text']"
             #textInput
             [readonly]="readonly"
-            (keyup.enter)="enter.emit(true)">
+            (keyup.enter)="enter.emit(true)"
+        >
     </mat-form-field>
 
-    <!-- input element type is textarea -->
+    <!-- if input element type is textarea -->
     <div *ngIf="textarea" class="string-literal long-text">
         <!-- button toggle group: buttons to select language -->
         <mat-button-toggle-group

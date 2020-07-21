@@ -17,14 +17,14 @@ export class StringLiteralInputComponent implements OnInit {
      *
      * @param  {string} [placeholder='Label']
      */
-    @Input() placeholder?: string = 'Label';
+    @Input() placeholder = 'Label';
 
     /**
      * Optional predefined (selected) language: en, de, it, fr, etc.
      *
      * @param  {string} language
      */
-    @Input() language?: string;
+    @Input() language: string;
 
     /**
      * Optional form field input type: textarea? set to true for textarea
@@ -32,28 +32,28 @@ export class StringLiteralInputComponent implements OnInit {
      *
      * @param  {boolean} [textarea=false]
      */
-    @Input() textarea?: boolean;
+    @Input() textarea: boolean;
 
     /**
      * Optional form field value of type StringLiteral[]
      *
      * @param {StringLiteral[]} value
      */
-    @Input() value?: StringLiteral[] = [];
+    @Input() value: StringLiteral[] = [];
 
     /**
      * Optional disable the input field in case of no right to edit the field/value
      *
      * @param {boolean}: [disabled=false]
      */
-    @Input() disabled?: boolean;
+    @Input() disabled: boolean;
 
     /**
      * The readonly attribute specifies whether the control may be modified by the user.
      *
      * @param {boolean}: [readonly=false]
      */
-    @Input() readonly?: boolean;
+    @Input() readonly: boolean;
 
     /**
      * Returns (output) an array of StringLiteral on any change on the input field.
@@ -117,10 +117,7 @@ export class StringLiteralInputComponent implements OnInit {
             text: new FormControl(
                 {
                     value: '',
-                    disabled: this.disabled
-                },
-                {
-                    // updateOn: 'blur'
+                    disabled: this.disabled // https://stackoverflow.com/a/47521965
                 }
             )
         });
