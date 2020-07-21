@@ -1,13 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnDestroy,
-    Output,
-    SimpleChange
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChange } from '@angular/core';
 import {
     Constants,
     Point2D,
@@ -26,10 +17,8 @@ import {
 declare let OpenSeadragon: any;
 
 /**
- * Represents a region.
- * Contains a reference to the resource representing the region and its geometries.
+ * Represents a region resource.
  */
-
 export class Region {
 
     /**
@@ -50,22 +39,7 @@ export class Region {
 }
 
 /**
- * Represents a geometry belonging to a specific region.
- */
-export class GeometryForRegion {
-
-    /**
-     *
-     * @param geometry the geometrical information.
-     * @param region the region the geometry belongs to.
-     */
-    constructor(readonly geometry: RegionGeometry, readonly region: ReadResource) {
-    }
-
-}
-
-/**
- * Represents an image including its regions.
+ * Represents a still image file value including its regions.
  */
 export class StillImageRepresentation {
 
@@ -76,6 +50,21 @@ export class StillImageRepresentation {
      */
     constructor(readonly stillImageFileValue: ReadStillImageFileValue, readonly regions: Region[]) {
 
+    }
+
+}
+
+/**
+ * Represents a geometry belonging to a specific region resource.
+ */
+export class GeometryForRegion {
+
+    /**
+     *
+     * @param geometry the geometrical information.
+     * @param region the region the geometry belongs to.
+     */
+    constructor(readonly geometry: RegionGeometry, readonly region: ReadResource) {
     }
 
 }
@@ -104,6 +93,26 @@ export class StillImageComponent implements OnChanges, OnDestroy {
 
     private _viewer;
     private _regions: PolygonsForRegion = {};
+
+    /**
+     * Calculates the surface of a rectangular region.
+     *
+     * @param geom the region's geometry.
+     * @returns the surface.
+     */
+    static surfaceOfRectangularRegion(geom: RegionGeometry): number {
+
+        if (geom.type !== 'rectangle') {
+            console.log('expected rectangular region, but ' + geom.type + ' given');
+            return 0;
+        }
+
+        const w = Math.max(geom.points[0].x, geom.points[1].x) - Math.min(geom.points[0].x, geom.points[1].x);
+        const h = Math.max(geom.points[0].y, geom.points[1].y) - Math.min(geom.points[0].y, geom.points[1].y);
+
+        return w * h;
+
+    }
 
     constructor(private _elementRef: ElementRef) {
     }
@@ -309,31 +318,37 @@ export class StillImageComponent implements OnChanges, OnDestroy {
     }
 
     /**
-     * Calculates the surface of a rectangular region.
-     *
-     * @param geom the region's geometry.
-     * @returns the surface.
-     */
-    private _surfaceOfRectangularRegion(geom: RegionGeometry): number {
-
-        if (geom.type !== 'rectangle') {
-            console.log('expected rectangular region, but ' + geom.type + ' given');
-            return 0;
-        }
-
-        const w = Math.max(geom.points[0].x, geom.points[1].x) - Math.min(geom.points[0].x, geom.points[1].x);
-        const h = Math.max(geom.points[0].y, geom.points[1].y) - Math.min(geom.points[0].y, geom.points[1].y);
-
-        return w * h;
-
-    }
-
-    /**
      * Adds a ROI-overlay to the viewer for every region of every image in this.images
      */
     private _renderRegions(): void {
 
-        // TODO: get regions from @Input
+        /**
+         * Sorts rectangular regions by surface, so all rectangular regions are clickable.
+         * Non-rectangular regions are ignored.
+         *
+         * @param geom1 first region.
+         * @param geom2 second region.
+         */
+        const sortRectangularRegion = (geom1: GeometryForRegion, geom2: GeometryForRegion) => {
+
+            if (geom1.geometry.type === 'rectangle' && geom2.geometry.type === 'rectangle') {
+
+                const surf1 = StillImageComponent.surfaceOfRectangularRegion(geom1.geometry);
+                const surf2 = StillImageComponent.surfaceOfRectangularRegion(geom2.geometry);
+
+                // if reg1 is smaller than reg2, return 1
+                // reg1 then comes after reg2 and thus is rendered later
+                if (surf1 < surf2) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+
+            } else {
+                return 0;
+            }
+
+        };
 
         this._removeOverlays();
 
@@ -357,26 +372,7 @@ export class StillImageComponent implements OnChanges, OnDestroy {
             });
 
             // sort all geometries belonging to this page
-            geometries.sort((geom1, geom2) => {
-
-                if (geom1.geometry.type === 'rectangle' && geom2.geometry.type === 'rectangle') {
-
-                    const surf1 = this._surfaceOfRectangularRegion(geom1.geometry);
-                    const surf2 = this._surfaceOfRectangularRegion(geom2.geometry);
-
-                    // if reg1 is smaller than reg2, return 1
-                    // reg1 then comes after reg2 and thus is rendered later
-                    if (surf1 < surf2) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-
-                } else {
-                    return 0;
-                }
-
-            });
+            geometries.sort(sortRectangularRegion);
 
             // render all geometries for this page
             for (const geom of geometries) {

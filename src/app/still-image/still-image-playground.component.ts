@@ -54,7 +54,7 @@ export class StillImagePlaygroundComponent implements OnInit {
                 const geometry = new ReadGeomValue(parseReg);
 
                 const geomStr2
-                    = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.17532467532467533,"y":0.18049792531120332},{"x":0.8051948051948052,"y":0.17012448132780084},{"x":0.8311688311688312,"y":0.7261410788381742},{"x":0.19480519480519481,"y":0.7323651452282157},{"x":0.17857142857142858,"y":0.17842323651452283},{"x":0.18506493506493507,"y":0.1825726141078838},{"x":0.17857142857142858,"y":0.1825726141078838}],"type":"polygon"}';
+                    = '{"status":"active","lineColor":"#ff3333","lineWidth":2,"points":[{"x":0.1989010989010989,"y":0.18055555555555555},{"x":0.7252747252747253,"y":0.7245370370370371}],"type":"rectangle"}';
 
                 const parseReg2 = new Geom();
                 parseReg2.geometryString = geomStr2;
@@ -62,12 +62,17 @@ export class StillImagePlaygroundComponent implements OnInit {
                 const geometry2 = new ReadGeomValue(parseReg2);
 
                 const regionRes = new ReadResource();
-                regionRes.id = 'activeRegion2';
-                regionRes.label = 'test region 2';
-                regionRes.properties[Constants.HasGeometry] = [geometry, geometry2];
+                regionRes.id = 'activeRegion';
+                regionRes.label = 'test region ';
+                regionRes.properties[Constants.HasGeometry] = [geometry];
+
+                const regionRes2 = new ReadResource();
+                regionRes2.id = 'activeRegion2';
+                regionRes2.label = 'test region 2';
+                regionRes2.properties[Constants.HasGeometry] = [geometry2];
 
                 this.stillImageRepresentations
-                    = [new StillImageRepresentation(res.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue', ReadStillImageFileValue)[0], [new Region(regionRes)])];
+                    = [new StillImageRepresentation(res.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue', ReadStillImageFileValue)[0], [new Region(regionRes), new Region(regionRes2)])];
 
                 this.loading = false;
             },
