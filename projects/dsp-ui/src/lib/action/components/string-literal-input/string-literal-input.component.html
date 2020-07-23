@@ -5,8 +5,10 @@
 
         <!-- select: button to select language -->
         <button
-            mat-button type="button"
-            matPrefix class="select-lang"
+            mat-button
+            type="button"
+            matPrefix
+            class="select-lang"
             [matMenuTriggerFor]="selectLanguage"
             #btnToSelectLanguage="matMenuTrigger"
             (click)="form.controls['text'].disable()">
@@ -15,10 +17,11 @@
         </button>
 
         <!-- select: menu with list of languages -->
-        <mat-menu #selectLanguage="matMenu">
+        <mat-menu #selectLanguage="matMenu" class="lang-menu">
             <button
                 mat-menu-item
                 type="button"
+                class="lang-button"
                 *ngFor="let lang of languages"
                 (click)="setLanguage(lang);switchFocus()">
                     <span [class.existing-value]="getValueFromStringLiteral(lang)">{{lang}}</span>

@@ -165,12 +165,13 @@ export class StringLiteralInputComponent implements OnInit {
     /**
      * @ignore
      *
-     * Set the language after selecting; This updates the array of StringLiterals: adds item with the selected language if it doesn't exist
+     * Set the language after selecting;
+     * This updates the array of StringLiterals: adds item with the selected language if it doesn't exist
      */
     setLanguage(lang: string) {
 
         if (this.language === lang) {
-            // console.warn('DO NOTHING! this language was already selected');
+            console.warn('DO NOTHING! this language was already selected');
         } else {
             // clean stringLIteral value for previous language, if text field is empty
             this.updateStringLiterals(this.language, this.form.controls['text'].value);

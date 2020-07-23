@@ -90,6 +90,26 @@ export class ActionPlaygroundComponent implements OnInit {
         },
     ];
 
+    // labels for stringify string literal input component example
+    stringLiteralInputlabels: StringLiteral[] = [
+        {
+            value: 'Welt',
+            language: 'de'
+        },
+        {
+            value: 'World',
+            language: 'en'
+        },
+        {
+            value: 'Monde',
+            language: 'fr'
+        },
+        {
+            value: 'Mondo',
+            language: 'it'
+        },
+    ];
+
     // short message example
     shortMessage: DspMessageData = {
         status: 200,
