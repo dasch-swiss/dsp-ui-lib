@@ -5,6 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DspApiConnectionToken } from '../../../core';
 import { ListViewComponent, ListViewParam } from './list-view.component';
+import { SearchEndpointV2, CountQueryResponse } from '@dasch-swiss/dsp-js';
+import { of } from 'rxjs';
 
 /**
  * Test host component to simulate child component, here resource-list.
@@ -37,9 +39,12 @@ class TestParentComponent implements OnInit {
     ngOnInit() {
 
         this.search = {
-            query: 'kreuz',
-            mode: 'fulltext'
-        }
+            query: 'mann',
+            mode: 'fulltext',
+            params: {
+                limitToProject: 'http://rdfh.ch/projects/0803'
+            }
+        };
     }
 
     openResource(id: string) {
@@ -48,9 +53,8 @@ class TestParentComponent implements OnInit {
 
 }
 
-describe('ListViewComponent', () => {
-    let testHostComponent: TestParentComponent;
-    let testHostFixture: ComponentFixture<TestParentComponent>;
+fdescribe('ListViewComponent', () => {
+
 
     beforeEach(async(() => {
 
@@ -62,7 +66,8 @@ describe('ListViewComponent', () => {
 
         TestBed.configureTestingModule({
             declarations: [
-                ListViewComponent
+                ListViewComponent,
+                TestParentComponent
             ],
             imports: [
                 MatButtonModule,
@@ -79,17 +84,45 @@ describe('ListViewComponent', () => {
             .compileComponents();
     }));
 
-    beforeEach(() => {
-        testHostFixture = TestBed.createComponent(TestParentComponent);
-        testHostComponent = testHostFixture.componentInstance;
-        testHostFixture.detectChanges();
+    describe('display list of resources', () => {
+        let testHostComponent: TestParentComponent;
+        let testHostFixture: ComponentFixture<TestParentComponent>;
 
-        expect(testHostComponent).toBeTruthy();
+        beforeEach(() => {
+            testHostFixture = TestBed.createComponent(TestParentComponent);
+            testHostComponent = testHostFixture.componentInstance;
+            testHostFixture.detectChanges();
 
-    });
+            expect(testHostComponent).toBeTruthy();
 
-    it('should create', () => {
-        expect(testHostComponent.search).toBeTruthy();
+        });
 
+        it('should do fulltext search', () => {
+            const valuesSpy = TestBed.inject(DspApiConnectionToken);
+
+            (valuesSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doFulltextSearchCountQuery.and.callFake(
+                () => {
+                    const num = new CountQueryResponse();
+                    num.numberOfResults = 101;
+                    return of(num);
+                }
+            );
+
+            // simulate user searching for label 'thing'
+            testHostComponent.search.query = 'mann';
+            testHostComponent.search.mode = 'fulltext';
+            testHostComponent.search.params.limitToProject = 'http://rdfh.ch/projects/0803'
+
+            expect(valuesSpy.v2.search.doFulltextSearchCountQuery).toHaveBeenCalledWith('mann', 0, { limitToProject: 'http://rdfh.ch/projects/0803' });
+            //   expect(testHostComponent.inputValueComponent.resources.length).toEqual(1);
+            //   expect(testHostComponent.inputValueComponent.resources[0].id).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
+
+            // {
+            //     "schema:numberOfItems" : 2,
+            //     "@context" : {
+            //       "schema" : "http://schema.org/"
+            //     }
+            //   }
+        });
     });
 });

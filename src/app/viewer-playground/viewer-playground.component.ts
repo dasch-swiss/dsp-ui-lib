@@ -8,6 +8,17 @@ import { ListViewParam } from '@dasch-swiss/dsp-ui';
 })
 export class ViewerPlaygroundComponent implements OnInit {
 
+    // two different search examples to use in ListView @Input:
+    // fulltext search
+    fulltextSearch: ListViewParam = {
+        query: 'mann',
+        mode: 'fulltext',
+        params: {
+            limitToProject: 'http://rdfh.ch/projects/0803'
+        }
+    }
+
+    // gravsearch
     gravSearchExample = `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
     PREFIX incunabula: <http://0.0.0.0:3333/ontology/0803/incunabula/simple/v2#>
 
@@ -19,12 +30,6 @@ export class ViewerPlaygroundComponent implements OnInit {
         ?book a incunabula:book .
         ?book incunabula:title ?title .
     }`;
-
-    fulltextSearch: ListViewParam = {
-        query: 'hand',
-        mode: 'fulltext'
-    }
-
     gravSearch: ListViewParam = {
         query: JSON.stringify(this.gravSearchExample),
         mode: 'gravsearch'
@@ -36,6 +41,7 @@ export class ViewerPlaygroundComponent implements OnInit {
 
     }
 
+    // open resource on click event
     openResource(id: string) {
         console.log('Open Resource:', id);
     }
