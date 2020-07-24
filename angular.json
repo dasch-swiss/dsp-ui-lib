@@ -29,9 +29,7 @@
               "src/config"
             ],
             "styles": [
-              "src/styles.scss",
-              "src/assets/main.scss",
-              "dist/@dasch-swiss/dsp-ui/lib/assets/style/dsp-ui.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -95,8 +93,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "src/assets/main.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           }
