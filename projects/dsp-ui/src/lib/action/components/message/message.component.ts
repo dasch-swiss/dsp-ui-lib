@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StatusMsg } from '../../../assets/i18n/statusMsg';
+import { StatusMsg } from '../../../../assets/i18n/statusMsg';
 
 /**
  * @ignore

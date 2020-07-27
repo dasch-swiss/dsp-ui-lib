@@ -7,7 +7,7 @@ import { MatListModule } from '@angular/material/list';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiResponseError } from '@dasch-swiss/dsp-js';
-import { StatusMsg } from '../../../assets/i18n/statusMsg';
+import { StatusMsg } from '../../../../assets/i18n/statusMsg';
 import { DspMessageData, MessageComponent } from './message.component';
 
 /**
