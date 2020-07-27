@@ -20,6 +20,8 @@
     "jdnconvertiblecalendardateadapter": "^0.0.13",
     "ngx-color-picker": "^9.1.0",
     "openseadragon": "^2.4.2",
-    "svg-overlay": "github:openseadragon/svg-overlay"
+    "svg-overlay": "github:openseadragon/svg-overlay",
+    "@ckeditor/ckeditor5-angular": "^1.2.3",
+    "@ckeditor/ckeditor5-build-classic": "^20.0.0"
   }
 }

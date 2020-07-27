@@ -28,6 +28,8 @@ import { SearchResultsComponent } from './search-playground/search-results/searc
 import { environment } from '../environments/environment';
 import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { CkeditorPlaygroundComponent } from './ckeditor/ckeditor-playground/ckeditor-playground.component';
 
 @NgModule({
     declarations: [
@@ -39,7 +41,8 @@ import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground
         SearchResultsComponent,
         AdvancedSearchPlaygroundComponent,
         StillImagePlaygroundComponent,
-        ViewerPlaygroundComponent
+        ViewerPlaygroundComponent,
+        CkeditorPlaygroundComponent
     ],
     imports: [
         BrowserModule,
@@ -51,7 +54,8 @@ import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground
         DspSearchModule,
         MatJDNConvertibleCalendarDateAdapterModule,
         MatButtonModule,
-        MatListModule
+        MatListModule,
+        CKEditorModule
     ],
     providers: [
         {

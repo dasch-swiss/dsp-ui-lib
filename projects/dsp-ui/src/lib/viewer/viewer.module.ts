@@ -47,6 +47,7 @@ import { DspActionModule } from '../action';
 import { AddValueComponent } from './operations/add-value/add-value.component';
 import { StillImageComponent } from './representation/still-image/still-image.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { TextValueAsXMLComponent } from './values/text-value/text-value-as-xml/text-value-as-xml.component';
 
 @NgModule({
     declarations: [
@@ -76,7 +77,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         StillImageComponent,
         ResourceListComponent,
         ResourceGridComponent,
-        AddValueComponent
+        AddValueComponent,
+        TextValueAsXMLComponent
     ],
     imports: [
         CommonModule,

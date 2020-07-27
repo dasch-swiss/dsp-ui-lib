@@ -8,6 +8,7 @@ import { SearchPlaygroundComponent } from './search-playground/search-playground
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
 import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
+import { CkeditorPlaygroundComponent } from './ckeditor/ckeditor-playground/ckeditor-playground.component';
 
 
 const routes: Routes = [
@@ -31,7 +32,8 @@ const routes: Routes = [
     },
     { path: 'advanced-search', component: AdvancedSearchPlaygroundComponent}, // advanced search playground component
     { path: 'still-image', component: StillImagePlaygroundComponent}, // still image playground component
-    { path: 'viewer', component: ViewerPlaygroundComponent} // viewer playground component
+    { path: 'viewer', component: ViewerPlaygroundComponent}, // viewer playground component
+    { path: 'ckeditor', component: CkeditorPlaygroundComponent} // CKeditor playground component
 ];
 
 @NgModule({
