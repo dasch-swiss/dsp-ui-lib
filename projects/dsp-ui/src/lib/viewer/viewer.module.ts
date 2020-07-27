@@ -121,7 +121,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
         ResourceListComponent,
         ResourceGridComponent,
         AddValueComponent,
-		StillImageComponent
+        StillImageComponent
     ]
 })
 export class DspViewerModule {
