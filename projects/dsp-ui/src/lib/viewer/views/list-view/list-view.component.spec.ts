@@ -96,7 +96,7 @@ describe('ListViewComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    // xit('should do fulltext search', () => {
+    // it('should do fulltext search', () => {
 
     //     const searchSpy = TestBed.inject(DspApiConnectionToken);
 
