@@ -122,15 +122,17 @@ Do not forget to import `APP_INITIALIZER` from `@angular/core` and the desired D
 The contents of the configuration can be accessed via `AppInitService`s member `config`.
 Just include `AppInitService` in you service's or component's constructor.
 
-The module needs a global styling in the app to override some material design rules. Please update your `angular.json` file as follow:
+The module needs a global styling in the app to override some material design rules.
+If you're using Angular CLI, this is as simple as including one line in your `styles.scss` file:
 
-```json
-...
-    "styles": [
-        "src/styles.scss",
-        "node_modules/@dasch-swiss/dsp-ui/lib/assets/style/dsp-ui.scss" // <- add this line
-    ],
-...
+```css
+@import '@dasch-swiss/dsp-ui/assets/style/dsp-ui.scss';
+```
+
+Alternatively, you can just reference the file directly. This would look something like:
+
+```html
+<link href="node_modules/@dasch-swiss/dsp-ui/assets/style/dsp-ui.scss" rel="stylesheet">
 ```
 
 ## Usage
