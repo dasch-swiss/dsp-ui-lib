@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import * as Editor from 'ckeditor5-custom-build';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { TextValueAsXMLComponent } from '@dasch-swiss/dsp-ui/lib/viewer/values/text-value/text-value-as-xml/text-value-as-xml.component';
 
 @Component({
     selector: 'app-ckeditor-playground',
@@ -9,11 +8,17 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class CkeditorPlaygroundComponent implements OnInit {
 
+    @ViewChild('xml') xmlValue: TextValueAsXMLComponent;
+
     constructor() {
     }
 
     ngOnInit(): void {
 
+    }
+
+    save() {
+        console.log(this.xmlValue.getNewValue());
     }
 
 }
