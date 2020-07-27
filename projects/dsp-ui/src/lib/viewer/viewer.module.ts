@@ -48,6 +48,7 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
 import { StillImageComponent } from './representation/still-image/still-image.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TextValueAsXMLComponent } from './values/text-value/text-value-as-xml/text-value-as-xml.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
     declarations: [
@@ -100,7 +101,8 @@ import { TextValueAsXMLComponent } from './values/text-value/text-value-as-xml/t
         MatToolbarModule,
         ClipboardModule,
         ColorPickerModule,
-        DspActionModule
+        DspActionModule,
+        CKEditorModule
     ],
     exports: [
         TextValueAsStringComponent,
@@ -123,7 +125,8 @@ import { TextValueAsXMLComponent } from './values/text-value/text-value-as-xml/t
         ResourceListComponent,
         ResourceGridComponent,
         AddValueComponent,
-        StillImageComponent
+        StillImageComponent,
+        TextValueAsXMLComponent
     ]
 })
 export class DspViewerModule {
