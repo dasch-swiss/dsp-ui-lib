@@ -143,7 +143,7 @@ export class StringLiteralInputComponent implements OnInit {
         const control = form.get('text');
         this.touched.emit(control && control.dirty);
 
-        this.updateStringLiterals(this.language, this.form.controls['text'].value);
+        this.updateStringLiterals(this.language, this.form.controls.text.value);
 
         this.dataChanged.emit(this.value);
 
@@ -161,11 +161,9 @@ export class StringLiteralInputComponent implements OnInit {
      */
     setLanguage(lang: string) {
 
-        if (this.language === lang) {
-            // console.warn('DO NOTHING! this language was already selected');
-        } else {
+        if (this.language !== lang) {
             // clean stringLIteral value for previous language, if text field is empty
-            this.updateStringLiterals(this.language, this.form.controls['text'].value);
+            this.updateStringLiterals(this.language, this.form.controls.text.value);
 
             this.language = lang;
             // update form field value / reset in case of no value
@@ -186,7 +184,7 @@ export class StringLiteralInputComponent implements OnInit {
         }
 
         if (!this.disabled) {
-            this.form.controls['text'].enable();
+            this.form.controls.text.enable();
             this.textInput.nativeElement.focus();
         }
     }
@@ -200,7 +198,7 @@ export class StringLiteralInputComponent implements OnInit {
         if (!value) {
             value = '';
         }
-        this.form.controls['text'].setValue(value);
+        this.form.controls.text.setValue(value);
     }
 
     /**
