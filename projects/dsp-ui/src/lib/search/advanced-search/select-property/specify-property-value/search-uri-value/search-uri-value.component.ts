@@ -8,26 +8,26 @@ import { PropertyValue, Value, ValueLiteral } from '../operator';
 const resolvedPromise = Promise.resolve(null);
 
 @Component({
-  selector: 'dsp-search-uri-value',
-  templateUrl: './search-uri-value.component.html',
-  styleUrls: ['./search-uri-value.component.scss']
+    selector: 'dsp-search-uri-value',
+    templateUrl: './search-uri-value.component.html',
+    styleUrls: ['./search-uri-value.component.scss']
 })
 export class SearchUriValueComponent implements OnInit, OnDestroy, PropertyValue {
 
-// parent FormGroup
+    // parent FormGroup
     @Input() formGroup: FormGroup;
 
     type = Constants.UriValue;
 
     form: FormGroup;
 
-    constructor (@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
 
     }
 
     ngOnInit() {
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             uriValue: [null, Validators.compose([Validators.required, Validators.pattern(CustomRegex.URI_REGEX)])]
         });
 
