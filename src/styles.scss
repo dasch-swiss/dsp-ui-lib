@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+
+// material style
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-* {
-  font-family: Arial, Helvetica, sans-serif;
-}
+// dsp-ui style
+@import 'dist/@dasch-swiss/dsp-ui/assets/style/dsp-ui.scss';
+
+// app style
+@import 'assets/main.scss';
