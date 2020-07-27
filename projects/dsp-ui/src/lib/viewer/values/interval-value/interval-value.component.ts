@@ -1,14 +1,14 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {BaseValueComponent} from '../base-value.component';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { BaseValueComponent } from '../base-value.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
-import {CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue} from '@dasch-swiss/dsp-js';
+import { CreateIntervalValue, ReadIntervalValue, UpdateIntervalValue } from '@dasch-swiss/dsp-js';
 import {
     FormBuilder,
     FormControl,
     FormGroup
 } from '@angular/forms';
-import {Subscription} from 'rxjs';
-import {Interval, IntervalInputComponent} from './interval-input/interval-input.component';
+import { Subscription } from 'rxjs';
+import { Interval, IntervalInputComponent } from './interval-input/interval-input.component';
 
 @Component({
     selector: 'dsp-interval-value',
@@ -32,7 +32,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
 
     matcher = new ValueErrorStateMatcher();
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
         super();
     }
 
@@ -61,7 +61,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
             }
         );
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             intervalValue: this.valueFormControl,
             comment: this.commentFormControl
         });
