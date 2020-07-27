@@ -126,7 +126,7 @@ The module needs a global styling in the app to override some material design ru
 If you're using Angular CLI, this is as simple as including one line in your `styles.scss` file:
 
 ```css
-@import '@dasch-swiss/dsp-ui/assets/style/dsp-ui.scss';
+@import '@dasch-swiss/dsp-ui/src/assets/style/dsp-ui.scss';
 ```
 
 Alternatively, you can just reference the file directly. This would look something like:
