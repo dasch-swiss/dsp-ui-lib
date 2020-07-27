@@ -45,6 +45,8 @@ import { ResourceListComponent } from './views/list-view/resource-list/resource-
 import { ResourceGridComponent } from './views/list-view/resource-grid/resource-grid.component';
 import { DspActionModule } from '../action';
 import { AddValueComponent } from './operations/add-value/add-value.component';
+import { StillImageComponent } from './representation/still-image/still-image.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
     declarations: [
@@ -71,6 +73,7 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
         ListValueComponent,
         SublistValueComponent,
         GeonameValueComponent,
+        StillImageComponent,
         ResourceListComponent,
         ResourceGridComponent,
         AddValueComponent
@@ -92,6 +95,7 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
         MatJDNConvertibleCalendarDateAdapterModule,
         MatListModule,
         MatMenuModule,
+        MatToolbarModule,
         ClipboardModule,
         ColorPickerModule,
         DspActionModule
@@ -116,7 +120,8 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
         JDNDatepickerDirective,
         ResourceListComponent,
         ResourceGridComponent,
-        AddValueComponent
+        AddValueComponent,
+        StillImageComponent
     ]
 })
 export class DspViewerModule {

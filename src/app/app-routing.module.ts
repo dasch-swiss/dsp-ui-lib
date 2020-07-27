@@ -6,6 +6,7 @@ import { ModifyComponent } from './modify/modify.component';
 import { ReadComponent } from './read/read.component';
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
+import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
 
 
@@ -29,7 +30,8 @@ const routes: Routes = [
         ]
     },
     { path: 'advanced-search', component: AdvancedSearchPlaygroundComponent}, // advanced search playground component
-    { path: 'viewer', component: ViewerPlaygroundComponent}, // viewer playground component
+    { path: 'still-image', component: StillImagePlaygroundComponent}, // still image playground component
+    { path: 'viewer', component: ViewerPlaygroundComponent} // viewer playground component
 ];
 
 @NgModule({
