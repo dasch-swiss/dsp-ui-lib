@@ -21,15 +21,5 @@
     "ngx-color-picker": "^9.1.0",
     "openseadragon": "^2.4.2",
     "svg-overlay": "github:openseadragon/svg-overlay"
-  },
-  "ngPackage": {
-    "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
-    "assets": [
-      "src/assets/style"
-    ],
-    "lib": {
-      "entryFile": "src/public-api.ts"
-    },
-    "dest": "../../dist/@dasch-swiss/dsp-ui"
   }
 }
