@@ -66,7 +66,7 @@ class TestHostStringLiteralInputComponent implements OnInit {
     }
 }
 
-fdescribe('StringLiteralInputComponent', () => {
+describe('StringLiteralInputComponent', () => {
     let testHostComponent: TestHostStringLiteralInputComponent;
     let testHostFixture: ComponentFixture<TestHostStringLiteralInputComponent>;
     let loader: HarnessLoader;
