@@ -1,8 +1,8 @@
 <div class="dsp-search-panel" #fullSearchPanel cdkOverlayOrigin>
 
     <!-- DESKTOP VERSION -->
-    <dsp-fulltext-search class="dsp-fulltext-search" [route]="route" [projectfilter]="projectfilter"
-        [filterbyproject]="filterbyproject">
+    <dsp-fulltext-search class="dsp-fulltext-search" [projectfilter]="projectfilter"
+        [filterbyproject]="filterbyproject" (search)="search.emit($event)">
     </dsp-fulltext-search>
 
     <!-- advanced search button: if advanced === true -->

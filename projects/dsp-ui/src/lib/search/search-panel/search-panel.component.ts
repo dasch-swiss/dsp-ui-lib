@@ -1,6 +1,7 @@
 import { ConnectionPositionPair, Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, ElementRef, Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, Input, TemplateRef, ViewChild, ViewContainerRef, Output, EventEmitter } from '@angular/core';
+import { SearchParams } from '../../viewer';
 
 @Component({
     selector: 'dsp-search-panel',
@@ -12,7 +13,7 @@ export class SearchPanelComponent {
     /**
      * @param route Route to navigate after search. This route path should contain a component for search results.
      */
-    @Input() route = '/search';
+    // @Input() route = '/search';
 
     /**
      * @param [projectfilter] If true it shows the selection of projects to filter by one of them
@@ -34,6 +35,8 @@ export class SearchPanelComponent {
      * @param [expert] Adds the expert search / gravsearch editor to the panel
      */
     @Input() expert?: boolean = false;
+
+    @Output() search = new EventEmitter<SearchParams>();
 
     @ViewChild('fullSearchPanel', { static: false }) searchPanel: ElementRef;
 

@@ -1,6 +1,6 @@
 <h2>Search panel</h2>
 <dsp-search-panel
-    [route]="'/search'"
+    (search)="doSearch($event)"
     [projectfilter]="true"
     [expert]="false"
     [advanced]="false">
