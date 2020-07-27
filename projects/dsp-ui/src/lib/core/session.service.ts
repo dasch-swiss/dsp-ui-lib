@@ -53,7 +53,7 @@ export class SessionService {
 
 
     constructor(
-        @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection
     ) { }
 
     /**
@@ -71,12 +71,12 @@ export class SessionService {
      * @param identifier  email address or username
      * @param identifierType 'email' or 'username'
      */
-     setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
+    setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
 
-        this.dspApiConnection.v2.jsonWebToken = (jwt ? jwt : '');
+        this._dspApiConnection.v2.jsonWebToken = (jwt ? jwt : '');
 
         // get user information
-        return this.dspApiConnection.admin.usersEndpoint.getUser(identifierType, identifier).pipe(
+        return this._dspApiConnection.admin.usersEndpoint.getUser(identifierType, identifier).pipe(
             map((response: ApiResponseData<UserResponse> | ApiResponseError) => {
                 this._storeSessionInLocalStorage(response, jwt);
                 // return type is void
@@ -98,18 +98,18 @@ export class SessionService {
 
         if (session) {
 
-            this.dspApiConnection.v2.jsonWebToken = session.user.jwt;
+            this._dspApiConnection.v2.jsonWebToken = session.user.jwt;
 
             // check if the session is still valid:
             if (session.id + this.MAX_SESSION_TIME <= tsNow) {
                 // the internal (dsp-ui) session has expired
                 // check if the api credentials are still valid
 
-                return this.dspApiConnection.v2.auth.checkCredentials().pipe(
+                return this._dspApiConnection.v2.auth.checkCredentials().pipe(
                     map((credentials: ApiResponseData<CredentialsResponse> | ApiResponseError) => {
-                            const idUpdated = this._updateSessionId(credentials, session, tsNow);
-                            return idUpdated;
-                        }
+                        const idUpdated = this._updateSessionId(credentials, session, tsNow);
+                        return idUpdated;
+                    }
                     )
                 );
 
@@ -119,7 +119,7 @@ export class SessionService {
             }
         } else {
             // no session found; update knora api connection with empty jwt
-            this.dspApiConnection.v2.jsonWebToken = '';
+            this._dspApiConnection.v2.jsonWebToken = '';
             return of(false);
         }
     }
