@@ -30,6 +30,7 @@ import { StillImagePlaygroundComponent } from './still-image/still-image-playgro
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { CkeditorPlaygroundComponent } from './ckeditor/ckeditor-playground/ckeditor-playground.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -55,7 +56,8 @@ import { CkeditorPlaygroundComponent } from './ckeditor/ckeditor-playground/cked
         MatJDNConvertibleCalendarDateAdapterModule,
         MatButtonModule,
         MatListModule,
-        CKEditorModule
+        CKEditorModule,
+        ReactiveFormsModule
     ],
     providers: [
         {

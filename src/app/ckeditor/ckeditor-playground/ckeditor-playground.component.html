@@ -1,1 +1,3 @@
-<ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+<div [formGroup]="form">
+    <ckeditor formControlName="text" [config]="editorConfig" [editor]="Editor"></ckeditor>
+</div>
