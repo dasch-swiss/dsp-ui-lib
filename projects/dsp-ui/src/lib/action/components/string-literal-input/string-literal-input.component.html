@@ -11,7 +11,8 @@
             class="select-lang"
             [matMenuTriggerFor]="selectLanguage"
             #btnToSelectLanguage="matMenuTrigger"
-            (click)="form.controls['text'].disable()">
+            (click)="form.controls['text'].disable()"
+            (menuClosed)="menuClosed()">
                 <span class="label">{{language}}</span>
                 <mat-icon class="icon" matSuffix>keyboard_arrow_down</mat-icon>
         </button>

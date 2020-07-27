@@ -192,6 +192,18 @@ export class StringLiteralInputComponent implements OnInit {
     /**
      * @ignore
      *
+     * Switch focus to input field after closing the menu by clicking anywhere outside of it
+     */
+    menuClosed() {
+        if (!this.disabled) {
+            this.form.controls.text.enable();
+            this.textInput.nativeElement.focus();
+        }
+    }
+
+    /**
+     * @ignore
+     *
      * Set the value in the input field
      */
     updateFormField(value: string) {
