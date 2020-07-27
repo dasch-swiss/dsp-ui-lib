@@ -50,6 +50,8 @@
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.13",
     "ngx-color-picker": "^9.1.0",
+    "openseadragon": "^2.4.2",
+    "svg-overlay": "github:openseadragon/svg-overlay",
     "rxjs": "~6.5.5",
     "ts-md5": "^1.2.7",
     "tslib": "^1.10.0",

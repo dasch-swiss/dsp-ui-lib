@@ -24,3 +24,5 @@ export * from './views/property-view/property-view.component';
 export * from './views/list-view/list-view.component';
 export * from './views/list-view/resource-list/resource-list.component';
 export * from './views/list-view/resource-grid/resource-grid.component';
+// media representations
+export * from './representation/still-image/still-image.component';

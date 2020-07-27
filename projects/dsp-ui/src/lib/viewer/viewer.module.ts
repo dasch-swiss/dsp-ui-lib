@@ -16,11 +16,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { DspActionModule } from '../action';
 import { AddValueComponent } from './operations/add-value/add-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
+import { StillImageComponent } from './representation/still-image/still-image.component';
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
 import { ColorValueComponent } from './values/color-value/color-value.component';
@@ -73,6 +75,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         SublistValueComponent,
         GeonameValueComponent,
         ListViewComponent,
+        StillImageComponent,
         ResourceListComponent,
         ResourceGridComponent,
         AddValueComponent
@@ -96,6 +99,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         MatJDNConvertibleCalendarDateAdapterModule,
         MatListModule,
         MatMenuModule,
+        MatToolbarModule,
         ClipboardModule,
         ColorPickerModule,
         DspActionModule
@@ -121,7 +125,8 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         ListViewComponent,
         ResourceListComponent,
         ResourceGridComponent,
-        AddValueComponent
+        AddValueComponent,
+        StillImageComponent
     ]
 })
 export class DspViewerModule {

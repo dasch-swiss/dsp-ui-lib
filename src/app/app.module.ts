@@ -26,6 +26,7 @@ import { SearchPlaygroundComponent } from './search-playground/search-playground
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
 
 import { environment } from '../environments/environment';
+import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
 
 @NgModule({
@@ -37,6 +38,7 @@ import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground
         SearchPlaygroundComponent,
         SearchResultsComponent,
         AdvancedSearchPlaygroundComponent,
+        StillImagePlaygroundComponent,
         ViewerPlaygroundComponent
     ],
     imports: [
