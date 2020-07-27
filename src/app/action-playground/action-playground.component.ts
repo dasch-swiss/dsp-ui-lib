@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ApiResponseData, ApiResponseError, KnoraApiConnection, LoginResponse, LogoutResponse } from '@dasch-swiss/dsp-js';
+import { ApiResponseData, ApiResponseError, KnoraApiConnection, LoginResponse, LogoutResponse, StringLiteral } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken, DspMessageData, Session, SessionService, SortingService } from '@dasch-swiss/dsp-ui';
 
 @Component({
@@ -69,6 +69,26 @@ export class ActionPlaygroundComponent implements OnInit {
         }
     ];
     status = -1;
+
+    // labels for stringify string literal pipe example
+    labels: StringLiteral[] = [
+        {
+            value: 'Welt',
+            language: 'de'
+        },
+        {
+            value: 'World',
+            language: 'en'
+        },
+        {
+            value: 'Monde',
+            language: 'fr'
+        },
+        {
+            value: 'Mondo',
+            language: 'it'
+        },
+    ];
 
     // short message example
     shortMessage: DspMessageData = {

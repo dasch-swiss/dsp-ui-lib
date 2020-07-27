@@ -6,6 +6,7 @@ export * from './pipes/formatting/knoradate.pipe';
 export * from './pipes/array-transformation/reverse.pipe';
 export * from './pipes/array-transformation/sort-by.pipe';
 export * from './pipes/string-transformation/truncate.pipe';
+export * from './pipes/string-transformation/stringify-string-literal.pipe';
 
 // services
 export * from './services/sorting.service';
@@ -14,6 +15,7 @@ export * from './services/sorting.service';
 export * from './components/progress-indicator/progress-indicator.component';
 export * from './components/message/message.component';
 export * from './components/sort-button/sort-button.component';
+export * from './components/login-form/login-form.component';
 
 // directives
 export * from './directives/admin-image/admin-image.directive';

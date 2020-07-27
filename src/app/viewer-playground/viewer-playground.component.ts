@@ -9,7 +9,7 @@ import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
 })
 export class ViewerPlaygroundComponent implements OnInit {
 
-    showGrid = false;
+    showGrid = true;
 
     // test data
     resources: ReadResourceSequence;
@@ -19,15 +19,14 @@ export class ViewerPlaygroundComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-
-        this._dspApiConnection.v2.search.doFulltextSearch('ding').subscribe(
+        this._dspApiConnection.v2.search.doFulltextSearch('kreuz').subscribe(
             (response: ReadResourceSequence) => {
                 this.resources = response;
             },
             (error: ApiResponseError) => {
                 console.error(error);
             }
-        )
+        );
     }
 
     openResource(id: string) {

@@ -1,10 +1,4 @@
-// TODO: link class should be moved to root level of the module
-.link {
-  cursor: pointer;
-  &:hover {
-    background: rgba(0, 0, 0, 0.12);
-  }
-}
+@import "../../../../../assets/style/viewer";
 
 .resource-list {
   .mat-list-item {
