@@ -24,15 +24,15 @@ export interface fulltextSearchParams {
  *
  * mode: search mode "fulltext" OR "gravsearch"
  *
- * params: Optional parameter with following optional properties:
+ * filter: Optional fulltext search parameter with following (optional) properties:
  *   - limitToResourceClass: string; Iri of resource class the fulltext search is restricted to, if any.
  *   - limitToProject: string; Iri of the project the fulltext search is restricted to, if any.
  *   - limitToStandoffClass: string; Iri of standoff class the fulltext search is restricted to, if any.
  */
-export interface ListViewParam {
+export interface SearchParams {
     query: string;
     mode: 'fulltext' | 'gravsearch';
-    params?: fulltextSearchParams;
+    filter?: fulltextSearchParams;
 }
 
 @Component({
@@ -42,7 +42,7 @@ export interface ListViewParam {
 })
 export class ListViewComponent implements OnInit {
 
-    @Input() search: ListViewParam;
+    @Input() search: SearchParams;
 
     @Input() view?: 'list' | 'grid' = 'list';    // TODO: will be expanded with 'table' as soon as resource-table component is done
 
@@ -100,7 +100,7 @@ export class ListViewComponent implements OnInit {
             // search mode: fulltext
             if (this.pageEvent.pageIndex === 0) {
                 // perform count query
-                this._dspApiConnection.v2.search.doFulltextSearchCountQuery(this.search.query, this.pageEvent.pageIndex, this.search.params).subscribe(
+                this._dspApiConnection.v2.search.doFulltextSearchCountQuery(this.search.query, this.pageEvent.pageIndex, this.search.filter).subscribe(
                     (response: CountQueryResponse) => {
                         this.numberOfAllResults = response.numberOfResults;
                     },
@@ -112,7 +112,7 @@ export class ListViewComponent implements OnInit {
             }
 
             // perform full text search
-            this._dspApiConnection.v2.search.doFulltextSearch(this.search.query, this.pageEvent.pageIndex, this.search.params).subscribe(
+            this._dspApiConnection.v2.search.doFulltextSearch(this.search.query, this.pageEvent.pageIndex, this.search.filter).subscribe(
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;

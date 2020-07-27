@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ListViewParam } from '@dasch-swiss/dsp-ui';
+import { SearchParams } from '@dasch-swiss/dsp-ui';
 
 @Component({
     selector: 'app-viewer-playground',
@@ -10,10 +10,10 @@ export class ViewerPlaygroundComponent implements OnInit {
 
     // two different search examples to use in ListView @Input:
     // fulltext search
-    fulltextSearch: ListViewParam = {
+    fulltextSearch: SearchParams = {
         query: 'mann',
         mode: 'fulltext',
-        params: {
+        filter: {
             limitToProject: 'http://rdfh.ch/projects/0803'
         }
     }
@@ -30,7 +30,7 @@ export class ViewerPlaygroundComponent implements OnInit {
         ?book a incunabula:book .
         ?book incunabula:title ?title .
     }`;
-    gravSearch: ListViewParam = {
+    gravSearch: SearchParams = {
         query: JSON.stringify(this.gravSearchExample),
         mode: 'gravsearch'
     }
