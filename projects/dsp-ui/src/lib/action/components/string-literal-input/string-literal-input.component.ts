@@ -88,9 +88,9 @@ export class StringLiteralInputComponent implements OnInit {
 
         // set selected language, if it's not defined yet
         if (!this.language) {
-            if (_sessionService.getSession() !== null) {
+            if (this._sessionService.getSession() !== null) {
                 // get language from the logged-in user profile data
-                this.language = _sessionService.getSession().user.lang;
+                this.language = this._sessionService.getSession().user.lang;
             } else {
                 // get default language from browser
                 this.language = navigator.language.substr(0, 2);
@@ -106,10 +106,6 @@ export class StringLiteralInputComponent implements OnInit {
     }
 
     ngOnInit() {
-
-        // if (this.placeholder.length > 0) {
-        //     this.placeholder += ' (' + this.language + ')';
-        // }
 
         // reset stringLiterals if they have empty values
         this.resetValues();
@@ -147,11 +143,6 @@ export class StringLiteralInputComponent implements OnInit {
         const control = form.get('text');
         this.touched.emit(control && control.dirty);
 
-        // if (control && control.dirty) {
-        // console.warn('control dirty');
-
-        // }
-
         this.updateStringLiterals(this.language, this.form.controls['text'].value);
 
         this.dataChanged.emit(this.value);
@@ -171,7 +162,7 @@ export class StringLiteralInputComponent implements OnInit {
     setLanguage(lang: string) {
 
         if (this.language === lang) {
-            console.warn('DO NOTHING! this language was already selected');
+            // console.warn('DO NOTHING! this language was already selected');
         } else {
             // clean stringLIteral value for previous language, if text field is empty
             this.updateStringLiterals(this.language, this.form.controls['text'].value);
@@ -222,19 +213,16 @@ export class StringLiteralInputComponent implements OnInit {
 
         if (index > -1 && this.value[index].value.length > 0) {
             // value is not empty and exists in list of stringLiterals
-            // console.log('update existing value for ' + lang + ' on position ' + index);
             this.value[index].value = value;
         }
 
         if ((!value || value.length === 0) && index > -1) {
             // value is empty: delete stringLiteral item for this language
-            // console.log('delete empty value for ' + lang + ' on position ' + index);
             this.value.splice(index, 1);
         }
 
         if (index < 0 && value) {
             // value doesn't exist in stringLiterals: add one
-            // console.log('add new value (' + value + ') for ' + lang);
             const newValue: StringLiteral = {
                 value: value,
                 language: lang
@@ -278,7 +266,6 @@ export class StringLiteralInputComponent implements OnInit {
      * Get the value from array of StringLiterals for the selected language
      */
     getValueFromStringLiteral(lang: string): string {
-        // console.log('existing value in', this.value);
         // get index for this language
         const index = this.value.findIndex(i => i.language === lang);
 

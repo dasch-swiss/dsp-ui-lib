@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatMenuHarness } from '@angular/material/menu/testing';
+import { MatMenuHarness, MatMenuItemHarness } from '@angular/material/menu/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StringLiteral } from '@dasch-swiss/dsp-js';
@@ -41,7 +41,6 @@ class TestHostStringLiteralInputComponent implements OnInit {
     isTextarea: boolean;
 
     ngOnInit() {
-        // this.labels = [];
 
         this.labels = [
             {
@@ -116,6 +115,11 @@ describe('StringLiteralInputComponent', () => {
         testHostFixture.detectChanges();
         expect(testHostComponent).toBeTruthy();
         expect(testHostComponent.stringLiteralInputComponent).toBeTruthy();
+
+        const hostCompDe = testHostFixture.debugElement;
+        sliComponentDe = hostCompDe.query(By.directive(StringLiteralInputComponent));
+
+        expect(sliComponentDe).toBeTruthy();
     });
 
     it('should load values and assign them to the correct language', async () => {
@@ -124,50 +128,57 @@ describe('StringLiteralInputComponent', () => {
 
         expect(await inputElement.getValue()).toEqual('World');
 
-        testHostComponent.stringLiteralInputComponent.setLanguage('de');
+        const langSelectButtonElement = await loader.getHarness(MatButtonHarness.with({selector: '.select-lang'}));
 
-        testHostFixture.detectChanges();
+        expect(langSelectButtonElement).toBeTruthy();
 
+        // open language select button
+        await langSelectButtonElement.click();
+
+        // get reference to the mat-menu
+        sliMenuDebugElement = sliComponentDe.query(By.css('.lang-menu'));
+
+        // get reference to mat-menu native element in order to be able to access the buttons
+        sliMenuNativeElement = sliMenuDebugElement.nativeElement;
+
+        // select 'de' button
+        langButton = sliMenuNativeElement.children[0].children[0];
+
+        // simulate a user click on the button element to switch input value to the german value
+        langButton.click();
+
+        // expect the value of the german input to equal 'Welt'
         expect(await inputElement.getValue()).toEqual('Welt');
 
-        testHostComponent.stringLiteralInputComponent.setLanguage('fr');
+        // select 'fr' button
+        langButton = sliMenuNativeElement.children[0].children[1];
 
-        testHostFixture.detectChanges();
+        // switch to french
+        langButton.click();
 
+        // expect the value of the french input to equal 'Monde'
         expect(await inputElement.getValue()).toEqual('Monde');
 
-        testHostComponent.stringLiteralInputComponent.setLanguage('it');
+        // select 'it' button
+        langButton = sliMenuNativeElement.children[0].children[2];
 
-        testHostFixture.detectChanges();
+        // switch to italian
+        langButton.click();
 
+        // expect the value of the italian input to equal 'Mondo'
         expect(await inputElement.getValue()).toEqual('Mondo');
     });
 
     it('should change a value and assign it to the correct language', async () => {
 
-        const hostCompDe = testHostFixture.debugElement;
-        sliComponentDe = hostCompDe.query(By.directive(StringLiteralInputComponent));
-
         const inputElement = await loader.getHarness(MatInputHarness.with({selector: '.inputValue'}));
 
         const langSelectButtonElement = await loader.getHarness(MatButtonHarness.with({selector: '.select-lang'}));
 
-        expect(langSelectButtonElement).toBeDefined();
+        expect(langSelectButtonElement).toBeTruthy();
 
         // open language select button
         await langSelectButtonElement.click();
-
-        // why doesn't this work....
-
-        // const langMenuElement = await loader.getHarness(MatMenuHarness.with({selector: '.lang-menu'}));
-
-        // console.log(langMenuElement);
-
-        // const langButtonArray = await loader.getAllHarnesses(MatButtonHarness.with({selector: '.lang-button'}));
-
-        // console.log(langButtonArray);
-
-        // old-school way works
 
         // get reference to the mat-menu
         sliMenuDebugElement = sliComponentDe.query(By.css('.lang-menu'));
@@ -207,42 +218,99 @@ describe('StringLiteralInputComponent', () => {
 
     });
 
-    it('should switch input to a textarea', async () => {
+    it('should switch input to a textarea and assign the values to the correct language', async () => {
         testHostComponent.isTextarea = true;
 
         testHostFixture.detectChanges();
 
         const inputElement = await loader.getHarness(MatInputHarness.with({selector: '.textAreaValue'}));
 
-        console.log(inputElement);
+        // get reference to the mat-menu
+        sliMenuDebugElement = sliComponentDe.query(By.css('.string-literal-select-lang'));
 
-        expect(inputElement).toBeDefined();
+        // get reference to mat-menu native element in order to be able to access the buttons
+        sliMenuNativeElement = sliMenuDebugElement.nativeElement;
 
-        expect(await inputElement.getValue()).toEqual('World');
+        // select 'de' button
+        langButton = sliMenuNativeElement.children[0];
 
-        testHostComponent.stringLiteralInputComponent.setLanguage('de');
+        // simulate a user click on the button element to switch input value to the german value
+        langButton.click();
 
-        testHostFixture.detectChanges();
-
+        // expect the value of the german input to equal 'Welt'
         expect(await inputElement.getValue()).toEqual('Welt');
 
-        testHostComponent.stringLiteralInputComponent.setLanguage('fr');
+        // select 'fr' button
+        langButton = sliMenuNativeElement.children[1];
 
-        testHostFixture.detectChanges();
+        // switch to french
+        langButton.click();
 
+        // expect the value of the french input to equal 'Monde'
         expect(await inputElement.getValue()).toEqual('Monde');
 
-        testHostComponent.stringLiteralInputComponent.setLanguage('it');
+        // select 'it' button
+        langButton = sliMenuNativeElement.children[2];
+
+        // switch to italian
+        langButton.click();
+
+        // expect the value of the italian input to equal 'Mondo'
+        expect(await inputElement.getValue()).toEqual('Mondo');
+
+        // select 'en' button
+        langButton = sliMenuNativeElement.children[3];
+
+        // switch to english
+        langButton.click();
+
+        // expect the value of the english input to equal 'World'
+        expect(await inputElement.getValue()).toEqual('World');
+
+    });
+
+    it('should store a new value inside a textarea in the correct language', async () => {
+        testHostComponent.isTextarea = true;
 
         testHostFixture.detectChanges();
 
-        expect(await inputElement.getValue()).toEqual('Mondo');
+        const inputElement = await loader.getHarness(MatInputHarness.with({selector: '.textAreaValue'}));
 
-        const langSelectButtonElement = await loader.getAllHarnesses(MatButtonHarness.with({selector: '.lang-toggle-button'}));
+        // get reference to the mat-menu
+        sliMenuDebugElement = sliComponentDe.query(By.css('.string-literal-select-lang'));
 
-        console.log(langSelectButtonElement);
+        // get reference to mat-menu native element in order to be able to access the buttons
+        sliMenuNativeElement = sliMenuDebugElement.nativeElement;
 
-        expect(langSelectButtonElement).toBeDefined();
+        // select 'en' button
+        langButton = sliMenuNativeElement.children[3];
+
+        // switch to english
+        langButton.click();
+
+        // expect the value of the english input to equal 'World'
+        expect(await inputElement.getValue()).toEqual('World');
+
+        // set new value for the german text
+        await inputElement.setValue('Brave New World');
+
+        // select 'de' button
+        langButton = sliMenuNativeElement.children[0];
+
+        // simulate a user click on the button element to switch input value to the german value
+        langButton.click();
+
+        // expect the value of the german input to equal 'Welt'
+        expect(await inputElement.getValue()).toEqual('Welt');
+
+        // select 'en' button again
+        langButton = sliMenuNativeElement.children[3];
+
+        // switch back to english
+        langButton.click();
+
+        // expect the value of the english input to equal the new value 'Brave New World'
+        expect(await inputElement.getValue()).toEqual('Brave New World');
 
     });
 });

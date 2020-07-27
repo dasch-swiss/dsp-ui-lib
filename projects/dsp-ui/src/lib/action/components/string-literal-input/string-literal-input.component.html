@@ -57,7 +57,8 @@
             <mat-button-toggle
                 *ngFor="let lang of languages"
                 (click)="setLanguage(lang);switchFocus()"
-                [checked]="lang === language">
+                [checked]="lang === language"
+                class="lang-toggle-button">
                 <span [class.existing-value]="getValueFromStringLiteral(lang)">{{lang}}</span>
             </mat-button-toggle>
         </mat-button-toggle-group>
