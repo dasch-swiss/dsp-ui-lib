@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, Inject, Output, EventEmitter } from '@angular/core';
-import { ReadResourceSequence, KnoraApiConnection, CountQueryResponse, ApiResponseError } from '@dasch-swiss/dsp-js';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { ApiResponseError, CountQueryResponse, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../../core';
 
-export interface fulltextSearchParams {
+export interface FulltextSearchParams {
     /**
      * Iri of resource class the fulltext search is restricted to, if any.
      */
@@ -32,7 +32,7 @@ export interface fulltextSearchParams {
 export interface SearchParams {
     query: string;
     mode: 'fulltext' | 'gravsearch';
-    filter?: fulltextSearchParams;
+    filter?: FulltextSearchParams;
 }
 
 @Component({
@@ -138,7 +138,7 @@ export class ListViewComponent implements OnInit {
                         this.errorMessage = error;
                         console.error(error);
                     }
-                )
+                );
             }
 
             // perform extended search

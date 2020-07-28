@@ -90,8 +90,6 @@ describe('ListViewComponent', () => {
 
     beforeEach(() => {
 
-        // mock doFulltextSearchCountQuery and doFulltextSearch response before creating the component
-        // TODO: check fulltext-search comp. spec as an example
         const searchSpy = TestBed.inject(DspApiConnectionToken);
 
         (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doFulltextSearchCountQuery.and.callFake(
@@ -127,13 +125,8 @@ describe('ListViewComponent', () => {
 
         const searchSpy = TestBed.inject(DspApiConnectionToken);
 
-        expect(
-            searchSpy.v2.search.doFulltextSearchCountQuery
-        ).toHaveBeenCalledWith(
-            'fake query',
-            0,
-            { limitToProject: 'http://rdfh.ch/projects/0803' }
-        );
+        expect(searchSpy.v2.search.doFulltextSearchCountQuery).toHaveBeenCalledWith('fake query', 0, { limitToProject: 'http://rdfh.ch/projects/0803' });
+
 
     });
 
