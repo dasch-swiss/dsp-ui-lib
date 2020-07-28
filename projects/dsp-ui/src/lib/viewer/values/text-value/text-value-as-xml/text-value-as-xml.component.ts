@@ -57,9 +57,18 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         this.editor = Editor;
 
         this.editorConfig = {
-            // format_tags: 'p;h1;h2;h3;h4;h5;h6;pre',
             entities: false,
-            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'removeformat']
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat'],
+            heading: {
+                options: [
+                    {model: 'heading1', view: 'h1', title: 'Heading 1'},
+                    {model: 'heading2', view: 'h2', title: 'Heading 2'},
+                    {model: 'heading3', view: 'h3', title: 'Heading 3'},
+                    {model: 'heading4', view: 'h4', title: 'Heading 4'},
+                    {model: 'heading5', view: 'h5', title: 'Heading 5'},
+                    {model: 'heading6', view: 'h6', title: 'Heading 6'},
+                ]
+            },
         };
 
         // initialize form control elements
