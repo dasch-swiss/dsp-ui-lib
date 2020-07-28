@@ -9,7 +9,6 @@ import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
 import { ListViewComponent, SearchParams } from './list-view.component';
 
-// TODO: declare this component in the TestBed declarations, e.g. advanced-search comp.
 /**
  * Test host component to simulate child component, here resource-list.
  */
