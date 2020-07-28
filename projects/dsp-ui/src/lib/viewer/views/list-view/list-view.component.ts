@@ -96,6 +96,8 @@ export class ListViewComponent implements OnInit {
 
     private _doSearch() {
 
+        this.loading = true;
+
         if (this.search.mode === 'fulltext') {
             // search mode: fulltext
             if (this.pageEvent.pageIndex === 0) {

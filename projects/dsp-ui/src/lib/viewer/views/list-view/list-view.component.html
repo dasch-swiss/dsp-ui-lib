@@ -2,17 +2,6 @@
 <div class="list-view-header">
     <span class="switch-list">
         <span class="switch-list-label">Display as&nbsp;</span>
-        <!-- <mat-button-toggle-group name="listStyle" appearance="legacy" aria-label="Show as" (change)="toggleView($event)">
-            <mat-button-toggle value="list">
-                <mat-icon>view_list</mat-icon> List
-            </mat-button-toggle>
-            <mat-button-toggle value="grid">
-                <mat-icon>view_module</mat-icon> Grid
-            </mat-button-toggle>
-            <!-- TODO: expand with table as soon as resource-table is done:
-                <mat-button-toggle value="underline">Underline</mat-button-toggle>
-            --
-        </mat-button-toggle-group> -->
         <button mat-button (click)="toggleView('list')" [class.active]="view === 'list'">
             <mat-icon>view_list</mat-icon> List
         </button>
@@ -24,7 +13,7 @@
     <span class="fill-remaining-space"></span>
     <span class="page-navigation">
         <mat-paginator [length]="numberOfAllResults" [pageSize]="25" [hidePageSize]="true"
-            [pageIndex]="pageEvent.pageIndex" (page)="loadMoreResults($event)">
+            [pageIndex]="pageEvent.pageIndex" [disabled]="loading" (page)="loadMoreResults($event)">
         </mat-paginator>
     </span>
 </div>
@@ -58,7 +47,7 @@
     <span class="fill-remaining-space"></span>
     <span class="page-navigation">
         <mat-paginator [length]="numberOfAllResults" [pageSize]="25" [hidePageSize]="true"
-            [pageIndex]="pageEvent.pageIndex" (page)="loadMoreResults($event)">
+            [pageIndex]="pageEvent.pageIndex" [disabled]="loading" (page)="loadMoreResults($event)">
         </mat-paginator>
     </span>
 </div>
