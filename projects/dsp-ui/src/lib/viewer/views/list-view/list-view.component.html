@@ -43,7 +43,7 @@
 </div>
 
 <!-- footer with pagination -->
-<div class="list-view-footer" *ngIf="numberOfAllResults > 25 && resources.resources.length === 25 && !loading">
+<div class="list-view-footer" *ngIf="numberOfAllResults > 25 && resources?.resources.length === 25 && !loading">
     <span class="fill-remaining-space"></span>
     <span class="page-navigation">
         <mat-paginator [length]="numberOfAllResults" [pageSize]="25" [hidePageSize]="true"
