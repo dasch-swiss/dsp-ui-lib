@@ -2,9 +2,9 @@ import { Directive, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 
 @Directive({
-  selector: '[dspExistingName]'
+    selector: '[dspExistingName]'
 })
-export class ExistingNameDirective implements Validators, OnChanges{
+export class ExistingNameDirective implements Validators, OnChanges {
 
     /**
      * @ignore
@@ -14,7 +14,7 @@ export class ExistingNameDirective implements Validators, OnChanges{
     /**
      * @ignore
      */
-    private valFn = Validators.nullValidator;
+    private _valFn = Validators.nullValidator;
 
     /**
      * @ignore
@@ -25,9 +25,9 @@ export class ExistingNameDirective implements Validators, OnChanges{
         if (change) {
             const val: string | RegExp = change.currentValue;
             const re = val instanceof RegExp ? val : new RegExp(val);
-            this.valFn = existingNameValidator(re);
+            this._valFn = existingNameValidator(re);
         } else {
-            this.valFn = Validators.nullValidator;
+            this._valFn = Validators.nullValidator;
         }
     }
 
@@ -36,7 +36,7 @@ export class ExistingNameDirective implements Validators, OnChanges{
      * @param control
      */
     validate(control: AbstractControl): { [key: string]: any } {
-        return this.valFn(control);
+        return this._valFn(control);
     }
 }
 

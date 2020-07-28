@@ -22,9 +22,9 @@ import { EmitEvent, ValueOperationEventService, Events } from '../../services/va
 import { BaseValueComponent } from '../../values/base-value.component';
 
 @Component({
-  selector: 'dsp-add-value',
-  templateUrl: './add-value.component.html',
-  styleUrls: ['./add-value.component.scss']
+    selector: 'dsp-add-value',
+    templateUrl: './add-value.component.html',
+    styleUrls: ['./add-value.component.scss']
 })
 export class AddValueComponent implements OnInit {
 
@@ -51,9 +51,9 @@ export class AddValueComponent implements OnInit {
 
     progressIndicatorColor = 'blue';
 
-    constructor(@Inject(DspApiConnectionToken)
-                private knoraApiConnection: KnoraApiConnection,
-                private _valueOperationEventService: ValueOperationEventService) { }
+    constructor(
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
 
@@ -91,22 +91,22 @@ export class AddValueComponent implements OnInit {
             // assign the new value to the UpdateResource value
             updateRes.value = createVal;
 
-            this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
+            this._dspApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
                 mergeMap((res: WriteValueResponse) => {
                     // if successful, get the newly created value
-                    return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
+                    return this._dspApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
                 })
-                ).subscribe(
-                    (res2: ReadResource) => {
-                        // emit a ValueAdded event to the listeners in:
-                        // property-view component to hide the add value form
-                        // resource-view component to trigger a refresh of the resource
-                        this._valueOperationEventService.emit(new EmitEvent(Events.ValueAdded));
+            ).subscribe(
+                (res2: ReadResource) => {
+                    // emit a ValueAdded event to the listeners in:
+                    // property-view component to hide the add value form
+                    // resource-view component to trigger a refresh of the resource
+                    this._valueOperationEventService.emit(new EmitEvent(Events.ValueAdded));
 
-                        // hide the progress indicator
-                        this.submittingValue = false;
-                    }
-                );
+                    // hide the progress indicator
+                    this.submittingValue = false;
+                }
+            );
         } else {
             console.error('invalid value');
 

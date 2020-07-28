@@ -60,13 +60,13 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
 
     comparisonOperatorChangesSubscription: Subscription;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnChanges(): void {
 
         // build a form for comparison operator selection
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             comparisonOperator: [null, Validators.required]
         });
 
