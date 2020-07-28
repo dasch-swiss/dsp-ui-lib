@@ -27,6 +27,8 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     editor: Editor;
     editorConfig;
 
+    readonly standardMapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
         super();
     }
@@ -36,16 +38,13 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         // convert tags: CKEditor 4 to 5 migration, see https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html
 
         if (this.displayValue !== undefined) {
-            if (this.displayValue.mapping !== 'http://rdfh.ch/standoff/mappings/StandardMapping') {
+            if (this.displayValue.mapping !== this.standardMapping) {
                 // mapping is not supported
                 return null;
             }
 
             // strip the doctype and text tag
-            return this.displayValue.xml
-                .replace('<?xml version="1.0" encoding="UTF-8"?>', '')
-                .replace('<text>', '')
-                .replace('</text>', '');
+            return this._handleXML(this.displayValue.xml, true);
         } else {
             return null;
         }
@@ -64,7 +63,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         };
 
         // initialize form control elements
-        this.valueFormControl = new FormControl({ value: null, disabled: this.mode === 'read'});
+        this.valueFormControl = new FormControl({value: null, disabled: this.mode === 'read'});
 
         this.commentFormControl = new FormControl(null);
 
@@ -111,9 +110,8 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         const newTextValue = new CreateTextValueAsXml();
 
-        // TODO: add doctype and the text tag
-        newTextValue.xml = this.valueFormControl.value;
-        newTextValue.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+        newTextValue.xml = this._handleXML(this.valueFormControl.value, false);
+        newTextValue.mapping = this.standardMapping;
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             newTextValue.valueHasComment = this.commentFormControl.value;
@@ -133,15 +131,37 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         updatedTextValue.id = this.displayValue.id;
 
-        // TODO: add doctype and the text tag
-        updatedTextValue.xml = this.valueFormControl.value;
-
-        updatedTextValue.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+        updatedTextValue.xml = this._handleXML(this.valueFormControl.value, false);
+        updatedTextValue.mapping = this.standardMapping;
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             updatedTextValue.valueHasComment = this.commentFormControl.value;
         }
 
         return updatedTextValue;
+    }
+
+    /**
+     * Converts XML to HTML suitable for CKEditor and vice versa.
+     *
+     * @param xml xml to be processed.
+     * @param fromKnora true if xml is received from Knora.
+     */
+    private _handleXML(xml: string, fromKnora: boolean) {
+
+        const doctype = '<?xml version="1.0" encoding="UTF-8"?>';
+        const textTag = 'text';
+        const openingTextTag = `<${textTag}>`;
+        const closingTextTag = `</${textTag}>`;
+
+        if (fromKnora) {
+            return xml.replace(doctype, '')
+                .replace(openingTextTag, '')
+                .replace(closingTextTag, '')
+                .replace(/&nbsp;/g, String.fromCharCode(160));
+        } else {
+            return doctype + openingTextTag + xml + closingTextTag;
+        }
+
     }
 }
