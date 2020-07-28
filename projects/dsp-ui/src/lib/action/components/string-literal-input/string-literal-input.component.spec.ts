@@ -10,7 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatMenuHarness, MatMenuItemHarness } from '@angular/material/menu/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StringLiteral } from '@dasch-swiss/dsp-js';

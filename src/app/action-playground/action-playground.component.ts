@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { ApiResponseData, ApiResponseError, KnoraApiConnection, LoginResponse, LogoutResponse, StringLiteral } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken, DspMessageData, Session, SessionService, SortingService } from '@dasch-swiss/dsp-ui';
+import { Component, OnInit } from '@angular/core';
+import { ApiResponseError, StringLiteral } from '@dasch-swiss/dsp-js';
+import { DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-action-playground',
