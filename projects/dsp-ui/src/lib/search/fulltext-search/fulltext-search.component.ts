@@ -60,9 +60,11 @@ export class FulltextSearchComponent implements OnInit {
      */
     @Input() filterbyproject?: string;
 
-    @Input() show: boolean;
-
-    // @Output() showState = new EventEmitter();
+    /**
+     * The data event emitter of type SearchParams
+     *
+     * @param  search
+     */
     @Output() search = new EventEmitter<SearchParams>();
 
 
@@ -288,8 +290,6 @@ export class FulltextSearchComponent implements OnInit {
             this.overlayRef.detach();
         }
 
-        // this.show = false;
-        // this.showState.emit(this.show);
     }
 
     /**

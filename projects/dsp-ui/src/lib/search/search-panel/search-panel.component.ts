@@ -36,6 +36,11 @@ export class SearchPanelComponent {
      */
     @Input() expert?: boolean = false;
 
+    /**
+     * The data event emitter of type SearchParams
+     *
+     * @param  search
+     */
     @Output() search = new EventEmitter<SearchParams>();
 
     @ViewChild('fullSearchPanel', { static: false }) searchPanel: ElementRef;

@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Vali
 import { KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken } from '../../core/core.module';
 import { AdvancedSearchParams, AdvancedSearchParamsService } from '../services/advanced-search-params.service';
+import { SearchParams } from '../../viewer';
 
 /**
  * @ignore
@@ -25,9 +26,11 @@ export function forbiddenTermValidator(termRe: RegExp): ValidatorFn {
 export class ExpertSearchComponent implements OnInit {
 
     /**
-     * @param gravsearchQuery Send the gravsearch query back.
+     * The data event emitter of type SearchParams
+     *
+     * @param  search
      */
-    @Output() gravsearchQuery = new EventEmitter<string>();
+    @Output() search = new EventEmitter<SearchParams>();
 
     expertSearchForm: FormGroup;
     queryFormControl: FormControl;
@@ -83,7 +86,10 @@ CONSTRUCT {
         const gravsearch = this._generateGravsearch(0);
 
         if (gravsearch) {
-            this.gravsearchQuery.emit(gravsearch);
+            this.search.emit({
+                query: gravsearch,
+                mode: 'gravsearch'
+            });
         }
     }
 
