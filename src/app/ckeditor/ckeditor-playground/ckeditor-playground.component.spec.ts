@@ -6,7 +6,7 @@ import { ReadResource, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 
 
-fdescribe('CkeditorPlaygroundComponent', () => {
+describe('CkeditorPlaygroundComponent', () => {
     let component: CkeditorPlaygroundComponent;
     let fixture: ComponentFixture<CkeditorPlaygroundComponent>;
 
@@ -34,7 +34,7 @@ fdescribe('CkeditorPlaygroundComponent', () => {
         const dspSpy = TestBed.inject(DspApiConnectionToken);
 
         (dspSpy.v2.res as jasmine.SpyObj<ResourcesEndpointV2>).getResource.and.returnValue(of(new ReadResource()));
-        
+
         fixture = TestBed.createComponent(CkeditorPlaygroundComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
