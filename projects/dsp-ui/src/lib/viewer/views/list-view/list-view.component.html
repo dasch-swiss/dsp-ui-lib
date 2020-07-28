@@ -13,7 +13,7 @@
     <span class="fill-remaining-space"></span>
     <span class="page-navigation">
         <mat-paginator [length]="numberOfAllResults" [pageSize]="25" [hidePageSize]="true"
-            [pageIndex]="pageEvent.pageIndex" [disabled]="loading" (page)="loadMoreResults($event)">
+            [pageIndex]="pageEvent.pageIndex" [disabled]="loading" (page)="goToPage($event)">
         </mat-paginator>
     </span>
 </div>
@@ -47,7 +47,7 @@
     <span class="fill-remaining-space"></span>
     <span class="page-navigation">
         <mat-paginator [length]="numberOfAllResults" [pageSize]="25" [hidePageSize]="true"
-            [pageIndex]="pageEvent.pageIndex" [disabled]="loading" (page)="loadMoreResults($event)">
+            [pageIndex]="pageEvent.pageIndex" [disabled]="loading" (page)="goToPage($event)">
         </mat-paginator>
     </span>
 </div>

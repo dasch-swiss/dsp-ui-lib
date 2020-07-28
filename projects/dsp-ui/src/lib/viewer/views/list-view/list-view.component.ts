@@ -89,7 +89,7 @@ export class ListViewComponent implements OnInit {
         this.resourceSelected.emit(id);
     }
 
-    loadMoreResults(page: PageEvent) {
+    nextPage(page: PageEvent) {
         this.pageEvent = page;
         this._doSearch();
     }
