@@ -17,7 +17,7 @@ import { ListViewComponent, SearchParams } from './list-view.component';
     selector: `dsp-list-view`,
     template: ``
 })
-class TestResourceListComponent {
+class TestListViewComponent {
 
     @Input() search: SearchParams;
 
@@ -125,9 +125,14 @@ describe('ListViewComponent', () => {
 
         const searchSpy = TestBed.inject(DspApiConnectionToken);
 
+        // do fulltext search count query
         expect(searchSpy.v2.search.doFulltextSearchCountQuery).toHaveBeenCalledWith('fake query', 0, { limitToProject: 'http://rdfh.ch/projects/0803' });
 
+        // do fulltext search
+        expect(searchSpy.v2.search.doFulltextSearch).toHaveBeenCalledWith('fake query', 0, { limitToProject: 'http://rdfh.ch/projects/0803' });
+        expect(testHostComponent.listViewComponent.resources.resources.length).toBe(5);
 
     });
+
 
 });
