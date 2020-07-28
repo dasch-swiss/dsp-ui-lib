@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { ApiResponseData, ApiResponseError, KnoraApiConnection, LoginResponse, LogoutResponse, StringLiteral } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken, DspMessageData, Session, SessionService, SortingService } from '@dasch-swiss/dsp-ui';
+import { Component, OnInit } from '@angular/core';
+import { ApiResponseError, StringLiteral } from '@dasch-swiss/dsp-js';
+import { DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-action-playground',
@@ -90,6 +90,29 @@ export class ActionPlaygroundComponent implements OnInit {
         },
     ];
 
+    // labels for stringify string literal input component example
+    stringLiteralInputLabels: StringLiteral[] = [
+        {
+            value: 'Welt',
+            language: 'de'
+        },
+        {
+            value: 'World',
+            language: 'en'
+        },
+        {
+            value: 'Monde',
+            language: 'fr'
+        },
+        {
+            value: 'Mondo',
+            language: 'it'
+        },
+    ];
+
+    // used to store newly created labels when using the string literal input component with no preloaded values
+    stringLiteralInputNewLabels: StringLiteral[];
+
     // short message example
     shortMessage: DspMessageData = {
         status: 200,
@@ -136,6 +159,16 @@ export class ActionPlaygroundComponent implements OnInit {
 
     sortList(key) {
         this.list = this._sortingService.keySortByAlphabetical(this.list, key);
+    }
+
+    // when new data is entered in the string literal input component without preloaded values
+    handleNewInput(data: StringLiteral[]) {
+        this.stringLiteralInputNewLabels = data;
+    }
+
+    // when the enter key is pressed in the string literal input component
+    submitNewInput() {
+        console.log('submit string literal', this.stringLiteralInputNewLabels);
     }
 
     // TODO: Will be replaced by login process from action module

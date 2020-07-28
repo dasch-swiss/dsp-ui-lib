@@ -66,3 +66,13 @@ We will implement the login form here as soon its moved from the old knora-ui.
 
 <strong>Show only one value (Uses the language of the user if logged in. If not, uses the browser language)</strong>
 <p>{{labels | dspStringifyStringLiteral}}</p>
+
+<hr>
+<p>StringLiteral input example</p>
+<dsp-string-literal-input [placeholder]="'List label'" (dataChanged)="handleNewInput($event)" (enter)="submitNewInput()"> </dsp-string-literal-input>
+
+<p>StringLiteral input example with preloaded values</p>
+<dsp-string-literal-input [placeholder]="'List label'" [value]="stringLiteralInputLabels"> </dsp-string-literal-input>
+
+<p>StringLiteral input example as textarea</p>
+<dsp-string-literal-input [placeholder]="'List description'" [textarea]="true"> </dsp-string-literal-input>
