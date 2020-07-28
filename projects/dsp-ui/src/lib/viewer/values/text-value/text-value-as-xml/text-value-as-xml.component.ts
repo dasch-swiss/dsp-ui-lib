@@ -33,7 +33,9 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
     getInitValue(): string | null {
 
+        // TODO: check for the standard mapping
         if (this.displayValue !== undefined) {
+            // TODO: strip the HTML tag
             return this.displayValue.xml;
         } else {
             return null;
@@ -46,18 +48,14 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         this.editor = Editor;
 
-        const filter = ' p em strong strike u sub sup hr h1 h2 h3 h4 h5 h6 pre table tbody tr td ol ul li cite blockquote code; a[!href](salsah-link) ';
-
         this.editorConfig = {
-            allowedContent: filter,
-            pasteFilter: filter,
-            format_tags: 'p;h1;h2;h3;h4;h5;h6;pre',
+            // format_tags: 'p;h1;h2;h3;h4;h5;h6;pre',
             entities: false,
             toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'removeformat']
         };
 
         // initialize form control elements
-        this.valueFormControl = new FormControl(null);
+        this.valueFormControl = new FormControl({ value: null, disabled: this.mode === 'read'});
 
         this.commentFormControl = new FormControl(null);
 
@@ -81,6 +79,15 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         // resets values and validators in form controls when input displayValue or mode changes
         // at the first call of ngOnChanges, form control elements are not initialized yet
         this.resetFormControl();
+
+        // mode is controlled via the FormControl
+        if (this.valueFormControl !== undefined && this.mode === 'read') {
+            this.valueFormControl.disable();
+        } else if (this.valueFormControl !== undefined) {
+            this.valueFormControl.enable();
+        }
+
+
     }
 
     ngOnDestroy(): void {
@@ -95,7 +102,10 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         const newTextValue = new CreateTextValueAsXml();
 
+        // TODO: add the HTML tag
         newTextValue.xml = this.valueFormControl.value;
+
+        // TODO: add the standard mapping
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             newTextValue.valueHasComment = this.commentFormControl.value;
@@ -115,7 +125,10 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         updatedTextValue.id = this.displayValue.id;
 
+        // TODO: add the HTML tag
         updatedTextValue.xml = this.valueFormControl.value;
+
+        // TODO: add the standard mapping
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             updatedTextValue.valueHasComment = this.commentFormControl.value;
