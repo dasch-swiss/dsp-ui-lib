@@ -108,7 +108,6 @@ describe('ListViewComponent', () => {
                 let resources: ReadResourceSequence;
                 // mock list of resourcses to simulate full-text search response
                 MockResource.getTesthings(5).subscribe(res => {
-                    console.log(res);
                     resources = res;
                 });
                 if (resources.resources.length) {
@@ -135,15 +134,7 @@ describe('ListViewComponent', () => {
             0,
             { limitToProject: 'http://rdfh.ch/projects/0803' }
         );
-        // expect(testComponent.resources.resources.length).toEqual(5);
-        // expect(testHostComponent.inputValueComponent.resources[0].id).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
 
-        // {
-        //     "schema:numberOfItems" : 2,
-        //     "@context" : {
-        //       "schema" : "http://schema.org/"
-        //     }
-        //   }
     });
 
 });
