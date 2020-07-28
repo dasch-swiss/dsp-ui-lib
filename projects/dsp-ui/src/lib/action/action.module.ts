@@ -1,16 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { MessageComponent } from './components/message/message.component';
 import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator.component';
 import { SortButtonComponent } from './components/sort-button/sort-button.component';
+import { StringLiteralInputComponent } from './components/string-literal-input/string-literal-input.component';
 import { AdminImageDirective } from './directives/admin-image/admin-image.directive';
 import { ExistingNameDirective } from './directives/existing-names/existing-name.directive';
 import { GndDirective } from './directives/gnd/gnd.directive';
@@ -35,10 +39,12 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     ProgressIndicatorComponent,
     MessageComponent,
     SortButtonComponent,
+    StringLiteralInputComponent,
     LoginFormComponent
   ],
   imports: [
     CommonModule,
+    BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
     MatInputModule,
@@ -46,7 +52,9 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     MatCardModule,
     MatListModule,
     ReactiveFormsModule,
-    FormsModule
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
   ],
   exports: [
     FormattedBooleanPipe,
@@ -60,6 +68,7 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     ProgressIndicatorComponent,
     MessageComponent,
     SortButtonComponent,
+    StringLiteralInputComponent,
     LoginFormComponent
   ]
 })

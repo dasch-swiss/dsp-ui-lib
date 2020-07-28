@@ -126,7 +126,7 @@ The module needs a global styling in the app to override some material design ru
 If you're using Angular CLI, this is as simple as including one line in your `styles.scss` file:
 
 ```css
-@import '@dasch-swiss/dsp-ui/assets/style/dsp-ui.scss';
+@import '@dasch-swiss/dsp-ui/src/assets/style/dsp-ui.scss';
 ```
 
 Alternatively, you can just reference the file directly. This would look something like:
@@ -173,7 +173,7 @@ export class ProjectsComponent implements OnInit {
   projects: ReadProject[];
 
   constructor(
-    @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection
+    @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection
   ) { }
 
   ngOnInit() {
@@ -181,7 +181,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProjects() {
-    this.dspApiConnection.admin.projectsEndpoint.getProjects().subscribe(
+    this._dspApiConnection.admin.projectsEndpoint.getProjects().subscribe(
       (response: ApiResponseData<ProjectsResponse>) => {
         this.projects = response.body.projects;
       },

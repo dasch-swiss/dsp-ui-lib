@@ -1,18 +1,18 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {Interval, IntervalInputComponent} from './interval-input.component';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {Component, DebugElement, OnInit, ViewChild} from '@angular/core';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {By} from '@angular/platform-browser';
+import { Interval, IntervalInputComponent } from './interval-input.component';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
 
 /**
  * Test host component to simulate parent component.
  */
 @Component({
-  template: `
+    template: `
     <div [formGroup]="form">
       <mat-form-field>
         <dsp-interval-input #intervalInput [formControlName]="'interval'"></dsp-interval-input>
@@ -21,104 +21,104 @@ import { MatInputModule } from '@angular/material/input';
 })
 class TestHostComponent implements OnInit {
 
-  @ViewChild('intervalInput') intervalInputComponent: IntervalInputComponent;
+    @ViewChild('intervalInput') intervalInputComponent: IntervalInputComponent;
 
-  form: FormGroup;
+    form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-  }
+    constructor(private _fb: FormBuilder) {
+    }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
 
-    this.form = this.fb.group({
-      interval: [new Interval(1, 2)]
-    });
+        this.form = this._fb.group({
+            interval: [new Interval(1, 2)]
+        });
 
-  }
+    }
 }
 
 describe('InvertalInputComponent', () => {
-  let testHostComponent: TestHostComponent;
-  let testHostFixture: ComponentFixture<TestHostComponent>;
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  let intervalInputComponentDe: DebugElement;
-  let startInputDebugElement: DebugElement;
-  let startInputNativeElement;
-  let endInputDebugElement: DebugElement;
-  let endInputNativeElement;
+    let intervalInputComponentDe: DebugElement;
+    let startInputDebugElement: DebugElement;
+    let startInputNativeElement;
+    let endInputDebugElement: DebugElement;
+    let endInputNativeElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
-      declarations: [IntervalInputComponent, TestHostComponent]
-    })
-      .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
+            declarations: [IntervalInputComponent, TestHostComponent]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    testHostFixture = TestBed.createComponent(TestHostComponent);
-    testHostComponent = testHostFixture.componentInstance;
-    testHostFixture.detectChanges();
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
 
-    expect(testHostComponent).toBeTruthy();
-    expect(testHostComponent.intervalInputComponent).toBeTruthy();
+        expect(testHostComponent).toBeTruthy();
+        expect(testHostComponent.intervalInputComponent).toBeTruthy();
 
-    const hostCompDe = testHostFixture.debugElement;
-    intervalInputComponentDe = hostCompDe.query(By.directive(IntervalInputComponent));
-    startInputDebugElement = intervalInputComponentDe.query(By.css('input.start'));
-    startInputNativeElement = startInputDebugElement.nativeElement;
-    endInputDebugElement = intervalInputComponentDe.query(By.css('input.end'));
-    endInputNativeElement = endInputDebugElement.nativeElement;
-  });
+        const hostCompDe = testHostFixture.debugElement;
+        intervalInputComponentDe = hostCompDe.query(By.directive(IntervalInputComponent));
+        startInputDebugElement = intervalInputComponentDe.query(By.css('input.start'));
+        startInputNativeElement = startInputDebugElement.nativeElement;
+        endInputDebugElement = intervalInputComponentDe.query(By.css('input.end'));
+        endInputNativeElement = endInputDebugElement.nativeElement;
+    });
 
-  it('should initialize the interval correctly', () => {
+    it('should initialize the interval correctly', () => {
 
-    expect(startInputNativeElement.value).toEqual('1');
-    expect(endInputNativeElement.value).toEqual('2');
+        expect(startInputNativeElement.value).toEqual('1');
+        expect(endInputNativeElement.value).toEqual('2');
 
-  });
+    });
 
-  it('should propagate changes made by the user', () => {
+    it('should propagate changes made by the user', () => {
 
-    startInputNativeElement.value = '3';
-    startInputNativeElement.dispatchEvent(new Event('input'));
+        startInputNativeElement.value = '3';
+        startInputNativeElement.dispatchEvent(new Event('input'));
 
-    testHostFixture.detectChanges();
+        testHostFixture.detectChanges();
 
-    expect(testHostComponent.form.controls.interval).toBeTruthy();
-    expect(testHostComponent.form.controls.interval.value.start).toEqual(3);
-    expect(testHostComponent.form.controls.interval.value.end).toEqual(2);
+        expect(testHostComponent.form.controls.interval).toBeTruthy();
+        expect(testHostComponent.form.controls.interval.value.start).toEqual(3);
+        expect(testHostComponent.form.controls.interval.value.end).toEqual(2);
 
-    endInputNativeElement.value = '35';
-    endInputNativeElement.dispatchEvent(new Event('input'));
+        endInputNativeElement.value = '35';
+        endInputNativeElement.dispatchEvent(new Event('input'));
 
-    testHostFixture.detectChanges();
+        testHostFixture.detectChanges();
 
-    expect(testHostComponent.form.controls.interval.value).toBeTruthy();
-    expect(testHostComponent.form.controls.interval.value.start).toEqual(3);
-    expect(testHostComponent.form.controls.interval.value.end).toEqual(35);
+        expect(testHostComponent.form.controls.interval.value).toBeTruthy();
+        expect(testHostComponent.form.controls.interval.value.start).toEqual(3);
+        expect(testHostComponent.form.controls.interval.value.end).toEqual(35);
 
-  });
+    });
 
-  it('should return "null" for an empty (invalid) user input', () => {
+    it('should return "null" for an empty (invalid) user input', () => {
 
-    startInputNativeElement.value = '';
-    startInputNativeElement.dispatchEvent(new Event('input'));
+        startInputNativeElement.value = '';
+        startInputNativeElement.dispatchEvent(new Event('input'));
 
-    endInputNativeElement.value = '';
-    endInputNativeElement.dispatchEvent(new Event('input'));
+        endInputNativeElement.value = '';
+        endInputNativeElement.dispatchEvent(new Event('input'));
 
-    testHostFixture.detectChanges();
+        testHostFixture.detectChanges();
 
-    expect(testHostComponent.form.controls.interval.value).toBe(null);
-  });
+        expect(testHostComponent.form.controls.interval.value).toBe(null);
+    });
 
-  it('should initialize the interval with an empty value', () => {
+    it('should initialize the interval with an empty value', () => {
 
-    testHostComponent.form.controls.interval.setValue(null);
-    expect(startInputNativeElement.value).toEqual('');
-    expect(endInputNativeElement.value).toEqual('');
+        testHostComponent.form.controls.interval.setValue(null);
+        expect(startInputNativeElement.value).toEqual('');
+        expect(endInputNativeElement.value).toEqual('');
 
-  });
+    });
 
 });
