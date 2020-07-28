@@ -39,3 +39,39 @@
 .grid-card .mat-card-header > div.mat-card-header-text {
   margin: 0 0 !important;
 }
+
+// String literal input
+// string literal textarea: overwrite material styling !important
+.string-literal {
+  &.short-text {
+    .mat-form-field-infix {
+      margin-left: 12px;
+    }
+  }
+
+  &.long-text {
+
+    .mat-button-toggle-appearance-standard {
+      .mat-button-toggle-label-content {
+        line-height: 36px !important;
+        padding: 0 8px !important;
+      }
+    }
+
+    // textarea
+    .mat-form-field-wrapper {
+      width: 100%;
+      .mat-form-field-flex {
+        border-left: 1px solid rgba(0, 0, 0, 0.12);
+        min-height: calc(4 * 36px + 2px);
+
+        .mat-form-field-infix {
+          // negative values are not the best choice,
+          // but with this margin-top the placeholder is at the
+          // same position as in the short-text input
+          margin: -12px auto auto 12px;
+        }
+      }
+    }
+  }
+}
