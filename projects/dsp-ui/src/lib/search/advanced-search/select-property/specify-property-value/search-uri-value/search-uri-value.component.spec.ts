@@ -23,11 +23,11 @@ class TestHostComponent implements OnInit {
 
     @ViewChild('uriVal') uriValue: SearchUriValueComponent;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({});
+        this.form = this._fb.group({});
     }
 }
 

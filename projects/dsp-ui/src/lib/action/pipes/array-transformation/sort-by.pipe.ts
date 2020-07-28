@@ -11,11 +11,11 @@ import { SortingService } from '../../services/sorting.service';
 })
 export class SortByPipe implements PipeTransform {
 
-    constructor(private sortingService: SortingService) { }
+    constructor(private _sortingService: SortingService) { }
     /**
      * uses sorting service to sort by key
      */
     transform(array: Array<any>, args: string): Array<any> {
-        return this.sortingService.keySortByAlphabetical(array, args);
+        return this._sortingService.keySortByAlphabetical(array, args);
     }
 }

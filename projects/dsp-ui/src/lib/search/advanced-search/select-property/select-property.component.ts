@@ -65,15 +65,15 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
 
     propertyChangesSubscription: Subscription;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder,
-                private _sortingService: SortingService) {
-
+    constructor(
+        @Inject(FormBuilder) private _fb: FormBuilder,
+        private _sortingService: SortingService) {
     }
 
     ngOnInit() {
 
         // build a form for the property selection
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             property: [null, Validators.required],
             isSortCriterion: [false, Validators.required]
         });
