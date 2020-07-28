@@ -35,7 +35,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     // will come from the ontology settings when implemented
     ontologyDateSetting: string;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
         super();
     }
 
@@ -85,7 +85,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
             }
         );
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             dateValue: this.valueFormControl,
             comment: this.commentFormControl
         });

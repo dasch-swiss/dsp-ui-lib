@@ -11,14 +11,14 @@ import { SortingService } from '../../services/sorting.service';
 })
 export class ReversePipe implements PipeTransform {
 
-    constructor(private sortingService: SortingService) { }
+    constructor(private _sortingService: SortingService) { }
 
     /**
      * uses sorting service to reverse the array
      */
 
     transform(value: any): any {
-        return this.sortingService.reverseArray(value);
+        return this._sortingService.reverseArray(value);
     }
 
 }

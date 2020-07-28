@@ -7,9 +7,9 @@ import { PropertyValue, Value, ValueLiteral } from '../operator';
 const resolvedPromise = Promise.resolve(null);
 
 @Component({
-  selector: 'dsp-search-int-value',
-  templateUrl: './search-int-value.component.html',
-  styleUrls: ['./search-int-value.component.scss']
+    selector: 'dsp-search-int-value',
+    templateUrl: './search-int-value.component.html',
+    styleUrls: ['./search-int-value.component.scss']
 })
 export class SearchIntValueComponent implements OnInit, OnDestroy, PropertyValue {
 
@@ -20,13 +20,13 @@ export class SearchIntValueComponent implements OnInit, OnDestroy, PropertyValue
 
     form: FormGroup;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
 
     }
 
     ngOnInit() {
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             integerValue: [null, Validators.compose([Validators.required, Validators.pattern(/^-?\d+$/)])] // only allow for integer values (no fractions)
         });
 

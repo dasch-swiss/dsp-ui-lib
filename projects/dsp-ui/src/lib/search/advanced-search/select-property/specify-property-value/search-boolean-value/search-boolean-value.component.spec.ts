@@ -20,13 +20,13 @@ class TestHostComponent implements OnInit {
 
     form;
 
-    @ViewChild('boolVal', {static: false}) booleanValue: SearchBooleanValueComponent;
+    @ViewChild('boolVal', { static: false }) booleanValue: SearchBooleanValueComponent;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({});
+        this.form = this._fb.group({});
 
     }
 }

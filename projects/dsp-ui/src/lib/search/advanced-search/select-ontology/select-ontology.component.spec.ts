@@ -29,11 +29,11 @@ class TestHostComponent implements OnInit {
 
     selectedOntoIri: string;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({});
+        this.form = this._fb.group({});
 
         this.ontoMetadata = MockOntology.mockOntologiesMetadata();
     }
@@ -122,7 +122,7 @@ describe('SelectOntologyComponent', () => {
 
         await select.open();
 
-        const options = await select.getOptions({text: 'The anything ontology'});
+        const options = await select.getOptions({ text: 'The anything ontology' });
 
         expect(options.length).toEqual(1);
 
