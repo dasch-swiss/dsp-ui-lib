@@ -1,15 +1,15 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import {
-  Constants,
-  DeleteValue,
-  DeleteValueResponse,
-  KnoraApiConnection,
-  PermissionUtil,
-  ReadResource,
-  ReadValue,
-  UpdateResource,
-  UpdateValue,
-  WriteValueResponse
+    Constants,
+    DeleteValue,
+    DeleteValueResponse,
+    KnoraApiConnection,
+    PermissionUtil,
+    ReadResource,
+    ReadValue,
+    UpdateResource,
+    UpdateValue,
+    WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
@@ -18,9 +18,9 @@ import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
 @Component({
-  selector: 'dsp-display-edit',
-  templateUrl: './display-edit.component.html',
-  styleUrls: ['./display-edit.component.scss']
+    selector: 'dsp-display-edit',
+    templateUrl: './display-edit.component.html',
+    styleUrls: ['./display-edit.component.scss']
 })
 export class DisplayEditComponent implements OnInit {
 
@@ -49,9 +49,9 @@ export class DisplayEditComponent implements OnInit {
     // indicates if value can be edited
     readOnlyValue: boolean;
 
-    constructor(@Inject(DspApiConnectionToken)
-                private knoraApiConnection: KnoraApiConnection,
-                private valueTypeService: ValueTypeService) {
+    constructor(
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _valueTypeService: ValueTypeService) {
     }
 
     ngOnInit() {
@@ -66,9 +66,9 @@ export class DisplayEditComponent implements OnInit {
         // check if comment toggle button should be shown
         this.checkCommentToggleVisibility();
 
-        this.valueTypeOrClass = this.valueTypeService.getValueTypeOrClass(this.displayValue);
+        this.valueTypeOrClass = this._valueTypeService.getValueTypeOrClass(this.displayValue);
 
-        this.readOnlyValue = this.valueTypeService.isReadOnly(this.valueTypeOrClass);
+        this.readOnlyValue = this._valueTypeService.isReadOnly(this.valueTypeOrClass);
     }
 
     activateEditMode() {
@@ -92,21 +92,21 @@ export class DisplayEditComponent implements OnInit {
             updateRes.type = this.parentResource.type;
             updateRes.property = this.displayValue.property;
             updateRes.value = updatedVal;
-            this.knoraApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
-            mergeMap((res: WriteValueResponse) => {
-                return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
-            })
+            this._dspApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
+                mergeMap((res: WriteValueResponse) => {
+                    return this._dspApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
+                })
             ).subscribe(
-            (res2: ReadResource) => {
-                this.displayValue = res2.getValues(this.displayValue.property)[0];
-                this.mode = 'read';
+                (res2: ReadResource) => {
+                    this.displayValue = res2.getValues(this.displayValue.property)[0];
+                    this.mode = 'read';
 
-                // hide comment once back in read mode
-                this.displayValueComponent.updateCommentVisibility();
+                    // hide comment once back in read mode
+                    this.displayValueComponent.updateCommentVisibility();
 
-                // check if comment toggle button should be shown
-                this.checkCommentToggleVisibility();
-            }
+                    // check if comment toggle button should be shown
+                    this.checkCommentToggleVisibility();
+                }
             );
 
         } else {

@@ -7,9 +7,9 @@ import { Value, ValueLiteral } from '../operator';
 const resolvedPromise = Promise.resolve(null);
 
 @Component({
-  selector: 'dsp-search-decimal-value',
-  templateUrl: './search-decimal-value.component.html',
-  styleUrls: ['./search-decimal-value.component.scss']
+    selector: 'dsp-search-decimal-value',
+    templateUrl: './search-decimal-value.component.html',
+    styleUrls: ['./search-decimal-value.component.scss']
 })
 export class SearchDecimalValueComponent implements OnInit, OnDestroy {
 
@@ -20,12 +20,12 @@ export class SearchDecimalValueComponent implements OnInit, OnDestroy {
 
     form: FormGroup;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             decimalValue: [null, Validators.compose([Validators.required])]
         });
 

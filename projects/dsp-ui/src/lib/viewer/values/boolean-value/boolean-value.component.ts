@@ -26,7 +26,7 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
 
     preferredDisplayType: string;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
         super();
     }
 
@@ -50,7 +50,7 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
             }
         );
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             booleanValue: this.valueFormControl,
             comment: this.commentFormControl
         });
