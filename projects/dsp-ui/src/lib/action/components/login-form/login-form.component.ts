@@ -4,9 +4,9 @@ import { ApiResponseData, ApiResponseError, KnoraApiConnection, LoginResponse, L
 import { DspApiConnectionToken, Session, SessionService } from '../../../core';
 
 @Component({
-  selector: 'dsp-login-form',
-  templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.scss']
+    selector: 'dsp-login-form',
+    templateUrl: './login-form.component.html',
+    styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent implements OnInit {
 
@@ -100,7 +100,7 @@ export class LoginFormComponent implements OnInit {
 
 
     constructor(
-        @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _sessionService: SessionService,
         private _fb: FormBuilder
     ) { }
@@ -145,7 +145,7 @@ export class LoginFormComponent implements OnInit {
 
         const identifierType: 'iri' | 'email' | 'username' = (identifier.indexOf('@') > -1 ? 'email' : 'username');
 
-        this.knoraApiConnection.v2.auth.login(identifierType, identifier, password).subscribe(
+        this._dspApiConnection.v2.auth.login(identifierType, identifier, password).subscribe(
             (response: ApiResponseData<LoginResponse>) => {
                 this._sessionService.setSession(response.body.token, identifier, identifierType).subscribe(
                     () => {
@@ -179,7 +179,7 @@ export class LoginFormComponent implements OnInit {
     logout() {
         this.loading = true;
 
-        this.knoraApiConnection.v2.auth.logout().subscribe(
+        this._dspApiConnection.v2.auth.logout().subscribe(
             (response: ApiResponseData<LogoutResponse>) => {
                 this.logoutSuccess.emit(true);
                 this._sessionService.destroySession();

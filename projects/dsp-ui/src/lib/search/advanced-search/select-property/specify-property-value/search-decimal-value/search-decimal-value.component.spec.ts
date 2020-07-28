@@ -21,14 +21,13 @@ class TestHostComponent implements OnInit {
 
     form;
 
-    @ViewChild('decVal', {static: false}) decimalValue: SearchDecimalValueComponent;
+    @ViewChild('decVal', { static: false }) decimalValue: SearchDecimalValueComponent;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({});
-
+        this.form = this._fb.group({});
     }
 }
 

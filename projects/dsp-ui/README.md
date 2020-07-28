@@ -173,7 +173,7 @@ export class ProjectsComponent implements OnInit {
   projects: ReadProject[];
 
   constructor(
-    @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection
+    @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection
   ) { }
 
   ngOnInit() {
@@ -181,7 +181,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProjects() {
-    this.dspApiConnection.admin.projectsEndpoint.getProjects().subscribe(
+    this._dspApiConnection.admin.projectsEndpoint.getProjects().subscribe(
       (response: ApiResponseData<ProjectsResponse>) => {
         this.projects = response.body.projects;
       },
