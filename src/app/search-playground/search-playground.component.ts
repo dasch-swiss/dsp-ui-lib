@@ -8,16 +8,17 @@ import { SearchParams } from '@dasch-swiss/dsp-ui/lib/viewer';
 })
 export class SearchPlaygroundComponent {
 
+    searchParams: SearchParams;
+
     constructor() { }
 
-    submitQuery(query: string) {
-        console.log('output', query);
-    }
-
     doSearch(search: SearchParams) {
+        // reset search params
+        this.searchParams = undefined;
         // we can do the routing here or send the search param
         // to (resource) list view directly
         console.log('do search:', search);
+        this.searchParams = search;
     }
 
 }

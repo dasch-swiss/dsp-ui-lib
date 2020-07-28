@@ -8,8 +8,12 @@
 
 <h2>Expert Search</h2>
 <div class="content large middle expert-search-container">
-    <dsp-expert-search (gravsearchQuery)="submitQuery($event)"></dsp-expert-search>
+    <dsp-expert-search (search)="doSearch($event)"></dsp-expert-search>
 </div>
 
 <br>
-<router-outlet></router-outlet>
+<!-- TODO: reactivate as soon the dsp-list-view is ready
+-->
+<div class="search-results" *ngIf="searchParams">
+    <dsp-list-view [search]="searchParams"></dsp-list-view>
+</div>
