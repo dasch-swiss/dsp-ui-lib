@@ -11,13 +11,14 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
 
     loading: boolean;
 
-    constructor(private _advancedSearchParamsService: AdvancedSearchParamsService,
-                @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+    constructor(
+        private _advancedSearchParamsService: AdvancedSearchParamsService,
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection) {
     }
 
     ngOnInit(): void {
         this.loading = true;
-        this.knoraApiConnection.v2.auth.logout().subscribe(
+        this._dspApiConnection.v2.auth.logout().subscribe(
             (response: ApiResponseData<LogoutResponse>) => {
                 this.loading = false;
             },

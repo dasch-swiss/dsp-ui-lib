@@ -25,13 +25,13 @@ export class SearchDateValueComponent implements OnInit, OnDestroy, PropertyValu
     // custom header for the datepicker
     headerComponent = CalendarHeaderComponent;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
 
         // init datepicker
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             dateValue: [null, Validators.compose([Validators.required])]
         });
 

@@ -73,15 +73,15 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     @ViewChildren('property') propertyComponents: QueryList<SelectPropertyComponent>;
 
     constructor(
-        @Inject(FormBuilder) private fb: FormBuilder,
-        @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
+        @Inject(FormBuilder) private _fb: FormBuilder,
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _gravsearchGenerationService: GravsearchGenerationService) {
     }
 
     ngOnInit() {
 
         // parent form is empty, it gets passed to the child components
-        this.form = this.fb.group({});
+        this.form = this._fb.group({});
 
         // if form status changes, re-run validation
         this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
@@ -123,7 +123,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      * @returns void
      */
     initializeOntologies(): void {
-        this.knoraApiConnection.v2.onto.getOntologiesMetadata().subscribe(
+        this._dspApiConnection.v2.onto.getOntologiesMetadata().subscribe(
             (response: OntologiesMetadata) => {
                 this.ontologiesMetadata = response;
             },
@@ -138,7 +138,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      *
      * @param classDefs a map of class definitions
      */
-    private _makeResourceClassesArray(classDefs: { [index: string]: ClassDefinition}): ResourceClassDefinition[] {
+    private _makeResourceClassesArray(classDefs: { [index: string]: ClassDefinition }): ResourceClassDefinition[] {
 
         const classIris = Object.keys(classDefs);
 
@@ -159,7 +159,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      *
      * @param propertyDefs a map of property definitions
      */
-    private _makeResourceProperties(propertyDefs: { [index: string]: PropertyDefinition}): Properties {
+    private _makeResourceProperties(propertyDefs: { [index: string]: PropertyDefinition }): Properties {
         const resProps: Properties = {};
 
         const propIris = Object.keys(propertyDefs);
@@ -191,7 +191,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
         this.activeOntology = ontologyIri;
 
-        this.knoraApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
+        this._dspApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
             onto => {
 
                 this.resourceClasses = this._makeResourceClassesArray(onto.get(ontologyIri).classes);
@@ -221,7 +221,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
             this.getResourceClassesAndPropertiesForOntology(this.activeOntology);
         } else {
 
-            this.knoraApiConnection.v2.ontologyCache.getResourceClassDefinition(resourceClassIri).subscribe(
+            this._dspApiConnection.v2.ontologyCache.getResourceClassDefinition(resourceClassIri).subscribe(
                 onto => {
                     this.activeResourceClass = onto.classes[resourceClassIri];
 

@@ -20,12 +20,12 @@ export class SearchTextValueComponent implements OnInit, OnDestroy, PropertyValu
 
     form: FormGroup;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             textValue: [null, Validators.required]
         });
 

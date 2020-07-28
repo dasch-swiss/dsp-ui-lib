@@ -23,14 +23,13 @@ class TestHostComponent implements OnInit {
 
     form;
 
-    @ViewChild('dateVal', {static: false}) dateValue: SearchDateValueComponent;
+    @ViewChild('dateVal', { static: false }) dateValue: SearchDateValueComponent;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({});
-
+        this.form = this._fb.group({});
     }
 }
 

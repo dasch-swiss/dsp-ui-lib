@@ -44,7 +44,7 @@ export class SelectResourceClassComponent implements OnInit, OnChanges, OnDestro
 
     form: FormGroup;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit(): void {
@@ -85,7 +85,7 @@ export class SelectResourceClassComponent implements OnInit, OnChanges, OnDestro
      */
     private _initForm() {
         // build a form for the resource class selection
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             resourceClass: [null] // resource class selection is optional
         });
 

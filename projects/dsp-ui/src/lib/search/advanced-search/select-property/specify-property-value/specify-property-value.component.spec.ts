@@ -20,7 +20,7 @@ const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
     return o instanceof className;
 };
 
-const makeProperties = (props: { [index: string]: PropertyDefinition}): Properties => {
+const makeProperties = (props: { [index: string]: PropertyDefinition }): Properties => {
     const propIris = Object.keys(props);
 
     const resProps = {};
@@ -51,11 +51,11 @@ class TestHostComponent implements OnInit {
 
     propertyDef: ResourcePropertyDefinition;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({});
+        this.form = this._fb.group({});
 
         const props = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties;
 

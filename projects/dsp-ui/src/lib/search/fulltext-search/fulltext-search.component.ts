@@ -110,8 +110,8 @@ export class FulltextSearchComponent implements OnInit {
     ];
 
     constructor(
-        @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
-        private sortingService: SortingService,
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _sortingService: SortingService,
         private _overlay: Overlay,
         // private _router: Router,
         private _viewContainerRef: ViewContainerRef
@@ -146,7 +146,7 @@ export class FulltextSearchComponent implements OnInit {
      * Get all public projects from DSP-API
      */
     getAllProjects(): void {
-        this.knoraApiConnection.admin.projectsEndpoint.getProjects().subscribe(
+        this._dspApiConnection.admin.projectsEndpoint.getProjects().subscribe(
             (response: ApiResponseData<ProjectsResponse>) => {
                 this.projects = response.body.projects;
                 // this.loadSystem = false;
@@ -155,7 +155,7 @@ export class FulltextSearchComponent implements OnInit {
                         localStorage.getItem('currentProject')
                     );
                 }
-                this.projects = this.sortingService.keySortByAlphabetical(response.body.projects, 'shortname');
+                this.projects = this._sortingService.keySortByAlphabetical(response.body.projects, 'shortname');
             },
             (error: ApiResponseError) => {
                 console.error(error);
@@ -169,7 +169,7 @@ export class FulltextSearchComponent implements OnInit {
      * @param id Project Id
      */
     getProject(id: string): void {
-        this.knoraApiConnection.admin.projectsEndpoint.getProjectByIri(id).subscribe(
+        this._dspApiConnection.admin.projectsEndpoint.getProjectByIri(id).subscribe(
             (project: ApiResponseData<ProjectResponse>) => {
                 this.setProject(project.body.project);
             },
@@ -308,7 +308,7 @@ export class FulltextSearchComponent implements OnInit {
      */
     setFocus(): void {
         if (localStorage.getItem('prevSearch') !== null) {
-            this.prevSearch = this.sortingService.reverseArray(JSON.parse(localStorage.getItem('prevSearch')));
+            this.prevSearch = this._sortingService.reverseArray(JSON.parse(localStorage.getItem('prevSearch')));
         } else {
             this.prevSearch = [];
         }
