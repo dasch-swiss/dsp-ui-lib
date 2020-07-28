@@ -91,7 +91,7 @@ export class ActionPlaygroundComponent implements OnInit {
     ];
 
     // labels for stringify string literal input component example
-    stringLiteralInputlabels: StringLiteral[] = [
+    stringLiteralInputLabels: StringLiteral[] = [
         {
             value: 'Welt',
             language: 'de'
@@ -109,6 +109,9 @@ export class ActionPlaygroundComponent implements OnInit {
             language: 'it'
         },
     ];
+
+    // used to store newly created labels when using the string literal input component with no preloaded values
+    stringLiteralInputNewLabels: StringLiteral[];
 
     // short message example
     shortMessage: DspMessageData = {
@@ -156,6 +159,16 @@ export class ActionPlaygroundComponent implements OnInit {
 
     sortList(key) {
         this.list = this._sortingService.keySortByAlphabetical(this.list, key);
+    }
+
+    // when new data is entered in the string literal input component without preloaded values
+    handleNewInput(data: StringLiteral[]) {
+        this.stringLiteralInputNewLabels = data;
+    }
+
+    // when the enter key is pressed in the string literal input component
+    submitNewInput() {
+        console.log('submit string literal', this.stringLiteralInputNewLabels);
     }
 
     // TODO: Will be replaced by login process from action module
