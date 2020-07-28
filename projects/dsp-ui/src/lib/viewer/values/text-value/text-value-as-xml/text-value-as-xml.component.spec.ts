@@ -28,10 +28,13 @@ class TestCKEditorComponent implements ControlValueAccessor {
 
     @Input() editor;
 
+    value;
+
     constructor() {
     }
 
     writeValue(obj: any) {
+        this.value = obj;
     }
 
     registerOnChange(fn: any) {
@@ -105,6 +108,8 @@ describe('TextValueAsXMLComponent', () => {
         it('should display an existing value', () => {
 
             expect(testHostComponent.inputValueComponent.displayValue.xml).toEqual('<html><p>my text</p></html>');
+
+            expect(ckeditorDe.componentInstance.value).toEqual('<html><p>my text</p></html>');
 
         });
 
