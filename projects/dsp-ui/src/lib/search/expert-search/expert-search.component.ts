@@ -34,7 +34,7 @@ export class ExpertSearchComponent implements OnInit {
 
     defaultGravsearchQuery =
         `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
-PREFIX incunabula: <${this.dspApiConfig.apiUrl}/ontology/0803/incunabula/simple/v2#>
+PREFIX incunabula: <${this._dspApiConfig.apiUrl}/ontology/0803/incunabula/simple/v2#>
 
 CONSTRUCT {
     ?book knora-api:isMainResource true .
@@ -47,16 +47,16 @@ CONSTRUCT {
 `;
 
     constructor(
-        @Inject(DspApiConfigToken) private dspApiConfig: KnoraApiConfig,
+        @Inject(DspApiConfigToken) private _dspApiConfig: KnoraApiConfig,
         private _searchParamsService: AdvancedSearchParamsService,
-        private fb: FormBuilder
+        private _fb: FormBuilder
     ) { }
 
     ngOnInit(): void {
         // initialize the form with predefined Gravsearch query as example.
         this.queryFormControl = new FormControl(this.defaultGravsearchQuery);
 
-        this.expertSearchForm = this.fb.group({
+        this.expertSearchForm = this._fb.group({
             gravsearchquery: [
                 this.defaultGravsearchQuery,
                 [

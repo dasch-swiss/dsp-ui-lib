@@ -4,9 +4,9 @@ import { OntologiesMetadata } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'dsp-select-ontology',
-  templateUrl: './select-ontology.component.html',
-  styleUrls: ['./select-ontology.component.scss']
+    selector: 'dsp-select-ontology',
+    templateUrl: './select-ontology.component.html',
+    styleUrls: ['./select-ontology.component.scss']
 })
 export class SelectOntologyComponent implements OnInit, OnDestroy {
 
@@ -20,13 +20,13 @@ export class SelectOntologyComponent implements OnInit, OnDestroy {
 
     ontologyChangesSubscription: Subscription;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
 
         // build a form for the named graph selection
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             ontologies: [null, Validators.required]
         });
 
@@ -42,7 +42,7 @@ export class SelectOntologyComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         if (this.ontologyChangesSubscription !== undefined) {
-           this.ontologyChangesSubscription.unsubscribe();
+            this.ontologyChangesSubscription.unsubscribe();
         }
     }
 

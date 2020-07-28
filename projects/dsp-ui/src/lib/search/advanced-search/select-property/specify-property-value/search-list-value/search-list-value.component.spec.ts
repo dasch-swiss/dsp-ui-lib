@@ -28,13 +28,13 @@ class TestHostComponent implements OnInit {
 
     property: ResourcePropertyDefinition;
 
-    @ViewChild('listVal', {static: false}) listValue: SearchListValueComponent;
+    @ViewChild('listVal', { static: false }) listValue: SearchListValueComponent;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({});
+        this.form = this._fb.group({});
 
         const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
         this.property = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasListItem'] as ResourcePropertyDefinition;

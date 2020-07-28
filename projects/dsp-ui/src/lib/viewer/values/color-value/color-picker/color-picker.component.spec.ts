@@ -12,7 +12,7 @@ import { By } from '@angular/platform-browser';
  * Test host component to simulate parent component.
  */
 @Component({
-  template: `
+    template: `
     <div [formGroup]="form">
       <mat-form-field>
         <dsp-color-picker #colorInput [formControlName]="'colorValue'"></dsp-color-picker>
@@ -21,78 +21,78 @@ import { By } from '@angular/platform-browser';
 })
 class TestHostComponent implements OnInit {
 
-  @ViewChild('colorInput') colorPickerComponent: ColorPickerComponent;
+    @ViewChild('colorInput') colorPickerComponent: ColorPickerComponent;
 
-  form: FormGroup;
+    form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-  }
+    constructor(private _fb: FormBuilder) {
+    }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
 
-    this.form = this.fb.group({
-      colorValue: '#901453'
-    });
+        this.form = this._fb.group({
+            colorValue: '#901453'
+        });
 
-  }
+    }
 }
 
 describe('ColorPickerComponent', () => {
-  let testHostComponent: TestHostComponent;
-  let testHostFixture: ComponentFixture<TestHostComponent>;
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
 
-  let colorPickerComponentDe: DebugElement;
-  let colorInputDebugElement: DebugElement;
-  let colorInputNativeElement;
+    let colorPickerComponentDe: DebugElement;
+    let colorInputDebugElement: DebugElement;
+    let colorInputNativeElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ColorPickerModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
-      declarations: [ColorPickerComponent, TestHostComponent]
-    })
-      .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [ColorPickerModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
+            declarations: [ColorPickerComponent, TestHostComponent]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    testHostFixture = TestBed.createComponent(TestHostComponent);
-    testHostComponent = testHostFixture.componentInstance;
-    testHostFixture.detectChanges();
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
 
-    expect(testHostComponent).toBeTruthy();
-    expect(testHostComponent.colorPickerComponent).toBeTruthy();
+        expect(testHostComponent).toBeTruthy();
+        expect(testHostComponent.colorPickerComponent).toBeTruthy();
 
-    const hostCompDe = testHostFixture.debugElement;
-    colorPickerComponentDe = hostCompDe.query(By.directive(ColorPickerComponent));
-    colorInputDebugElement = colorPickerComponentDe.query(By.css('input.color'));
-    colorInputNativeElement = colorInputDebugElement.nativeElement;
+        const hostCompDe = testHostFixture.debugElement;
+        colorPickerComponentDe = hostCompDe.query(By.directive(ColorPickerComponent));
+        colorInputDebugElement = colorPickerComponentDe.query(By.css('input.color'));
+        colorInputNativeElement = colorInputDebugElement.nativeElement;
 
-    expect(colorInputNativeElement.getAttribute('ng-reflect-cp-disabled')).toEqual('false');
-  });
+        expect(colorInputNativeElement.getAttribute('ng-reflect-cp-disabled')).toEqual('false');
+    });
 
-  it('should initialize the color correctly', () => {
-    expect(colorInputNativeElement.value).toEqual('#901453');
-  });
+    it('should initialize the color correctly', () => {
+        expect(colorInputNativeElement.value).toEqual('#901453');
+    });
 
-  it('should propagate changes made by the user', () => {
+    it('should propagate changes made by the user', () => {
 
-    colorInputNativeElement.value = '#f1f1f1';
-    colorInputNativeElement.dispatchEvent(new Event('input'));
+        colorInputNativeElement.value = '#f1f1f1';
+        colorInputNativeElement.dispatchEvent(new Event('input'));
 
-    testHostFixture.detectChanges();
+        testHostFixture.detectChanges();
 
-    expect(testHostComponent.form.controls.colorValue).toBeTruthy();
-    expect(testHostComponent.form.controls.colorValue.value).toEqual('#f1f1f1');
+        expect(testHostComponent.form.controls.colorValue).toBeTruthy();
+        expect(testHostComponent.form.controls.colorValue.value).toEqual('#f1f1f1');
 
-  });
+    });
 
-  it('should return "null" for an empty (invalid) input', () => {
+    it('should return "null" for an empty (invalid) input', () => {
 
-    colorInputNativeElement.value = '';
-    colorInputNativeElement.dispatchEvent(new Event('input'));
+        colorInputNativeElement.value = '';
+        colorInputNativeElement.dispatchEvent(new Event('input'));
 
-    testHostFixture.detectChanges();
+        testHostFixture.detectChanges();
 
-    expect(testHostComponent.form.controls.colorValue.value).toEqual('');
-  });
+        expect(testHostComponent.form.controls.colorValue.value).toEqual('');
+    });
 
 });

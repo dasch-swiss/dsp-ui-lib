@@ -29,10 +29,10 @@ export interface PropertyInfoValues {
 }
 
 @Component({
-  selector: 'dsp-resource-view',
-  templateUrl: './resource-view.component.html',
-  styleUrls: ['./resource-view.component.scss'],
-  providers: [ValueOperationEventService] // provide service on the component level so that each implementation of this component has its own instance.
+    selector: 'dsp-resource-view',
+    templateUrl: './resource-view.component.html',
+    styleUrls: ['./resource-view.component.scss'],
+    providers: [ValueOperationEventService] // provide service on the component level so that each implementation of this component has its own instance.
 })
 export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -56,7 +56,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     valueOperationEventSubscription: Subscription;
 
     constructor(
-        @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _snackBar: MatSnackBar,
         private _valueOperationEventService: ValueOperationEventService) { }
 
@@ -85,35 +85,35 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      */
     getResource(iri: string): void {
 
-        this.knoraApiConnection.v2.res.getResource(iri).subscribe(
-        (response: ReadResource) => {
-            this.resource = response;
+        this._dspApiConnection.v2.res.getResource(iri).subscribe(
+            (response: ReadResource) => {
+                this.resource = response;
 
-            // gather resource property information
-            this.resPropInfoVals = this.resource.entityInfo.classes[this.resource.type].getResourcePropertiesList().map(
-                (prop: IHasPropertyWithPropertyDefinition) => {
-                    const propInfoAndValues: PropertyInfoValues = {
-                        propDef: prop.propertyDefinition,
-                        guiDef: prop,
-                        values: this.resource.getValues(prop.propertyIndex)
-                    };
-                    return propInfoAndValues;
-                }
-            );
+                // gather resource property information
+                this.resPropInfoVals = this.resource.entityInfo.classes[this.resource.type].getResourcePropertiesList().map(
+                    (prop: IHasPropertyWithPropertyDefinition) => {
+                        const propInfoAndValues: PropertyInfoValues = {
+                            propDef: prop.propertyDefinition,
+                            guiDef: prop,
+                            values: this.resource.getValues(prop.propertyIndex)
+                        };
+                        return propInfoAndValues;
+                    }
+                );
 
-            // sort properties by guiOrder
-            this.resPropInfoVals.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
+                // sort properties by guiOrder
+                this.resPropInfoVals.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
 
-            // get system property information
-            this.systemPropDefs = this.resource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
+                // get system property information
+                this.systemPropDefs = this.resource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
 
-            // set the arkUrl value
-            this.versionArkUrl = this.resource.versionArkUrl;
+                // set the arkUrl value
+                this.versionArkUrl = this.resource.versionArkUrl;
 
-        },
-        (error: ApiResponseError) => {
-            console.error('Error to get resource: ', error);
-        });
+            },
+            (error: ApiResponseError) => {
+                console.error('Error to get resource: ', error);
+            });
     }
 
     /**
@@ -125,9 +125,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         message = 'Copied to clipboard!';
         action = 'Citation Link';
         this._snackBar.open(message, action, {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top'
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
         });
     }
 
