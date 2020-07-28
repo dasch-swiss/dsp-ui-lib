@@ -1,4 +1,6 @@
-<dsp-text-value-as-xml #xml [mode]="mode" [displayValue]="displayVal"></dsp-text-value-as-xml>
+<div *ngIf="!loading">
+    <dsp-text-value-as-xml #xml [mode]="mode" [displayValue]="displayVal"></dsp-text-value-as-xml>
 
-<button (click)="save()" [disabled]="mode === 'read'">Save</button>
-<button (click)="toggleMode()">Toggle Mode</button>
+    <button (click)="save()" [disabled]="mode === 'read'">Save</button>
+    <button (click)="toggleMode()">Toggle Mode</button>
+</div>

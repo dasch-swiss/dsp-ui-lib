@@ -33,10 +33,19 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
     getInitValue(): string | null {
 
-        // TODO: check for the standard mapping
+        // convert tags: CKEditor 4 to 5 migration, see https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html
+
         if (this.displayValue !== undefined) {
-            // TODO: strip the HTML tag
-            return this.displayValue.xml;
+            if (this.displayValue.mapping !== 'http://rdfh.ch/standoff/mappings/StandardMapping') {
+                // mapping is not supported
+                return null;
+            }
+
+            // strip the doctype and text tag
+            return this.displayValue.xml
+                .replace('<?xml version="1.0" encoding="UTF-8"?>', '')
+                .replace('<text>', '')
+                .replace('</text>', '');
         } else {
             return null;
         }
@@ -102,10 +111,9 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         const newTextValue = new CreateTextValueAsXml();
 
-        // TODO: add the HTML tag
+        // TODO: add doctype and the text tag
         newTextValue.xml = this.valueFormControl.value;
-
-        // TODO: add the standard mapping
+        newTextValue.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             newTextValue.valueHasComment = this.commentFormControl.value;
@@ -125,10 +133,10 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         updatedTextValue.id = this.displayValue.id;
 
-        // TODO: add the HTML tag
+        // TODO: add doctype and the text tag
         updatedTextValue.xml = this.valueFormControl.value;
 
-        // TODO: add the standard mapping
+        updatedTextValue.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             updatedTextValue.valueHasComment = this.commentFormControl.value;
