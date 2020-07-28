@@ -28,24 +28,32 @@ class TestListViewComponent {
  */
 @Component({
     template: `
-      <dsp-list-view #listView [search]="search" (resourceSelected)="openResource($event)"></dsp-list-view>`
+      <dsp-list-view #listViewFulltext [search]="fulltext" (resourceSelected)="openResource($event)"></dsp-list-view>
+      <dsp-list-view #listViewGravsearch [search]="gravsearch" (resourceSelected)="openResource($event)"></dsp-list-view>`
 })
 class TestParentComponent implements OnInit {
 
-    @ViewChild('listView') listViewComponent: ListViewComponent;
+    @ViewChild('listViewFulltext') listViewFulltext: ListViewComponent;
+    @ViewChild('listViewGravsearch') listViewGravsearch: ListViewComponent;
 
-    search: SearchParams;
+    fulltext: SearchParams;
+    gravsearch: SearchParams;
 
     resIri: string;
 
     ngOnInit() {
 
-        this.search = {
+        this.fulltext = {
             query: 'fake query',
             mode: 'fulltext',
             filter: {
                 limitToProject: 'http://rdfh.ch/projects/0803'
             }
+        };
+
+        this.gravsearch = {
+            query: 'fake query',
+            mode: 'gravsearch'
         };
     }
 
@@ -64,7 +72,7 @@ describe('ListViewComponent', () => {
 
         const searchSpyObj = {
             v2: {
-                search: jasmine.createSpyObj('search', ['doFulltextSearch', 'doFulltextSearchCountQuery'])
+                search: jasmine.createSpyObj('search', ['doFulltextSearch', 'doFulltextSearchCountQuery', 'doExtendedSearch', 'doExtendedSearchCountQuery'])
             }
         };
 
@@ -114,6 +122,28 @@ describe('ListViewComponent', () => {
             }
         );
 
+        (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearchCountQuery.and.callFake(
+            () => {
+                const num = new CountQueryResponse();
+                num.numberOfResults = 5;
+                return of(num);
+            }
+        );
+
+        (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
+            (searchTerm: string) => {
+
+                let resources: ReadResourceSequence;
+                // mock list of resourcses to simulate full-text search response
+                MockResource.getTesthings(5).subscribe(res => {
+                    resources = res;
+                });
+                if (resources.resources.length) {
+                    return of(resources);
+                }
+            }
+        );
+
         testHostFixture = TestBed.createComponent(TestParentComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
@@ -130,7 +160,20 @@ describe('ListViewComponent', () => {
 
         // do fulltext search
         expect(searchSpy.v2.search.doFulltextSearch).toHaveBeenCalledWith('fake query', 0, { limitToProject: 'http://rdfh.ch/projects/0803' });
-        expect(testHostComponent.listViewComponent.resources.resources.length).toBe(5);
+        expect(testHostComponent.listViewFulltext.resources.resources.length).toBe(5);
+
+    });
+
+    it('should do extended search', () => {
+
+        const searchSpy = TestBed.inject(DspApiConnectionToken);
+
+        // do fulltext search count query
+        expect(searchSpy.v2.search.doExtendedSearchCountQuery).toHaveBeenCalledWith('fake query');
+
+        // do fulltext search
+        expect(searchSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith('fake query');
+        expect(testHostComponent.listViewGravsearch.resources.resources.length).toBe(5);
 
     });
 
