@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, Inject, Output, EventEmitter } from '@angular/core';
-import { ReadResourceSequence, KnoraApiConnection, CountQueryResponse, ApiResponseError } from '@dasch-swiss/dsp-js';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { ApiResponseError, CountQueryResponse, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../../core';
 
-export interface fulltextSearchParams {
+export interface FulltextSearchParams {
     /**
      * Iri of resource class the fulltext search is restricted to, if any.
      */
@@ -32,7 +32,7 @@ export interface fulltextSearchParams {
 export interface SearchParams {
     query: string;
     mode: 'fulltext' | 'gravsearch';
-    filter?: fulltextSearchParams;
+    filter?: FulltextSearchParams;
 }
 
 @Component({
@@ -89,12 +89,14 @@ export class ListViewComponent implements OnInit {
         this.resourceSelected.emit(id);
     }
 
-    loadMoreResults(page: PageEvent) {
+    goToPage(page: PageEvent) {
         this.pageEvent = page;
         this._doSearch();
     }
 
     private _doSearch() {
+
+        this.loading = true;
 
         if (this.search.mode === 'fulltext') {
             // search mode: fulltext
@@ -128,7 +130,7 @@ export class ListViewComponent implements OnInit {
             // search mode: gravsearch
             if (this.pageEvent.pageIndex === 0) {
                 // perform count query
-                this._dspApiConnection.v2.search.doExtendedSearchCountQuery(JSON.parse(this.search.query)).subscribe(
+                this._dspApiConnection.v2.search.doExtendedSearchCountQuery(this.search.query).subscribe(
                     (response: CountQueryResponse) => {
                         this.numberOfAllResults = response.numberOfResults;
                     },
@@ -136,11 +138,11 @@ export class ListViewComponent implements OnInit {
                         this.errorMessage = error;
                         console.error(error);
                     }
-                )
+                );
             }
 
             // perform extended search
-            this._dspApiConnection.v2.search.doExtendedSearch(JSON.parse(this.search.query)).subscribe(
+            this._dspApiConnection.v2.search.doExtendedSearch(this.search.query).subscribe(
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;

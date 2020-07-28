@@ -4,10 +4,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CountQueryResponse, MockResource, ReadResourceSequence, SearchEndpointV2 } from '@dasch-swiss/dsp-js';
+import { IFulltextSearchParams } from '@dasch-swiss/dsp-js/src/api/v2/search/search-endpoint-v2';
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
 import { ListViewComponent, SearchParams } from './list-view.component';
-import { IFulltextSearchParams } from '@dasch-swiss/dsp-js/src/api/v2/search/search-endpoint-v2';
 
 /**
  * Test host component to simulate child component, here resource-list.
@@ -16,7 +16,7 @@ import { IFulltextSearchParams } from '@dasch-swiss/dsp-js/src/api/v2/search/sea
     selector: `dsp-list-view`,
     template: ``
 })
-class TestResourceListComponent {
+class TestListViewComponent {
 
     @Input() search: SearchParams;
 
@@ -27,24 +27,32 @@ class TestResourceListComponent {
  */
 @Component({
     template: `
-      <dsp-list-view #listView [search]="search" (resourceSelected)="openResource($event)"></dsp-list-view>`
+      <dsp-list-view #listViewFulltext [search]="fulltext" (resourceSelected)="openResource($event)"></dsp-list-view>
+      <dsp-list-view #listViewGravsearch [search]="gravsearch" (resourceSelected)="openResource($event)"></dsp-list-view>`
 })
 class TestParentComponent implements OnInit {
 
-    @ViewChild('listView') listViewComponent: ListViewComponent;
+    @ViewChild('listViewFulltext') listViewFulltext: ListViewComponent;
+    @ViewChild('listViewGravsearch') listViewGravsearch: ListViewComponent;
 
-    search: SearchParams;
+    fulltext: SearchParams;
+    gravsearch: SearchParams;
 
     resIri: string;
 
     ngOnInit() {
 
-        this.search = {
+        this.fulltext = {
             query: 'fake query',
             mode: 'fulltext',
             filter: {
                 limitToProject: 'http://rdfh.ch/projects/0803'
             }
+        };
+
+        this.gravsearch = {
+            query: 'fake query',
+            mode: 'gravsearch'
         };
     }
 
@@ -63,7 +71,7 @@ describe('ListViewComponent', () => {
 
         const searchSpyObj = {
             v2: {
-                search: jasmine.createSpyObj('search', ['doFulltextSearch', 'doFulltextSearchCountQuery'])
+                search: jasmine.createSpyObj('search', ['doFulltextSearch', 'doFulltextSearchCountQuery', 'doExtendedSearch', 'doExtendedSearchCountQuery'])
             }
         };
 
@@ -88,52 +96,85 @@ describe('ListViewComponent', () => {
     }));
 
     beforeEach(() => {
+
+        const searchSpy = TestBed.inject(DspApiConnectionToken);
+
+        (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doFulltextSearchCountQuery.and.callFake(
+            () => {
+                const num = new CountQueryResponse();
+                num.numberOfResults = 5;
+                return of(num);
+            }
+        );
+
+        (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doFulltextSearch.and.callFake(
+            (searchTerm: string, offset?: number, params?: IFulltextSearchParams) => {
+
+                let resources: ReadResourceSequence;
+                // mock list of resourcses to simulate full-text search response
+                MockResource.getTesthings(5).subscribe(res => {
+                    resources = res;
+                });
+                if (resources.resources.length) {
+                    return of(resources);
+                }
+            }
+        );
+
+        (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearchCountQuery.and.callFake(
+            () => {
+                const num = new CountQueryResponse();
+                num.numberOfResults = 5;
+                return of(num);
+            }
+        );
+
+        (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
+            (searchTerm: string) => {
+
+                let resources: ReadResourceSequence;
+                // mock list of resourcses to simulate full-text search response
+                MockResource.getTesthings(5).subscribe(res => {
+                    resources = res;
+                });
+                if (resources.resources.length) {
+                    return of(resources);
+                }
+            }
+        );
+
         testHostFixture = TestBed.createComponent(TestParentComponent);
         testHostComponent = testHostFixture.componentInstance;
         testHostFixture.detectChanges();
 
-
         expect(testHostComponent).toBeTruthy();
     });
 
-    // it('should do fulltext search', () => {
+    it('should do fulltext search', () => {
 
-    //     const searchSpy = TestBed.inject(DspApiConnectionToken);
+        const searchSpy = TestBed.inject(DspApiConnectionToken);
 
-    //     (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doFulltextSearchCountQuery.and.callFake(
-    //         () => {
-    //             const num = new CountQueryResponse();
-    //             num.numberOfResults = 5;
-    //             return of(num);
-    //         }
-    //     );
+        // do fulltext search count query
+        expect(searchSpy.v2.search.doFulltextSearchCountQuery).toHaveBeenCalledWith('fake query', 0, { limitToProject: 'http://rdfh.ch/projects/0803' });
 
-    //     (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doFulltextSearch.and.callFake(
-    //         (searchTerm: string, offset?: number, params?: IFulltextSearchParams) => {
+        // do fulltext search
+        expect(searchSpy.v2.search.doFulltextSearch).toHaveBeenCalledWith('fake query', 0, { limitToProject: 'http://rdfh.ch/projects/0803' });
+        expect(testHostComponent.listViewFulltext.resources.resources.length).toBe(5);
 
-    //             let resources: ReadResourceSequence;
-    //             // mock list of resourcses to simulate full-text search response
-    //             MockResource.getTesthings(5).subscribe(res => {
-    //                 console.log(res);
-    //                 resources = res;
-    //             });
-    //             if (resources.resources.length) {
-    //                 return of(resources);
-    //             }
-    //         }
-    //     );
+    });
 
+    it('should do extended search', () => {
 
-    //     expect(searchSpy.v2.search.doFulltextSearchCountQuery).toHaveBeenCalledWith('fake query', 0, { limitToProject: 'http://rdfh.ch/projects/0803' });
-    //     // expect(testComponent.resources.resources.length).toEqual(5);
-    //     //   expect(testHostComponent.inputValueComponent.resources[0].id).toEqual('http://rdfh.ch/0001/IwMDbs0KQsaxSRUTl2cAIQ');
+        const searchSpy = TestBed.inject(DspApiConnectionToken);
 
-    //     // {
-    //     //     "schema:numberOfItems" : 2,
-    //     //     "@context" : {
-    //     //       "schema" : "http://schema.org/"
-    //     //     }
-    //     //   }
-    // });
+        // do fulltext search count query
+        expect(searchSpy.v2.search.doExtendedSearchCountQuery).toHaveBeenCalledWith('fake query');
+
+        // do fulltext search
+        expect(searchSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith('fake query');
+        expect(testHostComponent.listViewGravsearch.resources.resources.length).toBe(5);
+
+    });
+
 
 });
