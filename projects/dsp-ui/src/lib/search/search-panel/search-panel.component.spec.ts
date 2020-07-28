@@ -4,7 +4,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { SearchPanelComponent } from './search-panel.component';
 
-
 /**
  * Test host component to simulate child component, here fulltext-search.
  */
@@ -13,7 +12,6 @@ import { SearchPanelComponent } from './search-panel.component';
 })
 class TestFulltextSearchComponent implements OnInit {
 
-    @Input() route = '/search';
     @Input() projectfilter?: boolean = false;
     @Input() filterbyproject?: string;
     @Input() show: boolean;
@@ -28,7 +26,6 @@ class TestFulltextSearchComponent implements OnInit {
 @Component({
     template: `
         <dsp-search-panel #searchPanelView
-            [route]="route"
             [projectfilter]="projectfilter"
             [expert]="expert"
             [advanced]="advanced">
@@ -38,7 +35,6 @@ class TestHostComponent {
 
     @ViewChild('searchPanelView') searchPanelComponent: SearchPanelComponent;
 
-    route = '/search';
     projectfilter = true;
     advanced = false;
     expert = false;
