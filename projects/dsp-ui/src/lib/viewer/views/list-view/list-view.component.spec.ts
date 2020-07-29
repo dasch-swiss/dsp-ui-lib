@@ -99,7 +99,6 @@ describe('ListViewComponent', () => {
             imports: [
                 MatButtonModule,
                 MatIconModule,
-                MatListModule,
                 MatPaginatorModule
             ],
             providers: [
