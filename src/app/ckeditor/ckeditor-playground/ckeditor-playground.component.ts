@@ -4,7 +4,7 @@ import {
     KnoraApiConnection,
     ReadResource,
     ReadTextValueAsXml,
-    UpdateResource, UpdateTextValueAsXml,
+    UpdateResource,
     UpdateValue,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
@@ -35,8 +35,10 @@ export class CkeditorPlaygroundComponent implements OnInit {
         // http://rdfh.ch/0001/qN1igiDRSAemBBktbRHn6g
         // http://rdfh.ch/0001/thing_with_richtext_with_markup
 
-        this._dspApiConnection.v2.res.getResource('http://rdfh.ch/0001/qN1igiDRSAemBBktbRHn6g').subscribe(
-            (res: ReadResource) => {
+        this._dspApiConnection.v2.auth.login('username', 'root', 'test').pipe(
+            mergeMap(() =>
+                this._dspApiConnection.v2.res.getResource('http://rdfh.ch/0001/qN1igiDRSAemBBktbRHn6g')
+            )).subscribe((res: ReadResource) => {
 
                 this.resource = res;
 
