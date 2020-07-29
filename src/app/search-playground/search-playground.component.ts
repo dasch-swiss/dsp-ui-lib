@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges } from '@angular/core';
 import { SearchParams } from '@dasch-swiss/dsp-ui/lib/viewer';
 
 @Component({
@@ -6,11 +6,15 @@ import { SearchParams } from '@dasch-swiss/dsp-ui/lib/viewer';
     templateUrl: './search-playground.component.html',
     styleUrls: ['./search-playground.component.scss']
 })
-export class SearchPlaygroundComponent {
+export class SearchPlaygroundComponent implements OnChanges {
 
     searchParams: SearchParams;
 
     constructor() { }
+
+    ngOnChanges() {
+        console.log(this.searchParams.query)
+    }
 
     doSearch(search: SearchParams) {
         // reset search params
@@ -19,6 +23,11 @@ export class SearchPlaygroundComponent {
         // to (resource) list view directly
         console.log('do search:', search);
         this.searchParams = search;
+        this.ngOnChanges();
+    }
+
+    openResource(id: string) {
+        console.log('open ', id);
     }
 
 }

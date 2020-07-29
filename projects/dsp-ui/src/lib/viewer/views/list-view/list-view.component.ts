@@ -77,6 +77,11 @@ export class ListViewComponent implements OnInit {
         this._doSearch();
     }
 
+    ngOnChanges(): void {
+        this.resources = undefined;
+        this.ngOnInit();
+    }
+
     /**
      *
      * @param view 'list' | ' grid'; TODO: will be expanded with 'table' as soon as resource-table component is done

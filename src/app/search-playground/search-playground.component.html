@@ -12,8 +12,7 @@
 </div>
 
 <br>
-<!-- TODO: reactivate as soon the dsp-list-view is ready
--->
+
 <div class="search-results" *ngIf="searchParams">
-    <dsp-list-view [search]="searchParams"></dsp-list-view>
+    <dsp-list-view [search]="searchParams" (resourceSelected)="openResource($event)"></dsp-list-view>
 </div>
