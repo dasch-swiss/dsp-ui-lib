@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Pipe, PipeTransform } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
