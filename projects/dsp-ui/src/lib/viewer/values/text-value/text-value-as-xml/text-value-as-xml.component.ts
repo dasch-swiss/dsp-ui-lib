@@ -58,6 +58,19 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         this.editorConfig = {
             entities: false,
+            link: {
+                addTargetToExternalLinks: true,
+                decorators: {
+                    isInternal: {
+                        label: 'internal link to a Knora resource',
+                        mode: 'manual', // automatic requires callback -> but the callback is async and the user could save the text before the check ...
+                        /*callback: url => { console.log(url, url.startsWith( 'http://rdfh.ch/' )); return url.startsWith( 'http://rdfh.ch/' ); },*/
+                        attributes: {
+                            class: 'salsah-link'
+                        }
+                    }
+                }
+            },
             toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat', 'redo', 'undo'],
             heading: {
                 options: [
