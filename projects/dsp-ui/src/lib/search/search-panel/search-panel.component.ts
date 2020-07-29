@@ -11,11 +11,6 @@ import { SearchParams } from '../../viewer';
 export class SearchPanelComponent {
 
     /**
-     * @param route Route to navigate after search. This route path should contain a component for search results.
-     */
-    // @Input() route = '/search';
-
-    /**
      * @param [projectfilter] If true it shows the selection of projects to filter by one of them
      */
     @Input() projectfilter?: boolean = false;

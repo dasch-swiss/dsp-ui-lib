@@ -10,6 +10,8 @@ export class SearchPlaygroundComponent implements OnChanges {
 
     searchParams: SearchParams;
 
+    display: 'fulltext' | 'advanced' | 'expert' | 'panel' = 'fulltext';
+
     constructor() { }
 
     ngOnChanges() {
@@ -28,6 +30,11 @@ export class SearchPlaygroundComponent implements OnChanges {
 
     openResource(id: string) {
         console.log('open ', id);
+    }
+
+    // playground helper method
+    switchComponent(comp: 'fulltext' | 'advanced' | 'expert' | 'panel') {
+        this.display = comp;
     }
 
 }
