@@ -1,29 +1,20 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CountQueryResponse, MockResource, ReadResourceSequence, SearchEndpointV2 } from '@dasch-swiss/dsp-js';
 import { IFulltextSearchParams } from '@dasch-swiss/dsp-js/src/api/v2/search/search-endpoint-v2';
 import { of } from 'rxjs';
+import { DspActionModule } from '../../../action';
 import { DspApiConnectionToken } from '../../../core';
 import { ListViewComponent, SearchParams } from './list-view.component';
+import { ResourceGridComponent } from './resource-grid/resource-grid.component';
+import { ResourceListComponent } from './resource-list/resource-list.component';
 
 /**
- * Test host component to simulate child component, here resource-list.
- */
-@Component({
-    selector: `dsp-list-view`,
-    template: ``
-})
-class TestListViewComponent {
-
-    @Input() search: SearchParams;
-
-}
-
-/**
- * Test host component to simulate resource-list component.
+ * Test host component to simulate child component, here list-view.
  */
 @Component({
     template: `
@@ -78,11 +69,15 @@ describe('ListViewComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 ListViewComponent,
+                ResourceListComponent,
+                ResourceGridComponent,
                 TestParentComponent
             ],
             imports: [
+                DspActionModule,
                 MatButtonModule,
                 MatIconModule,
+                MatListModule,
                 MatPaginatorModule
             ],
             providers: [

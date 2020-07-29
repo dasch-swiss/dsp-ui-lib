@@ -1,26 +1,12 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { DspActionModule } from 'projects/dsp-ui/src/lib/action';
 import { ResourceGridComponent } from './resource-grid.component';
 
-
 /**
  * Test host component to simulate child component, here resource-grid.
- */
-@Component({
-    selector: `dsp-resource-grid`,
-    template: ``
-})
-class TestResourceGridComponent {
-
-    @Input() resources: ReadResourceSequence;
-
-}
-
-/**
- * Test host component to simulate resource-grid component.
  */
 @Component({
     template: `
