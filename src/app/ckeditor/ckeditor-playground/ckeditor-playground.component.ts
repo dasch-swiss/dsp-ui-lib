@@ -44,7 +44,53 @@ export class CkeditorPlaygroundComponent implements OnInit {
 
                 this.displayVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext', ReadTextValueAsXml)[0];
 
-                const xml = `
+                // console.log(res.entityInfo.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext']);
+
+                this.loading = false;
+            },
+            err => console.error(err)
+        );
+    }
+
+    save() {
+
+        const updatedVal = this.xmlValue.getUpdatedValue();
+
+        if (updatedVal !== false) {
+
+            console.log(updatedVal.xml);
+
+            const updateRes = new UpdateResource();
+            updateRes.id = this.resource.id;
+            updateRes.type = this.resource.type;
+            updateRes.property = this.displayVal.property;
+            updateRes.value = updatedVal;
+
+            this._dspApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
+                mergeMap((res: WriteValueResponse) => {
+                    return this._dspApiConnection.v2.values.getValue(this.resource.id, res.uuid);
+                })
+            ).subscribe(
+                (res2: ReadResource) => {
+                    this.displayVal = res2.getValues(this.displayVal.property)[0] as ReadTextValueAsXml;
+                    this.mode = 'read';
+                }
+            );
+
+        }
+    }
+
+    toggleMode() {
+        if (this.mode === 'read') {
+            this.mode = 'update';
+        } else {
+            this.mode = 'read';
+        }
+    }
+
+    sampleText() {
+
+        const xml = `
                     <p>
         This is very boring text that as boring markup as well: <strong>strong</strong>, <strike>struck</strike>, <em>emphasized</em>, <u>underlined</u>,
         <sub>subtext</sub>m <sup>supertext</sup>, <a href="http://www.knora.org">KNORA</a>, <a class="salsah-link" href="http://rdfh.ch/0001/7uuGcnFcQJq08dMOralyCQ">internal link</a>,
@@ -104,51 +150,18 @@ export class CkeditorPlaygroundComponent implements OnInit {
     <cite>GNU</cite>&#160;<em>Copyright © 2004, Martin Dickopp</em>
                 `;
 
-                //this.displayVal.xml = xml;
+        const sampleText = new ReadTextValueAsXml();
 
-
-                // console.log(res.entityInfo.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext']);
-
-                this.loading = false;
-            },
-            err => console.error(err)
-        );
-    }
-
-    save() {
-
-        const updatedVal = this.xmlValue.getUpdatedValue();
-
-        if (updatedVal !== false) {
-
-            console.log(updatedVal.xml);
-
-            const updateRes = new UpdateResource();
-            updateRes.id = this.resource.id;
-            updateRes.type = this.resource.type;
-            updateRes.property = this.displayVal.property;
-            updateRes.value = updatedVal;
-
-            this._dspApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
-                mergeMap((res: WriteValueResponse) => {
-                    return this._dspApiConnection.v2.values.getValue(this.resource.id, res.uuid);
-                })
-            ).subscribe(
-                (res2: ReadResource) => {
-                    this.displayVal = res2.getValues(this.displayVal.property)[0] as ReadTextValueAsXml;
-                    this.mode = 'read';
-                }
-            );
-
+        for (const key in this.displayVal) {
+            if (this.displayVal.hasOwnProperty(key)) {
+                sampleText[key] = this.displayVal[key];
+            }
         }
-    }
 
-    toggleMode() {
-        if (this.mode === 'read') {
-            this.mode = 'update';
-        } else {
-            this.mode = 'read';
-        }
+        sampleText.xml = xml;
+
+        this.displayVal = sampleText;
+
     }
 
 }
