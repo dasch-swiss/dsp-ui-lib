@@ -5,9 +5,25 @@ import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
 import { ReadResource, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { ApiResponseData, AuthenticationEndpointV2, LoginResponse } from '@dasch-swiss/dsp-js/index';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { TextValueAsXMLComponent } from '../../../../projects/dsp-ui/src/lib/viewer';
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    selector: `dsp-text-value-as-xml`,
+    template: ``
+})
+class TestDspTextValueAsXMLComponent {
 
-describe('CkeditorPlaygroundComponent', () => {
+    @Input() mode;
+
+    @Input() displayValue;
+
+}
+
+fdescribe('CkeditorPlaygroundComponent', () => {
     let component: CkeditorPlaygroundComponent;
     let fixture: ComponentFixture<CkeditorPlaygroundComponent>;
 
@@ -21,7 +37,7 @@ describe('CkeditorPlaygroundComponent', () => {
         };
 
         TestBed.configureTestingModule({
-            declarations: [CkeditorPlaygroundComponent],
+            declarations: [CkeditorPlaygroundComponent, TestDspTextValueAsXMLComponent],
             providers: [
                 {
                     provide: DspApiConnectionToken,
