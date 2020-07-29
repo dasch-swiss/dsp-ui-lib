@@ -1,3 +1,7 @@
+<dsp-list-view [search]="fulltextSearch" (resourceSelected)="openResource($event)"></dsp-list-view>
+
+<!-- OLD playground with the two resource list and grid views implemented in standalone mode;
+    TODO: will be reactivated as soon the dsp-list-view is implemented in search playground but this needs an additional PR --
 <button mat-raised-button color="accent" (click)="showGrid = !showGrid">
     Display as {{showGrid ? "LIST" : "GRID"}}
 </button>
@@ -13,3 +17,4 @@
     <dsp-resource-grid *ngIf="resources" [resources]="resources" (resourceSelected)="openResource($event)">
     </dsp-resource-grid>
 </div>
+-->

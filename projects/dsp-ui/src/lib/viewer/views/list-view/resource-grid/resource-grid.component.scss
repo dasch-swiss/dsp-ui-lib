@@ -2,13 +2,14 @@
 
 .resource-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: auto;
   grid-auto-rows: 1fr;
   gap: 8px 8px;
   justify-items: stretch;
   align-items: stretch;
   align-content: space-evenly;
+  padding: 8px 0;
 }
 
 .grid-card {
@@ -32,6 +33,20 @@
 
 .res-prop-label {
   font-style: italic;
+}
+
+// responsive for tablet device
+@media (max-width: map-get($grid-breakpoints, tablet)) and (min-width: map-get($grid-breakpoints, phone)) {
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    grid-auto-rows: 1fr;
+    gap: 4px 4px;
+    justify-items: stretch;
+    align-items: stretch;
+    align-content: space-evenly;
+  }
 }
 
 // responsive for phone device
