@@ -23,7 +23,7 @@ class TestDspTextValueAsXMLComponent {
 
 }
 
-fdescribe('CkeditorPlaygroundComponent', () => {
+describe('CkeditorPlaygroundComponent', () => {
     let component: CkeditorPlaygroundComponent;
     let fixture: ComponentFixture<CkeditorPlaygroundComponent>;
 
