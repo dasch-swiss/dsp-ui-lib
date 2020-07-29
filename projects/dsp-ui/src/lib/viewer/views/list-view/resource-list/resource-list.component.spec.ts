@@ -1,27 +1,35 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLineModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { DspActionModule } from 'projects/dsp-ui/src/lib/action';
 import { ResourceListComponent } from './resource-list.component';
 
 /**
- * Test host component to simulate child component, here resource-list.
+ * Test component to simulate child component, here progress-indicator from action module.
  */
 @Component({
-    selector: `dsp-resource-list`,
+    selector: `dsp-progress-indicator`,
     template: ``
 })
-class TestResourceListComponent {
-
-    @Input() resources: ReadResourceSequence;
+class TestProgressIndicatorComponent {
 
 }
 
 /**
- * Test host component to simulate resource-list component.
+ * Mocked truncate pipe from action module.
+ */
+@Pipe({name: 'dspTruncate'})
+class MockPipe implements PipeTransform {
+    transform(value: string, limit?: number, trail?: string): string {
+        //Do stuff here, if you want
+        return value;
+    }
+}
+
+/**
+ * Test parent component to simulate integration of resource-list component.
  */
 @Component({
     template: `
@@ -55,11 +63,11 @@ describe('ResourceListComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
+                MockPipe,
                 ResourceListComponent,
                 TestParentComponent
             ],
             imports: [
-                DspActionModule,
                 MatIconModule,
                 MatLineModule,
                 MatListModule

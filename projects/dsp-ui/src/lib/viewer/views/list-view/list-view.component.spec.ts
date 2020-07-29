@@ -37,18 +37,7 @@ class TestResourceGridComponent {
 }
 
 /**
- * Test component to simulate child component, here progress-indicator from action module.
- */
-@Component({
-    selector: `dsp-progress-indicator`,
-    template: ``
-})
-class TestProgressIndicatorComponent {
-
-}
-
-/**
- * Test host component to simulate resource-list component.
+ * Test parent component to simulate integration of list-view component.
  */
 @Component({
     template: `
