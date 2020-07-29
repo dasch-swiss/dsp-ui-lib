@@ -79,6 +79,8 @@ export class CkeditorPlaygroundComponent implements OnInit {
                 }
             );
 
+        } else {
+            console.log('identical, no update performed');
         }
     }
 
