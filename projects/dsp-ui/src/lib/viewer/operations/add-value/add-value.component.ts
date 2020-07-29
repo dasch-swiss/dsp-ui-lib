@@ -14,11 +14,12 @@ import {
     ReadResource,
     ResourcePropertyDefinition,
     UpdateResource,
-    WriteValueResponse,
+    WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, ValueOperationEventService, Events } from '../../services/value-operation-event.service';
+import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
+import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
 @Component({
@@ -53,7 +54,8 @@ export class AddValueComponent implements OnInit {
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
-        private _valueOperationEventService: ValueOperationEventService) { }
+        private _valueOperationEventService: ValueOperationEventService,
+        private _valueTypeService: ValueTypeService) { }
 
     ngOnInit() {
 
@@ -62,16 +64,11 @@ export class AddValueComponent implements OnInit {
         this.createModeActive = true;
 
         // Since simple text values and rich text values share the same object type 'TextValue',
-        // we need to look at the guiElement in order to assign it the correct object type for the ngSwitch in the template
-        if (this.resourcePropertyDefinition.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText'
-            && this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
-            this.resourcePropertyDefinition.objectType = 'ReadTextValueAsString';
+        // we need to use the ValueTypeService in order to assign it the correct object type for the ngSwitch in the template
+        if (this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
+            this.resourcePropertyDefinition.objectType = this._valueTypeService.getTextValueClass(this.resourcePropertyDefinition);
         }
 
-        if (this.resourcePropertyDefinition.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#RichText'
-            && this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
-            this.resourcePropertyDefinition.objectType = 'ReadTextValueAsXml';
-        }
     }
 
     /**
