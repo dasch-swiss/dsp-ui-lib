@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLineModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +9,19 @@ import { ResourceListComponent } from './resource-list.component';
 
 /**
  * Test host component to simulate child component, here resource-list.
+ */
+@Component({
+    selector: `dsp-resource-list`,
+    template: ``
+})
+class TestResourceListComponent {
+
+    @Input() resources: ReadResourceSequence;
+
+}
+
+/**
+ * Test host component to simulate resource-list component.
  */
 @Component({
     template: `

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,14 +7,48 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CountQueryResponse, MockResource, ReadResourceSequence, SearchEndpointV2 } from '@dasch-swiss/dsp-js';
 import { IFulltextSearchParams } from '@dasch-swiss/dsp-js/src/api/v2/search/search-endpoint-v2';
 import { of } from 'rxjs';
-import { DspActionModule } from '../../../action';
 import { DspApiConnectionToken } from '../../../core';
 import { ListViewComponent, SearchParams } from './list-view.component';
-import { ResourceGridComponent } from './resource-grid/resource-grid.component';
-import { ResourceListComponent } from './resource-list/resource-list.component';
 
 /**
- * Test host component to simulate child component, here list-view.
+ * Test component to simulate child component, here resource-list.
+ */
+@Component({
+    selector: `dsp-resource-list`,
+    template: ``
+})
+class TestResourceListComponent {
+
+    @Input() resources: ReadResourceSequence;
+
+}
+
+/**
+ * Test component to simulate child component, here resource-grid.
+ */
+@Component({
+    selector: `dsp-resource-grid`,
+    template: ``
+})
+class TestResourceGridComponent {
+
+    @Input() resources: ReadResourceSequence;
+
+}
+
+/**
+ * Test component to simulate child component, here progress-indicator from action module.
+ */
+@Component({
+    selector: `dsp-progress-indicator`,
+    template: ``
+})
+class TestProgressIndicatorComponent {
+
+}
+
+/**
+ * Test host component to simulate resource-list component.
  */
 @Component({
     template: `
@@ -69,12 +103,11 @@ describe('ListViewComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 ListViewComponent,
-                ResourceListComponent,
-                ResourceGridComponent,
-                TestParentComponent
+                TestParentComponent,
+                TestResourceGridComponent,
+                TestResourceListComponent
             ],
             imports: [
-                DspActionModule,
                 MatButtonModule,
                 MatIconModule,
                 MatListModule,
