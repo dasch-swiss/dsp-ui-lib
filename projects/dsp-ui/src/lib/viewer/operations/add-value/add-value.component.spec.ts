@@ -67,7 +67,8 @@ class TestIntValueComponent implements OnInit {
 @Component({
     selector: `dsp-add-value-host-component`,
     template: `
-      <dsp-add-value *ngIf="resourcePropertyDefinition" #testAddVal [resourcePropertyDefinition]="resourcePropertyDefinition" [parentResource]="readResource"></dsp-add-value>`
+      <dsp-add-value *ngIf="resourcePropertyDefinition" #testAddVal [resourcePropertyDefinition]="resourcePropertyDefinition"
+      [parentResource]="readResource"></dsp-add-value>`
   })
 class DspAddValueTestComponent implements OnInit {
 
