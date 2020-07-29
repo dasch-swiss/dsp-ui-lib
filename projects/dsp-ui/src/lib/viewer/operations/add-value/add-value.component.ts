@@ -63,12 +63,14 @@ export class AddValueComponent implements OnInit {
 
         // Since simple text values and rich text values share the same object type 'TextValue',
         // we need to look at the guiElement in order to assign it the correct object type for the ngSwitch in the template
-        if (this.resourcePropertyDefinition.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText') {
+        if (this.resourcePropertyDefinition.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText'
+            && this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
             this.resourcePropertyDefinition.objectType = 'ReadTextValueAsString';
         }
 
-        if (this.resourcePropertyDefinition.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#RichText') {
-            this.resourcePropertyDefinition.objectType = 'ReadTextValueAsHtml';
+        if (this.resourcePropertyDefinition.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#RichText'
+            && this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
+            this.resourcePropertyDefinition.objectType = 'ReadTextValueAsXml';
         }
     }
 

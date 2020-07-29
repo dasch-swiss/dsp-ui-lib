@@ -81,7 +81,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
 
         this.propID = prop.propDef.id;
         this.addValueFormIsVisible = true;
-        this.addButtonIsVisible = false;
 
     }
 
@@ -91,5 +90,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     hideAddValueForm() {
         this.addValueFormIsVisible = false;
         this.addButtonIsVisible = true;
+        this.propID = undefined;
     }
 }

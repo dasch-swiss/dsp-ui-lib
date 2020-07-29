@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
@@ -11,10 +11,10 @@ import {
     ResourcePropertyDefinition,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
+import { Subscription } from 'rxjs';
+import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 import { PropertyViewComponent } from './property-view.component';
-import { ValueOperationEventService, Events, EmitEvent } from '../../services/value-operation-event.service';
-import { Subscription } from 'rxjs';
 
 /**
  * Test host component to simulate parent component.
@@ -228,7 +228,10 @@ describe('PropertyViewComponent', () => {
 
             testHostFixture.detectChanges();
 
-            expect(propertyViewComponentDe.query(By.css('button.create'))).toBeNull();
+            const addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
+
+            // the add button for the property with the open add value form is hidden
+            expect(addButtons.length).toEqual(13);
 
             expect(propertyViewComponentDe.query(By.css('.add-value'))).toBeDefined();
 
