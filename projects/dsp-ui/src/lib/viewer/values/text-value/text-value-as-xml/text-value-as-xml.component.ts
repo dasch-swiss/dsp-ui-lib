@@ -58,7 +58,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         this.editorConfig = {
             entities: false,
-            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat'],
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat', 'redo', 'undo'],
             heading: {
                 options: [
                     {model: 'heading1', view: 'h1', title: 'Heading 1'},
@@ -75,6 +75,10 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         this.valueFormControl = new FormControl({value: null, disabled: this.mode === 'read'});
 
         this.commentFormControl = new FormControl(null);
+
+        this.valueFormControl.valueChanges.subscribe(
+            data => console.log(data)
+        );
 
         this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
             data => {
@@ -166,9 +170,17 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         if (fromKnora) {
             return xml.replace(doctype, '')
                 .replace(openingTextTag, '')
-                .replace(closingTextTag, '')
-                .replace(/&nbsp;/g, String.fromCharCode(160));
+                .replace(closingTextTag, '');
         } else {
+            xml = xml.replace(/&nbsp;/g, String.fromCharCode(160))
+                .replace(/<hr>/g, '<hr/>')
+                .replace(/<\/hr>/g, '<hr/>')
+                .replace(/<s>/g, '<strike>')
+                .replace(/<\/s>/g, '</strike>')
+                .replace(/<i>/g, '<em>')
+                .replace(/<\/i>/g, '</em>')
+                .replace(/<figure class="table">/g, '')
+                .replace(/<\/figure>/g, '');
             return doctype + openingTextTag + xml + closingTextTag;
         }
 
