@@ -6,6 +6,7 @@ import { MockResource, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-s
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { MatInputModule } from '@angular/material/input';
 
 /**
  * Test host component to simulate parent component.
@@ -91,6 +92,7 @@ describe('TextValueAsXMLComponent', () => {
             ],
             imports: [
                 ReactiveFormsModule,
+                MatInputModule,
                 BrowserAnimationsModule
             ]
         })
