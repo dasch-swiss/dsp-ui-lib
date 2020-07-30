@@ -7,17 +7,6 @@ import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { ResourceListComponent } from './resource-list.component';
 
 /**
- * Test component to simulate child component, here progress-indicator from action module.
- */
-@Component({
-    selector: `dsp-progress-indicator`,
-    template: ``
-})
-class TestProgressIndicatorComponent {
-
-}
-
-/**
  * Mocked truncate pipe from action module.
  */
 @Pipe({name: 'dspTruncate'})
