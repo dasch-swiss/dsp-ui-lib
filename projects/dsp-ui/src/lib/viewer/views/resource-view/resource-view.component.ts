@@ -18,7 +18,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { ValueOperationEventService, Events } from '../../services/value-operation-event.service';
+import { Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 
 
 // object of property information from ontology class, properties and property values
