@@ -65,11 +65,8 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         // when a ValueAdded event is emitted, get the resource again to display the newly created value
         // TODO: find a better way to show the new value than having to get the entire resource again
         // this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.getResource(this.iri));
-        this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, (newValue: ReadValue) => {
-            console.log('value added!');
-            console.log(newValue);
-
-        });
+        this.valueOperationEventSubscription = this._valueOperationEventService.on(
+            Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue));
     }
 
     ngOnChanges() {
@@ -121,8 +118,18 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
-    updateResource(newValue: ReadValue): void {
-
+    updateResource(newValue?: ReadValue, isDeletion?: boolean): void {
+        if (this.resPropInfoVals) {
+            if (!isDeletion) {
+                this.resPropInfoVals
+                    .filter( propInfoValueArray => propInfoValueArray.propDef.id === newValue.property) // filter to the correct property
+                    .map( propInfoValue => propInfoValue.values.push(newValue)); // push new property to array
+            } else {
+                // pop from the array
+            }
+        } else {
+            console.error('No properties exist for this resource');
+        }
     }
 
     /**
