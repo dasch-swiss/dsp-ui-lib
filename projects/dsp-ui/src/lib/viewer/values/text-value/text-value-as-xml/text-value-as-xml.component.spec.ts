@@ -211,6 +211,25 @@ describe('TextValueAsXMLComponent', () => {
 
         });
 
+        it('should set a new display value', () => {
+
+            const newXml = new ReadTextValueAsXml();
+
+            newXml.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p>my updated text<p></text>';
+            newXml.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+
+            newXml.id = 'updatedId';
+
+            testHostComponent.displayInputVal = newXml;
+
+            testHostFixture.detectChanges();
+
+            expect(ckeditorDe.componentInstance.value).toEqual('<p>my updated text<p>');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+        });
+
     });
 
 });
