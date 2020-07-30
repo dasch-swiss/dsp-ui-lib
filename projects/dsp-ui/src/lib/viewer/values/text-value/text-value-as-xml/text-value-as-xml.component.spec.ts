@@ -122,6 +122,8 @@ describe('TextValueAsXMLComponent', () => {
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
+            expect(testHostComponent.inputValueComponent.valueFormControl.disabled).toBeTruthy();
+
             expect(ckeditorDe.componentInstance.value).toEqual('\n<p>test with <strong>markup</strong></p>');
 
         });
@@ -135,6 +137,8 @@ describe('TextValueAsXMLComponent', () => {
             expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            expect(testHostComponent.inputValueComponent.valueFormControl.disabled).toBeFalsy();
 
             expect(ckeditorDe.componentInstance.value).toEqual('\n<p>test with <strong>markup</strong></p>');
 
@@ -152,6 +156,58 @@ describe('TextValueAsXMLComponent', () => {
 
             expect((updatedValue as UpdateTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?><text>\n' +
                 '<p>test with a lot of <strong>markup</strong></p></text>');
+
+        });
+
+        it('should not return an invalid update value', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            expect(ckeditorDe.componentInstance.value).toEqual('\n<p>test with <strong>markup</strong></p>');
+
+            // simulate input in ckeditor
+            ckeditorDe.componentInstance.value = '';
+            ckeditorDe.componentInstance._handleInput();
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+            expect(updatedValue).toBeFalsy();
+
+        });
+
+        it('should restore the initially displayed value', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            expect(ckeditorDe.componentInstance.value).toEqual('\n<p>test with <strong>markup</strong></p>');
+
+            // simulate input in ckeditor
+            ckeditorDe.componentInstance.value = '<p>updated text<p></p>';
+            ckeditorDe.componentInstance._handleInput();
+
+            testHostFixture.detectChanges();
+
+            testHostComponent.inputValueComponent.resetFormControl();
+
+            expect(ckeditorDe.componentInstance.value).toEqual('\n<p>test with <strong>markup</strong></p>');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
         });
 
