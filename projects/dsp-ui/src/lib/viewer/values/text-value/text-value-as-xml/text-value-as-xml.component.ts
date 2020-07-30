@@ -89,10 +89,6 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         this.commentFormControl = new FormControl(null);
 
-        this.valueFormControl.valueChanges.subscribe(
-            data => console.log(data)
-        );
-
         this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
             data => {
                 this.valueFormControl.updateValueAndValidity();

@@ -2,11 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TextValueAsXMLComponent } from './text-value-as-xml.component';
 import { Component, DebugElement, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ReadTextValueAsXml, MockResource } from '@dasch-swiss/dsp-js';
+import { MockResource, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { DateValueComponent } from '../../..';
 
 /**
  * Test host component to simulate parent component.
@@ -30,6 +29,8 @@ class TestCKEditorComponent implements ControlValueAccessor {
 
     value;
 
+    onChange = (_: any) => {};
+
     constructor() {
     }
 
@@ -38,9 +39,14 @@ class TestCKEditorComponent implements ControlValueAccessor {
     }
 
     registerOnChange(fn: any) {
+        this.onChange = fn;
     }
 
     registerOnTouched(fn: any) {
+    }
+
+    _handleInput(): void {
+        this.onChange(this.value);
     }
 
 }
@@ -70,11 +76,11 @@ class TestHostDisplayValueComponent implements OnInit {
                 this.mode = 'read';
             }
         );
-        
+
     }
 }
 
-fdescribe('TextValueAsXMLComponent', () => {
+describe('TextValueAsXMLComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -110,7 +116,40 @@ fdescribe('TextValueAsXMLComponent', () => {
 
             expect(testHostComponent.inputValueComponent.displayValue.xml).toEqual('<?xml version="1.0" encoding="UTF-8"?>\n<text><p>test with <strong>markup</strong></p></text>');
 
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+            expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+
             expect(ckeditorDe.componentInstance.value).toEqual('\n<p>test with <strong>markup</strong></p>');
+
+        });
+
+        it('should make an existing value editable', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            expect(ckeditorDe.componentInstance.value).toEqual('\n<p>test with <strong>markup</strong></p>');
+
+            // simulate input in ckeditor
+            ckeditorDe.componentInstance.value = '\n<p>test with a lot of <strong>markup</strong></p>';
+            ckeditorDe.componentInstance._handleInput();
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+            const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
+
+            expect(updatedValue instanceof UpdateTextValueAsXml).toBeTruthy();
+
+            expect((updatedValue as UpdateTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?><text>\n' +
+                '<p>test with a lot of <strong>markup</strong></p></text>');
 
         });
 
