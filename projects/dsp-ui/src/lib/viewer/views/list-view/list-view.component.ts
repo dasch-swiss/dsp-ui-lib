@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { PageEvent } from '@angular/material/paginator';
 import { ApiResponseError, CountQueryResponse, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../../core';
+import { AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
 
 export interface FulltextSearchParams {
     /**
@@ -68,7 +69,8 @@ export class ListViewComponent implements OnInit {
     loading = true;
 
     constructor(
-        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _advancedSearchParamsService: AdvancedSearchParamsService,
     ) { }
 
     ngOnInit(): void {
@@ -132,6 +134,7 @@ export class ListViewComponent implements OnInit {
             );
 
         } else {
+
             // search mode: gravsearch
             if (this.pageEvent.pageIndex === 0) {
                 // perform count query
@@ -147,17 +150,20 @@ export class ListViewComponent implements OnInit {
             }
 
             // perform extended search
-            this._dspApiConnection.v2.search.doExtendedSearch(this.search.query).subscribe(
-                (response: ReadResourceSequence) => {
-                    this.resources = response;
-                    this.loading = false;
-                },
-                (error: ApiResponseError) => {
-                    this.errorMessage = error;
-                    console.error(error);
-                    this.loading = false;
-                }
-            );
+            const gravsearch = this._advancedSearchParamsService.getSearchParams().generateGravsearch(this.pageEvent.pageIndex);
+            if (typeof gravsearch === 'string') {
+                this._dspApiConnection.v2.search.doExtendedSearch(gravsearch).subscribe(
+                    (response: ReadResourceSequence) => {
+                        this.resources = response;
+                        this.loading = false;
+                    },
+                    (error: ApiResponseError) => {
+                        this.errorMessage = error;
+                        console.error(error);
+                        this.loading = false;
+                    }
+                );
+            }
 
         }
 

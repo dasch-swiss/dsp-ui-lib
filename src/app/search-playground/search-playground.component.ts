@@ -6,7 +6,7 @@ import { SearchParams } from '@dasch-swiss/dsp-ui/lib/viewer';
     templateUrl: './search-playground.component.html',
     styleUrls: ['./search-playground.component.scss']
 })
-export class SearchPlaygroundComponent implements OnChanges {
+export class SearchPlaygroundComponent {
 
     searchParams: SearchParams;
 
@@ -14,18 +14,13 @@ export class SearchPlaygroundComponent implements OnChanges {
 
     constructor() { }
 
-    ngOnChanges() {
-        console.log(this.searchParams.query)
-    }
-
     doSearch(search: SearchParams) {
         // reset search params
         this.searchParams = undefined;
         // we can do the routing here or send the search param
         // to (resource) list view directly
-        console.log('do search:', search);
+        console.log('do search:', search.query);
         this.searchParams = search;
-        this.ngOnChanges();
     }
 
     openResource(id: string) {

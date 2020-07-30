@@ -86,7 +86,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         // if form status changes, re-run validation
         this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
             this.formValid = this._validateForm();
-            // console.log(this.form);
         });
 
         // initialize ontologies to be used for the ontologies selection in the search form

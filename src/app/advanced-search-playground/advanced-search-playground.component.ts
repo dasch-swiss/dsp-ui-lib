@@ -28,7 +28,6 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
     }
 
     submitQuery(gravsearch: SearchParams) {
-        console.log('Output: ', gravsearch);
 
         console.log('search params', this._advancedSearchParamsService.getSearchParams().generateGravsearch(1));
     }
