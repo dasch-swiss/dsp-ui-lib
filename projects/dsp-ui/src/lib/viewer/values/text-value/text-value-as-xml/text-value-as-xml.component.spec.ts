@@ -7,6 +7,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
+import { TextValueAsStringComponent } from '../../..';
+import { CreateTextValueAsXml } from '@dasch-swiss/dsp-js/index';
 
 /**
  * Test host component to simulate parent component.
@@ -81,6 +83,26 @@ class TestHostDisplayValueComponent implements OnInit {
     }
 }
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+    <dsp-text-value-as-xml #inputVal [mode]="mode"></dsp-text-value-as-xml>`
+})
+class TestHostCreateValueComponent implements OnInit {
+
+    @ViewChild('inputVal') inputValueComponent: TextValueAsXMLComponent;
+
+    mode: 'read' | 'update' | 'create' | 'search';
+
+    ngOnInit() {
+
+        this.mode = 'create';
+
+    }
+}
+
 describe('TextValueAsXMLComponent', () => {
 
     beforeEach(async(() => {
@@ -88,7 +110,8 @@ describe('TextValueAsXMLComponent', () => {
             declarations: [
                 TextValueAsXMLComponent,
                 TestHostDisplayValueComponent,
-                TestCKEditorComponent
+                TestCKEditorComponent,
+                TestHostCreateValueComponent
             ],
             imports: [
                 ReactiveFormsModule,
@@ -227,6 +250,77 @@ describe('TextValueAsXMLComponent', () => {
             expect(ckeditorDe.componentInstance.value).toEqual('<p>my updated text<p>');
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+        });
+
+    });
+
+    describe('create a text value with markup', () => {
+
+        let testHostComponent: TestHostCreateValueComponent;
+        let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+        let ckeditorDe: DebugElement;
+
+        let valueComponentDe: DebugElement;
+        let commentInputDebugElement: DebugElement;
+        let commentInputNativeElement;
+
+        beforeEach(() => {
+            testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
+            testHostComponent = testHostFixture.componentInstance;
+            testHostFixture.detectChanges();
+
+            const hostCompDe = testHostFixture.debugElement;
+
+            ckeditorDe = hostCompDe.query(By.directive(TestCKEditorComponent));
+
+            valueComponentDe = hostCompDe.query(By.directive(TextValueAsXMLComponent));
+            commentInputDebugElement = valueComponentDe.query(By.css('textarea.comment'));
+            commentInputNativeElement = commentInputDebugElement.nativeElement;
+        });
+
+        it('should create a value', () => {
+
+            // simulate input in ckeditor
+            ckeditorDe.componentInstance.value = '<p>created text<p></p>';
+            ckeditorDe.componentInstance._handleInput();
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+            expect(testHostComponent.inputValueComponent.valueFormControl.disabled).toBeFalsy();
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+            const newValue = testHostComponent.inputValueComponent.getNewValue();
+
+            expect(newValue instanceof CreateTextValueAsXml).toBeTruthy();
+
+            expect((newValue as CreateTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>created text<p></p></text>');
+            expect((newValue as CreateTextValueAsXml).mapping).toEqual('http://rdfh.ch/standoff/mappings/StandardMapping');
+        });
+
+        it('should reset form after cancellation', () => {
+            ckeditorDe.componentInstance.value = '<p>created text<p></p>';
+            ckeditorDe.componentInstance._handleInput();
+
+            commentInputNativeElement.value = 'created comment';
+
+            commentInputNativeElement.dispatchEvent(new Event('input'));
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.inputValueComponent.mode).toEqual('create');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+            testHostComponent.inputValueComponent.resetFormControl();
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+            expect(ckeditorDe.componentInstance.value).toEqual(null);
+
+            expect(commentInputNativeElement.value).toEqual('');
 
         });
 
