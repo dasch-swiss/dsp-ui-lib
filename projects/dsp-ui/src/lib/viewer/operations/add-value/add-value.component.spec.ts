@@ -1,6 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
@@ -18,8 +17,9 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
+import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { AddValueComponent } from './add-value.component';
-import { ValueOperationEventService, EmitEvent, Events } from '../../services/value-operation-event.service';
+
 
 @Component({
     selector: `dsp-int-value`,
@@ -256,6 +256,10 @@ describe('AddValueComponent', () => {
 
             expectedUpdateResource.value = expectedCreateVal;
 
+            const newReadValue = new ReadIntValue();
+            newReadValue.id = 'newID';
+            newReadValue.int = 1;
+
             expect(valuesSpy.v2.values.createValue).toHaveBeenCalledWith(expectedUpdateResource);
             expect(valuesSpy.v2.values.createValue).toHaveBeenCalledTimes(1);
 
@@ -263,7 +267,7 @@ describe('AddValueComponent', () => {
             expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id, 'uuid');
 
             expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
-            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueAdded));
+            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueAdded, newReadValue));
 
         });
     });
