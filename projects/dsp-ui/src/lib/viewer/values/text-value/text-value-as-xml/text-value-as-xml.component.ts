@@ -82,6 +82,11 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
                     {model: 'heading6', view: 'h6', title: 'Heading 6'},
                 ]
             },
+            codeBlock: {
+                languages: [
+                    { language: 'plaintext', label: 'Plain text', class: '' }
+                ]
+            }
         };
 
         // initialize form control elements

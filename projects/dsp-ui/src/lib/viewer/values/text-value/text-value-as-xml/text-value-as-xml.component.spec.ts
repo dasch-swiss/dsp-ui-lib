@@ -253,6 +253,23 @@ describe('TextValueAsXMLComponent', () => {
 
         });
 
+        it('convert markup received from CKEditor: <i> -> <em>', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            // simulate input in ckeditor
+            ckeditorDe.componentInstance.value = '<p>test <i>with</i> a lot of <i>markup</i></p>';
+            ckeditorDe.componentInstance._handleInput();
+
+            testHostFixture.detectChanges();
+
+            expect((testHostComponent.inputValueComponent.getUpdatedValue() as UpdateTextValueAsXml).xml)
+                .toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test <em>with</em> a lot of <em>markup</em></p></text>');
+
+        });
+
     });
 
     describe('create a text value with markup', () => {
