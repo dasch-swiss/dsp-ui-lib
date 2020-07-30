@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TextValueAsXMLComponent } from './text-value-as-xml.component';
 import { Component, DebugElement, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ReadTextValueAsXml } from '@dasch-swiss/dsp-js';
+import { ReadTextValueAsXml, MockResource } from '@dasch-swiss/dsp-js';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
@@ -62,18 +62,19 @@ class TestHostDisplayValueComponent implements OnInit {
 
     ngOnInit() {
 
-        const inputVal = new ReadTextValueAsXml();
-        inputVal.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
-        inputVal.xml = '<html><p>my text</p></html>';
+        MockResource.getTestthing().subscribe(
+            res => {
 
-        this.displayInputVal = inputVal;
+                this.displayInputVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext', ReadTextValueAsXml)[0];
 
-        this.mode = 'read';
-
+                this.mode = 'read';
+            }
+        );
+        
     }
 }
 
-describe('TextValueAsXMLComponent', () => {
+fdescribe('TextValueAsXMLComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -107,9 +108,9 @@ describe('TextValueAsXMLComponent', () => {
 
         it('should display an existing value', () => {
 
-            expect(testHostComponent.inputValueComponent.displayValue.xml).toEqual('<html><p>my text</p></html>');
+            expect(testHostComponent.inputValueComponent.displayValue.xml).toEqual('<?xml version="1.0" encoding="UTF-8"?>\n<text><p>test with <strong>markup</strong></p></text>');
 
-            expect(ckeditorDe.componentInstance.value).toEqual('<html><p>my text</p></html>');
+            expect(ckeditorDe.componentInstance.value).toEqual('\n<p>test with <strong>markup</strong></p>');
 
         });
 
