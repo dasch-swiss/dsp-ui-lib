@@ -109,7 +109,17 @@ export class AddValueComponent implements OnInit {
 
                     // hide the progress indicator
                     this.submittingValue = false;
+                },
+                (err: Error) => {
+                    console.error('There was an issue submitting your value: ', err);
+
+                    // hide the progress indicator
+                    this.submittingValue = false;
+
+                    // show the CRUD buttons
+                    this.createModeActive = true;
                 }
+
             );
         } else {
             console.error('invalid value');
