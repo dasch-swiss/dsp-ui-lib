@@ -29,6 +29,8 @@ The module has the following package dependencies, which you also have to instal
 - [jdnconvertiblecalendar@0.0.5](https://www.npmjs.com/package/jdnconvertiblecalendar)
 - [jdnconvertiblecalendardateadapter@0.0.13](https://www.npmjs.com/package/jdnconvertiblecalendardateadapter)
 - [ngx-color-picker@9.1.0](https://www.npmjs.com/package/ngx-color-picker)
+- [openseadragon](https://openseadragon.github.io/#download)
+- [svg-overlay](https://github.com/openseadragon/svg-overlay)
 
 ## Setup
 
