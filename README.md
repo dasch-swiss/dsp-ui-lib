@@ -6,7 +6,6 @@
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
 [![license](https://img.shields.io/npm/l/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
 
-
 This is the demo and developing environment for DSP-UI-LIB ([@dasch-swiss/dsp-ui](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)) comprised of 4 modules.
 
 The modules help create a GUI to allow the user to use [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/) in a quick and simple way from within a web application. The modules are written in Typescript for use with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
@@ -200,9 +199,9 @@ npm install
 
 To make changes to the DSP-UI and have your changes reflected immediately upon saving, follow these steps:
 
- - run `npm run build-watchful-lib-dev` from the project root directory
- - open a new tab and run `npm run start` from the project root directory
- - now, anytime you make a change to DSP-UI and save, the library will be re-built and the webpage will refresh and you will see the changes
+- run `npm run build-watchful-lib-dev` from the project root directory
+- open a new tab and run `npm run start` from the project root directory
+- now, anytime you make a change to DSP-UI and save, the library will be re-built and the webpage will refresh and you will see the changes
 
 ### Run the application in productive mode
 
