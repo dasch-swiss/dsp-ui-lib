@@ -63,8 +63,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit() {
         // subscribe to the event bus and listen for the ValueAdded event to be emitted
         // when a ValueAdded event is emitted, get the resource again to display the newly created value
-        // TODO: find a better way to show the new value than having to get the entire resource again
-        // this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.getResource(this.iri));
         this.valueOperationEventSubscription = this._valueOperationEventService.on(
             Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue));
     }
