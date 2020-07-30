@@ -1,26 +1,22 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { DspActionModule } from 'projects/dsp-ui/src/lib/action';
 import { ResourceGridComponent } from './resource-grid.component';
 
-
 /**
- * Test host component to simulate child component, here resource-grid.
+ * Mocked truncate pipe from action module.
  */
-@Component({
-    selector: `dsp-resource-grid`,
-    template: ``
-})
-class TestResourceGridComponent {
-
-    @Input() resources: ReadResourceSequence;
-
+@Pipe({name: 'dspTruncate'})
+class MockPipe implements PipeTransform {
+    transform(value: string, limit?: number, trail?: string): string {
+        //Do stuff here, if you want
+        return value;
+    }
 }
 
 /**
- * Test host component to simulate resource-grid component.
+ * Test parent component to simulate integration of resource-grid component.
  */
 @Component({
     template: `
@@ -54,11 +50,11 @@ describe('ResourceGridComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
+                MockPipe,
                 ResourceGridComponent,
                 TestParentComponent
             ],
             imports: [
-                DspActionModule,
                 MatCardModule
             ],
             providers: []
