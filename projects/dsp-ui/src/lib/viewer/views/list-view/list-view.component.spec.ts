@@ -10,20 +10,44 @@ import { DspApiConnectionToken } from '../../../core';
 import { ListViewComponent, SearchParams } from './list-view.component';
 
 /**
- * Test host component to simulate child component, here resource-list.
+ * Test component to simulate child component, here resource-list.
  */
 @Component({
-    selector: `dsp-list-view`,
+    selector: `dsp-resource-list`,
     template: ``
 })
-class TestListViewComponent {
+class TestResourceListComponent {
 
-    @Input() search: SearchParams;
+    @Input() resources: ReadResourceSequence;
 
 }
 
 /**
- * Test host component to simulate resource-list component.
+ * Test component to simulate child component, here resource-grid.
+ */
+@Component({
+    selector: `dsp-resource-grid`,
+    template: ``
+})
+class TestResourceGridComponent {
+
+    @Input() resources: ReadResourceSequence;
+
+}
+
+/**
+ * Test component to simulate child component, here progress-indicator from action module.
+ */
+@Component({
+    selector: `dsp-progress-indicator`,
+    template: ``
+})
+class TestProgressIndicatorComponent {
+
+}
+
+/**
+ * Test parent component to simulate integration of list-view component.
  */
 @Component({
     template: `
@@ -78,7 +102,10 @@ describe('ListViewComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 ListViewComponent,
-                TestParentComponent
+                TestParentComponent,
+                TestProgressIndicatorComponent,
+                TestResourceGridComponent,
+                TestResourceListComponent
             ],
             imports: [
                 MatButtonModule,
