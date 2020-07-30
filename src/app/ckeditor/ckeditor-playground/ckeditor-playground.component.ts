@@ -54,6 +54,10 @@ export class CkeditorPlaygroundComponent implements OnInit {
         );
     }
 
+    getXML() {
+        console.log(this.xmlValue.getUpdatedValue());
+    }
+
     save() {
 
         const updatedVal = this.xmlValue.getUpdatedValue();
