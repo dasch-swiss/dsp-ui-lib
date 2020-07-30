@@ -133,7 +133,8 @@ export class ListViewComponent implements OnInit {
                 }
             );
 
-        } else {
+        } else if (this.search.mode === 'gravsearch') {
+
 
             // search mode: gravsearch
             if (this.pageEvent.pageIndex === 0) {

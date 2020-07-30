@@ -18,7 +18,7 @@ Select the component to play with:
 
 <div class="component-container" [ngSwitch]="display">
 
-    <dsp-fulltext-search *ngSwitchCase="'fulltext'" (search)="doSearch($event)" [projectfilter]="false">
+    <dsp-fulltext-search *ngSwitchCase="'fulltext'" (search)="doSearch($event)" [projectfilter]="true">
     </dsp-fulltext-search>
 
     <dsp-advanced-search *ngSwitchCase="'advanced'" (search)="doSearch($event)"></dsp-advanced-search>

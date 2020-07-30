@@ -19,7 +19,6 @@ export class SearchPlaygroundComponent {
         this.searchParams = undefined;
         // we can do the routing here or send the search param
         // to (resource) list view directly
-        console.log('do search:', search.query);
         this.searchParams = search;
     }
 
