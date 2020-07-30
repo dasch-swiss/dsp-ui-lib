@@ -105,7 +105,7 @@ export class AddValueComponent implements OnInit {
                     // emit a ValueAdded event to the listeners in:
                     // property-view component to hide the add value form
                     // resource-view component to trigger a refresh of the resource
-                    this._valueOperationEventService.emit(new EmitEvent(Events.ValueAdded));
+                    this._valueOperationEventService.emit(new EmitEvent(Events.ValueAdded, res2.getValues(updateRes.property)[0]));
 
                     // hide the progress indicator
                     this.submittingValue = false;
