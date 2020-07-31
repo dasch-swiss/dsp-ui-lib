@@ -8,7 +8,6 @@ import { IFulltextSearchParams } from '@dasch-swiss/dsp-js/src/api/v2/search/sea
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
 import { ListViewComponent, SearchParams } from './list-view.component';
-import { AdvancedSearchParamsService, AdvancedSearchParams } from '../../../search/services/advanced-search-params.service';
 
 /**
  * Test component to simulate child component, here resource-list.
@@ -92,10 +91,8 @@ describe('ListViewComponent', () => {
     let testHostComponent: TestParentComponent;
     let testHostFixture: ComponentFixture<TestParentComponent>;
 
-    let searchParamsServiceSpy: jasmine.SpyObj<AdvancedSearchParamsService>;
-    let advancedSearchParams: AdvancedSearchParams;
-
-    const spy = jasmine.createSpyObj('SearchParamsService', ['getSearchParams']);
+    // let searchParamsServiceSpy: jasmine.SpyObj<AdvancedSearchParamsService>;
+    // let advancedSearchParams: AdvancedSearchParams;
 
     beforeEach(async(() => {
 
@@ -124,10 +121,6 @@ describe('ListViewComponent', () => {
                 {
                     provide: DspApiConnectionToken,
                     useValue: searchSpyObj
-                },
-                {
-                    provide: AdvancedSearchParamsService,
-                    useValue: spy
                 }
             ]
         })
@@ -168,11 +161,6 @@ describe('ListViewComponent', () => {
             }
         );
 
-        // searchParamsServiceSpy = TestBed.inject(AdvancedSearchParamsService) as jasmine.SpyObj<AdvancedSearchParamsService>;
-        // searchParamsServiceSpy.getSearchParams().generateGravsearch.and.callFake((offset: number) => {
-
-        // });
-
         (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
             (searchTerm: string) => {
 
@@ -207,7 +195,7 @@ describe('ListViewComponent', () => {
 
     });
 
-    it('should do a gravsearch search', () => {
+    it('should do extended search', () => {
 
         const searchSpy = TestBed.inject(DspApiConnectionToken);
 
