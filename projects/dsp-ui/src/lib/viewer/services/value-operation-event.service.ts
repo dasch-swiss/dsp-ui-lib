@@ -1,6 +1,6 @@
+import { ReadValue } from '@dasch-swiss/dsp-js';
 import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { ReadValue } from '@dasch-swiss/dsp-js';
 
 /**
  * https://stackoverflow.com/questions/56290722/how-pass-a-event-from-deep-nested-child-to-parent-in-angular-2
