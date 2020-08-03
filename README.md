@@ -4,7 +4,7 @@
 [![CI](https://github.com/dasch-swiss/knora-ui-ng-lib/workflows/CI/badge.svg)](https://github.com/dasch-swiss/knora-ui-ng-lib/actions?query=workflow%3ACI)
 [![npm downloads](https://img.shields.io/npm/dt/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
-[![license](https://img.shields.io/npm/l/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
+[![license](https://img.shields.io/npm/l/@dasch-swiss/dsp-ui.svg?style=flat)](https://github.com/dasch-swiss/dsp-ui-lib/blob/master/LICENSE)
 
 This is the demo and developing environment for DSP-UI-LIB ([@dasch-swiss/dsp-ui](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)) comprised of 4 modules.
 
@@ -264,9 +264,11 @@ A new version will be published with each github release as it's part of Github 
   - `release-major`                  updates version to next MAJOR version e.g. from 3.0.0 to 4.0.0
   - `release-minor`                  updates version to next MINOR version e.g. from 3.0.0 to 3.1.0
   - `release-patch`                  updates version to next PATCH version e.g. from 3.0.0 to 3.0.1
-- The make command will commit and push to github
-- Update README and CHANGELOG if necessary and commit the changes
+- The make command will commit and push to github (you have to fill in your GitHub username and password to log when you do not use any [github token](https://docs.github.com/en/enterprise/2.15/user/articles/creating-a-personal-access-token-for-the-command-line))
+- Update README and CHANGELOG if necessary and commit the changes (currently, the CHANGELOG has to be updated manually)
 - Create new pull request and merge into master
-- Draft new release on Github. This will build, test and publish the new package on npm. Additional it creates / overrides release notes on Github.
+- Draft new release on Github. This will build, test and publish the new package on npm. Additional it creates / overrides release notes on Github. Fill in:
+  - the tag version, the release title (same name)
+  - If this is a pre-release, check the box "This is a pre-release"
 
 New package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>
