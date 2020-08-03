@@ -124,6 +124,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                     .map( propInfoValue => propInfoValue.values.push(newValue)); // push new property to array
             } else {
                 // pop from the array
+                // TODO: remove element from array when deletion is implemented
             }
         } else {
             console.error('No properties exist for this resource');
