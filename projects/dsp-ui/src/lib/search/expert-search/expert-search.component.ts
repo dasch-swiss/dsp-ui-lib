@@ -85,8 +85,6 @@ CONSTRUCT {
     submitQuery() {
         const gravsearch = this._generateGravsearch(0);
 
-        // const gravsearchWithoutOffset = this.expertSearchForm.controls['gravsearchquery'].value;
-
         if (gravsearch) {
             this.search.emit({
                 query: gravsearch,

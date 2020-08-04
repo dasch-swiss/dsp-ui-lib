@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ApiResponseError, CountQueryResponse, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../../core';
 import { AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
 
+// TODO: should be replaced by IFulltextSearchParams from dsp-js
 export interface FulltextSearchParams {
     /**
      * Iri of resource class the fulltext search is restricted to, if any.
@@ -41,7 +42,7 @@ export interface SearchParams {
     templateUrl: './list-view.component.html',
     styleUrls: ['./list-view.component.scss']
 })
-export class ListViewComponent implements OnInit {
+export class ListViewComponent implements OnChanges {
 
     @Input() search: SearchParams;
 
@@ -73,15 +74,13 @@ export class ListViewComponent implements OnInit {
         private _advancedSearchParamsService: AdvancedSearchParamsService,
     ) { }
 
-    ngOnInit(): void {
+    ngOnChanges(): void {
+        // reset
         this.pageEvent = new PageEvent();
         this.pageEvent.pageIndex = 0;
-        this._doSearch();
-    }
-
-    ngOnChanges(): void {
         this.resources = undefined;
-        this.ngOnInit();
+
+        this._doSearch();
     }
 
     /**

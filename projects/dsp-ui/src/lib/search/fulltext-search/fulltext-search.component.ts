@@ -364,12 +364,12 @@ export class FulltextSearchComponent implements OnInit {
         let searchParams: SearchParams = {
             query: this.searchQuery,
             mode: 'fulltext'
-        }
+        };
 
         if (this.projectIri !== undefined) {
             searchParams.filter = {
                 limitToProject: this.projectIri
-            }
+            };
         }
 
         this.search.emit(searchParams);

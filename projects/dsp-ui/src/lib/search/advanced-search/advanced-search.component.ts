@@ -273,13 +273,15 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
             }
         );
 
-        const gravsearch: SearchParams = {
-            query: this._gravsearchGenerationService.createGravsearchQuery(properties, resClass),
-            mode: 'gravsearch'
-        };
+        const gravsearch = this._gravsearchGenerationService.createGravsearchQuery(properties, resClass);
 
-        // emit query
-        this.search.emit(gravsearch);
+        if (gravsearch) {
+            // emit query
+            this.search.emit({
+                query: gravsearch,
+                mode: 'gravsearch'
+            });
+        }
     }
 
 }
