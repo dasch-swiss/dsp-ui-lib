@@ -1,11 +1,11 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
-import { MockResource, PropertyDefinition, ReadResource, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
+import { MockResource, PropertyDefinition, ReadIntValue, ReadResource, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { DspApiConnectionToken } from '../../../core';
@@ -148,6 +148,23 @@ describe('ResourceViewComponent', () => {
         testHostFixture.destroy();
 
         expect(testHostComponent.voeSubscription.closed).toBe(true);
+    });
+
+    it('should update a resource', () => {
+        const newReadIntValue = new ReadIntValue();
+
+        newReadIntValue.int = 123;
+        newReadIntValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
+
+        testHostComponent.resourceViewComponent.updateResource(newReadIntValue);
+
+        const propArrayIntValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === newReadIntValue.property
+        );
+
+        expect(propArrayIntValues[0].values.length).toEqual(2);
+
+        expect((propArrayIntValues[0].values[1] as ReadIntValue).int).toEqual(123);
     });
 
     // TODO: currently not possible to test copy to clipboard from Material Angular

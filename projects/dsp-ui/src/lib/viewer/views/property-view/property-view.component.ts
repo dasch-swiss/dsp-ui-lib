@@ -9,7 +9,7 @@ import { PermissionUtil, ReadResource, SystemPropertyDefinition } from '@dasch-s
 import { Subscription } from 'rxjs';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
-import { ValueOperationEventService, Events } from '../../services/value-operation-event.service';
+import { Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 
 @Component({
@@ -58,7 +58,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
                 this.parentResource.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR'
             );
 
-            // if user has modify permissions, set createAllowed to true so the user see's the add button
+            // if user has modify permissions, set addButtonIsVisible to true so the user see's the add button
             this.addButtonIsVisible = allPermissions.indexOf(PermissionUtil.Permissions.M) !== -1;
         }
 
@@ -81,7 +81,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
 
         this.propID = prop.propDef.id;
         this.addValueFormIsVisible = true;
-        this.addButtonIsVisible = false;
 
     }
 
@@ -91,5 +90,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     hideAddValueForm() {
         this.addValueFormIsVisible = false;
         this.addButtonIsVisible = true;
+        this.propID = undefined;
     }
 }
