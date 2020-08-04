@@ -4,7 +4,8 @@ import {
     ReadTextValueAsHtml,
     ReadTextValueAsString,
     ReadTextValueAsXml,
-    ReadValue
+    ReadValue,
+    ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 
 @Injectable({
@@ -43,6 +44,21 @@ export class ValueTypeService {
             }
         } else {
             return value.type;
+        }
+    }
+
+    /**
+     * Given a ResourcePropertyDefinition of a #hasText property, determines the class representing it.
+     *
+     * @param resourcePropDef the given ResourcePropertyDefinition.
+     */
+    getTextValueClass(resourcePropDef: ResourcePropertyDefinition): string {
+        if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText') {
+            return this._readTextValueAsString;
+        } else if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
+            return this._readTextValueAsHtml;
+        } else {
+            throw new Error(`unknown TextValue class ${resourcePropDef}`);
         }
     }
 

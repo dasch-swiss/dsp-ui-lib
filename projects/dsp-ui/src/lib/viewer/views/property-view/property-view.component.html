@@ -30,7 +30,7 @@
             </dsp-add-value>
         </div>
         <!-- Add button -->
-        <div *ngIf="addButtonIsVisible && prop.guiDef.cardinality !== 1">
+        <div *ngIf="addButtonIsVisible && prop.guiDef.cardinality !== 1 && propID !== prop.propDef.id">
             <button class="create" (click)="showAddValueForm(prop)" title="Add a new value">
                 <mat-icon>add_box</mat-icon>
             </button>

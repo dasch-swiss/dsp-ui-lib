@@ -1,3 +1,4 @@
+import { ReadValue } from '@dasch-swiss/dsp-js';
 import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -16,7 +17,7 @@ export class ValueOperationEventService {
 
     // Used in the listening component.
     // i.e. this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => doSomething());
-    on(event: Events, action: () => void): Subscription {
+    on(event: Events, action: (newValue) => void): Subscription {
         return this._subject$
             .pipe(
                 // Filter down based on event name to any events that are emitted out of the subject from the emit method below.
@@ -34,7 +35,7 @@ export class ValueOperationEventService {
 }
 
 export class EmitEvent {
-    constructor(public name: any, public value?: () => void) { }
+    constructor(public name: any, public value?: ReadValue) { }
 }
 
 // Possible events that can be emitted.
