@@ -195,6 +195,10 @@ describe('AddValueComponent', () => {
             addValueComponentDe = hostCompDe.query(By.directive(AddValueComponent));
 
             expect(testHostComponent).toBeTruthy();
+
+            testHostComponent.testAddValueComponent.createModeActive = true;
+
+            testHostFixture.detectChanges();
         });
 
         it('should add a new value to a property', () => {
@@ -236,6 +240,10 @@ describe('AddValueComponent', () => {
 
             expect(testHostComponent.testAddValueComponent.createModeActive).toBeTruthy();
 
+            testHostComponent.testAddValueComponent.createValueComponent.form.setValue({test: 123});
+
+            testHostFixture.detectChanges();
+
             const saveButtonDebugElement = addValueComponentDe.query(By.css('button.save'));
             const saveButtonNativeElement = saveButtonDebugElement.nativeElement;
 
@@ -252,7 +260,7 @@ describe('AddValueComponent', () => {
             expectedUpdateResource.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
 
             const expectedCreateVal = new CreateIntValue();
-            expectedCreateVal.int = 123;
+            expectedCreateVal.int = testHostComponent.testAddValueComponent.createValueComponent.form.value.test;
 
             expectedUpdateResource.value = expectedCreateVal;
 

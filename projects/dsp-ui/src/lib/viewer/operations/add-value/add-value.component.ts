@@ -1,5 +1,5 @@
 import {
-    Component,
+    AfterViewInit, Component,
     EventEmitter,
     Inject,
     Input,
@@ -27,7 +27,7 @@ import { BaseValueComponent } from '../../values/base-value.component';
     templateUrl: './add-value.component.html',
     styleUrls: ['./add-value.component.scss']
 })
-export class AddValueComponent implements OnInit {
+export class AddValueComponent implements OnInit, AfterViewInit {
 
     @ViewChild('createVal') createValueComponent: BaseValueComponent;
 
@@ -61,14 +61,19 @@ export class AddValueComponent implements OnInit {
 
         this.mode = 'create';
 
-        this.createModeActive = true;
-
         // Since simple text values and rich text values share the same object type 'TextValue',
         // we need to use the ValueTypeService in order to assign it the correct object type for the ngSwitch in the template
         if (this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
             this.resourcePropertyDefinition.objectType = this._valueTypeService.getTextValueClass(this.resourcePropertyDefinition);
         }
 
+    }
+
+    // wait to show the save/cancel buttons until the form is initialized so that the template checks using the form's validity work
+    ngAfterViewInit() {
+        setTimeout(() => {
+            this.createModeActive = true;
+        }, 0);
     }
 
     /**
