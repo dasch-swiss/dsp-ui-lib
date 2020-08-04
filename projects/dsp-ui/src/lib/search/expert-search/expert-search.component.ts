@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken } from '../../core/core.module';
+import { SearchParams } from '../../viewer';
 import { AdvancedSearchParams, AdvancedSearchParamsService } from '../services/advanced-search-params.service';
 
 /**
@@ -25,9 +26,11 @@ export function forbiddenTermValidator(termRe: RegExp): ValidatorFn {
 export class ExpertSearchComponent implements OnInit {
 
     /**
-     * @param gravsearchQuery Send the gravsearch query back.
+     * The data event emitter of type SearchParams
+     *
+     * @param  search
      */
-    @Output() gravsearchQuery = new EventEmitter<string>();
+    @Output() search = new EventEmitter<SearchParams>();
 
     expertSearchForm: FormGroup;
     queryFormControl: FormControl;
@@ -83,7 +86,10 @@ CONSTRUCT {
         const gravsearch = this._generateGravsearch(0);
 
         if (gravsearch) {
-            this.gravsearchQuery.emit(gravsearch);
+            this.search.emit({
+                query: gravsearch,
+                mode: 'gravsearch'
+            });
         }
     }
 
@@ -92,7 +98,7 @@ CONSTRUCT {
      * Generate the whole gravsearch query matching the query given by the form.
      */
     private _generateGravsearch(offset: number = 0): string {
-        // const queryTemplate = this.expertSearchForm.controls['gravsearchquery'].value;
+        const query = this.expertSearchForm.controls['gravsearchquery'].value;
 
         // offset component of the Gravsearch query
         const offsetTemplate = `
@@ -107,14 +113,14 @@ CONSTRUCT {
              OFFSET ${localOffset}
              `;
 
-            return this.queryFormControl.value + offsetCustomTemplate;
+            return query + offsetCustomTemplate;
         };
 
         if (offset === 0) {
             // store the function so another Gravsearch query can be created with an increased offset
             this._searchParamsService.changeSearchParamsMsg(new AdvancedSearchParams(generateGravsearchWithCustomOffset));
         }
-        return this.queryFormControl.value + offsetTemplate;
+        return query + offsetTemplate;
     }
 
 }

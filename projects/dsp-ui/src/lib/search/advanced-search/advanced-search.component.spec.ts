@@ -1,10 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { AdvancedSearchComponent } from './advanced-search.component';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DspApiConnectionToken } from '../../core';
+import { MatButtonHarness } from '@angular/material/button/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     ClassDefinition,
     MockOntology,
@@ -14,14 +16,11 @@ import {
     ReadOntology,
     ResourceClassDefinition, ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
-import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
 import { OntologyCache } from '@dasch-swiss/dsp-js/src/cache/ontology-cache/OntologyCache';
-import { MatIconModule } from '@angular/material/icon';
+import { of } from 'rxjs';
+import { DspApiConnectionToken } from '../../core';
+import { AdvancedSearchComponent } from './advanced-search.component';
 import { Properties } from './select-property/select-property.component';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { MatButtonHarness } from '@angular/material/button/testing';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
