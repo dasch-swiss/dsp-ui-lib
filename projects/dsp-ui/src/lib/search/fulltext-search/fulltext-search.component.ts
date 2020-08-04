@@ -13,7 +13,6 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { Router } from '@angular/router';
 import {
     ApiResponseData,
     ApiResponseError,
@@ -25,6 +24,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { SortingService } from '../../action/services/sorting.service';
 import { DspApiConnectionToken } from '../../core';
+import { SearchParams } from '../../viewer';
 
 export interface PrevSearchItem {
     projectIri?: string;
@@ -41,13 +41,6 @@ export class FulltextSearchComponent implements OnInit {
 
     /**
      *
-     * @param route Route to navigate after search.
-     * This route path should contain a component for search results.
-     */
-    @Input() route = '/search';
-
-    /**
-     *
      * @param [projectfilter] If true it shows the selection
      * of projects to filter by one of them
      */
@@ -60,9 +53,13 @@ export class FulltextSearchComponent implements OnInit {
      */
     @Input() filterbyproject?: string;
 
-    @Input() show: boolean;
+    /**
+     * The data event emitter of type SearchParams
+     *
+     * @param  search
+     */
+    @Output() search = new EventEmitter<SearchParams>();
 
-    @Output() showState = new EventEmitter();
 
     @ViewChild('fulltextSearchPanel', { static: false }) searchPanel: ElementRef;
 
@@ -109,7 +106,6 @@ export class FulltextSearchComponent implements OnInit {
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _sortingService: SortingService,
         private _overlay: Overlay,
-        private _router: Router,
         private _viewContainerRef: ViewContainerRef
     ) { }
 
@@ -231,23 +227,13 @@ export class FulltextSearchComponent implements OnInit {
     }
 
     /**
-     * Perform a search and store the new result in the local storage
+     * Send the search query to parent and store the new query in the local storage
+     * to have a search history list
      */
     doSearch(): void {
+
         if (this.searchQuery !== undefined && this.searchQuery !== null) {
-            if (this.projectIri !== undefined) {
-                this._router.navigate([
-                    this.route +
-                    '/fulltext/' +
-                    this.searchQuery +
-                    '/' +
-                    encodeURIComponent(this.projectIri)
-                ]);
-            } else {
-                this._router.navigate([
-                    this.route + '/fulltext/' + this.searchQuery
-                ]);
-            }
+
             // push the search query into the local storage prevSearch array (previous search)
             // to have a list of recent search requests
             let existingPrevSearch: PrevSearchItem[] = JSON.parse(
@@ -286,15 +272,16 @@ export class FulltextSearchComponent implements OnInit {
                     JSON.stringify(existingPrevSearch)
                 );
             }
+
+            this.emitSearchParams();
         }
+
         this.resetSearch();
 
         if (this.overlayRef) {
             this.overlayRef.detach();
         }
 
-        this.show = false;
-        this.showState.emit(this.show);
     }
 
     /**
@@ -331,12 +318,11 @@ export class FulltextSearchComponent implements OnInit {
         if (prevSearch.projectIri !== undefined) {
             this.projectIri = prevSearch.projectIri;
             this.projectLabel = prevSearch.projectLabel;
-            this._router.navigate([this.route + '/fulltext/' + this.searchQuery + '/' + encodeURIComponent(prevSearch.projectIri)]);
         } else {
             this.projectIri = undefined;
             this.projectLabel = this.defaultProjectLabel;
-            this._router.navigate([this.route + '/fulltext/' + this.searchQuery]);
         }
+        this.emitSearchParams();
 
         this.resetSearch();
 
@@ -372,6 +358,21 @@ export class FulltextSearchComponent implements OnInit {
         this.selectProject.closeMenu();
         this.searchInput.nativeElement.focus();
         this.setFocus();
+    }
+
+    emitSearchParams() {
+        let searchParams: SearchParams = {
+            query: this.searchQuery,
+            mode: 'fulltext'
+        };
+
+        if (this.projectIri !== undefined) {
+            searchParams.filter = {
+                limitToProject: this.projectIri
+            };
+        }
+
+        this.search.emit(searchParams);
     }
 
 }

@@ -7,9 +7,11 @@
     margin: auto;
 
     .textarea-field {
-      width: 100%;
+      width: calc(100% - 24px);
       display: block;
       margin-bottom: 24px;
+      background: #fff;
+      padding: 12px;
     }
 
     .form-panel {
