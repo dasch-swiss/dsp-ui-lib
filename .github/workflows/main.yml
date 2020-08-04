@@ -116,22 +116,24 @@ jobs:
       - run: npm install
       - run: npm run build-lib
       - if: "github.event.release.prerelease"
-        name: Publish prerelease to npm and update release notes
+        name: Publish prerelease to npm
         run: cd ${{env.dist-directory}} && npm publish --tag rc --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
       - if: "!github.event.release.prerelease"
-        name: Publish release to npm and update release notes
+        name: Publish release to npm
         run: cd ${{env.dist-directory}} && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
       - if: "github.event.release.prerelease"
+        name: Update release notes
         uses: lakto/gren-action@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           options: '--override --prerelease'
       - if: "!github.event.release.prerelease"
+        name: Update release notes
         uses: lakto/gren-action@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
