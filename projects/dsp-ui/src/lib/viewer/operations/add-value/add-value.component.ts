@@ -1,5 +1,5 @@
 import {
-    Component,
+    AfterViewInit, Component,
     EventEmitter,
     Inject,
     Input,
@@ -14,11 +14,12 @@ import {
     ReadResource,
     ResourcePropertyDefinition,
     UpdateResource,
-    WriteValueResponse,
+    WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, ValueOperationEventService, Events } from '../../services/value-operation-event.service';
+import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
+import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
 @Component({
@@ -26,7 +27,7 @@ import { BaseValueComponent } from '../../values/base-value.component';
     templateUrl: './add-value.component.html',
     styleUrls: ['./add-value.component.scss']
 })
-export class AddValueComponent implements OnInit {
+export class AddValueComponent implements OnInit, AfterViewInit {
 
     @ViewChild('createVal') createValueComponent: BaseValueComponent;
 
@@ -53,18 +54,26 @@ export class AddValueComponent implements OnInit {
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
-        private _valueOperationEventService: ValueOperationEventService) { }
+        private _valueOperationEventService: ValueOperationEventService,
+        private _valueTypeService: ValueTypeService) { }
 
     ngOnInit() {
 
         this.mode = 'create';
 
-        this.createModeActive = true;
-
-        // TODO: find a way to figure out what type of text value it is
+        // Since simple text values and rich text values share the same object type 'TextValue',
+        // we need to use the ValueTypeService in order to assign it the correct object type for the ngSwitch in the template
         if (this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
-            this.resourcePropertyDefinition.objectType = 'ReadTextValueAsString';
+            this.resourcePropertyDefinition.objectType = this._valueTypeService.getTextValueClass(this.resourcePropertyDefinition);
         }
+
+    }
+
+    // wait to show the save/cancel buttons until the form is initialized so that the template checks using the form's validity work
+    ngAfterViewInit() {
+        setTimeout(() => {
+            this.createModeActive = true;
+        }, 0);
     }
 
     /**
@@ -101,7 +110,7 @@ export class AddValueComponent implements OnInit {
                     // emit a ValueAdded event to the listeners in:
                     // property-view component to hide the add value form
                     // resource-view component to trigger a refresh of the resource
-                    this._valueOperationEventService.emit(new EmitEvent(Events.ValueAdded));
+                    this._valueOperationEventService.emit(new EmitEvent(Events.ValueAdded, res2.getValues(updateRes.property)[0]));
 
                     // hide the progress indicator
                     this.submittingValue = false;
