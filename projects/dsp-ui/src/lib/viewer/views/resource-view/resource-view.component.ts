@@ -18,7 +18,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { ValueOperationEventService, Events } from '../../services/value-operation-event.service';
+import { Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 
 
 // object of property information from ontology class, properties and property values
@@ -63,8 +63,8 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit() {
         // subscribe to the event bus and listen for the ValueAdded event to be emitted
         // when a ValueAdded event is emitted, get the resource again to display the newly created value
-        // TODO: find a better way to show the new value than having to get the entire resource again
-        this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.getResource(this.iri));
+        this.valueOperationEventSubscription = this._valueOperationEventService.on(
+            Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue));
     }
 
     ngOnChanges() {
@@ -114,6 +114,21 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
             (error: ApiResponseError) => {
                 console.error('Error to get resource: ', error);
             });
+    }
+
+    updateResource(newValue?: ReadValue, isDeletion?: boolean): void {
+        if (this.resPropInfoVals) {
+            if (!isDeletion) {
+                this.resPropInfoVals
+                    .filter( propInfoValueArray => propInfoValueArray.propDef.id === newValue.property) // filter to the correct property
+                    .map( propInfoValue => propInfoValue.values.push(newValue)); // push new property to array
+            } else {
+                // pop from the array
+                // TODO: remove element from array when deletion is implemented
+            }
+        } else {
+            console.error('No properties exist for this resource');
+        }
     }
 
     /**
