@@ -120,19 +120,20 @@ jobs:
         run: cd ${{env.dist-directory}} && npm publish --tag rc --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
+      - if: "!github.event.release.prerelease"
+        name: Publish release to npm and update release notes
+        run: cd ${{env.dist-directory}} && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
+      - if: "github.event.release.prerelease"
         uses: lakto/gren-action@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           options: '--override --prerelease'
       - if: "!github.event.release.prerelease"
-        name: Publish release to npm and update release notes
-        run: cd ${{env.dist-directory}} && npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
         uses: lakto/gren-action@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           options: '--override'
-
