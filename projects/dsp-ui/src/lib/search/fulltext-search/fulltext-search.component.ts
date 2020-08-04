@@ -106,7 +106,6 @@ export class FulltextSearchComponent implements OnInit {
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _sortingService: SortingService,
         private _overlay: Overlay,
-        // private _router: Router,
         private _viewContainerRef: ViewContainerRef
     ) { }
 
@@ -319,11 +318,9 @@ export class FulltextSearchComponent implements OnInit {
         if (prevSearch.projectIri !== undefined) {
             this.projectIri = prevSearch.projectIri;
             this.projectLabel = prevSearch.projectLabel;
-            // this._router.navigate([this.route + '/fulltext/' + this.searchQuery + '/' + encodeURIComponent(prevSearch.projectIri)]);
         } else {
             this.projectIri = undefined;
             this.projectLabel = this.defaultProjectLabel;
-            // this._router.navigate([this.route + '/fulltext/' + this.searchQuery]);
         }
         this.emitSearchParams();
 

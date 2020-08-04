@@ -152,6 +152,7 @@ export class ListViewComponent implements OnInit {
 
             // perform extended search
             const gravsearch = this._advancedSearchParamsService.getSearchParams().generateGravsearch(this.pageEvent.pageIndex);
+
             if (typeof gravsearch === 'string') {
                 this._dspApiConnection.v2.search.doExtendedSearch(gravsearch).subscribe(
                     (response: ReadResourceSequence) => {
@@ -164,6 +165,8 @@ export class ListViewComponent implements OnInit {
                         this.loading = false;
                     }
                 );
+            } else {
+                console.error('The gravsearch query is not set correctly');
             }
 
         }

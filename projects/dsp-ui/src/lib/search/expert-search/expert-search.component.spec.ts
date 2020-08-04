@@ -57,7 +57,6 @@ describe('ExpertSearchComponent', () => {
             imports: [
                 FormsModule,
                 ReactiveFormsModule,
-                RouterTestingModule,
                 BrowserAnimationsModule,
                 MatFormFieldModule,
                 MatInputModule
@@ -66,12 +65,6 @@ describe('ExpertSearchComponent', () => {
                 {
                     provide: DspApiConfigToken,
                     useValue: dspConfSpy
-                },
-                {
-                    provide: ActivatedRoute,
-                    useValue: {
-                        params: null
-                    }
                 },
                 {
                     provide: AdvancedSearchParamsService,

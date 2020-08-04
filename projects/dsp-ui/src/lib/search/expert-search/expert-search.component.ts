@@ -2,8 +2,8 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken } from '../../core/core.module';
-import { AdvancedSearchParams, AdvancedSearchParamsService } from '../services/advanced-search-params.service';
 import { SearchParams } from '../../viewer';
+import { AdvancedSearchParams, AdvancedSearchParamsService } from '../services/advanced-search-params.service';
 
 /**
  * @ignore
