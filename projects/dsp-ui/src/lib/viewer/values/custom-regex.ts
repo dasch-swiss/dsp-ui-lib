@@ -22,4 +22,6 @@ export class CustomRegex {
     public static readonly USERNAME_REGEX = /^[a-zA-Z0-9]+$/;
 
     public static readonly SHORTNAME_REGEX = /^[a-zA-Z]+\S*$/;
+
+    public static readonly ONTOLOGYNAME_REGEX = /^(?![vV][0-9]|[0-9]|[\u00C0-\u017F]).[a-zA-Z0-9]+\S*$/;
 }
