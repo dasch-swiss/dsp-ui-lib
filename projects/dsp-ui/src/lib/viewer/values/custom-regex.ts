@@ -15,4 +15,13 @@ export class CustomRegex {
 
     public static readonly GEONAME_REGEX = /^[0-9]{7}$/;
 
+    public static readonly EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+    public static readonly PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/i;
+
+    public static readonly USERNAME_REGEX = /^[a-zA-Z0-9]+$/;
+
+    public static readonly SHORTNAME_REGEX = /^[a-zA-Z]+\S*$/;
+
+    public static readonly ONTOLOGYNAME_REGEX = /^(?![vV][0-9]|[0-9]|[\u00C0-\u017F]).[a-zA-Z0-9]+\S*$/;
 }
