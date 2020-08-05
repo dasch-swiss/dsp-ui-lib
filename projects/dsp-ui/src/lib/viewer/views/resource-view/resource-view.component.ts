@@ -9,6 +9,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     ApiResponseError,
+    DeleteValue,
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
     PropertyDefinition,
@@ -16,6 +17,7 @@ import {
     ReadValue,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
+import { BaseValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/base-value';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { Events, ValueOperationEventService } from '../../services/value-operation-event.service';
@@ -67,7 +69,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
             Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue, false));
 
         this.valueOperationEventSubscription = this._valueOperationEventService.on(
-            Events.ValueDeleted, (deletedValue: ReadValue) => this.updateResource(deletedValue, true));
+            Events.ValueDeleted, (deletedValue: DeleteValue) => this.updateResource(deletedValue, true));
     }
 
     ngOnChanges() {
@@ -119,21 +121,24 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
-    updateResource(value: ReadValue, isDeletion: boolean): void {
+    updateResource(value: BaseValue, isDeletion: boolean): void {
         if (this.resPropInfoVals) {
             if (!isDeletion) { // add new value
                 this.resPropInfoVals
-                    .filter( propInfoValueArray => propInfoValueArray.propDef.id === value.property) // filter to the correct property
-                    .map( propInfoValue => propInfoValue.values.push(value)); // push new value to array
+                    .filter( propInfoValueArray =>
+                        propInfoValueArray.propDef.id === (value as ReadValue).property) // filter to the correct property
+                    .map( propInfoValue =>
+                        propInfoValue.values.push((value as ReadValue))); // push new value to array
             } else { // delete value
                 this.resPropInfoVals
-                    .filter( propInfoValueArray => propInfoValueArray.propDef.objectType === value.type) // filter to the correct type
+                    .filter( propInfoValueArray =>
+                        propInfoValueArray.propDef.objectType === (value as DeleteValue).type) // filter to the correct type
                     .map((filteredpropInfoValueArray) => {
                         let index = -1; // init index to increment and use for the splice
                         filteredpropInfoValueArray.values.forEach( // loop through each value of the current property
                             val => {
                                 index += 1; // increment index
-                                if (val.id === value.id) { // find the value that was deleted using the value id
+                                if (val.id === (value as DeleteValue).id) { // find the value that was deleted using the value id
                                     filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
                                 }
                             }

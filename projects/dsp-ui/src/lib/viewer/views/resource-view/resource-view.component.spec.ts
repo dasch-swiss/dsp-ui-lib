@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
-import { MockResource, PropertyDefinition, ReadIntValue, ReadResource, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
+import { DeleteValue, MockResource, PropertyDefinition, ReadIntValue, ReadResource, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { DspApiConnectionToken } from '../../../core';
@@ -150,7 +150,7 @@ describe('ResourceViewComponent', () => {
         expect(testHostComponent.voeSubscription.closed).toBe(true);
     });
 
-    it('should update a resource', () => {
+    it('should add a value to a property of a resource', () => {
         const newReadIntValue = new ReadIntValue();
 
         newReadIntValue.int = 123;
@@ -165,6 +165,33 @@ describe('ResourceViewComponent', () => {
         expect(propArrayIntValues[0].values.length).toEqual(2);
 
         expect((propArrayIntValues[0].values[1] as ReadIntValue).int).toEqual(123);
+    });
+
+    it('should delete a value from a property of a resource', () => {
+        // add new value to be deleted (so that I can ensure the id will be what I expect)
+        const newReadIntValue = new ReadIntValue();
+
+        newReadIntValue.id = 'myNewReadIntId';
+        newReadIntValue.int = 123;
+        newReadIntValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
+
+        testHostComponent.resourceViewComponent.updateResource(newReadIntValue, false);
+
+        // delete the value
+        const valueToBeDeleted = new DeleteValue();
+
+        valueToBeDeleted.id = 'myNewReadIntId';
+        valueToBeDeleted.type = 'http://api.knora.org/ontology/knora-api/v2#IntValue';
+
+        testHostComponent.resourceViewComponent.updateResource(valueToBeDeleted, true);
+
+        const propArrayIntValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.objectType === valueToBeDeleted.type
+        );
+
+        // expect there to be one value left after deleting the newly created value
+        expect(propArrayIntValues[0].values.length).toEqual(1);
+
     });
 
     // TODO: currently not possible to test copy to clipboard from Material Angular
