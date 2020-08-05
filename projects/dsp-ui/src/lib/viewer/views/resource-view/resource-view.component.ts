@@ -64,7 +64,10 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         // subscribe to the event bus and listen for the ValueAdded event to be emitted
         // when a ValueAdded event is emitted, get the resource again to display the newly created value
         this.valueOperationEventSubscription = this._valueOperationEventService.on(
-            Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue));
+            Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue, false));
+
+        this.valueOperationEventSubscription = this._valueOperationEventService.on(
+            Events.ValueDeleted, (deletedValue: ReadValue) => this.updateResource(deletedValue, true));
     }
 
     ngOnChanges() {
@@ -116,15 +119,25 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
-    updateResource(newValue?: ReadValue, isDeletion?: boolean): void {
+    updateResource(value: ReadValue, isDeletion: boolean): void {
         if (this.resPropInfoVals) {
-            if (!isDeletion) {
+            if (!isDeletion) { // add new value
                 this.resPropInfoVals
-                    .filter( propInfoValueArray => propInfoValueArray.propDef.id === newValue.property) // filter to the correct property
-                    .map( propInfoValue => propInfoValue.values.push(newValue)); // push new property to array
-            } else {
-                // pop from the array
-                // TODO: remove element from array when deletion is implemented
+                    .filter( propInfoValueArray => propInfoValueArray.propDef.id === value.property) // filter to the correct property
+                    .map( propInfoValue => propInfoValue.values.push(value)); // push new value to array
+            } else { // delete value
+                this.resPropInfoVals.forEach( // loop through each property
+                    propInfoValue => {
+                        let index = -1; // init index to increment and use for the splice
+                        propInfoValue.values.forEach( // loop through each value of the current property
+                            val => {
+                                index += 1; // increment index
+                                if (val.id === value.id) { // find the value that was deleted using the value id
+                                    propInfoValue.values.splice(index, 1); // remove the value from the values array
+                                }
+                            });
+                        }
+                    );
             }
         } else {
             console.error('No properties exist for this resource');

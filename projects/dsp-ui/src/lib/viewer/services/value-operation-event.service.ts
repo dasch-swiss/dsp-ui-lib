@@ -1,6 +1,7 @@
 import { ReadValue } from '@dasch-swiss/dsp-js';
 import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { BaseValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/base-value';
 
 /**
  * https://stackoverflow.com/questions/56290722/how-pass-a-event-from-deep-nested-child-to-parent-in-angular-2
@@ -35,7 +36,7 @@ export class ValueOperationEventService {
 }
 
 export class EmitEvent {
-    constructor(public name: any, public value?: ReadValue) { }
+    constructor(public name: any, public value?: BaseValue) { }
 }
 
 // Possible events that can be emitted.

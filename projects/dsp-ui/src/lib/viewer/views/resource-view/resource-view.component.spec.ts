@@ -156,7 +156,7 @@ describe('ResourceViewComponent', () => {
         newReadIntValue.int = 123;
         newReadIntValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
 
-        testHostComponent.resourceViewComponent.updateResource(newReadIntValue);
+        testHostComponent.resourceViewComponent.updateResource(newReadIntValue, false);
 
         const propArrayIntValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
             propInfoValueArray => propInfoValueArray.propDef.id === newReadIntValue.property

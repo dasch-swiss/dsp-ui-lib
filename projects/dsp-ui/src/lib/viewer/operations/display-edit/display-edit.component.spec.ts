@@ -34,6 +34,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
 import { ValueTypeService } from '../../services/value-type.service';
+import { ValueOperationEventService } from '../../services/value-operation-event.service';
 
 @Component({
   selector: `dsp-text-value-as-string`,
@@ -256,6 +257,8 @@ describe('DisplayEditComponent', () => {
       }
     };
 
+    const eventSpy = jasmine.createSpyObj('ValueOperationEventService', ['emit']);
+
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -282,6 +285,10 @@ describe('DisplayEditComponent', () => {
         {
           provide: DspApiConnectionToken,
           useValue: valuesSpyObj
+        },
+        {
+            provide: ValueOperationEventService,
+            useValue: eventSpy
         },
         ValueTypeService
       ]

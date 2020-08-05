@@ -1,9 +1,17 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import {
     Constants,
+
+
+
+
+
+
+
+
+
     DeleteValue,
-    DeleteValueResponse,
-    KnoraApiConnection,
+    DeleteValueResponse, KnoraApiConnection,
     PermissionUtil,
     ReadResource,
     ReadValue,
@@ -13,7 +21,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, ValueOperationEventService, Events } from '../../services/value-operation-event.service';
+import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
@@ -51,6 +59,7 @@ export class DisplayEditComponent implements OnInit {
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _valueOperationEventService: ValueOperationEventService,
         private _valueTypeService: ValueTypeService) {
     }
 
@@ -114,6 +123,33 @@ export class DisplayEditComponent implements OnInit {
         }
     }
 
+    deleteValue() {
+        const deleteVal = new DeleteValue();
+        deleteVal.id = this.displayValue.id;
+        deleteVal.type = this.displayValue.type;
+
+        const updateRes = new UpdateResource();
+        updateRes.type = this.parentResource.type;
+        updateRes.id = this.parentResource.id;
+        updateRes.property = this.displayValue.property;
+        updateRes.value = deleteVal;
+
+        console.log('updateRes: ', updateRes);
+
+        this._dspApiConnection.v2.values.deleteValue(updateRes as UpdateResource<DeleteValue>).pipe(
+        mergeMap((res: DeleteValueResponse) => {
+            console.log('res: ', res);
+            // emit a ValueDeleted event to the listeners in resource-view component to trigger an update of the UI
+            this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, deleteVal));
+            return res.result;
+        })
+        ).subscribe(
+        () => {
+            // TODO: figure out what needs to be done here
+        }
+        );
+    }
+
     cancelEditValue() {
         this.editModeActive = false;
         this.mode = 'read';
@@ -132,7 +168,11 @@ export class DisplayEditComponent implements OnInit {
 
     // only show the comment toggle button if user is in READ mode and a comment exists for the value
     checkCommentToggleVisibility() {
-        this.shouldShowCommentToggle = (this.mode === 'read' && this.displayValue.valueHasComment !== '' && this.displayValue.valueHasComment !== undefined);
+        this.shouldShowCommentToggle = (
+            this.mode === 'read' &&
+            this.displayValue.valueHasComment !== '' &&
+            this.displayValue.valueHasComment !== undefined
+        );
     }
 
 }

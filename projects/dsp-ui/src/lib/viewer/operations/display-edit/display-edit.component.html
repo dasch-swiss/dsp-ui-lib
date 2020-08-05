@@ -39,7 +39,8 @@
         <button mat-button
                 class="delete"
                 title="delete"
-                *ngIf="canModify && !editModeActive">
+                *ngIf="canModify && !editModeActive"
+                (click)="deleteValue()">
                 <mat-icon>delete</mat-icon>
         </button>
         <button class="save"
