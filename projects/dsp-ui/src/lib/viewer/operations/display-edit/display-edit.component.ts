@@ -134,11 +134,8 @@ export class DisplayEditComponent implements OnInit {
         updateRes.property = this.displayValue.property;
         updateRes.value = deleteVal;
 
-        console.log('updateRes: ', updateRes);
-
         this._dspApiConnection.v2.values.deleteValue(updateRes as UpdateResource<DeleteValue>).pipe(
         mergeMap((res: DeleteValueResponse) => {
-            console.log('res: ', res);
             // emit a ValueDeleted event to the listeners in resource-view component to trigger an update of the UI
             this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, deleteVal));
             return res.result;

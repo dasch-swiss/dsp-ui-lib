@@ -126,18 +126,20 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                     .filter( propInfoValueArray => propInfoValueArray.propDef.id === value.property) // filter to the correct property
                     .map( propInfoValue => propInfoValue.values.push(value)); // push new value to array
             } else { // delete value
-                this.resPropInfoVals.forEach( // loop through each property
-                    propInfoValue => {
+                this.resPropInfoVals
+                    .filter( propInfoValueArray => propInfoValueArray.propDef.objectType === value.type) // filter to the correct type
+                    .map((filteredpropInfoValueArray) => {
                         let index = -1; // init index to increment and use for the splice
-                        propInfoValue.values.forEach( // loop through each value of the current property
+                        filteredpropInfoValueArray.values.forEach( // loop through each value of the current property
                             val => {
                                 index += 1; // increment index
                                 if (val.id === value.id) { // find the value that was deleted using the value id
-                                    propInfoValue.values.splice(index, 1); // remove the value from the values array
+                                    filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
                                 }
-                            });
-                        }
-                    );
+                            }
+                        );
+                    }
+                );
             }
         } else {
             console.error('No properties exist for this resource');
