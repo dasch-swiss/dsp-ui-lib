@@ -8,7 +8,8 @@ import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    ILabelSearchParams, ReadResource,
+    ILabelSearchParams,
+    ReadResource,
     ReadResourceSequence,
     SearchEndpointV2
 } from '@dasch-swiss/dsp-js';
