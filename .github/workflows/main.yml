@@ -116,7 +116,7 @@ jobs:
       - run: npm install
       - run: npm run build-lib
       - if: "github.event.release.prerelease"
-        name: Publish prerelease to npm
+        name: Publish pre-release to npm
         run: cd ${{env.dist-directory}} && npm publish --tag rc --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
@@ -126,7 +126,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
       - if: "github.event.release.prerelease"
-        name: Update release notes
+        name: Update pre-release notes
         uses: lakto/gren-action@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
