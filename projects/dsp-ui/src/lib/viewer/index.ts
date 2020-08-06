@@ -15,6 +15,7 @@ export * from './values/text-value/text-value-as-html/text-value-as-html.compone
 export * from './values/text-value/text-value-as-string/text-value-as-string.component';
 export * from './values/time-value/time-value.component';
 export * from './values/uri-value/uri-value.component';
+export * from './values/custom-regex';
 // operation components
 export * from './operations/display-edit/display-edit.component';
 export * from './operations/add-value/add-value.component';
