@@ -61,7 +61,7 @@
 - [#94](https://github.com/dasch-swiss/dsp-ui-lib/pull/94) Migrate sort button
 - [#93](https://github.com/dasch-swiss/dsp-ui-lib/pull/93) Progress Indicator
 - [#91](https://github.com/dasch-swiss/dsp-ui-lib/pull/91) Migrate action module directives
-- [#92](https://github.com/dasch-swiss/dsp-ui-lib/pull/92) Update tslint 
+- [#92](https://github.com/dasch-swiss/dsp-ui-lib/pull/92) Update tslint
 - [#89](https://github.com/dasch-swiss/dsp-ui-lib/pull/89) Refactor Truncate Pipe
 - [#86](https://github.com/dasch-swiss/dsp-ui-lib/pull/86) Update package information
 
