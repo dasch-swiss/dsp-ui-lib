@@ -1,5 +1,5 @@
-import { ComparisonOperatorConstants } from './operator-constants';
 import { ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
+import { ComparisonOperatorConstants } from './operator-constants';
 
 /**
  * An abstract interface representing a comparison operator.
