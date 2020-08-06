@@ -1,29 +1,12 @@
 # Changelog
 
-## v1.0.0-rc.3 (07/08/2020)
-
-### Enhancements
-
-- [#149](https://github.com/dasch-swiss/dsp-ui-lib/pull/149) Export operator.ts
-- [#146](https://github.com/dasch-swiss/dsp-ui-lib/pull/146) Add missing regex variables
-
-### Documentation
-
-- [#144](https://github.com/dasch-swiss/dsp-ui-lib/pull/144) Update CHANGELOG and READMEs
-
-### Other
-
-- [#145](https://github.com/dasch-swiss/dsp-ui-lib/pull/145) Update process of release notes
-
----
-
 ## v1.0.0-rc.2 (30/07/2020)
 
-### Breaking changes
+#### Breaking changes:
 
 - [#82](https://github.com/dasch-swiss/dsp-ui-lib/pull/82) Action module pipes migration
 
-### Enhancements
+#### Enhancements:
 
 - [#138](https://github.com/dasch-swiss/dsp-ui-lib/pull/138) Optimise the number of cards per line
 - [#136](https://github.com/dasch-swiss/dsp-ui-lib/pull/136) Build lib including assets folder
@@ -43,7 +26,7 @@
 - [#88](https://github.com/dasch-swiss/dsp-ui-lib/pull/88) Refactor how to get properties by type
 - [#73](https://github.com/dasch-swiss/dsp-ui-lib/pull/73) Custom Boolean Pipe
 
-### Bug Fixes
+#### Bug Fixes:
 
 - [#142](https://github.com/dasch-swiss/dsp-ui-lib/pull/142) FIX: DSP UI is blocked when submitting an invalid value
 - [#121](https://github.com/dasch-swiss/dsp-ui-lib/pull/121) Flaky E2E Tests
@@ -53,16 +36,16 @@
 - [#102](https://github.com/dasch-swiss/dsp-ui-lib/pull/102) FIX: Sort button type annotation
 - [#97](https://github.com/dasch-swiss/dsp-ui-lib/pull/97) FIX: Action Module Playground & Components Missing Imports
 
-### Documentation
+#### Documentation:
 
 - [#99](https://github.com/dasch-swiss/dsp-ui-lib/pull/99) Update README
 - [#87](https://github.com/dasch-swiss/dsp-ui-lib/pull/87) Describe concept of value components
 
-### Styling
+#### Styling:
 
 - [#141](https://github.com/dasch-swiss/dsp-ui-lib/pull/141) Change Home Icon of OpenSeadragon Viewer
 
-### Other
+#### Other:
 
 - [#143](https://github.com/dasch-swiss/dsp-ui-lib/pull/143) Prerelease of v1.0.0 rc.2
 - [#131](https://github.com/dasch-swiss/dsp-ui-lib/pull/131) Migrate String Literal Input Component
@@ -78,7 +61,7 @@
 - [#94](https://github.com/dasch-swiss/dsp-ui-lib/pull/94) Migrate sort button
 - [#93](https://github.com/dasch-swiss/dsp-ui-lib/pull/93) Progress Indicator
 - [#91](https://github.com/dasch-swiss/dsp-ui-lib/pull/91) Migrate action module directives
-- [#92](https://github.com/dasch-swiss/dsp-ui-lib/pull/92) Update tslint
+- [#92](https://github.com/dasch-swiss/dsp-ui-lib/pull/92) Update tslint 
 - [#89](https://github.com/dasch-swiss/dsp-ui-lib/pull/89) Refactor Truncate Pipe
 - [#86](https://github.com/dasch-swiss/dsp-ui-lib/pull/86) Update package information
 
@@ -86,12 +69,12 @@
 
 ## v1.0.0-rc.1 (15/05/2020)
 
-### Breaking changes
+#### Breaking changes:
 
 - [#78](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/78) Rename @knora/ui to @dasch-swiss/dsp-ui and kui to dsp
 - [#63](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/63) Upgrade to Angular 9
 
-### Enhancements
+#### Enhancements:
 
 - [#83](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/83) Preparing Release Candidate v1.0.0-rc.0
 - [#67](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/67) Improve read mode appearance of value components
@@ -106,17 +89,17 @@
 - [#22](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/22) Uri Value Component
 - [#23](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/23) Decimal Value Component
 
-### Bug Fixes
+#### Bug Fixes:
 
 - [#77](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/77) FIX: KnoraDatePipe return values
 - [#66](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/66) BUG: User can no longer save an edited value
 - [#58](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/58) Clean up prop label
 
-### Documentation
+#### Documentation:
 
 - [#72](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/72) Step by step guidelines in the READMEs
 
-### Other
+#### Other:
 
 - [#81](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/81) Add ngx-color-picker to lib's peer deps
 - [#76](https://github.com/dasch-swiss/knora-ui-ng-lib/pull/76) Use @knora/api 1.0.0-rc.0
