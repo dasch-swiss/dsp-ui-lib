@@ -24,6 +24,7 @@ import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe'
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { StringifyStringLiteralPipe } from './pipes/string-transformation/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     MessageComponent,
     SortButtonComponent,
     StringLiteralInputComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +71,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     MessageComponent,
     SortButtonComponent,
     StringLiteralInputComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    ConfirmationDialogComponent
   ]
 })
 
