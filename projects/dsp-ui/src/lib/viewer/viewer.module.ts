@@ -48,6 +48,7 @@ import { ResourceGridComponent } from './views/list-view/resource-grid/resource-
 import { ResourceListComponent } from './views/list-view/resource-list/resource-list.component';
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
+import { MovingImageComponent } from './representation/moving-image/moving-image.component';
 
 @NgModule({
     declarations: [
@@ -78,7 +79,8 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         StillImageComponent,
         ResourceListComponent,
         ResourceGridComponent,
-        AddValueComponent
+        AddValueComponent,
+        MovingImageComponent
     ],
     imports: [
         CommonModule,
