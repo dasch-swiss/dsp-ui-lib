@@ -1,8 +1,6 @@
-# Change Log
+# Changelog
 
-## Latest release
-
-### [v1.0.0-rc.2](https://github.com/dasch-swiss/knora-ui-ng-lib/releases/tag/v1.0.0-rc.2)
+## v1.0.0-rc.2 (30/07/2020)
 
 #### Breaking changes:
 
@@ -63,13 +61,13 @@
 - [#94](https://github.com/dasch-swiss/dsp-ui-lib/pull/94) Migrate sort button
 - [#93](https://github.com/dasch-swiss/dsp-ui-lib/pull/93) Progress Indicator
 - [#91](https://github.com/dasch-swiss/dsp-ui-lib/pull/91) Migrate action module directives
-- [#92](https://github.com/dasch-swiss/dsp-ui-lib/pull/92) Update tslint 
+- [#92](https://github.com/dasch-swiss/dsp-ui-lib/pull/92) Update tslint
 - [#89](https://github.com/dasch-swiss/dsp-ui-lib/pull/89) Refactor Truncate Pipe
 - [#86](https://github.com/dasch-swiss/dsp-ui-lib/pull/86) Update package information
 
-## Old releases
+---
 
-### [v1.0.0-rc.1](https://github.com/dasch-swiss/knora-ui-ng-lib/releases/tag/v1.0.0-rc.1)
+## v1.0.0-rc.1 (15/05/2020)
 
 #### Breaking changes:
 
