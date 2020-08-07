@@ -15,22 +15,12 @@ export class ConfirmationDialogData {
 })
 export class ConfirmationDialogComponent {
 
-    title: string;
-    message: string;
-    confirmButtonText: string;
-    cancelButtonText: string;
-
+    // type assertion doesn't seem to be enforced
+    // https://stackoverflow.com/a/57787554
     constructor(
-        @Inject(MAT_DIALOG_DATA) private _data: ConfirmationDialogData,
+        @Inject(MAT_DIALOG_DATA) public data: ConfirmationDialogData,
         private _dialogRef: MatDialogRef<ConfirmationDialogComponent>
-    ) {
-        if (_data) {
-            this.title = _data.title;
-            this.message = _data.message;
-            this.confirmButtonText = _data.buttonTextOk;
-            this.cancelButtonText = _data.buttonTextCancel;
-        }
-    }
+    ) { }
 
     onConfirmClick(): void {
         this._dialogRef.close(true);
