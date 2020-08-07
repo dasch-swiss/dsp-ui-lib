@@ -76,3 +76,11 @@ We will implement the login form here as soon its moved from the old knora-ui.
 
 <p>StringLiteral input example as textarea</p>
 <dsp-string-literal-input [placeholder]="'List description'" [textarea]="true"> </dsp-string-literal-input>
+
+
+<hr>
+
+<p>Confirmation Dialog component</p>
+
+<button mat-raised-button color="primary" (click)="openDialog()">Open Confirmation Dialog</button>
+<p> {{confirmationDialogResponse}} </p>

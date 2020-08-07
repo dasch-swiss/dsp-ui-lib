@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ApiResponseError, StringLiteral } from '@dasch-swiss/dsp-js';
-import { DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
+import { ConfirmationDialogComponent, DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
+import { ConfirmationDialogData } from 'projects/dsp-ui/src/lib/action';
 
 @Component({
   selector: 'app-action-playground',
@@ -130,10 +132,13 @@ export class ActionPlaygroundComponent implements OnInit {
         error: 'error message'
     };
 
+    confirmationDialogResponse: string;
+
     constructor(
         // private _sessionService: SessionService,
         // @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
-        private _sortingService: SortingService
+        private _sortingService: SortingService,
+        private dialog: MatDialog
     ) { }
 
     ngOnInit(): void {
@@ -170,6 +175,33 @@ export class ActionPlaygroundComponent implements OnInit {
     submitNewInput() {
         console.log('submit string literal', this.stringLiteralInputNewLabels);
     }
+
+    // confirmation dialog
+
+    openDialog() {
+        const dialogData = new ConfirmationDialogData();
+        dialogData.title = 'Are you sure want to do this?';
+        dialogData.message = 'Confirming this action will delete the value. (Not really though, this is just a test message)';
+        dialogData.buttonTextOk = 'Yes, delete the value';
+        dialogData.buttonTextCancel = 'No, keep the value';
+
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            data: {
+                title: 'Are you sure want to do this?',
+                message: 'Confirming this action will delete the value. (Not really though, this is just a test message)',
+                buttonTextOk: 'Yes, delete the value',
+                buttonTextCancel: 'No, keep the value'
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+            if (confirmed) {
+                this.confirmationDialogResponse = 'Action was confirmed!';
+            } else {
+                this.confirmationDialogResponse = 'Action was not confirmed';
+            }
+        });
+      }
 
     // TODO: Will be replaced by login process from action module
     /*

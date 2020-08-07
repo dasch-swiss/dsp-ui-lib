@@ -25,6 +25,7 @@ import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { StringifyStringLiteralPipe } from './pipes/string-transformation/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     CommonModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatDialogModule,
     MatIconModule,
     MatInputModule,
     MatMenuModule,

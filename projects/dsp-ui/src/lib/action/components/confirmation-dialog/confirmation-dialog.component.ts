@@ -1,15 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+export class ConfirmationDialogData {
+    title: string;
+    message: string;
+    buttonTextOk: string;
+    buttonTextCancel: string;
+}
 
 @Component({
   selector: 'dsp-confirmation-dialog',
   templateUrl: './confirmation-dialog.component.html',
   styleUrls: ['./confirmation-dialog.component.scss']
 })
-export class ConfirmationDialogComponent implements OnInit {
+export class ConfirmationDialogComponent {
 
-  constructor() { }
+    title: string;
+    message: string;
+    confirmButtonText: string;
+    cancelButtonText: string;
 
-  ngOnInit(): void {
-  }
+    constructor(
+        @Inject(MAT_DIALOG_DATA) private data: ConfirmationDialogData,
+        private dialogRef: MatDialogRef<ConfirmationDialogComponent>) {
+            if (data) {
+                console.log(data);
+
+                this.title = data.title;
+                this.message = data.message;
+                this.confirmButtonText = data.buttonTextOk;
+                this.cancelButtonText = data.buttonTextCancel;
+        }
+    }
+
+    onConfirmClick(): void {
+        this.dialogRef.close(true);
+    }
 
 }
