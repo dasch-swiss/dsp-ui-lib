@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiResponseError, StringLiteral } from '@dasch-swiss/dsp-js';
-import { ConfirmationDialogComponent, DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
-import { ConfirmationDialogData } from 'projects/dsp-ui/src/lib/action';
+import { ConfirmationDialogComponent, ConfirmationDialogData, DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-action-playground',
@@ -185,14 +184,8 @@ export class ActionPlaygroundComponent implements OnInit {
         dialogData.buttonTextOk = 'Yes, delete the value';
         dialogData.buttonTextCancel = 'No, keep the value';
 
-        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-            data: {
-                title: 'Are you sure want to do this?',
-                message: 'Confirming this action will delete the value. (Not really though, this is just a test message)',
-                buttonTextOk: 'Yes, delete the value',
-                buttonTextCancel: 'No, keep the value'
-            }
-        });
+        const dialogRef =
+            this.dialog.open<ConfirmationDialogComponent, ConfirmationDialogData>(ConfirmationDialogComponent, { data: dialogData});
 
         dialogRef.afterClosed().subscribe((confirmed: boolean) => {
             if (confirmed) {

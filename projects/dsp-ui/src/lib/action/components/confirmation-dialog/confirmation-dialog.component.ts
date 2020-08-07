@@ -21,19 +21,19 @@ export class ConfirmationDialogComponent {
     cancelButtonText: string;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) private data: ConfirmationDialogData,
-        private dialogRef: MatDialogRef<ConfirmationDialogComponent>
+        @Inject(MAT_DIALOG_DATA) private _data: ConfirmationDialogData,
+        private _dialogRef: MatDialogRef<ConfirmationDialogComponent>
     ) {
-        if (data) {
-            this.title = data.title;
-            this.message = data.message;
-            this.confirmButtonText = data.buttonTextOk;
-            this.cancelButtonText = data.buttonTextCancel;
+        if (_data) {
+            this.title = _data.title;
+            this.message = _data.message;
+            this.confirmButtonText = _data.buttonTextOk;
+            this.cancelButtonText = _data.buttonTextCancel;
         }
     }
 
     onConfirmClick(): void {
-        this.dialogRef.close(true);
+        this._dialogRef.close(true);
     }
 
 }
