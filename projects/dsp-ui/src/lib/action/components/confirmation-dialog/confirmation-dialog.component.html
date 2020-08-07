@@ -1,8 +1,8 @@
 <mat-dialog-content>
     <p class="title"> {{title}} </p>
-    <p class="message"> {{message}} </p>
+    <p *ngIf="message" class="message"> {{message}} </p>
 </mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions class="action-buttons">
     <button class="cancel" mat-raised-button mat-dialog-close tabindex="-1">{{cancelButtonText}}</button>
     <button class="ok" mat-raised-button color="primary" tabindex="1" (click)="onConfirmClick()">{{confirmButtonText}}</button>
 </mat-dialog-actions>
