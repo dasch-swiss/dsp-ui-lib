@@ -22,14 +22,13 @@ export class ConfirmationDialogComponent {
 
     constructor(
         @Inject(MAT_DIALOG_DATA) private data: ConfirmationDialogData,
-        private dialogRef: MatDialogRef<ConfirmationDialogComponent>) {
-            if (data) {
-                console.log(data);
-
-                this.title = data.title;
-                this.message = data.message;
-                this.confirmButtonText = data.buttonTextOk;
-                this.cancelButtonText = data.buttonTextCancel;
+        private dialogRef: MatDialogRef<ConfirmationDialogComponent>
+    ) {
+        if (data) {
+            this.title = data.title;
+            this.message = data.message;
+            this.confirmButtonText = data.buttonTextOk;
+            this.cancelButtonText = data.buttonTextCancel;
         }
     }
 
