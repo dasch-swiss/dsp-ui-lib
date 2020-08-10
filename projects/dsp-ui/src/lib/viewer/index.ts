@@ -27,3 +27,5 @@ export * from './views/list-view/resource-list/resource-list.component';
 export * from './views/list-view/resource-grid/resource-grid.component';
 // media representations
 export * from './representation/still-image/still-image.component';
+export * from './representation/moving-image/moving-image.component';
+export * from './representation/moving-image/moving-image-preview/moving-image-preview.component';

@@ -1,4 +1,5 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,11 +18,15 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { DspActionModule } from '../action';
 import { AddValueComponent } from './operations/add-value/add-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
+import { AvTimelineComponent } from './representation/av-helper/av-timeline/av-timeline.component';
+import { MovingImageComponent } from './representation/moving-image/moving-image.component';
+import { MovingImagePreviewComponent } from './representation/moving-image/moving-image-preview/moving-image-preview.component';
 import { StillImageComponent } from './representation/still-image/still-image.component';
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
@@ -48,7 +53,6 @@ import { ResourceGridComponent } from './views/list-view/resource-grid/resource-
 import { ResourceListComponent } from './views/list-view/resource-list/resource-list.component';
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
-import { MovingImageComponent } from './representation/moving-image/moving-image.component';
 
 @NgModule({
     declarations: [
@@ -80,12 +84,15 @@ import { MovingImageComponent } from './representation/moving-image/moving-image
         ResourceListComponent,
         ResourceGridComponent,
         AddValueComponent,
-        MovingImageComponent
+        MovingImageComponent,
+        MovingImagePreviewComponent,
+        AvTimelineComponent
     ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
+        DragDropModule,
         MatButtonModule,
         MatButtonToggleModule,
         MatCardModule,
@@ -102,6 +109,7 @@ import { MovingImageComponent } from './representation/moving-image/moving-image
         MatListModule,
         MatMenuModule,
         MatToolbarModule,
+        MatTooltipModule,
         ClipboardModule,
         ColorPickerModule,
         DspActionModule
@@ -128,7 +136,9 @@ import { MovingImageComponent } from './representation/moving-image/moving-image
         ResourceListComponent,
         ResourceGridComponent,
         AddValueComponent,
-        StillImageComponent
+        StillImageComponent,
+        MovingImageComponent,
+        MovingImagePreviewComponent
     ]
 })
 export class DspViewerModule {

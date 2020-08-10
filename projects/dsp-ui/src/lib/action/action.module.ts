@@ -22,6 +22,7 @@ import { ReversePipe } from './pipes/array-transformation/reverse.pipe';
 import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe';
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
+import { TimecodePipe } from './pipes/formatting/timecode.pipe';
 import { StringifyStringLiteralPipe } from './pipes/string-transformation/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
 
@@ -40,7 +41,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     MessageComponent,
     SortButtonComponent,
     StringLiteralInputComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    TimecodePipe
   ],
   imports: [
     CommonModule,
@@ -69,7 +71,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     MessageComponent,
     SortButtonComponent,
     StringLiteralInputComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    TimecodePipe
   ]
 })
 

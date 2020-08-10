@@ -76,3 +76,10 @@ We will implement the login form here as soon its moved from the old knora-ui.
 
 <p>StringLiteral input example as textarea</p>
 <dsp-string-literal-input [placeholder]="'List description'" [textarea]="true"> </dsp-string-literal-input>
+
+<hr>
+<p>Timecode pipe</p>
+<p>Convert seconds into hh:mm:ss</p>
+<mat-slider min="0" max="7200" step="10" [value]="time" (input)="time = $event.value"></mat-slider>
+<p>{{time}}s => {{time | timecode }}</p>
+

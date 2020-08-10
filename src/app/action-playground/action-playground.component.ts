@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiResponseError, StringLiteral } from '@dasch-swiss/dsp-js';
 import { DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
+import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
   selector: 'app-action-playground',
@@ -130,6 +131,9 @@ export class ActionPlaygroundComponent implements OnInit {
         error: 'error message'
     };
 
+    // time for timecode pipe
+    time = 342;
+
     constructor(
         // private _sessionService: SessionService,
         // @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
@@ -209,5 +213,4 @@ export class ActionPlaygroundComponent implements OnInit {
         )
     }
     */
-
 }
