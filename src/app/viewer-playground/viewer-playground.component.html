@@ -1,20 +1,6 @@
-<dsp-list-view [search]="fulltextSearch" (resourceSelected)="openResource($event)"></dsp-list-view>
+<p>The <strong>DspViewerModule</strong> contains different component to display a resource.
+    The example here shows the usage of <span>dsp-resource-view</span> which combines smaller
+    components like one of the representation viewer or the value components. All of them can
+    also be used individually.</p>
 
-<!-- OLD playground with the two resource list and grid views implemented in standalone mode;
-    TODO: will be reactivated as soon the dsp-list-view is implemented in search playground but this needs an additional PR --
-<button mat-raised-button color="accent" (click)="showGrid = !showGrid">
-    Display as {{showGrid ? "LIST" : "GRID"}}
-</button>
-
-<div class="resource-list" *ngIf="!showGrid">
-    <h3>Simple list of resources: dsp-resource-list</h3>
-    <dsp-resource-list *ngIf="resources" [resources]="resources" (resourceSelected)="openResource($event)">
-    </dsp-resource-list>
-</div>
-
-<div class="resource-grid" *ngIf="showGrid">
-    <h3>Simple grid of resources: dsp-resource-grid</h3>
-    <dsp-resource-grid *ngIf="resources" [resources]="resources" (resourceSelected)="openResource($event)">
-    </dsp-resource-grid>
-</div>
--->
+<dsp-resource-view [iri]="resource"></dsp-resource-view>
