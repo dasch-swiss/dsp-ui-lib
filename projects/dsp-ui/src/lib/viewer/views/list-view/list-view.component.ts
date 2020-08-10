@@ -1,24 +1,8 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ApiResponseError, CountQueryResponse, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
+import { ApiResponseError, CountQueryResponse, IFulltextSearchParams, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../../core';
 import { AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
-
-// TODO: should be replaced by IFulltextSearchParams from dsp-js
-export interface FulltextSearchParams {
-    /**
-     * Iri of resource class the fulltext search is restricted to, if any.
-     */
-    limitToResourceClass?: string;
-    /**
-     * Iri of the project the fulltext search is restricted to, if any.
-     */
-    limitToProject?: string;
-    /**
-     * Iri of standoff class the fulltext search is restricted to, if any.
-     */
-    limitToStandoffClass?: string;
-}
 
 /**
  * query: search query. It can be gravserch query or fulltext string query.
@@ -34,7 +18,7 @@ export interface FulltextSearchParams {
 export interface SearchParams {
     query: string;
     mode: 'fulltext' | 'gravsearch';
-    filter?: FulltextSearchParams;
+    filter?: IFulltextSearchParams;
 }
 
 @Component({
