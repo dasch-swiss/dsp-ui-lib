@@ -1,0 +1,8 @@
+<mat-dialog-content>
+    <p class="title"> {{data.title}} </p>
+    <p *ngIf="data.message && data.message.trim() !== ''" class="message"> {{data.message}} </p>
+</mat-dialog-content>
+<mat-dialog-actions class="action-buttons">
+    <button class="cancel" mat-raised-button mat-dialog-close>{{data.buttonTextCancel}}</button>
+    <button class="ok" mat-raised-button color="primary" (click)="onConfirmClick()">{{data.buttonTextOk}}</button>
+</mat-dialog-actions>
