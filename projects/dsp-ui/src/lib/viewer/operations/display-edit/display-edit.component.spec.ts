@@ -1,34 +1,20 @@
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatButtonHarness } from '@angular/material/button/testing';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     Constants,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    DeleteValue, DeleteValueResponse, MockResource,
+    DeleteValue,
+    DeleteValueResponse,
+    MockResource,
     ReadBooleanValue,
     ReadColorValue,
     ReadDecimalValue,
@@ -52,7 +38,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
-import { ValueOperationEventService, EmitEvent, Events } from '../../services/value-operation-event.service';
+import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { DisplayEditComponent } from './display-edit.component';
 
@@ -285,6 +271,7 @@ describe('DisplayEditComponent', () => {
       imports: [
         BrowserAnimationsModule,
         MatIconModule,
+        MatDialogModule
       ],
       declarations: [
         DisplayEditComponent,
@@ -311,6 +298,14 @@ describe('DisplayEditComponent', () => {
         {
             provide: ValueOperationEventService,
             useValue: eventSpy
+        },
+        {
+            provide: MAT_DIALOG_DATA,
+            useValue: {}
+        },
+        {
+            provide: MatDialogRef,
+            useValue: {}
         },
         ValueTypeService
       ]
@@ -797,6 +792,8 @@ describe('DisplayEditComponent', () => {
   describe('deleteValue method', () => {
     let hostCompDe;
     let displayEditComponentDe;
+    let rootLoader: HarnessLoader;
+    let overlayContainer: OverlayContainer;
 
     beforeEach(() => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
@@ -807,9 +804,19 @@ describe('DisplayEditComponent', () => {
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
+      overlayContainer = TestBed.inject(OverlayContainer);
+      rootLoader = TestbedHarnessEnvironment.documentRootLoader(testHostFixture);
     });
 
-    it('should delete a value from a property', () => {
+    afterEach(async () => {
+        const dialogs = await rootLoader.getAllHarnesses(MatDialogHarness);
+        await Promise.all(dialogs.map(async d => await d.close()));
+
+        // Angular won't call this for us so we need to do it ourselves to avoid leaks.
+        overlayContainer.ngOnDestroy();
+    });
+
+    it('should delete a value from a property', async () => {
         const valueEventSpy = TestBed.inject(ValueOperationEventService);
 
         const valuesSpy = TestBed.inject(DspApiConnectionToken);
@@ -827,11 +834,16 @@ describe('DisplayEditComponent', () => {
             }
         );
 
-        const deleteButtonDebugElement = displayEditComponentDe.query(By.css('button.delete'));
-        const deleteButtonNativeElement = deleteButtonDebugElement.nativeElement;
+        const deleteButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.delete'}));
+        await deleteButton.click();
 
-        deleteButtonNativeElement.click();
-        testHostFixture.detectChanges();
+        const dialogHarnesses = await rootLoader.getAllHarnesses(MatDialogHarness);
+
+        expect(dialogHarnesses.length).toEqual(1);
+
+        const okButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.ok'}));
+
+        await okButton.click();
 
         const expectedUpdateResource = new UpdateResource();
 
@@ -845,11 +857,13 @@ describe('DisplayEditComponent', () => {
 
         expectedUpdateResource.value = deleteVal;
 
-        expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledWith(expectedUpdateResource);
-        expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledTimes(1);
+        testHostFixture.whenStable().then(() => {
+            expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledWith(expectedUpdateResource);
+            expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledTimes(1);
 
-        expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
-        expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueDeleted, deleteVal));
+            expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
+            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueDeleted, deleteVal));
+        });
 
     });
   });

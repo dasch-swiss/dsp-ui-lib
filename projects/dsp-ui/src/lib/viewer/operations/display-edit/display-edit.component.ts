@@ -1,17 +1,10 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import {
     Constants,
-
-
-
-
-
-
-
-
-
     DeleteValue,
-    DeleteValueResponse, KnoraApiConnection,
+    DeleteValueResponse,
+    KnoraApiConnection,
     PermissionUtil,
     ReadResource,
     ReadValue,
@@ -20,6 +13,10 @@ import {
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
+import {
+    ConfirmationDialogComponent,
+    ConfirmationDialogData
+} from '../../../action/components/confirmation-dialog/confirmation-dialog.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
@@ -60,7 +57,8 @@ export class DisplayEditComponent implements OnInit {
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueTypeService: ValueTypeService) {
+        private _valueTypeService: ValueTypeService,
+        private _dialog: MatDialog) {
     }
 
     ngOnInit() {
@@ -123,6 +121,24 @@ export class DisplayEditComponent implements OnInit {
         }
     }
 
+    openDialog() {
+        const dialogData = new ConfirmationDialogData();
+        dialogData.title = 'Are you sure want to delete this value from ' + this.displayValue.propertyLabel + '?';
+        dialogData.message = 'Confirming this action will delete the following value from ' +
+                                this.displayValue.propertyLabel + ':<br/><br/>' + this._generateValueInfo();
+        dialogData.buttonTextOk = 'Yes, delete the value';
+        dialogData.buttonTextCancel = 'No, keep the value';
+
+        const dialogRef =
+            this._dialog.open<ConfirmationDialogComponent, ConfirmationDialogData>(ConfirmationDialogComponent, { data: dialogData});
+
+        dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+            if (confirmed) {
+                this.deleteValue();
+            }
+        });
+    }
+
     deleteValue() {
         const deleteVal = new DeleteValue();
         deleteVal.id = this.displayValue.id;
@@ -170,6 +186,18 @@ export class DisplayEditComponent implements OnInit {
             this.displayValue.valueHasComment !== '' &&
             this.displayValue.valueHasComment !== undefined
         );
+    }
+
+    private _generateValueInfo(): string {
+        const value = this.displayValue.strval;
+        const comment = this.displayValue.valueHasComment ? this.displayValue.valueHasComment : 'No comment';
+        const creationDate = new Date(this.displayValue.valueCreationDate).toString();
+
+        const message = '<b>Value:</b> ' + value +
+                        '<br/><br/><b>Value Comment:</b> ' + comment +
+                        '<br/><br/><b>Value Creation Date:</b> ' + creationDate;
+
+        return message;
     }
 
 }
