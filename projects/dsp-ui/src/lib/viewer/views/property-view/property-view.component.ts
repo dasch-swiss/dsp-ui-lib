@@ -59,7 +59,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     constructor(private _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
-        console.log(this.parentResource);
         if (this.parentResource) {
             // get user permissions
             const allPermissions = PermissionUtil.allUserPermissions(
@@ -72,8 +71,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
 
         // listen for the AddValue event to be emitted and call hideAddValueForm()
         this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.hideAddValueForm());
-
-        console.log(this.propArray);
 
     }
 

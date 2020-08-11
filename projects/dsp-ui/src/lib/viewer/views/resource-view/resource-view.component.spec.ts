@@ -80,10 +80,8 @@ describe('ResourceViewComponent', () => {
             TestPropertyViewComponent
         ],
         imports: [
-            MatSnackBarModule,
             MatIconModule,
-            FormsModule,
-            ClipboardModule
+            FormsModule
         ],
         providers: [
             {
@@ -166,8 +164,5 @@ describe('ResourceViewComponent', () => {
 
         expect((propArrayIntValues[0].values[1] as ReadIntValue).int).toEqual(123);
     });
-
-    // TODO: currently not possible to test copy to clipboard from Material Angular
-    // https://stackoverflow.com/questions/60337742/test-copy-to-clipboard-function
 
 });

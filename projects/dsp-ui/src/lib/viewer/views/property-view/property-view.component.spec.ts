@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 import { PropertyViewComponent } from './property-view.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /**
  * Test host component to simulate parent component.
@@ -117,6 +118,7 @@ describe('PropertyViewComponent', () => {
         TestBed.configureTestingModule({
         imports: [
             MatIconModule,
+            MatTooltipModule
         ],
         declarations: [
             TestPropertyParentComponent,
