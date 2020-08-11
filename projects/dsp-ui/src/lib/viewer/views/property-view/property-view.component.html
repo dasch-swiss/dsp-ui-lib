@@ -1,3 +1,101 @@
+<!-- properties -->
+<div class="properties-container">
+    <div class="properties">
+
+        <!-- list of properties -->
+        <div *ngFor="let prop of propArray; let last = last">
+            <!-- show property; all in case of showAll === true or only the ones with prop.values -->
+            <div class="property" *ngIf="showAllProps && !prop.propDef['isLinkProperty'] || (prop.values && prop.values.length > 0)">
+                <div class="property-label">
+                    <!-- label of the property -->
+                    <h3 class="label mat-subheading-1">
+                        {{prop.propDef.label}}
+                    </h3>
+                </div>
+                <div class="property-value">
+
+                    <!-- the value(s) of the property -->
+                    <div class="property-value-item" *ngFor="let val of prop.values; let lastItem = last">
+                        <div *ngFor="let value of prop.values">
+                            <div *ngIf="value">
+                                <dsp-display-edit
+                                    #displayEdit
+                                    [parentResource]="parentResource"
+                                    [displayValue]="value">
+                                </dsp-display-edit>
+                            </div>
+                        </div>
+
+                        <!-- Add value form -->
+                        <div *ngIf="addValueFormIsVisible && propID === prop.propDef.id">
+                            <dsp-add-value
+                                #addValue
+                                class="add-value"
+                                [parentResource]="parentResource"
+                                [resourcePropertyDefinition]="$any(parentResource.entityInfo.properties[prop.propDef.id])"
+                                (operationCancelled)="hideAddValueForm()">
+                            </dsp-add-value>
+                        </div>
+
+                        <!-- Add button -->
+                        <div *ngIf="addButtonIsVisible && prop.guiDef.cardinality !== 1 && propID !== prop.propDef.id">
+                            <button class="create" (click)="showAddValueForm(prop)" title="Add a new value">
+                                <mat-icon>add_box</mat-icon>
+                            </button>
+                        </div>
+
+                        <!--
+                        <span *ngIf="prop.values" [class.list]="prop.values.length > 1"
+                              [class.lastItem]="lastItem">{{val.strval}}</span> -->
+
+                        <!-- TODO: reactivate switch by value type as soon the new viewer elements are ready -->
+                        <!--
+                        <span [ngSwitch]="val.type" [class.list]="prop.values.length > 1" [class.lastItem]="lastItem">
+                            <kui-text-value-as-string *ngSwitchCase="KnoraConstants.TextValue" [valueObject]="val">
+                            </kui-text-value-as-string>
+                            <kui-text-value-as-xml *ngSwitchCase="KnoraConstants.TextValueAsXml" [valueObject]="val">
+                            </kui-text-value-as-xml>
+                            <kui-date-value *ngSwitchCase="KnoraConstants.ReadDateValue" [valueObject]="val"
+                                            [calendar]="true" [era]="true">
+                            </kui-date-value>
+                            <kui-link-value class="app-link" *ngSwitchCase="KnoraConstants.ReadLinkValue"
+                                            [valueObject]="val"
+                                            (referredResourceClicked)="openLink(val.referredResourceIri)">
+                            </kui-link-value>
+                            <kui-integer-value *ngSwitchCase="KnoraConstants.IntValue" [valueObject]="val">
+                            </kui-integer-value>
+                            <kui-decimal-value *ngSwitchCase="KnoraConstants.DecimalValue" [valueObject]="val">
+                            </kui-decimal-value>
+                            <kui-geometry-value *ngSwitchCase="KnoraConstants.GeomValue" [valueObject]="val">
+                            </kui-geometry-value>
+                            <kui-color-value *ngSwitchCase="KnoraConstants.ColorValue" [valueObject]="val">
+                            </kui-color-value>
+                            <kui-uri-value *ngSwitchCase="KnoraConstants.UriValue" [valueObject]="val">
+                            </kui-uri-value>
+                            <kui-boolean-value *ngSwitchCase="KnoraConstants.BooleanValue" [valueObject]="val">
+                            </kui-boolean-value>
+                            <kui-interval-value *ngSwitchCase="KnoraConstants.IntervalValue" [valueObject]="val">
+                            </kui-interval-value>
+                            <kui-list-value *ngSwitchCase="KnoraConstants.ReadListValue" [valueObject]="val">
+                            </kui-list-value>
+                            <kui-textfile-value *ngSwitchCase="KnoraConstants.FileValueHasFilename" [valueObject]="val">
+                            </kui-textfile-value>
+                            <span *ngSwitchDefault>Not supported {{val.type}}</span>
+                            <br>
+                        </span>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+<hr>
+
+<p>OLD PROPERTY VIEW</p>
+
 <div *ngFor="let prop of propArray">
     <div *ngIf="prop.values && prop.values.length > 0">
         <div class="property-header">
@@ -19,6 +117,7 @@
                 </dsp-display-edit>
             </div>
         </div>
+
         <!-- Add value form -->
         <div *ngIf="addValueFormIsVisible && propID === prop.propDef.id">
             <dsp-add-value
@@ -29,6 +128,7 @@
                 (operationCancelled)="hideAddValueForm()">
             </dsp-add-value>
         </div>
+
         <!-- Add button -->
         <div *ngIf="addButtonIsVisible && prop.guiDef.cardinality !== 1 && propID !== prop.propDef.id">
             <button class="create" (click)="showAddValueForm(prop)" title="Add a new value">

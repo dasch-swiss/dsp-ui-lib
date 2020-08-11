@@ -42,6 +42,13 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      */
     @Input() systemPropArray: SystemPropertyDefinition[];
 
+    /**
+     * Show all properties, even they don't have a value.
+     *
+     * @param  {boolean} [showAllProps]
+     */
+    @Input() showAllProps?: boolean = false;
+
     addButtonIsVisible: boolean; // used to toggle add value button
     addValueFormIsVisible: boolean; // used to toggle add value form field
     propID: string; // used in template to show only the add value form of the corresponding value
@@ -52,6 +59,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     constructor(private _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
+        console.log(this.parentResource);
         if (this.parentResource) {
             // get user permissions
             const allPermissions = PermissionUtil.allUserPermissions(
@@ -64,6 +72,8 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
 
         // listen for the AddValue event to be emitted and call hideAddValueForm()
         this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.hideAddValueForm());
+
+        console.log(this.propArray);
 
     }
 

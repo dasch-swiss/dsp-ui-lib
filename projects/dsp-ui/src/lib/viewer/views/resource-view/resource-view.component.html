@@ -1,26 +1,33 @@
 <div class="resource-view" *ngIf="resource">
 
+    <!-- TODO: add representation here -->
+
     <!-- citation link - ARK URL -->
     <div class="ark-url-label">
         <label for="clipboard-arkurl">Citation Link (ARK URL)</label>
     </div>
     <div class="ark-url-input">
         <input id="clipboard-arkurl" class="clipboard-arkurl" cols="30" rows="10" [(ngModel)]="versionArkUrl" />
-        <button
-            mat-mini-fab
-            [cdkCopyToClipboard]="versionArkUrl"
-            (click)="openSnackBar(message, action)"
-            title="Copy"
+        <button mat-mini-fab [cdkCopyToClipboard]="versionArkUrl" (click)="openSnackBar(message, action)" title="Copy"
             class="btn-copy-arkurl">
-                <mat-icon class="icon-arkurl">content_copy</mat-icon>
+            <mat-icon class="icon-arkurl">content_copy</mat-icon>
         </button>
     </div>
 
-  <!-- dsp-property-view -->
-  <div *ngIf="resPropInfoVals.length !== 0 || systemPropDefs.length !== 0; else noProperty">
+    <!-- dsp-property-view -->
+    <dsp-property-toolbar *ngIf="showToolbar" [projectiri]="resource.attachedToProject" [showAllProps]="showAllProps"
+        (toggleProps)="toggleProps($event)">
+    </dsp-property-toolbar>
+    <dsp-property-view *ngIf="resPropInfoVals.length !== 0 || systemPropDefs.length !== 0; else noProperty"
+        [parentResource]="resource" [propArray]="resPropInfoVals" [systemPropArray]="systemPropDefs" [showAllProps]="showAllProps">
+    </dsp-property-view>
+
+    <ng-template #noProperty>The resource {{resource?.resourceClassLabel}} has no defined properties.</ng-template>
+
+    <!-- <div *ngIf="resPropInfoVals.length !== 0 || systemPropDefs.length !== 0; else noProperty">
     <dsp-property-view [parentResource]="resource" [propArray]="resPropInfoVals" [systemPropArray]="systemPropDefs">
     </dsp-property-view>
   </div>
-  <ng-template #noProperty>The resource {{resource?.resourceClassLabel}} has no defined properties.</ng-template>
+    -->
 </div>
 <dsp-progress-indicator *ngIf="!resource"></dsp-progress-indicator>

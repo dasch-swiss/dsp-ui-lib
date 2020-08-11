@@ -43,6 +43,20 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      */
     @Input() iri: string;
 
+    /**
+     * Show all properties, even they don't have a value.
+     *
+     * @param  {boolean} [showAllProps]
+     */
+    @Input() showAllProps?: boolean = false;
+
+    /**
+     * Show toolbar with project info and some action tools on top of properties if true.
+     *
+     * @param  {boolean} [showToolbar]
+     */
+    @Input() showToolbar?: boolean = false;
+
     resource: ReadResource;
 
     resPropInfoVals: PropertyInfoValues[] = []; // array of resource properties
@@ -144,6 +158,14 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
             horizontalPosition: 'center',
             verticalPosition: 'top'
         });
+    }
+    /**
+     * Event receiver: Show all props or not
+     *
+     * @param  ev
+     */
+    toggleProps(ev: boolean) {
+        this.showAllProps = ev;
     }
 
 }
