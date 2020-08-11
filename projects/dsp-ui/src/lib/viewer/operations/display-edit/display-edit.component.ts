@@ -78,6 +78,9 @@ export class DisplayEditComponent implements OnInit {
         this.readOnlyValue = this._valueTypeService.isReadOnly(this.valueTypeOrClass);
     }
 
+    /**
+     * Show the form components and CRUD buttons to update an existing value or add a new value.
+     */
     activateEditMode() {
         this.editModeActive = true;
         this.mode = 'update';
@@ -89,6 +92,9 @@ export class DisplayEditComponent implements OnInit {
         this.displayValueComponent.shouldShowComment = false;
     }
 
+    /**
+     * Save a new version of an existing property value.
+     */
     saveEditValue() {
         this.editModeActive = false;
         const updatedVal = this.displayValueComponent.getUpdatedValue();
@@ -121,6 +127,9 @@ export class DisplayEditComponent implements OnInit {
         }
     }
 
+    /**
+     * Open a confirmation dialog box to ensure the user would like to complete the action.
+     */
     openDialog() {
         const dialogData = new ConfirmationDialogData();
         dialogData.title = 'Are you sure want to delete this value from ' + this.displayValue.propertyLabel + '?';
@@ -139,6 +148,10 @@ export class DisplayEditComponent implements OnInit {
         });
     }
 
+    /**
+     * Delete a value from a property.
+     * Emits an event that can be listened to.
+     */
     deleteValue() {
         const deleteVal = new DeleteValue();
         deleteVal.id = this.displayValue.id;
@@ -155,14 +168,12 @@ export class DisplayEditComponent implements OnInit {
             // emit a ValueDeleted event to the listeners in resource-view component to trigger an update of the UI
             this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, deleteVal));
             return res.result;
-        })
-        ).subscribe(
-        () => {
-            // TODO: figure out what needs to be done here
-        }
-        );
+        })).subscribe();
     }
 
+    /**
+     * Hide the form components and CRUD buttons and show the value in read mode.
+     */
     cancelEditValue() {
         this.editModeActive = false;
         this.mode = 'read';
@@ -174,12 +185,17 @@ export class DisplayEditComponent implements OnInit {
         this.checkCommentToggleVisibility();
     }
 
-    // shows or hides the comment
+    /**
+     * Show or hide the comment.
+     */
     toggleComment() {
         this.displayValueComponent.toggleCommentVisibility();
     }
 
-    // only show the comment toggle button if user is in READ mode and a comment exists for the value
+    /**
+     * Check if the comment toggle button should be shown.
+     * Only show the comment toggle button if user is in READ mode and a comment exists for the value.
+     */
     checkCommentToggleVisibility() {
         this.shouldShowCommentToggle = (
             this.mode === 'read' &&
@@ -188,6 +204,11 @@ export class DisplayEditComponent implements OnInit {
         );
     }
 
+    /**
+     * Generate the message body for the confirmation dialog.
+     *
+     * @returns A string consisting of the values: value, comment, and creation date.
+     */
     private _generateValueInfo(): string {
         const value = this.displayValue.strval;
         const comment = this.displayValue.valueHasComment ? this.displayValue.valueHasComment : 'No comment';

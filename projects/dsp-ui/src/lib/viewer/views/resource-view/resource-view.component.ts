@@ -121,6 +121,12 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
+    /**
+     * Update the UI to reflect updates made to property values.
+     *
+     * @param value value to be updated inside propInfoValueArray
+     * @param isDeletion is the value being removed or added
+     */
     updateResource(value: BaseValue, isDeletion: boolean): void {
         if (this.resPropInfoVals) {
             if (!isDeletion) { // add new value

@@ -1,7 +1,6 @@
-import { ReadValue } from '@dasch-swiss/dsp-js';
+import { BaseValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/base-value';
 import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { BaseValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/base-value';
 
 /**
  * https://stackoverflow.com/questions/56290722/how-pass-a-event-from-deep-nested-child-to-parent-in-angular-2
