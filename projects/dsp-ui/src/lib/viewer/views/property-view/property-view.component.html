@@ -5,7 +5,7 @@
         <!-- list of properties -->
         <div *ngFor="let prop of propArray; let last = last">
             <!-- show property; all in case of showAll === true or only the ones with prop.values -->
-            <div class="property" *ngIf="showAllProps && !prop.propDef['isLinkProperty'] || (prop.values && prop.values.length > 0)">
+            <div class="property" *ngIf="!prop.propDef['isLinkProperty'] && showAllProps || ( prop.values && prop.values.length > 0 )">
                 <div class="property-label">
                     <!-- label of the property -->
                     <h3 class="label mat-subheading-1" [class.label-info]="prop.propDef.comment"
@@ -16,7 +16,7 @@
                 <div class="property-value">
 
                     <!-- the value(s) of the property -->
-                    <div class="property-value-item" *ngFor="let val of prop.values; let lastItem = last">
+                    <div class="property-value-item" *ngFor="let val of prop.values">
 
                         <div *ngFor="let value of prop.values">
                                 <dsp-display-edit *ngIf="value"
