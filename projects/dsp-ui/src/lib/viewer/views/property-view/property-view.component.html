@@ -8,7 +8,8 @@
             <div class="property" *ngIf="showAllProps && !prop.propDef['isLinkProperty'] || (prop.values && prop.values.length > 0)">
                 <div class="property-label">
                     <!-- label of the property -->
-                    <h3 class="label mat-subheading-1">
+                    <h3 class="label mat-subheading-1" [class.label-info]="prop.propDef.comment"
+                    [matTooltip]="prop.propDef.comment" matTooltipPosition="above">
                         {{prop.propDef.label}}
                     </h3>
                 </div>
@@ -16,14 +17,14 @@
 
                     <!-- the value(s) of the property -->
                     <div class="property-value-item" *ngFor="let val of prop.values; let lastItem = last">
+
                         <div *ngFor="let value of prop.values">
-                            <div *ngIf="value">
-                                <dsp-display-edit
+                                <dsp-display-edit *ngIf="value"
                                     #displayEdit
                                     [parentResource]="parentResource"
                                     [displayValue]="value">
                                 </dsp-display-edit>
-                            </div>
+                                <!-- TODO: if no value, show add value button here -->
                         </div>
 
                         <!-- Add value form -->

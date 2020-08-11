@@ -63,15 +63,10 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
 
-    versionArkUrl: string; // versionArkUrl value
-    message: string; // message to show in the snackbar to confirm the copy of the ARK URL
-    action: string; // label for the snackbar action
-
     valueOperationEventSubscription: Subscription;
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
-        private _snackBar: MatSnackBar,
         private _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
@@ -121,9 +116,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                 // get system property information
                 this.systemPropDefs = this.resource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
 
-                // set the arkUrl value
-                this.versionArkUrl = this.resource.versionArkUrl;
-
             },
             (error: ApiResponseError) => {
                 console.error('Error to get resource: ', error);
@@ -145,20 +137,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    /**
-     * Display message to confirm the copy of the citation link (ARK URL)
-     * @param message
-     * @param action
-     */
-    openSnackBar(message: string, action: string) {
-        message = 'Copied to clipboard!';
-        action = 'Citation Link';
-        this._snackBar.open(message, action, {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top'
-        });
-    }
     /**
      * Event receiver: Show all props or not
      *

@@ -2,22 +2,10 @@
 
     <!-- TODO: add representation here -->
 
-    <!-- citation link - ARK URL -->
-    <div class="ark-url-label">
-        <label for="clipboard-arkurl">Citation Link (ARK URL)</label>
-    </div>
-    <div class="ark-url-input">
-        <input id="clipboard-arkurl" class="clipboard-arkurl" cols="30" rows="10" [(ngModel)]="versionArkUrl" />
-        <button mat-mini-fab [cdkCopyToClipboard]="versionArkUrl" (click)="openSnackBar(message, action)" title="Copy"
-            class="btn-copy-arkurl">
-            <mat-icon class="icon-arkurl">content_copy</mat-icon>
-        </button>
-    </div>
-
-    <!-- dsp-property-view -->
-    <dsp-property-toolbar *ngIf="showToolbar" [projectiri]="resource.attachedToProject" [showAllProps]="showAllProps"
-        (toggleProps)="toggleProps($event)">
+    <!-- dsp-property-toolbar with action buttons and project information -->
+    <dsp-property-toolbar *ngIf="showToolbar" [resource]="resource" [showAllProps]="showAllProps" (toggleProps)="toggleProps($event)">
     </dsp-property-toolbar>
+    <!-- dsp-property-view -->
     <dsp-property-view *ngIf="resPropInfoVals.length !== 0 || systemPropDefs.length !== 0; else noProperty"
         [parentResource]="resource" [propArray]="resPropInfoVals" [systemPropArray]="systemPropDefs" [showAllProps]="showAllProps">
     </dsp-property-view>

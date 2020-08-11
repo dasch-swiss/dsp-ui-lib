@@ -49,6 +49,7 @@ import { ResourceListComponent } from './views/list-view/resource-list/resource-
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
 import { PropertyToolbarComponent } from './views/property-view/property-toolbar/property-toolbar.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
@@ -102,6 +103,7 @@ import { PropertyToolbarComponent } from './views/property-view/property-toolbar
         MatListModule,
         MatMenuModule,
         MatToolbarModule,
+        MatTooltipModule,
         ClipboardModule,
         ColorPickerModule,
         DspActionModule

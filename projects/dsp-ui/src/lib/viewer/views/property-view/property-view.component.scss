@@ -38,7 +38,6 @@
 .properties-container {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  //  grid-template-rows: repeat(2, auto);
   gap: 16px;
 
   .properties,
@@ -47,8 +46,7 @@
   }
 
   .properties {
-    // grid-row: 1 / span 2;
-    grid-column: 1 / span 4;
+    grid-column: 1 / span 6;
 
     .property {
       grid-row: 1 / 1;
@@ -68,6 +66,10 @@
 
         .label {
           text-align: right;
+        }
+
+        .label-info {
+          cursor: help;
         }
       }
 
