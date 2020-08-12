@@ -110,7 +110,6 @@ export class DisplayEditComponent implements OnInit {
                     this.editModeActive = true;
                     switch (error.status) {
                         case 400:
-                            console.log('DUPLICATE VALUE DETECTED');
                             this.displayValueComponent.valueFormControl.setErrors({duplicateValue: true});
                             break;
                         default:
