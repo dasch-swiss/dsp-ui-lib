@@ -21,7 +21,7 @@ export class PropertyToolbarComponent implements OnInit {
 
     @Input() resource: ReadResource;
 
-    @Input() showAllProps?: boolean = false;
+    @Input() showAllProps = false;
 
     @Output() toggleProps: EventEmitter<boolean> = new EventEmitter<boolean>();
 

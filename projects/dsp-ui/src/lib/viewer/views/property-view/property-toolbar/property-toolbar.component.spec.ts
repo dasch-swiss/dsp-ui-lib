@@ -46,8 +46,8 @@ class TestPropertyParentComponent implements OnInit {
         );
     }
 
-    toggleProps(ev: boolean) {
-        this.showAllProps = ev;
+    toggleProps(show: boolean) {
+        this.showAllProps = show;
     }
 
     openProject(project: ReadProject) {

@@ -46,16 +46,16 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Show all properties, even they don't have a value.
      *
-     * @param  {boolean} [showAllProps]
+     * @param  (showAllProps)
      */
-    @Input() showAllProps?: boolean = false;
+    @Input() showAllProps = false;
 
     /**
      * Show toolbar with project info and some action tools on top of properties if true.
      *
-     * @param  {boolean} [showToolbar]
+     * @param  (showToolbar)
      */
-    @Input() showToolbar?: boolean = false;
+    @Input() showToolbar = true;
 
     resource: ReadResource;
 

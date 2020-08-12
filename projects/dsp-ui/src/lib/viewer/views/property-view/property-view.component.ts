@@ -45,9 +45,9 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     /**
      * Show all properties, even if they don't have a value.
      *
-     * @param  [showAllProps]
+     * @param  (showAllProps)
      */
-    @Input() showAllProps?: boolean = false;
+    @Input() showAllProps = false;
 
     addButtonIsVisible: boolean; // used to toggle add value button
     addValueFormIsVisible: boolean; // used to toggle add value form field
