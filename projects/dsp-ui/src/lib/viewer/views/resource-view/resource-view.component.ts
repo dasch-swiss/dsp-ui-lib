@@ -1,17 +1,18 @@
 import {
     Component,
-    Inject,
+    EventEmitter, Inject,
     Input,
     OnChanges,
     OnDestroy,
-    OnInit
+    OnInit,
+    Output
 } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     ApiResponseError,
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
     PropertyDefinition,
+    ReadProject,
     ReadResource,
     ReadValue,
     SystemPropertyDefinition
@@ -56,6 +57,11 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param  (showToolbar)
      */
     @Input() showToolbar = true;
+
+    /**
+     * @param  openProject EventEmitter which sends project information to parent component
+     */
+    @Output() openProject: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
 
     resource: ReadResource;
 

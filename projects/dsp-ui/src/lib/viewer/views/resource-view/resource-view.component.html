@@ -6,7 +6,7 @@
     -->
 
     <!-- dsp-property-toolbar with action buttons and project information -->
-    <dsp-property-toolbar *ngIf="showToolbar" [resource]="resource" [showAllProps]="showAllProps" (toggleProps)="toggleProps($event)">
+    <dsp-property-toolbar *ngIf="showToolbar" [resource]="resource" [showAllProps]="showAllProps" (toggleProps)="toggleProps($event)" (openProject)="openProject.emit($event)">
     </dsp-property-toolbar>
 
     <!-- dsp-property-view -->

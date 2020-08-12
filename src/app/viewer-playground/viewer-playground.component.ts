@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionService } from '@dasch-swiss/dsp-ui';
+import { ReadProject } from '@dasch-swiss/dsp-js';
+import { prototype } from 'events';
 
 @Component({
     selector: 'app-viewer-playground',
@@ -18,4 +20,8 @@ export class ViewerPlaygroundComponent implements OnInit {
         this._sessionService.isSessionValid().subscribe(status => console.log('session valid: ', status));
     }
 
+    openProject(project: ReadProject) {
+        // here you can redirect a user to the project page
+        console.log('redircet to project page e.g. /project/:shortname', project.shortname);
+    }
 }
