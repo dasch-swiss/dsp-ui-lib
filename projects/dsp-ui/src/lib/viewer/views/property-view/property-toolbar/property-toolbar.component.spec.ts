@@ -92,17 +92,18 @@ describe('PropertyToolbarComponent', () => {
     }));
 
     beforeEach(() => {
-        // mock getProjectByIri response
-        const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
-        (valuesSpy.admin.projectsEndpoint as jasmine.SpyObj<ProjectsEndpointAdmin>).getProjectByIri.and.callFake(
+        const adminSpy = TestBed.inject(DspApiConnectionToken);
+
+        // mock getProjectByIri response
+        (adminSpy.admin.projectsEndpoint as jasmine.SpyObj<ProjectsEndpointAdmin>).getProjectByIri.and.callFake(
             () => {
                 const project = MockProjects.mockProject();
                 return of(project);
             }
         );
-
-        (valuesSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUserByIri.and.callFake(
+        // mock getUserByIri response
+        (adminSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUserByIri.and.callFake(
             () => {
                 const user = MockUsers.mockUser();
                 return of(user);
