@@ -1,7 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MockProjects, MockResource, MockUsers, ProjectsEndpointAdmin, ReadResource, ResourcesEndpointV2, UsersEndpointAdmin } from '@dasch-swiss/dsp-js';
+import {
+    MockProjects,
+    MockResource,
+    MockUsers,
+    ProjectsEndpointAdmin,
+    ReadResource,
+    ResourcesEndpointV2,
+    UsersEndpointAdmin
+} from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken, DspViewerModule } from '@dasch-swiss/dsp-ui';
 import { of } from 'rxjs/internal/observable/of';
 import { map } from 'rxjs/internal/operators/map';

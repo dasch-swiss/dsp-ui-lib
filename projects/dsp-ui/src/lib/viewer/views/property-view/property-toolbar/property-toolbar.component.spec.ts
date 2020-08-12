@@ -1,16 +1,25 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
-import { ApiResponseError, MockProjects, MockResource, MockUsers, ProjectsEndpointAdmin, ReadProject, ReadResource, UsersEndpointAdmin } from '@dasch-swiss/dsp-js';
+import {
+    ApiResponseError,
+    MockProjects,
+    MockResource,
+    MockUsers,
+    ProjectsEndpointAdmin,
+    ReadProject,
+    ReadResource,
+    UsersEndpointAdmin
+} from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from 'projects/dsp-ui/src/lib/core';
 import { of } from 'rxjs/internal/observable/of';
 import { PropertyToolbarComponent } from './property-toolbar.component';
-import { FormsModule } from '@angular/forms';
 
 /**
  * Test host component to simulate parent component
