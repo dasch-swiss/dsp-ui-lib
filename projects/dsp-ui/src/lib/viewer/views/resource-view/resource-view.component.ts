@@ -9,6 +9,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     ApiResponseError,
+    BaseValue,
     DeleteValue,
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
@@ -17,7 +18,6 @@ import {
     ReadValue,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
-import { BaseValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/base-value';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { Events, ValueOperationEventService } from '../../services/value-operation-event.service';
