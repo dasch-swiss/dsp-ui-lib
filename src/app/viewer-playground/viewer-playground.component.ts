@@ -11,11 +11,11 @@ export class ViewerPlaygroundComponent implements OnInit {
     resource = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
 
     constructor(
-        // private _sessionService: SessionService
+        private _sessionService: SessionService
      ) { }
 
     ngOnInit(): void {
-        // this._sessionService.isSessionValid().subscribe(status => console.log('session valid: ', status));
+        this._sessionService.isSessionValid().subscribe(status => console.log('session valid: ', status));
     }
 
 }
