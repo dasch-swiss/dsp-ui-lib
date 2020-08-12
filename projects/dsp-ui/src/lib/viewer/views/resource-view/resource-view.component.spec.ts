@@ -1,9 +1,6 @@
-import { ClipboardModule } from '@angular/cdk/clipboard';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import { MockResource, PropertyDefinition, ReadIntValue, ReadResource, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
@@ -24,6 +21,7 @@ class TestPropertyViewComponent implements OnInit {
     @Input() parentResource: ReadResource;
     @Input() propArray: PropertyInfoValues;
     @Input() systemPropArray: PropertyDefinition;
+    @Input() showAllProps: boolean;
 
     ngOnInit() { }
 }
@@ -80,8 +78,7 @@ describe('ResourceViewComponent', () => {
             TestPropertyViewComponent
         ],
         imports: [
-            MatIconModule,
-            FormsModule
+            MatIconModule
         ],
         providers: [
             {

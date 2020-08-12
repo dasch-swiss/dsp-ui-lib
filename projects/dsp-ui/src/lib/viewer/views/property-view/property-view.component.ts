@@ -24,7 +24,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     /**
      * Parent resource
      *
-     * @param (resource)
+     * @param (parentResource)
      */
     @Input() parentResource: ReadResource;
 
@@ -38,14 +38,14 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     /**
      * Array of system property object with list of system properties
      *
-     * @param (propArray)
+     * @param (systemPropArray)
      */
     @Input() systemPropArray: SystemPropertyDefinition[];
 
     /**
-     * Show all properties, even they don't have a value.
+     * Show all properties, even if they don't have a value.
      *
-     * @param  {boolean} [showAllProps]
+     * @param  [showAllProps]
      */
     @Input() showAllProps?: boolean = false;
 

@@ -1,6 +1,15 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ApiResponseData, ApiResponseError, KnoraApiConnection, ProjectResponse, ReadProject, ReadResource, UserResponse, ReadUser } from '@dasch-swiss/dsp-js';
+import {
+    ApiResponseData,
+    ApiResponseError,
+    KnoraApiConnection,
+    ProjectResponse,
+    ReadProject,
+    ReadResource,
+    ReadUser,
+    UserResponse
+} from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../../../core/core.module';
 
 @Component({
@@ -12,7 +21,7 @@ export class PropertyToolbarComponent implements OnInit {
 
     @Input() resource: ReadResource;
 
-    @Input() showAllProps: boolean;
+    @Input() showAllProps?: boolean = false;
 
     @Output() toggleProps: EventEmitter<boolean> = new EventEmitter<boolean>();
 

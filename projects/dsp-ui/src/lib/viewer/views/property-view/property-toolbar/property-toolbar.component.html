@@ -1,6 +1,6 @@
 <div class="infobar mat-caption" *ngIf="project && user">
     <p>This source belongs to project
-        <span class="link" (click)="openProject.emit(project)">
+        <span class="project link" (click)="openProject.emit(project)">
             {{project?.shortname}}
             <mat-icon inline>open_in_new</mat-icon>
         </span>
@@ -20,28 +20,32 @@
     <span>
         <!-- TODO: activate favorite action to add resource to collection -->
         <!--
-        <button mat-button>
+        <button mat-button class="add-res-to-collection">
             <mat-icon>star_border</mat-icon>
         </button>
         -->
 
         <!-- Toggle list of properties: all or only the ones with value -->
-        <button mat-button (click)="toggleProps.emit(!showAllProps)" matTooltip="Toggle list of properties"
-            matTooltipPosition="above">
+        <button mat-button class="toggle-props"
+            matTooltip="Toggle list of properties"
+            matTooltipPosition="above"
+            (click)="toggleProps.emit(!showAllProps)">
             <mat-icon>{{showAllProps ? 'unfold_less' : 'unfold_more'}}</mat-icon>
             <span class="desktop-only">{{showAllProps ? 'Decrease' : 'Increase'}} properties</span>
         </button>
 
         <!-- TODO: activate delete action to delete the whole resource -->
         <!--
-        <button mat-button>
+        <button mat-button class="delete-res">
             <mat-icon>delete</mat-icon>
         </button>
         -->
 
         <!-- Share resource by copying the ark url -->
-        <button mat-button [matMenuTriggerFor]="share" matTooltip="Share resource by copying ARK url"
-            matTooltipPosition="above">
+        <button mat-button class="share-res"
+            matTooltip="Share resource by copying ARK url"
+            matTooltipPosition="above"
+            [matMenuTriggerFor]="share">
             <mat-icon>share</mat-icon>
             <span  class="desktop-only">Citation Link</span>
         </button>

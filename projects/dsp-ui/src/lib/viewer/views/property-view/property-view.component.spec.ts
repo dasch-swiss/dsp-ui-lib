@@ -25,7 +25,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     <dsp-property-view #propView
       [parentResource]="parentResource"
       [propArray]="propArray"
-      [systemPropArray]="systemPropArray">
+      [systemPropArray]="systemPropArray"
+      [showAllProps]="showAllProps">
     </dsp-property-view>`
 })
 class TestPropertyParentComponent implements OnInit, OnDestroy {
@@ -37,6 +38,8 @@ class TestPropertyParentComponent implements OnInit, OnDestroy {
     propArray: PropertyInfoValues[] = [];
 
     systemPropArray: SystemPropertyDefinition[] = [];
+
+    showAllProps = false;
 
     voeSubscription: Subscription;
 
