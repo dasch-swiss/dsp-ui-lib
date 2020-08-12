@@ -8,8 +8,10 @@
             <div class="property" *ngIf="!prop.propDef['isLinkProperty'] && showAllProps || ( prop.values && prop.values.length > 0 )">
                 <div class="property-label">
                     <!-- label of the property -->
-                    <h3 class="label mat-subheading-1" [class.label-info]="prop.propDef.comment"
-                    [matTooltip]="prop.propDef.comment" matTooltipPosition="above">
+                    <h3 class="label mat-subheading-1"
+                        [class.label-info]="prop.propDef.comment"
+                        [matTooltip]="prop.propDef.comment"
+                        matTooltipPosition="above">
                         {{prop.propDef.label}}
                     </h3>
                 </div>
