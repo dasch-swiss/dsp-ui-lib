@@ -59,8 +59,6 @@ export class PropertyToolbarComponent implements OnInit {
 
     /**
      * Display message to confirm the copy of the citation link (ARK URL)
-     * @param message
-     * @param action
      */
     openSnackBar() {
         const message = 'Copied to clipboard!';

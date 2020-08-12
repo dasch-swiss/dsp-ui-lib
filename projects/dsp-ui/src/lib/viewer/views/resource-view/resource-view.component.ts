@@ -140,10 +140,10 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Event receiver: Show all props or not
      *
-     * @param  ev
+     * @param  show
      */
-    toggleProps(ev: boolean) {
-        this.showAllProps = ev;
+    toggleProps(show: boolean) {
+        this.showAllProps = show;
     }
 
 }
