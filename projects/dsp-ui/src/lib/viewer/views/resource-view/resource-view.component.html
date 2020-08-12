@@ -1,10 +1,14 @@
 <div class="resource-view" *ngIf="resource">
 
-    <!-- TODO: add representation here -->
+    <!-- dsp-resource-representation -->
+    <!-- TODO: here we will add the resource representation viewers like
+        still-image-viewer, moving-image-viewer, audio-player etc.
+    -->
 
     <!-- dsp-property-toolbar with action buttons and project information -->
     <dsp-property-toolbar *ngIf="showToolbar" [resource]="resource" [showAllProps]="showAllProps" (toggleProps)="toggleProps($event)">
     </dsp-property-toolbar>
+
     <!-- dsp-property-view -->
     <dsp-property-view *ngIf="resPropInfoVals.length !== 0 || systemPropDefs.length !== 0; else noProperty"
         [parentResource]="resource" [propArray]="resPropInfoVals" [systemPropArray]="systemPropDefs" [showAllProps]="showAllProps">
@@ -12,10 +16,5 @@
 
     <ng-template #noProperty>The resource {{resource?.resourceClassLabel}} has no defined properties.</ng-template>
 
-    <!-- <div *ngIf="resPropInfoVals.length !== 0 || systemPropDefs.length !== 0; else noProperty">
-    <dsp-property-view [parentResource]="resource" [propArray]="resPropInfoVals" [systemPropArray]="systemPropDefs">
-    </dsp-property-view>
-  </div>
-    -->
 </div>
 <dsp-progress-indicator *ngIf="!resource"></dsp-progress-indicator>

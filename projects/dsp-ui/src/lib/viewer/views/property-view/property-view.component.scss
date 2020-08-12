@@ -1,15 +1,4 @@
-.property-header .label,
-.property-header .info {
-    display: inline-block;
-    vertical-align: bottom;
-}
-
-.property-header .label {
-    margin: 0em 1em 0em 0em;
-    font: 400 15px/24px sans-serif;
-    color: #0000008a;
-}
-
+// smaller buttons: add value and value info
 .info,
 .create {
     cursor: pointer;
@@ -31,9 +20,7 @@
     height: 18px;
 }
 
-
-// --------------------------------------
-// --------------------------------------
+// properties container with property item and property value items
 
 .properties-container {
   display: grid;
@@ -80,6 +67,7 @@
     }
   }
 
+  // incoming is not yet implemented. TODO: reactivate incoming info box
   .incoming {
     grid-column: 5 / span 2;
 

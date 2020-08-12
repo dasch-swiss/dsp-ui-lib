@@ -29,8 +29,7 @@ import { PropertyToolbarComponent } from './property-toolbar.component';
       <dsp-property-toolbar #propToolbar
         [resource]="parentResource"
         [showAllProps]="showAllProps"
-        (toggleProps)="toggleProps($event)"
-        (openProject)="openProject($evnt)">
+        (toggleProps)="toggleProps($event)">
       </dsp-property-toolbar>`
 })
 class TestPropertyParentComponent implements OnInit {
@@ -57,10 +56,6 @@ class TestPropertyParentComponent implements OnInit {
 
     toggleProps(show: boolean) {
         this.showAllProps = show;
-    }
-
-    openProject(project: ReadProject) {
-        // do something with the project information here
     }
 }
 
@@ -138,9 +133,6 @@ describe('PropertyToolbarComponent', () => {
         let hostCompDe;
         let propertyToolbarComponentDe;
 
-        let component: PropertyToolbarComponent;
-        let fixture: ComponentFixture<PropertyToolbarComponent>;
-
         beforeEach(() => {
             expect(testHostComponent.propertyToolbarComponent).toBeTruthy();
 
@@ -152,18 +144,6 @@ describe('PropertyToolbarComponent', () => {
 
             testHostFixture.detectChanges();
         });
-
-        // it('should get a project when the project link is clicked', () => {
-        //     const projectLinkDebugElement = propertyToolbarComponentDe.query(By.css('span.project'));
-        //     const projectLinkNativeElement = projectLinkDebugElement.nativeElement;
-
-        //     projectLinkNativeElement.click();
-
-        //     testHostFixture.detectChanges();
-
-        //     // testHostComponent.propertyToolbarComponent.openProject
-
-        // });
 
         it('should have the label "testding"', () => {
             const resLabelDebugElement = propertyToolbarComponentDe.query(By.css('h3.label'));
