@@ -1,8 +1,7 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import {
+    ApiResponseError,
     Constants,
-    DeleteValue,
-    DeleteValueResponse,
     KnoraApiConnection,
     PermissionUtil,
     ReadResource,
@@ -13,7 +12,6 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, ValueOperationEventService, Events } from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
@@ -106,6 +104,20 @@ export class DisplayEditComponent implements OnInit {
 
                     // check if comment toggle button should be shown
                     this.checkCommentToggleVisibility();
+                },
+                (error: ApiResponseError) => {
+                    // error handling
+                    this.editModeActive = true;
+                    switch (error.status) {
+                        case 400:
+                            console.log('DUPLICATE VALUE DETECTED');
+                            this.displayValueComponent.valueFormControl.setErrors({duplicateValue: true});
+                            break;
+                        default:
+                            console.log('There was an error processing your request. Details: ', error);
+                            break;
+
+                    }
                 }
             );
 
