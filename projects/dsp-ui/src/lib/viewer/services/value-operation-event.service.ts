@@ -1,4 +1,4 @@
-import { BaseValue } from '@dasch-swiss/dsp-js/src/models/v2/resources/values/base-value';
+import { BaseValue } from '@dasch-swiss/dsp-js';
 import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
