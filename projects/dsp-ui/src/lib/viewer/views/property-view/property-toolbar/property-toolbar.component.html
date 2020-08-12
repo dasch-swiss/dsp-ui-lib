@@ -26,7 +26,8 @@
         -->
 
         <!-- Toggle list of properties: all or only the ones with value -->
-        <button mat-button class="toggle-props"
+        <button mat-button
+            class="toggle-props"
             matTooltip="Toggle list of properties"
             matTooltipPosition="above"
             (click)="toggleProps.emit(!showAllProps)">
@@ -42,7 +43,8 @@
         -->
 
         <!-- Share resource by copying the ark url -->
-        <button mat-button class="share-res"
+        <button mat-button
+            class="share-res"
             matTooltip="Share resource by copying ARK url"
             matTooltipPosition="above"
             [matMenuTriggerFor]="share">
@@ -55,10 +57,19 @@
                 <label for="clipboard-arkurl">Citation Link (ARK URL)</label>
             </div>
             <div class="ark-url-input">
-                <input id="clipboard-arkurl" class="clipboard-arkurl" cols="30" rows="10" readonly
+                <input
+                    id="clipboard-arkurl"
+                    class="clipboard-arkurl"
+                    cols="30"
+                    rows="10"
+                    readonly
                     [(ngModel)]="resource.versionArkUrl" />
-                <button mat-button class="btn-copy-arkurl" [cdkCopyToClipboard]="resource.versionArkUrl"
-                    matTooltip="Copy ARK url" matTooltipPosition="below" (click)="openSnackBar()">
+                <button mat-button
+                    class="btn-copy-arkurl"
+                    [cdkCopyToClipboard]="resource.versionArkUrl"
+                    matTooltip="Copy ARK url"
+                    matTooltipPosition="below"
+                    (click)="openSnackBar()">
                     <mat-icon class="icon-arkurl">content_copy</mat-icon>
                 </button>
             </div>
