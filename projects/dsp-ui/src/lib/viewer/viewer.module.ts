@@ -17,6 +17,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { DspActionModule } from '../action';
@@ -46,91 +47,90 @@ import { UriValueComponent } from './values/uri-value/uri-value.component';
 import { ListViewComponent } from './views/list-view/list-view.component';
 import { ResourceGridComponent } from './views/list-view/resource-grid/resource-grid.component';
 import { ResourceListComponent } from './views/list-view/resource-list/resource-list.component';
+import { PropertyToolbarComponent } from './views/property-view/property-toolbar/property-toolbar.component';
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
-import { PropertyToolbarComponent } from './views/property-view/property-toolbar/property-toolbar.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
-        TextValueAsStringComponent,
-        TextValueAsHtmlComponent,
-        IntValueComponent,
-        DisplayEditComponent,
+        AddValueComponent,
         BooleanValueComponent,
-        DecimalValueComponent,
-        UriValueComponent,
-        IntervalValueComponent,
-        IntervalInputComponent,
-        TimeValueComponent,
-        TimeInputComponent,
-        JDNDatepickerDirective,
-        PropertyViewComponent,
-        ResourceViewComponent,
-        ColorValueComponent,
-        ColorPickerComponent,
-        DateValueComponent,
-        DateInputComponent,
         CalendarHeaderComponent,
+        ColorPickerComponent,
+        ColorValueComponent,
+        DateInputComponent,
+        DateValueComponent,
+        DecimalValueComponent,
+        DisplayEditComponent,
+        GeonameValueComponent,
+        IntervalInputComponent,
+        IntervalValueComponent,
+        IntValueComponent,
+        JDNDatepickerDirective,
         LinkValueComponent,
         ListValueComponent,
-        SublistValueComponent,
-        GeonameValueComponent,
         ListViewComponent,
-        StillImageComponent,
-        ResourceListComponent,
+        PropertyToolbarComponent,
+        PropertyViewComponent,
         ResourceGridComponent,
-        AddValueComponent,
-        PropertyToolbarComponent
+        ResourceListComponent,
+        ResourceViewComponent,
+        StillImageComponent,
+        SublistValueComponent,
+        TextValueAsHtmlComponent,
+        TextValueAsStringComponent,
+        TimeInputComponent,
+        TimeValueComponent,
+        UriValueComponent
     ],
     imports: [
+        ClipboardModule,
+        ColorPickerModule,
         CommonModule,
-        ReactiveFormsModule,
+        DspActionModule,
         FormsModule,
+        MatAutocompleteModule,
         MatButtonModule,
         MatButtonToggleModule,
         MatCardModule,
-        MatInputModule,
-        MatAutocompleteModule,
         MatCheckboxModule,
+        MatDatepickerModule,
+        MatIconModule,
+        MatInputModule,
+        MatJDNConvertibleCalendarDateAdapterModule,
+        MatListModule,
+        MatMenuModule,
         MatOptionModule,
         MatPaginatorModule,
         MatSelectModule,
         MatSnackBarModule,
-        MatDatepickerModule,
-        MatIconModule,
-        MatJDNConvertibleCalendarDateAdapterModule,
-        MatListModule,
-        MatMenuModule,
         MatToolbarModule,
         MatTooltipModule,
-        ClipboardModule,
-        ColorPickerModule,
-        DspActionModule
+        ReactiveFormsModule
     ],
     exports: [
-        TextValueAsStringComponent,
-        TextValueAsHtmlComponent,
-        IntValueComponent,
-        DisplayEditComponent,
+        AddValueComponent,
         BooleanValueComponent,
         ColorValueComponent,
-        DecimalValueComponent,
-        UriValueComponent,
-        IntervalValueComponent,
-        TimeValueComponent,
         DateValueComponent,
-        LinkValueComponent,
-        PropertyViewComponent,
-        ResourceViewComponent,
-        ListValueComponent,
+        DecimalValueComponent,
+        DisplayEditComponent,
         GeonameValueComponent,
+        IntervalValueComponent,
+        IntValueComponent,
         JDNDatepickerDirective,
+        LinkValueComponent,
+        ListValueComponent,
         ListViewComponent,
-        ResourceListComponent,
+        PropertyViewComponent,
         ResourceGridComponent,
-        AddValueComponent,
-        StillImageComponent
+        ResourceListComponent,
+        ResourceViewComponent,
+        StillImageComponent,
+        TextValueAsHtmlComponent,
+        TextValueAsStringComponent,
+        TimeValueComponent,
+        UriValueComponent
     ]
 })
 export class DspViewerModule {
