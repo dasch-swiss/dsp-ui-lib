@@ -31,7 +31,7 @@
             matTooltipPosition="above"
             (click)="toggleProps.emit(!showAllProps)">
             <mat-icon>{{showAllProps ? 'unfold_less' : 'unfold_more'}}</mat-icon>
-            <span class="desktop-only">{{showAllProps ? 'Decrease' : 'Increase'}} properties</span>
+            <span class="desktop-only">{{showAllProps ? 'Hide empty' : 'Show all'}} properties</span>
         </button>
 
         <!-- TODO: activate delete action to delete the whole resource -->

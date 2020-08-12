@@ -167,14 +167,14 @@ describe('PropertyToolbarComponent', () => {
             const resLabelDebugElement = propertyToolbarComponentDe.query(By.css('button.toggle-props'));
             const resLabelNativeElement = resLabelDebugElement.nativeElement;
             // the button contains an icon "unfold_less" and the text "Decrease properties"
-            expect(resLabelNativeElement.textContent.trim()).toBe('unfold_lessDecrease properties');
+            expect(resLabelNativeElement.textContent.trim()).toBe('unfold_lessHide empty properties');
 
             resLabelNativeElement.click();
 
             testHostFixture.detectChanges();
 
             // the button contains an icon "unfold_more" and the text "Increase properties"
-            expect(resLabelNativeElement.textContent.trim()).toBe('unfold_moreIncrease properties');
+            expect(resLabelNativeElement.textContent.trim()).toBe('unfold_moreShow all properties');
 
         });
     });
