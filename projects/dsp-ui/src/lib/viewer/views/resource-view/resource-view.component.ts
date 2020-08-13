@@ -1,12 +1,12 @@
 import {
     Component,
-    Inject,
+    EventEmitter, Inject,
     Input,
     OnChanges,
     OnDestroy,
-    OnInit
+    OnInit,
+    Output
 } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     ApiResponseError,
     BaseValue,
@@ -14,6 +14,7 @@ import {
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
     PropertyDefinition,
+    ReadProject,
     ReadResource,
     ReadValue,
     SystemPropertyDefinition
@@ -45,21 +46,35 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      */
     @Input() iri: string;
 
+    /**
+     * Show all properties, even they don't have a value.
+     *
+     * @param  (showAllProps)
+     */
+    @Input() showAllProps = false;
+
+    /**
+     * Show toolbar with project info and some action tools on top of properties if true.
+     *
+     * @param  (showToolbar)
+     */
+    @Input() showToolbar = true;
+
+    /**
+     * @param  openProject EventEmitter which sends project information to parent component
+     */
+    @Output() openProject: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
     resource: ReadResource;
 
     resPropInfoVals: PropertyInfoValues[] = []; // array of resource properties
 
     systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
 
-    versionArkUrl: string; // versionArkUrl value
-    message: string; // message to show in the snackbar to confirm the copy of the ARK URL
-    action: string; // label for the snackbar action
-
     valueOperationEventSubscription: Subscription;
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
-        private _snackBar: MatSnackBar,
         private _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
@@ -112,9 +127,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                 // get system property information
                 this.systemPropDefs = this.resource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
 
-                // set the arkUrl value
-                this.versionArkUrl = this.resource.versionArkUrl;
-
             },
             (error: ApiResponseError) => {
                 console.error('Error to get resource: ', error);
@@ -158,18 +170,12 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
-     * Display message to confirm the copy of the citation link (ARK URL)
-     * @param message
-     * @param action
+     * Event receiver: Show all props or not
+     *
+     * @param  show
      */
-    openSnackBar(message: string, action: string) {
-        message = 'Copied to clipboard!';
-        action = 'Citation Link';
-        this._snackBar.open(message, action, {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top'
-        });
+    toggleProps(show: boolean) {
+        this.showAllProps = show;
     }
 
 }
