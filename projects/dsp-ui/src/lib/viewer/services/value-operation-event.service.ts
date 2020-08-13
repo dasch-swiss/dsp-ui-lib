@@ -1,4 +1,4 @@
-import { ReadValue } from '@dasch-swiss/dsp-js';
+import { BaseValue } from '@dasch-swiss/dsp-js';
 import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -35,7 +35,7 @@ export class ValueOperationEventService {
 }
 
 export class EmitEvent {
-    constructor(public name: any, public value?: ReadValue) { }
+    constructor(public name: any, public value?: BaseValue) { }
 }
 
 // Possible events that can be emitted.

@@ -9,6 +9,8 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     ApiResponseError,
+    BaseValue,
+    DeleteValue,
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
     PropertyDefinition,
@@ -64,7 +66,10 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         // subscribe to the event bus and listen for the ValueAdded event to be emitted
         // when a ValueAdded event is emitted, get the resource again to display the newly created value
         this.valueOperationEventSubscription = this._valueOperationEventService.on(
-            Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue));
+            Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue, false));
+
+        this.valueOperationEventSubscription = this._valueOperationEventService.on(
+            Events.ValueDeleted, (deletedValue: DeleteValue) => this.updateResource(deletedValue, true));
     }
 
     ngOnChanges() {
@@ -116,15 +121,36 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
-    updateResource(newValue?: ReadValue, isDeletion?: boolean): void {
+    /**
+     * Update the UI to reflect updates made to property values.
+     *
+     * @param value value to be updated inside propInfoValueArray
+     * @param isDeletion is the value being removed or added
+     */
+    updateResource(value: BaseValue, isDeletion: boolean): void {
         if (this.resPropInfoVals) {
-            if (!isDeletion) {
+            if (!isDeletion) { // add new value
                 this.resPropInfoVals
-                    .filter( propInfoValueArray => propInfoValueArray.propDef.id === newValue.property) // filter to the correct property
-                    .map( propInfoValue => propInfoValue.values.push(newValue)); // push new property to array
-            } else {
-                // pop from the array
-                // TODO: remove element from array when deletion is implemented
+                    .filter( propInfoValueArray =>
+                        propInfoValueArray.propDef.id === (value as ReadValue).property) // filter to the correct property
+                    .map( propInfoValue =>
+                        propInfoValue.values.push((value as ReadValue))); // push new value to array
+            } else { // delete value
+                this.resPropInfoVals
+                    .filter( propInfoValueArray =>
+                        propInfoValueArray.propDef.objectType === (value as DeleteValue).type) // filter to the correct type
+                    .map((filteredpropInfoValueArray) => {
+                        let index = -1; // init index to increment and use for the splice
+                        filteredpropInfoValueArray.values.forEach( // loop through each value of the current property
+                            val => {
+                                index += 1; // increment index
+                                if (val.id === (value as DeleteValue).id) { // find the value that was deleted using the value id
+                                    filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
+                                }
+                            }
+                        );
+                    }
+                );
             }
         } else {
             console.error('No properties exist for this resource');
