@@ -6,3 +6,13 @@ $grid-breakpoints: (
   notebook: 992px,
   desktop: 1200px
 );
+
+@media (max-width: map-get($grid-breakpoints, desktop)) and (min-width: map-get($grid-breakpoints, tablet)) {
+
+}
+
+@media (max-width: map-get($grid-breakpoints, phone)) {
+  .desktop-only {
+    display: none;
+  }
+}

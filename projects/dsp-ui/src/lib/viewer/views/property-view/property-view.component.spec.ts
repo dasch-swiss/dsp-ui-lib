@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import {
     ApiResponseError,
@@ -24,7 +25,8 @@ import { PropertyViewComponent } from './property-view.component';
     <dsp-property-view #propView
       [parentResource]="parentResource"
       [propArray]="propArray"
-      [systemPropArray]="systemPropArray">
+      [systemPropArray]="systemPropArray"
+      [showAllProps]="showAllProps">
     </dsp-property-view>`
 })
 class TestPropertyParentComponent implements OnInit, OnDestroy {
@@ -36,6 +38,8 @@ class TestPropertyParentComponent implements OnInit, OnDestroy {
     propArray: PropertyInfoValues[] = [];
 
     systemPropArray: SystemPropertyDefinition[] = [];
+
+    showAllProps = false;
 
     voeSubscription: Subscription;
 
@@ -117,6 +121,7 @@ describe('PropertyViewComponent', () => {
         TestBed.configureTestingModule({
         imports: [
             MatIconModule,
+            MatTooltipModule
         ],
         declarations: [
             TestPropertyParentComponent,

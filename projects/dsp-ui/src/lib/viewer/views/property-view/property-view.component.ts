@@ -24,7 +24,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     /**
      * Parent resource
      *
-     * @param (resource)
+     * @param (parentResource)
      */
     @Input() parentResource: ReadResource;
 
@@ -38,9 +38,16 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     /**
      * Array of system property object with list of system properties
      *
-     * @param (propArray)
+     * @param (systemPropArray)
      */
     @Input() systemPropArray: SystemPropertyDefinition[];
+
+    /**
+     * Show all properties, even if they don't have a value.
+     *
+     * @param  (showAllProps)
+     */
+    @Input() showAllProps = false;
 
     addButtonIsVisible: boolean; // used to toggle add value button
     addValueFormIsVisible: boolean; // used to toggle add value form field
