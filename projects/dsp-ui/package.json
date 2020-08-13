@@ -21,7 +21,7 @@
     "@angular/core": "^9.0.0",
     "@angular/material": "^9.0.0",
     "@angular/cdk": "^9.0.0",
-    "@dasch-swiss/dsp-js": "1.0.0-rc.6",
+    "@dasch-swiss/dsp-js": "1.0.0-rc.7",
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.13",
     "ngx-color-picker": "^9.1.0",

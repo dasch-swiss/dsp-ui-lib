@@ -86,7 +86,7 @@ describe('ConfirmationDialogComponent', () => {
 
         // Angular won't call this for us so we need to do it ourselves to avoid leaks.
         overlayContainer.ngOnDestroy();
-      });
+    });
 
     it('should display a confirmation dialog', () => {
 
