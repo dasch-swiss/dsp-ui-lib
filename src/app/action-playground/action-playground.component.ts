@@ -137,7 +137,7 @@ export class ActionPlaygroundComponent implements OnInit {
         // private _sessionService: SessionService,
         // @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
         private _sortingService: SortingService,
-        private dialog: MatDialog
+        private _dialog: MatDialog
     ) { }
 
     ngOnInit(): void {
@@ -185,7 +185,7 @@ export class ActionPlaygroundComponent implements OnInit {
         dialogData.buttonTextCancel = 'No, keep the value';
 
         const dialogRef =
-            this.dialog.open<ConfirmationDialogComponent, ConfirmationDialogData>(ConfirmationDialogComponent, { data: dialogData});
+            this._dialog.open<ConfirmationDialogComponent, ConfirmationDialogData>(ConfirmationDialogComponent, { data: dialogData});
 
         dialogRef.afterClosed().subscribe((confirmed: boolean) => {
             if (confirmed) {
