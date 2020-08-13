@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import {
     ApiResponseError,
     Constants,
+    DeleteValue,
+    DeleteValueResponse,
     KnoraApiConnection,
     PermissionUtil,
     ReadResource,
