@@ -124,6 +124,11 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     initializeOntologies(): void {
         this._dspApiConnection.v2.onto.getOntologiesMetadata().subscribe(
             (response: OntologiesMetadata) => {
+                response.ontologies = response.ontologies.filter(
+                    onto => onto.attachedToProject !== 'http://www.knora.org/ontology/knora-admin#SystemProject');
+
+                console.log(response);
+
                 this.ontologiesMetadata = response;
             },
             (error: ApiResponseError) => {
