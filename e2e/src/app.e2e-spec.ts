@@ -86,7 +86,7 @@ describe('Test App', () => {
 
             const ontoOptions = await selectOntos.getOptions();
 
-            expect(ontoOptions.length).toEqual(15);
+            expect(ontoOptions.length).toEqual(11);
 
             expect(await ontoOptions[0].getText()).toEqual('The anything ontology');
 
