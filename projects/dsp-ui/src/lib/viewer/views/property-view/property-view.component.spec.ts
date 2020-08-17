@@ -219,7 +219,7 @@ describe('PropertyViewComponent', () => {
 
         it('should show an add button under each property that has a value component and for which the cardinality is not 1', () => {
             const addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
-            expect(addButtons.length).toEqual(14);
+            expect(addButtons.length).toEqual(13);
 
         });
 
@@ -236,7 +236,7 @@ describe('PropertyViewComponent', () => {
             const addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
 
             // the add button for the property with the open add value form is hidden
-            expect(addButtons.length).toEqual(13);
+            expect(addButtons.length).toEqual(12);
 
             expect(propertyViewComponentDe.query(By.css('.add-value'))).toBeDefined();
 
