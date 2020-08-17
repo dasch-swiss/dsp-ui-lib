@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -25,7 +26,29 @@ import { BaseValueComponent } from '../../values/base-value.component';
 @Component({
     selector: 'dsp-display-edit',
     templateUrl: './display-edit.component.html',
-    styleUrls: ['./display-edit.component.scss']
+    styleUrls: ['./display-edit.component.scss'],
+    animations: [
+        // the fade-in/fade-out animation.
+        // https://www.kdechant.com/blog/angular-animations-fade-in-and-fade-out
+        trigger('simpleFadeAnimation', [
+
+          // the "in" style determines the "resting" state of the element when it is visible.
+          state('in', style({opacity: 1})),
+
+          // fade in when created.
+          transition(':enter', [
+            // the styles start from this point when the element appears
+            style({opacity: 0}),
+            // and animate toward the "in" state above
+            animate(150)
+          ]),
+
+          // fade out when destroyed.
+          transition(':leave',
+            // fading out uses a different syntax, with the "style" being passed into animate()
+            animate(150, style({opacity: 0})))
+        ])
+      ]
 })
 export class DisplayEditComponent implements OnInit {
 
@@ -53,6 +76,8 @@ export class DisplayEditComponent implements OnInit {
 
     // indicates if value can be edited
     readOnlyValue: boolean;
+
+    showActionBubble = false;
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,

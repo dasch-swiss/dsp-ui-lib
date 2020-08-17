@@ -1,4 +1,6 @@
-<div class="grid-container">
+<div class="grid-container"
+    (mouseenter)="showActionBubble = !showActionBubble"
+    (mouseleave)="showActionBubble = !showActionBubble">
     <div class="value-component">
         <span [ngSwitch]="valueTypeOrClass">
             <!-- display value is cast as 'any' because the compiler cannot infer the value type expected by the child component -->
@@ -19,6 +21,29 @@
                         [propertyDef]="$any(parentResource.entityInfo.properties[displayValue.property])"></dsp-list-value>
             <span *ngSwitchDefault>{{displayValue.strval}}</span>
         </span>
+        <!-- *ngIf="showActionBubble" -->
+        <div class="action-bubble" *ngIf="!readOnlyValue && showActionBubble && !editModeActive" [@simpleFadeAnimation]="'in'">
+            <div class="button-container">
+                <button class="edit"
+                        title="edit"
+                        *ngIf="canModify && !editModeActive"
+                        (click)="activateEditMode()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button class="comment"
+                        title="toggle comment"
+                        *ngIf="shouldShowCommentToggle"
+                        (click)="toggleComment()">
+                    <mat-icon>comment</mat-icon>
+                </button>
+                <button class="delete"
+                        title="delete"
+                        *ngIf="canModify && !editModeActive"
+                        (click)="openDialog()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
     </div>
     <!-- TEMPORARY CODE: readOnlyValue USED TO HIDE BUTTONS FOR VALUE COMPONENTS NOT YET IMPLEMENTED -->
     <div class="crud-buttons" *ngIf="!readOnlyValue">

@@ -66,6 +66,11 @@
   grid-row-end: auto;
   grid-column-start: 1;
   grid-column-end: 2;
+  position: relative;
+}
+
+.value-component:hover {
+  background-color: #f5f5f5;
 }
 
 .crud-buttons {
