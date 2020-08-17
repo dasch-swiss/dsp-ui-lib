@@ -6,7 +6,9 @@
         <div *ngFor="let prop of propArray; let last = last" [class.border-bottom]="!last">
             <!-- show property; all in case of showAll === true or only the ones with prop.values -->
             <div class="property" *ngIf="!prop.propDef['isLinkProperty'] && showAllProps || ( prop.values && prop.values.length > 0 )">
-                <div class="property-label">
+                <div class="property-label"
+                    (mouseenter)="mouseEnterActionBubble(prop)"
+                    (mouseleave)="mouseLeaveActionBubble()">
                     <!-- label of the property -->
                     <h3 class="label mat-subheading-1"
                         [class.label-info]="prop.propDef.comment"
@@ -14,6 +16,19 @@
                         matTooltipPosition="above">
                         {{prop.propDef.label}}
                     </h3>
+                    <div class="action-bubble" *ngIf="showActionBubble && hoveredProp == prop.propDef.id" [@simpleFadeAnimation]="'in'">
+                        <div class="button-container">
+                            <button class="info">
+                                <mat-icon>info</mat-icon>
+                            </button>
+                            <button class="info">
+                                <mat-icon>comment</mat-icon>
+                            </button>
+                            <button class="info">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="property-value">
                     <!-- the value(s) of the property -->

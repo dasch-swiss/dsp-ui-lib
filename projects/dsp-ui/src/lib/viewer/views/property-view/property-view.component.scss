@@ -20,6 +20,37 @@
     height: 18px;
 }
 
+.action-bubble {
+  position: absolute;
+  right: 0;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0 1px;
+
+  .button-container {
+
+    button {
+      cursor: pointer;
+      border: none;
+      padding: 0em;
+      outline: none;
+      background-color: transparent;
+      color: #000000;
+      margin: 0 2px;
+
+      .material-icons {
+        font-size: 18px;
+      }
+
+      .mat-icon {
+        width: 18px;
+        height: 18px;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
 // properties container with property item and property value items
 
 .properties-container {
@@ -50,9 +81,11 @@
 
       .property-label {
         grid-column: 1 / span 1;
+        position: relative;
 
         .label {
           text-align: right;
+          margin: 2px 0 0 0;
         }
 
         .label-info {
