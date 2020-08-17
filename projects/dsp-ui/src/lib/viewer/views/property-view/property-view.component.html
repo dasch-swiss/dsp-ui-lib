@@ -50,7 +50,11 @@
                         </dsp-add-value>
                     </div>
                     <!-- Add button -->
-                    <div *ngIf="addButtonIsVisible && prop.guiDef.cardinality !== 1 && propID !== prop.propDef.id">
+                    <!-- temporary hack to hide add button for an XML value -->
+                    <div *ngIf="prop.guiDef.propertyIndex !== 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext' &&
+                        addButtonIsVisible &&
+                        prop.guiDef.cardinality !== 1 &&
+                        propID !== prop.propDef.id">
                         <button class="create" (click)="showAddValueForm(prop)" title="Add a new value">
                             <mat-icon>add_box</mat-icon>
                         </button>
