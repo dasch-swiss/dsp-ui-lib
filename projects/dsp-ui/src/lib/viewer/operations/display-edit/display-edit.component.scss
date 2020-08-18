@@ -16,11 +16,13 @@
     button {
       cursor: pointer;
       border: none;
-      padding: 0em;
+      padding: 2px;
       outline: none;
       background-color: transparent;
       color: #000000;
       margin: 0 2px;
+      border-radius: 10px;
+      transition: background-color ease-out 0.5s;
 
       .material-icons {
         font-size: 18px;
@@ -31,6 +33,10 @@
         height: 18px;
         vertical-align: middle;
       }
+    }
+
+    button:hover {
+      background-color: #c7c7c7;
     }
   }
 }
