@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
+    ApiResponseError,
     Constants,
     DeleteValue,
     DeleteValueResponse,
@@ -119,6 +120,19 @@ export class DisplayEditComponent implements OnInit {
 
                     // check if comment toggle button should be shown
                     this.checkCommentToggleVisibility();
+                },
+                (error: ApiResponseError) => {
+                    // error handling
+                    this.editModeActive = true;
+                    switch (error.status) {
+                        case 400:
+                            this.displayValueComponent.valueFormControl.setErrors({duplicateValue: true});
+                            break;
+                        default:
+                            console.log('There was an error processing your request. Details: ', error);
+                            break;
+
+                    }
                 }
             );
 
