@@ -16,29 +16,7 @@ import { PropertyInfoValues } from '../resource-view/resource-view.component';
 @Component({
   selector: 'dsp-property-view',
   templateUrl: './property-view.component.html',
-  styleUrls: ['./property-view.component.scss'],
-  animations: [
-    // the fade-in/fade-out animation.
-    // https://www.kdechant.com/blog/angular-animations-fade-in-and-fade-out
-    trigger('simpleFadeAnimation', [
-
-      // the "in" style determines the "resting" state of the element when it is visible.
-      state('in', style({opacity: 1})),
-
-      // fade in when created.
-      transition(':enter', [
-        // the styles start from this point when the element appears
-        style({opacity: 0}),
-        // and animate toward the "in" state above
-        animate(300)
-      ]),
-
-      // fade out when destroyed.
-      transition(':leave',
-        // fading out uses a different syntax, with the "style" being passed into animate()
-        animate(300, style({opacity: 0})))
-    ])
-  ]
+  styleUrls: ['./property-view.component.scss']
 })
 export class PropertyViewComponent implements OnInit, OnDestroy {
 
@@ -76,8 +54,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     addValueFormIsVisible: boolean; // used to toggle add value form field
     propID: string; // used in template to show only the add value form of the corresponding value
     readOnlyProp: boolean; // used in template to not show an "add" button for properties we do not yet have a way to create/edit
-    showActionBubble = false;
-    hoveredProp: string;
 
     valueOperationEventSubscription: Subscription;
 
@@ -123,20 +99,5 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
         this.addValueFormIsVisible = false;
         this.addButtonIsVisible = true;
         this.propID = undefined;
-    }
-
-    /**
-     * Called from the template when the user hovers over a property label
-     */
-    mouseEnterActionBubble(prop: PropertyInfoValues) {
-        this.hoveredProp = prop.propDef.id;
-        this.showActionBubble = true;
-    }
-    /**
-     * Called from the template when the user stops hovering over a property label
-     */
-    mouseLeaveActionBubble() {
-        this.showActionBubble = false;
-        this.hoveredProp = undefined;
     }
 }
