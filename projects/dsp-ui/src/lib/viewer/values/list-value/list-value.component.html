@@ -25,6 +25,9 @@
     <mat-error *ngIf="form.controls.listValue.hasError('valueNotChanged')  && form.controls.listValue.dirty">
         <span class="custom-error-message">New value must be different than the current value.</span>
     </mat-error>
+    <mat-error *ngIf="form.controls.listValue.hasError('duplicateValue')">
+        <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
+    </mat-error>
 </span>
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
     <p class="rm-value">{{valueFormControl.value}}</p>
