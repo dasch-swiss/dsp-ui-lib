@@ -26,6 +26,9 @@
             <mat-error *ngIf="valueFormControl.hasError('pattern')">
                 Please enter a hex color value.
             </mat-error>
+            <mat-error *ngIf="valueFormControl.hasError('duplicateValue')">
+                <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
+            </mat-error>
         </mat-form-field>
         <mat-form-field class="large-field value-component-comment">
             <textarea

@@ -8,7 +8,7 @@ import {
     ViewChild
 } from '@angular/core';
 import {
-    Constants,
+    ApiResponseError, Constants,
     CreateValue,
     KnoraApiConnection,
     ReadResource,
@@ -115,19 +115,25 @@ export class AddValueComponent implements OnInit, AfterViewInit {
                     // hide the progress indicator
                     this.submittingValue = false;
                 },
-                (err: Error) => {
-                    console.error('There was an issue submitting your value: ', err);
-
+                (error: ApiResponseError) => {
                     // hide the progress indicator
                     this.submittingValue = false;
 
                     // show the CRUD buttons
                     this.createModeActive = true;
-                }
 
+                    switch (error.status) {
+                        case 400:
+                            this.createValueComponent.valueFormControl.setErrors({duplicateValue: true});
+                            break;
+                        default:
+                            console.log('There was an error processing your request. Details: ', error);
+                            break;
+                    }
+                }
             );
         } else {
-            console.error('invalid value');
+            console.error('Expected instance of CreateVal, received: ', createVal);
 
             // hide the progress indicator
             this.submittingValue = false;
