@@ -29,7 +29,7 @@ describe('Test App', () => {
             const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value', timeout);
 
             const intValEleField = await page.getReadValueFieldFromValueComponent(valueEleComp);
-            expect(await intValEleField.getText()).toEqual('4');
+            expect(await intValEleField.getText()).toEqual('1');
 
         });
 
