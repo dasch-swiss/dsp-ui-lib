@@ -1,7 +1,7 @@
-import { browser, by, element, WebElement, WebElementPromise } from 'protractor';
-import { MatButtonHarness } from '@angular/material/button/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
+import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
+import { browser, by, element, WebElement, WebElementPromise } from 'protractor';
 
 export class AppPage {
 
