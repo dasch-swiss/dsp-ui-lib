@@ -1,7 +1,8 @@
 <div class="grid-container">
     <div class="value-component"
-        (mouseenter)="showActionBubble = !showActionBubble"
-        (mouseleave)="showActionBubble = !showActionBubble">
+        (mouseenter)="mouseEnter()"
+        (mouseleave)="mouseLeave()"
+        [ngClass]='backgroundColor'>
         <span [ngSwitch]="valueTypeOrClass">
             <!-- display value is cast as 'any' because the compiler cannot infer the value type expected by the child component -->
             <dsp-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-string>

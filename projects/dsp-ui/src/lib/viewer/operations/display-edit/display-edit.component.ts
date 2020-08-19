@@ -78,7 +78,11 @@ export class DisplayEditComponent implements OnInit {
     // indicates if value can be edited
     readOnlyValue: boolean;
 
+    // indicates if the action bubble with the CRUD buttons should be shown
     showActionBubble = false;
+
+    // string used as class name to add add to value-component element on hover
+    backgroundColor = '';
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
@@ -109,6 +113,7 @@ export class DisplayEditComponent implements OnInit {
      */
     activateEditMode() {
         this.editModeActive = true;
+        this.backgroundColor = '';
         this.mode = 'update';
 
         // hide comment toggle button while in edit mode
@@ -123,6 +128,7 @@ export class DisplayEditComponent implements OnInit {
      */
     saveEditValue() {
         this.editModeActive = false;
+        this.showActionBubble = false;
         const updatedVal = this.displayValueComponent.getUpdatedValue();
 
         if (updatedVal instanceof UpdateValue) {
@@ -215,6 +221,7 @@ export class DisplayEditComponent implements OnInit {
      */
     cancelEditValue() {
         this.editModeActive = false;
+        this.showActionBubble = false;
         this.mode = 'read';
 
         // hide comment once back in read mode
@@ -241,6 +248,24 @@ export class DisplayEditComponent implements OnInit {
             this.displayValue.valueHasComment !== '' &&
             this.displayValue.valueHasComment !== undefined
         );
+    }
+
+    /**
+     * Show CRUD buttons and add 'highlighted' class to the element only if editModeActive is false
+     */
+    mouseEnter() {
+        this.showActionBubble = true;
+        if (!this.editModeActive) {
+            this.backgroundColor = 'highlighted';
+        }
+    }
+
+    /**
+     * Hide CRUD buttons and remove the 'hightlighted' class from the element
+     */
+    mouseLeave() {
+        this.showActionBubble = false;
+        this.backgroundColor = '';
     }
 
     /**
