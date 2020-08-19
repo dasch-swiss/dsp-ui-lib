@@ -888,17 +888,17 @@ describe('DisplayEditComponent', () => {
             }
         );
 
-        const deleteButtonDebugElement = displayEditComponentDe.query(By.css('button.delete'));
-        const deleteButtonNativeElement = deleteButtonDebugElement.nativeElement;
+        // const deleteButtonDebugElement = displayEditComponentDe.query(By.css('button.delete'));
+        // const deleteButtonNativeElement = deleteButtonDebugElement.nativeElement;
 
-        expect(deleteButtonNativeElement.disabled).toBeFalsy();
+        // expect(deleteButtonNativeElement.disabled).toBeFalsy();
 
-        deleteButtonNativeElement.click();
+        // deleteButtonNativeElement.click();
 
-        testHostFixture.detectChanges();
+        // testHostFixture.detectChanges();
 
-        // const deleteButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.delete'}));
-        // await deleteButton.click();
+        const deleteButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.delete'}));
+        await deleteButton.click();
 
         const dialogHarnesses = await rootLoader.getAllHarnesses(MatDialogHarness);
 
