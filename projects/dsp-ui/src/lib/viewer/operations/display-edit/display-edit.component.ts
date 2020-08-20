@@ -78,6 +78,10 @@ export class DisplayEditComponent implements OnInit {
         this.readOnlyValue = this._valueTypeService.isReadOnly(this.valueTypeOrClass);
     }
 
+    getTooltipText(): string {
+        return 'Value creation date: ' + this.displayValue.valueCreationDate + '\n Attached to user: ' + this.displayValue.attachedToUser;
+    }
+
     /**
      * Show the form components and CRUD buttons to update an existing value or add a new value.
      */

@@ -82,11 +82,12 @@
   grid-column-end: end;
 }
 
-.comment-toggle,
-.edit,
-.save,
-.delete,
-.cancel {
+button.comment-toggle,
+button.edit,
+button.save,
+button.delete,
+button.cancel,
+button.info {
   cursor: pointer;
   border: none;
   padding: 0em;
@@ -96,25 +97,30 @@
   color: #000000;
 }
 
-.save:disabled {
+button.info {
+  cursor: default;
+}
+
+button.save:disabled {
   color: #adadad;
   cursor: default;
 }
 
-.comment-toggle .material-icons,
-.edit .material-icons,
-.save .material-icons,
-.delete .material-icons,
-.cancel .material-icons {
+button.comment-toggle .material-icons,
+button.edit .material-icons,
+button.save .material-icons,
+button.delete .material-icons,
+button.cancel .material-icons,
+button.info .material-icons {
   font-size: 18px;
 }
 
-.comment-toggle .mat-icon,
-.edit .mat-icon,
-.save .mat-icon,
-.delete .mat-icon,
-.cancel .mat-icon {
+button.comment-toggle .mat-icon,
+button.edit .mat-icon,
+button.save .mat-icon,
+button.delete .mat-icon,
+button.cancel .mat-icon,
+button.info .mat-icon {
   width: 18px;
   height: 18px;
 }
-
