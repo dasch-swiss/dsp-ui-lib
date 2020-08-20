@@ -7,6 +7,7 @@ export * from './pipes/array-transformation/reverse.pipe';
 export * from './pipes/array-transformation/sort-by.pipe';
 export * from './pipes/string-transformation/truncate.pipe';
 export * from './pipes/string-transformation/stringify-string-literal.pipe';
+export * from './pipes/sanitization/sanitize-html.pipe';
 
 // services
 export * from './services/sorting.service';
