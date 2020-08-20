@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -26,7 +27,29 @@ import { BaseValueComponent } from '../../values/base-value.component';
 @Component({
     selector: 'dsp-display-edit',
     templateUrl: './display-edit.component.html',
-    styleUrls: ['./display-edit.component.scss']
+    styleUrls: ['./display-edit.component.scss'],
+    animations: [
+        // the fade-in/fade-out animation.
+        // https://www.kdechant.com/blog/angular-animations-fade-in-and-fade-out
+        trigger('simpleFadeAnimation', [
+
+          // the "in" style determines the "resting" state of the element when it is visible.
+          state('in', style({opacity: 1})),
+
+          // fade in when created.
+          transition(':enter', [
+            // the styles start from this point when the element appears
+            style({opacity: 0}),
+            // and animate toward the "in" state above
+            animate(150)
+          ]),
+
+          // fade out when destroyed.
+          transition(':leave',
+            // fading out uses a different syntax, with the "style" being passed into animate()
+            animate(150, style({opacity: 0})))
+        ])
+      ]
 })
 export class DisplayEditComponent implements OnInit {
 
@@ -54,6 +77,12 @@ export class DisplayEditComponent implements OnInit {
 
     // indicates if value can be edited
     readOnlyValue: boolean;
+
+    // indicates if the action bubble with the CRUD buttons should be shown
+    showActionBubble = false;
+
+    // string used as class name to add add to value-component element on hover
+    backgroundColor = '';
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
@@ -84,6 +113,7 @@ export class DisplayEditComponent implements OnInit {
      */
     activateEditMode() {
         this.editModeActive = true;
+        this.backgroundColor = '';
         this.mode = 'update';
 
         // hide comment toggle button while in edit mode
@@ -98,6 +128,7 @@ export class DisplayEditComponent implements OnInit {
      */
     saveEditValue() {
         this.editModeActive = false;
+        this.showActionBubble = false;
         const updatedVal = this.displayValueComponent.getUpdatedValue();
 
         if (updatedVal instanceof UpdateValue) {
@@ -190,6 +221,7 @@ export class DisplayEditComponent implements OnInit {
      */
     cancelEditValue() {
         this.editModeActive = false;
+        this.showActionBubble = false;
         this.mode = 'read';
 
         // hide comment once back in read mode
@@ -216,6 +248,24 @@ export class DisplayEditComponent implements OnInit {
             this.displayValue.valueHasComment !== '' &&
             this.displayValue.valueHasComment !== undefined
         );
+    }
+
+    /**
+     * Show CRUD buttons and add 'highlighted' class to the element only if editModeActive is false
+     */
+    mouseEnter() {
+        this.showActionBubble = true;
+        if (!this.editModeActive) {
+            this.backgroundColor = 'highlighted';
+        }
+    }
+
+    /**
+     * Hide CRUD buttons and remove the 'hightlighted' class from the element
+     */
+    mouseLeave() {
+        this.showActionBubble = false;
+        this.backgroundColor = '';
     }
 
     /**

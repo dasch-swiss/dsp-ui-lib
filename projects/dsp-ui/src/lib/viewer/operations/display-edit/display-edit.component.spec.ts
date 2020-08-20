@@ -541,6 +541,10 @@ describe('DisplayEditComponent', () => {
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
+      testHostComponent.displayEditValueComponent.showActionBubble = true;
+      testHostFixture.detectChanges();
+
+
     });
 
     it('should display an edit button if the user has the necessary permissions', () => {
@@ -734,6 +738,8 @@ describe('DisplayEditComponent', () => {
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
+      testHostComponent.displayEditValueComponent.showActionBubble = true;
+      testHostFixture.detectChanges();
     });
 
     it('should display a comment button if the value has a comment', () => {
@@ -849,6 +855,9 @@ describe('DisplayEditComponent', () => {
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
+      testHostComponent.displayEditValueComponent.showActionBubble = true;
+      testHostFixture.detectChanges();
+
       overlayContainer = TestBed.inject(OverlayContainer);
       rootLoader = TestbedHarnessEnvironment.documentRootLoader(testHostFixture);
     });
@@ -878,6 +887,15 @@ describe('DisplayEditComponent', () => {
                 return of(response);
             }
         );
+
+        // const deleteButtonDebugElement = displayEditComponentDe.query(By.css('button.delete'));
+        // const deleteButtonNativeElement = deleteButtonDebugElement.nativeElement;
+
+        // expect(deleteButtonNativeElement.disabled).toBeFalsy();
+
+        // deleteButtonNativeElement.click();
+
+        // testHostFixture.detectChanges();
 
         const deleteButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.delete'}));
         await deleteButton.click();
