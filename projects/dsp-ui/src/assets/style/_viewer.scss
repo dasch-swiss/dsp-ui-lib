@@ -66,6 +66,54 @@
   grid-row-end: auto;
   grid-column-start: 1;
   grid-column-end: 2;
+  position: relative;
+
+  .action-bubble {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
+    padding: 0 1px;
+    background-color: #e4e4e4;
+    z-index: 2;
+    box-shadow: #949494 1px 4px 5px 0px;
+
+    .button-container {
+
+      button {
+        cursor: pointer;
+        border: none;
+        padding: 2px;
+        outline: none;
+        background-color: transparent;
+        color: #000000;
+        margin: 0 2px;
+        border-radius: 10px;
+        transition: background-color ease-out 0.5s;
+        min-width: inherit;
+        line-height: normal;
+
+        .material-icons {
+          font-size: 18px;
+        }
+
+        .mat-icon {
+          width: 18px;
+          height: 18px;
+          vertical-align: middle;
+        }
+      }
+
+      button:hover {
+        background-color: #c7c7c7;
+      }
+    }
+  }
+}
+
+.value-component.highlighted {
+  background-color: #f5f5f5;
 }
 
 .crud-buttons {
@@ -82,10 +130,7 @@
   grid-column-end: end;
 }
 
-button.comment-toggle,
-button.edit,
 button.save,
-button.delete,
 button.cancel,
 button.info {
   cursor: pointer;
@@ -106,21 +151,14 @@ button.save:disabled {
   cursor: default;
 }
 
-button.comment-toggle .material-icons,
-button.edit .material-icons,
 button.save .material-icons,
-button.delete .material-icons,
 button.cancel .material-icons,
 button.info .material-icons {
   font-size: 18px;
 }
 
-button.comment-toggle .mat-icon,
-button.edit .mat-icon,
 button.save .mat-icon,
-button.delete .mat-icon,
 button.cancel .mat-icon,
 button.info .mat-icon {
-  width: 18px;
-  height: 18px;
+  font-size: 18px;
 }

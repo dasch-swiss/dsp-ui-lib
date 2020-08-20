@@ -1,9 +1,9 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    Constants,
+    ApiResponseError, Constants,
     DeleteValue,
     DeleteValueResponse,
     MockResource,
@@ -36,7 +36,8 @@ import {
     ValuesEndpointV2,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { AjaxError } from 'rxjs/ajax';
 import { DspApiConnectionToken } from '../../../core';
 import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
@@ -114,12 +115,17 @@ class TestIntValueComponent implements OnInit {
 
   @Input() displayValue;
 
-  form: object;
+  form: FormGroup;
+
+  valueFormControl: FormControl;
+
+  constructor(@Inject(FormBuilder) private _fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.valueFormControl = new FormControl(null, [Validators.required]);
 
-    this.form = new FormGroup({
-      test: new FormControl(null, [Validators.required])
+    this.form = this._fb.group({
+        test: this.valueFormControl
     });
   }
 
@@ -307,7 +313,8 @@ describe('DisplayEditComponent', () => {
             provide: MatDialogRef,
             useValue: {}
         },
-        ValueTypeService
+        ValueTypeService,
+        FormBuilder
       ]
     })
       .compileComponents();
@@ -534,6 +541,10 @@ describe('DisplayEditComponent', () => {
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
+      testHostComponent.displayEditValueComponent.showActionBubble = true;
+      testHostFixture.detectChanges();
+
+
     });
 
     it('should display an edit button if the user has the necessary permissions', () => {
@@ -643,6 +654,44 @@ describe('DisplayEditComponent', () => {
 
     });
 
+    it('should handle an ApiResponseError with status of 400 correctly', () => {
+
+        const valuesSpy = TestBed.inject(DspApiConnectionToken);
+
+        const error = ApiResponseError.fromAjaxError({} as AjaxError);
+
+        error.status = 400;
+
+        (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).updateValue.and.returnValue(throwError(error));
+
+        testHostComponent.displayEditValueComponent.canModify = true;
+        testHostComponent.displayEditValueComponent.editModeActive = true;
+        testHostComponent.displayEditValueComponent.mode = 'update';
+
+        testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.clearValidators();
+        testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.updateValueAndValidity();
+
+        testHostFixture.detectChanges();
+
+        const saveButtonDebugElement = displayEditComponentDe.query(By.css('button.save'));
+        const saveButtonNativeElement = saveButtonDebugElement.nativeElement;
+
+        expect(saveButtonNativeElement.disabled).toBeFalsy();
+
+        saveButtonNativeElement.click();
+
+        testHostFixture.detectChanges();
+
+        const formErrors = testHostComponent.displayEditValueComponent.displayValueComponent.valueFormControl.errors;
+
+        const expectedErrors = {
+            duplicateValue: true
+        };
+
+        expect(formErrors).toEqual(expectedErrors);
+
+    });
+
   });
 
   describe('do not change from display to edit mode for an html text value', () => {
@@ -689,6 +738,8 @@ describe('DisplayEditComponent', () => {
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
+      testHostComponent.displayEditValueComponent.showActionBubble = true;
+      testHostFixture.detectChanges();
     });
 
     it('should display a comment button if the value has a comment', () => {
@@ -804,6 +855,9 @@ describe('DisplayEditComponent', () => {
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
+      testHostComponent.displayEditValueComponent.showActionBubble = true;
+      testHostFixture.detectChanges();
+
       overlayContainer = TestBed.inject(OverlayContainer);
       rootLoader = TestbedHarnessEnvironment.documentRootLoader(testHostFixture);
     });
@@ -833,6 +887,15 @@ describe('DisplayEditComponent', () => {
                 return of(response);
             }
         );
+
+        // const deleteButtonDebugElement = displayEditComponentDe.query(By.css('button.delete'));
+        // const deleteButtonNativeElement = deleteButtonDebugElement.nativeElement;
+
+        // expect(deleteButtonNativeElement.disabled).toBeFalsy();
+
+        // deleteButtonNativeElement.click();
+
+        // testHostFixture.detectChanges();
 
         const deleteButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.delete'}));
         await deleteButton.click();

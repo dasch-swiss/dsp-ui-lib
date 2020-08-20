@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
+    ApiResponseError,
     CreateIntValue,
     CreateValue,
     MockResource,
@@ -15,7 +16,8 @@ import {
     ValuesEndpointV2,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { AjaxError } from 'rxjs/ajax';
 import { DspApiConnectionToken } from '../../../core';
 import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { AddValueComponent } from './add-value.component';
@@ -31,12 +33,17 @@ class TestIntValueComponent implements OnInit {
 
     @Input() displayValue;
 
-    form: object;
+    form: FormGroup;
+
+    valueFormControl: FormControl;
+
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) { }
 
     ngOnInit(): void {
+        this.valueFormControl = new FormControl(null, [Validators.required]);
 
-        this.form = new FormGroup({
-            test: new FormControl(null, [Validators.required])
+        this.form = this._fb.group({
+            test: this.valueFormControl
         });
     }
 
@@ -134,6 +141,7 @@ describe('AddValueComponent', () => {
                     provide: ValueOperationEventService,
                     useValue: eventSpy
                 },
+                FormBuilder
             ]
         })
         .compileComponents();
@@ -277,6 +285,40 @@ describe('AddValueComponent', () => {
             expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
             expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueAdded, newReadValue));
 
+        });
+
+        it('should handle an ApiResponseError with status of 400 correctly', () => {
+
+            const valuesSpy = TestBed.inject(DspApiConnectionToken);
+
+            const error = ApiResponseError.fromAjaxError({} as AjaxError);
+
+            error.status = 400;
+
+            (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).createValue.and.returnValue(throwError(error));
+
+            expect(testHostComponent.testAddValueComponent.createModeActive).toBeTruthy();
+
+            testHostComponent.testAddValueComponent.createValueComponent.form.controls.test.clearValidators();
+            testHostComponent.testAddValueComponent.createValueComponent.form.controls.test.updateValueAndValidity();
+            testHostFixture.detectChanges();
+
+            const saveButtonDebugElement = addValueComponentDe.query(By.css('button.save'));
+            const saveButtonNativeElement = saveButtonDebugElement.nativeElement;
+
+            expect(saveButtonNativeElement).toBeDefined();
+
+            saveButtonNativeElement.click();
+
+            testHostFixture.detectChanges();
+
+            const formErrors = testHostComponent.testAddValueComponent.createValueComponent.valueFormControl.errors;
+
+            const expectedErrors = {
+                duplicateValue: true
+            };
+
+            expect(formErrors).toEqual(expectedErrors);
         });
     });
 
