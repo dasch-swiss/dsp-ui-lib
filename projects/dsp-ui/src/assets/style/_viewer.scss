@@ -105,6 +105,10 @@
         }
       }
 
+      button.info {
+        cursor: default;
+      }
+
       button:hover {
         background-color: #c7c7c7;
       }
@@ -131,8 +135,7 @@
 }
 
 button.save,
-button.cancel,
-button.info {
+button.cancel {
   cursor: pointer;
   border: none;
   padding: 0em;
@@ -142,23 +145,17 @@ button.info {
   color: #000000;
 }
 
-button.info {
-  cursor: default;
-}
-
 button.save:disabled {
   color: #adadad;
   cursor: default;
 }
 
 button.save .material-icons,
-button.cancel .material-icons,
-button.info .material-icons {
+button.cancel .material-icons {
   font-size: 18px;
 }
 
 button.save .mat-icon,
-button.cancel .mat-icon,
-button.info .mat-icon {
+button.cancel .mat-icon {
   font-size: 18px;
 }

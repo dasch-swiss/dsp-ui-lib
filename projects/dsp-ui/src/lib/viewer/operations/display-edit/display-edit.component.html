@@ -32,6 +32,12 @@
                     <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-button
+                        class="info"
+                        matTooltip="{{getTooltipText()}}"
+                        matTooltipClass="info-tooltip">
+                        <mat-icon>info</mat-icon>
+                </button>
+                <button mat-button
                         class="comment-toggle"
                         title="toggle comment"
                         *ngIf="shouldShowCommentToggle"
