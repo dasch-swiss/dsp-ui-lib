@@ -127,8 +127,8 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     initializeOntologies(): void {
         this._dspApiConnection.v2.onto.getOntologiesMetadata().subscribe(
             (response: OntologiesMetadata) => {
-                response.ontologies = response.ontologies.filter(
-                    onto => onto.attachedToProject !== Constants.SystemProjectIRI);
+                // filter out system ontologies
+                response.ontologies = response.ontologies.filter(onto => onto.attachedToProject !== Constants.SystemProjectIRI);
 
                 this.ontologiesMetadata = response;
             },
