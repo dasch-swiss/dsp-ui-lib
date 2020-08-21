@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
-import { SanitizeHtmlPipe } from './sanitize-html.pipe';
+import { SanitizeUrlPipe } from './sanitize-url.pipe';
 
-describe('SanitizeHtmlPipe', () => {
-
-    let pipe: SanitizeHtmlPipe;
+describe('SanitizeUrlPipe', () => {
+    let pipe: SanitizeUrlPipe;
     let sanitizer: DomSanitizer;
 
     beforeEach(() => {
@@ -15,7 +14,7 @@ describe('SanitizeHtmlPipe', () => {
         });
 
         sanitizer = TestBed.inject(DomSanitizer);
-        pipe = new SanitizeHtmlPipe(sanitizer);
+        pipe = new SanitizeUrlPipe(sanitizer);
       });
 
     it('create an instance', () => {

@@ -25,6 +25,7 @@ import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe';
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { SanitizeHtmlPipe } from './pipes/sanitization/sanitize-html.pipe';
+import { SanitizeUrlPipe } from './pipes/sanitization/sanitize-url.pipe';
 import { StringifyStringLiteralPipe } from './pipes/string-transformation/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
 
@@ -45,7 +46,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     SortButtonComponent,
     StringLiteralInputComponent,
     LoginFormComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    SanitizeUrlPipe
   ],
   imports: [
     CommonModule,
@@ -70,6 +72,7 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     TruncatePipe,
     StringifyStringLiteralPipe,
     SanitizeHtmlPipe,
+    SanitizeUrlPipe,
     AdminImageDirective,
     ExistingNameDirective,
     ProgressIndicatorComponent,
