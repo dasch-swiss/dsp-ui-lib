@@ -1,5 +1,7 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <p class="rm-value">{{valueFormControl.value}}</p>
+    <a target="_blank" href="{{valueFormControl.value}}">
+        <p class="rm-value">{{valueFormControl.value}}</p>
+    </a>
     <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
 </div>
 <ng-template #showForm>
