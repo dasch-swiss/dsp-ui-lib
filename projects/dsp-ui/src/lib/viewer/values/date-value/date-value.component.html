@@ -1,10 +1,22 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
     <div *ngIf="valueFormControl.value?.end; else date">
-        <p class="rm-value date-start">Period Start: {{valueFormControl.value?.start | knoraDate:ontologyDateSetting}}</p>
-        <p class="rm-value date-end">Period End: {{valueFormControl.value?.end | knoraDate:ontologyDateSetting}}</p>
+        <p class="rm-value date-start">
+            Period Start: {{valueFormControl.value?.start | knoraDate:ontologyDateSetting}}
+            <span *ngIf="era">{{$any(valueFormControl.value?.start).era}}&nbsp;</span>
+            <span *ngIf="calendar">{{$any(valueFormControl.value?.start).calendar}}</span>
+        </p>
+        <p class="rm-value date-end">
+            Period End: {{valueFormControl.value?.end | knoraDate:ontologyDateSetting}}
+            <span *ngIf="era">{{$any(valueFormControl.value?.end).era}}&nbsp;</span>
+            <span *ngIf="calendar">{{$any(valueFormControl.value?.end).calendar}}</span>
+        </p>
     </div>
     <ng-template #date>
-        <p class="rm-value">Date: {{valueFormControl.value | knoraDate:ontologyDateSetting}}</p>
+        <p class="rm-value">
+            {{valueFormControl.value | knoraDate:ontologyDateSetting}}
+            <span *ngIf="era">{{$any(valueFormControl.value).era}}&nbsp;</span>
+            <span *ngIf="calendar">{{$any(valueFormControl.value).calendar}}</span>
+        </p>
         <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
     </ng-template>
 </div>

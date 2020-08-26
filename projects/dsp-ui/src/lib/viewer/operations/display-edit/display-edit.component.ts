@@ -84,6 +84,10 @@ export class DisplayEditComponent implements OnInit {
     // string used as class name to add add to value-component element on hover
     backgroundColor = '';
 
+    // TODO: use configuration input to figure out how the user would like dates to be displayed?
+    showEra = true;
+    showCalendar = true;
+
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,

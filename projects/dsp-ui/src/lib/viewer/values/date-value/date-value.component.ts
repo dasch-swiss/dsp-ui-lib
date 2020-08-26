@@ -20,6 +20,8 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     @ViewChild('dateInput') dateInputComponent: DateInputComponent;
 
     @Input() displayValue?: ReadDateValue;
+    @Input() era: boolean;
+    @Input() calendar: boolean;
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;

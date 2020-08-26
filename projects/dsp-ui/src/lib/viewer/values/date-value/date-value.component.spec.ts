@@ -170,7 +170,7 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueReadModeNativeElement.innerText).toEqual('Date: 13.05.2018');
+      expect(valueReadModeNativeElement.innerText).toEqual('13.05.2018');
 
     });
 
@@ -342,7 +342,7 @@ describe('DateValueComponent', () => {
 
         expect(testHostComponent.inputValueComponent.valueFormControl.value).toEqual(new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13));
 
-        expect(valueReadModeNativeElement.innerText).toEqual('Date: 13.05.2019');
+        expect(valueReadModeNativeElement.innerText).toEqual('13.05.2019');
 
         expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
