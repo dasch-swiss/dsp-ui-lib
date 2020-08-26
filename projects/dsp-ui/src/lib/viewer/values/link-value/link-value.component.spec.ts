@@ -25,7 +25,7 @@ import { LinkValueComponent } from './link-value.component';
 @Component({
   template: `
     <dsp-link-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [parentResource]="parentResource"
-                    [propIri]="propIri"></dsp-link-value>`
+                    [propIri]="propIri" (referredResourceClicked)="refResClicked($event)"></dsp-link-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -35,6 +35,7 @@ class TestHostDisplayValueComponent implements OnInit {
   parentResource: ReadResource;
   propIri: string;
   mode: 'read' | 'update' | 'create' | 'search';
+  linkValueSelected: ReadLinkValue;
 
   ngOnInit() {
 
@@ -48,6 +49,10 @@ class TestHostDisplayValueComponent implements OnInit {
       this.mode = 'read';
     });
 
+  }
+
+  refResClicked(readLinkValue: ReadLinkValue) {
+    this.linkValueSelected = readLinkValue;
   }
 }
 
@@ -408,12 +413,8 @@ describe('LinkValueComponent', () => {
     }));
 
     it('should emit the displayValue when the value is clicked on', () => {
-        spyOn(testHostComponent.inputValueComponent, 'refResClicked').and.callThrough();
-        spyOn(testHostComponent.inputValueComponent.referredResourceClicked, 'emit');
-
         valueReadModeNativeElement.click();
-        expect(testHostComponent.inputValueComponent.referredResourceClicked.emit).toHaveBeenCalledTimes(1);
-        expect(testHostComponent.inputValueComponent.referredResourceClicked.emit).toHaveBeenCalledWith(testHostComponent.displayInputVal);
+        expect(testHostComponent.linkValueSelected).toEqual(testHostComponent.displayInputVal);
     });
 
   });
