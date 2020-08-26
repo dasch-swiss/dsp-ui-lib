@@ -84,9 +84,7 @@ export class DisplayEditComponent implements OnInit {
     // string used as class name to add add to value-component element on hover
     backgroundColor = '';
 
-    // TODO: use configuration input to figure out how the user would like dates to be displayed?
-    showEra = true;
-    showCalendar = true;
+    datePrecisions: 'era' | 'calendar' | 'all';
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
@@ -98,6 +96,7 @@ export class DisplayEditComponent implements OnInit {
     ngOnInit() {
 
         this.mode = 'read';
+        this.datePrecisions = 'all';
 
         // determine if user has modify permissions
         const allPermissions = PermissionUtil.allUserPermissions(this.displayValue.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR');

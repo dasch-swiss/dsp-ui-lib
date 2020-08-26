@@ -1,14 +1,10 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue } from '@dasch-swiss/dsp-js';
-import {
-    FormBuilder,
-    FormControl,
-    FormGroup
-} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
-import { DateInputComponent } from './date-input/date-input.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
+import { DateInputComponent } from './date-input/date-input.component';
 
 @Component({
     selector: 'dsp-date-value',
@@ -20,8 +16,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     @ViewChild('dateInput') dateInputComponent: DateInputComponent;
 
     @Input() displayValue?: ReadDateValue;
-    @Input() era: boolean;
-    @Input() calendar: boolean;
+    @Input() precisionOptions: 'era' | 'calendar' | 'all';
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
@@ -78,7 +73,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
         this.commentFormControl = new FormControl(null);
 
-        this.ontologyDateSetting = 'MM.dd.YYYY';
+        this.ontologyDateSetting = 'dd.MM.YYYY';
 
         // subscribe to any change on the comment and recheck validity
         this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(

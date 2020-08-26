@@ -1,19 +1,19 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {DateValueComponent} from './date-value.component';
-import {Component, DebugElement, forwardRef, Input, OnInit, ViewChild} from '@angular/core';
-import {CreateDateValue, KnoraDate, KnoraPeriod, MockResource, ReadDateValue, UpdateDateValue} from '@dasch-swiss/dsp-js';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldControl} from '@angular/material/form-field';
-import {Subject} from 'rxjs';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {By} from '@angular/platform-browser';
-import {MatInputModule} from '@angular/material/input';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { KnoraDatePipe } from '../../../action/pipes/formatting/knoradate.pipe';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { Component, DebugElement, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatInputHarness } from '@angular/material/input/testing';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreateDateValue, KnoraDate, KnoraPeriod, MockResource, ReadDateValue, UpdateDateValue } from '@dasch-swiss/dsp-js';
+import { Subject } from 'rxjs';
+import { KnoraDatePipe } from '../../../action/pipes/formatting/knoradate.pipe';
+import { DateValueComponent } from './date-value.component';
+
 
 @Component({
   selector: `dsp-date-input`,
