@@ -257,7 +257,9 @@ export class DisplayEditComponent implements OnInit {
      * Show CRUD buttons and add 'highlighted' class to the element only if editModeActive is false
      */
     mouseEnter() {
-        this.showActionBubble = true;
+        if (this.canModify) {
+            this.showActionBubble = true;
+        }
         if (!this.editModeActive) {
             this.backgroundColor = 'highlighted';
         }
