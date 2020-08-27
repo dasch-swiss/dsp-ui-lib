@@ -1,14 +1,17 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
     <div *ngIf="valueFormControl.value?.end; else date">
         <p class="rm-value date-start">
-            Period Start: {{valueFormControl.value?.start | knoraDate:ontologyDateSetting:precisionOptions}}
+            <span *ngIf="labels">Period Start: </span>
+            {{valueFormControl.value?.start | knoraDate:ontologyDateSetting:precisionOptions}}
         </p>
         <p class="rm-value date-end">
-            Period End: {{valueFormControl.value?.end | knoraDate:ontologyDateSetting:precisionOptions}}
+            <span *ngIf="labels">Period End: </span>
+            {{valueFormControl.value?.end | knoraDate:ontologyDateSetting:precisionOptions}}
         </p>
     </div>
     <ng-template #date>
         <p class="rm-value">
+            <span *ngIf="labels">Date: </span>
             {{valueFormControl.value | knoraDate:ontologyDateSetting:precisionOptions}}
         </p>
         <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
