@@ -17,11 +17,11 @@ export class GNDConstants {
 export class GndDirective implements OnChanges {
 
     @Input()
-    set dspGnd(value: string) {
+    set gnd(value: string) {
         this._gnd = value;
     }
 
-    get dspGnd() {
+    get gnd() {
         return this._gnd;
     }
 

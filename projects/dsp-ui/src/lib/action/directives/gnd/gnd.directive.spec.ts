@@ -7,7 +7,7 @@ import { GndDirective } from './gnd.directive';
  * Test component for a GND/IAF identifier.
  */
 @Component({
-    template: `<span [dspGnd]="'(DE-588)118696149'"></span>`
+    template: `<span dspGnd [gnd]="'(DE-588)118696149'"></span>`
 })
 class TestGnd1Component { }
 
@@ -15,7 +15,7 @@ class TestGnd1Component { }
  * Test component for a VIAF identifier.
  */
 @Component({
-    template: `<span [dspGnd]="'(VIAF)22936072'"></span>`
+    template: `<span dspGnd [gnd]="'(VIAF)22936072'"></span>`
 })
 class TestGnd2Component { }
 
@@ -23,7 +23,7 @@ class TestGnd2Component { }
  * Test component for normal text.
  */
 @Component({
-    template: `<span [dspGnd]="'normal text'"></span>`
+    template: `<span dspGnd [gnd]="'normal text'"></span>`
 })
 class TestGnd3Component { }
 
@@ -31,7 +31,8 @@ class TestGnd3Component { }
  * Test component for long normal text.
  */
 @Component({
-    template: `<span [dspGnd]="'normal text that is quite long and will not even be looked at because it cannot possibly be a GND/IAF or VIAF identifier'"></span>`
+    template: `<span dspGnd
+        [gnd]="'normal text that is quite long and will not even be looked at because it cannot possibly be a GND/IAF or VIAF identifier'"></span>`
 })
 class TestGnd4Component { }
 
@@ -39,7 +40,7 @@ class TestGnd4Component { }
  * Test component with an updated text.
  */
 @Component({
-    template: `<span [dspGnd]="gndValue"></span>`
+    template: `<span dspGnd [gnd]="gndValue"></span>`
 })
 class TestGnd5Component implements OnInit {
 
