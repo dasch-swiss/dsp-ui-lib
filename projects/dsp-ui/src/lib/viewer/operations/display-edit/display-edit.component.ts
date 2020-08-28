@@ -127,6 +127,8 @@ export class DisplayEditComponent implements OnInit {
      * Save a new version of an existing property value.
      */
     saveEditValue() {
+        console.log('parent resource: ', this.parentResource);
+
         this.editModeActive = false;
         this.showActionBubble = false;
         const updatedVal = this.displayValueComponent.getUpdatedValue();
@@ -139,10 +141,13 @@ export class DisplayEditComponent implements OnInit {
             updateRes.value = updatedVal;
             this._dspApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
                 mergeMap((res: WriteValueResponse) => {
+                    this._valueOperationEventService.emit(new EmitEvent(Events.ValueUpdated, updatedVal));
                     return this._dspApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
                 })
             ).subscribe(
                 (res2: ReadResource) => {
+                    console.log('res2: ', res2);
+
                     this.displayValue = res2.getValues(this.displayValue.property)[0];
                     this.mode = 'read';
 

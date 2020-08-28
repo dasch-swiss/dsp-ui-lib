@@ -17,7 +17,8 @@ import {
     ReadProject,
     ReadResource,
     ReadValue,
-    SystemPropertyDefinition
+    SystemPropertyDefinition,
+    UpdateValue
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
@@ -85,6 +86,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
         this.valueOperationEventSubscription = this._valueOperationEventService.on(
             Events.ValueDeleted, (deletedValue: DeleteValue) => this.updateResource(deletedValue, true));
+
+        this.valueOperationEventSubscription = this._valueOperationEventService.on(
+            Events.ValueUpdated, (updatedValue: any) => console.log('updatedValue: ', updatedValue));
     }
 
     ngOnChanges() {
@@ -153,9 +157,13 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                         propInfoValueArray.propDef.objectType === (value as DeleteValue).type) // filter to the correct type
                     .map((filteredpropInfoValueArray) => {
                         let index = -1; // init index to increment and use for the splice
+                        console.log('looking for id: ', (value as DeleteValue).id);
+
                         filteredpropInfoValueArray.values.forEach( // loop through each value of the current property
                             val => {
                                 index += 1; // increment index
+                                console.log('val id: ', val.id);
+
                                 if (val.id === (value as DeleteValue).id) { // find the value that was deleted using the value id
                                     filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
                                 }

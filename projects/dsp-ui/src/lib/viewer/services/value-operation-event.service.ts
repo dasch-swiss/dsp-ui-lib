@@ -17,12 +17,14 @@ export class ValueOperationEventService {
 
     // Used in the listening component.
     // i.e. this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => doSomething());
-    on(event: Events, action: (newValue) => void): Subscription {
+    on(event: Events, action: (newValue: any) => void): Subscription {
+        console.log('subject: ', this._subject$);
+
         return this._subject$
             .pipe(
                 // Filter down based on event name to any events that are emitted out of the subject from the emit method below.
                 filter((e: EmitEvent) => e.name === event),
-                map((e: EmitEvent) => e.value)
+                map((e: EmitEvent) => e.value),
             )
             .subscribe(action); // Subscribe to the subject to get the data.
     }
@@ -41,5 +43,6 @@ export class EmitEvent {
 // Possible events that can be emitted.
 export enum Events {
     ValueAdded,
-    ValueDeleted
+    ValueDeleted,
+    ValueUpdated
 }
