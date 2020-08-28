@@ -77,7 +77,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     SortButtonComponent,
     StringLiteralInputComponent,
     LoginFormComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    GndDirective
   ]
 })
 
