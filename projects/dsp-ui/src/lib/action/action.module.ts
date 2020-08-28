@@ -74,7 +74,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     SortButtonComponent,
     StringLiteralInputComponent,
     LoginFormComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    GndDirective
   ]
 })
 
