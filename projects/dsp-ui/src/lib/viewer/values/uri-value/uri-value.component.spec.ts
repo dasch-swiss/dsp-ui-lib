@@ -111,6 +111,13 @@ describe('UriValueComponent', () => {
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
       expect(valueReadModeNativeElement.innerText).toEqual('http://www.google.ch');
+
+      const anchorDebugElement = valueReadModeDebugElement.query(By.css('a'));
+      expect(anchorDebugElement.nativeElement).toBeDefined();
+
+      expect(anchorDebugElement.attributes['href']).toEqual('http://www.google.ch');
+      expect(anchorDebugElement.attributes['target']).toEqual('_blank');
+
     });
 
     it('should make an existing value editable', () => {
