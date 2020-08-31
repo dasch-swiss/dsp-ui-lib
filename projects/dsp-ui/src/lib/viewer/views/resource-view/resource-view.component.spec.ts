@@ -56,6 +56,12 @@ class TestParentComponent implements OnInit, OnDestroy {
     }
 }
 
+@Component({selector: 'dsp-property-toolbar', template: ''})
+class MockDspPropertyToolbarComponent {
+    @Input() resource: ReadResource;
+    @Input() showAllProps: boolean;
+}
+
 describe('ResourceViewComponent', () => {
     let testHostComponent: TestParentComponent;
     let testHostFixture: ComponentFixture<TestParentComponent>;
@@ -75,7 +81,8 @@ describe('ResourceViewComponent', () => {
         declarations: [
             ResourceViewComponent,
             TestParentComponent,
-            TestPropertyViewComponent
+            TestPropertyViewComponent,
+            MockDspPropertyToolbarComponent
         ],
         imports: [
             MatIconModule
