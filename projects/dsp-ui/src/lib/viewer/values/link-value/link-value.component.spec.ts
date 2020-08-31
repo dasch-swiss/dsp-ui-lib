@@ -159,6 +159,10 @@ describe('LinkValueComponent', () => {
       testHostFixture.detectChanges();
 
       expect(valueReadModeNativeElement.innerText).toEqual('Sierra');
+
+      const anchorDebugElement = valueReadModeDebugElement.query(By.css('a'));
+      expect(anchorDebugElement.nativeElement).toBeDefined();
+
     }));
 
     it('should make a link value editable', fakeAsync(() => {
