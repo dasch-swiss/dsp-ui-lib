@@ -88,6 +88,8 @@ export class DisplayEditComponent implements OnInit {
 
     showDateLabels = false;
 
+    dateFormat: string;
+
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
@@ -100,6 +102,7 @@ export class DisplayEditComponent implements OnInit {
         this.mode = 'read';
         this.dateDisplayOptions = 'all';
         this.showDateLabels = true;
+        this.dateFormat = 'dd.MM.YYYY';
 
         // determine if user has modify permissions
         const allPermissions = PermissionUtil.allUserPermissions(this.displayValue.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR');

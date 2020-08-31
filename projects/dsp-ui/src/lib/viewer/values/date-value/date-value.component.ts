@@ -18,6 +18,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     @Input() displayValue?: ReadDateValue;
     @Input() displayOptions?: 'era' | 'calendar' | 'all';
     @Input() labels = false;
+    @Input() ontologyDateFormat = 'dd.MM.YYYY';
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
@@ -29,9 +30,6 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     customValidators = [];
 
     matcher = new ValueErrorStateMatcher();
-
-    // will come from the ontology settings when implemented
-    ontologyDateSetting: string;
 
     constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
         super();
@@ -73,8 +71,6 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         this.valueFormControl = new FormControl(null);
 
         this.commentFormControl = new FormControl(null);
-
-        this.ontologyDateSetting = 'dd.MM.YYYY';
 
         // subscribe to any change on the comment and recheck validity
         this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
