@@ -8,7 +8,7 @@ export class KnoraDatePipe implements PipeTransform {
 
     formattedString: string;
 
-    transform(date: KnoraDate, format?: string, precisionOptions?: 'era' | 'calendar' | 'all'): string {
+    transform(date: KnoraDate, format?: string, displayOptions?: 'era' | 'calendar' | 'all'): string {
         if (!(date instanceof KnoraDate)) {
             console.error('Non-KnoraDate provided. Expected a valid KnoraDate');
             return '';
@@ -17,22 +17,22 @@ export class KnoraDatePipe implements PipeTransform {
         switch (format) {
             case 'dd.MM.YYYY':
                 this.formattedString = `${this.leftPadding(date.day)}.${this.leftPadding(date.month)}.${date.year}`;
-                if (precisionOptions) {
-                    return this.addPrecision(date, this.formattedString, precisionOptions);
+                if (displayOptions) {
+                    return this.addDisplayOptions(date, this.formattedString, displayOptions);
                 } else {
                     return `${this.leftPadding(date.day)}.${this.leftPadding(date.month)}.${date.year}`;
                 }
             case 'dd-MM-YYYY':
                 this.formattedString = `${this.leftPadding(date.day)}-${this.leftPadding(date.month)}-${date.year}`;
-                if (precisionOptions) {
-                    return this.addPrecision(date, this.formattedString, precisionOptions);
+                if (displayOptions) {
+                    return this.addDisplayOptions(date, this.formattedString, displayOptions);
                 } else {
                     return `${this.leftPadding(date.day)}-${this.leftPadding(date.month)}-${date.year}`;
                 }
             case 'MM/dd/YYYY':
                 this.formattedString = `${this.leftPadding(date.month)}/${this.leftPadding(date.day)}/${date.year}`;
-                if (precisionOptions) {
-                    return this.addPrecision(date, this.formattedString, precisionOptions);
+                if (displayOptions) {
+                    return this.addDisplayOptions(date, this.formattedString, displayOptions);
                 } else {
                     return `${this.leftPadding(date.month)}/${this.leftPadding(date.day)}/${date.year}`;
                 }
@@ -47,7 +47,7 @@ export class KnoraDatePipe implements PipeTransform {
     }
 
     // add the era, calendar, or both to the result returned by the pipe
-    addPrecision(date: KnoraDate, value: string, precision: string): string {
+    addDisplayOptions(date: KnoraDate, value: string, precision: string): string {
         switch (precision) {
             case 'era':
                 return value + ' ' + date.era;

@@ -17,7 +17,7 @@
             <dsp-geoname-value class="parent-value-component" #displayVal *ngSwitchCase="constants.GeonameValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-geoname-value>
             <dsp-link-value class="parent-value-component" #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="$any(displayValue)"
                         [parentResource]="parentResource" [propIri]="displayValue.property"></dsp-link-value>
-            <dsp-date-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode" [displayValue]="$any(displayValue)" [precisionOptions]="datePrecisions" [labels]="showDateLabels"></dsp-date-value>
+            <dsp-date-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode" [displayValue]="$any(displayValue)" [displayOptions]="dateDisplayOptions" [labels]="showDateLabels"></dsp-date-value>
             <dsp-list-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode" [displayValue]="$any(displayValue)"
                         [propertyDef]="$any(parentResource.entityInfo.properties[displayValue.property])"></dsp-list-value>
             <span *ngSwitchDefault>{{displayValue.strval}}</span>

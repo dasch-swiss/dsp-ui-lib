@@ -84,7 +84,7 @@ export class DisplayEditComponent implements OnInit {
     // string used as class name to add add to value-component element on hover
     backgroundColor = '';
 
-    datePrecisions: 'era' | 'calendar' | 'all';
+    dateDisplayOptions: 'era' | 'calendar' | 'all';
 
     showDateLabels = false;
 
@@ -98,7 +98,7 @@ export class DisplayEditComponent implements OnInit {
     ngOnInit() {
 
         this.mode = 'read';
-        this.datePrecisions = 'all';
+        this.dateDisplayOptions = 'all';
         this.showDateLabels = true;
 
         // determine if user has modify permissions

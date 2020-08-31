@@ -2,17 +2,17 @@
     <div *ngIf="valueFormControl.value?.end; else date">
         <p class="rm-value date-start">
             <span *ngIf="labels">Period Start: </span>
-            {{valueFormControl.value?.start | knoraDate:ontologyDateSetting:precisionOptions}}
+            {{valueFormControl.value?.start | knoraDate:ontologyDateSetting:displayOptions}}
         </p>
         <p class="rm-value date-end">
             <span *ngIf="labels">Period End: </span>
-            {{valueFormControl.value?.end | knoraDate:ontologyDateSetting:precisionOptions}}
+            {{valueFormControl.value?.end | knoraDate:ontologyDateSetting:displayOptions}}
         </p>
     </div>
     <ng-template #date>
         <p class="rm-value">
             <span *ngIf="labels">Date: </span>
-            {{valueFormControl.value | knoraDate:ontologyDateSetting:precisionOptions}}
+            {{valueFormControl.value | knoraDate:ontologyDateSetting:displayOptions}}
         </p>
         <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
     </ng-template>
