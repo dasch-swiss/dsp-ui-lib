@@ -1,5 +1,7 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-  <p class="rm-value" (click)="refResClicked()">{{valueFormControl.value?.label}}</p>
+    <p class="rm-value" (click)="refResClicked()">
+        <a>{{valueFormControl.value?.label}}</a>
+    </p>
   <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
 </div>
 <ng-template #showForm>
