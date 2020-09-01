@@ -1,15 +1,16 @@
-import { KnoraDatePipe } from './knoradate.pipe';
 import { KnoraDate } from '@dasch-swiss/dsp-js';
+import { KnoraDatePipe } from './knoradate.pipe';
 
-describe('KnoradatePipe', () => {
-    it('create an instance', () => {
-        const pipe = new KnoraDatePipe();
+fdescribe('KnoradatePipe', () => {
+    let pipe: KnoraDatePipe;
+
+    beforeEach(() => {
+        pipe = new KnoraDatePipe();
         expect(pipe).toBeTruthy();
     });
 
     it('should return a date string', () => {
-        const pipe = new KnoraDatePipe();
-        const date = new KnoraDate('Gregorian', 'AD', 1993, 10, 10);
+        const date = new KnoraDate('GREGORIAN', 'AD', 1993, 10, 10);
 
         const convertedDate = pipe.transform(date);
 
@@ -17,8 +18,7 @@ describe('KnoradatePipe', () => {
     });
 
     it('should return the correct format depending on the format provided', () => {
-        const pipe = new KnoraDatePipe();
-        const date = new KnoraDate('Gregorian', 'AD', 1776, 7, 4);
+        const date = new KnoraDate('GREGORIAN', 'AD', 1776, 7, 4);
 
         let convertedDate = pipe.transform(date, 'dd.MM.YYYY');
 
@@ -38,9 +38,39 @@ describe('KnoradatePipe', () => {
         expect(convertedDate).toEqual('04.07.1776');
     });
 
-    it('should return a number of two digits', () => {
-        const pipe = new KnoraDatePipe();
+    it ('should return a string with the desired display options', () => {
+        const date = new KnoraDate('GREGORIAN', 'AD', 1776, 7, 4);
 
+        let dateWithDisplayOptions = pipe.transform(date, 'dd.MM.YYYY', 'era');
+
+        expect(dateWithDisplayOptions).toEqual('04.07.1776 AD');
+
+        dateWithDisplayOptions = pipe.transform(date, 'dd.MM.YYYY', 'calendar');
+
+        expect(dateWithDisplayOptions).toEqual('04.07.1776 GREGORIAN');
+
+        dateWithDisplayOptions = pipe.transform(date, 'dd.MM.YYYY', 'all');
+
+        expect(dateWithDisplayOptions).toEqual('04.07.1776 AD GREGORIAN');
+    });
+
+    it ('should return a string with only the month and the year', () => {
+        const date = new KnoraDate('GREGORIAN', 'AD', 1776, 7);
+
+        const convertedDate = pipe.transform(date, 'dd.MM.YYYY');
+
+        expect(convertedDate).toEqual('07.1776');
+    });
+
+    it ('should return a string with only the year', () => {
+        const date = new KnoraDate('GREGORIAN', 'AD', 1776);
+
+        const convertedDate = pipe.transform(date, 'dd.MM.YYYY');
+
+        expect(convertedDate).toEqual('1776');
+    });
+
+    it('should return a number of two digits', () => {
         let num = pipe.leftPadding(7);
 
         expect(num).toEqual('07');
