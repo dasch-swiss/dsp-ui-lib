@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.0-rc.5 (02/09/2020)
+
+#### Dependencies:
+- [#166](https://github.com/dasch-swiss/dsp-ui-lib/pull/166) Update peer-dep for dsp-js lib
+
 ## v1.0.0-rc.4 (02/09/2020)
 
 #### Enhancements:
