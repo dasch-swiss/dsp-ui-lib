@@ -17,6 +17,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { DspActionModule } from '../action';
@@ -24,6 +25,7 @@ import { AddValueComponent } from './operations/add-value/add-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { StillImageComponent } from './representation/still-image/still-image.component';
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
 import { ColorValueComponent } from './values/color-value/color-value.component';
 import { CalendarHeaderComponent } from './values/date-value/calendar-header/calendar-header.component';
@@ -46,93 +48,101 @@ import { UriValueComponent } from './values/uri-value/uri-value.component';
 import { ListViewComponent } from './views/list-view/list-view.component';
 import { ResourceGridComponent } from './views/list-view/resource-grid/resource-grid.component';
 import { ResourceListComponent } from './views/list-view/resource-list/resource-list.component';
+import { PropertyToolbarComponent } from './views/property-view/property-toolbar/property-toolbar.component';
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
 import { TextValueAsXMLComponent } from './values/text-value/text-value-as-xml/text-value-as-xml.component';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 
 @NgModule({
     declarations: [
-        TextValueAsStringComponent,
-        TextValueAsHtmlComponent,
-        IntValueComponent,
-        DisplayEditComponent,
+        AddValueComponent,
         BooleanValueComponent,
-        DecimalValueComponent,
-        UriValueComponent,
-        IntervalValueComponent,
-        IntervalInputComponent,
-        TimeValueComponent,
-        TimeInputComponent,
-        JDNDatepickerDirective,
-        PropertyViewComponent,
-        ResourceViewComponent,
-        ColorValueComponent,
-        ColorPickerComponent,
-        DateValueComponent,
-        DateInputComponent,
         CalendarHeaderComponent,
+        ColorPickerComponent,
+        ColorValueComponent,
+        DateInputComponent,
+        DateValueComponent,
+        DecimalValueComponent,
+        DisplayEditComponent,
+        GeonameValueComponent,
+        IntervalInputComponent,
+        IntervalValueComponent,
+        IntValueComponent,
+        JDNDatepickerDirective,
         LinkValueComponent,
         ListValueComponent,
-        SublistValueComponent,
-        GeonameValueComponent,
         ListViewComponent,
-        StillImageComponent,
-        ResourceListComponent,
+        PropertyToolbarComponent,
+        PropertyViewComponent,
         ResourceGridComponent,
         AddValueComponent,
-        TextValueAsXMLComponent
+        TextValueAsXMLComponent,
+        ResourceListComponent,
+        ResourceViewComponent,
+        StillImageComponent,
+        SublistValueComponent,
+        TextValueAsHtmlComponent,
+        TextValueAsStringComponent,
+        TimeInputComponent,
+        TimeValueComponent,
+        UriValueComponent
     ],
     imports: [
+        ClipboardModule,
+        ColorPickerModule,
         CommonModule,
-        ReactiveFormsModule,
+        DspActionModule,
         FormsModule,
+        MatAutocompleteModule,
         MatButtonModule,
         MatButtonToggleModule,
         MatCardModule,
-        MatInputModule,
-        MatAutocompleteModule,
         MatCheckboxModule,
+        MatDatepickerModule,
+        MatIconModule,
+        MatInputModule,
+        MatJDNConvertibleCalendarDateAdapterModule,
+        MatListModule,
+        MatMenuModule,
         MatOptionModule,
         MatPaginatorModule,
         MatSelectModule,
         MatSnackBarModule,
-        MatDatepickerModule,
-        MatIconModule,
-        MatJDNConvertibleCalendarDateAdapterModule,
-        MatListModule,
-        MatMenuModule,
         MatToolbarModule,
         ClipboardModule,
         ColorPickerModule,
         DspActionModule,
-        CKEditorModule
+        CKEditorModule,
+        MatTooltipModule,
+        ReactiveFormsModule
     ],
     exports: [
-        TextValueAsStringComponent,
-        TextValueAsHtmlComponent,
-        IntValueComponent,
-        DisplayEditComponent,
+        AddValueComponent,
         BooleanValueComponent,
         ColorValueComponent,
-        DecimalValueComponent,
-        UriValueComponent,
-        IntervalValueComponent,
-        TimeValueComponent,
         DateValueComponent,
-        LinkValueComponent,
-        PropertyViewComponent,
-        ResourceViewComponent,
-        ListValueComponent,
+        DecimalValueComponent,
+        DisplayEditComponent,
         GeonameValueComponent,
+        IntervalValueComponent,
+        IntValueComponent,
         JDNDatepickerDirective,
+        LinkValueComponent,
+        ListValueComponent,
         ListViewComponent,
-        ResourceListComponent,
+        PropertyViewComponent,
         ResourceGridComponent,
         AddValueComponent,
         StillImageComponent,
-        TextValueAsXMLComponent
+        TextValueAsXMLComponent,
+        ResourceListComponent,
+        ResourceViewComponent,
+        StillImageComponent,
+        TextValueAsHtmlComponent,
+        TextValueAsStringComponent,
+        TimeValueComponent,
+        UriValueComponent
     ]
 })
 export class DspViewerModule {

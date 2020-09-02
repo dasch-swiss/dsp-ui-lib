@@ -3,10 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { CountQueryResponse, MockResource, ReadResourceSequence, SearchEndpointV2 } from '@dasch-swiss/dsp-js';
-import { IFulltextSearchParams } from '@dasch-swiss/dsp-js/src/api/v2/search/search-endpoint-v2';
+import { CountQueryResponse, IFulltextSearchParams, MockResource, ReadResourceSequence, SearchEndpointV2 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core';
+import { AdvancedSearchParams, AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
 import { ListViewComponent, SearchParams } from './list-view.component';
 
 /**
@@ -91,6 +91,8 @@ describe('ListViewComponent', () => {
     let testHostComponent: TestParentComponent;
     let testHostFixture: ComponentFixture<TestParentComponent>;
 
+    let searchParamsServiceSpy: jasmine.SpyObj<AdvancedSearchParamsService>;
+
     beforeEach(async(() => {
 
         const searchSpyObj = {
@@ -98,6 +100,8 @@ describe('ListViewComponent', () => {
                 search: jasmine.createSpyObj('search', ['doFulltextSearch', 'doFulltextSearchCountQuery', 'doExtendedSearch', 'doExtendedSearchCountQuery'])
             }
         };
+
+        const searchParamsSpyObj = jasmine.createSpyObj('SearchParamsService', ['getSearchParams']);
 
         TestBed.configureTestingModule({
             declarations: [
@@ -116,6 +120,10 @@ describe('ListViewComponent', () => {
                 {
                     provide: DspApiConnectionToken,
                     useValue: searchSpyObj
+                },
+                {
+                    provide: AdvancedSearchParamsService,
+                    useValue: searchParamsSpyObj
                 }
             ]
         })
@@ -123,6 +131,16 @@ describe('ListViewComponent', () => {
     }));
 
     beforeEach(() => {
+
+        searchParamsServiceSpy = TestBed.inject(AdvancedSearchParamsService) as jasmine.SpyObj<AdvancedSearchParamsService>;
+
+        const generateFakeQuery = (offset: number) => {
+            return 'fake query OFFSET ' + offset;
+        };
+
+        searchParamsServiceSpy.getSearchParams.and.callFake((): AdvancedSearchParams => {
+            return new AdvancedSearchParams(generateFakeQuery);
+        });
 
         const searchSpy = TestBed.inject(DspApiConnectionToken);
 
@@ -194,11 +212,14 @@ describe('ListViewComponent', () => {
 
         const searchSpy = TestBed.inject(DspApiConnectionToken);
 
-        // do fulltext search count query
+        // do extended search count query
         expect(searchSpy.v2.search.doExtendedSearchCountQuery).toHaveBeenCalledWith('fake query');
 
-        // do fulltext search
-        expect(searchSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith('fake query');
+        // generate gravesearch query
+        expect(searchParamsServiceSpy.getSearchParams).toHaveBeenCalled();
+
+        // do extended search
+        expect(searchSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith('fake query OFFSET 0');
         expect(testHostComponent.listViewGravsearch.resources.resources.length).toBe(5);
 
     });

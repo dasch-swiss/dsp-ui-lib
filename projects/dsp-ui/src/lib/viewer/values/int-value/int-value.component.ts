@@ -1,8 +1,8 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BaseValueComponent } from '../base-value.component';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreateIntValue, ReadIntValue, UpdateIntValue } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BaseValueComponent } from '../base-value.component';
 import { CustomRegex } from '../custom-regex';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 

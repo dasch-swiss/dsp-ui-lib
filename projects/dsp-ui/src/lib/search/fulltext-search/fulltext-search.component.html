@@ -27,7 +27,7 @@
     <div class="dsp-fulltext-search" [class.with-project-filter]="projectfilter">
         <div class="dsp-fulltext-search-field">
             <input #fulltextSearchInput class="dsp-fulltext-search-input" type="search" [(ngModel)]="searchQuery"
-                name="search" minlength="3" autocomplete="off" [placeholder]="'Search'" (keyup.esc)="resetSearch()"
+                name="fulltext-search" minlength="3" autocomplete="off" [placeholder]="'Search'" (keyup.esc)="resetSearch()"
                 (keyup.enter)="doSearch()" (click)="setFocus()">
         </div>
         <button class="dsp-fulltext-search-button suffix" (click)="doSearch()" type="submit">

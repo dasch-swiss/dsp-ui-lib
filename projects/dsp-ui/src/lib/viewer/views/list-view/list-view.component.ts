@@ -1,22 +1,8 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ApiResponseError, CountQueryResponse, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
+import { ApiResponseError, CountQueryResponse, IFulltextSearchParams, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../../core';
-
-export interface FulltextSearchParams {
-    /**
-     * Iri of resource class the fulltext search is restricted to, if any.
-     */
-    limitToResourceClass?: string;
-    /**
-     * Iri of the project the fulltext search is restricted to, if any.
-     */
-    limitToProject?: string;
-    /**
-     * Iri of standoff class the fulltext search is restricted to, if any.
-     */
-    limitToStandoffClass?: string;
-}
+import { AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
 
 /**
  * query: search query. It can be gravserch query or fulltext string query.
@@ -32,7 +18,7 @@ export interface FulltextSearchParams {
 export interface SearchParams {
     query: string;
     mode: 'fulltext' | 'gravsearch';
-    filter?: FulltextSearchParams;
+    filter?: IFulltextSearchParams;
 }
 
 @Component({
@@ -40,7 +26,7 @@ export interface SearchParams {
     templateUrl: './list-view.component.html',
     styleUrls: ['./list-view.component.scss']
 })
-export class ListViewComponent implements OnInit {
+export class ListViewComponent implements OnChanges {
 
     @Input() search: SearchParams;
 
@@ -68,12 +54,16 @@ export class ListViewComponent implements OnInit {
     loading = true;
 
     constructor(
-        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _advancedSearchParamsService: AdvancedSearchParamsService,
     ) { }
 
-    ngOnInit(): void {
+    ngOnChanges(): void {
+        // reset
         this.pageEvent = new PageEvent();
         this.pageEvent.pageIndex = 0;
+        this.resources = undefined;
+
         this._doSearch();
     }
 
@@ -126,7 +116,9 @@ export class ListViewComponent implements OnInit {
                 }
             );
 
-        } else {
+        } else if (this.search.mode === 'gravsearch') {
+
+
             // search mode: gravsearch
             if (this.pageEvent.pageIndex === 0) {
                 // perform count query
@@ -142,17 +134,23 @@ export class ListViewComponent implements OnInit {
             }
 
             // perform extended search
-            this._dspApiConnection.v2.search.doExtendedSearch(this.search.query).subscribe(
-                (response: ReadResourceSequence) => {
-                    this.resources = response;
-                    this.loading = false;
-                },
-                (error: ApiResponseError) => {
-                    this.errorMessage = error;
-                    console.error(error);
-                    this.loading = false;
-                }
-            );
+            const gravsearch = this._advancedSearchParamsService.getSearchParams().generateGravsearch(this.pageEvent.pageIndex);
+
+            if (typeof gravsearch === 'string') {
+                this._dspApiConnection.v2.search.doExtendedSearch(gravsearch).subscribe(
+                    (response: ReadResourceSequence) => {
+                        this.resources = response;
+                        this.loading = false;
+                    },
+                    (error: ApiResponseError) => {
+                        this.errorMessage = error;
+                        console.error(error);
+                        this.loading = false;
+                    }
+                );
+            } else {
+                console.error('The gravsearch query is not set correctly');
+            }
 
         }
 

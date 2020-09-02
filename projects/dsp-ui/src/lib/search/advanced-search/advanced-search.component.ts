@@ -23,6 +23,7 @@ import { SelectResourceClassComponent } from './select-resource-class/select-res
 import { Subscription } from 'rxjs';
 import { PropertyWithValue } from './select-property/specify-property-value/operator';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
+import { SearchParams } from '../../viewer';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -38,7 +39,12 @@ const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
 })
 export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
-    @Output() gravsearchQuery = new EventEmitter<string>();
+    /**
+     * The data event emitter of type SearchParams
+     *
+     * @param  search
+     */
+    @Output() search = new EventEmitter<SearchParams>();
 
     ontologiesMetadata: OntologiesMetadata;
 
@@ -80,7 +86,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         // if form status changes, re-run validation
         this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
             this.formValid = this._validateForm();
-            // console.log(this.form);
         });
 
         // initialize ontologies to be used for the ontologies selection in the search form
@@ -268,10 +273,15 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
             }
         );
 
-        const gravsearchQuery = this._gravsearchGenerationService.createGravsearchQuery(properties, resClass);
+        const gravsearch = this._gravsearchGenerationService.createGravsearchQuery(properties, resClass);
 
-        // emit query
-        this.gravsearchQuery.emit(gravsearchQuery);
+        if (gravsearch) {
+            // emit query
+            this.search.emit({
+                query: gravsearch,
+                mode: 'gravsearch'
+            });
+        }
     }
 
 }

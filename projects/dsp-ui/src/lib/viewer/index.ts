@@ -16,6 +16,7 @@ export * from './values/text-value/text-value-as-xml/text-value-as-xml.component
 export * from './values/text-value/text-value-as-string/text-value-as-string.component';
 export * from './values/time-value/time-value.component';
 export * from './values/uri-value/uri-value.component';
+export * from './values/custom-regex';
 // operation components
 export * from './operations/display-edit/display-edit.component';
 export * from './operations/add-value/add-value.component';
@@ -27,3 +28,5 @@ export * from './views/list-view/resource-list/resource-list.component';
 export * from './views/list-view/resource-grid/resource-grid.component';
 // media representations
 export * from './representation/still-image/still-image.component';
+// services
+export * from './services/value-type.service';

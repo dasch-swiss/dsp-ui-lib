@@ -1,6 +1,6 @@
-import { OverlayModule, Overlay, OverlayRef, OverlayContainer } from '@angular/cdk/overlay';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,8 +10,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MockProjects, ProjectsEndpointAdmin } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs/internal/observable/of';
 import { SortingService } from '../../action/services/sorting.service';
@@ -25,7 +23,6 @@ import { FulltextSearchComponent } from './fulltext-search.component';
     selector: `dsp-host-component`,
     template: `
         <dsp-fulltext-search #fulltextSearch
-            [route]="route"
             [projectfilter]="projectfilter"
             [filterbyproject]="filterbyproject"
             class="dsp-fulltext-search">
@@ -38,7 +35,6 @@ class TestHostFulltextSearchComponent implements OnInit {
 
     sortingService: SortingService = new SortingService();
 
-    route = '/search';
     projectfilter?: boolean = true;
     filterbyproject?: string;
 
@@ -58,15 +54,10 @@ describe('FulltextSearchComponent', () => {
     let testHostFixture: ComponentFixture<TestHostFulltextSearchComponent>;
     let fulltextSearchComponentDe;
     let hostCompDe;
-    let mockRouter;
     let dspConnSpy;
     let prevSearchArray: PrevSearchItem[];
 
     beforeEach(async(() => {
-
-        mockRouter = {
-            navigate: jasmine.createSpy('navigate')
-        };
 
         dspConnSpy = {
             admin: {
@@ -82,7 +73,6 @@ describe('FulltextSearchComponent', () => {
             ],
             imports: [
                 OverlayModule,
-                RouterTestingModule,
                 FormsModule,
                 BrowserAnimationsModule,
                 MatMenuModule,
@@ -96,10 +86,6 @@ describe('FulltextSearchComponent', () => {
                 {
                     provide: DspApiConnectionToken,
                     useValue: dspConnSpy
-                },
-                {
-                    provide: Router,
-                    useValue: mockRouter
                 }
             ]
         })
@@ -206,8 +192,6 @@ describe('FulltextSearchComponent', () => {
             ];
             expect(localStorage.getItem('prevSearch')).toEqual(JSON.stringify(newPrevSearchArray));
 
-            // check the call of router.navigate with correct arguments
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/new thing']);
         });
 
         it('should perform a search with a previous item', () => {
@@ -227,7 +211,6 @@ describe('FulltextSearchComponent', () => {
             expect(testHostComponent.fulltextSearch.projectIri).toEqual('http://rdfh.ch/projects/0801');
             expect(testHostComponent.fulltextSearch.projectLabel).toEqual('anything');
 
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/hello world/http%3A%2F%2Frdfh.ch%2Fprojects%2F0801']);
         });
 
         it('should perform a search with a previous item - solution 2', () => {
@@ -237,7 +220,6 @@ describe('FulltextSearchComponent', () => {
             expect(testHostComponent.fulltextSearch.projectIri).toEqual('http://rdfh.ch/projects/0803');
             expect(testHostComponent.fulltextSearch.projectLabel).toEqual('incunabula');
 
-            expect(mockRouter.navigate).toHaveBeenCalledWith(['/search/fulltext/one thing/http%3A%2F%2Frdfh.ch%2Fprojects%2F0803']);
         });
 
     });
