@@ -7,7 +7,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
-import { TextValueAsStringComponent } from '../../..';
 import { CreateTextValueAsXml } from '@dasch-swiss/dsp-js/index';
 
 /**

@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { BaseValueComponent } from '../../base-value.component';
-import { CreateTextValueAsXml, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
+import { Constants, CreateTextValueAsXml, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
@@ -28,6 +28,9 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     editorConfig;
 
     readonly standardMapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+
+    // TODO: get this from config via AppInitService
+    readonly resourceBasePath = 'http://rdfh.ch/';
 
     constructor(@Inject(FormBuilder) private fb: FormBuilder) {
         super();
@@ -64,9 +67,9 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
                     isInternal: {
                         // label: 'internal link to a Knora resource',
                         mode: 'automatic', // automatic requires callback -> but the callback is async and the user could save the text before the check ...
-                        callback: url => { console.log(url, url.startsWith( 'http://rdfh.ch/' )); return url.startsWith( 'http://rdfh.ch/' ); },
+                        callback: url => { /*console.log(url, url.startsWith( 'http://rdfh.ch/' ));*/ return url.startsWith( this.resourceBasePath ); },
                         attributes: {
-                            class: 'salsah-link'
+                            class: Constants.SalsahLink
                         }
                     }
                 }
