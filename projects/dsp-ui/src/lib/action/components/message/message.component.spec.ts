@@ -11,7 +11,7 @@ import { StatusMsg } from '../../../../assets/i18n/statusMsg';
 import { DspMessageData, MessageComponent } from './message.component';
 
 /**
- * Test host component to simulate parent component with a progress bar.
+ * Test host component to simulate parent component.
  */
 @Component({
     template: `<dsp-message #message [message]="shortMessage" [short]="short"></dsp-message>`
@@ -37,7 +37,7 @@ class ShortMessageTestHostComponent implements OnInit {
 }
 
 /**
- * Test host component to simulate parent component with a progress bar.
+ * Test host component to simulate parent component.
  */
 @Component({
     template: `<dsp-message #message [message]="errorMessage" [short]="short"></dsp-message>`
@@ -54,6 +54,32 @@ class LongMessageTestHostComponent implements OnInit {
     };
 
     short = false;
+
+    constructor() {
+    }
+
+    ngOnInit() { }
+}
+
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `<dsp-message #message [message]="shortMessage" [short]="short" [duration]="2000"></dsp-message>`
+})
+class ShortMessageWithDurationTestHostComponent implements OnInit {
+
+    @ViewChild('message', { static: false }) messageComponent: MessageComponent;
+
+    shortMessage: DspMessageData = {
+        status: 200,
+        statusMsg: 'Success',
+        statusText: 'You just updated the user profile.',
+        type: 'Note',
+        footnote: 'Close it'
+    };
+
+    short = true;
 
     constructor() {
     }
@@ -154,5 +180,37 @@ describe('MessageComponent', () => {
             expect(messageTitleElement.nativeElement.innerText).toEqual('The request was a legal request, but the server is refusing to respond to it');
 
         });
+    });
+
+    describe('display a short message with a duration of 2 seconds', () => {
+        beforeEach(() => {
+            shortMsgTestHostFixture = TestBed.createComponent(ShortMessageTestHostComponent);
+            shortMsgTestHostComponent = shortMsgTestHostFixture.componentInstance;
+            shortMsgTestHostFixture.detectChanges();
+        });
+
+        it('should create', () => {
+            expect(shortMsgTestHostComponent.messageComponent).toBeTruthy();
+        });
+
+        it('should display a short message', () => {
+            expect(shortMsgTestHostComponent.messageComponent).toBeTruthy();
+            expect(shortMsgTestHostComponent.messageComponent.message.status).toEqual(200);
+            expect(shortMsgTestHostComponent.messageComponent.message.statusMsg).toEqual('Success');
+
+            const hostCompDe = shortMsgTestHostFixture.debugElement;
+
+            const messageEl = hostCompDe.query(By.directive(MessageComponent));
+
+            const spanShortMessageElement = messageEl.query(By.css('.dsp-short-message-text'));
+
+            expect(spanShortMessageElement.nativeElement.innerText).toEqual('You just updated the user profile.');
+
+            setTimeout(() => {
+                expect(shortMsgTestHostComponent.messageComponent).toBeTruthy();
+            }, 2100);
+
+        });
+
     });
 });
