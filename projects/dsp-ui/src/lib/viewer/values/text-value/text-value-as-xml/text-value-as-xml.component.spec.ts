@@ -330,13 +330,13 @@ describe('TextValueAsXMLComponent', () => {
             testHostFixture.detectChanges();
 
             // simulate input in ckeditor
-            ckeditorDe.componentInstance.value = '<p><figure class=\"table\"></figure></p>';
+            ckeditorDe.componentInstance.value = '<p><figure class="table"><table><tbody><tr><td>test</td><td>test</td></tr><tr><td>test</td><td>test</td></tr></tbody></table></figure></p>';
             ckeditorDe.componentInstance._handleInput();
 
             testHostFixture.detectChanges();
 
             expect((testHostComponent.inputValueComponent.getUpdatedValue() as UpdateTextValueAsXml).xml)
-                .toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test with <strike>struck</strike> word</p></text>');
+                .toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p><table><tbody><tr><td>test</td><td>test</td></tr><tr><td>test</td><td>test</td></tr></tbody></table></p></text>');
 
         });
 
