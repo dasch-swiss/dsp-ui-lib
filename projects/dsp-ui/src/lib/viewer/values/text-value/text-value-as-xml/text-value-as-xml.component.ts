@@ -5,6 +5,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
 import * as Editor from 'ckeditor5-custom-build';
+import { AppInitService } from '../../../../core';
 
 @Component({
     selector: 'dsp-text-value-as-xml',
@@ -32,14 +33,14 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     // TODO: get this from config via AppInitService
     readonly resourceBasePath = 'http://rdfh.ch/';
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(private _appInitService: AppInitService,
+                @Inject(FormBuilder) private fb: FormBuilder) {
         super();
     }
 
     getInitValue(): string | null {
 
-        // convert tags: CKEditor 4 to 5 migration, see https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html
-
+        // check for standard mapping
         if (this.displayValue !== undefined) {
             if (this.displayValue.mapping !== this.standardMapping) {
                 // mapping is not supported
@@ -55,8 +56,6 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
     ngOnInit() {
 
-        // check for standard mapping
-
         this.editor = Editor;
 
         this.editorConfig = {
@@ -67,7 +66,9 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
                     isInternal: {
                         // label: 'internal link to a Knora resource',
                         mode: 'automatic', // automatic requires callback -> but the callback is async and the user could save the text before the check ...
-                        callback: url => { /*console.log(url, url.startsWith( 'http://rdfh.ch/' ));*/ return url.startsWith( this.resourceBasePath ); },
+                        callback: url => { /*console.log(url, url.startsWith( 'http://rdfh.ch/' ));*/
+                            return url.startsWith(this.resourceBasePath);
+                        },
                         attributes: {
                             class: Constants.SalsahLink
                         }
@@ -77,12 +78,12 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
             toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat', 'redo', 'undo'],
             heading: {
                 options: [
-                    {model: 'heading1', view: 'h1', title: 'Heading 1'},
-                    {model: 'heading2', view: 'h2', title: 'Heading 2'},
-                    {model: 'heading3', view: 'h3', title: 'Heading 3'},
-                    {model: 'heading4', view: 'h4', title: 'Heading 4'},
-                    {model: 'heading5', view: 'h5', title: 'Heading 5'},
-                    {model: 'heading6', view: 'h6', title: 'Heading 6'},
+                    { model: 'heading1', view: 'h1', title: 'Heading 1' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2' },
+                    { model: 'heading3', view: 'h3', title: 'Heading 3' },
+                    { model: 'heading4', view: 'h4', title: 'Heading 4' },
+                    { model: 'heading5', view: 'h5', title: 'Heading 5' },
+                    { model: 'heading6', view: 'h6', title: 'Heading 6' },
                 ]
             },
             codeBlock: {
@@ -185,19 +186,19 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         const closingTextTag = `</${textTag}>`;
 
         if (fromKnora) {
+            // convert tags: CKEditor 4 to 5 migration, see https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html
             return xml.replace(doctype, '')
                 .replace(openingTextTag, '')
                 .replace(closingTextTag, '');
         } else {
-            xml = xml.replace(/&nbsp;/g, String.fromCharCode(160))
-                .replace(/<hr>/g, '<hr/>')
-                .replace(/<\/hr>/g, '<hr/>')
-                .replace(/<s>/g, '<strike>')
-                .replace(/<\/s>/g, '</strike>')
-                .replace(/<i>/g, '<em>')
-                .replace(/<\/i>/g, '</em>')
-                .replace(/<figure class="table">/g, '')
-                .replace(/<\/figure>/g, '');
+            // get XML transform config
+            xml = xml.replace(/&nbsp;/g, String.fromCharCode(160));
+
+            const keys = Object.keys(this._appInitService.config['xmlTransform']);
+            for (const key of keys) {
+                xml = xml.replace(new RegExp(key, 'g'), this._appInitService.config['xmlTransform'][key]);
+            }
+
             return doctype + openingTextTag + xml + closingTextTag;
         }
 

@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
 import { CreateTextValueAsXml } from '@dasch-swiss/dsp-js/index';
+import { AppInitService } from '../../../../core';
 
 /**
  * Test host component to simulate parent component.
@@ -31,7 +32,8 @@ class TestCKEditorComponent implements ControlValueAccessor {
 
     value;
 
-    onChange = (_: any) => {};
+    onChange = (_: any) => {
+    };
 
     constructor() {
     }
@@ -87,7 +89,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
     template: `
-    <dsp-text-value-as-xml #inputVal [mode]="mode"></dsp-text-value-as-xml>`
+        <dsp-text-value-as-xml #inputVal [mode]="mode"></dsp-text-value-as-xml>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
@@ -104,6 +106,21 @@ class TestHostCreateValueComponent implements OnInit {
 
 describe('TextValueAsXMLComponent', () => {
 
+    const appInitServiceMock = {
+        config: {
+            xmlTransform: {
+                "<hr>": "<hr/>",
+                "</hr>": "",
+                "<s>": "<strike>",
+                "</s>": "</strike>",
+                "<i>": "<em>",
+                "</i>": "</em>",
+                "<figure class=\"table\">": "",
+                "</figure>": ""
+            }
+        }
+    };
+
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
@@ -116,6 +133,9 @@ describe('TextValueAsXMLComponent', () => {
                 ReactiveFormsModule,
                 MatInputModule,
                 BrowserAnimationsModule
+            ],
+            providers: [
+                {provide: AppInitService, useValue: appInitServiceMock}
             ]
         })
             .compileComponents();
@@ -266,6 +286,57 @@ describe('TextValueAsXMLComponent', () => {
 
             expect((testHostComponent.inputValueComponent.getUpdatedValue() as UpdateTextValueAsXml).xml)
                 .toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test <em>with</em> a lot of <em>markup</em></p></text>');
+
+        });
+
+        it('convert markup received from CKEditor: <hr></hr> -> <hr/>', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            // simulate input in ckeditor
+            ckeditorDe.componentInstance.value = '<p>test with horizontal line <hr></hr></p>';
+            ckeditorDe.componentInstance._handleInput();
+
+            testHostFixture.detectChanges();
+
+            expect((testHostComponent.inputValueComponent.getUpdatedValue() as UpdateTextValueAsXml).xml)
+                .toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test with horizontal line <hr/></p></text>');
+
+        });
+
+        it('convert markup received from CKEditor: <s></s> -> <strike></strike>', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            // simulate input in ckeditor
+            ckeditorDe.componentInstance.value = '<p>test with <s>struck</s> word</p>';
+            ckeditorDe.componentInstance._handleInput();
+
+            testHostFixture.detectChanges();
+
+            expect((testHostComponent.inputValueComponent.getUpdatedValue() as UpdateTextValueAsXml).xml)
+                .toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test with <strike>struck</strike> word</p></text>');
+
+        });
+
+        it('remove markup received from CKEditor: <figure class=""></figure>', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            // simulate input in ckeditor
+            ckeditorDe.componentInstance.value = '<p><figure class=\"table\"></figure></p>';
+            ckeditorDe.componentInstance._handleInput();
+
+            testHostFixture.detectChanges();
+
+            expect((testHostComponent.inputValueComponent.getUpdatedValue() as UpdateTextValueAsXml).xml)
+                .toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test with <strike>struck</strike> word</p></text>');
 
         });
 

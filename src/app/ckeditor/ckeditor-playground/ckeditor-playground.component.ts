@@ -55,6 +55,8 @@ export class CkeditorPlaygroundComponent implements OnInit {
     }
 
     getXML() {
+        console.log(this.xmlValue.valueFormControl.value);
+
         const update = this.xmlValue.getUpdatedValue();
         if (update) {
             console.log(update.mapping, update.xml);

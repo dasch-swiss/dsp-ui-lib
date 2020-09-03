@@ -4,5 +4,15 @@
   "apiPort": 3333,
   "apiPath": "",
   "jsonWebToken": "",
-  "logErrors": false
+  "logErrors": false,
+  "xmlTransform": {
+    "<hr>": "<hr/>",
+    "</hr>": "",
+    "<s>": "<strike>",
+    "</s>": "</strike>",
+    "<i>": "<em>",
+    "</i>": "</em>",
+    "<figure class=\"table\">": "",
+    "</figure>": ""
+  }
 }
