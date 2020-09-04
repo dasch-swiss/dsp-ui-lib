@@ -207,7 +207,7 @@ describe('MessageComponent', () => {
             expect(spanShortMessageElement.nativeElement.innerText).toEqual('You just updated the user profile.');
 
             setTimeout(() => {
-                expect(shortMsgTestHostComponent.messageComponent).toBeTruthy();
+                expect(shortMsgTestHostComponent.messageComponent.disable).toBeFalsy();
             }, 2100);
 
         });
