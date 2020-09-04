@@ -15,7 +15,7 @@ import { AppInitService } from '../../../../core';
 export class TextValueAsXMLComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() displayValue?: ReadTextValueAsXml;
-    @Input() mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+    @Input() mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping'; // TODO: define this somewhere else
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
@@ -52,7 +52,9 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
     ngOnInit() {
 
-        if (this.mapping !== undefined && this._appInitService.config['xmlTransform'][this.mapping] !== undefined) {
+        if (this.mapping !== undefined
+            && this._appInitService.config['xmlTransform'] !== undefined
+            && this._appInitService.config['xmlTransform'][this.mapping] !== undefined) {
 
             this.editor = Editor;
 
