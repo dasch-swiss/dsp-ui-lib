@@ -109,14 +109,16 @@ describe('TextValueAsXMLComponent', () => {
     const appInitServiceMock = {
         config: {
             xmlTransform: {
-                "<hr>": "<hr/>",
-                "</hr>": "",
-                "<s>": "<strike>",
-                "</s>": "</strike>",
-                "<i>": "<em>",
-                "</i>": "</em>",
-                "<figure class=\"table\">": "",
-                "</figure>": ""
+                "http://rdfh.ch/standoff/mappings/StandardMapping": {
+                    "<hr>": "<hr/>",
+                    "</hr>": "",
+                    "<s>": "<strike>",
+                    "</s>": "</strike>",
+                    "<i>": "<em>",
+                    "</i>": "</em>",
+                    "<figure class=\"table\">": "",
+                    "</figure>": ""
+                }
             }
         }
     };

@@ -15,6 +15,7 @@ import { AppInitService } from '../../../../core';
 export class TextValueAsXMLComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() displayValue?: ReadTextValueAsXml;
+    @Input() mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
@@ -25,10 +26,9 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     matcher = new ValueErrorStateMatcher();
     customValidators = [];
 
+    // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/angular.html
     editor: Editor;
     editorConfig;
-
-    readonly standardMapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
 
     // TODO: get this from config via AppInitService
     readonly resourceBasePath = 'http://rdfh.ch/';
@@ -42,10 +42,6 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         // check for standard mapping
         if (this.displayValue !== undefined) {
-            if (this.displayValue.mapping !== this.standardMapping) {
-                // mapping is not supported
-                return null;
-            }
 
             // strip the doctype and text tag
             return this._handleXML(this.displayValue.xml, true);
@@ -56,61 +52,63 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
     ngOnInit() {
 
-        this.editor = Editor;
+        if (this.mapping !== undefined && this._appInitService.config['xmlTransform'][this.mapping] !== undefined) {
 
-        this.editorConfig = {
-            entities: false,
-            link: {
-                addTargetToExternalLinks: false,
-                decorators: {
-                    isInternal: {
-                        // label: 'internal link to a Knora resource',
-                        mode: 'automatic', // automatic requires callback -> but the callback is async and the user could save the text before the check ...
-                        callback: url => { /*console.log(url, url.startsWith( 'http://rdfh.ch/' ));*/
-                            return url.startsWith(this.resourceBasePath);
-                        },
-                        attributes: {
-                            class: Constants.SalsahLink
+            this.editor = Editor;
+
+            this.editorConfig = {
+                entities: false,
+                link: {
+                    addTargetToExternalLinks: false,
+                    decorators: {
+                        isInternal: {
+                            // label: 'internal link to a Knora resource',
+                            mode: 'automatic', // automatic requires callback -> but the callback is async and the user could save the text before the check ...
+                            callback: url => { /*console.log(url, url.startsWith( 'http://rdfh.ch/' ));*/
+                                return url.startsWith(this.resourceBasePath);
+                            },
+                            attributes: {
+                                class: Constants.SalsahLink
+                            }
                         }
                     }
+                },
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat', 'redo', 'undo'],
+                heading: {
+                    options: [
+                        {model: 'heading1', view: 'h1', title: 'Heading 1'},
+                        {model: 'heading2', view: 'h2', title: 'Heading 2'},
+                        {model: 'heading3', view: 'h3', title: 'Heading 3'},
+                        {model: 'heading4', view: 'h4', title: 'Heading 4'},
+                        {model: 'heading5', view: 'h5', title: 'Heading 5'},
+                        {model: 'heading6', view: 'h6', title: 'Heading 6'},
+                    ]
+                },
+                codeBlock: {
+                    languages: [
+                        {language: 'plaintext', label: 'Plain text', class: ''}
+                    ]
                 }
-            },
-            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat', 'redo', 'undo'],
-            heading: {
-                options: [
-                    { model: 'heading1', view: 'h1', title: 'Heading 1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3' },
-                    { model: 'heading4', view: 'h4', title: 'Heading 4' },
-                    { model: 'heading5', view: 'h5', title: 'Heading 5' },
-                    { model: 'heading6', view: 'h6', title: 'Heading 6' },
-                ]
-            },
-            codeBlock: {
-                languages: [
-                    { language: 'plaintext', label: 'Plain text', class: '' }
-                ]
-            }
-        };
+            };
 
-        // initialize form control elements
-        this.valueFormControl = new FormControl({value: null, disabled: this.mode === 'read'});
+            // initialize form control elements
+            this.valueFormControl = new FormControl({value: null, disabled: this.mode === 'read'});
 
-        this.commentFormControl = new FormControl(null);
+            this.commentFormControl = new FormControl(null);
 
-        this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
-            data => {
-                this.valueFormControl.updateValueAndValidity();
-            }
-        );
+            this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
+                data => {
+                    this.valueFormControl.updateValueAndValidity();
+                }
+            );
 
-        this.form = this.fb.group({
-            xmlValue: this.valueFormControl,
-            comment: this.commentFormControl
-        });
+            this.form = this.fb.group({
+                xmlValue: this.valueFormControl,
+                comment: this.commentFormControl
+            });
 
-        this.resetFormControl();
-
+            this.resetFormControl();
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -125,7 +123,6 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         } else if (this.valueFormControl !== undefined) {
             this.valueFormControl.enable();
         }
-
 
     }
 
@@ -142,7 +139,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         const newTextValue = new CreateTextValueAsXml();
 
         newTextValue.xml = this._handleXML(this.valueFormControl.value, false);
-        newTextValue.mapping = this.standardMapping;
+        newTextValue.mapping = this.mapping;
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             newTextValue.valueHasComment = this.commentFormControl.value;
@@ -163,7 +160,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         updatedTextValue.id = this.displayValue.id;
 
         updatedTextValue.xml = this._handleXML(this.valueFormControl.value, false);
-        updatedTextValue.mapping = this.standardMapping;
+        updatedTextValue.mapping = this.mapping;
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             updatedTextValue.valueHasComment = this.commentFormControl.value;
@@ -186,17 +183,21 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         const closingTextTag = `</${textTag}>`;
 
         if (fromKnora) {
-            // convert tags: CKEditor 4 to 5 migration, see https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html
+            // CKEditor accepts tags from version 4, no conversion needed
+            // see 4 to 5 migration, see https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html
             return xml.replace(doctype, '')
                 .replace(openingTextTag, '')
                 .replace(closingTextTag, '');
         } else {
-            // get XML transform config
+
+            // replace &nbsp; entity
             xml = xml.replace(/&nbsp;/g, String.fromCharCode(160));
 
-            const keys = Object.keys(this._appInitService.config['xmlTransform']);
+            // get XML transform config
+            const keys = Object.keys(this._appInitService.config['xmlTransform'][this.mapping]);
             for (const key of keys) {
-                xml = xml.replace(new RegExp(key, 'g'), this._appInitService.config['xmlTransform'][key]);
+                // replace tags defined in config
+                xml = xml.replace(new RegExp(key, 'g'), this._appInitService.config['xmlTransform'][this.mapping][key]);
             }
 
             return doctype + openingTextTag + xml + closingTextTag;
