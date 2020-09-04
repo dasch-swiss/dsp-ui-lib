@@ -1,8 +1,8 @@
 <div class="dsp-search-panel" #fullSearchPanel cdkOverlayOrigin>
 
     <!-- DESKTOP VERSION -->
-    <dsp-fulltext-search class="dsp-fulltext-search" [projectfilter]="projectfilter"
-        [filterbyproject]="filterbyproject" (search)="search.emit($event)">
+    <dsp-fulltext-search class="dsp-fulltext-search" [projectfilter]="projectfilter" [filterbyproject]="filterbyproject"
+        (search)="search.emit($event)">
     </dsp-fulltext-search>
 
     <!-- advanced search button: if advanced === true -->
@@ -44,9 +44,8 @@
             </span>
         </div>
         <div class="dsp-menu-content">
-            <!-- TODO: reactivate this tags when the components are ready -->
-            <!-- <dsp-advanced-search *ngIf="showAdvanced" (search)="search.emit($event); closeMenu()"></dsp-advanced-search> -->
-            <!-- <dsp-expert-search *ngIf="!showAdvanced" (search)="search.emit($event); closeMenu()"></dsp-expert-search> -->
+            <dsp-advanced-search *ngIf="showAdvanced" (search)="search.emit($event); closeMenu()"></dsp-advanced-search>
+            <dsp-expert-search *ngIf="!showAdvanced" (search)="search.emit($event); closeMenu()"></dsp-expert-search>
         </div>
     </div>
 </ng-template>
