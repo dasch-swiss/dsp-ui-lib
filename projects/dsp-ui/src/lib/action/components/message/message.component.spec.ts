@@ -1,6 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -94,6 +93,9 @@ describe('MessageComponent', () => {
     let longMsgTestHostComponent: LongMessageTestHostComponent;
     let longMsgTestHostFixture: ComponentFixture<LongMessageTestHostComponent>;
 
+    let shortMsgDurationTestHostComponent: ShortMessageWithDurationTestHostComponent;
+    let shortMsgDurationTestHostFixture: ComponentFixture<ShortMessageWithDurationTestHostComponent>;
+
     let status: StatusMsg;
     let apiResonseError: ApiResponseError;
 
@@ -112,7 +114,8 @@ describe('MessageComponent', () => {
             declarations: [
                 MessageComponent,
                 ShortMessageTestHostComponent,
-                LongMessageTestHostComponent
+                LongMessageTestHostComponent,
+                ShortMessageWithDurationTestHostComponent
             ]
         }).compileComponents();
 
@@ -165,7 +168,8 @@ describe('MessageComponent', () => {
 
             expect(longMsgTestHostComponent.messageComponent.message.status).toEqual(403);
             expect(longMsgTestHostComponent.messageComponent.message.statusMsg).toEqual('Forbidden');
-            expect(longMsgTestHostComponent.messageComponent.message.statusText).toEqual('The request was a legal request, but the server is refusing to respond to it');
+            expect(longMsgTestHostComponent.messageComponent.message.statusText).toEqual(
+                'The request was a legal request, but the server is refusing to respond to it');
 
             const hostCompDe = longMsgTestHostFixture.debugElement;
 
@@ -177,28 +181,29 @@ describe('MessageComponent', () => {
 
             const messageTitleElement = messageEl.query(By.css('.message-title'));
 
-            expect(messageTitleElement.nativeElement.innerText).toEqual('The request was a legal request, but the server is refusing to respond to it');
+            expect(messageTitleElement.nativeElement.innerText).toEqual(
+                'The request was a legal request, but the server is refusing to respond to it');
 
         });
     });
 
     describe('display a short message with a duration of 2 seconds', () => {
         beforeEach(() => {
-            shortMsgTestHostFixture = TestBed.createComponent(ShortMessageTestHostComponent);
-            shortMsgTestHostComponent = shortMsgTestHostFixture.componentInstance;
-            shortMsgTestHostFixture.detectChanges();
+            shortMsgDurationTestHostFixture = TestBed.createComponent(ShortMessageWithDurationTestHostComponent);
+            shortMsgDurationTestHostComponent = shortMsgDurationTestHostFixture.componentInstance;
+            shortMsgDurationTestHostFixture.detectChanges();
         });
 
         it('should create', () => {
-            expect(shortMsgTestHostComponent.messageComponent).toBeTruthy();
+            expect(shortMsgDurationTestHostComponent.messageComponent).toBeTruthy();
         });
 
-        it('should display a short message', () => {
-            expect(shortMsgTestHostComponent.messageComponent).toBeTruthy();
-            expect(shortMsgTestHostComponent.messageComponent.message.status).toEqual(200);
-            expect(shortMsgTestHostComponent.messageComponent.message.statusMsg).toEqual('Success');
+        it('should display a short message', fakeAsync(() => {
+            expect(shortMsgDurationTestHostComponent.messageComponent).toBeTruthy();
+            expect(shortMsgDurationTestHostComponent.messageComponent.message.status).toEqual(200);
+            expect(shortMsgDurationTestHostComponent.messageComponent.message.statusMsg).toEqual('Success');
 
-            const hostCompDe = shortMsgTestHostFixture.debugElement;
+            const hostCompDe = shortMsgDurationTestHostFixture.debugElement;
 
             const messageEl = hostCompDe.query(By.directive(MessageComponent));
 
@@ -206,11 +211,11 @@ describe('MessageComponent', () => {
 
             expect(spanShortMessageElement.nativeElement.innerText).toEqual('You just updated the user profile.');
 
-            setTimeout(() => {
-                expect(shortMsgTestHostComponent.messageComponent.disable).toBeFalsy();
-            }, 2100);
+            shortMsgDurationTestHostFixture.whenStable().then(() => {
+                console.log(shortMsgDurationTestHostComponent);
 
-        });
-
+                expect(shortMsgDurationTestHostComponent.messageComponent.disable).toBeTruthy();
+            });
+        }));
     });
 });
