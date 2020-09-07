@@ -4,6 +4,6 @@ export * from './fulltext-search/fulltext-search.component';
 export * from './expert-search/expert-search.component';
 export * from './advanced-search/advanced-search.component';
 export * from './advanced-search/select-ontology/select-ontology.harness';
+export * from './advanced-search/select-property/specify-property-value/operator';
 export * from './services/advanced-search-params.service';
 export * from './services/gravsearch-generation.service';
-

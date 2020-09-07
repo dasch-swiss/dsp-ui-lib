@@ -1,26 +1,23 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { SearchLinkValueComponent } from './search-link-value.component';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { DspApiConnectionToken } from '../../../../../core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
+    ILabelSearchParams,
     ReadResource,
     ReadResourceSequence,
-    SearchEndpointV2,
-    ValuesEndpointV2,
-    WriteValueResponse
+    SearchEndpointV2
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
-import { ILabelSearchParams } from '@dasch-swiss/dsp-js/src/api/v2/search/search-endpoint-v2';
-import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { DspApiConnectionToken } from '../../../../../core';
 import { IRI } from '../operator';
+import { SearchLinkValueComponent } from './search-link-value.component';
+
 
 /**
  * Test host component to simulate parent component.
@@ -33,15 +30,15 @@ class TestHostComponent implements OnInit {
 
     form;
 
-    @ViewChild('linkVal', {static: false}) linkValue: SearchLinkValueComponent;
+    @ViewChild('linkVal', { static: false }) linkValue: SearchLinkValueComponent;
 
     resClass: string;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({});
+        this.form = this._fb.group({});
         this.resClass = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
     }
 }
@@ -138,7 +135,7 @@ describe('SearchLinkValueComponent', () => {
         expect(testHostComponent.linkValue.form.controls['resource'].value.id).toEqual('http://testIri');
 
         expect(searchSpy.v2.search.doSearchByLabel).toHaveBeenCalledTimes(5); // starts sending requests when 3 chars long: 'testres' -> tes (1) + tres (4)
-        expect(searchSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('testres', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'});
+        expect(searchSpy.v2.search.doSearchByLabel).toHaveBeenCalledWith('testres', 0, { limitToResourceClass: 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing' });
 
     });
 

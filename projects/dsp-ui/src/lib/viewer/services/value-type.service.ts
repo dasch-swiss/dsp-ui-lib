@@ -4,7 +4,8 @@ import {
     ReadTextValueAsHtml,
     ReadTextValueAsString,
     ReadTextValueAsXml,
-    ReadValue
+    ReadValue,
+    ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 
 @Injectable({
@@ -12,11 +13,11 @@ import {
 })
 export class ValueTypeService {
 
-    private readonly readTextValueAsString = 'ReadTextValueAsString';
+    private readonly _readTextValueAsString = 'ReadTextValueAsString';
 
-    private readonly readTextValueAsXml = 'ReadTextValueAsXml';
+    private readonly _readTextValueAsXml = 'ReadTextValueAsXml';
 
-    private readonly readTextValueAsHtml = 'ReadTextValueAsHtml';
+    private readonly _readTextValueAsHtml = 'ReadTextValueAsHtml';
 
     constants = Constants;
 
@@ -33,16 +34,31 @@ export class ValueTypeService {
     getValueTypeOrClass(value: ReadValue): string {
         if (value.type === this.constants.TextValue) {
             if (value instanceof ReadTextValueAsString) {
-                return this.readTextValueAsString;
+                return this._readTextValueAsString;
             } else if (value instanceof ReadTextValueAsXml) {
-                return this.readTextValueAsXml;
+                return this._readTextValueAsXml;
             } else if (value instanceof ReadTextValueAsHtml) {
-                return this.readTextValueAsHtml;
+                return this._readTextValueAsHtml;
             } else {
                 throw new Error(`unknown TextValue class ${value}`);
             }
         } else {
             return value.type;
+        }
+    }
+
+    /**
+     * Given a ResourcePropertyDefinition of a #hasText property, determines the class representing it.
+     *
+     * @param resourcePropDef the given ResourcePropertyDefinition.
+     */
+    getTextValueClass(resourcePropDef: ResourcePropertyDefinition): string {
+        if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText') {
+            return this._readTextValueAsString;
+        } else if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
+            return this._readTextValueAsHtml;
+        } else {
+            throw new Error(`unknown TextValue class ${resourcePropDef}`);
         }
     }
 
@@ -57,8 +73,8 @@ export class ValueTypeService {
      * @param valueTypeOrClass the type or class of the given value.
      */
     isReadOnly(valueTypeOrClass: string): boolean {
-        return valueTypeOrClass === this.readTextValueAsHtml ||
-                valueTypeOrClass === this.readTextValueAsXml  ||
-                valueTypeOrClass === this.constants.GeomValue;
+        return valueTypeOrClass === this._readTextValueAsHtml ||
+            valueTypeOrClass === this._readTextValueAsXml ||
+            valueTypeOrClass === this.constants.GeomValue;
     }
 }

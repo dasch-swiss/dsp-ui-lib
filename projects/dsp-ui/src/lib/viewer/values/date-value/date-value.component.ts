@@ -1,14 +1,10 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue } from '@dasch-swiss/dsp-js';
-import {
-    FormBuilder,
-    FormControl,
-    FormGroup
-} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
-import { DateInputComponent } from './date-input/date-input.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
+import { DateInputComponent } from './date-input/date-input.component';
 
 @Component({
     selector: 'dsp-date-value',
@@ -20,6 +16,9 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     @ViewChild('dateInput') dateInputComponent: DateInputComponent;
 
     @Input() displayValue?: ReadDateValue;
+    @Input() displayOptions?: 'era' | 'calendar' | 'all';
+    @Input() labels = false;
+    @Input() ontologyDateFormat = 'dd.MM.YYYY';
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
@@ -32,10 +31,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     matcher = new ValueErrorStateMatcher();
 
-    // will come from the ontology settings when implemented
-    ontologyDateSetting: string;
-
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
         super();
     }
 
@@ -76,8 +72,6 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
         this.commentFormControl = new FormControl(null);
 
-        this.ontologyDateSetting = 'MM.dd.YYYY';
-
         // subscribe to any change on the comment and recheck validity
         this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
             data => {
@@ -85,7 +79,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
             }
         );
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             dateValue: this.valueFormControl,
             comment: this.commentFormControl
         });

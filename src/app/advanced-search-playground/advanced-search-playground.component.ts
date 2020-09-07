@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AdvancedSearchParamsService, DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
+import { AdvancedSearchParamsService, DspApiConnectionToken, SearchParams } from '@dasch-swiss/dsp-ui';
 import { ApiResponseData, ApiResponseError, KnoraApiConnection, LogoutResponse } from '@dasch-swiss/dsp-js';
 
 @Component({
@@ -11,13 +11,14 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
 
     loading: boolean;
 
-    constructor(private _advancedSearchParamsService: AdvancedSearchParamsService,
-                @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+    constructor(
+        private _advancedSearchParamsService: AdvancedSearchParamsService,
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection) {
     }
 
     ngOnInit(): void {
         this.loading = true;
-        this.knoraApiConnection.v2.auth.logout().subscribe(
+        this._dspApiConnection.v2.auth.logout().subscribe(
             (response: ApiResponseData<LogoutResponse>) => {
                 this.loading = false;
             },
@@ -26,8 +27,7 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
             });
     }
 
-    submitQuery(gravsearchQuery: string) {
-        console.log('Output: ', gravsearchQuery);
+    submitQuery(gravsearch: SearchParams) {
 
         console.log('search params', this._advancedSearchParamsService.getSearchParams().generateGravsearch(1));
     }

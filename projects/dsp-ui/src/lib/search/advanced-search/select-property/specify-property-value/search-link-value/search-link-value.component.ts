@@ -8,9 +8,9 @@ import { DspApiConnectionToken } from '../../../../../core';
 const resolvedPromise = Promise.resolve(null);
 
 @Component({
-  selector: 'dsp-search-link-value',
-  templateUrl: './search-link-value.component.html',
-  styleUrls: ['./search-link-value.component.scss']
+    selector: 'dsp-search-link-value',
+    templateUrl: './search-link-value.component.html',
+    styleUrls: ['./search-link-value.component.scss']
 })
 export class SearchLinkValueComponent implements OnInit, OnDestroy, PropertyValue {
 
@@ -35,12 +35,12 @@ export class SearchLinkValueComponent implements OnInit, OnDestroy, PropertyValu
     }
 
     constructor(
-        @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
-        @Inject(FormBuilder) private fb: FormBuilder) {
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        @Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             resource: [null, Validators.compose([
                 Validators.required,
                 this.validateResource
@@ -88,7 +88,7 @@ export class SearchLinkValueComponent implements OnInit, OnDestroy, PropertyValu
 
         // at least 3 characters are required
         if (searchTerm.length >= 3) {
-            this.knoraApiConnection.v2.search.doSearchByLabel(searchTerm, 0, { limitToResourceClass: this._restrictToResourceClass }).subscribe(
+            this._dspApiConnection.v2.search.doSearchByLabel(searchTerm, 0, { limitToResourceClass: this._restrictToResourceClass }).subscribe(
                 (response: ReadResourceSequence) => {
                     this.resources = response.resources;
                 });

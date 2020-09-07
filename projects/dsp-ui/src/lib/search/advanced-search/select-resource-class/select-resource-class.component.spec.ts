@@ -36,11 +36,11 @@ class TestHostComponent implements OnInit {
 
     selectedResClassIri: string;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
     ngOnInit() {
-        this.form = this.fb.group({});
+        this.form = this._fb.group({});
 
         const resClasses = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').classes;
 
@@ -143,7 +143,7 @@ describe('SelectResourceClassComponent', () => {
 
         await select.open();
 
-        const options = await select.getOptions({text: 'Blue thing'});
+        const options = await select.getOptions({ text: 'Blue thing' });
 
         expect(options.length).toEqual(1);
 
@@ -164,7 +164,7 @@ describe('SelectResourceClassComponent', () => {
 
         await select.open();
 
-        const options = await select.getOptions({text: 'no selection'});
+        const options = await select.getOptions({ text: 'no selection' });
 
         expect(options.length).toEqual(1);
 

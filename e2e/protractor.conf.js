@@ -9,6 +9,7 @@ const tsConfig = require('../tsconfig.json'); // https://github.com/nrwl/nx/issu
 global['window'] = {
     addEventListener: () => {}
 };
+const {SpecReporter, StacktraceOption} = require('jasmine-spec-reporter');
 
 /**
  * @type { import("protractor").Config }
@@ -42,6 +43,6 @@ exports.config = {
             baseUrl: './',
             paths: tsConfig.compilerOptions.paths
         });
-        jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: 'raw'}}));
+        jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: StacktraceOption.RAW}}));
     }
 };

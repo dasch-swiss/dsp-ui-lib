@@ -12,16 +12,16 @@ export class GNDConstants {
  * This directive renders a GND/IAF or a VIAF identifier as a link to the respective resolver.
  */
 @Directive({
-  selector: '[dspGnd]'
+    selector: '[dspGnd]'
 })
 export class GndDirective implements OnChanges {
 
     @Input()
-    set dspGnd(value: string) {
+    set gnd(value: string) {
         this._gnd = value;
     }
 
-    get dspGnd() {
+    get gnd() {
         return this._gnd;
     }
 
@@ -29,7 +29,7 @@ export class GndDirective implements OnChanges {
     // the GND identifier to be rendered
     private _gnd: string;
 
-    constructor(private el: ElementRef) {
+    constructor(private _ele: ElementRef) {
 
     }
 
@@ -38,18 +38,18 @@ export class GndDirective implements OnChanges {
 
             if (this._gnd.indexOf(GNDConstants.GND_PREFIX) === 0) {
                 // GND/IAF identifier
-                this.el.nativeElement.innerHTML = `<a href="${GNDConstants.GND_RESOLVER + this._gnd.replace(GNDConstants.GND_PREFIX, '')}" target="_blank">${this._gnd}</a>`;
+                this._ele.nativeElement.innerHTML = `<a href="${GNDConstants.GND_RESOLVER + this._gnd.replace(GNDConstants.GND_PREFIX, '')}" target="_blank">${this._gnd}</a>`;
             } else if (this._gnd.indexOf(GNDConstants.VIAF_PREFIX) === 0) {
                 // VIAF identifier
-                this.el.nativeElement.innerHTML = `<a href="${GNDConstants.VIAF_RESOLVER + this._gnd.replace(GNDConstants.VIAF_PREFIX, '')}" target="_blank">${this._gnd}</a>`;
+                this._ele.nativeElement.innerHTML = `<a href="${GNDConstants.VIAF_RESOLVER + this._gnd.replace(GNDConstants.VIAF_PREFIX, '')}" target="_blank">${this._gnd}</a>`;
             } else {
                 // no identifier, leave unchanged
-                this.el.nativeElement.innerHTML = this._gnd;
+                this._ele.nativeElement.innerHTML = this._gnd;
             }
 
         } else {
             // no identifier, leave unchanged
-            this.el.nativeElement.innerHTML = this._gnd;
+            this._ele.nativeElement.innerHTML = this._gnd;
         }
 
     }

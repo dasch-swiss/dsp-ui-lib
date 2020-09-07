@@ -15,11 +15,17 @@ export * from './values/text-value/text-value-as-html/text-value-as-html.compone
 export * from './values/text-value/text-value-as-string/text-value-as-string.component';
 export * from './values/time-value/time-value.component';
 export * from './values/uri-value/uri-value.component';
+export * from './values/custom-regex';
 // operation components
 export * from './operations/display-edit/display-edit.component';
 export * from './operations/add-value/add-value.component';
 // view components
 export * from './views/resource-view/resource-view.component';
 export * from './views/property-view/property-view.component';
+export * from './views/list-view/list-view.component';
 export * from './views/list-view/resource-list/resource-list.component';
 export * from './views/list-view/resource-grid/resource-grid.component';
+// media representations
+export * from './representation/still-image/still-image.component';
+// services
+export * from './services/value-type.service';

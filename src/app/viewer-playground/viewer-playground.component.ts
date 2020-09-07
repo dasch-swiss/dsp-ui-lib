@@ -1,6 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { ApiResponseError, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
+import { Component, OnInit } from '@angular/core';
+import { SessionService } from '@dasch-swiss/dsp-ui';
+import { ReadProject } from '@dasch-swiss/dsp-js';
+import { prototype } from 'events';
 
 @Component({
     selector: 'app-viewer-playground',
@@ -9,28 +10,18 @@ import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
 })
 export class ViewerPlaygroundComponent implements OnInit {
 
-    showGrid = true;
-
-    // test data
-    resources: ReadResourceSequence;
+    resource = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
 
     constructor(
-        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection
-    ) { }
+        private _sessionService: SessionService
+     ) { }
 
     ngOnInit(): void {
-        this._dspApiConnection.v2.search.doFulltextSearch('kreuz').subscribe(
-            (response: ReadResourceSequence) => {
-                this.resources = response;
-            },
-            (error: ApiResponseError) => {
-                console.error(error);
-            }
-        );
+        this._sessionService.isSessionValid().subscribe(status => console.log('session valid: ', status));
     }
 
-    openResource(id: string) {
-        console.log('Open Resource:', id);
+    openProject(project: ReadProject) {
+        // here you can redirect a user to the project page
+        console.log('redircet to project page e.g. /project/:shortname', project.shortname);
     }
-
 }

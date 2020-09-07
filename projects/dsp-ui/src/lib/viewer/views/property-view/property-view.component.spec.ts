@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import {
     ApiResponseError,
@@ -11,10 +12,10 @@ import {
     ResourcePropertyDefinition,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
+import { Subscription } from 'rxjs';
+import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { PropertyInfoValues } from '../resource-view/resource-view.component';
 import { PropertyViewComponent } from './property-view.component';
-import { ValueOperationEventService, Events, EmitEvent } from '../../services/value-operation-event.service';
-import { Subscription } from 'rxjs';
 
 /**
  * Test host component to simulate parent component.
@@ -24,7 +25,8 @@ import { Subscription } from 'rxjs';
     <dsp-property-view #propView
       [parentResource]="parentResource"
       [propArray]="propArray"
-      [systemPropArray]="systemPropArray">
+      [systemPropArray]="systemPropArray"
+      [showAllProps]="showAllProps">
     </dsp-property-view>`
 })
 class TestPropertyParentComponent implements OnInit, OnDestroy {
@@ -36,6 +38,8 @@ class TestPropertyParentComponent implements OnInit, OnDestroy {
     propArray: PropertyInfoValues[] = [];
 
     systemPropArray: SystemPropertyDefinition[] = [];
+
+    showAllProps = false;
 
     voeSubscription: Subscription;
 
@@ -117,6 +121,7 @@ describe('PropertyViewComponent', () => {
         TestBed.configureTestingModule({
         imports: [
             MatIconModule,
+            MatTooltipModule
         ],
         declarations: [
             TestPropertyParentComponent,
@@ -214,7 +219,7 @@ describe('PropertyViewComponent', () => {
 
         it('should show an add button under each property that has a value component and for which the cardinality is not 1', () => {
             const addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
-            expect(addButtons.length).toEqual(14);
+            expect(addButtons.length).toEqual(13);
 
         });
 
@@ -228,7 +233,10 @@ describe('PropertyViewComponent', () => {
 
             testHostFixture.detectChanges();
 
-            expect(propertyViewComponentDe.query(By.css('button.create'))).toBeNull();
+            const addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
+
+            // the add button for the property with the open add value form is hidden
+            expect(addButtons.length).toEqual(12);
 
             expect(propertyViewComponentDe.query(By.css('.add-value'))).toBeDefined();
 

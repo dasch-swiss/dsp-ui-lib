@@ -8,29 +8,29 @@ import {
 } from '@dasch-swiss/dsp-js';
 
 @Component({
-  selector: 'app-read',
-  templateUrl: './read.component.html',
-  styleUrls: ['./read.component.scss']
+    selector: 'app-read',
+    templateUrl: './read.component.html',
+    styleUrls: ['./read.component.scss']
 })
 export class ReadComponent implements OnInit {
 
-  resourceIri: string;
-  loading: boolean;
+    resourceIri: string;
+    loading: boolean;
 
-  constructor(@Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
-  }
+    constructor(@Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection) {
+    }
 
-  ngOnInit(): void {
-    this.loading = true;
-    this.knoraApiConnection.v2.auth.logout().subscribe(
-      (response: ApiResponseData<LogoutResponse>) => {
-        this.resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
-        this.loading = false;
-      },
-      (error: ApiResponseError) => {
-          console.error(error);
-      }
-  );
-  }
+    ngOnInit(): void {
+        this.loading = true;
+        this._dspApiConnection.v2.auth.logout().subscribe(
+            (response: ApiResponseData<LogoutResponse>) => {
+                this.resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+                this.loading = false;
+            },
+            (error: ApiResponseError) => {
+                console.error(error);
+            }
+        );
+    }
 
 }

@@ -21,13 +21,13 @@ export class SearchBooleanValueComponent implements OnInit, OnDestroy, PropertyV
 
     form: FormGroup;
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
 
     }
 
     ngOnInit() {
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             booleanValue: [false, Validators.compose([Validators.required])]
         });
 

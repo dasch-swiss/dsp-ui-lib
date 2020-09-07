@@ -15,9 +15,9 @@ import { DspApiConnectionToken } from '../../../../../core';
 const resolvedPromise = Promise.resolve(null);
 
 @Component({
-  selector: 'dsp-search-list-value',
-  templateUrl: './search-list-value.component.html',
-  styleUrls: ['./search-list-value.component.scss']
+    selector: 'dsp-search-list-value',
+    templateUrl: './search-list-value.component.html',
+    styleUrls: ['./search-list-value.component.scss']
 })
 export class SearchListValueComponent implements OnInit, OnDestroy, PropertyValue {
 
@@ -37,14 +37,14 @@ export class SearchListValueComponent implements OnInit, OnDestroy, PropertyValu
     @ViewChild(MatMenuTrigger) menuTrigger: MatMenuTrigger;
 
     constructor(
-        @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
-        @Inject(FormBuilder) private fb: FormBuilder
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        @Inject(FormBuilder) private _fb: FormBuilder
     ) {
     }
 
     ngOnInit() {
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             listValue: [null, Validators.required]
         });
 
@@ -55,7 +55,7 @@ export class SearchListValueComponent implements OnInit, OnDestroy, PropertyValu
 
         const rootNodeIri = this._getRootNodeIri();
 
-        this.knoraApiConnection.v2.list.getList(rootNodeIri).subscribe(
+        this._dspApiConnection.v2.list.getList(rootNodeIri).subscribe(
             (response: ListNodeV2) => {
                 this.listRootNode = response;
             },

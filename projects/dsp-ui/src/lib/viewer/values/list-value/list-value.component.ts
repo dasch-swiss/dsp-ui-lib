@@ -2,148 +2,149 @@ import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, 
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import {
-  ApiResponseError,
-  CreateListValue,
-  KnoraApiConnection,
-  ListNodeV2,
-  ReadListValue,
-  ResourcePropertyDefinition,
-  UpdateListValue
+    ApiResponseError,
+    CreateListValue,
+    KnoraApiConnection,
+    ListNodeV2,
+    ReadListValue,
+    ResourcePropertyDefinition,
+    UpdateListValue
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { BaseValueComponent } from '../base-value.component';
 
 @Component({
-  selector: 'dsp-list-value',
-  templateUrl: './list-value.component.html',
-  styleUrls: ['./list-value.component.scss']
+    selector: 'dsp-list-value',
+    templateUrl: './list-value.component.html',
+    styleUrls: ['./list-value.component.scss']
 })
 export class ListValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() displayValue?: ReadListValue;
-  @Input() propertyDef: ResourcePropertyDefinition;
-  valueFormControl: FormControl;
-  commentFormControl: FormControl;
-  listRootNode: ListNodeV2;
-  // active node
-  selectedNode: ListNodeV2;
+    @Input() displayValue?: ReadListValue;
+    @Input() propertyDef: ResourcePropertyDefinition;
+    valueFormControl: FormControl;
+    commentFormControl: FormControl;
+    listRootNode: ListNodeV2;
+    // active node
+    selectedNode: ListNodeV2;
 
-  form: FormGroup;
+    form: FormGroup;
 
-  valueChangesSubscription: Subscription;
-  @ViewChild(MatMenuTrigger) menuTrigger: MatMenuTrigger;
+    valueChangesSubscription: Subscription;
+    @ViewChild(MatMenuTrigger) menuTrigger: MatMenuTrigger;
 
-  customValidators = [];
+    customValidators = [];
 
-  constructor(@Inject(FormBuilder) private fb: FormBuilder,
-              @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
-    super();
-   }
-
-   getInitValue(): string | null {
-    if (this.displayValue !== undefined) {
-      return this.displayValue.listNode;
-    } else {
-      return null;
+    constructor(
+        @Inject(FormBuilder) private _fb: FormBuilder,
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection) {
+        super();
     }
-   }
-  // override the resetFormControl() from the base component to deal with appending root nodes.
-  resetFormControl(): void {
-    super.resetFormControl();
-    if (this.mode === 'update'){
-        this.selectedNode = new ListNodeV2();
-        this.selectedNode.label = this.displayValue.listNodeLabel;
-    } else {
-        this.selectedNode = null;
-    }
-    if (this.valueFormControl !== undefined) {
-      if (this.mode !== 'read') {
-        this.listRootNode = new ListNodeV2();
-        const rootNodeIris = this.propertyDef.guiAttributes;
-        for (const rootNodeIri of rootNodeIris) {
-          // get rid of the "hlist"
-          const trimmedRootNodeIRI = rootNodeIri.substr(7, rootNodeIri.length - (1 + 7));
-          this.knoraApiConnection.v2.list.getList(trimmedRootNodeIRI).subscribe(
-            (response2: ListNodeV2) => {
-              this.listRootNode.children.push(response2);
-            }, (error: ApiResponseError) => {
-              console.error(error);
-            });
+
+    getInitValue(): string | null {
+        if (this.displayValue !== undefined) {
+            return this.displayValue.listNode;
+        } else {
+            return null;
         }
-      } else {
-          this.valueFormControl.setValue(this.displayValue.listNodeLabel);
-      }
     }
-  }
-
-  ngOnInit() {
-
-    this.valueFormControl = new FormControl(null);
-    this.commentFormControl = new FormControl(null);
-    this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
-      data => {
-        this.valueFormControl.updateValueAndValidity();
-      }
-    );
-    this.form = this.fb.group({
-      listValue: this.valueFormControl,
-      comment: this.commentFormControl
-    });
-
-    this.resetFormControl();
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    this.resetFormControl();
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribeFromValueChanges();
-  }
-
-  getNewValue(): CreateListValue | false {
-    if (this.mode !== 'create' || !this.form.valid) {
-      return false;
+    // override the resetFormControl() from the base component to deal with appending root nodes.
+    resetFormControl(): void {
+        super.resetFormControl();
+        if (this.mode === 'update') {
+            this.selectedNode = new ListNodeV2();
+            this.selectedNode.label = this.displayValue.listNodeLabel;
+        } else {
+            this.selectedNode = null;
+        }
+        if (this.valueFormControl !== undefined) {
+            if (this.mode !== 'read') {
+                this.listRootNode = new ListNodeV2();
+                const rootNodeIris = this.propertyDef.guiAttributes;
+                for (const rootNodeIri of rootNodeIris) {
+                    // get rid of the "hlist"
+                    const trimmedRootNodeIRI = rootNodeIri.substr(7, rootNodeIri.length - (1 + 7));
+                    this._dspApiConnection.v2.list.getList(trimmedRootNodeIRI).subscribe(
+                        (response2: ListNodeV2) => {
+                            this.listRootNode.children.push(response2);
+                        }, (error: ApiResponseError) => {
+                            console.error(error);
+                        });
+                }
+            } else {
+                this.valueFormControl.setValue(this.displayValue.listNodeLabel);
+            }
+        }
     }
 
-    const newListValue = new CreateListValue();
+    ngOnInit() {
 
+        this.valueFormControl = new FormControl(null);
+        this.commentFormControl = new FormControl(null);
+        this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
+            data => {
+                this.valueFormControl.updateValueAndValidity();
+            }
+        );
+        this.form = this._fb.group({
+            listValue: this.valueFormControl,
+            comment: this.commentFormControl
+        });
 
-    newListValue.listNode = this.valueFormControl.value;
-
-
-    if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
-      newListValue.valueHasComment = this.commentFormControl.value;
+        this.resetFormControl();
+    }
+    ngOnChanges(changes: SimpleChanges): void {
+        this.resetFormControl();
     }
 
-    return newListValue;
-  }
-
-  getUpdatedValue(): UpdateListValue | false {
-    if (this.mode !== 'update' || !this.form.valid) {
-      return false;
+    ngOnDestroy(): void {
+        this.unsubscribeFromValueChanges();
     }
 
-    const updatedListValue = new UpdateListValue();
+    getNewValue(): CreateListValue | false {
+        if (this.mode !== 'create' || !this.form.valid) {
+            return false;
+        }
 
-    updatedListValue.id = this.displayValue.id;
-    if (this.selectedNode) {
-      updatedListValue.listNode = this.selectedNode.id;
-    } else {
-      updatedListValue.listNode = this.displayValue.listNode;
+        const newListValue = new CreateListValue();
+
+
+        newListValue.listNode = this.valueFormControl.value;
+
+
+        if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
+            newListValue.valueHasComment = this.commentFormControl.value;
+        }
+
+        return newListValue;
     }
-    if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
-      updatedListValue.valueHasComment = this.commentFormControl.value;
+
+    getUpdatedValue(): UpdateListValue | false {
+        if (this.mode !== 'update' || !this.form.valid) {
+            return false;
+        }
+
+        const updatedListValue = new UpdateListValue();
+
+        updatedListValue.id = this.displayValue.id;
+        if (this.selectedNode) {
+            updatedListValue.listNode = this.selectedNode.id;
+        } else {
+            updatedListValue.listNode = this.displayValue.listNode;
+        }
+        if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
+            updatedListValue.valueHasComment = this.commentFormControl.value;
+        }
+
+        return updatedListValue;
     }
 
-    return updatedListValue;
-  }
-
-  getSelectedNode(item: ListNodeV2) {
-    this.menuTrigger.closeMenu();
-    this.form.controls.listValue.markAsDirty();
-    this.selectedNode = item;
-    this.valueFormControl.setValue(item.id);
-  }
+    getSelectedNode(item: ListNodeV2) {
+        this.menuTrigger.closeMenu();
+        this.form.controls.listValue.markAsDirty();
+        this.selectedNode = item;
+        this.valueFormControl.setValue(item.id);
+    }
 
 }

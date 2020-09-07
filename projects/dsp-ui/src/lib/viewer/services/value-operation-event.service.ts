@@ -1,3 +1,4 @@
+import { BaseValue } from '@dasch-swiss/dsp-js';
 import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -12,29 +13,29 @@ export class ValueOperationEventService {
 
     // Create a subject to hold data which can be subscribed to.
     // You only get the data after you subscribe.
-    private subject$ = new Subject();
+    private _subject$ = new Subject();
 
     // Used in the listening component.
     // i.e. this.valueOperationEventSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => doSomething());
-    on(event: Events, action: () => void): Subscription {
-        return this.subject$
+    on(event: Events, action: (newValue) => void): Subscription {
+        return this._subject$
             .pipe(
                 // Filter down based on event name to any events that are emitted out of the subject from the emit method below.
                 filter((e: EmitEvent) => e.name === event),
                 map((e: EmitEvent) => e.value)
             )
             .subscribe(action); // Subscribe to the subject to get the data.
-        }
+    }
 
     // Used in the emitting component.
     // i.e. this.valueOperationEventService.emit(new EmitEvent(Events.ValueAdded));
     emit(event: EmitEvent) {
-        this.subject$.next(event);
+        this._subject$.next(event);
     }
 }
 
 export class EmitEvent {
-    constructor(public name: any, public value?: () => void) { }
+    constructor(public name: any, public value?: BaseValue) { }
 }
 
 // Possible events that can be emitted.

@@ -23,6 +23,7 @@ import { SelectResourceClassComponent } from './select-resource-class/select-res
 import { Subscription } from 'rxjs';
 import { PropertyWithValue } from './select-property/specify-property-value/operator';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
+import { SearchParams } from '../../viewer';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -38,7 +39,12 @@ const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
 })
 export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
-    @Output() gravsearchQuery = new EventEmitter<string>();
+    /**
+     * The data event emitter of type SearchParams
+     *
+     * @param  search
+     */
+    @Output() search = new EventEmitter<SearchParams>();
 
     ontologiesMetadata: OntologiesMetadata;
 
@@ -67,20 +73,19 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     @ViewChildren('property') propertyComponents: QueryList<SelectPropertyComponent>;
 
     constructor(
-        @Inject(FormBuilder) private fb: FormBuilder,
-        @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection,
+        @Inject(FormBuilder) private _fb: FormBuilder,
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _gravsearchGenerationService: GravsearchGenerationService) {
     }
 
     ngOnInit() {
 
         // parent form is empty, it gets passed to the child components
-        this.form = this.fb.group({});
+        this.form = this._fb.group({});
 
         // if form status changes, re-run validation
         this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
             this.formValid = this._validateForm();
-            // console.log(this.form);
         });
 
         // initialize ontologies to be used for the ontologies selection in the search form
@@ -117,7 +122,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      * @returns void
      */
     initializeOntologies(): void {
-        this.knoraApiConnection.v2.onto.getOntologiesMetadata().subscribe(
+        this._dspApiConnection.v2.onto.getOntologiesMetadata().subscribe(
             (response: OntologiesMetadata) => {
                 this.ontologiesMetadata = response;
             },
@@ -132,7 +137,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      *
      * @param classDefs a map of class definitions
      */
-    private _makeResourceClassesArray(classDefs: { [index: string]: ClassDefinition}): ResourceClassDefinition[] {
+    private _makeResourceClassesArray(classDefs: { [index: string]: ClassDefinition }): ResourceClassDefinition[] {
 
         const classIris = Object.keys(classDefs);
 
@@ -153,7 +158,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      *
      * @param propertyDefs a map of property definitions
      */
-    private _makeResourceProperties(propertyDefs: { [index: string]: PropertyDefinition}): Properties {
+    private _makeResourceProperties(propertyDefs: { [index: string]: PropertyDefinition }): Properties {
         const resProps: Properties = {};
 
         const propIris = Object.keys(propertyDefs);
@@ -185,7 +190,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
         this.activeOntology = ontologyIri;
 
-        this.knoraApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
+        this._dspApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
             onto => {
 
                 this.resourceClasses = this._makeResourceClassesArray(onto.get(ontologyIri).classes);
@@ -215,7 +220,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
             this.getResourceClassesAndPropertiesForOntology(this.activeOntology);
         } else {
 
-            this.knoraApiConnection.v2.ontologyCache.getResourceClassDefinition(resourceClassIri).subscribe(
+            this._dspApiConnection.v2.ontologyCache.getResourceClassDefinition(resourceClassIri).subscribe(
                 onto => {
                     this.activeResourceClass = onto.classes[resourceClassIri];
 
@@ -268,10 +273,15 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
             }
         );
 
-        const gravsearchQuery = this._gravsearchGenerationService.createGravsearchQuery(properties, resClass);
+        const gravsearch = this._gravsearchGenerationService.createGravsearchQuery(properties, resClass);
 
-        // emit query
-        this.gravsearchQuery.emit(gravsearchQuery);
+        if (gravsearch) {
+            // emit query
+            this.search.emit({
+                query: gravsearch,
+                mode: 'gravsearch'
+            });
+        }
     }
 
 }

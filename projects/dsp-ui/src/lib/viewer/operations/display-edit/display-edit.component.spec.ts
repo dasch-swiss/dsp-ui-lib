@@ -1,8 +1,19 @@
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatButtonHarness } from '@angular/material/button/testing';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogHarness } from '@angular/material/dialog/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    Constants,
+    ApiResponseError, Constants,
+    DeleteValue,
+    DeleteValueResponse,
     MockResource,
     ReadBooleanValue,
     ReadColorValue,
@@ -25,15 +36,14 @@ import {
     ValuesEndpointV2,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
+import { of, throwError } from 'rxjs';
+import { AjaxError } from 'rxjs/ajax';
+import { DspApiConnectionToken } from '../../../core';
+import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
+import { ValueTypeService } from '../../services/value-type.service';
 import { DisplayEditComponent } from './display-edit.component';
 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { By } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
-import { DspApiConnectionToken } from '../../../core';
-import { ValueTypeService } from '../../services/value-type.service';
+
 
 @Component({
   selector: `dsp-text-value-as-string`,
@@ -105,12 +115,17 @@ class TestIntValueComponent implements OnInit {
 
   @Input() displayValue;
 
-  form: object;
+  form: FormGroup;
+
+  valueFormControl: FormControl;
+
+  constructor(@Inject(FormBuilder) private _fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.valueFormControl = new FormControl(null, [Validators.required]);
 
-    this.form = new FormGroup({
-      test: new FormControl(null, [Validators.required])
+    this.form = this._fb.group({
+        test: this.valueFormControl
     });
   }
 
@@ -252,14 +267,17 @@ describe('DisplayEditComponent', () => {
 
     const valuesSpyObj = {
       v2: {
-        values: jasmine.createSpyObj('values', ['updateValue', 'getValue'])
+        values: jasmine.createSpyObj('values', ['updateValue', 'getValue', 'deleteValue'])
       }
     };
+
+    const eventSpy = jasmine.createSpyObj('ValueOperationEventService', ['emit']);
 
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
         MatIconModule,
+        MatDialogModule
       ],
       declarations: [
         DisplayEditComponent,
@@ -283,7 +301,20 @@ describe('DisplayEditComponent', () => {
           provide: DspApiConnectionToken,
           useValue: valuesSpyObj
         },
-        ValueTypeService
+        {
+            provide: ValueOperationEventService,
+            useValue: eventSpy
+        },
+        {
+            provide: MAT_DIALOG_DATA,
+            useValue: {}
+        },
+        {
+            provide: MatDialogRef,
+            useValue: {}
+        },
+        ValueTypeService,
+        FormBuilder
       ]
     })
       .compileComponents();
@@ -510,6 +541,10 @@ describe('DisplayEditComponent', () => {
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
+      testHostComponent.displayEditValueComponent.showActionBubble = true;
+      testHostFixture.detectChanges();
+
+
     });
 
     it('should display an edit button if the user has the necessary permissions', () => {
@@ -619,6 +654,44 @@ describe('DisplayEditComponent', () => {
 
     });
 
+    it('should handle an ApiResponseError with status of 400 correctly', () => {
+
+        const valuesSpy = TestBed.inject(DspApiConnectionToken);
+
+        const error = ApiResponseError.fromAjaxError({} as AjaxError);
+
+        error.status = 400;
+
+        (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).updateValue.and.returnValue(throwError(error));
+
+        testHostComponent.displayEditValueComponent.canModify = true;
+        testHostComponent.displayEditValueComponent.editModeActive = true;
+        testHostComponent.displayEditValueComponent.mode = 'update';
+
+        testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.clearValidators();
+        testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.updateValueAndValidity();
+
+        testHostFixture.detectChanges();
+
+        const saveButtonDebugElement = displayEditComponentDe.query(By.css('button.save'));
+        const saveButtonNativeElement = saveButtonDebugElement.nativeElement;
+
+        expect(saveButtonNativeElement.disabled).toBeFalsy();
+
+        saveButtonNativeElement.click();
+
+        testHostFixture.detectChanges();
+
+        const formErrors = testHostComponent.displayEditValueComponent.displayValueComponent.valueFormControl.errors;
+
+        const expectedErrors = {
+            duplicateValue: true
+        };
+
+        expect(formErrors).toEqual(expectedErrors);
+
+    });
+
   });
 
   describe('do not change from display to edit mode for an html text value', () => {
@@ -665,6 +738,8 @@ describe('DisplayEditComponent', () => {
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
+      testHostComponent.displayEditValueComponent.showActionBubble = true;
+      testHostFixture.detectChanges();
     });
 
     it('should display a comment button if the value has a comment', () => {
@@ -763,5 +838,96 @@ describe('DisplayEditComponent', () => {
 
     });
 
+  });
+
+  describe('deleteValue method', () => {
+    let hostCompDe;
+    let displayEditComponentDe;
+    let rootLoader: HarnessLoader;
+    let overlayContainer: OverlayContainer;
+
+    beforeEach(() => {
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
+
+      hostCompDe = testHostFixture.debugElement;
+      displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
+
+      testHostComponent.displayEditValueComponent.showActionBubble = true;
+      testHostFixture.detectChanges();
+
+      overlayContainer = TestBed.inject(OverlayContainer);
+      rootLoader = TestbedHarnessEnvironment.documentRootLoader(testHostFixture);
+    });
+
+    afterEach(async () => {
+        const dialogs = await rootLoader.getAllHarnesses(MatDialogHarness);
+        await Promise.all(dialogs.map(async d => await d.close()));
+
+        // Angular won't call this for us so we need to do it ourselves to avoid leaks.
+        overlayContainer.ngOnDestroy();
+    });
+
+    it('should delete a value from a property', async () => {
+        const valueEventSpy = TestBed.inject(ValueOperationEventService);
+
+        const valuesSpy = TestBed.inject(DspApiConnectionToken);
+
+        (valueEventSpy as jasmine.SpyObj<ValueOperationEventService>).emit.and.stub();
+
+        (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).deleteValue.and.callFake(
+            () => {
+
+                const response = new DeleteValueResponse();
+
+                response.result = 'success';
+
+                return of(response);
+            }
+        );
+
+        // const deleteButtonDebugElement = displayEditComponentDe.query(By.css('button.delete'));
+        // const deleteButtonNativeElement = deleteButtonDebugElement.nativeElement;
+
+        // expect(deleteButtonNativeElement.disabled).toBeFalsy();
+
+        // deleteButtonNativeElement.click();
+
+        // testHostFixture.detectChanges();
+
+        const deleteButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.delete'}));
+        await deleteButton.click();
+
+        const dialogHarnesses = await rootLoader.getAllHarnesses(MatDialogHarness);
+
+        expect(dialogHarnesses.length).toEqual(1);
+
+        const okButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.ok'}));
+
+        await okButton.click();
+
+        const expectedUpdateResource = new UpdateResource();
+
+        expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+        expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
+        expectedUpdateResource.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
+
+        const deleteVal = new DeleteValue();
+        deleteVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/dJ1ES8QTQNepFKF5-EAqdg';
+        deleteVal.type = 'http://api.knora.org/ontology/knora-api/v2#IntValue';
+
+        expectedUpdateResource.value = deleteVal;
+
+        testHostFixture.whenStable().then(() => {
+            expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledWith(expectedUpdateResource);
+            expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledTimes(1);
+
+            expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
+            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueDeleted, deleteVal));
+        });
+
+    });
   });
 });

@@ -1,6 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { ApiResponseData, ApiResponseError, KnoraApiConnection, LoginResponse, LogoutResponse, StringLiteral } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken, DspMessageData, Session, SessionService, SortingService } from '@dasch-swiss/dsp-ui';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ApiResponseError, StringLiteral } from '@dasch-swiss/dsp-js';
+import { ConfirmationDialogComponent, ConfirmationDialogData, DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
 
 @Component({
   selector: 'app-action-playground',
@@ -90,6 +91,29 @@ export class ActionPlaygroundComponent implements OnInit {
         },
     ];
 
+    // labels for stringify string literal input component example
+    stringLiteralInputLabels: StringLiteral[] = [
+        {
+            value: 'Welt',
+            language: 'de'
+        },
+        {
+            value: 'World',
+            language: 'en'
+        },
+        {
+            value: 'Monde',
+            language: 'fr'
+        },
+        {
+            value: 'Mondo',
+            language: 'it'
+        },
+    ];
+
+    // used to store newly created labels when using the string literal input component with no preloaded values
+    stringLiteralInputNewLabels: StringLiteral[];
+
     // short message example
     shortMessage: DspMessageData = {
         status: 200,
@@ -107,17 +131,16 @@ export class ActionPlaygroundComponent implements OnInit {
         error: 'error message'
     };
 
+    confirmationDialogResponse: string;
+    showTimedMessage: boolean;
+
     constructor(
-        // private _sessionService: SessionService,
-        // @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
-        private _sortingService: SortingService
+        private _sortingService: SortingService,
+        private _dialog: MatDialog
     ) { }
 
     ngOnInit(): void {
         this.refresh();
-
-        // already logged-in user?
-        // this.session = this._sessionService.getSession();
     }
 
     // only for testing the change of status
@@ -138,43 +161,40 @@ export class ActionPlaygroundComponent implements OnInit {
         this.list = this._sortingService.keySortByAlphabetical(this.list, key);
     }
 
-    // TODO: Will be replaced by login process from action module
-    /*
-    login() {
-        this.loading = true;
-        this.dspApiConnection.v2.auth.login('username', 'root', 'test').subscribe(
-            (response: ApiResponseData<LoginResponse>) => {
-                this._sessionService.setSession(response.body.token, 'root', 'username').subscribe(
-                    () => {
-                        this.loading = false;
-                        this.session = this._sessionService.getSession();
-                    });
-            },
-            (error: ApiResponseError) => {
-                // error handling
-                // this.loginErrorUser = (error.status === 404);
-                // this.loginErrorPw = (error.status === 401);
-                // this.loginErrorServer = (error.status === 0);
-
-                // this.errorMessage = error;
-
-                this.loading = false;
-                // TODO: update error handling similar to the old method (see commented code below)
-            }
-        );
+    // when new data is entered in the string literal input component without preloaded values
+    handleNewInput(data: StringLiteral[]) {
+        this.stringLiteralInputNewLabels = data;
     }
 
-    // TODO: Will be replaced by login process from action module
-    logout() {
-        this.loading = true;
-        this.dspApiConnection.v2.auth.logout().subscribe(
-            (response: ApiResponseData<LogoutResponse>) => {
-                this._sessionService.destroySession();
-                this.session = this._sessionService.getSession();
-                this.loading = false;
-            }
-        )
+    // when the enter key is pressed in the string literal input component
+    submitNewInput() {
+        console.log('submit string literal', this.stringLiteralInputNewLabels);
     }
-    */
+
+    // confirmation dialog
+
+    openDialog() {
+        const dialogData = new ConfirmationDialogData();
+        dialogData.title = 'Are you sure want to do this?';
+        dialogData.message = 'Confirming this action will delete the value. (Not really though, this is just a test message)';
+        dialogData.buttonTextOk = 'Yes, delete the value';
+        dialogData.buttonTextCancel = 'No, keep the value';
+
+        const dialogRef =
+            this._dialog.open<ConfirmationDialogComponent, ConfirmationDialogData>(ConfirmationDialogComponent, { data: dialogData});
+
+        dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+            if (confirmed) {
+                this.confirmationDialogResponse = 'Action was confirmed!';
+            } else {
+                this.confirmationDialogResponse = 'Action was not confirmed';
+            }
+        });
+    }
+
+    openMessage() {
+        this.showTimedMessage = true;
+        setTimeout(() => { this.showTimedMessage = false; }, 2100);
+    }
 
 }

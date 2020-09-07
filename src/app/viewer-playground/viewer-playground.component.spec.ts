@@ -1,10 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatLineModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { ReadResourceSequence, SearchEndpointV2 } from '@dasch-swiss/dsp-js';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+    MockProjects,
+    MockResource,
+    MockUsers,
+    ProjectsEndpointAdmin,
+    ReadResource,
+    ResourcesEndpointV2,
+    UsersEndpointAdmin
+} from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken, DspViewerModule } from '@dasch-swiss/dsp-ui';
-import { of } from 'rxjs';
+import { of } from 'rxjs/internal/observable/of';
+import { map } from 'rxjs/internal/operators/map';
 import { ViewerPlaygroundComponent } from './viewer-playground.component';
 
 describe('ViewerPlaygroundComponent', () => {
@@ -13,9 +21,13 @@ describe('ViewerPlaygroundComponent', () => {
 
     beforeEach(async(() => {
 
-        const searchSpyObj = {
+        const apiSpyObj = {
+            admin: {
+                usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUserByIri']),
+                projectsEndpoint: jasmine.createSpyObj('projectsEndpoint', ['getProjectByIri'])
+            },
             v2: {
-                search: jasmine.createSpyObj('search', ['doFulltextSearch']),
+                res: jasmine.createSpyObj('res', ['getResource'])
             }
         };
 
@@ -26,13 +38,12 @@ describe('ViewerPlaygroundComponent', () => {
             imports: [
                 DspViewerModule,
                 MatIconModule,
-                MatLineModule,
-                MatListModule
+                MatTooltipModule
             ],
             providers: [
                 {
                     provide: DspApiConnectionToken,
-                    useValue: searchSpyObj
+                    useValue: apiSpyObj
                 }
             ]
         })
@@ -40,15 +51,41 @@ describe('ViewerPlaygroundComponent', () => {
     }));
 
     beforeEach(() => {
-        const searchSpy = TestBed.inject(DspApiConnectionToken);
+        const resSpy = TestBed.inject(DspApiConnectionToken);
 
-        (searchSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doFulltextSearch.and.returnValue(
-            of({} as ReadResourceSequence)
+        (resSpy.v2.res as jasmine.SpyObj<ResourcesEndpointV2>).getResource.and.callFake(
+            (id: string) => {
+
+                return MockResource.getTestthing().pipe(
+                    map(
+                        (res: ReadResource) => {
+                            res.id = id;
+                            return res;
+                        }
+                    ));
+            }
         );
 
-      fixture = TestBed.createComponent(ViewerPlaygroundComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
+        const adminSpy = TestBed.inject(DspApiConnectionToken);
+
+        // mock getProjectByIri response
+        (adminSpy.admin.projectsEndpoint as jasmine.SpyObj<ProjectsEndpointAdmin>).getProjectByIri.and.callFake(
+            () => {
+                const project = MockProjects.mockProject();
+                return of(project);
+            }
+        );
+        // mock getUserByIri response
+        (adminSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUserByIri.and.callFake(
+            () => {
+                const user = MockUsers.mockUser();
+                return of(user);
+            }
+        );
+
+        fixture = TestBed.createComponent(ViewerPlaygroundComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
     });
 
     it('should create', () => {

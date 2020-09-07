@@ -1,5 +1,5 @@
 import {
-    Component,
+    AfterViewInit, Component,
     EventEmitter,
     Inject,
     Input,
@@ -8,25 +8,26 @@ import {
     ViewChild
 } from '@angular/core';
 import {
-    Constants,
+    ApiResponseError, Constants,
     CreateValue,
     KnoraApiConnection,
     ReadResource,
     ResourcePropertyDefinition,
     UpdateResource,
-    WriteValueResponse,
+    WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, ValueOperationEventService, Events } from '../../services/value-operation-event.service';
+import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
+import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
 @Component({
-  selector: 'dsp-add-value',
-  templateUrl: './add-value.component.html',
-  styleUrls: ['./add-value.component.scss']
+    selector: 'dsp-add-value',
+    templateUrl: './add-value.component.html',
+    styleUrls: ['./add-value.component.scss']
 })
-export class AddValueComponent implements OnInit {
+export class AddValueComponent implements OnInit, AfterViewInit {
 
     @ViewChild('createVal') createValueComponent: BaseValueComponent;
 
@@ -51,20 +52,28 @@ export class AddValueComponent implements OnInit {
 
     progressIndicatorColor = 'blue';
 
-    constructor(@Inject(DspApiConnectionToken)
-                private knoraApiConnection: KnoraApiConnection,
-                private _valueOperationEventService: ValueOperationEventService) { }
+    constructor(
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _valueOperationEventService: ValueOperationEventService,
+        private _valueTypeService: ValueTypeService) { }
 
     ngOnInit() {
 
         this.mode = 'create';
 
-        this.createModeActive = true;
-
-        // TODO: find a way to figure out what type of text value it is
+        // Since simple text values and rich text values share the same object type 'TextValue',
+        // we need to use the ValueTypeService in order to assign it the correct object type for the ngSwitch in the template
         if (this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
-            this.resourcePropertyDefinition.objectType = 'ReadTextValueAsString';
+            this.resourcePropertyDefinition.objectType = this._valueTypeService.getTextValueClass(this.resourcePropertyDefinition);
         }
+
+    }
+
+    // wait to show the save/cancel buttons until the form is initialized so that the template checks using the form's validity work
+    ngAfterViewInit() {
+        setTimeout(() => {
+            this.createModeActive = true;
+        }, 0);
     }
 
     /**
@@ -91,24 +100,40 @@ export class AddValueComponent implements OnInit {
             // assign the new value to the UpdateResource value
             updateRes.value = createVal;
 
-            this.knoraApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
+            this._dspApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
                 mergeMap((res: WriteValueResponse) => {
                     // if successful, get the newly created value
-                    return this.knoraApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
+                    return this._dspApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
                 })
-                ).subscribe(
-                    (res2: ReadResource) => {
-                        // emit a ValueAdded event to the listeners in:
-                        // property-view component to hide the add value form
-                        // resource-view component to trigger a refresh of the resource
-                        this._valueOperationEventService.emit(new EmitEvent(Events.ValueAdded));
+            ).subscribe(
+                (res2: ReadResource) => {
+                    // emit a ValueAdded event to the listeners in:
+                    // property-view component to hide the add value form
+                    // resource-view component to trigger a refresh of the resource
+                    this._valueOperationEventService.emit(new EmitEvent(Events.ValueAdded, res2.getValues(updateRes.property)[0]));
 
-                        // hide the progress indicator
-                        this.submittingValue = false;
+                    // hide the progress indicator
+                    this.submittingValue = false;
+                },
+                (error: ApiResponseError) => {
+                    // hide the progress indicator
+                    this.submittingValue = false;
+
+                    // show the CRUD buttons
+                    this.createModeActive = true;
+
+                    switch (error.status) {
+                        case 400:
+                            this.createValueComponent.valueFormControl.setErrors({duplicateValue: true});
+                            break;
+                        default:
+                            console.log('There was an error processing your request. Details: ', error);
+                            break;
                     }
-                );
+                }
+            );
         } else {
-            console.error('invalid value');
+            console.error('Expected instance of CreateVal, received: ', createVal);
 
             // hide the progress indicator
             this.submittingValue = false;

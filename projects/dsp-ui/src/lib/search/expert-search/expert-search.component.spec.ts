@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { KnoraApiConfig } from '@dasch-swiss/dsp-js';
 import { DspApiConfigToken } from '../../core/core.module';
+import { SearchParams } from '../../viewer';
 import { AdvancedSearchParams, AdvancedSearchParamsService } from '../services/advanced-search-params.service';
 import { ExpertSearchComponent } from './expert-search.component';
 
@@ -17,18 +18,18 @@ import { ExpertSearchComponent } from './expert-search.component';
  */
 @Component({
     template: `
-        <dsp-expert-search #expSearch (gravsearchQuery)="gravsearchQuery($event)"></dsp-expert-search>`
+        <dsp-expert-search #expSearch (search)="gravsearchQuery($event)"></dsp-expert-search>`
 })
 class TestHostComponent implements OnInit {
 
     @ViewChild('expSearch') expertSearch: ExpertSearchComponent;
 
-    gravsearchQ: string;
+    gravsearchQ: SearchParams;
 
     ngOnInit() {
     }
 
-    gravsearchQuery(query: string) {
+    gravsearchQuery(query: SearchParams) {
         this.gravsearchQ = query;
     }
 
@@ -56,7 +57,6 @@ describe('ExpertSearchComponent', () => {
             imports: [
                 FormsModule,
                 ReactiveFormsModule,
-                RouterTestingModule,
                 BrowserAnimationsModule,
                 MatFormFieldModule,
                 MatInputModule
@@ -65,12 +65,6 @@ describe('ExpertSearchComponent', () => {
                 {
                     provide: DspApiConfigToken,
                     useValue: dspConfSpy
-                },
-                {
-                    provide: ActivatedRoute,
-                    useValue: {
-                        params: null
-                    }
                 },
                 {
                     provide: AdvancedSearchParamsService,
@@ -207,7 +201,8 @@ CONSTRUCT {
         testHostFixture.detectChanges();
 
         expect(testHostComponent.gravsearchQ).toBeDefined();
-        expect(testHostComponent.gravsearchQ).toEqual(expectedGravsearch);
+        expect(testHostComponent.gravsearchQ.query).toEqual(expectedGravsearch);
+        expect(testHostComponent.gravsearchQ.mode).toEqual('gravsearch');
 
     });
 

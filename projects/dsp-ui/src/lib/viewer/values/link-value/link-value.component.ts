@@ -1,20 +1,30 @@
-import {Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
-import {BaseValueComponent} from '../base-value.component';
+import {
+    Component,
+    EventEmitter,
+    Inject,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges
+} from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import {
     CreateLinkValue,
+    KnoraApiConnection,
     ReadLinkValue,
     ReadResource,
-    UpdateLinkValue,
-    KnoraApiConnection,
-    ReadResourceSequence
+    ReadResourceSequence,
+    UpdateLinkValue
 } from '@dasch-swiss/dsp-js';
-import {Subscription} from 'rxjs';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
-import {DspApiConnectionToken} from '../../../core/core.module';
+import { Subscription } from 'rxjs';
+import { DspApiConnectionToken } from '../../../core/core.module';
+import { BaseValueComponent } from '../base-value.component';
 
 export function resourceValidator(control: AbstractControl) {
     const invalid = !(control.value instanceof ReadResource);
-    return invalid ? {'invalidType': {value: control.value}} : null;
+    return invalid ? { invalidType: { value: control.value } } : null;
 }
 
 @Component({
@@ -27,6 +37,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     @Input() displayValue?: ReadLinkValue;
     @Input() parentResource: ReadResource;
     @Input() propIri: string;
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
     resources: ReadResource[] = [];
     restrictToResourceClass: string;
     valueFormControl: FormControl;
@@ -38,7 +49,9 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     // label cannot contain logical operations of lucene index
     customValidators = [resourceValidator];
 
-    constructor(@Inject(FormBuilder) private fb: FormBuilder, @Inject(DspApiConnectionToken) private knoraApiConnection: KnoraApiConnection) {
+    constructor(
+        @Inject(FormBuilder) private _fb: FormBuilder,
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection) {
         super();
     }
 
@@ -63,10 +76,11 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     searchByLabel(searchTerm: string) {
         // at least 3 characters are required
         if (typeof searchTerm === 'string' && searchTerm.length >= 3) {
-            this.knoraApiConnection.v2.search.doSearchByLabel(searchTerm, 0, {limitToResourceClass: this.restrictToResourceClass}).subscribe(
-                (response: ReadResourceSequence) => {
-                    this.resources = response.resources;
-                });
+            this._dspApiConnection.v2.search.doSearchByLabel(
+                searchTerm, 0, { limitToResourceClass: this.restrictToResourceClass }).subscribe(
+                    (response: ReadResourceSequence) => {
+                        this.resources = response.resources;
+                    });
         } else {
             this.resources = [];
         }
@@ -105,7 +119,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
             this.searchByLabel(data);
         });
 
-        this.form = this.fb.group({
+        this.form = this._fb.group({
             linkValue: this.valueFormControl,
             comment: this.commentFormControl
         });
@@ -157,5 +171,12 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
         }
 
         return updatedLinkValue;
+    }
+
+    /**
+     * Emits the displayValue
+     */
+    refResClicked() {
+        this.referredResourceClicked.emit(this.displayValue);
     }
 }
