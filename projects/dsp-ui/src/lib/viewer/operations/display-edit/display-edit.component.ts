@@ -20,7 +20,7 @@ import {
     ConfirmationDialogData
 } from '../../../action/components/confirmation-dialog/confirmation-dialog.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
+import { EmitEvent, Events, EventValues, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
@@ -136,8 +136,6 @@ export class DisplayEditComponent implements OnInit {
      * Save a new version of an existing property value.
      */
     saveEditValue() {
-        console.log('parent resource: ', this.parentResource);
-
         this.editModeActive = false;
         this.showActionBubble = false;
         const updatedVal = this.displayValueComponent.getUpdatedValue();
@@ -150,12 +148,13 @@ export class DisplayEditComponent implements OnInit {
             updateRes.value = updatedVal;
             this._dspApiConnection.v2.values.updateValue(updateRes as UpdateResource<UpdateValue>).pipe(
                 mergeMap((res: WriteValueResponse) => {
-                    this._valueOperationEventService.emit(new EmitEvent(Events.ValueUpdated, updatedVal));
                     return this._dspApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
                 })
             ).subscribe(
                 (res2: ReadResource) => {
-                    console.log('res2: ', res2);
+                    this._valueOperationEventService.emit(
+                        new EmitEvent(Events.ValueUpdated, new EventValues(
+                            this.displayValue, res2.getValues(this.displayValue.property)[0])));
 
                     this.displayValue = res2.getValues(this.displayValue.property)[0];
                     this.mode = 'read';
@@ -225,7 +224,7 @@ export class DisplayEditComponent implements OnInit {
         this._dspApiConnection.v2.values.deleteValue(updateRes as UpdateResource<DeleteValue>).pipe(
         mergeMap((res: DeleteValueResponse) => {
             // emit a ValueDeleted event to the listeners in resource-view component to trigger an update of the UI
-            this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, deleteVal));
+            this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, new EventValues(deleteVal)));
             return res.result;
         })).subscribe();
     }

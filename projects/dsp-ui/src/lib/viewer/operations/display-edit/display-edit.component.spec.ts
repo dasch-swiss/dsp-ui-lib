@@ -5,7 +5,7 @@ import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonHarness } from '@angular/material/button/testing';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
@@ -39,11 +39,9 @@ import {
 import { of, throwError } from 'rxjs';
 import { AjaxError } from 'rxjs/ajax';
 import { DspApiConnectionToken } from '../../../core';
-import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
+import { EmitEvent, Events, EventValues, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { DisplayEditComponent } from './display-edit.component';
-
-
 
 @Component({
   selector: `dsp-text-value-as-string`,
@@ -578,79 +576,88 @@ describe('DisplayEditComponent', () => {
 
     it('should save a new version of a value', () => {
 
-      const valuesSpy = TestBed.inject(DspApiConnectionToken);
+        const valueEventSpy = TestBed.inject(ValueOperationEventService);
 
-      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).updateValue.and.callFake(
-        () => {
+        const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
-          const response = new WriteValueResponse();
+        (valueEventSpy as jasmine.SpyObj<ValueOperationEventService>).emit.and.stub();
 
-          response.id = 'newID';
-          response.type = 'type';
-          response.uuid = 'uuid';
+        (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).updateValue.and.callFake(
+            () => {
 
-          return of(response);
-        }
-      );
+                const response = new WriteValueResponse();
 
-      (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).getValue.and.callFake(
-        () => {
+                response.id = 'newID';
+                response.type = 'type';
+                response.uuid = 'uuid';
 
-          const updatedVal = new ReadIntValue();
+                return of(response);
+            }
+        );
 
-          updatedVal.id = 'newID';
-          updatedVal.int = 1;
+        (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).getValue.and.callFake(
+            () => {
 
-          const resource = new ReadResource();
+                const updatedVal = new ReadIntValue();
 
-          resource.properties = {
-            'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger': [updatedVal]
-          };
+                updatedVal.id = 'newID';
+                updatedVal.int = 1;
 
-          return of(resource);
-        }
-      );
+                const resource = new ReadResource();
 
-      testHostComponent.displayEditValueComponent.canModify = true;
-      testHostComponent.displayEditValueComponent.editModeActive = true;
-      testHostComponent.displayEditValueComponent.mode = 'update';
+                resource.properties = {
+                    'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger': [updatedVal]
+                };
 
-      testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.clearValidators();
-      testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.updateValueAndValidity();
+                return of(resource);
+            }
+        );
 
-      testHostFixture.detectChanges();
+        testHostComponent.displayEditValueComponent.canModify = true;
+        testHostComponent.displayEditValueComponent.editModeActive = true;
+        testHostComponent.displayEditValueComponent.mode = 'update';
 
-      const saveButtonDebugElement = displayEditComponentDe.query(By.css('button.save'));
-      const saveButtonNativeElement = saveButtonDebugElement.nativeElement;
+        testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.clearValidators();
+        testHostComponent.displayEditValueComponent.displayValueComponent.form.controls.test.updateValueAndValidity();
 
-      expect(saveButtonNativeElement.disabled).toBeFalsy();
+        testHostFixture.detectChanges();
 
-      saveButtonNativeElement.click();
+        const saveButtonDebugElement = displayEditComponentDe.query(By.css('button.save'));
+        const saveButtonNativeElement = saveButtonDebugElement.nativeElement;
 
-      testHostFixture.detectChanges();
+        expect(saveButtonNativeElement.disabled).toBeFalsy();
 
-      const expectedUpdateResource = new UpdateResource();
+        saveButtonNativeElement.click();
 
-      expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
-      expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
-      expectedUpdateResource.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
+        testHostFixture.detectChanges();
 
-      const expectedUpdateVal = new UpdateIntValue();
-      expectedUpdateVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/dJ1ES8QTQNepFKF5-EAqdg';
-      expectedUpdateVal.int = 1;
+        const expectedUpdateResource = new UpdateResource();
 
-      expectedUpdateResource.value = expectedUpdateVal;
+        expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+        expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
+        expectedUpdateResource.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
 
-      expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledWith(expectedUpdateResource);
-      expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledTimes(1);
+        const expectedUpdateVal = new UpdateIntValue();
+        expectedUpdateVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/dJ1ES8QTQNepFKF5-EAqdg';
+        expectedUpdateVal.int = 1;
 
-      expect(valuesSpy.v2.values.getValue).toHaveBeenCalledTimes(1);
-      expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id,
-        'uuid');
+        expectedUpdateResource.value = expectedUpdateVal;
 
-      expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue.id).toEqual('newID');
-      expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
+        expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledWith(expectedUpdateResource);
+        expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledTimes(1);
+
+        expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
+        expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueUpdated, new EventValues(
+            testHostComponent.readValue, testHostComponent.displayEditValueComponent.displayValue)));
+
+        expect(valuesSpy.v2.values.getValue).toHaveBeenCalledTimes(1);
+        expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id, 'uuid');
+
+        expect(testHostComponent.displayEditValueComponent.displayValue.id).toEqual('newID');
+        expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue.id).toEqual('newID');
+        expect(testHostComponent.displayEditValueComponent.mode).toEqual('read');
+
+
 
     });
 
@@ -743,8 +750,6 @@ describe('DisplayEditComponent', () => {
     });
 
     it('should display a comment button if the value has a comment', () => {
-      //console.log(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue);
-
       expect(testHostComponent.displayEditValueComponent.editModeActive).toBeFalsy();
       expect(testHostComponent.displayEditValueComponent.shouldShowCommentToggle).toBeTruthy()
 
@@ -888,15 +893,6 @@ describe('DisplayEditComponent', () => {
             }
         );
 
-        // const deleteButtonDebugElement = displayEditComponentDe.query(By.css('button.delete'));
-        // const deleteButtonNativeElement = deleteButtonDebugElement.nativeElement;
-
-        // expect(deleteButtonNativeElement.disabled).toBeFalsy();
-
-        // deleteButtonNativeElement.click();
-
-        // testHostFixture.detectChanges();
-
         const deleteButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.delete'}));
         await deleteButton.click();
 
@@ -925,7 +921,7 @@ describe('DisplayEditComponent', () => {
             expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledTimes(1);
 
             expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
-            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueDeleted, deleteVal));
+            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueDeleted, new EventValues(deleteVal)));
         });
 
     });

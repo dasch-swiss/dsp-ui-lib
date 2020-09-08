@@ -17,12 +17,11 @@ import {
     ReadProject,
     ReadResource,
     ReadValue,
-    SystemPropertyDefinition,
-    UpdateValue
+    SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { Events, ValueOperationEventService } from '../../services/value-operation-event.service';
+import { Events, EventValues, ValueOperationEventService } from '../../services/value-operation-event.service';
 
 
 // object of property information from ontology class, properties and property values
@@ -79,16 +78,17 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         private _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
-        // subscribe to the event bus and listen for the ValueAdded event to be emitted
-        // when a ValueAdded event is emitted, get the resource again to display the newly created value
+        // subscribe to the ValueOperationEventService and listen for an event to be emitted
         this.valueOperationEventSubscription = this._valueOperationEventService.on(
-            Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue, false));
+            Events.ValueAdded, (newValue: EventValues) => this.updateResource(newValue.currentValue, 'create'));
 
         this.valueOperationEventSubscription = this._valueOperationEventService.on(
-            Events.ValueDeleted, (deletedValue: DeleteValue) => this.updateResource(deletedValue, true));
+            Events.ValueUpdated, (updatedValue: EventValues) =>
+                this.updateResource(updatedValue.currentValue, 'update', updatedValue.newValue));
 
         this.valueOperationEventSubscription = this._valueOperationEventService.on(
-            Events.ValueUpdated, (updatedValue: any) => console.log('updatedValue: ', updatedValue));
+            Events.ValueDeleted, (deletedValue: EventValues) => this.updateResource(deletedValue.currentValue, 'delete'));
+
     }
 
     ngOnChanges() {
@@ -96,7 +96,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy() {
-        // unsubscribe from the event bus when component is destroyed
+        // unsubscribe from the ValueOperationEventService when component is destroyed
         if (this.valueOperationEventSubscription !== undefined) {
             this.valueOperationEventSubscription.unsubscribe();
         }
@@ -140,33 +140,45 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * Update the UI to reflect updates made to property values.
      *
-     * @param value value to be updated inside propInfoValueArray
+     * @param currentValue value to be updated inside propInfoValueArray
      * @param isDeletion is the value being removed or added
      */
-    updateResource(value: BaseValue, isDeletion: boolean): void {
+    updateResource(currentValue: BaseValue, operation: 'create' | 'update' | 'delete', newValue?: BaseValue): void {
         if (this.resPropInfoVals) {
-            if (!isDeletion) { // add new value
+            if (operation === 'create') { // add new value
                 this.resPropInfoVals
                     .filter( propInfoValueArray =>
-                        propInfoValueArray.propDef.id === (value as ReadValue).property) // filter to the correct property
+                        propInfoValueArray.propDef.id === (currentValue as ReadValue).property) // filter to the correct property
                     .map( propInfoValue =>
-                        propInfoValue.values.push((value as ReadValue))); // push new value to array
+                        propInfoValue.values.push((currentValue as ReadValue))); // push new value to array
+            } else if (operation === 'update') { // update value
+                this.resPropInfoVals
+                    .filter( propInfoValueArray =>
+                        propInfoValueArray.propDef.id === (currentValue as ReadValue).property) // filter to the correct property
+                    .map((filteredpropInfoValueArray) => {
+                        let index = 0;
+                        filteredpropInfoValueArray.values.forEach( // loop through each value of the current property
+                            val => {
+                                if (val.id === (currentValue as ReadValue).id) { // find the value that was deleted using the value id
+                                    filteredpropInfoValueArray.values[index] = newValue as ReadValue;
+                                }
+                                index += 1;
+                            }
+                        );
+                    }
+                );
             } else { // delete value
                 this.resPropInfoVals
                     .filter( propInfoValueArray =>
-                        propInfoValueArray.propDef.objectType === (value as DeleteValue).type) // filter to the correct type
+                        propInfoValueArray.propDef.objectType === (currentValue as DeleteValue).type) // filter to the correct type
                     .map((filteredpropInfoValueArray) => {
-                        let index = -1; // init index to increment and use for the splice
-                        console.log('looking for id: ', (value as DeleteValue).id);
-
+                        let index = 0; // init index to increment and use for the splice
                         filteredpropInfoValueArray.values.forEach( // loop through each value of the current property
                             val => {
-                                index += 1; // increment index
-                                console.log('val id: ', val.id);
-
-                                if (val.id === (value as DeleteValue).id) { // find the value that was deleted using the value id
+                                if (val.id === (currentValue as DeleteValue).id) { // find the value that was deleted using the value id
                                     filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
                                 }
+                                index += 1; // increment index
                             }
                         );
                     }
