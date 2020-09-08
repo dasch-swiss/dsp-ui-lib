@@ -5,9 +5,12 @@
                              (ontologySelected)="getResourceClassesAndPropertiesForOntology($event)"></dsp-select-ontology>
     </div>
 
-    <div class="select-resource-class" *ngIf="resourceClasses?.length > 0">
-        <dsp-select-resource-class #resourceClass [formGroup]="form" [resourceClassDefinitions]="resourceClasses"
-                                   (resourceClassSelected)="getPropertiesForResourceClass($event)">
+    <div class="select-resource-class">
+        <dsp-select-resource-class *ngIf="resourceClasses?.length > 0"
+            #resourceClass
+            [formGroup]="form"
+            [resourceClassDefinitions]="resourceClasses"
+            (resourceClassSelected)="getPropertiesForResourceClass($event)">
         </dsp-select-resource-class>
     </div>
 

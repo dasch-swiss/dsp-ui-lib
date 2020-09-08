@@ -1,5 +1,35 @@
 # Changelog
 
+## v1.0.0-rc.5 (02/09/2020)
+
+#### Dependencies:
+- [#166](https://github.com/dasch-swiss/dsp-ui-lib/pull/166) Update peer-dep for dsp-js lib
+
+## v1.0.0-rc.4 (02/09/2020)
+
+#### Enhancements:
+- [#149](https://github.com/dasch-swiss/dsp-ui-lib/pull/149) Export operator.ts
+- [#150](https://github.com/dasch-swiss/dsp-ui-lib/pull/150) Action Module Confirmation Dialog Component
+- [#153](https://github.com/dasch-swiss/dsp-ui-lib/pull/153) Error handling: submitting duplicate values
+- [#155](https://github.com/dasch-swiss/dsp-ui-lib/pull/155) Experimental: Alternative approach to resource/property view UI buttons
+- [#156](https://github.com/dasch-swiss/dsp-ui-lib/pull/156) FIX: hide the add button for an XML text property
+- [#159](https://github.com/dasch-swiss/dsp-ui-lib/pull/159) Make URI values clickable
+- [#160](https://github.com/dasch-swiss/dsp-ui-lib/pull/160) Emit link value when clicked on
+- [#161](https://github.com/dasch-swiss/dsp-ui-lib/pull/161) Read mode date value era and calendar
+- [#163](https://github.com/dasch-swiss/dsp-ui-lib/pull/163) Anchor Tag in Link Value's HTML
+- [#164](https://github.com/dasch-swiss/dsp-ui-lib/pull/164) dsp-property-toolbar warnings in unit tests
+
+#### Styling:
+- [#152](https://github.com/dasch-swiss/dsp-ui-lib/pull/152) List of properties: refactor and redesign
+
+#### Dependencies:
+- [#151](https://github.com/dasch-swiss/dsp-ui-lib/pull/151) Update dsp-js-lib to version 1.0.0-rc.6
+
+#### Bug Fixes:
+- [#162](https://github.com/dasch-swiss/dsp-ui-lib/pull/162) Export GND directive
+
+## v1.0.0-rc.3 (05/08/2020)
+
 ## v1.0.0-rc.2 (30/07/2020)
 
 #### Breaking changes:

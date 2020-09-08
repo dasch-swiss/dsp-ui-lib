@@ -132,19 +132,15 @@ export class ActionPlaygroundComponent implements OnInit {
     };
 
     confirmationDialogResponse: string;
+    showTimedMessage: boolean;
 
     constructor(
-        // private _sessionService: SessionService,
-        // @Inject(DspApiConnectionToken) private dspApiConnection: KnoraApiConnection,
         private _sortingService: SortingService,
         private _dialog: MatDialog
     ) { }
 
     ngOnInit(): void {
         this.refresh();
-
-        // already logged-in user?
-        // this.session = this._sessionService.getSession();
     }
 
     // only for testing the change of status
@@ -194,45 +190,11 @@ export class ActionPlaygroundComponent implements OnInit {
                 this.confirmationDialogResponse = 'Action was not confirmed';
             }
         });
-      }
-
-    // TODO: Will be replaced by login process from action module
-    /*
-    login() {
-        this.loading = true;
-        this.dspApiConnection.v2.auth.login('username', 'root', 'test').subscribe(
-            (response: ApiResponseData<LoginResponse>) => {
-                this._sessionService.setSession(response.body.token, 'root', 'username').subscribe(
-                    () => {
-                        this.loading = false;
-                        this.session = this._sessionService.getSession();
-                    });
-            },
-            (error: ApiResponseError) => {
-                // error handling
-                // this.loginErrorUser = (error.status === 404);
-                // this.loginErrorPw = (error.status === 401);
-                // this.loginErrorServer = (error.status === 0);
-
-                // this.errorMessage = error;
-
-                this.loading = false;
-                // TODO: update error handling similar to the old method (see commented code below)
-            }
-        );
     }
 
-    // TODO: Will be replaced by login process from action module
-    logout() {
-        this.loading = true;
-        this.dspApiConnection.v2.auth.logout().subscribe(
-            (response: ApiResponseData<LogoutResponse>) => {
-                this._sessionService.destroySession();
-                this.session = this._sessionService.getSession();
-                this.loading = false;
-            }
-        )
+    openMessage() {
+        this.showTimedMessage = true;
+        setTimeout(() => { this.showTimedMessage = false; }, 2100);
     }
-    */
 
 }
