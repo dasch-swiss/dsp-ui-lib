@@ -1,8 +1,36 @@
-# Change Log
+# Changelog
 
-## Latest release
+## v1.0.0-rc.5 (02/09/2020)
 
-### [v1.0.0-rc.2](https://github.com/dasch-swiss/knora-ui-ng-lib/releases/tag/v1.0.0-rc.2)
+#### Dependencies:
+- [#166](https://github.com/dasch-swiss/dsp-ui-lib/pull/166) Update peer-dep for dsp-js lib
+
+## v1.0.0-rc.4 (02/09/2020)
+
+#### Enhancements:
+- [#149](https://github.com/dasch-swiss/dsp-ui-lib/pull/149) Export operator.ts
+- [#150](https://github.com/dasch-swiss/dsp-ui-lib/pull/150) Action Module Confirmation Dialog Component
+- [#153](https://github.com/dasch-swiss/dsp-ui-lib/pull/153) Error handling: submitting duplicate values
+- [#155](https://github.com/dasch-swiss/dsp-ui-lib/pull/155) Experimental: Alternative approach to resource/property view UI buttons
+- [#156](https://github.com/dasch-swiss/dsp-ui-lib/pull/156) FIX: hide the add button for an XML text property
+- [#159](https://github.com/dasch-swiss/dsp-ui-lib/pull/159) Make URI values clickable
+- [#160](https://github.com/dasch-swiss/dsp-ui-lib/pull/160) Emit link value when clicked on
+- [#161](https://github.com/dasch-swiss/dsp-ui-lib/pull/161) Read mode date value era and calendar
+- [#163](https://github.com/dasch-swiss/dsp-ui-lib/pull/163) Anchor Tag in Link Value's HTML
+- [#164](https://github.com/dasch-swiss/dsp-ui-lib/pull/164) dsp-property-toolbar warnings in unit tests
+
+#### Styling:
+- [#152](https://github.com/dasch-swiss/dsp-ui-lib/pull/152) List of properties: refactor and redesign
+
+#### Dependencies:
+- [#151](https://github.com/dasch-swiss/dsp-ui-lib/pull/151) Update dsp-js-lib to version 1.0.0-rc.6
+
+#### Bug Fixes:
+- [#162](https://github.com/dasch-swiss/dsp-ui-lib/pull/162) Export GND directive
+
+## v1.0.0-rc.3 (05/08/2020)
+
+## v1.0.0-rc.2 (30/07/2020)
 
 #### Breaking changes:
 
@@ -63,13 +91,13 @@
 - [#94](https://github.com/dasch-swiss/dsp-ui-lib/pull/94) Migrate sort button
 - [#93](https://github.com/dasch-swiss/dsp-ui-lib/pull/93) Progress Indicator
 - [#91](https://github.com/dasch-swiss/dsp-ui-lib/pull/91) Migrate action module directives
-- [#92](https://github.com/dasch-swiss/dsp-ui-lib/pull/92) Update tslint 
+- [#92](https://github.com/dasch-swiss/dsp-ui-lib/pull/92) Update tslint
 - [#89](https://github.com/dasch-swiss/dsp-ui-lib/pull/89) Refactor Truncate Pipe
 - [#86](https://github.com/dasch-swiss/dsp-ui-lib/pull/86) Update package information
 
-## Old releases
+---
 
-### [v1.0.0-rc.1](https://github.com/dasch-swiss/knora-ui-ng-lib/releases/tag/v1.0.0-rc.1)
+## v1.0.0-rc.1 (15/05/2020)
 
 #### Breaking changes:
 

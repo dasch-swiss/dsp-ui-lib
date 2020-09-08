@@ -49,6 +49,8 @@ export class MessageComponent implements OnInit {
      */
     @Input() medium = false;
 
+    @Input() duration?: number;
+
     statusMsg: any;
 
     isLoading = true;
@@ -111,6 +113,9 @@ export class MessageComponent implements OnInit {
 
         this.message = this.setMessage(this.message);
         this.isLoading = false;
+        if (this.duration) {
+            setTimeout(() => this.disable = true, this.duration);
+        }
     }
 
     setMessage(msg: DspMessageData) {

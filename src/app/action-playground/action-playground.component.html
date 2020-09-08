@@ -57,7 +57,11 @@ We will implement the login form here as soon its moved from the old knora-ui.
 <dsp-message [message]="errorMessage" [short]="true"></dsp-message>
 <dsp-message [message]="errorMessage" [medium]="true"></dsp-message>
 <dsp-message [message]="errorMessage" [short]="false"></dsp-message>
-
+<p>Open a message with a display duration of 2 seconds</p>
+<button (click)="openMessage()" [disabled]="showTimedMessage">Click me</button>
+<div *ngIf="showTimedMessage">
+    <dsp-message [message]="shortMessage" [short]="true" [duration]="2000"></dsp-message>
+</div>
 <hr>
 
 <p>Stringify String Literal pipe</p>
@@ -83,3 +87,18 @@ We will implement the login form here as soon its moved from the old knora-ui.
 <mat-slider min="0" max="7200" step="10" [value]="time" (input)="time = $event.value"></mat-slider>
 <p>{{time}}s => {{time | timecode }}</p>
 
+
+<hr>
+
+<p>Confirmation Dialog component</p>
+
+<div>
+    <button mat-raised-button color="primary" (click)="openDialog()" style="display: inline-block;">Open Confirmation Dialog</button>
+    <p style="display: inline-block; padding-left: 2%"> {{confirmationDialogResponse}} </p>
+</div>
+
+<hr>
+
+<p>GND Directive (Integrated Authority File)</p>
+
+<span dspGnd [gnd]="'(DE-588)119166895'"></span>

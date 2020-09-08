@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SearchParams } from '@dasch-swiss/dsp-ui';
+import { SessionService } from '@dasch-swiss/dsp-ui';
+import { ReadProject } from '@dasch-swiss/dsp-js';
+import { prototype } from 'events';
 
 @Component({
     selector: 'app-viewer-playground',
@@ -8,42 +10,18 @@ import { SearchParams } from '@dasch-swiss/dsp-ui';
 })
 export class ViewerPlaygroundComponent implements OnInit {
 
-    // two different search examples to use in ListView @Input:
-    // fulltext search
-    fulltextSearch: SearchParams = {
-        query: 'mann',
-        mode: 'fulltext',
-        filter: {
-            limitToProject: 'http://rdfh.ch/projects/0803'
-        }
-    }
+    resource = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
 
-    // gravsearch
-    gravSearchExample = `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
-    PREFIX incunabula: <http://0.0.0.0:3333/ontology/0803/incunabula/simple/v2#>
-
-    CONSTRUCT {
-        ?book knora-api:isMainResource true .
-        ?book incunabula:title ?title .
-
-    } WHERE {
-        ?book a incunabula:book .
-        ?book incunabula:title ?title .
-    }`;
-    gravSearch: SearchParams = {
-        query: JSON.stringify(this.gravSearchExample),
-        mode: 'gravsearch'
-    }
-
-    constructor( ) { }
+    constructor(
+        private _sessionService: SessionService
+     ) { }
 
     ngOnInit(): void {
-
+        this._sessionService.isSessionValid().subscribe(status => console.log('session valid: ', status));
     }
 
-    // open resource on click event
-    openResource(id: string) {
-        console.log('Open Resource:', id);
+    openProject(project: ReadProject) {
+        // here you can redirect a user to the project page
+        console.log('redircet to project page e.g. /project/:shortname', project.shortname);
     }
-
 }

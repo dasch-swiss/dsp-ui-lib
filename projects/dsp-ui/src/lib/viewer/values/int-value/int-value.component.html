@@ -14,7 +14,10 @@
                 <span class="custom-error-message">New value must be an integer.</span>
             </mat-error>
             <mat-error *ngIf="form.controls.intValue.hasError('required')">
-                An integer value is <strong>required</strong>.
+                <span class="custom-error-message">An integer value is <strong>required</strong>.</span>
+            </mat-error>
+            <mat-error *ngIf="form.controls.intValue.hasError('duplicateValue')">
+                <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
             </mat-error>
         </mat-form-field>
         <mat-form-field class="large-field value-component-comment">

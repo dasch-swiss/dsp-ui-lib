@@ -1,39 +1,51 @@
-<div *ngFor="let prop of propArray">
-    <div *ngIf="prop.values && prop.values.length > 0">
-        <div class="property-header">
-            <h4 class="label">
-                {{prop.propDef.label}}
-            </h4>
-            <button mat-button
-                    class="info"
-                    title="info">
-                    <mat-icon>info</mat-icon>
-            </button>
-        </div>
-        <div *ngFor="let value of prop.values">
-            <div *ngIf="value">
-                <dsp-display-edit
-                    #displayEdit
-                    [parentResource]="parentResource"
-                    [displayValue]="value">
-                </dsp-display-edit>
+<!-- properties -->
+<div class="properties-container">
+    <div class="properties">
+
+        <!-- list of properties -->
+        <div *ngFor="let prop of propArray; let last = last" [class.border-bottom]="!last">
+            <!-- show property; all in case of showAll === true or only the ones with prop.values -->
+            <div class="property" *ngIf="!prop.propDef['isLinkProperty'] && showAllProps || ( prop.values && prop.values.length > 0 )">
+                <div class="property-label">
+                    <!-- label of the property -->
+                    <h3 class="label mat-subheading-1"
+                        [class.label-info]="prop.propDef.comment"
+                        [matTooltip]="prop.propDef.comment"
+                        matTooltipPosition="above">
+                        {{prop.propDef.label}}
+                    </h3>
+                </div>
+                <div class="property-value">
+                    <!-- the value(s) of the property -->
+                    <div *ngFor="let val of prop.values">
+                        <dsp-display-edit *ngIf="val"
+                            #displayEdit
+                            [parentResource]="parentResource"
+                            [displayValue]="val">
+                        </dsp-display-edit>
+                    </div>
+                    <!-- Add value form -->
+                    <div *ngIf="addValueFormIsVisible && propID === prop.propDef.id">
+                        <dsp-add-value
+                            #addValue
+                            class="add-value"
+                            [parentResource]="parentResource"
+                            [resourcePropertyDefinition]="$any(parentResource.entityInfo.properties[prop.propDef.id])"
+                            (operationCancelled)="hideAddValueForm()">
+                        </dsp-add-value>
+                    </div>
+                    <!-- Add button -->
+                    <!-- temporary hack to hide add button for an XML value -->
+                    <div *ngIf="prop.guiDef.propertyIndex !== 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext' &&
+                        addButtonIsVisible &&
+                        prop.guiDef.cardinality !== 1 &&
+                        propID !== prop.propDef.id">
+                        <button class="create" (click)="showAddValueForm(prop)" title="Add a new value">
+                            <mat-icon>add_box</mat-icon>
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <!-- Add value form -->
-        <div *ngIf="addValueFormIsVisible && propID === prop.propDef.id">
-            <dsp-add-value
-                #addValue
-                class="add-value"
-                [parentResource]="parentResource"
-                [resourcePropertyDefinition]="$any(parentResource.entityInfo.properties[prop.propDef.id])"
-                (operationCancelled)="hideAddValueForm()">
-            </dsp-add-value>
-        </div>
-        <!-- Add button -->
-        <div *ngIf="addButtonIsVisible && prop.guiDef.cardinality !== 1 && propID !== prop.propDef.id">
-            <button class="create" (click)="showAddValueForm(prop)" title="Add a new value">
-                <mat-icon>add_box</mat-icon>
-            </button>
         </div>
     </div>
 </div>

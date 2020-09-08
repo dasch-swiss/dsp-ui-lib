@@ -1,5 +1,7 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <p class="rm-value">{{valueFormControl.value}}</p>
+    <p class="rm-value">
+        <a class="link" target="_blank" href="{{valueFormControl.value}}">{{valueFormControl.value}}</a>
+    </p>
     <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
 </div>
 <ng-template #showForm>
@@ -15,6 +17,9 @@
             </mat-error>
              <mat-error *ngIf="form.controls.uriValue.hasError('required')">
                 A URI value is <strong>required</strong>.
+            </mat-error>
+            <mat-error *ngIf="form.controls.uriValue.hasError('duplicateValue')">
+                <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
             </mat-error>
         </mat-form-field>
         <mat-form-field class="large-field value-component-comment">

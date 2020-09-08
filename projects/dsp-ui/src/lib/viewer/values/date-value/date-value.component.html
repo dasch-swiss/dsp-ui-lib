@@ -1,10 +1,19 @@
 <div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
     <div *ngIf="valueFormControl.value?.end; else date">
-        <p class="rm-value date-start">Period Start: {{valueFormControl.value?.start | knoraDate:ontologyDateSetting}}</p>
-        <p class="rm-value date-end">Period End: {{valueFormControl.value?.end | knoraDate:ontologyDateSetting}}</p>
+        <p class="rm-value date-start">
+            <span *ngIf="labels">Period Start: </span>
+            {{valueFormControl.value?.start | knoraDate:ontologyDateFormat:displayOptions}}
+        </p>
+        <p class="rm-value date-end">
+            <span *ngIf="labels">Period End: </span>
+            {{valueFormControl.value?.end | knoraDate:ontologyDateFormat:displayOptions}}
+        </p>
     </div>
     <ng-template #date>
-        <p class="rm-value">Date: {{valueFormControl.value | knoraDate:ontologyDateSetting}}</p>
+        <p class="rm-value">
+            <span *ngIf="labels">Date: </span>
+            {{valueFormControl.value | knoraDate:ontologyDateFormat:displayOptions}}
+        </p>
         <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
     </ng-template>
 </div>
@@ -15,6 +24,9 @@
                 [errorStateMatcher]="matcher"></dsp-date-input>
                 <mat-error *ngIf="form.controls.dateValue.hasError('valueNotChanged')">
                     <span class="custom-error-message">New value must be different than the current value.</span>
+                </mat-error>
+                <mat-error *ngIf="form.controls.dateValue.hasError('duplicateValue')">
+                    <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
                 </mat-error>
         </mat-form-field>
         <mat-form-field class="large-field value-component-comment">

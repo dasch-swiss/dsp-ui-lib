@@ -1,17 +1,20 @@
 import {
     Component,
-    Inject,
+    EventEmitter, Inject,
     Input,
     OnChanges,
     OnDestroy,
-    OnInit
+    OnInit,
+    Output
 } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     ApiResponseError,
+    BaseValue,
+    DeleteValue,
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
     PropertyDefinition,
+    ReadProject,
     ReadResource,
     ReadValue,
     SystemPropertyDefinition
@@ -43,28 +46,45 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      */
     @Input() iri: string;
 
+    /**
+     * Show all properties, even they don't have a value.
+     *
+     * @param  (showAllProps)
+     */
+    @Input() showAllProps = false;
+
+    /**
+     * Show toolbar with project info and some action tools on top of properties if true.
+     *
+     * @param  (showToolbar)
+     */
+    @Input() showToolbar = true;
+
+    /**
+     * @param  openProject EventEmitter which sends project information to parent component
+     */
+    @Output() openProject: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
     resource: ReadResource;
 
     resPropInfoVals: PropertyInfoValues[] = []; // array of resource properties
 
     systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
 
-    versionArkUrl: string; // versionArkUrl value
-    message: string; // message to show in the snackbar to confirm the copy of the ARK URL
-    action: string; // label for the snackbar action
-
     valueOperationEventSubscription: Subscription;
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
-        private _snackBar: MatSnackBar,
         private _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
         // subscribe to the event bus and listen for the ValueAdded event to be emitted
         // when a ValueAdded event is emitted, get the resource again to display the newly created value
         this.valueOperationEventSubscription = this._valueOperationEventService.on(
-            Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue));
+            Events.ValueAdded, (newValue: ReadValue) => this.updateResource(newValue, false));
+
+        this.valueOperationEventSubscription = this._valueOperationEventService.on(
+            Events.ValueDeleted, (deletedValue: DeleteValue) => this.updateResource(deletedValue, true));
     }
 
     ngOnChanges() {
@@ -107,24 +127,42 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                 // get system property information
                 this.systemPropDefs = this.resource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
 
-                // set the arkUrl value
-                this.versionArkUrl = this.resource.versionArkUrl;
-
             },
             (error: ApiResponseError) => {
                 console.error('Error to get resource: ', error);
             });
     }
 
-    updateResource(newValue?: ReadValue, isDeletion?: boolean): void {
+    /**
+     * Update the UI to reflect updates made to property values.
+     *
+     * @param value value to be updated inside propInfoValueArray
+     * @param isDeletion is the value being removed or added
+     */
+    updateResource(value: BaseValue, isDeletion: boolean): void {
         if (this.resPropInfoVals) {
-            if (!isDeletion) {
+            if (!isDeletion) { // add new value
                 this.resPropInfoVals
-                    .filter( propInfoValueArray => propInfoValueArray.propDef.id === newValue.property) // filter to the correct property
-                    .map( propInfoValue => propInfoValue.values.push(newValue)); // push new property to array
-            } else {
-                // pop from the array
-                // TODO: remove element from array when deletion is implemented
+                    .filter( propInfoValueArray =>
+                        propInfoValueArray.propDef.id === (value as ReadValue).property) // filter to the correct property
+                    .map( propInfoValue =>
+                        propInfoValue.values.push((value as ReadValue))); // push new value to array
+            } else { // delete value
+                this.resPropInfoVals
+                    .filter( propInfoValueArray =>
+                        propInfoValueArray.propDef.objectType === (value as DeleteValue).type) // filter to the correct type
+                    .map((filteredpropInfoValueArray) => {
+                        let index = -1; // init index to increment and use for the splice
+                        filteredpropInfoValueArray.values.forEach( // loop through each value of the current property
+                            val => {
+                                index += 1; // increment index
+                                if (val.id === (value as DeleteValue).id) { // find the value that was deleted using the value id
+                                    filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
+                                }
+                            }
+                        );
+                    }
+                );
             }
         } else {
             console.error('No properties exist for this resource');
@@ -132,18 +170,12 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
-     * Display message to confirm the copy of the citation link (ARK URL)
-     * @param message
-     * @param action
+     * Event receiver: Show all props or not
+     *
+     * @param  show
      */
-    openSnackBar(message: string, action: string) {
-        message = 'Copied to clipboard!';
-        action = 'Citation Link';
-        this._snackBar.open(message, action, {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top'
-        });
+    toggleProps(show: boolean) {
+        this.showAllProps = show;
     }
 
 }

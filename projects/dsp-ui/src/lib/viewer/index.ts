@@ -29,3 +29,5 @@ export * from './views/list-view/resource-grid/resource-grid.component';
 export * from './representation/still-image/still-image.component';
 export * from './representation/moving-image/moving-image.component';
 export * from './representation/moving-image/moving-image-preview/moving-image-preview.component';
+// services
+export * from './services/value-type.service';

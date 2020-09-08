@@ -1,23 +1,23 @@
+import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-
-import { LinkValueComponent } from './link-value.component';
-import {
-    ReadLinkValue,
-    MockResource,
-    UpdateLinkValue,
-    CreateLinkValue,
-    ReadResource,
-    SearchEndpointV2,
-    ReadResourceSequence
-} from '@dasch-swiss/dsp-js';
-import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DspApiConnectionToken } from '../../../core';
+import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+    CreateLinkValue,
+    MockResource,
+    ReadLinkValue,
+    ReadResource,
+    ReadResourceSequence,
+    SearchEndpointV2,
+    UpdateLinkValue
+} from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
+import { DspApiConnectionToken } from '../../../core';
+import { LinkValueComponent } from './link-value.component';
+
 
 /**
  * Test host component to simulate parent component.
@@ -25,7 +25,7 @@ import { of } from 'rxjs';
 @Component({
   template: `
     <dsp-link-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [parentResource]="parentResource"
-                    [propIri]="propIri"></dsp-link-value>`
+                    [propIri]="propIri" (referredResourceClicked)="refResClicked($event)"></dsp-link-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -35,6 +35,7 @@ class TestHostDisplayValueComponent implements OnInit {
   parentResource: ReadResource;
   propIri: string;
   mode: 'read' | 'update' | 'create' | 'search';
+  linkValueSelected: ReadLinkValue;
 
   ngOnInit() {
 
@@ -48,6 +49,10 @@ class TestHostDisplayValueComponent implements OnInit {
       this.mode = 'read';
     });
 
+  }
+
+  refResClicked(readLinkValue: ReadLinkValue) {
+    this.linkValueSelected = readLinkValue;
   }
 }
 
@@ -154,6 +159,10 @@ describe('LinkValueComponent', () => {
       testHostFixture.detectChanges();
 
       expect(valueReadModeNativeElement.innerText).toEqual('Sierra');
+
+      const anchorDebugElement = valueReadModeDebugElement.query(By.css('a'));
+      expect(anchorDebugElement.nativeElement).toBeDefined();
+
     }));
 
     it('should make a link value editable', fakeAsync(() => {
@@ -406,6 +415,11 @@ describe('LinkValueComponent', () => {
       expect(valueReadModeNativeElement.innerText).toEqual('new target');
 
     }));
+
+    it('should emit the displayValue when the value is clicked on', () => {
+        valueReadModeNativeElement.click();
+        expect(testHostComponent.linkValueSelected).toEqual(testHostComponent.displayInputVal);
+    });
 
   });
 

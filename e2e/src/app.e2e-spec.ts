@@ -1,8 +1,8 @@
-import { AppPage } from './app.po';
-import { browser, by, element, logging, WebElement } from 'protractor';
 import { ProtractorHarnessEnvironment } from '@angular/cdk/testing/protractor';
-import { MatInputHarness } from '@angular/material/input/testing';
 import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
+import { MatInputHarness } from '@angular/material/input/testing';
+import { browser, by, element, logging, WebElement } from 'protractor';
+import { AppPage } from './app.po';
 
 describe('Test App', () => {
     let page: AppPage;
@@ -40,6 +40,10 @@ describe('Test App', () => {
             const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value', timeout);
 
             const displayEditComp: WebElement = await page.getDisplayEditComponentFromValueComponent(valueEleComp);
+
+            await browser.actions().mouseMove(element(by.cssContainingText('.value-component', /^1$/))).perform();
+
+            expect(element(by.css('.action-bubble')).isDisplayed()).toBeTruthy();
 
             const editButton: WebElement = await page.getEditButtonFromDisplayEditComponent(displayEditComp);
 
@@ -86,7 +90,7 @@ describe('Test App', () => {
 
             const ontoOptions = await selectOntos.getOptions();
 
-            expect(ontoOptions.length).toEqual(15);
+            expect(ontoOptions.length).toEqual(11);
 
             expect(await ontoOptions[0].getText()).toEqual('The anything ontology');
 

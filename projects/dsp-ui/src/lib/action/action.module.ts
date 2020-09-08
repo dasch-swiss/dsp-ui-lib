@@ -25,6 +25,8 @@ import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { TimecodePipe } from './pipes/formatting/timecode.pipe';
 import { StringifyStringLiteralPipe } from './pipes/string-transformation/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -42,12 +44,14 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     SortButtonComponent,
     StringLiteralInputComponent,
     LoginFormComponent,
-    TimecodePipe
+    TimecodePipe,
+    ConfirmationDialogComponent
   ],
   imports: [
     CommonModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatDialogModule,
     MatIconModule,
     MatInputModule,
     MatMenuModule,
@@ -72,7 +76,9 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     SortButtonComponent,
     StringLiteralInputComponent,
     LoginFormComponent,
-    TimecodePipe
+    TimecodePipe,
+    ConfirmationDialogComponent,
+    GndDirective
   ]
 })
 
