@@ -1,6 +1,6 @@
 <mat-dialog-content>
-    <p class="title"> {{data.title}} </p>
-    <p *ngIf="data.message && data.message.trim() !== ''" class="message" [innerHTML]="data.message"></p>
+    <p class="title"> Are you sure you want to delete this value from {{data.value.propertyLabel}}?</p>
+    <dsp-confirmation-message [value]="data.value"></dsp-confirmation-message>
 </mat-dialog-content>
 <mat-dialog-actions class="action-buttons">
     <button class="cancel" mat-raised-button mat-dialog-close>{{data.buttonTextCancel}}</button>
