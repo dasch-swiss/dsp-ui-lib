@@ -14,6 +14,7 @@ import { CustomRegex } from '../custom-regex';
 export class UriValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() displayValue?: ReadUriValue;
+    @Input() label?: string;
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
