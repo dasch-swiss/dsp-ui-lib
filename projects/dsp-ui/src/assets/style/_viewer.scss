@@ -10,8 +10,9 @@
 
 .read-mode-view {
   font: 400 15px/24px sans-serif;
-  .rm-value {
+  .rm-value, .rm-comment {
     display: block;
+    margin: 0px
   }
 }
 
