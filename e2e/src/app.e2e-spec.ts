@@ -90,7 +90,7 @@ describe('Test App', () => {
 
             const ontoOptions = await selectOntoHarness.getOntologyOptions();
 
-            expect(ontoOptions.length).toEqual(15);
+            expect(ontoOptions.length).toEqual(11);
 
             expect(ontoOptions[0]).toEqual('The anything ontology');
 
