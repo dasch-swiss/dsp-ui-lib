@@ -1,15 +1,14 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReadIntValue } from '@dasch-swiss/dsp-js';
+import { MockResource, ReadIntValue, ReadValue } from '@dasch-swiss/dsp-js';
 import { ConfirmationDialogComponent } from './confirmation-dialog.component';
-import { ConfirmationMessageComponent } from './confirmation-message/confirmation-message.component';
 
 /**
  * Test host component to simulate parent component with a confirmation dialog.
@@ -17,7 +16,7 @@ import { ConfirmationMessageComponent } from './confirmation-message/confirmatio
 @Component({
     template: `<p> {{confirmationDialogResponse}} </p>`
 })
-class ConfirmationDialogTestHostComponent {
+class ConfirmationDialogTestHostComponent implements OnInit {
 
     confirmationDialogResponse: string;
 
@@ -26,16 +25,16 @@ class ConfirmationDialogTestHostComponent {
     constructor(private dialog: MatDialog) {
     }
 
+    ngOnInit() {
+        MockResource.getTestthing().subscribe(res => {
+            this.testValue = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger', ReadIntValue)[0];
+        });
+    }
+
     openDialog() {
-        this.testValue = new ReadIntValue();
-        this.testValue.strval = '1';
-        this.testValue.propertyLabel = 'My label';
-        this.testValue.valueCreationDate = '1993-10-10T19:11:00.00Z';
-        this.testValue.valueHasComment = 'My comment';
 
         this.dialog.open(ConfirmationDialogComponent, {
             data: {
-                title: 'Title',
                 value: this.testValue,
                 buttonTextOk: 'OK',
                 buttonTextCancel: 'Cancel'
@@ -50,6 +49,13 @@ class ConfirmationDialogTestHostComponent {
       }
 }
 
+@Component({selector: 'dsp-confirmation-message', template: ''})
+class MockConfirmationMessageComponent {
+    @Input() value: ReadValue;
+
+    constructor() { }
+}
+
 describe('ConfirmationDialogComponent', () => {
     let testHostComponent: ConfirmationDialogTestHostComponent;
     let testHostFixture: ComponentFixture<ConfirmationDialogTestHostComponent>;
@@ -61,7 +67,7 @@ describe('ConfirmationDialogComponent', () => {
             declarations: [
                 ConfirmationDialogComponent,
                 ConfirmationDialogTestHostComponent,
-                ConfirmationMessageComponent
+                MockConfirmationMessageComponent
             ],
             imports: [
                 MatDialogModule,
@@ -106,23 +112,16 @@ describe('ConfirmationDialogComponent', () => {
         testHostFixture.detectChanges();
 
         testHostFixture.whenStable().then(() => {
+
             const dialogDiv = document.querySelector('mat-dialog-container');
             expect(dialogDiv).toBeTruthy();
 
+            const dspConfirmMsg = document.querySelector('dsp-confirmation-message');
+            expect(dspConfirmMsg).toBeTruthy();
+
             const dialogTitle = dialogDiv.querySelector('.title');
-            expect(dialogTitle.innerHTML.trim()).toEqual('Are you sure you want to delete this value from My label?');
+            expect(dialogTitle.innerHTML.trim()).toEqual('Are you sure you want to delete this value from Integer?');
 
-            const dialogMessageLabel = dialogDiv.querySelector('.message .val-label');
-            expect(dialogMessageLabel.innerHTML.trim()).toEqual('Confirming this action will delete the following value from My label:');
-
-            const dialogMessageValue = dialogDiv.querySelector('.message .val-value');
-            expect(dialogMessageValue.innerHTML.trim()).toEqual('Value: 1');
-
-            const dialogMessageComment = dialogDiv.querySelector('.message .val-comment');
-            expect(dialogMessageComment.innerHTML.trim()).toEqual('Value Comment: My comment');
-
-            const dialogMessageCreationDate = dialogDiv.querySelector('.message .val-creation-date');
-            expect(dialogMessageCreationDate.innerHTML.trim()).toEqual('Value Creation Date: 1993-10-10T19:11:00.00Z');
         });
 
     });

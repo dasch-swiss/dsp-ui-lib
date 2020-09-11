@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ReadIntValue } from '@dasch-swiss/dsp-js';
+import { MockResource, ReadIntValue } from '@dasch-swiss/dsp-js';
 import { ConfirmationMessageComponent } from './confirmation-message.component';
 
 /**
@@ -18,11 +18,9 @@ class ConfirmationMessageTestHostComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.testValue = new ReadIntValue();
-        this.testValue.strval = '1';
-        this.testValue.propertyLabel = 'My label';
-        this.testValue.valueCreationDate = '1993-10-10T19:11:00.00Z';
-        this.testValue.valueHasComment = 'My comment';
+        MockResource.getTestthing().subscribe(res => {
+            this.testValue = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger', ReadIntValue)[0];
+        });
     }
 }
 
@@ -51,13 +49,16 @@ describe('ConfirmationMessageComponent', () => {
     });
 
     it('should bind the values correctly', () => {
+        testHostComponent.testValue.valueHasComment = 'My comment';
+        testHostFixture.detectChanges();
+
         const hostCompDe = testHostFixture.debugElement;
         const valueComponentDe = hostCompDe.query(By.directive(ConfirmationMessageComponent));
 
         expect(valueComponentDe).toBeTruthy();
 
         const label = valueComponentDe.query(By.css('.val-label')).nativeElement;
-        expect(label.innerText).toEqual('Confirming this action will delete the following value from My label:');
+        expect(label.innerText).toEqual('Confirming this action will delete the following value from Integer:');
 
         const value = valueComponentDe.query(By.css('.val-value')).nativeElement;
         expect(value.innerText).toEqual('Value: 1');
@@ -66,7 +67,7 @@ describe('ConfirmationMessageComponent', () => {
         expect(comment.innerText).toEqual('Value Comment: My comment');
 
         const creationDate = valueComponentDe.query(By.css('.val-creation-date')).nativeElement;
-        expect(creationDate.innerText).toEqual('Value Creation Date: 1993-10-10T19:11:00.00Z');
+        expect(creationDate.innerText).toEqual('Value Creation Date: 2018-05-28T15:52:03.897Z');
 
     });
 
