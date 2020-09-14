@@ -37,7 +37,7 @@ describe('Test App', () => {
 
             await page.navigateTo('modify');
 
-            const valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value', timeout);
+            let valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value', timeout);
 
             const displayEditComp: WebElement = await page.getDisplayEditComponentFromValueComponent(valueEleComp);
 
@@ -63,6 +63,10 @@ describe('Test App', () => {
 
             await browser.wait(EC.presenceOf(element(by.css('.rm-value'))), timeout,
                 'Wait for read value to be visible.');
+
+            // a new element is created in the DOM when we update a value
+            // therefore we need to get a reference to the element again, otherwise it will be stale
+            valueEleComp = await page.getComponentBySelector('dsp-int-value', timeout);
 
             const readEle = await page.getReadValueFieldFromValueComponent(valueEleComp);
             expect(await readEle.getText()).toEqual('3');
