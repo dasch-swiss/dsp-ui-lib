@@ -63,6 +63,20 @@ export class ValueTypeService {
     }
 
     /**
+     * Given the ObjectType of a PropertyDefinition, compares it to the type of the type of the provided value.
+     * Primarily used to check if a TextValue type is equal to one of the readonly strings in this class.
+     *
+     * @param objectType PropertyDefinition ObjectType
+     * @param valueType Value type (ReadValue, DeleteValue, BaseValue, etc.)
+     */
+    compareObjectTypeWithValueType(objectType: string, valueType: string): boolean {
+        return objectType === this._readTextValueAsString ||
+                objectType === this._readTextValueAsHtml ||
+                objectType === this._readTextValueAsXml ||
+                objectType === valueType;
+    }
+
+    /**
      * Equality checks with constants below are TEMPORARY until component is implemented.
      * Used so that the CRUD buttons do not show if a property doesn't have a value component.
      */

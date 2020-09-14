@@ -1,22 +1,22 @@
-<div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <div *ngIf="valueFormControl.value?.end; else date">
-        <p class="rm-value date-start">
+<span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
+    <span *ngIf="valueFormControl.value?.end; else date">
+        <span class="rm-value date-start">
             <span *ngIf="labels">Period Start: </span>
             {{valueFormControl.value?.start | knoraDate:ontologyDateFormat:displayOptions}}
-        </p>
-        <p class="rm-value date-end">
+        </span>
+        <span class="rm-value date-end">
             <span *ngIf="labels">Period End: </span>
             {{valueFormControl.value?.end | knoraDate:ontologyDateFormat:displayOptions}}
-        </p>
-    </div>
+        </span>
+    </span>
     <ng-template #date>
-        <p class="rm-value">
+        <span class="rm-value">
             <span *ngIf="labels">Date: </span>
             {{valueFormControl.value | knoraDate:ontologyDateFormat:displayOptions}}
-        </p>
-        <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
+        </span>
     </ng-template>
-</div>
+    <span class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</span>
+</span>
 <ng-template #showForm>
     <span [formGroup]="form">
         <mat-form-field class="large-field child-value-component" floatLabel="never">
