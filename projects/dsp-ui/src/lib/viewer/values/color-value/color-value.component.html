@@ -1,15 +1,15 @@
-<div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <p>Hex value:</p>
-    <p class="rm-value">{{ valueFormControl.value }}</p>
-    <p>Preview:</p>
+<span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
+    <span>Hex value:</span>
+    <span class="rm-value">{{ valueFormControl.value }}</span>
+    <span>Preview:</span>
     <div
         class="color-preview"
         [style.background-color]="valueFormControl.value"
     ></div>
-    <p class="rm-comment" *ngIf="shouldShowComment">
+    <span class="rm-comment" *ngIf="shouldShowComment">
         {{ commentFormControl.value }}
-    </p>
-</div>
+    </span>
+</span>
 <ng-template #showForm>
     <span [formGroup]="form">
         <mat-form-field class="large-field color-field child-value-component" floatLabel="never">
