@@ -80,16 +80,16 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit() {
         // subscribe to the ValueOperationEventService and listen for an event to be emitted
         this.valueOperationEventSubscriptions.push(this._valueOperationEventService.on(
-            Events.ValueAdded,(newValue: EventValues) =>
-                this.updateResource(newValue.currentValue, 'create')));
+            Events.ValueAdded, (newValue: EventValues) =>
+                this.addValueToResource(newValue.currentValue as ReadValue)));
 
         this.valueOperationEventSubscriptions.push(this._valueOperationEventService.on(
             Events.ValueUpdated, (updatedValue: EventValues) =>
-                this.updateResource(updatedValue.currentValue, 'update', updatedValue.newValue)));
+                this.updateValueInResource(updatedValue.currentValue as ReadValue, updatedValue.newValue as ReadValue)));
 
         this.valueOperationEventSubscriptions.push(this._valueOperationEventService.on(
             Events.ValueDeleted, (deletedValue: EventValues) =>
-                this.updateResource(deletedValue.currentValue, 'delete')));
+                this.deleteValueFromResource(deletedValue.currentValue as DeleteValue)));
 
     }
 
@@ -100,7 +100,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     ngOnDestroy() {
         // unsubscribe from the ValueOperationEventService when component is destroyed
         if (this.valueOperationEventSubscriptions !== undefined) {
-            this.valueOperationEventSubscriptions.forEach((sub) => sub.unsubscribe());
+            this.valueOperationEventSubscriptions.forEach(sub => sub.unsubscribe());
         }
     }
 
@@ -140,52 +140,62 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
-     * Update the UI to reflect updates made to property values.
+     * Updates the UI in the event of a new value being added to show the new value
      *
-     * @param currentValue value to be updated inside propInfoValueArray
-     * @param isDeletion is the value being removed or added
+     * @param valueToAdd the value to add to the end of the values array of the filtered property
      */
-    updateResource(currentValue: BaseValue, operation: 'create' | 'update' | 'delete', newValue?: BaseValue): void {
+    addValueToResource(valueToAdd: ReadValue): void {
         if (this.resPropInfoVals) {
-            if (operation === 'create') { // add new value
-                this.resPropInfoVals
-                    .filter( propInfoValueArray =>
-                        propInfoValueArray.propDef.id === (currentValue as ReadValue).property) // filter to the correct property
-                    .map( propInfoValue =>
-                        propInfoValue.values.push((currentValue as ReadValue))); // push new value to array
-            } else if (operation === 'update') { // update value
-                this.resPropInfoVals
-                    .filter( propInfoValueArray =>
-                        propInfoValueArray.propDef.id === (currentValue as ReadValue).property) // filter to the correct property
-                    .map((filteredpropInfoValueArray) => {
-                        let index = 0;
-                        filteredpropInfoValueArray.values.forEach( // loop through each value of the current property
-                            val => {
-                                if (val.id === (currentValue as ReadValue).id) { // find the value that was deleted using the value id
-                                    filteredpropInfoValueArray.values[index] = newValue as ReadValue;
-                                }
-                                index += 1;
-                            }
-                        );
-                    }
-                );
-            } else { // delete value
-                this.resPropInfoVals
-                    .filter( propInfoValueArray =>
-                        propInfoValueArray.propDef.objectType === (currentValue as DeleteValue).type) // filter to the correct type
-                    .map((filteredpropInfoValueArray) => {
-                        let index = 0; // init index to increment and use for the splice
-                        filteredpropInfoValueArray.values.forEach( // loop through each value of the current property
-                            val => {
-                                if (val.id === (currentValue as DeleteValue).id) { // find the value that was deleted using the value id
-                                    filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
-                                }
-                                index += 1; // increment index
-                            }
-                        );
-                    }
-                );
-            }
+            this.resPropInfoVals
+                .filter( propInfoValueArray =>
+                    propInfoValueArray.propDef.id === valueToAdd.property) // filter to the correct property
+                .forEach( propInfoValue =>
+                    propInfoValue.values.push(valueToAdd)); // push new value to array
+        } else {
+            console.error('No properties exist for this resource');
+        }
+    }
+
+    /**
+     * Updates the UI in the event of an existing value being updated to show the updated value
+     *
+     * @param valueToReplace the value to be replaced within the values array of the filtered property
+     * @param updatedValue the value to replace valueToReplace with
+     */
+    updateValueInResource(valueToReplace: ReadValue, updatedValue: ReadValue): void {
+        if (this.resPropInfoVals && updatedValue !== null) {
+            this.resPropInfoVals
+                .filter( propInfoValueArray =>
+                    propInfoValueArray.propDef.id === valueToReplace.property) // filter to the correct property
+                .forEach(filteredpropInfoValueArray => {
+                    filteredpropInfoValueArray.values.forEach((val, index) => { // loop through each value of the current property
+                        if (val.id === valueToReplace.id) { // find the value that should be updated using the id of valueToReplace
+                            filteredpropInfoValueArray.values[index] = updatedValue; // replace value with the updated value
+                        }
+                    });
+                });
+        } else {
+            console.error('No properties exist for this resource');
+        }
+    }
+
+    /**
+     *
+     * @param valueToDelete the value to remove from the values array of the filtered property
+     */
+    deleteValueFromResource(valueToDelete: DeleteValue): void {
+        if (this.resPropInfoVals) {
+            this.resPropInfoVals
+                .filter( propInfoValueArray =>
+                    propInfoValueArray.propDef.objectType === valueToDelete.type) // filter to the correct type
+                .forEach((filteredpropInfoValueArray) => {
+                    filteredpropInfoValueArray.values.forEach((val, index) => { // loop through each value of the current property
+                        if (val.id === valueToDelete.id) { // find the value that was deleted using the id
+                            filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
+                        }
+                    });
+                }
+            );
         } else {
             console.error('No properties exist for this resource');
         }

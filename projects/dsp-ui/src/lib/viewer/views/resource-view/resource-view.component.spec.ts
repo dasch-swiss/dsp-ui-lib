@@ -172,7 +172,7 @@ describe('ResourceViewComponent', () => {
         newReadIntValue.int = 123;
         newReadIntValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
 
-        testHostComponent.resourceViewComponent.updateResource(newReadIntValue, 'create');
+        testHostComponent.resourceViewComponent.addValueToResource(newReadIntValue);
 
         const propArrayIntValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
             propInfoValueArray => propInfoValueArray.propDef.id === newReadIntValue.property
@@ -191,7 +191,7 @@ describe('ResourceViewComponent', () => {
         newReadIntValue.int = 123;
         newReadIntValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
 
-        testHostComponent.resourceViewComponent.updateResource(newReadIntValue, 'create');
+        testHostComponent.resourceViewComponent.addValueToResource(newReadIntValue);
 
         // delete the value
         const valueToBeDeleted = new DeleteValue();
@@ -199,7 +199,7 @@ describe('ResourceViewComponent', () => {
         valueToBeDeleted.id = 'myNewReadIntId';
         valueToBeDeleted.type = 'http://api.knora.org/ontology/knora-api/v2#IntValue';
 
-        testHostComponent.resourceViewComponent.updateResource(valueToBeDeleted, 'delete');
+        testHostComponent.resourceViewComponent.deleteValueFromResource(valueToBeDeleted);
 
         const propArrayIntValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
             propInfoValueArray => propInfoValueArray.propDef.objectType === valueToBeDeleted.type
@@ -217,7 +217,7 @@ describe('ResourceViewComponent', () => {
         newReadIntValue.int = 123;
         newReadIntValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
 
-        testHostComponent.resourceViewComponent.updateResource(newReadIntValue, 'create');
+        testHostComponent.resourceViewComponent.addValueToResource(newReadIntValue);
 
         let propArrayIntValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
             propInfoValueArray => propInfoValueArray.propDef.id === newReadIntValue.property
@@ -232,7 +232,7 @@ describe('ResourceViewComponent', () => {
         updateReadIntValue.int = 321;
         updateReadIntValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
 
-        testHostComponent.resourceViewComponent.updateResource(newReadIntValue, 'update', updateReadIntValue);
+        testHostComponent.resourceViewComponent.updateValueInResource(newReadIntValue, updateReadIntValue);
 
         propArrayIntValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
             propInfoValueArray => propInfoValueArray.propDef.id === updateReadIntValue.property
