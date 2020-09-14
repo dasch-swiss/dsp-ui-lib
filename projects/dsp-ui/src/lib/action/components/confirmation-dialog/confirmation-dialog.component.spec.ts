@@ -105,24 +105,22 @@ describe('ConfirmationDialogComponent', () => {
         overlayContainer.ngOnDestroy();
     });
 
-    it('should display a confirmation dialog', () => {
+    it('should display a confirmation dialog', async () => {
 
         testHostComponent.openDialog();
 
         testHostFixture.detectChanges();
 
-        testHostFixture.whenStable().then(() => {
+        await testHostFixture.whenStable();
 
-            const dialogDiv = document.querySelector('mat-dialog-container');
-            expect(dialogDiv).toBeTruthy();
+        const dialogDiv = document.querySelector('mat-dialog-container');
+        expect(dialogDiv).toBeTruthy();
 
-            const dspConfirmMsg = document.querySelector('dsp-confirmation-message');
-            expect(dspConfirmMsg).toBeTruthy();
+        const dspConfirmMsg = document.querySelector('dsp-confirmation-message');
+        expect(dspConfirmMsg).toBeTruthy();
 
-            const dialogTitle = dialogDiv.querySelector('.title');
-            expect(dialogTitle.innerHTML.trim()).toEqual('Are you sure you want to delete this value from Integer?');
-
-        });
+        const dialogTitle = dialogDiv.querySelector('.title');
+        expect(dialogTitle.innerHTML.trim()).toEqual('Are you sure you want to delete this value from Integer?');
 
     });
 
