@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import {
     ApiResponseError,
-    BaseValue,
     DeleteValue,
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
@@ -22,6 +21,7 @@ import {
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { Events, EventValues, ValueOperationEventService } from '../../services/value-operation-event.service';
+import { ValueTypeService } from '../../services/value-type.service';
 
 
 // object of property information from ontology class, properties and property values
@@ -75,7 +75,8 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
-        private _valueOperationEventService: ValueOperationEventService) { }
+        private _valueOperationEventService: ValueOperationEventService,
+        private _valueTypeService: ValueTypeService) { }
 
     ngOnInit() {
         // subscribe to the ValueOperationEventService and listen for an event to be emitted
@@ -147,9 +148,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     addValueToResource(valueToAdd: ReadValue): void {
         if (this.resPropInfoVals) {
             this.resPropInfoVals
-                .filter( propInfoValueArray =>
+                .filter(propInfoValueArray =>
                     propInfoValueArray.propDef.id === valueToAdd.property) // filter to the correct property
-                .forEach( propInfoValue =>
+                .forEach(propInfoValue =>
                     propInfoValue.values.push(valueToAdd)); // push new value to array
         } else {
             console.error('No properties exist for this resource');
@@ -165,7 +166,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     updateValueInResource(valueToReplace: ReadValue, updatedValue: ReadValue): void {
         if (this.resPropInfoVals && updatedValue !== null) {
             this.resPropInfoVals
-                .filter( propInfoValueArray =>
+                .filter(propInfoValueArray =>
                     propInfoValueArray.propDef.id === valueToReplace.property) // filter to the correct property
                 .forEach(filteredpropInfoValueArray => {
                     filteredpropInfoValueArray.values.forEach((val, index) => { // loop through each value of the current property
@@ -180,15 +181,16 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**
+     * Updates the UI in the event of an existing value being deleted
      *
      * @param valueToDelete the value to remove from the values array of the filtered property
      */
     deleteValueFromResource(valueToDelete: DeleteValue): void {
         if (this.resPropInfoVals) {
             this.resPropInfoVals
-                .filter( propInfoValueArray =>
-                    propInfoValueArray.propDef.objectType === valueToDelete.type) // filter to the correct type
-                .forEach((filteredpropInfoValueArray) => {
+                .filter(propInfoValueArray =>  // filter to the correct type
+                    this._valueTypeService.compareObjectTypeWithValueType(propInfoValueArray.propDef.objectType, valueToDelete.type))
+                .forEach(filteredpropInfoValueArray => {
                     filteredpropInfoValueArray.values.forEach((val, index) => { // loop through each value of the current property
                         if (val.id === valueToDelete.id) { // find the value that was deleted using the id
                             filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array

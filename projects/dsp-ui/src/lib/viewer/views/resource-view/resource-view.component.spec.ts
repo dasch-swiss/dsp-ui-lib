@@ -2,7 +2,15 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
-import { DeleteValue, MockResource, PropertyDefinition, ReadIntValue, ReadResource, ResourcesEndpointV2 } from '@dasch-swiss/dsp-js';
+import {
+    DeleteValue,
+    MockResource,
+    PropertyDefinition,
+    ReadIntValue,
+    ReadResource,
+    ReadTextValueAsString,
+    ResourcesEndpointV2
+} from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { DspApiConnectionToken } from '../../../core';
@@ -183,7 +191,7 @@ describe('ResourceViewComponent', () => {
         expect((propArrayIntValues[0].values[1] as ReadIntValue).int).toEqual(123);
     });
 
-    it('should delete a value from a property of a resource', () => {
+    it('should delete an int value from a property of a resource', () => {
         // add new value to be deleted (so that I can ensure the id will be what I expect)
         const newReadIntValue = new ReadIntValue();
 
@@ -198,6 +206,33 @@ describe('ResourceViewComponent', () => {
 
         valueToBeDeleted.id = 'myNewReadIntId';
         valueToBeDeleted.type = 'http://api.knora.org/ontology/knora-api/v2#IntValue';
+
+        testHostComponent.resourceViewComponent.deleteValueFromResource(valueToBeDeleted);
+
+        const propArrayIntValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.objectType === valueToBeDeleted.type
+        );
+
+        // expect there to be one value left after deleting the newly created value
+        expect(propArrayIntValues[0].values.length).toEqual(1);
+
+    });
+
+    it('should delete a text value from a property of a resource', () => {
+        // add new value to be deleted (so that I can ensure the id will be what I expect)
+        const newReadTextValueAsString = new ReadTextValueAsString();
+
+        newReadTextValueAsString.id = 'myNewReadTextValueAsStringId';
+        newReadTextValueAsString.text = 'my text';
+        newReadTextValueAsString.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText';
+
+        testHostComponent.resourceViewComponent.addValueToResource(newReadTextValueAsString);
+
+        // delete the value
+        const valueToBeDeleted = new DeleteValue();
+
+        valueToBeDeleted.id = 'myNewReadTextValueAsStringId';
+        valueToBeDeleted.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
 
         testHostComponent.resourceViewComponent.deleteValueFromResource(valueToBeDeleted);
 
