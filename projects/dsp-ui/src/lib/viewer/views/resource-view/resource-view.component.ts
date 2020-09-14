@@ -71,7 +71,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
 
-    valueOperationEventSubscription: Subscription[] = [];
+    valueOperationEventSubscriptions: Subscription[] = [];
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
@@ -79,15 +79,15 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit() {
         // subscribe to the ValueOperationEventService and listen for an event to be emitted
-        this.valueOperationEventSubscription.push(this._valueOperationEventService.on(
+        this.valueOperationEventSubscriptions.push(this._valueOperationEventService.on(
             Events.ValueAdded,(newValue: EventValues) =>
                 this.updateResource(newValue.currentValue, 'create')));
 
-        this.valueOperationEventSubscription.push(this._valueOperationEventService.on(
+        this.valueOperationEventSubscriptions.push(this._valueOperationEventService.on(
             Events.ValueUpdated, (updatedValue: EventValues) =>
                 this.updateResource(updatedValue.currentValue, 'update', updatedValue.newValue)));
 
-        this.valueOperationEventSubscription.push(this._valueOperationEventService.on(
+        this.valueOperationEventSubscriptions.push(this._valueOperationEventService.on(
             Events.ValueDeleted, (deletedValue: EventValues) =>
                 this.updateResource(deletedValue.currentValue, 'delete')));
 
@@ -99,8 +99,8 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnDestroy() {
         // unsubscribe from the ValueOperationEventService when component is destroyed
-        if (this.valueOperationEventSubscription !== undefined) {
-            this.valueOperationEventSubscription.forEach((sub) => sub.unsubscribe());
+        if (this.valueOperationEventSubscriptions !== undefined) {
+            this.valueOperationEventSubscriptions.forEach((sub) => sub.unsubscribe());
         }
     }
 
