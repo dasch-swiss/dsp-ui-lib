@@ -190,9 +190,7 @@ export class DisplayEditComponent implements OnInit {
      */
     openDialog() {
         const dialogData = new ConfirmationDialogData();
-        dialogData.title = 'Are you sure want to delete this value from ' + this.displayValue.propertyLabel + '?';
-        dialogData.message = 'Confirming this action will delete the following value from ' +
-                                this.displayValue.propertyLabel + ':<br/><br/>' + this._generateValueInfo();
+        dialogData.value = this.displayValue;
         dialogData.buttonTextOk = 'Yes, delete the value';
         dialogData.buttonTextCancel = 'No, keep the value';
 
@@ -281,23 +279,6 @@ export class DisplayEditComponent implements OnInit {
     mouseLeave() {
         this.showActionBubble = false;
         this.backgroundColor = '';
-    }
-
-    /**
-     * Generate the message body for the confirmation dialog.
-     *
-     * @returns A string consisting of the values: value, comment, and creation date.
-     */
-    private _generateValueInfo(): string {
-        const value = this.displayValue.strval;
-        const comment = this.displayValue.valueHasComment ? this.displayValue.valueHasComment : 'No comment';
-        const creationDate = new Date(this.displayValue.valueCreationDate).toString();
-
-        const message = '<b>Value:</b> ' + value +
-                        '<br/><br/><b>Value Comment:</b> ' + comment +
-                        '<br/><br/><b>Value Creation Date:</b> ' + creationDate;
-
-        return message;
     }
 
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ApiResponseError, StringLiteral } from '@dasch-swiss/dsp-js';
+import { ApiResponseError, ReadValue, StringLiteral } from '@dasch-swiss/dsp-js';
 import { ConfirmationDialogComponent, ConfirmationDialogData, DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
 
 @Component({
@@ -9,9 +9,6 @@ import { ConfirmationDialogComponent, ConfirmationDialogData, DspMessageData, So
   styleUrls: ['./action-playground.component.scss']
 })
 export class ActionPlaygroundComponent implements OnInit {
-
-    // loading: boolean;
-    // session: Session;
 
     sortProps: any = [
         {
@@ -174,9 +171,14 @@ export class ActionPlaygroundComponent implements OnInit {
     // confirmation dialog
 
     openDialog() {
+        const testValue = new ReadValue();
+        testValue.strval = 'My data 101010101';
+        testValue.propertyLabel = 'My label';
+        testValue.valueCreationDate = '1993-10-10T19:11:00.00Z';
+        testValue.valueHasComment = 'My comment';
+
         const dialogData = new ConfirmationDialogData();
-        dialogData.title = 'Are you sure want to do this?';
-        dialogData.message = 'Confirming this action will delete the value. (Not really though, this is just a test message)';
+        dialogData.value = testValue;
         dialogData.buttonTextOk = 'Yes, delete the value';
         dialogData.buttonTextCancel = 'No, keep the value';
 
