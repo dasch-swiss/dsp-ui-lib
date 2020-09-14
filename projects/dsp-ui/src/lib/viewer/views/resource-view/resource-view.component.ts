@@ -71,7 +71,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
 
-    valueOperationEventSubscription: Subscription;
+    valueOperationEventSubscription: Subscription[] = [];
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
@@ -79,15 +79,17 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit() {
         // subscribe to the ValueOperationEventService and listen for an event to be emitted
-        this.valueOperationEventSubscription = this._valueOperationEventService.on(
-            Events.ValueAdded, (newValue: EventValues) => this.updateResource(newValue.currentValue, 'create'));
+        this.valueOperationEventSubscription.push(this._valueOperationEventService.on(
+            Events.ValueAdded,(newValue: EventValues) =>
+                this.updateResource(newValue.currentValue, 'create')));
 
-        this.valueOperationEventSubscription = this._valueOperationEventService.on(
+        this.valueOperationEventSubscription.push(this._valueOperationEventService.on(
             Events.ValueUpdated, (updatedValue: EventValues) =>
-                this.updateResource(updatedValue.currentValue, 'update', updatedValue.newValue));
+                this.updateResource(updatedValue.currentValue, 'update', updatedValue.newValue)));
 
-        this.valueOperationEventSubscription = this._valueOperationEventService.on(
-            Events.ValueDeleted, (deletedValue: EventValues) => this.updateResource(deletedValue.currentValue, 'delete'));
+        this.valueOperationEventSubscription.push(this._valueOperationEventService.on(
+            Events.ValueDeleted, (deletedValue: EventValues) =>
+                this.updateResource(deletedValue.currentValue, 'delete')));
 
     }
 
@@ -98,7 +100,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     ngOnDestroy() {
         // unsubscribe from the ValueOperationEventService when component is destroyed
         if (this.valueOperationEventSubscription !== undefined) {
-            this.valueOperationEventSubscription.unsubscribe();
+            this.valueOperationEventSubscription.forEach((sub) => sub.unsubscribe());
         }
     }
 

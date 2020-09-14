@@ -39,21 +39,21 @@ class TestParentComponent implements OnInit, OnDestroy {
 
     resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
 
-    voeSubscription: Subscription;
+    voeSubscription: Subscription[] = [];
 
     myNum = 0;
 
     constructor(public _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
-        this.voeSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.myNum = 1);
-        this.voeSubscription = this._valueOperationEventService.on(Events.ValueUpdated, () => this.myNum = 2);
-        this.voeSubscription = this._valueOperationEventService.on(Events.ValueDeleted, () => this.myNum = 3);
+        this.voeSubscription.push(this._valueOperationEventService.on(Events.ValueAdded, () => this.myNum = 1));
+        this.voeSubscription.push(this._valueOperationEventService.on(Events.ValueUpdated, () => this.myNum = 2));
+        this.voeSubscription.push(this._valueOperationEventService.on(Events.ValueDeleted, () => this.myNum = 3));
     }
 
     ngOnDestroy() {
         if (this.voeSubscription) {
-            this.voeSubscription.unsubscribe();
+            this.voeSubscription.forEach(sub => sub.unsubscribe());
         }
     }
 }
@@ -155,11 +155,15 @@ describe('ResourceViewComponent', () => {
     });
 
     it('should unsubscribe from changes when destroyed', () => {
-        expect(testHostComponent.voeSubscription.closed).toBe(false);
+        testHostComponent.voeSubscription.forEach(sub => {
+            expect(sub.closed).toBe(false);
+        });
 
         testHostFixture.destroy();
 
-        expect(testHostComponent.voeSubscription.closed).toBe(true);
+        testHostComponent.voeSubscription.forEach(sub => {
+            expect(sub.closed).toBe(true);
+        });
     });
 
     it('should add a value to a property of a resource', () => {
