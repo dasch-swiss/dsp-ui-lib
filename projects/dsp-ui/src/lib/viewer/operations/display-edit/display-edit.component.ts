@@ -20,7 +20,13 @@ import {
     ConfirmationDialogData
 } from '../../../action/components/confirmation-dialog/confirmation-dialog.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, Events, EventValues, ValueOperationEventService } from '../../services/value-operation-event.service';
+import {
+    DeletedEventValue,
+    EmitEvent,
+    Events,
+    UpdatedEventValues,
+    ValueOperationEventService
+} from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
@@ -153,7 +159,7 @@ export class DisplayEditComponent implements OnInit {
             ).subscribe(
                 (res2: ReadResource) => {
                     this._valueOperationEventService.emit(
-                        new EmitEvent(Events.ValueUpdated, new EventValues(
+                        new EmitEvent(Events.ValueUpdated, new UpdatedEventValues(
                             this.displayValue, res2.getValues(this.displayValue.property)[0])));
 
                     this.displayValue = res2.getValues(this.displayValue.property)[0];
@@ -222,7 +228,7 @@ export class DisplayEditComponent implements OnInit {
         this._dspApiConnection.v2.values.deleteValue(updateRes as UpdateResource<DeleteValue>).pipe(
         mergeMap((res: DeleteValueResponse) => {
             // emit a ValueDeleted event to the listeners in resource-view component to trigger an update of the UI
-            this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, new EventValues(deleteVal)));
+            this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, new DeletedEventValue(deleteVal)));
             return res.result;
         })).subscribe();
     }

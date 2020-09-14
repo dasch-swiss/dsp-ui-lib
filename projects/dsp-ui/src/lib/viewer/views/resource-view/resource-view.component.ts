@@ -20,7 +20,13 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { Events, EventValues, ValueOperationEventService } from '../../services/value-operation-event.service';
+import {
+    AddedEventValue,
+    DeletedEventValue,
+    Events,
+    UpdatedEventValues,
+    ValueOperationEventService
+} from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 
 
@@ -71,7 +77,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
 
-    valueOperationEventSubscriptions: Subscription[] = [];
+    valueOperationEventSubscriptions: Subscription[] = []; // array of ValueOperationEvent subscriptions
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
@@ -81,16 +87,16 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit() {
         // subscribe to the ValueOperationEventService and listen for an event to be emitted
         this.valueOperationEventSubscriptions.push(this._valueOperationEventService.on(
-            Events.ValueAdded, (newValue: EventValues) =>
-                this.addValueToResource(newValue.currentValue as ReadValue)));
+            Events.ValueAdded, (newValue: AddedEventValue) =>
+                this.addValueToResource(newValue.addedValue)));
 
         this.valueOperationEventSubscriptions.push(this._valueOperationEventService.on(
-            Events.ValueUpdated, (updatedValue: EventValues) =>
-                this.updateValueInResource(updatedValue.currentValue as ReadValue, updatedValue.newValue as ReadValue)));
+            Events.ValueUpdated, (updatedValue: UpdatedEventValues) =>
+                this.updateValueInResource(updatedValue.currentValue, updatedValue.updatedValue)));
 
         this.valueOperationEventSubscriptions.push(this._valueOperationEventService.on(
-            Events.ValueDeleted, (deletedValue: EventValues) =>
-                this.deleteValueFromResource(deletedValue.currentValue as DeleteValue)));
+            Events.ValueDeleted, (deletedValue: DeletedEventValue) =>
+                this.deleteValueFromResource(deletedValue.deletedValue)));
 
     }
 

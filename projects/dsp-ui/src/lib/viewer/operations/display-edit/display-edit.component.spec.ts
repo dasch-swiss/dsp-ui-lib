@@ -5,7 +5,7 @@ import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonHarness } from '@angular/material/button/testing';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
@@ -39,7 +39,13 @@ import {
 import { of, throwError } from 'rxjs';
 import { AjaxError } from 'rxjs/ajax';
 import { DspApiConnectionToken } from '../../../core';
-import { EmitEvent, Events, EventValues, ValueOperationEventService } from '../../services/value-operation-event.service';
+import {
+    DeletedEventValue,
+    EmitEvent,
+    Events,
+    UpdatedEventValues,
+    ValueOperationEventService
+} from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { DisplayEditComponent } from './display-edit.component';
 
@@ -647,7 +653,7 @@ describe('DisplayEditComponent', () => {
         expect(valuesSpy.v2.values.updateValue).toHaveBeenCalledTimes(1);
 
         expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
-        expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueUpdated, new EventValues(
+        expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueUpdated, new UpdatedEventValues(
             testHostComponent.readValue, testHostComponent.displayEditValueComponent.displayValue)));
 
         expect(valuesSpy.v2.values.getValue).toHaveBeenCalledTimes(1);
@@ -921,7 +927,7 @@ describe('DisplayEditComponent', () => {
             expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledTimes(1);
 
             expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
-            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueDeleted, new EventValues(deleteVal)));
+            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueDeleted, new DeletedEventValue(deleteVal)));
         });
 
     });

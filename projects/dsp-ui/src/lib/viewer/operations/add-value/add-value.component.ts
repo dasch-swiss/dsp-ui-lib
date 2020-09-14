@@ -18,7 +18,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, Events, EventValues, ValueOperationEventService } from '../../services/value-operation-event.service';
+import { AddedEventValue, EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
@@ -111,7 +111,7 @@ export class AddValueComponent implements OnInit, AfterViewInit {
                     // property-view component to hide the add value form
                     // resource-view component to trigger a refresh of the resource
                     this._valueOperationEventService.emit(
-                        new EmitEvent(Events.ValueAdded, new EventValues(res2.getValues(updateRes.property)[0])));
+                        new EmitEvent(Events.ValueAdded, new AddedEventValue(res2.getValues(updateRes.property)[0])));
 
                     // hide the progress indicator
                     this.submittingValue = false;
