@@ -19,7 +19,7 @@ import {
 import { of, throwError } from 'rxjs';
 import { AjaxError } from 'rxjs/ajax';
 import { DspApiConnectionToken } from '../../../core';
-import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
+import { AddedEventValue, EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { AddValueComponent } from './add-value.component';
 
 
@@ -283,7 +283,7 @@ describe('AddValueComponent', () => {
             expect(valuesSpy.v2.values.getValue).toHaveBeenCalledWith(testHostComponent.readResource.id, 'uuid');
 
             expect(valueEventSpy.emit).toHaveBeenCalledTimes(1);
-            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueAdded, newReadValue));
+            expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueAdded, new AddedEventValue(newReadValue)));
 
         });
 

@@ -16,7 +16,7 @@
       <mat-datepicker #picker1 [calendarHeaderComponent]="calendarHeaderComponent"></mat-datepicker>
     </dsp-jdn-datepicker>
   </mat-form-field>
-  <mat-checkbox [formControlName]="'isPeriod'" (change)="_handleInput()"></mat-checkbox>
+  <mat-checkbox [formControlName]="'isPeriod'" (change)="_handleInput()" matTooltip="Period"></mat-checkbox>
   <mat-form-field *ngIf="isPeriodControl.value" class="end child-input-component">
     <span class="calendar">{{endDateControl.value?.calendarName}}</span>
     <dsp-jdn-datepicker [activeCalendar]="endDateControl.value?.calendarName">

@@ -1,13 +1,13 @@
-<div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <p class="rm-value">{{ valueFormControl.value }}</p>
+<span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
+    <span class="rm-value">{{ valueFormControl.value }}</span>
     <button class="more-info" mat-icon-button matSuffix (click)="openInfo()" [attr.aria-label]="'Open in geonames.org'"
         title="Open in geonames.org">
         <mat-icon>launch</mat-icon>
     </button>
-    <p class="rm-comment" *ngIf="shouldShowComment">
+    <span class="rm-comment" *ngIf="shouldShowComment">
         {{ commentFormControl.value }}
-    </p>
-</div>
+    </span>
+</span>
 <ng-template #showForm>
     <span [formGroup]="form" class="form-fields-container">
         <mat-form-field class="large-field child-value-component" floatLabel="never">
