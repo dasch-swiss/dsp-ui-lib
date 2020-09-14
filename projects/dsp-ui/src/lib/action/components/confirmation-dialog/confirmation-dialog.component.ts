@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ReadValue } from '@dasch-swiss/dsp-js';
 
 export class ConfirmationDialogData {
-    title: string;
-    message: string;
+    value: ReadValue;
     buttonTextOk: string;
     buttonTextCancel: string;
 }
