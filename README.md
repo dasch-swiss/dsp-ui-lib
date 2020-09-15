@@ -246,6 +246,7 @@ To build and run the application in Docker, do the following:
 The first step builds the lib and app in Docker. Make sure to delete the contents of the `dist` folder on your local system first.
 
 The second step runs a container based on the image built in the previous step:
+
 - `-v` mounts a config file from your local file system in the Docker container, so you can set the config.
 - `--publish` maps the port on your local machine to the port in the Docker container.
 
