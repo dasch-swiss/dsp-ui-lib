@@ -70,9 +70,9 @@ export class ValueTypeService {
      * @param valueType Value type (ReadValue, DeleteValue, BaseValue, etc.)
      */
     compareObjectTypeWithValueType(objectType: string, valueType: string): boolean {
-        return objectType === this._readTextValueAsString ||
-                objectType === this._readTextValueAsHtml ||
-                objectType === this._readTextValueAsXml ||
+        return (objectType === this._readTextValueAsString && valueType === this.constants.TextValue) ||
+                (objectType === this._readTextValueAsHtml && valueType === this.constants.TextValue) ||
+                (objectType === this._readTextValueAsXml && valueType === this.constants.TextValue) ||
                 objectType === valueType;
     }
 
