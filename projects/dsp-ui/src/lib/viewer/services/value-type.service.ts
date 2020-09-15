@@ -63,7 +63,7 @@ export class ValueTypeService {
     }
 
     /**
-     * Given the ObjectType of a PropertyDefinition, compares it to the type of the type of the provided value.
+     * Given the ObjectType of a PropertyDefinition, compares it to the provided value type.
      * Primarily used to check if a TextValue type is equal to one of the readonly strings in this class.
      *
      * @param objectType PropertyDefinition ObjectType
