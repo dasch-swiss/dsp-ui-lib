@@ -84,5 +84,12 @@ describe('ValueTypeService', () => {
                 .toBeFalsy();
         })
 
+        it('should fail to compare "http://api.knora.org/ontology/knora-api/v2#IntValue" with "ReadTextValueAsString"', () => {
+            expect(service.compareObjectTypeWithValueType(
+                'ReadTextValueAsString',
+                'http://api.knora.org/ontology/knora-api/v2#IntValue'))
+                .toBeFalsy();
+        });
+
     });
 });
