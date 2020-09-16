@@ -25,6 +25,13 @@
 
 ---
 
+## v1.0.0-rc.6
+
+Not released because of a mistake on npm. We were not able to override the unpublished version `v1.0.0-rc.6`. 
+This is why we had to jump to next release candidate rc.7.
+
+---
+
 ## v1.0.0-rc.5 (02/09/2020)
 
 #### Dependencies
