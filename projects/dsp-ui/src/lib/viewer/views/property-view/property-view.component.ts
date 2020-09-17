@@ -53,7 +53,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     addButtonIsVisible: boolean; // used to toggle add value button
     addValueFormIsVisible: boolean; // used to toggle add value form field
     propID: string; // used in template to show only the add value form of the corresponding value
-    readOnlyProp: boolean; // used in template to not show an "add" button for properties we do not yet have a way to create/edit
 
     valueOperationEventSubscription: Subscription;
 
