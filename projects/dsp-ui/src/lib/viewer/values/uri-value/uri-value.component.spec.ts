@@ -6,7 +6,6 @@ import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { $ } from 'protractor';
 import { By } from '@angular/platform-browser';
 
 
@@ -15,7 +14,7 @@ import { By } from '@angular/platform-browser';
  */
 @Component({
   template: `
-    <dsp-uri-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-uri-value>`
+    <dsp-uri-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [label]="label"></dsp-uri-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -24,6 +23,8 @@ class TestHostDisplayValueComponent implements OnInit {
   displayInputVal: ReadUriValue;
 
   mode: 'read' | 'update' | 'create' | 'search';
+
+  label: string;
 
   ngOnInit() {
 
@@ -111,6 +112,28 @@ describe('UriValueComponent', () => {
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
       expect(valueReadModeNativeElement.innerText).toEqual('http://www.google.ch');
+
+      const anchorDebugElement = valueReadModeDebugElement.query(By.css('a'));
+      expect(anchorDebugElement.nativeElement).toBeDefined();
+
+      expect(anchorDebugElement.attributes['href']).toEqual('http://www.google.ch');
+      expect(anchorDebugElement.attributes['target']).toEqual('_blank');
+
+    });
+
+    it('should display an existing value with a label', () => {
+
+      testHostComponent.label = 'testlabel';
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.inputValueComponent.displayValue.uri).toEqual('http://www.google.ch');
+
+      expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+
+      expect(valueReadModeNativeElement.innerText).toEqual('testlabel');
 
       const anchorDebugElement = valueReadModeDebugElement.query(By.css('a'));
       expect(anchorDebugElement.nativeElement).toBeDefined();

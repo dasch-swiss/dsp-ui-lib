@@ -27,7 +27,8 @@ $warn: rgb(244, 67, 54);
 
 .dsp-note,
 .dsp-hint {
-  background-color: rgba($primary, .4);
+  background-color: $primary;
+  color: #fff;
 }
 
 .dsp-error,

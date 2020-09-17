@@ -20,7 +20,13 @@ import {
     ConfirmationDialogData
 } from '../../../action/components/confirmation-dialog/confirmation-dialog.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
+import {
+    DeletedEventValue,
+    EmitEvent,
+    Events,
+    UpdatedEventValues,
+    ValueOperationEventService
+} from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
@@ -84,6 +90,12 @@ export class DisplayEditComponent implements OnInit {
     // string used as class name to add add to value-component element on hover
     backgroundColor = '';
 
+    dateDisplayOptions: 'era' | 'calendar' | 'all';
+
+    showDateLabels = false;
+
+    dateFormat: string;
+
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
@@ -94,6 +106,9 @@ export class DisplayEditComponent implements OnInit {
     ngOnInit() {
 
         this.mode = 'read';
+        this.dateDisplayOptions = 'all';
+        this.showDateLabels = true;
+        this.dateFormat = 'dd.MM.YYYY';
 
         // determine if user has modify permissions
         const allPermissions = PermissionUtil.allUserPermissions(this.displayValue.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR');
@@ -147,6 +162,10 @@ export class DisplayEditComponent implements OnInit {
                 })
             ).subscribe(
                 (res2: ReadResource) => {
+                    this._valueOperationEventService.emit(
+                        new EmitEvent(Events.ValueUpdated, new UpdatedEventValues(
+                            this.displayValue, res2.getValues(this.displayValue.property)[0])));
+
                     this.displayValue = res2.getValues(this.displayValue.property)[0];
                     this.mode = 'read';
 
@@ -181,9 +200,7 @@ export class DisplayEditComponent implements OnInit {
      */
     openDialog() {
         const dialogData = new ConfirmationDialogData();
-        dialogData.title = 'Are you sure want to delete this value from ' + this.displayValue.propertyLabel + '?';
-        dialogData.message = 'Confirming this action will delete the following value from ' +
-                                this.displayValue.propertyLabel + ':<br/><br/>' + this._generateValueInfo();
+        dialogData.value = this.displayValue;
         dialogData.buttonTextOk = 'Yes, delete the value';
         dialogData.buttonTextCancel = 'No, keep the value';
 
@@ -215,7 +232,7 @@ export class DisplayEditComponent implements OnInit {
         this._dspApiConnection.v2.values.deleteValue(updateRes as UpdateResource<DeleteValue>).pipe(
         mergeMap((res: DeleteValueResponse) => {
             // emit a ValueDeleted event to the listeners in resource-view component to trigger an update of the UI
-            this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, deleteVal));
+            this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, new DeletedEventValue(deleteVal)));
             return res.result;
         })).subscribe();
     }
@@ -272,23 +289,6 @@ export class DisplayEditComponent implements OnInit {
     mouseLeave() {
         this.showActionBubble = false;
         this.backgroundColor = '';
-    }
-
-    /**
-     * Generate the message body for the confirmation dialog.
-     *
-     * @returns A string consisting of the values: value, comment, and creation date.
-     */
-    private _generateValueInfo(): string {
-        const value = this.displayValue.strval;
-        const comment = this.displayValue.valueHasComment ? this.displayValue.valueHasComment : 'No comment';
-        const creationDate = new Date(this.displayValue.valueCreationDate).toString();
-
-        const message = '<b>Value:</b> ' + value +
-                        '<br/><br/><b>Value Comment:</b> ' + comment +
-                        '<br/><br/><b>Value Creation Date:</b> ' + creationDate;
-
-        return message;
     }
 
 }

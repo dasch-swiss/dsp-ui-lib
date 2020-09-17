@@ -1,5 +1,101 @@
 # Changelog
 
+## v1.0.0-rc.7 (15/09/2020)
+
+#### Enhancements
+
+- [#172](https://github.com/dasch-swiss/dsp-ui-lib/pull/172) Show label for URI Value (if set)
+- [#168](https://github.com/dasch-swiss/dsp-ui-lib/pull/168) Message component timer
+
+#### Bug Fixes
+
+- [#171](https://github.com/dasch-swiss/dsp-ui-lib/pull/171) FIX: Delete Value UI Bug
+- [#169](https://github.com/dasch-swiss/dsp-ui-lib/pull/169) Search Panel: Advanced Search Not Displayed
+
+#### Dependencies
+
+- [#177](https://github.com/dasch-swiss/dsp-ui-lib/pull/177) fix: Update peer dependencies for js-lib
+
+#### Other
+
+- [#175](https://github.com/dasch-swiss/dsp-ui-lib/pull/175) Fix compareObjectTypeWithValueType Method
+- [#174](https://github.com/dasch-swiss/dsp-ui-lib/pull/174) Confirmation Dialog Message Subcomponent
+- [#170](https://github.com/dasch-swiss/dsp-ui-lib/pull/170) Rephrase "This source belongs to project" in the resource viewer
+- [#154](https://github.com/dasch-swiss/dsp-ui-lib/pull/154) Hide system ontologies
+
+---
+
+## v1.0.0-rc.6
+
+Not released because of a mistake on npm. We were not able to override the unpublished version `v1.0.0-rc.6`. 
+This is why we had to jump to next release candidate rc.7.
+
+---
+
+## v1.0.0-rc.5 (02/09/2020)
+
+#### Dependencies
+
+- [#166](https://github.com/dasch-swiss/dsp-ui-lib/pull/166) Update peer-dep for dsp-js lib
+
+#### Other
+
+- [#167](https://github.com/dasch-swiss/dsp-ui-lib/pull/167) Prerelease: 1.0.0-rc.5
+
+---
+
+## v1.0.0-rc.4 (02/09/2020)
+
+#### Enhancements
+
+- [#161](https://github.com/dasch-swiss/dsp-ui-lib/pull/161) Read mode date value era and calendar
+- [#160](https://github.com/dasch-swiss/dsp-ui-lib/pull/160) Emit link value when clicked on
+- [#159](https://github.com/dasch-swiss/dsp-ui-lib/pull/159) Make URI values clickable
+- [#155](https://github.com/dasch-swiss/dsp-ui-lib/pull/155) Experimental: Alternative approach to resource/property view UI buttons
+- [#153](https://github.com/dasch-swiss/dsp-ui-lib/pull/153) Error handling: submitting duplicate values
+- [#152](https://github.com/dasch-swiss/dsp-ui-lib/pull/152) List of properties: refactor and redesign
+- [#147](https://github.com/dasch-swiss/dsp-ui-lib/pull/147) Delete property value
+- [#150](https://github.com/dasch-swiss/dsp-ui-lib/pull/150) Action Module Confirmation Dialog Component
+
+#### Bug Fixes
+
+- [#162](https://github.com/dasch-swiss/dsp-ui-lib/pull/162) Export GND directive
+
+#### Other
+
+- [#165](https://github.com/dasch-swiss/dsp-ui-lib/pull/165) release(prerelease): 1.0.0-rc.4
+- [#164](https://github.com/dasch-swiss/dsp-ui-lib/pull/164) dsp-property-toolbar warnings in unit tests
+- [#156](https://github.com/dasch-swiss/dsp-ui-lib/pull/156) FIX: hide the add button for an XML text property
+
+---
+
+## v1.0.0-rc.3 (07/08/2020)
+
+#### Breaking changes
+
+- [#137](https://github.com/dasch-swiss/dsp-ui-lib/pull/137) Better data handling in search module components
+
+#### Enhancements
+
+- [#149](https://github.com/dasch-swiss/dsp-ui-lib/pull/149) Export operator.ts
+- [#146](https://github.com/dasch-swiss/dsp-ui-lib/pull/146) Add missing regex variables
+- [#139](https://github.com/dasch-swiss/dsp-ui-lib/pull/139) Create New Value V2
+
+#### Documentation
+
+- [#144](https://github.com/dasch-swiss/dsp-ui-lib/pull/144) Update CHANGELOG and READMEs
+
+#### Dependencies
+
+- [#151](https://github.com/dasch-swiss/dsp-ui-lib/pull/151) Update dsp-js-lib to version 1.0.0-rc.6
+
+#### Other
+
+- [#148](https://github.com/dasch-swiss/dsp-ui-lib/pull/148) Prerelease 1.0.0-rc.3
+- [#145](https://github.com/dasch-swiss/dsp-ui-lib/pull/145) Update process of release notes
+
+---
+
 ## v1.0.0-rc.2 (30/07/2020)
 
 #### Breaking changes:

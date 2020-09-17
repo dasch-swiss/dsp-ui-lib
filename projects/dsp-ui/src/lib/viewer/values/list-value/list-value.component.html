@@ -29,10 +29,10 @@
         <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
     </mat-error>
 </span>
-<div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <p class="rm-value">{{valueFormControl.value}}</p>
-    <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
-</div>
+<span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
+    <span class="rm-value">{{valueFormControl.value}}</span>
+    <span class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</span>
+</span>
 <ng-template #showForm>
     <span [formGroup]="form">
     <mat-form-field class="large-field child-value-component" *ngIf="mode === 'read'" floatLabel="never">

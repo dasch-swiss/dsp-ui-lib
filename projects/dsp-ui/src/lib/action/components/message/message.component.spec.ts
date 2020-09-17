@@ -1,6 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -11,7 +10,7 @@ import { StatusMsg } from '../../../../assets/i18n/statusMsg';
 import { DspMessageData, MessageComponent } from './message.component';
 
 /**
- * Test host component to simulate parent component with a progress bar.
+ * Test host component to simulate parent component.
  */
 @Component({
     template: `<dsp-message #message [message]="shortMessage" [short]="short"></dsp-message>`
@@ -37,7 +36,7 @@ class ShortMessageTestHostComponent implements OnInit {
 }
 
 /**
- * Test host component to simulate parent component with a progress bar.
+ * Test host component to simulate parent component.
  */
 @Component({
     template: `<dsp-message #message [message]="errorMessage" [short]="short"></dsp-message>`
@@ -61,12 +60,41 @@ class LongMessageTestHostComponent implements OnInit {
     ngOnInit() { }
 }
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `<dsp-message #message [message]="shortMessage" [short]="short" [duration]="2000"></dsp-message>`
+})
+class ShortMessageWithDurationTestHostComponent implements OnInit {
+
+    @ViewChild('message', { static: false }) messageComponent: MessageComponent;
+
+    shortMessage: DspMessageData = {
+        status: 200,
+        statusMsg: 'Success',
+        statusText: 'You just updated the user profile.',
+        type: 'Note',
+        footnote: 'Close it'
+    };
+
+    short = true;
+
+    constructor() {
+    }
+
+    ngOnInit() { }
+}
+
 describe('MessageComponent', () => {
     let shortMsgTestHostComponent: ShortMessageTestHostComponent;
     let shortMsgTestHostFixture: ComponentFixture<ShortMessageTestHostComponent>;
 
     let longMsgTestHostComponent: LongMessageTestHostComponent;
     let longMsgTestHostFixture: ComponentFixture<LongMessageTestHostComponent>;
+
+    let shortMsgDurationTestHostComponent: ShortMessageWithDurationTestHostComponent;
+    let shortMsgDurationTestHostFixture: ComponentFixture<ShortMessageWithDurationTestHostComponent>;
 
     let status: StatusMsg;
     let apiResonseError: ApiResponseError;
@@ -86,7 +114,8 @@ describe('MessageComponent', () => {
             declarations: [
                 MessageComponent,
                 ShortMessageTestHostComponent,
-                LongMessageTestHostComponent
+                LongMessageTestHostComponent,
+                ShortMessageWithDurationTestHostComponent
             ]
         }).compileComponents();
 
@@ -139,7 +168,8 @@ describe('MessageComponent', () => {
 
             expect(longMsgTestHostComponent.messageComponent.message.status).toEqual(403);
             expect(longMsgTestHostComponent.messageComponent.message.statusMsg).toEqual('Forbidden');
-            expect(longMsgTestHostComponent.messageComponent.message.statusText).toEqual('The request was a legal request, but the server is refusing to respond to it');
+            expect(longMsgTestHostComponent.messageComponent.message.statusText).toEqual(
+                'The request was a legal request, but the server is refusing to respond to it');
 
             const hostCompDe = longMsgTestHostFixture.debugElement;
 
@@ -151,8 +181,41 @@ describe('MessageComponent', () => {
 
             const messageTitleElement = messageEl.query(By.css('.message-title'));
 
-            expect(messageTitleElement.nativeElement.innerText).toEqual('The request was a legal request, but the server is refusing to respond to it');
+            expect(messageTitleElement.nativeElement.innerText).toEqual(
+                'The request was a legal request, but the server is refusing to respond to it');
 
         });
+    });
+
+    describe('display a short message with a duration of 2 seconds', () => {
+        beforeEach(() => {
+            shortMsgDurationTestHostFixture = TestBed.createComponent(ShortMessageWithDurationTestHostComponent);
+            shortMsgDurationTestHostComponent = shortMsgDurationTestHostFixture.componentInstance;
+            shortMsgDurationTestHostFixture.detectChanges();
+        });
+
+        it('should create', () => {
+            expect(shortMsgDurationTestHostComponent.messageComponent).toBeTruthy();
+        });
+
+        it('should display a short message', fakeAsync(() => {
+            expect(shortMsgDurationTestHostComponent.messageComponent).toBeTruthy();
+            expect(shortMsgDurationTestHostComponent.messageComponent.message.status).toEqual(200);
+            expect(shortMsgDurationTestHostComponent.messageComponent.message.statusMsg).toEqual('Success');
+
+            const hostCompDe = shortMsgDurationTestHostFixture.debugElement;
+
+            const messageEl = hostCompDe.query(By.directive(MessageComponent));
+
+            const spanShortMessageElement = messageEl.query(By.css('.dsp-short-message-text'));
+
+            expect(spanShortMessageElement.nativeElement.innerText).toEqual('You just updated the user profile.');
+
+            shortMsgDurationTestHostFixture.whenStable().then(() => {
+                console.log(shortMsgDurationTestHostComponent);
+
+                expect(shortMsgDurationTestHostComponent.messageComponent.disable).toBeTruthy();
+            });
+        }));
     });
 });

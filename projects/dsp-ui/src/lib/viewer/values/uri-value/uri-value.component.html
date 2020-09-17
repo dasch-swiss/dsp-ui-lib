@@ -1,9 +1,9 @@
-<div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <p class="rm-value">
-        <a class="link" target="_blank" href="{{valueFormControl.value}}">{{valueFormControl.value}}</a>
-    </p>
-    <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
-</div>
+<span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
+    <span class="rm-value">
+        <a class="link" target="_blank" href="{{valueFormControl.value}}">{{ label ? label : valueFormControl.value}}</a>
+    </span>
+    <span class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</span>
+</span>
 <ng-template #showForm>
     <span [formGroup]="form">
         <mat-form-field class="large-field child-value-component" floatLabel="never">
