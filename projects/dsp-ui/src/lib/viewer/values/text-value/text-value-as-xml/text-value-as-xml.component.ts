@@ -1,11 +1,11 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BaseValueComponent } from '../../base-value.component';
-import { Constants, CreateTextValueAsXml, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
+import { Constants, CreateTextValueAsXml, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import * as Editor from 'ckeditor5-custom-build';
-import { AppInitService } from '../../../../core';
+import { Subscription } from 'rxjs';
+import { AppInitService } from '../../../../core/app-init.service';
+import { BaseValueComponent } from '../../base-value.component';
+import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
 
 @Component({
     selector: 'dsp-text-value-as-xml',

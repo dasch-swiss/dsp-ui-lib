@@ -1,14 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TextValueAsXMLComponent } from './text-value-as-xml.component';
 import { Component, DebugElement, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
-import { MockResource, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
-import { CreateTextValueAsXml } from '@dasch-swiss/dsp-js/index';
-import { AppInitService } from '../../../../core';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreateTextValueAsXml, MockResource, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
+import { AppInitService } from 'projects/dsp-ui/src/lib/core/app-init.service';
+import { TextValueAsXMLComponent } from './text-value-as-xml.component';
 
 /**
  * Test host component to simulate parent component.
@@ -109,15 +108,15 @@ describe('TextValueAsXMLComponent', () => {
     const appInitServiceMock = {
         config: {
             xmlTransform: {
-                "http://rdfh.ch/standoff/mappings/StandardMapping": {
-                    "<hr>": "<hr/>",
-                    "</hr>": "",
-                    "<s>": "<strike>",
-                    "</s>": "</strike>",
-                    "<i>": "<em>",
-                    "</i>": "</em>",
-                    "<figure class=\"table\">": "",
-                    "</figure>": ""
+                'http://rdfh.ch/standoff/mappings/StandardMapping': {
+                    '<hr>': '<hr/>',
+                    '</hr>': '',
+                    '<s>': '<strike>',
+                    '</s>': '</strike>',
+                    '<i>': '<em>',
+                    '</i>': '</em>',
+                    '<figure class="table">': '',
+                    '</figure>': ''
                 }
             }
         }

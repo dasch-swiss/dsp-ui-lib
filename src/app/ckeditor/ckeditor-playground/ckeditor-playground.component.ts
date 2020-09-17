@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { TextValueAsXMLComponent } from '@dasch-swiss/dsp-ui/lib/viewer/values/text-value/text-value-as-xml/text-value-as-xml.component';
 import {
     KnoraApiConnection,
     ReadResource,
@@ -9,6 +8,7 @@ import {
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
+import { TextValueAsXMLComponent } from '@dasch-swiss/dsp-ui';
 import { mergeMap } from 'rxjs/operators';
 
 @Component({
