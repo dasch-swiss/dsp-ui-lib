@@ -5,64 +5,45 @@ on:
   release:
     types: [published]
 
-env:
-  KNORA_GDB_LICENSE: ${{ github.workspace }}/ci/graphdb/UNIBAS_DEV_GRAPHDB_SE_latest-31-12-2020_1cores.license
-  GRAPHDB_HEAP_SIZE: 4G
-
 jobs:
   build-test:
     name: Build and Test
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [12.x]
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm run test-lib
+    - name: Install dependencies
+      run: npm install
+    - name: Run unit tests (lib)
+      run: npm run test-lib
       env:
         TZ: Europe/Zurich
     - run: ./find-ignored-tests.sh
-    - run: npm run build-lib
-    - run: npm run build-app
+    - name: Build lib in dev mode
+      run: npm run build-lib-dev
+    - name: Build lib in prod mode
+      run: npm run build-lib
+    - name: Build app
+      run: npm run build-app
+    - name: Run unit tests (app)
     - run: npm run test
       env:
           TZ: Europe/Zurich
           CI: true
 
-  build-dev:
-    name: Build lib in dev mode
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm run build-lib-dev
-      - run: npm run build-app
-
-
   e2e-test:
     name: E2E Tests
+    needs: [build-test]
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [12.x]
-
     steps:
     - uses: actions/checkout@v2
     - name: Checkout private ci-assets
@@ -89,11 +70,20 @@ jobs:
   docker-build:
     name: Docker build
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - run: docker build .
 
+  update_release_draft:
+    name: Update next release draft
+    needs: [build-test, e2e-test]
+    runs-on: ubuntu-latest
+    # Drafts your next Release notes as Pull Requests are merged into "master"
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
   publish:
     name: Publish to npm / Update release notes
@@ -113,29 +103,20 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - run: npm install
-      - run: npm run build-lib
+      - name: Install dependencies
+        run: npm install
+      - name: Build lib in prod mode
+        run: npm run build-lib
+      - name: Get previous tag
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@master"
       - if: "github.event.release.prerelease"
         name: Publish pre-release to npm
-        run: cd ${{env.dist-directory}} && npm publish --tag rc --access public
+        run: cd ${{env.dist-directory}} && npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false && npm publish --tag rc --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - if: "!github.event.release.prerelease"
-        name: Publish release to npm
-        run: cd ${{env.dist-directory}} && npm publish --access public
+        run: cd ${{env.dist-directory}} && npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false && npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
-      - if: "github.event.release.prerelease"
-        name: Update pre-release notes
-        uses: lakto/gren-action@v2.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          options: '--override --prerelease'
-      - if: "!github.event.release.prerelease"
-        name: Update release notes
-        uses: lakto/gren-action@v2.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          options: '--override'
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
