@@ -132,6 +132,32 @@ The value component's selector is chosen from `valueTypeOrClass`. Since all valu
 Value components may have additional specific inputs for configuration that can be handled in `DisplayEditComponent`'s template as well
 ,e.g., additional configuration of how do display a date.
 
+#### Integration of CKEditor
+
+To edit XML, the viewer module relies on CKEditor. `TextValueAsXMLComponent` integrates the CKEditor library for Angular.
+In addition, a custom build of CKEditor is needed which is accessible on [GitHub](https://github.com/dasch-swiss/ckeditor_custom_build).
+To make a new custom build, follow the [instructions](https://github.com/dasch-swiss/ckeditor_custom_build/blob/master/how-to-build.md).
+To add support for a specific mapping, a configuration object has to be added to the config file such as in the following example:
+
+```json
+  "xmlTransform": {
+    "http://rdfh.ch/standoff/mappings/StandardMapping": {
+      "<hr>": "<hr/>",
+      "</hr>": "",
+      "<s>": "<strike>",
+      "</s>": "</strike>",
+      "<i>": "<em>",
+      "</i>": "</em>",
+      "<figure class=\"table\">": "",
+      "</figure>": ""
+    }
+  }
+```
+
+The tags on the left will be replaced with the tags on the right,
+e.g. CKEditor's `<s>` will be converted to a `<strike` which is expected by Knora.
+Note that this is a simple search-and-replace algorithm which does not make use of an XML parser.
+
 ## Search Module
 
 The search module allows different ways of searching in order to make simple or complex searches in DSP-API.
