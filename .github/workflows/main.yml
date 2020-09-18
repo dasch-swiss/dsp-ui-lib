@@ -13,27 +13,27 @@ jobs:
       matrix:
         node-version: [12.x]
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install dependencies
-      run: npm install
-    - name: Run unit tests (lib)
-      run: npm run test-lib
-      env:
-        TZ: Europe/Zurich
-    - run: ./find-ignored-tests.sh
-    - name: Build lib in dev mode
-      run: npm run build-lib-dev
-    - name: Build lib in prod mode
-      run: npm run build-lib
-    - name: Build app
-      run: npm run build-app
-    - name: Run unit tests (app)
-    - run: npm run test
-      env:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm install
+      - name: Run unit tests (lib)
+        run: npm run test-lib
+        env:
+          TZ: Europe/Zurich
+      - run: ./find-ignored-tests.sh
+      - name: Build lib in dev mode
+        run: npm run build-lib-dev
+      - name: Build lib in prod mode
+        run: npm run build-lib
+      - name: Build app
+        run: npm run build-app
+      - name: Run unit tests (app)
+      - run: npm run test
+        env:
           TZ: Europe/Zurich
           CI: true
 
@@ -45,34 +45,34 @@ jobs:
       matrix:
         node-version: [12.x]
     steps:
-    - uses: actions/checkout@v2
-    - name: Checkout private ci-assets
-      uses: actions/checkout@v2
-      with:
-        repository: dasch-swiss/dsp-ci-assets
-        token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
-        path: ci
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm run build-lib
-    - run: |
-        make clone-knora-stack
-        make knora-stack
-    - run: npm run webdriver-update
-    - run: npm run e2e
-      env:
-        TZ: Europe/Zurich
-        CI: true
+      - uses: actions/checkout@v2
+      - name: Checkout private ci-assets
+        uses: actions/checkout@v2
+        with:
+          repository: dasch-swiss/dsp-ci-assets
+          token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
+          path: ci
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run build-lib
+      - run: |
+          make clone-knora-stack
+          make knora-stack
+      - run: npm run webdriver-update
+      - run: npm run e2e
+        env:
+          TZ: Europe/Zurich
+          CI: true
 
   docker-build:
     name: Docker build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: docker build .
+      - uses: actions/checkout@v2
+      - run: docker build .
 
   update_release_draft:
     name: Update next release draft
@@ -119,4 +119,3 @@ jobs:
         run: cd ${{env.dist-directory}} && npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-
