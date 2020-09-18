@@ -24,7 +24,8 @@ jobs:
         run: npm run test-lib
         env:
           TZ: Europe/Zurich
-      - run: ./find-ignored-tests.sh
+      - name: Find ignored tests
+        run: ./find-ignored-tests.sh
       - name: Build lib in dev mode
         run: npm run build-lib-dev
       - name: Build lib in prod mode
@@ -32,7 +33,7 @@ jobs:
       - name: Build app
         run: npm run build-app
       - name: Run unit tests (app)
-      - run: npm run test
+        run: npm run test
         env:
           TZ: Europe/Zurich
           CI: true
@@ -56,9 +57,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm run build-lib
-      - run: |
+      - name: Install dependencies
+        run: npm install
+      - name: Build lib in prod mode
+        run: npm run build-lib
+      - name: Run knora stack
+        run: |
           make clone-knora-stack
           make knora-stack
       - run: npm run webdriver-update
@@ -86,7 +90,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
   publish:
-    name: Publish to npm / Update release notes
+    name: Publish to npm
     needs: [build-test, e2e-test]
     runs-on: ubuntu-latest
     env:
