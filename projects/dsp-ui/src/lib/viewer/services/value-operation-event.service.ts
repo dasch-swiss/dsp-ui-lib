@@ -1,6 +1,7 @@
 import { DeleteValue, ReadValue } from '@dasch-swiss/dsp-js';
 import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
 
 /**
  * https://stackoverflow.com/questions/56290722/how-pass-a-event-from-deep-nested-child-to-parent-in-angular-2
@@ -9,6 +10,7 @@ import { filter, map } from 'rxjs/operators';
  * The ValueOperationEventService essentially creates a direct communication channel between
  * the emitting component and the listening component.
  */
+@Injectable()
 export class ValueOperationEventService {
 
     // Create a subject to hold data which can be subscribed to.
