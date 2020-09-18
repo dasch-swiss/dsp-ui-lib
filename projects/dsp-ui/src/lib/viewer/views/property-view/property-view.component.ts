@@ -85,10 +85,8 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      * Called from the template when the user clicks on the add button
      */
     showAddValueForm(prop: PropertyInfoValues) {
-
         this.propID = prop.propDef.id;
         this.addValueFormIsVisible = true;
-
     }
 
     /**
@@ -98,5 +96,25 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
         this.addValueFormIsVisible = false;
         this.addButtonIsVisible = true;
         this.propID = undefined;
+    }
+
+    /**
+     * Given a resource property, check if an add button should be displayed under the property values
+     *
+     * @param prop the resource property
+     */
+    addValueIsAllowed(prop: PropertyInfoValues): boolean {
+        // check if cardinality allows for a value to be added
+        if (prop.guiDef.cardinality !== 1 ||
+            prop.guiDef.cardinality === 1 && prop.values.length === 0) {
+
+            // check that the value component does not already have an add value form open
+            // and that the user has write permissions
+            if (this.propID !== prop.propDef.id && this.addButtonIsVisible) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

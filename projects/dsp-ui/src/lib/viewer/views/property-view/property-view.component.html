@@ -36,14 +36,7 @@
                     </div>
                     <!-- Add button -->
                     <!-- temporary hack to hide add button for an XML value -->
-                    <!-- ngIf:
-                         - user has write permissions
-                         - the property does not have a cardinality of 0-1 (enum for this case is 1) or if the property does have this cardinility, ensure there isn't already a value
-                         - the property id is not the same as a property with a add-value component currently open to prevent users from continuously opening add-value forms on the same property -->
-                    <div *ngIf="prop.guiDef.propertyIndex !== 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext' &&
-                        addButtonIsVisible &&
-                        (prop.guiDef.cardinality !== 1  || prop.guiDef.cardinality === 1 && prop.values.length === 0 ) &&
-                        propID !== prop.propDef.id">
+                    <div *ngIf="addValueIsAllowed(prop) && prop.guiDef.propertyIndex !== 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext'">
                         <button class="create" (click)="showAddValueForm(prop)" title="Add a new value">
                             <mat-icon>add_box</mat-icon>
                         </button>
