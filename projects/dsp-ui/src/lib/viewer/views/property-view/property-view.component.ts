@@ -1,4 +1,3 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
     Component,
     Input,
@@ -6,7 +5,7 @@ import {
     OnInit,
     ViewChild
 } from '@angular/core';
-import { PermissionUtil, ReadResource, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
+import { CardinalityUtil, PermissionUtil, ReadResource, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
@@ -104,15 +103,15 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      * @param prop the resource property
      */
     addValueIsAllowed(prop: PropertyInfoValues): boolean {
-        // check if cardinality allows for a value to be added
-        if (prop.guiDef.cardinality !== 1 ||
-            prop.guiDef.cardinality === 1 && prop.values.length === 0) {
+        const isAllowed = CardinalityUtil.createValueForPropertyAllowed(
+            prop.propDef.id, prop.values.length, this.parentResource.entityInfo.classes[this.parentResource.type]);
 
-            // check that the value component does not already have an add value form open
-            // and that the user has write permissions
-            if (this.propID !== prop.propDef.id && this.addButtonIsVisible) {
-                return true;
-            }
+        // check if:
+        // cardinality allows for a value to be added
+        // value component does not already have an add value form open
+        // user has write permissions
+        if (isAllowed && this.propID !== prop.propDef.id && this.addButtonIsVisible) {
+            return true;
         }
 
         return false;
