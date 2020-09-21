@@ -267,6 +267,12 @@ A new version will be published with each github release as it's part of Github 
   - `release-patch`                  updates version to next PATCH version e.g. from 3.0.0 to 3.0.1
 - The make command will commit and push to github (you have to fill in your GitHub username and password to log when you do not use any [github token](https://docs.github.com/en/enterprise/2.15/user/articles/creating-a-personal-access-token-for-the-command-line))
 - Update README and CHANGELOG if necessary and commit the changes (currently, the CHANGELOG has to be updated manually)
+
+- Be sure that all dependencies to DSP-JS-LIB and DSP-API are set to the correct version:
+  - Update DSP-API version in `Makefile`
+  - Update DSP-JS version in `package.json` and run `npm install` to update the `package-lock.json`
+  - Update DSP-JS version in section `peerDependencies` of `projects/dsp-ui/package.json`
+
 - Create new pull request and merge into master
 - Draft new release on Github. This will build, test and publish the new package on npm. Additional it creates / overrides release notes on Github. Fill in:
   - the tag version, the release title (same name)
