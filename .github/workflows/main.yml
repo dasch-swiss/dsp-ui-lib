@@ -40,7 +40,6 @@ jobs:
 
   e2e-test:
     name: E2E Tests
-    needs: [build-test]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -74,7 +73,6 @@ jobs:
 
   docker-build:
     name: Docker build
-    needs: [e2e-test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
