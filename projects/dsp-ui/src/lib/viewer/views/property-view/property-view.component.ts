@@ -116,10 +116,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
         // cardinality allows for a value to be added
         // value component does not already have an add value form open
         // user has write permissions
-        if (isAllowed && this.propID !== prop.propDef.id && this.addButtonIsVisible) {
-            return true;
-        }
-
-        return false;
+        return isAllowed && this.propID !== prop.propDef.id && this.addButtonIsVisible;
     }
 }
