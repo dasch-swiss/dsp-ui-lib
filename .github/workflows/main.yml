@@ -20,12 +20,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: npm install
+      - name: Find ignored tests
+        run: ./find-ignored-tests.sh
       - name: Run unit tests (lib)
         run: npm run test-lib
         env:
           TZ: Europe/Zurich
-      - name: Find ignored tests
-        run: ./find-ignored-tests.sh
       - name: Build lib in dev mode
         run: npm run build-lib-dev
       - name: Build lib in prod mode
@@ -37,22 +37,6 @@ jobs:
         env:
           TZ: Europe/Zurich
           CI: true
-
-  build-dev:
-    name: Build lib in dev mode
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm run build-lib-dev
-      - run: npm run build-app
 
   e2e-test:
     name: E2E Tests
@@ -82,13 +66,15 @@ jobs:
           make clone-knora-stack
           make knora-stack
       - run: npm run webdriver-update
-      - run: npm run e2e
+      - name: Run e2e tests
+        run: npm run e2e
         env:
           TZ: Europe/Zurich
           CI: true
 
   docker-build:
     name: Docker build
+    needs: [e2e-test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -112,11 +98,6 @@ jobs:
     env:
       dist-directory: ./dist/@dasch-swiss/dsp-ui/
     if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags')
-    # additional if condition: compare tag with package.json version
-    # - name: Get the version
-    # id: get_version
-    # run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-    # --> solution from https://github.community/t5/GitHub-Actions/How-to-get-just-the-tag-name/td-p/31595
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
