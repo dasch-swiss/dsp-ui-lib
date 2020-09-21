@@ -217,9 +217,31 @@ describe('PropertyViewComponent', () => {
             testHostFixture.detectChanges();
         });
 
-        it('should show an add button under each property that has a value component and for which the cardinality is not 1', () => {
+        it('should show an add button under each property that has a value component and value and appropriate cardinality', () => {
             const addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
             expect(addButtons.length).toEqual(13);
+
+        });
+
+        it('should show an add button under a property with a cardinality of 1 and does not have a value', () => {
+
+            // show all properties so that we can access properties with no values
+            testHostComponent.showAllProps = true;
+            testHostFixture.detectChanges();
+
+            let addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
+
+            // current amount of buttons should equal 18 because the boolean property shouldn't have an add button if it has a value
+            expect(addButtons.length).toEqual(18);
+
+            // remove value from the boolean property
+            testHostComponent.propArray[9].values = [];
+
+            testHostFixture.detectChanges();
+
+            // now the boolean property should have an add button so the amount of add buttons on the page should increase by 1
+            addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
+            expect(addButtons.length).toEqual(19);
 
         });
 

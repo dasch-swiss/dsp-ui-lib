@@ -1,4 +1,3 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
     Component,
     Input,
@@ -6,7 +5,7 @@ import {
     OnInit,
     ViewChild
 } from '@angular/core';
-import { PermissionUtil, ReadResource, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
+import { CardinalityUtil, PermissionUtil, ReadResource, ResourcePropertyDefinition, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
@@ -53,7 +52,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     addButtonIsVisible: boolean; // used to toggle add value button
     addValueFormIsVisible: boolean; // used to toggle add value form field
     propID: string; // used in template to show only the add value form of the corresponding value
-    readOnlyProp: boolean; // used in template to not show an "add" button for properties we do not yet have a way to create/edit
 
     valueOperationEventSubscription: Subscription;
 
@@ -86,10 +84,8 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      * Called from the template when the user clicks on the add button
      */
     showAddValueForm(prop: PropertyInfoValues) {
-
         this.propID = prop.propDef.id;
         this.addValueFormIsVisible = true;
-
     }
 
     /**
@@ -99,5 +95,27 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
         this.addValueFormIsVisible = false;
         this.addButtonIsVisible = true;
         this.propID = undefined;
+    }
+
+    /**
+     * Given a resource property, check if an add button should be displayed under the property values
+     *
+     * @param prop the resource property
+     */
+    addValueIsAllowed(prop: PropertyInfoValues): boolean {
+        // temporary until CkEditor is integrated
+        const guiElement = (prop.propDef as ResourcePropertyDefinition).guiElement;
+        if (guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
+            return false;
+        }
+
+        const isAllowed = CardinalityUtil.createValueForPropertyAllowed(
+            prop.propDef.id, prop.values.length, this.parentResource.entityInfo.classes[this.parentResource.type]);
+
+        // check if:
+        // cardinality allows for a value to be added
+        // value component does not already have an add value form open
+        // user has write permissions
+        return isAllowed && this.propID !== prop.propDef.id && this.addButtonIsVisible;
     }
 }
