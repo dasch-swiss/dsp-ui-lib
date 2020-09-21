@@ -18,9 +18,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { DspActionModule } from '../action';
+import { DspActionModule } from '../action/action.module';
 import { AddValueComponent } from './operations/add-value/add-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { StillImageComponent } from './representation/still-image/still-image.component';
@@ -41,6 +42,7 @@ import { ListValueComponent } from './values/list-value/list-value.component';
 import { SublistValueComponent } from './values/list-value/subList-value/sublist-value.component';
 import { TextValueAsHtmlComponent } from './values/text-value/text-value-as-html/text-value-as-html.component';
 import { TextValueAsStringComponent } from './values/text-value/text-value-as-string/text-value-as-string.component';
+import { TextValueAsXMLComponent } from './values/text-value/text-value-as-xml/text-value-as-xml.component';
 import { TimeInputComponent } from './values/time-value/time-input/time-input.component';
 import { TimeValueComponent } from './values/time-value/time-value.component';
 import { UriValueComponent } from './values/uri-value/uri-value.component';
@@ -50,6 +52,7 @@ import { ResourceListComponent } from './views/list-view/resource-list/resource-
 import { PropertyToolbarComponent } from './views/property-view/property-toolbar/property-toolbar.component';
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
+
 
 @NgModule({
     declarations: [
@@ -73,6 +76,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         PropertyToolbarComponent,
         PropertyViewComponent,
         ResourceGridComponent,
+        TextValueAsXMLComponent,
         ResourceListComponent,
         ResourceViewComponent,
         StillImageComponent,
@@ -105,6 +109,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         MatSelectModule,
         MatSnackBarModule,
         MatToolbarModule,
+        CKEditorModule,
         MatTooltipModule,
         ReactiveFormsModule
     ],
@@ -124,9 +129,10 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         ListViewComponent,
         PropertyViewComponent,
         ResourceGridComponent,
+        StillImageComponent,
+        TextValueAsXMLComponent,
         ResourceListComponent,
         ResourceViewComponent,
-        StillImageComponent,
         TextValueAsHtmlComponent,
         TextValueAsStringComponent,
         TimeValueComponent,

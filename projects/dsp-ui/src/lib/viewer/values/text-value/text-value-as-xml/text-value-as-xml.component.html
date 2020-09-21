@@ -1,0 +1,18 @@
+<div *ngIf="editor; else noConfig" [formGroup]="form">
+    <ckeditor formControlName="xmlValue" [config]="editorConfig" [editor]="editor"></ckeditor>
+    <mat-form-field class="large-field value-component-comment">
+            <textarea matInput
+                      cdkTextareaAutosize
+                      cdkAutosizeMinRows="1"
+                      cdkAutosizeMaxRows="6"
+                      [formControlName]="'comment'"
+                      class="comment"
+                      placeholder="Comment"
+                      type="text"
+                      spellcheck="false">
+            </textarea>
+    </mat-form-field>
+</div>
+<ng-template #noConfig>
+    No mapping or apt configuration was provided for "xmlTransform" in the app's configuration object.
+</ng-template>
