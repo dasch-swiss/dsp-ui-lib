@@ -35,8 +35,7 @@
                         </dsp-add-value>
                     </div>
                     <!-- Add button -->
-                    <!-- temporary hack to hide add button for an XML value -->
-                    <div *ngIf="addValueIsAllowed(prop) && prop.guiDef.propertyIndex !== 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext'">
+                    <div *ngIf="addValueIsAllowed(prop)">
                         <button class="create" (click)="showAddValueForm(prop)" title="Add a new value">
                             <mat-icon>add_box</mat-icon>
                         </button>

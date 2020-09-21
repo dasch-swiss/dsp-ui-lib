@@ -5,7 +5,7 @@ import {
     OnInit,
     ViewChild
 } from '@angular/core';
-import { CardinalityUtil, PermissionUtil, ReadResource, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
+import { CardinalityUtil, PermissionUtil, ReadResource, ResourcePropertyDefinition, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
@@ -103,6 +103,12 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      * @param prop the resource property
      */
     addValueIsAllowed(prop: PropertyInfoValues): boolean {
+        // temporary until CkEditor is integrated
+        const guiElement = (prop.propDef as ResourcePropertyDefinition).guiElement;
+        if (guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
+            return false;
+        }
+
         const isAllowed = CardinalityUtil.createValueForPropertyAllowed(
             prop.propDef.id, prop.values.length, this.parentResource.entityInfo.classes[this.parentResource.type]);
 
