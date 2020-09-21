@@ -38,6 +38,22 @@ jobs:
           TZ: Europe/Zurich
           CI: true
 
+  build-dev:
+    name: Build lib in dev mode
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run build-lib-dev
+      - run: npm run build-app
+
   e2e-test:
     name: E2E Tests
     needs: [build-test]
