@@ -1,0 +1,7 @@
+@import "../../../../../assets/style/viewer";
+
+// styles for CKEDITOR
+
+::ng-deep .ck-content code {
+  font-family: monospace;
+}
