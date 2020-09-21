@@ -6,16 +6,8 @@
         <mat-form-field class="start child-input-component">
             <span class="calendar">{{startDateControl.value?.calendarName}}</span>
             <dsp-jdn-datepicker [activeCalendar]="startDateControl.value?.calendarName">
+                <mat-label>Choose a start date</mat-label>
                 <input matInput [matDatepicker]="picker1" [formControlName]="'dateStart'" (dateChange)="_handleInput()" [errorStateMatcher]="matcher" readonly placeholder="Start">
-                <mat-error *ngIf="startDateControl.hasError('required')">
-                    <span class="custom-error-message">Start date is <strong>required</strong></span>
-                </mat-error>
-                <mat-error *ngIf="startDateControl.hasError('sameCalendarRequired')">
-                    <span class="custom-error-message">In a period, start and end date must use the same <strong>calendar</strong></span>
-                </mat-error>
-                <mat-error *ngIf="startDateControl.hasError('periodStartEnd')">
-                    <span class="custom-error-message">In a period, start must be <strong>before end</strong></span>
-                </mat-error>
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1 [calendarHeaderComponent]="calendarHeaderComponent"></mat-datepicker>
             </dsp-jdn-datepicker>
@@ -23,10 +15,20 @@
         <mat-form-field *ngIf="isPeriodControl.value" class="end child-input-component">
             <span class="calendar">{{endDateControl.value?.calendarName}}</span>
             <dsp-jdn-datepicker [activeCalendar]="endDateControl.value?.calendarName">
+                <mat-label>Choose an end date</mat-label>
                 <input matInput [matDatepicker]="picker2" [formControlName]="'dateEnd'" (dateChange)="_handleInput()" readonly placeholder="End">
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2 [calendarHeaderComponent]="calendarHeaderComponent"></mat-datepicker>
             </dsp-jdn-datepicker>
         </mat-form-field>
+        <mat-error *ngIf="startDateControl.hasError('required')">
+            <span class="custom-error-message">Start date is <strong>required</strong></span>
+        </mat-error>
+        <mat-error *ngIf="startDateControl.hasError('sameCalendarRequired')">
+            <span class="custom-error-message">In a period, start and end date must use the same <strong>calendar</strong></span>
+        </mat-error>
+        <mat-error *ngIf="startDateControl.hasError('periodStartEnd')">
+            <span class="custom-error-message">In a period, start must be <strong>before end</strong></span>
+        </mat-error>
     </div>
 </div>
