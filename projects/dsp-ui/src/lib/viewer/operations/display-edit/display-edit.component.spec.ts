@@ -15,6 +15,7 @@ import {
     DeleteValue,
     DeleteValueResponse,
     MockResource,
+    MockUsers,
     ReadBooleanValue,
     ReadColorValue,
     ReadDecimalValue,
@@ -33,6 +34,7 @@ import {
     UpdateIntValue,
     UpdateResource,
     UpdateValue,
+    UsersEndpointAdmin,
     ValuesEndpointV2,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
@@ -270,9 +272,12 @@ describe('DisplayEditComponent', () => {
   beforeEach(async(() => {
 
     const valuesSpyObj = {
-      v2: {
-        values: jasmine.createSpyObj('values', ['updateValue', 'getValue', 'deleteValue'])
-      }
+        admin: {
+            usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUserByIri'])
+        },
+        v2: {
+            values: jasmine.createSpyObj('values', ['updateValue', 'getValue', 'deleteValue'])
+        }
     };
 
     const eventSpy = jasmine.createSpyObj('ValueOperationEventService', ['emit']);
@@ -327,6 +332,17 @@ describe('DisplayEditComponent', () => {
   }));
 
   beforeEach(() => {
+
+    const adminSpy = TestBed.inject(DspApiConnectionToken);
+
+    // mock getUserByIri response
+    (adminSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUserByIri.and.callFake(
+        () => {
+            const user = MockUsers.mockUser();
+            return of(user);
+        }
+    );
+
     testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
     testHostComponent = testHostFixture.componentInstance;
     testHostFixture.detectChanges();
