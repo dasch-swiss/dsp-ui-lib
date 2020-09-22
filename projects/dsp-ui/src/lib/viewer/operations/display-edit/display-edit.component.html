@@ -22,12 +22,12 @@
                         [propertyDef]="$any(parentResource.entityInfo.properties[displayValue.property])"></dsp-list-value>
             <span *ngSwitchDefault>{{displayValue.strval}}</span>
         </span>
-        <div class="action-bubble" *ngIf="!readOnlyValue && showActionBubble && !editModeActive" [@simpleFadeAnimation]="'in'">
+        <div class="action-bubble" *ngIf="showActionBubble && !editModeActive" [@simpleFadeAnimation]="'in'">
             <div class="button-container">
                 <button mat-button
                         class="edit"
                         title="edit"
-                        *ngIf="canModify && !editModeActive"
+                        *ngIf="!readOnlyValue && canModify && !editModeActive"
                         (click)="activateEditMode()">
                     <mat-icon>edit</mat-icon>
                 </button>
@@ -47,7 +47,7 @@
                 <button mat-button
                         class="delete"
                         title="delete"
-                        *ngIf="canModify && !editModeActive"
+                        *ngIf="!readOnlyValue && canModify && !editModeActive"
                         (click)="openDialog()">
                     <mat-icon>delete</mat-icon>
                 </button>

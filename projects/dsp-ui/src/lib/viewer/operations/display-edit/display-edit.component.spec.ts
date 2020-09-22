@@ -8,6 +8,7 @@ import { MatButtonHarness } from '@angular/material/button/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -286,7 +287,8 @@ describe('DisplayEditComponent', () => {
       imports: [
         BrowserAnimationsModule,
         MatIconModule,
-        MatDialogModule
+        MatDialogModule,
+        MatTooltipModule
       ],
       declarations: [
         DisplayEditComponent,
