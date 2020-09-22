@@ -20,8 +20,7 @@
 <ng-template #showForm>
     <span [formGroup]="form">
         <mat-form-field class="large-field child-value-component" floatLabel="never">
-            <dsp-date-input #dateInput [formControlName]="'dateValue'" class="value" placeholder="Date value"
-                [errorStateMatcher]="matcher"></dsp-date-input>
+            <dsp-date-input #dateInput [formControlName]="'dateValue'" class="value" [errorStateMatcher]="matcher"></dsp-date-input>
                 <mat-error *ngIf="form.controls.dateValue.hasError('valueNotChanged')">
                     <span class="custom-error-message">New value must be different than the current value.</span>
                 </mat-error>
