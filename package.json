@@ -1,6 +1,5 @@
 {
   "name": "dsp-ui-lib",
-  "version": "1.0.0-rc.7",
   "description": "Angular library to easily create a Knora/DSP user interface",
   "repository": {
     "type": "git",
@@ -48,7 +47,7 @@
     "@angular/router": "~9.1.2",
     "@ckeditor/ckeditor5-angular": "^1.2.3",
     "ckeditor5-custom-build": "github:dasch-swiss/ckeditor_custom_build",
-    "@dasch-swiss/dsp-js": "1.0.0-rc.11",
+    "@dasch-swiss/dsp-js": "1.0.0-rc.12",
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.13",
     "ngx-color-picker": "^9.1.0",
