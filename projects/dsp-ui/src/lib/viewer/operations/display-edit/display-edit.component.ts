@@ -138,8 +138,8 @@ export class DisplayEditComponent implements OnInit {
     }
 
     getTooltipText(): string {
-        return 'Value creation date: ' + this.displayValue.valueCreationDate +
-            '\n Attached to user: ' + this.user?.givenName + ' ' + this.user?.familyName;
+        return 'Creation date: ' + this.displayValue.valueCreationDate +
+            '\n Value creator: ' + this.user?.givenName + ' ' + this.user?.familyName;
     }
 
     /**
