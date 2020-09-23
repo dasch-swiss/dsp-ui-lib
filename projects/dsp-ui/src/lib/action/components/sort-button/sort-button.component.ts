@@ -74,7 +74,7 @@ export class SortButtonComponent implements OnInit {
      */
     sortBy(key: string) {
         this.activeKey = (key ? key : this.sortProps[0].key);
-        this.sortKeyChange.emit(key);
+        this.sortKeyChange.emit(this.activeKey);
     }
 
 }
