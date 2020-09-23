@@ -135,7 +135,10 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                 );
 
                 // sort properties by guiOrder
-                this.resPropInfoVals.sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
+                this.resPropInfoVals =
+                    this.resPropInfoVals
+                        .filter(prop => prop.propDef.objectType !== 'http://api.knora.org/ontology/knora-api/v2#GeomValue')
+                        .sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
 
                 // get system property information
                 this.systemPropDefs = this.resource.entityInfo.getPropertyDefinitionsByType(SystemPropertyDefinition);
