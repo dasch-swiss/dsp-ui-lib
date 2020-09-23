@@ -110,6 +110,10 @@
         }
       }
 
+      button.info {
+        cursor: default;
+      }
+
       button:hover {
         background-color: #c7c7c7;
       }
@@ -135,8 +139,8 @@
   grid-column-end: end;
 }
 
-.save,
-.cancel {
+button.save,
+button.cancel {
   cursor: pointer;
   border: none;
   padding: 0em;
@@ -146,19 +150,17 @@
   color: #000000;
 }
 
-.save:disabled {
+button.save:disabled {
   color: #adadad;
   cursor: default;
 }
 
-.save .material-icons,
-.cancel .material-icons {
+button.save .material-icons,
+button.cancel .material-icons {
   font-size: 18px;
 }
 
-.save .mat-icon,
-.cancel .mat-icon {
-  width: 18px;
-  height: 18px;
+button.save .mat-icon,
+button.cancel .mat-icon {
+  font-size: 18px;
 }
-
