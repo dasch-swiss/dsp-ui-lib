@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import {
     ApiResponseError,
+    Constants,
     DeleteValue,
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
@@ -28,7 +29,6 @@ import {
     ValueOperationEventService
 } from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
-
 
 // object of property information from ontology class, properties and property values
 export interface PropertyInfoValues {
@@ -137,7 +137,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                 // sort properties by guiOrder
                 this.resPropInfoVals =
                     this.resPropInfoVals
-                        .filter(prop => prop.propDef.objectType !== 'http://api.knora.org/ontology/knora-api/v2#GeomValue')
+                        .filter(prop => prop.propDef.objectType !== Constants.GeomValue)
                         .sort((a, b) => (a.guiDef.guiOrder > b.guiDef.guiOrder) ? 1 : -1);
 
                 // get system property information
