@@ -1,39 +1,5 @@
 # Changelog
 
-## v1.0.0-rc.8 (22/09/2020)
-
-## Enhancements
-
-- #134 Add CKeditor
-
-## Styling
-
-- #185 Date & Interval Components: Remove Parent Input Placeholder
-- #180 Message Component Css
-
-## Bug fixes
-
-- #182 FIX: Boolean add button
-
-## Documentation
-
-- #181 test: Update api version
-- #179 docs: Update CHANGELOG
-
-## Dependencies
-
-- #181 test: Update api version
-
-## Maintenance
-
-- #183 DSP-619 Update release process
-
-## Testing
-
-- #181 test: Update api version
-
----
-
 ## v1.0.0-rc.7 (15/09/2020)
 
 #### Enhancements
@@ -56,6 +22,13 @@
 - [#174](https://github.com/dasch-swiss/dsp-ui-lib/pull/174) Confirmation Dialog Message Subcomponent
 - [#170](https://github.com/dasch-swiss/dsp-ui-lib/pull/170) Rephrase "This source belongs to project" in the resource viewer
 - [#154](https://github.com/dasch-swiss/dsp-ui-lib/pull/154) Hide system ontologies
+
+---
+
+## v1.0.0-rc.6
+
+Not released because of a mistake on npm. We were not able to override the unpublished version `v1.0.0-rc.6`. 
+This is why we had to jump to next release candidate rc.7.
 
 ---
 
