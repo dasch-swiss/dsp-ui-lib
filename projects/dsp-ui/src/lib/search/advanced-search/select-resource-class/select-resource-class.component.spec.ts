@@ -170,7 +170,7 @@ describe('SelectResourceClassComponent', () => {
 
         await options[0].click();
 
-        expect(testHostComponent.selectedResClassIri).toBe(null);
+        expect(testHostComponent.selectedResClassIri).toEqual(undefined);
 
         expect(testHostComponent.selectResourceClass.selectedResourceClassIri).toBe(false);
 
