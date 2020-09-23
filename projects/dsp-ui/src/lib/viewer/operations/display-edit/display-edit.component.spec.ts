@@ -8,6 +8,7 @@ import { MatButtonHarness } from '@angular/material/button/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -15,6 +16,7 @@ import {
     DeleteValue,
     DeleteValueResponse,
     MockResource,
+    MockUsers,
     ReadBooleanValue,
     ReadColorValue,
     ReadDecimalValue,
@@ -33,6 +35,7 @@ import {
     UpdateIntValue,
     UpdateResource,
     UpdateValue,
+    UsersEndpointAdmin,
     ValuesEndpointV2,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
@@ -270,9 +273,12 @@ describe('DisplayEditComponent', () => {
   beforeEach(async(() => {
 
     const valuesSpyObj = {
-      v2: {
-        values: jasmine.createSpyObj('values', ['updateValue', 'getValue', 'deleteValue'])
-      }
+        admin: {
+            usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUserByIri'])
+        },
+        v2: {
+            values: jasmine.createSpyObj('values', ['updateValue', 'getValue', 'deleteValue'])
+        }
     };
 
     const eventSpy = jasmine.createSpyObj('ValueOperationEventService', ['emit']);
@@ -281,7 +287,8 @@ describe('DisplayEditComponent', () => {
       imports: [
         BrowserAnimationsModule,
         MatIconModule,
-        MatDialogModule
+        MatDialogModule,
+        MatTooltipModule
       ],
       declarations: [
         DisplayEditComponent,
@@ -327,6 +334,17 @@ describe('DisplayEditComponent', () => {
   }));
 
   beforeEach(() => {
+
+    const adminSpy = TestBed.inject(DspApiConnectionToken);
+
+    // mock getUserByIri response
+    (adminSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUserByIri.and.callFake(
+        () => {
+            const user = MockUsers.mockUser();
+            return of(user);
+        }
+    );
+
     testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
     testHostComponent = testHostFixture.componentInstance;
     testHostFixture.detectChanges();
