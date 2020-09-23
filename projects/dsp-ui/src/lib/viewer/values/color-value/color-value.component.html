@@ -17,7 +17,6 @@
                 #colorInput
                 [formControlName]="'colorValue'"
                 class="value"
-                placeholder="Color value"
                 [errorStateMatcher]="matcher">
             </dsp-color-picker>
             <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
