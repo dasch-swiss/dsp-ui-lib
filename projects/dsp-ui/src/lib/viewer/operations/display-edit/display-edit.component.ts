@@ -2,6 +2,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
+    ApiResponseData,
     ApiResponseError,
     Constants,
     DeleteValue,
@@ -9,9 +10,11 @@ import {
     KnoraApiConnection,
     PermissionUtil,
     ReadResource,
+    ReadUser,
     ReadValue,
     UpdateResource,
     UpdateValue,
+    UserResponse,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
@@ -96,6 +99,8 @@ export class DisplayEditComponent implements OnInit {
 
     dateFormat: string;
 
+    user: ReadUser;
+
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
@@ -121,6 +126,20 @@ export class DisplayEditComponent implements OnInit {
         this.valueTypeOrClass = this._valueTypeService.getValueTypeOrClass(this.displayValue);
 
         this.readOnlyValue = this._valueTypeService.isReadOnly(this.valueTypeOrClass);
+
+        this._dspApiConnection.admin.usersEndpoint.getUserByIri(this.displayValue.attachedToUser).subscribe(
+            (response: ApiResponseData<UserResponse>) => {
+                this.user = response.body.user;
+            },
+            (error: ApiResponseError) => {
+                console.error(error);
+            }
+        );
+    }
+
+    getTooltipText(): string {
+        return 'Creation date: ' + this.displayValue.valueCreationDate +
+            '\n Value creator: ' + this.user?.givenName + ' ' + this.user?.familyName;
     }
 
     /**
@@ -271,9 +290,7 @@ export class DisplayEditComponent implements OnInit {
      * Show CRUD buttons and add 'highlighted' class to the element only if editModeActive is false
      */
     mouseEnter() {
-        if (this.canModify) {
-            this.showActionBubble = true;
-        }
+        this.showActionBubble = true;
         if (!this.editModeActive) {
             this.backgroundColor = 'highlighted';
         }
