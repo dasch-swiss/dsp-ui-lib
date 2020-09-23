@@ -1,1 +1,6 @@
 @import "../../../../../assets/style/viewer";
+
+::ng-deep .mat-form-field-flex,
+.color-picker-input {
+  cursor: pointer;
+}
