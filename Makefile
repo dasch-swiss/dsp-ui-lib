@@ -8,9 +8,6 @@ DIST_DIR := $(CURRENT_DIR)/dist/@dasch-swiss/dsp-ui/
 ifeq ($(BUILD_TAG),)
 	BUILD_TAG := $(shell git describe --tag --abbrev=0)
 endif
-ifeq ($(BUILD_TAG),)
-	BUILD_TAG := $(shell git rev-parse --verify HEAD)
-endif
 
 .PHONY: clean
 
@@ -27,7 +24,8 @@ knora-stack: ## runs the knora-stack
 
 .PHONY: update-lib-version
 update-lib-version: ## Get the latest tag from Github and update version in lib's package.json
-	cd $(DIST_DIR) && npm version $(BUILD_TAG) --git-tag-version=false --commit-hooks=false
+	cd $(DIST_DIR) && \
+	npm version $(BUILD_TAG) --git-tag-version=false --commit-hooks=false
 
 .PHONY: prepare-lib
 prepare-lib: ## Prepare lib for publishing: build and update version from git tag
