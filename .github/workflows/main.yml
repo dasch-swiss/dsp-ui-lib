@@ -6,149 +6,136 @@ on:
     types: [published]
 
 jobs:
-  # build-test:
-  #   name: Build and Test
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       node-version: [12.x]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Use Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-  #     - name: Install dependencies
-  #       run: npm install
-  #     - name: Find ignored tests
-  #       run: ./find-ignored-tests.sh
-  #     - name: Run unit tests (lib)
-  #       run: npm run test-lib
-  #       env:
-  #         TZ: Europe/Zurich
-  #     - name: Build lib in dev mode
-  #       run: npm run build-lib-dev
-  #     - name: Build lib in prod mode
-  #       run: npm run build-lib
-  #     - name: Build app
-  #       run: npm run build-app
-  #     - name: Run unit tests (app)
-  #       run: npm run test
-  #       env:
-  #         TZ: Europe/Zurich
-  #         CI: true
-
-  # e2e-test:
-  #   name: E2E Tests
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       node-version: [12.x]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Checkout private ci-assets
-  #       uses: actions/checkout@v2
-  #       with:
-  #         repository: dasch-swiss/dsp-ci-assets
-  #         token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
-  #         path: ci
-  #     - name: Use Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-  #     - name: Install dependencies
-  #       run: npm install
-  #     - name: Build lib in prod mode
-  #       run: npm run build-lib
-  #     - name: Run knora stack
-  #       run: |
-  #         make clone-knora-stack
-  #         make knora-stack
-  #     - run: npm run webdriver-update
-  #     - name: Run e2e tests
-  #       run: npm run e2e
-  #       env:
-  #         TZ: Europe/Zurich
-  #         CI: true
-
-  # docker-build:
-  #   name: Docker build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - run: docker build .
-
-  # update_release_draft:
-  #   name: Update next release draft
-  #   needs: [build-test, e2e-test]
-  #   runs-on: ubuntu-latest
-  #   # Drafts your next Release notes as Pull Requests are merged into "master"
-  #   if: github.ref == 'refs/heads/master'
-  #   steps:
-  #     - uses: release-drafter/release-drafter@v5
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-
-  publish-in-dry-mode:
-    name: Publish in dry mode
+  build-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [12.x]
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v2.3.3
-        with:
-          fetch-depth: 50
+      - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      # - name: Install dependencies
-      #   run: npm install
-      # - name: Build lib in prod mode
-      #   run: npm run build-lib
-      - name: Get previous tag from script
+      - name: Install dependencies
+        run: npm install
+      - name: Find ignored tests
+        run: ./find-ignored-tests.sh
+      - name: Run unit tests (lib)
+        run: npm run test-lib
+        env:
+          TZ: Europe/Zurich
+      - name: Build lib in dev mode
+        run: npm run build-lib-dev
+      - name: Build lib in prod mode
+        run: npm run build-lib
+      - name: Build app
+        run: npm run build-app
+      - name: Run unit tests (app)
+        run: npm run test
+        env:
+          TZ: Europe/Zurich
+          CI: true
+
+  e2e-test:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout private ci-assets
+        uses: actions/checkout@v2
+        with:
+          repository: dasch-swiss/dsp-ci-assets
+          token: ${{ secrets.ci_assets_pat }} # `GitHub_PAT` is a secret that contains the PAT.
+          path: ci
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm install
+      - name: Build lib in prod mode
+        run: npm run build-lib
+      - name: Run knora stack
+        run: |
+          make clone-knora-stack
+          make knora-stack
+      - run: npm run webdriver-update
+      - name: Run e2e tests
+        run: npm run e2e
+        env:
+          TZ: Europe/Zurich
+          CI: true
+
+  docker-build:
+    name: Docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker build .
+
+  update_release_draft:
+    name: Update next release draft
+    needs: [build-test, e2e-test]
+    runs-on: ubuntu-latest
+    # Drafts your next Release notes as Pull Requests are merged into "master"
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  get-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
+        with:
+          fetch-depth: 50
+
+      - name: Find Tag
+        id: tagger
+        uses: digital-ai/query-tag-action@v2
+        with:
+          include: "v*"
+          commit-ish: "HEAD"
+          exact-match: "true"
+      - name: Show Tag
+        id: display
+        run: |
+          echo 'Output from Find Tag: ${{steps.tagger.outputs.tag}}'
+
+  publish:
+    name: Publish to npm with --dry-run
+    needs: [build-test, e2e-test]
+    runs-on: ubuntu-latest
+    env:
+      dist-directory: ./dist/@dasch-swiss/dsp-ui/
+    if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags')
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - name: Install dependencies
+        run: npm install
+      - name: Build lib in prod mode
+        run: npm run build-lib
+      - name: Get previous tag
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@master"
-      - run:
-          echo ${{steps.previoustag.outputs.tag}}
-      - name: Get previous tag with make
-        run:
-          make display-tag-version
-      # - run: |
-      #     cd ${{env.dist-directory}}
-      #     echo ${{steps.previoustag.outputs.tag}}
-      #     npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false
-      #     npm publish --tag rc --dry-run
-
-
-  # publish:
-  #   name: Publish to npm
-  #   needs: [build-test, e2e-test]
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     dist-directory: ./dist/@dasch-swiss/dsp-ui/
-  #   if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags')
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 12
-  #         registry-url: https://registry.npmjs.org/
-  #     - name: Install dependencies
-  #       run: npm install
-  #     - name: Build lib in prod mode
-  #       run: npm run build-lib
-  #     - name: Get previous tag
-  #       id: previoustag
-  #       uses: "WyriHaximus/github-action-get-previous-tag@master"
-  #     - if: "github.event.release.prerelease"
-  #       name: Publish pre-release to npm
-  #       run: cd ${{env.dist-directory}} && npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false && npm publish --tag rc --access public
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-  #     - if: "!github.event.release.prerelease"
-  #       run: cd ${{env.dist-directory}} && npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false && npm publish --access public
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      - if: "github.event.release.prerelease"
+        name: Publish pre-release to npm
+        run: cd ${{env.dist-directory}} && npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false && npm publish --tag rc --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
+      - if: "!github.event.release.prerelease"
+        run: cd ${{env.dist-directory}} && npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
