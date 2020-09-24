@@ -99,22 +99,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 50
-      - name: Get tag
-        run: git describe --tag --abbrev=5
-      - name: Install dependencies
-        run: npm install
-      - name: Build lib in prod mode
-        run: npm run build-lib
-      - name: Get previous tag
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@master"
-      - name: DRY-RUN!!! No publish to npm
-        run: |
-          cd ${{env.dist-directory}}
-          npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false
-          npm publish --tag rc --access public --dry-run
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        run: make publish-in-dry-mode
+
 
   # publish:
   #   name: Publish to npm
