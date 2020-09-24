@@ -95,12 +95,12 @@ jobs:
     env:
       dist-directory: ./dist/@dasch-swiss/dsp-ui/
     steps:
-      - name: Get tag
-        run: git describe --tag --abbrev=5
       - name: Checkout source
         uses: actions/checkout@v2
         with:
           fetch-depth: 50
+      - name: Get tag
+        run: git describe --tag --abbrev=5
       - name: Install dependencies
         run: npm install
       - name: Build lib in prod mode
