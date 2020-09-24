@@ -1,9 +1,10 @@
-BIN = ./node_modules/.bin
 # Determine this makefile's path.
 # Be sure to place this BEFORE `include` directives, if any.
-THIS_FILE := $(lastword $(MAKEFILE_LIST))
+THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
+
 CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 DIST_DIR := $(CURRENT_DIR)/dist/@dasch-swiss/dsp-ui/
+
 BUILD_TAG := $(shell git describe --tag --abbrev=0)
 
 .PHONY: clean

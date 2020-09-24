@@ -92,15 +92,20 @@ jobs:
   publish-in-dry-mode:
     name: Publish in dry mode
     runs-on: ubuntu-latest
-    env:
-      dist-directory: ./dist/@dasch-swiss/dsp-ui/
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          fetch-depth: 50
+          node-version: ${{ matrix.node-version }}
       - name: Build, update version from git tag and publish to npm with --dry-run
         run: make publish-in-dry-mode
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
 
   # publish:
