@@ -22,6 +22,10 @@ knora-stack: ## runs the knora-stack
 	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-up
 	$(MAKE) -C $(CURRENT_DIR)/.tmp/knora-stack stack-logs-api-no-follow
 
+.PHONY: display-tag-version
+display-tag-version
+	echo $(BUILD_TAG)
+
 .PHONY: update-lib-version
 update-lib-version: ## Get the latest tag from Github and update version in lib's package.json
 	cd $(DIST_DIR) && \

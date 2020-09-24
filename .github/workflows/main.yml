@@ -97,22 +97,28 @@ jobs:
         node-version: [12.x]
     steps:
       - name: Checkout source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: npm install
-      - name: Build lib in prod mode
-        run: npm run build-lib
-      - name: Get previous tag
+      # - name: Install dependencies
+      #   run: npm install
+      # - name: Build lib in prod mode
+      #   run: npm run build-lib
+      - name: Get previous tag from script
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@master"
-      - run: |
-          cd ${{env.dist-directory}}
-          npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false
-          npm publish --tag rc --dry-run
+      - run:
+          echo ${{steps.previoustag.outputs.tag}}
+      - name: Get previous tag with make
+        run:
+          make display-tag-version
+      # - run: |
+      #     cd ${{env.dist-directory}}
+      #     echo ${{steps.previoustag.outputs.tag}}
+      #     npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false
+      #     npm publish --tag rc --dry-run
 
 
   # publish:
