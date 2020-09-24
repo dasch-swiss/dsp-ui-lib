@@ -89,29 +89,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-  get-tag:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.3
-        with:
-          fetch-depth: 50
-
-      - name: Find Tag
-        id: tagger
-        uses: digital-ai/query-tag-action@v2
-        with:
-          include: "v*"
-          commit-ish: "HEAD"
-          exact-match: "true"
-      - name: Show Tag
-        id: display
-        run: |
-          echo 'Output from Find Tag: ${{steps.tagger.outputs.tag}}'
-
   publish:
-    name: Publish to npm with --dry-run
+    name: Publish to npm
     needs: [build-test, e2e-test]
     runs-on: ubuntu-latest
     env:
