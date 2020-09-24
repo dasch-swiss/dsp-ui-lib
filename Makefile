@@ -5,7 +5,12 @@ THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 DIST_DIR := $(CURRENT_DIR)/dist/@dasch-swiss/dsp-ui/
 
-BUILD_TAG := $(shell git describe --tag --abbrev=0)
+ifeq ($(BUILD_TAG),)
+	BUILD_TAG := $(shell git describe --tag --abbrev=0)
+endif
+ifeq ($(BUILD_TAG),)
+	BUILD_TAG := $(shell git rev-parse --verify HEAD)
+endif
 
 .PHONY: clean
 
@@ -31,20 +36,20 @@ prepare-lib: ## Prepare lib for publishing: build and update version from git ta
 	npm run build-lib
 	@$(MAKE) -f $(THIS_FILE) update-lib-version
 
-.PHONY: publish-dry-run
-publish-dry-run: ## DRY RUN of publish process
-	@$(MAKE) -f $(THIS_FILE) prepare-lib
-	cd $(DIST_DIR) && npm publish --tag rc --access public --dry-run
+# .PHONY: publish-dry-run
+# publish-dry-run: ## DRY RUN of publish process
+# 	@$(MAKE) -f $(THIS_FILE) prepare-lib
+# 	cd $(DIST_DIR) && npm publish --tag rc --access public --dry-run
 
-.PHONY: publish-rc-to-npm
-publish-rc-to-npm: ## BE CAREFUL!!! This will publish as release candidate to npm
-	@$(MAKE) -f $(THIS_FILE) prepare-lib
-	cd $(DIST_DIR) && npm publish --tag rc --access public
+# .PHONY: publish-rc-to-npm
+# publish-rc-to-npm: ## BE CAREFUL!!! This will publish as release candidate to npm
+# 	@$(MAKE) -f $(THIS_FILE) prepare-lib
+# 	cd $(DIST_DIR) && npm publish --tag rc --access public
 
-.PHONY: publish-to-npm
-publish-to-npm: ## BE CAREFUL!!! This will publish new release to npm
-	@$(MAKE) -f $(THIS_FILE) prepare-lib
-	cd $(DIST_DIR) && npm publish --access public
+# .PHONY: publish-to-npm
+# publish-to-npm: ## BE CAREFUL!!! This will publish new release to npm
+# 	@$(MAKE) -f $(THIS_FILE) prepare-lib
+# 	cd $(DIST_DIR) && npm publish --access public
 
 .PHONY: help
 help: ## this help

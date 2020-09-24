@@ -102,8 +102,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Build lib and update version from git tag
-        run: |
+      - run: |
           echo "Build, update version from git tag and publish to npm with --dry-run"
           make prepare-lib
 
