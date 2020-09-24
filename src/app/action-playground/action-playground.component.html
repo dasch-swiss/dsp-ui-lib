@@ -19,7 +19,7 @@ We will implement the login form here as soon its moved from the old knora-ui.
 <hr>
 
 <p>Sorting</p>
-<dsp-sort-button [sortProps]="sortProps" [position]="'right'" (sortKeyChange)="sortList($event)"></dsp-sort-button>
+<dsp-sort-button [sortProps]="sortProps" [position]="'right'" [activeKey]="'creator'" (sortKeyChange)="sortList($event)"></dsp-sort-button>
 <ul>
     <li *ngFor="let item of list">
         <span>{{item.firstname}} </span>
@@ -94,5 +94,6 @@ We will implement the login form here as soon its moved from the old knora-ui.
 <hr>
 
 <p>GND Directive (Integrated Authority File)</p>
+
 
 <span dspGnd [gnd]="'(DE-588)119166895'"></span>
