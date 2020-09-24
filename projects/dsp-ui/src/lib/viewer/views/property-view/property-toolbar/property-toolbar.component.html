@@ -29,7 +29,7 @@
         <button mat-button class="toggle-props" matTooltip="Toggle list of properties" matTooltipPosition="above"
             (click)="toggleProps.emit(!showAllProps)">
             <mat-icon>{{showAllProps ? 'unfold_less' : 'unfold_more'}}</mat-icon>
-            <span class="desktop-only">{{showAllProps ? 'Hide empty' : 'Show all'}} properties</span>
+            <span class="desktop-only btn-label">{{showAllProps ? 'Hide empty' : 'Show all'}} properties</span>
         </button>
 
         <!-- TODO: activate delete action to delete the whole resource -->
@@ -43,7 +43,7 @@
         <button mat-button class="share-res" matTooltip="Share resource by copying ARK url" matTooltipPosition="above"
             [matMenuTriggerFor]="share">
             <mat-icon>share</mat-icon>
-            <span class="desktop-only">Citation Link</span>
+            <span class="desktop-only btn-label">Citation Link</span>
         </button>
         <mat-menu #share="matMenu" class="res-share-menu">
             <!-- citation link - ARK URL -->
