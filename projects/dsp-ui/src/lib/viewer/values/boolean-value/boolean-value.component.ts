@@ -34,7 +34,7 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
         if (this.displayValue !== undefined) {
             return this.displayValue.bool;
         } else {
-            return null;
+            return false;
         }
     }
 
