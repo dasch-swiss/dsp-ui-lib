@@ -298,7 +298,7 @@ describe('BooleanValueComponent', () => {
       commentBooleanNativeElement = commentBooleanDebugElement.nativeElement;
 
       expect(testHostComponent.booleanValueComponent.displayValue).toEqual(undefined);
-      expect(testHostComponent.booleanValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.booleanValueComponent.form.valid).toBeTruthy();
       expect(checkboxEl.disabled).toBe(false);
       expect(checkboxEl.checked).toBe(false);
       expect(checkboxLabel.innerText).toEqual('false');
@@ -338,7 +338,7 @@ describe('BooleanValueComponent', () => {
 
       testHostComponent.booleanValueComponent.resetFormControl();
 
-      expect(testHostComponent.booleanValueComponent.form.valid).toBeFalsy();
+      expect(testHostComponent.booleanValueComponent.form.valid).toBeTruthy();
 
       expect(checkboxEl.checked).toBe(true);
 
