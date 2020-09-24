@@ -103,7 +103,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Build, update version from git tag and publish to npm with --dry-run
-        run: make publish-in-dry-mode
+        run: |
+          echo "Build, update version from git tag and publish to npm with --dry-run"
+          make publish-in-dry-mode
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
