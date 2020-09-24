@@ -98,15 +98,21 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 50
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm install
+      - name: Build lib in prod mode
+        run: npm run build-lib
+      - name: Get previous tag
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@master"
       - run: |
-          echo "Build, update version from git tag and publish to npm with --dry-run"
-          make prepare-lib
+          cd ${{env.dist-directory}}
+          npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false
+          npm publish --tag rc --dry-run
 
 
   # publish:
