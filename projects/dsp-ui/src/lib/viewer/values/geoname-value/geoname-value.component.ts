@@ -1,8 +1,8 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BaseValueComponent } from '../base-value.component';
-import { CreateGeonameValue, ReadGeonameValue, UpdateGeonameValue } from '@dasch-swiss/dsp-js';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CreateGeonameValue, ReadGeonameValue, UpdateGeonameValue } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
+import { BaseValueComponent } from '../base-value.component';
 import { CustomRegex } from '../custom-regex';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 
@@ -13,6 +13,7 @@ import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 })
 export class GeonameValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
     @Input() displayValue?: ReadGeonameValue;
+    @Input() label?: string;
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
@@ -103,13 +104,6 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
         }
 
         return updatedGeonameValue;
-    }
-
-    openInfo() {
-        if (this.displayValue.geoname) {
-            const url = 'https://www.geonames.org/' + this.displayValue.geoname;
-            window.open(url, '_blank');
-        }
     }
 
 }
