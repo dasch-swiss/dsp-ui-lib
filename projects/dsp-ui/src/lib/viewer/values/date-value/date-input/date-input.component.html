@@ -9,7 +9,7 @@
             <dsp-jdn-datepicker [activeCalendar]="startDateControl.value?.calendarName">
                 <mat-form-field class="start">
                     <mat-label>Choose a <span *ngIf="isPeriodControl.value">start</span> date
-                        <span *ngIf="startDateControl.value">({{startDateControl.value?.calendarName}})</span>
+                        <span class="calendar" *ngIf="startDateControl.value">({{startDateControl.value?.calendarName}})</span>
                     </mat-label>
                     <input matInput [matDatepicker]="picker1" [formControlName]="'dateStart'"
                         [errorStateMatcher]="matcher" (dateChange)="_handleInput()" readonly placeholder="Start">
@@ -23,7 +23,7 @@
             <dsp-jdn-datepicker [activeCalendar]="endDateControl.value?.calendarName">
                 <mat-form-field *ngIf="isPeriodControl.value" class="end">
                     <mat-label>Choose an end date
-                        <span *ngIf="endDateControl.value">({{endDateControl.value?.calendarName}})</span>
+                        <span class="calendar" *ngIf="endDateControl.value">({{endDateControl.value?.calendarName}})</span>
                     </mat-label>
                     <input matInput [matDatepicker]="picker2" [formControlName]="'dateEnd'"
                         (dateChange)="_handleInput()" readonly>
