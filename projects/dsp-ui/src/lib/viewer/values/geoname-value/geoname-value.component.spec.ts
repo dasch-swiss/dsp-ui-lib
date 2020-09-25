@@ -1,21 +1,21 @@
+import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ReadGeonameValue, MockResource, UpdateGeonameValue, CreateGeonameValue } from '@dasch-swiss/dsp-js';
-import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatInputModule } from '@angular/material/input';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreateGeonameValue, MockResource, ReadGeonameValue, UpdateGeonameValue } from '@dasch-swiss/dsp-js';
 import { GeonameValueComponent } from './geoname-value.component';
+
+
 
 /**
  * Test host component to simulate parent component.
  */
 @Component({
   template: `
-    <dsp-geoname-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-geoname-value>`
+    <dsp-geoname-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [label]="label"></dsp-geoname-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -24,6 +24,8 @@ class TestHostDisplayValueComponent implements OnInit {
   displayInputVal: ReadGeonameValue;
 
   mode: 'read' | 'update' | 'create' | 'search';
+
+  label: string;
 
   ngOnInit() {
 
@@ -85,8 +87,6 @@ describe('GeonameValueComponent', () => {
     let valueInputNativeElement;
     let valueReadModeDebugElement: DebugElement;
     let valueReadModeNativeElement;
-    let commentInputDebugElement: DebugElement;
-    let commentInputNativeElement;
 
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
@@ -112,7 +112,35 @@ describe('GeonameValueComponent', () => {
 
       expect(valueReadModeNativeElement.innerText).toEqual('2661604');
 
+      const anchorDebugElement = valueReadModeDebugElement.query(By.css('a'));
+      expect(anchorDebugElement.nativeElement).toBeDefined();
+
+      expect(anchorDebugElement.attributes.href).toEqual('https://www.geonames.org/2661604');
+      expect(anchorDebugElement.attributes.target).toEqual('_blank');
+
     });
+
+    it('should display an existing value with a label', () => {
+
+        testHostComponent.label = 'testlabel';
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.inputValueComponent.displayValue.geoname).toEqual('2661604');
+
+        expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+        expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+
+        expect(valueReadModeNativeElement.innerText).toEqual('testlabel');
+
+        const anchorDebugElement = valueReadModeDebugElement.query(By.css('a'));
+        expect(anchorDebugElement.nativeElement).toBeDefined();
+
+        expect(anchorDebugElement.attributes.href).toEqual('https://www.geonames.org/2661604');
+        expect(anchorDebugElement.attributes.target).toEqual('_blank');
+
+      });
 
     it('should make an existing value editable', () => {
 
