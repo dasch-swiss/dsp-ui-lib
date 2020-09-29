@@ -1,11 +1,9 @@
 <span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <span>Hex value:</span>
-    <span class="rm-value">{{ valueFormControl.value }}</span>
-    <span>Preview:</span>
-    <div
-        class="color-preview"
-        [style.background-color]="valueFormControl.value"
-    ></div>
+    <div class="color-preview"
+        [style.color]="textColor"
+        [style.background-color]="valueFormControl.value">
+        <span class="rm-value">{{ valueFormControl.value }}</span>
+    </div>
     <span class="rm-comment" *ngIf="shouldShowComment">
         {{ commentFormControl.value }}
     </span>
