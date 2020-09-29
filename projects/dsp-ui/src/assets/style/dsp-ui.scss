@@ -18,7 +18,7 @@
 }
 
 .link {
-   cursor: pointer;
+  cursor: pointer;
 }
 
 .custom-error-message {
@@ -40,6 +40,12 @@
   margin: 0 0 !important;
 }
 
+dsp-color-value .mat-form-field-label span,
+dsp-color-value mat-label {
+  display: block;
+  padding: 8px 4px;
+}
+
 // String literal input
 // string literal textarea: overwrite material styling !important
 .string-literal {
@@ -50,7 +56,6 @@
   }
 
   &.long-text {
-
     .mat-button-toggle-appearance-standard {
       .mat-button-toggle-label-content {
         line-height: 36px !important;
