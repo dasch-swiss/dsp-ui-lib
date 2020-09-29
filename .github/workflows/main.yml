@@ -109,12 +109,15 @@ jobs:
       - name: Get previous tag
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@master"
+      - name: Update version
+        run: cd ${{env.dist-directory}} && npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false
       - if: "github.event.release.prerelease"
         name: Publish pre-release to npm
-        run: cd ${{env.dist-directory}} && npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false && npm publish --tag rc --access public
+        run: npm publish ${{env.dist-directory}} --tag rc --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
       - if: "!github.event.release.prerelease"
-        run: cd ${{env.dist-directory}} && npm version ${{steps.previoustag.outputs.tag}} --git-tag-version=false --commit-hooks=false && npm publish --access public
+        name: Publish release to npm
+        run: npm publish ${{env.dist-directory}} --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN_DASCHBOT}}
