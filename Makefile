@@ -1,7 +1,7 @@
 BIN = ./node_modules/.bin
 # Determine this makefile's path.
 # Be sure to place this BEFORE `include` directives, if any.
-THIS_FILE := $(lastword $(MAKEFILE_LIST))
+THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 .PHONY: clean
