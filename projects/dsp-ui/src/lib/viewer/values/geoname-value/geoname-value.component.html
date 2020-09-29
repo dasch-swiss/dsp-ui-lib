@@ -1,9 +1,7 @@
 <span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <span class="rm-value">{{ valueFormControl.value }}</span>
-    <button class="more-info" mat-icon-button matSuffix (click)="openInfo()" [attr.aria-label]="'Open in geonames.org'"
-        title="Open in geonames.org">
-        <mat-icon>launch</mat-icon>
-    </button>
+    <span class="rm-value">
+        <a class="link" target="_blank" href="https://www.geonames.org/{{valueFormControl.value}}">{{ label ? label : valueFormControl.value}}</a>
+    </span>
     <span class="rm-comment" *ngIf="shouldShowComment">
         {{ commentFormControl.value }}
     </span>

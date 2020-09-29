@@ -1,3 +1,5 @@
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self } from '@angular/core';
 import {
     AbstractControl,
@@ -11,12 +13,9 @@ import {
     ValidatorFn,
     Validators
 } from '@angular/forms';
+import { CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, mixinErrorState } from '@angular/material/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { KnoraDate, KnoraPeriod } from '@dasch-swiss/dsp-js';
-import { CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, mixinErrorState } from '@angular/material/core';
-import { Subject } from 'rxjs';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { FocusMonitor } from '@angular/cdk/a11y';
 import {
     CalendarDate,
     CalendarPeriod,
@@ -24,6 +23,7 @@ import {
     JDNConvertibleCalendar,
     JulianCalendarDate
 } from 'jdnconvertiblecalendar';
+import { Subject } from 'rxjs';
 import { CalendarHeaderComponent } from '../calendar-header/calendar-header.component';
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -78,9 +78,9 @@ export function periodStartEndValidator(isPeriod: FormControl, endDate: FormCont
 
 class MatInputBase {
     constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
-        public _parentForm: NgForm,
-        public _parentFormGroup: FormGroupDirective,
-        public ngControl: NgControl) {
+                public _parentForm: NgForm,
+                public _parentFormGroup: FormGroupDirective,
+                public ngControl: NgControl) {
     }
 }
 
