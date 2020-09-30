@@ -937,6 +937,7 @@ describe('DisplayEditComponent', () => {
         const deleteVal = new DeleteValue();
         deleteVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/dJ1ES8QTQNepFKF5-EAqdg';
         deleteVal.type = 'http://api.knora.org/ontology/knora-api/v2#IntValue';
+        deleteVal.deleteComment = null;
 
         expectedUpdateResource.value = deleteVal;
 

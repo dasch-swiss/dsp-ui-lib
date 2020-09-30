@@ -8,7 +8,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angu
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockResource, ReadIntValue, ReadValue } from '@dasch-swiss/dsp-js';
-import { ConfirmationDialogComponent } from './confirmation-dialog.component';
+import { ConfirmationDialogComponent, ConfirmationDialogPayload } from './confirmation-dialog.component';
 
 /**
  * Test host component to simulate parent component with a confirmation dialog.
@@ -39,8 +39,8 @@ class ConfirmationDialogTestHostComponent implements OnInit {
                 buttonTextOk: 'OK',
                 buttonTextCancel: 'Cancel'
             }
-        }).afterClosed().subscribe((confirmed: boolean) => {
-            if (confirmed) {
+        }).afterClosed().subscribe((payload: ConfirmationDialogPayload) => {
+            if (payload.confirmed) {
                 this.confirmationDialogResponse = 'Action was confirmed!';
             } else {
                 this.confirmationDialogResponse = 'Action was cancelled';

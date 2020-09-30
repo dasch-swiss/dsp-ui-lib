@@ -1,11 +1,17 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ReadValue } from '@dasch-swiss/dsp-js';
+import { ConfirmationMessageComponent } from './confirmation-message/confirmation-message.component';
 
 export class ConfirmationDialogData {
     value: ReadValue;
     buttonTextOk: string;
     buttonTextCancel: string;
+}
+
+export class ConfirmationDialogPayload {
+    confirmed: boolean;
+    deletionComment: string;
 }
 
 @Component({
@@ -14,6 +20,7 @@ export class ConfirmationDialogData {
   styleUrls: ['./confirmation-dialog.component.scss']
 })
 export class ConfirmationDialogComponent {
+    @ViewChild('confirmMessage') confirmationMessageComponent: ConfirmationMessageComponent;
 
     // type assertion doesn't seem to be enforced
     // https://stackoverflow.com/a/57787554
@@ -23,7 +30,10 @@ export class ConfirmationDialogComponent {
     ) { }
 
     onConfirmClick(): void {
-        this._dialogRef.close(true);
+        const payload = new ConfirmationDialogPayload();
+        payload.confirmed = true;
+        payload.deletionComment = this.confirmationMessageComponent.comment ? this.confirmationMessageComponent.comment : null;
+        this._dialogRef.close(payload);
     }
 
 }

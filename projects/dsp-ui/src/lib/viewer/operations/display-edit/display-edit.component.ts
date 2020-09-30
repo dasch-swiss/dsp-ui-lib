@@ -20,7 +20,8 @@ import {
 import { mergeMap } from 'rxjs/operators';
 import {
     ConfirmationDialogComponent,
-    ConfirmationDialogData
+    ConfirmationDialogData,
+    ConfirmationDialogPayload
 } from '../../../action/components/confirmation-dialog/confirmation-dialog.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import {
@@ -222,9 +223,9 @@ export class DisplayEditComponent implements OnInit {
         const dialogRef =
             this._dialog.open<ConfirmationDialogComponent, ConfirmationDialogData>(ConfirmationDialogComponent, { data: dialogData});
 
-        dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-            if (confirmed) {
-                this.deleteValue();
+        dialogRef.afterClosed().subscribe((payload: ConfirmationDialogPayload) => {
+            if (payload.confirmed) {
+                this.deleteValue(payload.deletionComment);
             }
         });
     }
@@ -233,10 +234,11 @@ export class DisplayEditComponent implements OnInit {
      * Delete a value from a property.
      * Emits an event that can be listened to.
      */
-    deleteValue() {
+    deleteValue(comment?: string) {
         const deleteVal = new DeleteValue();
         deleteVal.id = this.displayValue.id;
         deleteVal.type = this.displayValue.type;
+        deleteVal.deleteComment = comment;
 
         const updateRes = new UpdateResource();
         updateRes.type = this.parentResource.type;
@@ -248,6 +250,7 @@ export class DisplayEditComponent implements OnInit {
         mergeMap((res: DeleteValueResponse) => {
             // emit a ValueDeleted event to the listeners in resource-view component to trigger an update of the UI
             this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, new DeletedEventValue(deleteVal)));
+            console.log('res ', res);
             return res.result;
         })).subscribe();
     }

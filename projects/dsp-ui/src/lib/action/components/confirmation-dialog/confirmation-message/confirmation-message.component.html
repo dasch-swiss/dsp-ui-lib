@@ -3,4 +3,6 @@
     <p class="val-value">Value: {{value.strval}}</p>
     <p class="val-comment">Value Comment: {{value.valueHasComment ? value.valueHasComment : 'No comment'}}</p>
     <p class="val-creation-date">Value Creation Date: {{value.valueCreationDate}}</p>
+    <p>Reason for deletion</p>
+    <input matinput type="text" (keyup)="onKey($event)">
 </div>
