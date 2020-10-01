@@ -224,7 +224,7 @@ export class DisplayEditComponent implements OnInit {
             this._dialog.open<ConfirmationDialogComponent, ConfirmationDialogData>(ConfirmationDialogComponent, { data: dialogData});
 
         dialogRef.afterClosed().subscribe((payload: ConfirmationDialogPayload) => {
-            if (payload.confirmed) {
+            if (payload && payload.confirmed) {
                 this.deleteValue(payload.deletionComment);
             }
         });
@@ -250,7 +250,6 @@ export class DisplayEditComponent implements OnInit {
         mergeMap((res: DeleteValueResponse) => {
             // emit a ValueDeleted event to the listeners in resource-view component to trigger an update of the UI
             this._valueOperationEventService.emit(new EmitEvent(Events.ValueDeleted, new DeletedEventValue(deleteVal)));
-            console.log('res ', res);
             return res.result;
         })).subscribe();
     }
