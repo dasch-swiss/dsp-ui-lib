@@ -44,7 +44,11 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         if (this.displayValue !== undefined) {
 
             // strip the doctype and text tag
-            return this._handleXML(this.displayValue.xml, true);
+            console.log('text before conversion: ', this.displayValue.xml);
+            const converted = this._handleXML(this.displayValue.xml, true);
+            console.log('text after conversion: ', converted);
+
+            return converted;
         } else {
             return null;
         }
@@ -53,6 +57,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     ngOnInit() {
 
         if (this.mapping !== undefined
+            && this.mapping === 'http://rdfh.ch/standoff/mappings/StandardMapping'
             && this._appInitService.config['xmlTransform'] !== undefined
             && this._appInitService.config['xmlTransform'][this.mapping] !== undefined) {
 
@@ -94,7 +99,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
             };
 
             // initialize form control elements
-            this.valueFormControl = new FormControl({value: null, disabled: this.mode === 'read'});
+            this.valueFormControl = new FormControl(null);
 
             this.commentFormControl = new FormControl(null);
 
@@ -185,11 +190,14 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         const closingTextTag = `</${textTag}>`;
 
         if (fromKnora) {
-            // CKEditor accepts tags from version 4, no conversion needed
+            // CKEditor accepts tags from version 4
             // see 4 to 5 migration, see https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html
+            // CKEditor 5 uses <i> for italics so we need to convert the <em> tags from knora to <i> so that the validator works
             return xml.replace(doctype, '')
                 .replace(openingTextTag, '')
-                .replace(closingTextTag, '');
+                .replace(closingTextTag, '')
+                .replace('<em>', '<i>')
+                .replace('</em>', '</i>');
         } else {
 
             // replace &nbsp; entity

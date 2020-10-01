@@ -88,7 +88,6 @@ export class ValueTypeService {
      */
     isReadOnly(valueTypeOrClass: string): boolean {
         return valueTypeOrClass === this._readTextValueAsHtml ||
-            valueTypeOrClass === this._readTextValueAsXml ||
             valueTypeOrClass === this.constants.GeomValue;
     }
 }

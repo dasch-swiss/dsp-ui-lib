@@ -52,6 +52,10 @@ export abstract class BaseValueComponent {
      * @param curValue Current value.
      */
     standardValueComparisonFunc(initValue: any, curValue: any): boolean {
+        // if values are strings, trim them
+        initValue = typeof initValue === 'string' ? initValue.trim() : initValue;
+        curValue = typeof curValue === 'string' ? curValue.trim() : curValue;
+
         return initValue === curValue;
     }
 
@@ -69,6 +73,7 @@ export abstract class BaseValueComponent {
                 const invalid = this.standardValueComparisonFunc(initValue, control.value)
                     && (initComment === commentFormControl.value || (initComment === null && commentFormControl.value === ''));
 
+                console.log('validity: ', !invalid);
                 return invalid ? { valueNotChanged: { value: control.value } } : null;
             };
         };

@@ -59,6 +59,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (this.parentResource) {
+            console.log(this.parentResource);
             // get user permissions
             const allPermissions = PermissionUtil.allUserPermissions(
                 this.parentResource.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR'
@@ -104,10 +105,10 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      */
     addValueIsAllowed(prop: PropertyInfoValues): boolean {
         // temporary until CkEditor is integrated
-        const guiElement = (prop.propDef as ResourcePropertyDefinition).guiElement;
-        if (guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
-            return false;
-        }
+        // const guiElement = (prop.propDef as ResourcePropertyDefinition).guiElement;
+        // if (guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
+        //     return false;
+        // }
 
         const isAllowed = CardinalityUtil.createValueForPropertyAllowed(
             prop.propDef.id, prop.values.length, this.parentResource.entityInfo.classes[this.parentResource.type]);
