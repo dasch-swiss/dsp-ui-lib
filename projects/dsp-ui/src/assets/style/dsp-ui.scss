@@ -40,10 +40,18 @@
   margin: 0 0 !important;
 }
 
-dsp-color-value .mat-form-field-label span,
-dsp-color-value mat-label {
-  display: block;
-  padding: 8px 4px;
+dsp-color-value {
+
+  .mat-form-field-flex,
+  .color-picker-input {
+    cursor: pointer !important;
+  }
+
+  .mat-form-field-label span {
+    display: block;
+    padding: 8px 4px;
+    margin: 0 auto;
+  }
 }
 
 // String literal input
