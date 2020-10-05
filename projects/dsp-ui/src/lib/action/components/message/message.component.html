@@ -25,11 +25,11 @@
 
     </mat-card-content>
 
-    <mat-card-footer *ngIf="!medium" class="message-footnote" [innerHtml]="message?.footnote"></mat-card-footer>
+    <mat-card-footer *ngIf="(size === 'large')" class="message-footnote" [innerHtml]="message?.footnote"></mat-card-footer>
 
 </mat-card>
 
-<mat-card *ngIf="short && !disable" class="fix-width dsp-short-message" [ngClass]="'dsp-' + message?.type"
+<mat-card *ngIf="(size === 'short') && !disable" class="fix-width dsp-short-message" [ngClass]="'dsp-' + message?.type"
           (click)="closeMessage()">
 
     <div class="dsp-panel">

@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApiResponseError } from '@dasch-swiss/dsp-js';
 import { StatusMsg } from '../../../../assets/i18n/statusMsg';
 
 /**
@@ -18,6 +19,17 @@ export class DspMessageData {
     url?: string;
 }
 
+export class tmpApiResponseError {
+    status: number;
+    message: string;
+    name: string;
+    request: any;
+    response: any;
+    responseType: string;
+    xhr: XMLHttpRequest
+
+}
+
 @Component({
   selector: 'dsp-message',
   templateUrl: './message.component.html',
@@ -26,29 +38,43 @@ export class DspMessageData {
 export class MessageComponent implements OnInit {
 
     /**
-     * Message type: DspMessageData or ApiServiceError
+     * Message type: DspMessageData
      *
-     * @param message This type needs at least a status number (0-511).
+     * @param message This type needs at least a status number (0-599).
      * In this case, or if type is ApiServiceError, it takes the default status messages
      * from the list of HTTP status codes (https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
      */
     @Input() message: DspMessageData = new DspMessageData();
 
-    // TODO: Refactor Inputs into one parameter (i.e. 'size')
-    // https://github.com/dasch-swiss/knora-ui-ng-lib/pull/95#discussion_r435978988
+    /**
+     * Message type: ApiServiceError
+     * @param apiError
+     */
+    @Input() apiError?: ApiResponseError;
 
     /**
+     * Size of the message: large, medium or short?
+     * @param size Default size is 'large'
+     */
+    @Input() size: 'short' | 'medium' | 'large' = 'large';
+
+    /**
+     * @deprecated
      * @param short Show short message only
      * A small message box to notify the user an event has occured.
      */
-    @Input() short = false;
+    @Input() short = (this.size === 'short');
 
     /**
+     * @deprecated
      * @param medium Show medium message
      * A message box without footnote or links.
      */
-    @Input() medium = false;
+    @Input() medium = (this.size === 'medium');
 
+    /**
+     * @param duration How long should the message be displayed
+     */
     @Input() duration?: number;
 
     statusMsg: any;
@@ -91,7 +117,7 @@ export class MessageComponent implements OnInit {
         text: 'If you think this is a mistake, please',
         team: {
             dasch:
-                '<a href=\'https://discuss.dasch.swiss\' target=\'_blank\'> inform the DaSCH development team.</a>'
+                '<a href=\'https://docs.dasch.swiss/community/\' target=\'_blank\'> contact the DaSCH support.</a>'
         }
     };
 
@@ -103,6 +129,10 @@ export class MessageComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        if (this.apiError) {
+            this.message.status = this.apiError.status;
+        }
+
         this.statusMsg = this._status.default;
 
         if (!this.message) {
@@ -174,7 +204,7 @@ export class MessageComponent implements OnInit {
                     msg.footnote !== undefined
                         ? msg.footnote
                         : this.footnote.text + ' ' + this.footnote.team.dasch;
-                this.showLinks = !this.medium;
+                this.showLinks = (this.size === 'large');
                 break;
             case s >= 500 && s < 600:
                 // the message is a server side (api) error
