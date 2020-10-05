@@ -24,6 +24,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     valueChangesSubscription: Subscription;
     customValidators = [Validators.pattern(CustomRegex.COLOR_REGEX)];
     matcher = new ValueErrorStateMatcher();
+    textColor: string;
 
     constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
         super();
@@ -56,6 +57,8 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
         });
 
         this.resetFormControl();
+
+        this.textColor = this.getTextColor(this.valueFormControl.value);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -101,6 +104,37 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
         }
 
         return updatedColorValue;
+    }
+
+    // Calculate text color
+    getTextColor(hex: string): string {
+        if (!hex || hex === null) {
+            return;
+        }
+
+        // convert hexadicemal color value into rgb color value
+        const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+            return r + r + g + g + b + b;
+        });
+
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        const rgb: {r: number, g: number, b: number} = result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+
+        // calculate luminance
+        var a = [rgb.r, rgb.g, rgb.b].map(function (v) {
+            v /= 255;
+            return v <= 0.03928
+                ? v / 12.92
+                : Math.pow( (v + 0.055) / 1.055, 2.4 );
+        });
+        const luminance = a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+
+        return ((luminance > 0.179) ? "#000000" : "#ffffff");
     }
 
 }
