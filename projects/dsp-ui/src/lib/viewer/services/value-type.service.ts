@@ -56,7 +56,7 @@ export class ValueTypeService {
         if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText') {
             return this._readTextValueAsString;
         } else if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
-            return this._readTextValueAsHtml;
+            return this._readTextValueAsXml;
         } else {
             throw new Error(`unknown TextValue class ${resourcePropDef}`);
         }
