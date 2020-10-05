@@ -6,6 +6,8 @@
   font-family: monospace;
 }
 
-.rm-value p {
-  margin: 0;
+.rm-value {
+  ::ng-deep p {
+    margin: 0;
+  }
 }

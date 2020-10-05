@@ -1,5 +1,5 @@
 <span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <span *ngIf="this.displayValue?.mapping === standardMapping; else sourceMode" class="rm-value" [innerHTML]="valueFormControl.value"></span>
+    <div *ngIf="this.displayValue?.mapping === standardMapping; else sourceMode" class="rm-value" [innerHTML]="valueFormControl.value"></div>
     <ng-template #sourceMode>
         <span class="rm-value">{{displayValue?.xml}}</span>
     </ng-template>
