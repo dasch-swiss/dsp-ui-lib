@@ -526,17 +526,6 @@ describe('DisplayEditComponent', () => {
 
     });
 
-    it('should return the class of an XML text value as readonly', () => {
-
-      const xmlTextVal = new ReadTextValueAsXml();
-      xmlTextVal.type = Constants.TextValue;
-
-      expect(valueTypeService.getValueTypeOrClass(xmlTextVal)).toEqual('ReadTextValueAsXml');
-
-      expect(valueTypeService.isReadOnly('ReadTextValueAsXml')).toBe(true);
-
-    });
-
     it('should return the type of a plain text value as not readonly', () => {
 
       const plainTextVal = new ReadTextValueAsString();
