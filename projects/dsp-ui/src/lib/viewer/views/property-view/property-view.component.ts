@@ -59,7 +59,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (this.parentResource) {
-            console.log(this.parentResource);
             // get user permissions
             const allPermissions = PermissionUtil.allUserPermissions(
                 this.parentResource.userHasPermission as 'RV' | 'V' | 'M' | 'D' | 'CR'

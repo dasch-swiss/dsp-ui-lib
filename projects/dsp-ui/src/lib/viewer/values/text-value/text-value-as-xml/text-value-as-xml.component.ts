@@ -1,4 +1,12 @@
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    Inject,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    SimpleChanges
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Constants, CreateTextValueAsXml, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import * as Editor from 'ckeditor5-custom-build';
@@ -38,17 +46,20 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         super();
     }
 
+    standardValueComparisonFunc(initValue: any, curValue: any): boolean {
+        const initValueTrimmed = typeof initValue === 'string' ? initValue.trim() : initValue;
+        const curValueTrimmed = typeof curValue === 'string' ? curValue.trim() : curValue;
+
+        // TODO: convert curValueTrimmed to Knora XML schema
+
+        return initValueTrimmed === curValueTrimmed;
+    }
+
     getInitValue(): string | null {
 
         // check for standard mapping
         if (this.displayValue !== undefined) {
-
-            // strip the doctype and text tag
-            console.log('text before conversion: ', this.displayValue.xml);
-            const converted = this._handleXML(this.displayValue.xml, true);
-            console.log('text after conversion: ', converted);
-
-            return converted;
+            return this._handleXML(this.displayValue.xml, true);
         } else {
             return null;
         }
@@ -57,7 +68,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     ngOnInit() {
 
         if (this.mapping !== undefined
-            && this.mapping === 'http://rdfh.ch/standoff/mappings/StandardMapping'
+            /*&& this.mapping === 'http://rdfh.ch/standoff/mappings/StandardMapping'*/
             && this._appInitService.config['xmlTransform'] !== undefined
             && this._appInitService.config['xmlTransform'][this.mapping] !== undefined) {
 
@@ -72,7 +83,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
                             // label: 'internal link to a Knora resource',
                             mode: 'automatic', // automatic requires callback -> but the callback is async and the user could save the text before the check ...
                             callback: url => { /*console.log(url, url.startsWith( 'http://rdfh.ch/' ));*/
-                                return url.startsWith(this.resourceBasePath);
+                                return !!url && url.startsWith(this.resourceBasePath);
                             },
                             attributes: {
                                 class: Constants.SalsahLink
@@ -123,13 +134,6 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         // resets values and validators in form controls when input displayValue or mode changes
         // at the first call of ngOnChanges, form control elements are not initialized yet
         this.resetFormControl();
-
-        // mode is controlled via the FormControl
-        if (this.valueFormControl !== undefined && this.mode === 'read') {
-            this.valueFormControl.disable();
-        } else if (this.valueFormControl !== undefined) {
-            this.valueFormControl.enable();
-        }
 
     }
 
@@ -196,8 +200,6 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
             return xml.replace(doctype, '')
                 .replace(openingTextTag, '')
                 .replace(closingTextTag, '')
-                .replace('<em>', '<i>')
-                .replace('</em>', '</i>');
         } else {
 
             // replace &nbsp; entity
