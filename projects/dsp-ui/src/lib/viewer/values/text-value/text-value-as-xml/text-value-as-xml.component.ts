@@ -192,6 +192,11 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         const openingTextTag = `<${textTag}>`;
         const closingTextTag = `</${textTag}>`;
 
+        // check if xml is a string
+        if (typeof xml !== 'string') {
+            return xml;
+        }
+
         if (fromKnora) {
             // CKEditor accepts tags from version 4
             // see 4 to 5 migration, see https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html
