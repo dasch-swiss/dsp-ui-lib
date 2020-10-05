@@ -143,6 +143,8 @@ export class ColorPickerComponent extends _MatInputMixinBase implements ControlV
         if (this.ngControl != null) {
             this.ngControl.valueAccessor = this;
         }
+
+        this.placeholder = 'Click to select a color';
     }
 
     ngDoCheck() {
