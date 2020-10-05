@@ -50,9 +50,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         const initValueTrimmed = typeof initValue === 'string' ? initValue.trim() : initValue;
         const curValueTrimmed = typeof curValue === 'string' ? curValue.trim() : curValue;
 
-        // TODO: convert curValueTrimmed to Knora XML schema
-
-        return initValueTrimmed === curValueTrimmed;
+        return initValueTrimmed === this._handleXML(curValueTrimmed, false);
     }
 
     getInitValue(): string | null {
@@ -196,10 +194,9 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         if (fromKnora) {
             // CKEditor accepts tags from version 4
             // see 4 to 5 migration, see https://ckeditor.com/docs/ckeditor5/latest/builds/guides/migrate.html
-            // CKEditor 5 uses <i> for italics so we need to convert the <em> tags from knora to <i> so that the validator works
             return xml.replace(doctype, '')
                 .replace(openingTextTag, '')
-                .replace(closingTextTag, '')
+                .replace(closingTextTag, '');
         } else {
 
             // replace &nbsp; entity
