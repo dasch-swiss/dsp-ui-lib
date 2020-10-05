@@ -13,7 +13,7 @@ import { DspMessageData, MessageComponent } from './message.component';
  * Test host component to simulate parent component.
  */
 @Component({
-    template: `<dsp-message #message [message]="shortMessage" [size]="'short'"></dsp-message>`
+    template: `<dsp-message #message [message]="shortMessage" [size]="size"></dsp-message>`
 })
 class ShortMessageTestHostComponent implements OnInit {
 
@@ -39,7 +39,7 @@ class ShortMessageTestHostComponent implements OnInit {
  * Test host component to simulate parent component.
  */
 @Component({
-    template: `<dsp-message #message [message]="errorMessage" [size]="'short'"></dsp-message>`
+    template: `<dsp-message #message [message]="errorMessage"></dsp-message>`
 })
 class LongMessageTestHostComponent implements OnInit {
 
@@ -52,8 +52,6 @@ class LongMessageTestHostComponent implements OnInit {
         error: 'error message'
     };
 
-    size = 'short';
-
     constructor() {
     }
 
@@ -64,7 +62,7 @@ class LongMessageTestHostComponent implements OnInit {
  * Test host component to simulate parent component.
  */
 @Component({
-    template: `<dsp-message #message [message]="shortMessage" [size]="'short'" [duration]="2000"></dsp-message>`
+    template: `<dsp-message #message [message]="shortMessage" [size]="size" [duration]="2000"></dsp-message>`
 })
 class ShortMessageWithDurationTestHostComponent implements OnInit {
 

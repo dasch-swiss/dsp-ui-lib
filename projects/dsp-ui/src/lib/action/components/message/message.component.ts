@@ -53,10 +53,10 @@ export class MessageComponent implements OnInit {
     @Input() apiError?: ApiResponseError;
 
     /**
-     * Size of the message: large, medium or short?
-     * @param size Default size is 'large'
+     * Size of the message: long, medium or short?
+     * @param size Default size is 'long'
      */
-    @Input() size: 'short' | 'medium' | 'large' = 'large';
+    @Input() size: 'short' | 'medium' | 'long' = 'long';
 
     /**
      * @deprecated
@@ -210,7 +210,7 @@ export class MessageComponent implements OnInit {
                     msg.footnote !== undefined
                         ? msg.footnote
                         : this.footnote.text + ' ' + this.footnote.team.dasch;
-                this.showLinks = (this.size === 'large');
+                this.showLinks = (this.size === 'long');
                 break;
             case s >= 500 && s < 600:
                 // the message is a server side (api) error
