@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ReadIntValue, ReadTextValueAsHtml, ReadTextValueAsString } from '@dasch-swiss/dsp-js';
+import { ReadIntValue, ReadTextValueAsHtml, ReadTextValueAsString, ReadTextValueAsXml } from '@dasch-swiss/dsp-js';
 import { ValueTypeService } from './value-type.service';
 
 describe('ValueTypeService', () => {
@@ -44,6 +44,22 @@ describe('ValueTypeService', () => {
             readTextValueAsHtml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
             const valueClass = service.getValueTypeOrClass(readTextValueAsHtml);
             expect(service.isReadOnly(valueClass, readTextValueAsHtml)).toBeTruthy();
+        });
+
+        it('should not mark ReadTextValueAsXml with standard mapping as ReadOnly', () => {
+            const readTextValueAsXml = new ReadTextValueAsXml();
+            readTextValueAsXml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+            readTextValueAsXml.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+            const valueClass = service.getValueTypeOrClass(readTextValueAsXml);
+            expect(service.isReadOnly(valueClass, readTextValueAsXml)).toBeFalsy();
+        });
+
+        it('should mark ReadTextValueAsXml with custom mapping as ReadOnly', () => {
+            const readTextValueAsXml = new ReadTextValueAsXml();
+            readTextValueAsXml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+            readTextValueAsXml.mapping = 'http://rdfh.ch/standoff/mappings/CustomMapping';
+            const valueClass = service.getValueTypeOrClass(readTextValueAsXml);
+            expect(service.isReadOnly(valueClass, readTextValueAsXml)).toBeTruthy();
         });
     });
 
