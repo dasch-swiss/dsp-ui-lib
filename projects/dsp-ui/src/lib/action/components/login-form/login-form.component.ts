@@ -78,7 +78,7 @@ export class LoginFormComponent implements OnInit {
         forgot_pw: 'Forgot password?',
         error: {
             failed: 'Password or username is wrong',
-            server: 'There\'s an error with the server connection. Try it again later or inform the DaSCH team.'
+            server: 'There\'s an error with the server connection. Try it again later or contact the DaSCH support.'
         }
     };
 
@@ -159,7 +159,7 @@ export class LoginFormComponent implements OnInit {
                 // error handling
                 this.loginErrorUser = (error.status === 404);
                 this.loginErrorPw = (error.status === 401);
-                this.loginErrorServer = (error.status === 0);
+                this.loginErrorServer = (error.status === 0 || error.status >= 500 && error.status < 600);
 
                 this.loginSuccess.emit(false);
                 this.errorMessage = error;
