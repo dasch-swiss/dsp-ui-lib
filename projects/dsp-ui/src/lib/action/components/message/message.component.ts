@@ -31,9 +31,9 @@ export class tmpApiResponseError {
 }
 
 @Component({
-  selector: 'dsp-message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss']
+    selector: 'dsp-message',
+    templateUrl: './message.component.html',
+    styleUrls: ['./message.component.scss']
 })
 export class MessageComponent implements OnInit {
 
@@ -41,13 +41,13 @@ export class MessageComponent implements OnInit {
      * Message type: DspMessageData
      *
      * @param message This type needs at least a status number (0-599).
-     * In this case, or if type is ApiServiceError, it takes the default status messages
+     * In this case, or if type is ApiResponseError, it takes the default status messages
      * from the list of HTTP status codes (https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
      */
     @Input() message: DspMessageData = new DspMessageData();
 
     /**
-     * Message type: ApiServiceError
+     * Message type: ApiResponseError
      * @param apiError
      */
     @Input() apiError?: ApiResponseError;
@@ -131,7 +131,7 @@ export class MessageComponent implements OnInit {
     ngOnInit() {
         // temporary solution as long we have to support the deprecated inputs "short" and "medium"
         if (this.short || this.medium) {
-            this.size = (this.short ? 'short' :  'medium')
+            this.size = (this.short ? 'short' : 'medium')
         }
 
 
