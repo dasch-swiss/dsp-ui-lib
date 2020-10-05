@@ -114,10 +114,10 @@ export class MessageComponent implements OnInit {
     };
 
     footnote: any = {
-        text: 'If you think this is a mistake, please',
+        text: 'Please try again later.',
         team: {
             dasch:
-                '<a href=\'https://docs.dasch.swiss/community/\' target=\'_blank\'> contact the DaSCH support.</a>'
+                '<a href=\'https://docs.dasch.swiss/community/\' target=\'_blank\'>Contact the DaSCH support.</a>'
         }
     };
 
@@ -129,6 +129,12 @@ export class MessageComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        // temporary solution as long we have to support the deprecated inputs "short" and "medium"
+        if (this.short || this.medium) {
+            this.size = (this.short ? 'short' :  'medium')
+        }
+
+
         if (this.apiError) {
             this.message.status = this.apiError.status;
         }

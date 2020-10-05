@@ -1,4 +1,4 @@
-<mat-card *ngIf="!short" class="fix-width dsp-message" [ngClass]="'dsp-' + message?.type">
+<mat-card *ngIf="(size !== 'short')" class="fix-width dsp-message" [ngClass]="'dsp-' + message?.type">
 
     <mat-card-subtitle class="message-subtitle">
         <span class="left">{{message?.type | uppercase }} {{message?.status}} | {{message?.statusMsg}}</span>
