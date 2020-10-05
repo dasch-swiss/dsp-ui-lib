@@ -78,7 +78,7 @@ export class LoginFormComponent implements OnInit {
         forgot_pw: 'Forgot password?',
         error: {
             failed: 'Password or username is wrong',
-            server: 'There\'s an error with the server connection. Try it again later or contact the DaSCH support.'
+            server: 'An error has occurred when connecting to the server. Try again later or contact the DaSCH support.'
         }
     };
 
