@@ -149,7 +149,7 @@ describe('TextValueAsXMLComponent', () => {
 
         });
 
-        it('should display an existing value', () => {
+        it('should display an existing value for the standard mapping as formatted text', () => {
 
             expect(testHostComponent.inputValueComponent.displayValue.xml).toEqual('<?xml version="1.0" encoding="UTF-8"?>\n<text><p>test with <strong>markup</strong></p></text>');
 
@@ -158,6 +158,31 @@ describe('TextValueAsXMLComponent', () => {
             expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
             expect(valueReadModeNativeElement.innerHTML).toEqual('\n<p>test with <strong>markup</strong></p>');
+
+        });
+
+        it('should display an existing value for a custom mapping as XML source code', () => {
+
+            const newXml = new ReadTextValueAsXml();
+
+            newXml.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p>my updated text</p></text>';
+            newXml.mapping = 'http://rdfh.ch/standoff/mappings/customMapping';
+
+            newXml.id = 'id';
+
+            testHostComponent.displayInputVal = newXml;
+
+            testHostFixture.detectChanges();
+
+            valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+
+            valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
+
+            expect(valueReadModeNativeElement.innerText).toEqual(
+                '<?xml version="1.0" encoding="UTF-8"?><text><p>my updated text</p></text>');
+
+            // custom mappings are not supported by this component
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
         });
 
