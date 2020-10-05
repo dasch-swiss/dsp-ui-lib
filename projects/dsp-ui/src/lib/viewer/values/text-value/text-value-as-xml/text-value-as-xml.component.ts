@@ -50,7 +50,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         const initValueTrimmed = typeof initValue === 'string' ? initValue.trim() : initValue;
         const curValueTrimmed = typeof curValue === 'string' ? curValue.trim() : curValue;
 
-        return initValueTrimmed === this._handleXML(curValueTrimmed, false);
+        return initValueTrimmed === this._handleXML(curValueTrimmed, false, false);
     }
 
     getInitValue(): string | null {
@@ -183,8 +183,9 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
      *
      * @param xml xml to be processed.
      * @param fromKnora true if xml is received from Knora.
+     * @param addXMLDocType whether to add the doctype to the XML.
      */
-    private _handleXML(xml: string, fromKnora: boolean) {
+    private _handleXML(xml: string, fromKnora: boolean, addXMLDocType = true) {
 
         const doctype = '<?xml version="1.0" encoding="UTF-8"?>';
         const textTag = 'text';
@@ -209,7 +210,11 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
                 xml = xml.replace(new RegExp(key, 'g'), this._appInitService.config['xmlTransform'][this.mapping][key]);
             }
 
-            return doctype + openingTextTag + xml + closingTextTag;
+            if (addXMLDocType) {
+                return doctype + openingTextTag + xml + closingTextTag;
+            } else {
+                return xml;
+            }
         }
 
     }
