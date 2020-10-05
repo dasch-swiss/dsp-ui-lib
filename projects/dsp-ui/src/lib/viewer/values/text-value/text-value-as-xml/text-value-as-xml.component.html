@@ -1,5 +1,8 @@
 <span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <span class="rm-value" [innerHTML]="valueFormControl.value"></span>
+    <span *ngIf="this.displayValue?.mapping === standardMapping; else sourceMode" class="rm-value" [innerHTML]="valueFormControl.value"></span>
+    <ng-template #sourceMode class="rm-value">
+        <span>{{valueFormControl.value}}</span>
+    </ng-template>
     <span class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</span>
 </span>
 <ng-template #showForm>

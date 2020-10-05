@@ -13,8 +13,9 @@ import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
 })
 export class TextValueAsXMLComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
+    readonly standardMapping = 'http://rdfh.ch/standoff/mappings/StandardMapping'; // TODO: define this somewhere else
+
     @Input() displayValue?: ReadTextValueAsXml;
-    @Input() mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping'; // TODO: define this somewhere else
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
@@ -31,16 +32,14 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
     // XML conversion
     xmlTransform = {
-        'http://rdfh.ch/standoff/mappings/StandardMapping': {
-            '<hr>': '<hr/>',
-            '</hr>': '',
-            '<s>': '<strike>',
-            '</s>': '</strike>',
-            '<i>': '<em>',
-            '</i>': '</em>',
-            '<figure class="table">': '',
-            '</figure>': ''
-        }
+        '<hr>': '<hr/>',
+        '</hr>': '',
+        '<s>': '<strike>',
+        '</s>': '</strike>',
+        '<i>': '<em>',
+        '</i>': '</em>',
+        '<figure class="table">': '',
+        '</figure>': ''
     };
 
     // TODO: get this from config via AppInitService
@@ -60,7 +59,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     getInitValue(): string | null {
 
         // check for standard mapping
-        if (this.displayValue !== undefined) {
+        if (this.displayValue !== undefined && this.displayValue.mapping === this.standardMapping) {
             return this._handleXML(this.displayValue.xml, true);
         } else {
             return null;
@@ -69,65 +68,61 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
     ngOnInit() {
 
-        if (this.mapping !== undefined
-            /*&& this.mapping === 'http://rdfh.ch/standoff/mappings/StandardMapping'*/
-            ) {
+        this.editor = Editor;
 
-            this.editor = Editor;
-
-            this.editorConfig = {
-                entities: false,
-                link: {
-                    addTargetToExternalLinks: false,
-                    decorators: {
-                        isInternal: {
-                            // label: 'internal link to a Knora resource',
-                            mode: 'automatic', // automatic requires callback -> but the callback is async and the user could save the text before the check ...
-                            callback: url => { /*console.log(url, url.startsWith( 'http://rdfh.ch/' ));*/
-                                return !!url && url.startsWith(this.resourceBasePath);
-                            },
-                            attributes: {
-                                class: Constants.SalsahLink
-                            }
+        this.editorConfig = {
+            entities: false,
+            link: {
+                addTargetToExternalLinks: false,
+                decorators: {
+                    isInternal: {
+                        // label: 'internal link to a Knora resource',
+                        mode: 'automatic', // automatic requires callback -> but the callback is async and the user could save the text before the check ...
+                        callback: url => { /*console.log(url, url.startsWith( 'http://rdfh.ch/' ));*/
+                            return !!url && url.startsWith(this.resourceBasePath);
+                        },
+                        attributes: {
+                            class: Constants.SalsahLink
                         }
                     }
-                },
-                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat', 'redo', 'undo'],
-                heading: {
-                    options: [
-                        {model: 'heading1', view: 'h1', title: 'Heading 1'},
-                        {model: 'heading2', view: 'h2', title: 'Heading 2'},
-                        {model: 'heading3', view: 'h3', title: 'Heading 3'},
-                        {model: 'heading4', view: 'h4', title: 'Heading 4'},
-                        {model: 'heading5', view: 'h5', title: 'Heading 5'},
-                        {model: 'heading6', view: 'h6', title: 'Heading 6'},
-                    ]
-                },
-                codeBlock: {
-                    languages: [
-                        {language: 'plaintext', label: 'Plain text', class: ''}
-                    ]
                 }
-            };
+            },
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat', 'redo', 'undo'],
+            heading: {
+                options: [
+                    {model: 'heading1', view: 'h1', title: 'Heading 1'},
+                    {model: 'heading2', view: 'h2', title: 'Heading 2'},
+                    {model: 'heading3', view: 'h3', title: 'Heading 3'},
+                    {model: 'heading4', view: 'h4', title: 'Heading 4'},
+                    {model: 'heading5', view: 'h5', title: 'Heading 5'},
+                    {model: 'heading6', view: 'h6', title: 'Heading 6'},
+                ]
+            },
+            codeBlock: {
+                languages: [
+                    {language: 'plaintext', label: 'Plain text', class: ''}
+                ]
+            }
+        };
 
-            // initialize form control elements
-            this.valueFormControl = new FormControl(null);
+        // initialize form control elements
+        this.valueFormControl = new FormControl(null);
 
-            this.commentFormControl = new FormControl(null);
+        this.commentFormControl = new FormControl(null);
 
-            this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
-                data => {
-                    this.valueFormControl.updateValueAndValidity();
-                }
-            );
+        this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
+            data => {
+                this.valueFormControl.updateValueAndValidity();
+            }
+        );
 
-            this.form = this.fb.group({
-                xmlValue: this.valueFormControl,
-                comment: this.commentFormControl
-            });
+        this.form = this.fb.group({
+            xmlValue: this.valueFormControl,
+            comment: this.commentFormControl
+        });
 
-            this.resetFormControl();
-        }
+        this.resetFormControl();
+
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -151,7 +146,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         const newTextValue = new CreateTextValueAsXml();
 
         newTextValue.xml = this._handleXML(this.valueFormControl.value, false);
-        newTextValue.mapping = this.mapping;
+        newTextValue.mapping = this.standardMapping;
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             newTextValue.valueHasComment = this.commentFormControl.value;
@@ -172,7 +167,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
         updatedTextValue.id = this.displayValue.id;
 
         updatedTextValue.xml = this._handleXML(this.valueFormControl.value, false);
-        updatedTextValue.mapping = this.mapping;
+        updatedTextValue.mapping = this.standardMapping;
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             updatedTextValue.valueHasComment = this.commentFormControl.value;
@@ -212,10 +207,10 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
             xml = xml.replace(/&nbsp;/g, String.fromCharCode(160));
 
             // get XML transform config
-            const keys = Object.keys(this.xmlTransform[this.mapping]);
+            const keys = Object.keys(this.xmlTransform);
             for (const key of keys) {
                 // replace tags defined in config
-                xml = xml.replace(new RegExp(key, 'g'), this.xmlTransform[this.mapping][key]);
+                xml = xml.replace(new RegExp(key, 'g'), this.xmlTransform[key]);
             }
 
             if (addXMLDocType) {
