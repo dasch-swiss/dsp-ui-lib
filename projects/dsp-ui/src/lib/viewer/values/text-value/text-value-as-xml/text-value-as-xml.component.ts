@@ -1,12 +1,4 @@
-import {
-    Component,
-    Inject,
-    Input,
-    OnChanges,
-    OnDestroy,
-    OnInit,
-    SimpleChanges
-} from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Constants, CreateTextValueAsXml, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import * as Editor from 'ckeditor5-custom-build';
@@ -38,11 +30,24 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     editor: Editor;
     editorConfig;
 
+    // XML conversion
+    xmlTransform = {
+        'http://rdfh.ch/standoff/mappings/StandardMapping': {
+            '<hr>': '<hr/>',
+            '</hr>': '',
+            '<s>': '<strike>',
+            '</s>': '</strike>',
+            '<i>': '<em>',
+            '</i>': '</em>',
+            '<figure class="table">': '',
+            '</figure>': ''
+        }
+    };
+
     // TODO: get this from config via AppInitService
     readonly resourceBasePath = 'http://rdfh.ch/';
 
-    constructor(private _appInitService: AppInitService,
-                @Inject(FormBuilder) private fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private fb: FormBuilder) {
         super();
     }
 
@@ -67,8 +72,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         if (this.mapping !== undefined
             /*&& this.mapping === 'http://rdfh.ch/standoff/mappings/StandardMapping'*/
-            && this._appInitService.config['xmlTransform'] !== undefined
-            && this._appInitService.config['xmlTransform'][this.mapping] !== undefined) {
+            ) {
 
             this.editor = Editor;
 
@@ -209,10 +213,10 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
             xml = xml.replace(/&nbsp;/g, String.fromCharCode(160));
 
             // get XML transform config
-            const keys = Object.keys(this._appInitService.config['xmlTransform'][this.mapping]);
+            const keys = Object.keys(this.xmlTransform[this.mapping]);
             for (const key of keys) {
                 // replace tags defined in config
-                xml = xml.replace(new RegExp(key, 'g'), this._appInitService.config['xmlTransform'][this.mapping][key]);
+                xml = xml.replace(new RegExp(key, 'g'), this.xmlTransform[this.mapping][key]);
             }
 
             if (addXMLDocType) {

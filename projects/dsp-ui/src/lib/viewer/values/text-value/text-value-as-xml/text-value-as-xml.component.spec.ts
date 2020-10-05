@@ -105,23 +105,6 @@ class TestHostCreateValueComponent implements OnInit {
 
 describe('TextValueAsXMLComponent', () => {
 
-    const appInitServiceMock = {
-        config: {
-            xmlTransform: {
-                'http://rdfh.ch/standoff/mappings/StandardMapping': {
-                    '<hr>': '<hr/>',
-                    '</hr>': '',
-                    '<s>': '<strike>',
-                    '</s>': '</strike>',
-                    '<i>': '<em>',
-                    '</i>': '</em>',
-                    '<figure class="table">': '',
-                    '</figure>': ''
-                }
-            }
-        }
-    };
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
@@ -134,9 +117,6 @@ describe('TextValueAsXMLComponent', () => {
                 ReactiveFormsModule,
                 MatInputModule,
                 BrowserAnimationsModule
-            ],
-            providers: [
-                {provide: AppInitService, useValue: appInitServiceMock}
             ]
         })
             .compileComponents();
