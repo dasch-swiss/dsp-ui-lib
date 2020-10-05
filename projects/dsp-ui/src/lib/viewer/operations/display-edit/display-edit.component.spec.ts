@@ -512,7 +512,7 @@ describe('DisplayEditComponent', () => {
     it('should return the type of a integer value as not readonly', () => {
       expect(valueTypeService.getValueTypeOrClass(testHostComponent.displayEditValueComponent.displayValue)).toEqual(Constants.IntValue);
 
-      expect(valueTypeService.isReadOnly(Constants.IntValue)).toBe(false);
+      expect(valueTypeService.isReadOnly(Constants.IntValue, testHostComponent.displayEditValueComponent.displayValue)).toBe(false);
     });
 
     it('should return the class of a html text value as readonly', () => {
@@ -522,7 +522,7 @@ describe('DisplayEditComponent', () => {
 
       expect(valueTypeService.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsHtml');
 
-      expect(valueTypeService.isReadOnly('ReadTextValueAsHtml')).toBe(true);
+      expect(valueTypeService.isReadOnly('ReadTextValueAsHtml', htmlTextVal)).toBe(true);
 
     });
 
@@ -533,7 +533,7 @@ describe('DisplayEditComponent', () => {
 
       expect(valueTypeService.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsString');
 
-      expect(valueTypeService.isReadOnly('ReadTextValueAsString')).toBe(false);
+      expect(valueTypeService.isReadOnly('ReadTextValueAsString', plainTextVal)).toBe(false);
 
     });
 

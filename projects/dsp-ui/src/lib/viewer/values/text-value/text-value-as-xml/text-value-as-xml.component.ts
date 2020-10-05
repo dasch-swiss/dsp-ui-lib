@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Constants, CreateTextValueAsXml, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import * as Editor from 'ckeditor5-custom-build';
 import { Subscription } from 'rxjs';
-import { AppInitService } from '../../../../core/app-init.service';
 import { BaseValueComponent } from '../../base-value.component';
 import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
 

@@ -85,9 +85,14 @@ export class ValueTypeService {
      * Determines if the given value is readonly.
      *
      * @param valueTypeOrClass the type or class of the given value.
+     * @param value the given value.
      */
-    isReadOnly(valueTypeOrClass: string): boolean {
+    isReadOnly(valueTypeOrClass: string, value: ReadValue): boolean {
+        const xmlValueNonStandardMapping
+            = valueTypeOrClass === this._readTextValueAsXml
+            && (value instanceof ReadTextValueAsXml && value.mapping !== 'http://rdfh.ch/standoff/mappings/StandardMapping');
+
         return valueTypeOrClass === this._readTextValueAsHtml ||
-            valueTypeOrClass === this.constants.GeomValue;
+            valueTypeOrClass === this.constants.GeomValue || xmlValueNonStandardMapping;
     }
 }

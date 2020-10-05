@@ -36,14 +36,14 @@ describe('ValueTypeService', () => {
             const readTextValueAsString = new ReadTextValueAsString();
             readTextValueAsString.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
             const valueClass = service.getValueTypeOrClass(readTextValueAsString);
-            expect(service.isReadOnly(valueClass)).toBeFalsy();
+            expect(service.isReadOnly(valueClass, readTextValueAsString)).toBeFalsy();
         });
 
         it('should mark ReadTextValueAsHtml as ReadOnly', () => {
             const readTextValueAsHtml = new ReadTextValueAsHtml();
             readTextValueAsHtml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
             const valueClass = service.getValueTypeOrClass(readTextValueAsHtml);
-            expect(service.isReadOnly(valueClass)).toBeTruthy();
+            expect(service.isReadOnly(valueClass, readTextValueAsHtml)).toBeTruthy();
         });
     });
 
