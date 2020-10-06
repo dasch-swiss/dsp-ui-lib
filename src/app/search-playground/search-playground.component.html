@@ -25,8 +25,73 @@ Select the component to play with:
 
     <dsp-expert-search *ngSwitchCase="'expert'" (search)="doSearch($event)"></dsp-expert-search>
 
-    <dsp-search-panel *ngSwitchDefault [projectfilter]="true" [advanced]="true" [expert]="true"
-        (search)="doSearch($event)"></dsp-search-panel>
+
+    <div *ngSwitchDefault>
+        <!-- configure the search panel -->
+        <h3>Configure the search panel with the following parameters</h3>
+        <form [formGroup]="form">
+
+            <mat-checkbox class="set-search-param" formControlName="filterbyproject">
+                filterbyproject = "{{ projectIri }}"</mat-checkbox>
+
+            <mat-slide-toggle class="set-search-param" formControlName="projectfilter">projectfilter
+            </mat-slide-toggle>
+
+            <mat-slide-toggle class="set-search-param" formControlName="advancedsearch">advanced
+            </mat-slide-toggle>
+
+            <mat-slide-toggle class="set-search-param" formControlName="expertsearch">expert
+            </mat-slide-toggle>
+
+        </form>
+
+        <!--
+<h3>Fulltext search</h3>
+<kui-fulltext-search [route]="'/search'"></kui-fulltext-search>
+--
+<h3>Extended search</h3>
+<kui-extended-search [route]="'/search'"></kui-extended-search>
+-->
+
+        <!-- show the generated code -->
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Show code
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        dsp-search-panel
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <pre>
+      &lt;dsp-search-panel
+        [filterbyproject]="{{limitToProject}}"
+        [projectfilter]="{{projectFilter}}"
+        [advanced]="{{advancedSearch}}"
+        [expert]="{{expertSearch}}"
+        (search)="doSearch($event)"&gt;
+      &lt;/dsp-search-panel&gt;
+    </pre>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <!-- demo of search paenl -->
+        <div class="demo">
+            <!-- simulate header -->
+            <div class="header">
+                <dsp-search-panel *ngIf="!loading" class="center" [projectfilter]="projectFilter"
+                    [filterbyproject]="limitToProject" [advanced]="advancedSearch" [expert]="expertSearch" (search)="doSearch($event)">
+                </dsp-search-panel>
+                <!--  -->
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- <dsp-search-panel *ngSwitchDefault [projectfilter]="true" [advanced]="true" [expert]="true"
+        (search)="doSearch($event)"></dsp-search-panel> -->
 
 </div>
 

@@ -188,6 +188,7 @@ $gc-small: $full-input-width - $gc-large - 4;
     }
   }
 
+  .dsp-search-panel,
   .dsp-fulltext-search,
   .dsp-menu.advanced-search {
     width: calc(#{$search-width-small-device} - 160px);
