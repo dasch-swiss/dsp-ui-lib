@@ -164,3 +164,30 @@ button.save .mat-icon,
 button.cancel .mat-icon {
   font-size: 18px;
 }
+
+.deletion-dialog .title {
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+}
+
+.deletion-dialog .action-buttons {
+  float: right;
+
+  .cancel {
+    padding: 0 16px;
+  }
+}
+
+.deletion-dialog-message {
+  font-size: 16px;
+  background-color: #ededf5;
+  border: 1px solid #d8d8df;
+  border-radius: 5px;
+  padding: 20px 10px 20px 10px;
+  text-align: center;
+}
+
+.deletion-dialog-message .deletion-comment {
+  min-width: 80%;
+}
