@@ -31,7 +31,7 @@ export class TextValueHtmlLinkDirective {
      * @param targetElement the element that was hovered.
      */
     @HostListener('mouseover', ['$event.target'])
-    onMouseEnter(targetElement) {
+    onMouseOver(targetElement) {
         if (targetElement.nodeName.toLowerCase() === 'a'
             && targetElement.className.toLowerCase().indexOf(Constants.SalsahLink) !== -1) {
             this.internalLinkHovered.emit(targetElement.href);
