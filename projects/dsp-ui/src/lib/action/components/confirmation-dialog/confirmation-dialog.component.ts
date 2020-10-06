@@ -9,9 +9,9 @@ export class ConfirmationDialogData {
     buttonTextCancel: string;
 }
 
-export class ConfirmationDialogPayload {
+export class ConfirmationDialogValueDeletionPayload {
     confirmed: boolean;
-    deletionComment: string;
+    deletionComment?: string;
 }
 
 @Component({
@@ -30,9 +30,9 @@ export class ConfirmationDialogComponent {
     ) { }
 
     onConfirmClick(): void {
-        const payload = new ConfirmationDialogPayload();
+        const payload = new ConfirmationDialogValueDeletionPayload();
         payload.confirmed = true;
-        payload.deletionComment = this.confirmationMessageComponent.comment ? this.confirmationMessageComponent.comment : null;
+        payload.deletionComment = this.confirmationMessageComponent.comment ? this.confirmationMessageComponent.comment : undefined;
         this._dialogRef.close(payload);
     }
 

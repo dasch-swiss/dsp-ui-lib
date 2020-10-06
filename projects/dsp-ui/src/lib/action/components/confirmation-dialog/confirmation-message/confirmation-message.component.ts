@@ -9,7 +9,7 @@ import { ReadValue } from '@dasch-swiss/dsp-js';
 export class ConfirmationMessageComponent {
 
     @Input() value: ReadValue;
-    comment: string;
+    comment?: string;
 
     constructor() { }
 

@@ -21,7 +21,7 @@ import { mergeMap } from 'rxjs/operators';
 import {
     ConfirmationDialogComponent,
     ConfirmationDialogData,
-    ConfirmationDialogPayload
+    ConfirmationDialogValueDeletionPayload
 } from '../../../action/components/confirmation-dialog/confirmation-dialog.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import {
@@ -223,7 +223,7 @@ export class DisplayEditComponent implements OnInit {
         const dialogRef =
             this._dialog.open<ConfirmationDialogComponent, ConfirmationDialogData>(ConfirmationDialogComponent, { data: dialogData});
 
-        dialogRef.afterClosed().subscribe((payload: ConfirmationDialogPayload) => {
+        dialogRef.afterClosed().subscribe((payload: ConfirmationDialogValueDeletionPayload) => {
             if (payload && payload.confirmed) {
                 this.deleteValue(payload.deletionComment);
             }
