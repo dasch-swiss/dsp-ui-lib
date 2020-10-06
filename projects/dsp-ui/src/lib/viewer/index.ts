@@ -30,3 +30,5 @@ export * from './views/list-view/resource-grid/resource-grid.component';
 export * from './representation/still-image/still-image.component';
 // services
 export * from './services/value-type.service';
+// directives
+export * from './directives/text-value-xml-link.directive';
