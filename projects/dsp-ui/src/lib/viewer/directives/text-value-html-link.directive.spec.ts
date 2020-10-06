@@ -75,6 +75,22 @@ describe('TextValueHtmlLinkDirective', () => {
 
     });
 
+    it('should not react to clicking on an external link', () => {
+        expect(testHostComponent).toBeTruthy();
+
+        const hostCompDe = testHostFixture.debugElement;
+        const directiveDe = hostCompDe.query(By.directive(TextValueHtmlLinkDirective));
+
+        const externalLinkDe = directiveDe.query(By.css('a:not(.salsah-link)'));
+
+        externalLinkDe.nativeElement.click();
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.internalLinkClickedIri).toBeUndefined();
+
+    });
+
     it('should react to hovering over an internal link', () => {
         expect(testHostComponent).toBeTruthy();
 
@@ -92,6 +108,26 @@ describe('TextValueHtmlLinkDirective', () => {
         testHostFixture.detectChanges();
 
         expect(testHostComponent.internalLinkHoveredIri).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+
+    });
+
+    it('should not react to hovering over an external link', () => {
+        expect(testHostComponent).toBeTruthy();
+
+        const hostCompDe = testHostFixture.debugElement;
+        const directiveDe = hostCompDe.query(By.directive(TextValueHtmlLinkDirective));
+
+        const externalLinkDe = directiveDe.query(By.css('a:not(.salsah-link)'));
+
+        externalLinkDe.nativeElement.dispatchEvent(new MouseEvent('mouseover', {
+            view: window,
+            bubbles: true,
+            cancelable: true
+        }));
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.internalLinkHoveredIri).toBeUndefined();
 
     });
 });

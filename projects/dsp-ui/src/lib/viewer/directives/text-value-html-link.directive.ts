@@ -9,9 +9,6 @@ export class TextValueHtmlLinkDirective {
     @Output() internalLinkClicked = new EventEmitter<string>();
     @Output() internalLinkHovered = new EventEmitter<string>();
 
-    constructor() {
-    }
-
     /**
      * React to a click event for an internal link.
      *
