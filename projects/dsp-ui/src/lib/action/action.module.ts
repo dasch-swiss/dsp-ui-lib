@@ -20,6 +20,7 @@ import { SortButtonComponent } from './components/sort-button/sort-button.compon
 import { StringLiteralInputComponent } from './components/string-literal-input/string-literal-input.component';
 import { AdminImageDirective } from './directives/admin-image/admin-image.directive';
 import { ExistingNameDirective } from './directives/existing-names/existing-name.directive';
+import { ExternalLinksDirective } from './directives/external-links/external-links.directive';
 import { GndDirective } from './directives/gnd/gnd.directive';
 import { ReversePipe } from './pipes/array-transformation/reverse.pipe';
 import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
@@ -45,7 +46,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     StringLiteralInputComponent,
     LoginFormComponent,
     ConfirmationDialogComponent,
-    ConfirmationMessageComponent
+    ConfirmationMessageComponent,
+    ExternalLinksDirective
   ],
   imports: [
     CommonModule,
