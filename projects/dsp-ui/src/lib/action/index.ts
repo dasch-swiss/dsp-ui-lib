@@ -24,3 +24,4 @@ export * from './components/confirmation-dialog/confirmation-message/confirmatio
 export * from './directives/admin-image/admin-image.directive';
 export * from './directives/existing-names/existing-name.directive';
 export * from './directives/gnd/gnd.directive';
+export * from './directives/external-links/external-links.directive';

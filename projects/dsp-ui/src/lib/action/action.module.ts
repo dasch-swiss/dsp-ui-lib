@@ -80,7 +80,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     LoginFormComponent,
     ConfirmationDialogComponent,
     GndDirective,
-    ConfirmationMessageComponent
+    ConfirmationMessageComponent,
+    ExternalLinksDirective
   ]
 })
 
