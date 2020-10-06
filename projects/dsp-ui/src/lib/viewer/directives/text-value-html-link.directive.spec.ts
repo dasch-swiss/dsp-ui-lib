@@ -1,8 +1,97 @@
+import { Component } from '@angular/core';
 import { TextValueHtmlLinkDirective } from './text-value-html-link.directive';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+        <div [innerHTML]="html" dspHtmlLink (internalLinkClicked)="clicked($event)" (internalLinkHovered)="hovered($event)"></div>`
+})
+class TestHostComponent {
+
+    html =
+        'This is a test <a href="https://www.google.ch">external link</a> and a test <a class="salsah-link" href="http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw">internal link</a>';
+
+    internalLinkClickedIri: string;
+
+    internalLinkHoveredIri: string;
+
+    clicked(iri: string) {
+        this.internalLinkClickedIri = iri;
+    }
+
+    hovered(iri: string) {
+        this.internalLinkHoveredIri = iri;
+    }
+}
 
 describe('TextValueHtmlLinkDirective', () => {
-  it('should create an instance', () => {
-    const directive = new TextValueHtmlLinkDirective();
-    expect(directive).toBeTruthy();
-  });
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                BrowserAnimationsModule
+            ],
+            declarations: [
+                TextValueHtmlLinkDirective,
+                TestHostComponent
+            ]
+        }).compileComponents();
+
+    }));
+
+    beforeEach(() => {
+
+        testHostFixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should create an instance', () => {
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should react to clicking on an internal link', () => {
+        expect(testHostComponent).toBeTruthy();
+
+        const hostCompDe = testHostFixture.debugElement;
+        const directiveDe = hostCompDe.query(By.directive(TextValueHtmlLinkDirective));
+
+        const internalLinkDe = directiveDe.query(By.css('a.salsah-link'));
+
+        internalLinkDe.nativeElement.click();
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.internalLinkClickedIri).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+
+    });
+
+    it('should react to hovering over an internal link', () => {
+        expect(testHostComponent).toBeTruthy();
+
+        const hostCompDe = testHostFixture.debugElement;
+        const directiveDe = hostCompDe.query(By.directive(TextValueHtmlLinkDirective));
+
+        const internalLinkDe = directiveDe.query(By.css('a.salsah-link'));
+
+        internalLinkDe.nativeElement.dispatchEvent(new MouseEvent('mouseover', {
+            view: window,
+            bubbles: true,
+            cancelable: true
+        }));
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.internalLinkHoveredIri).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+
+    });
 });

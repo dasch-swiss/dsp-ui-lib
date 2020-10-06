@@ -2,7 +2,7 @@ import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
 import { Constants } from '@dasch-swiss/dsp-js';
 
 @Directive({
-    selector: '[dspMarkup]'
+    selector: '[dspHtmlLink]'
 })
 export class TextValueHtmlLinkDirective {
 
@@ -12,20 +12,34 @@ export class TextValueHtmlLinkDirective {
     constructor() {
     }
 
+    /**
+     * React to a click event for an internal link.
+     *
+     * @param targetElement the element that was clicked.
+     */
     @HostListener('click', ['$event.target'])
     onClick(targetElement) {
         if (targetElement.nodeName.toLowerCase() === 'a'
             && targetElement.className.toLowerCase().indexOf(Constants.SalsahLink) !== -1) {
             this.internalLinkClicked.emit(targetElement.href);
+
+            // preventDefault (propagation)
             return false;
         }
     }
 
+    /**
+     * React to a mouseover event for an internal link.
+     *
+     * @param targetElement the element that was hovered.
+     */
     @HostListener('mouseover', ['$event.target'])
     onMouseEnter(targetElement) {
         if (targetElement.nodeName.toLowerCase() === 'a'
             && targetElement.className.toLowerCase().indexOf(Constants.SalsahLink) !== -1) {
             this.internalLinkHovered.emit(targetElement.href);
+
+            // preventDefault (propagation)
             return false;
         }
     }
