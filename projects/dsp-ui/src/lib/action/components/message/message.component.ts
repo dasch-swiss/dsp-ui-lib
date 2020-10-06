@@ -19,17 +19,6 @@ export class DspMessageData {
     url?: string;
 }
 
-export class tmpApiResponseError {
-    status: number;
-    message: string;
-    name: string;
-    request: any;
-    response: any;
-    responseType: string;
-    xhr: XMLHttpRequest
-
-}
-
 @Component({
     selector: 'dsp-message',
     templateUrl: './message.component.html',
