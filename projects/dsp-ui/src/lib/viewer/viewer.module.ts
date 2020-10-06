@@ -52,7 +52,7 @@ import { ResourceListComponent } from './views/list-view/resource-list/resource-
 import { PropertyToolbarComponent } from './views/property-view/property-toolbar/property-toolbar.component';
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
-import { TextValueXmlLinkDirective } from './directives/text-value-xml-link.directive';
+import { TextValueHtmlLinkDirective } from './directives/text-value-html-link.directive';
 
 
 @NgModule({
@@ -87,7 +87,7 @@ import { TextValueXmlLinkDirective } from './directives/text-value-xml-link.dire
         TimeInputComponent,
         TimeValueComponent,
         UriValueComponent,
-        TextValueXmlLinkDirective
+        TextValueHtmlLinkDirective
     ],
     imports: [
         ClipboardModule,
@@ -139,7 +139,7 @@ import { TextValueXmlLinkDirective } from './directives/text-value-xml-link.dire
         TextValueAsStringComponent,
         TimeValueComponent,
         UriValueComponent,
-        TextValueXmlLinkDirective
+        TextValueHtmlLinkDirective
     ]
 })
 export class DspViewerModule {
