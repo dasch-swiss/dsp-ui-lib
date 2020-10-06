@@ -20,7 +20,8 @@ import {
 import { mergeMap } from 'rxjs/operators';
 import {
     ConfirmationDialogComponent,
-    ConfirmationDialogData
+    ConfirmationDialogData,
+    ConfirmationDialogValueDeletionPayload
 } from '../../../action/components/confirmation-dialog/confirmation-dialog.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import {
@@ -222,9 +223,9 @@ export class DisplayEditComponent implements OnInit {
         const dialogRef =
             this._dialog.open<ConfirmationDialogComponent, ConfirmationDialogData>(ConfirmationDialogComponent, { data: dialogData});
 
-        dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-            if (confirmed) {
-                this.deleteValue();
+        dialogRef.afterClosed().subscribe((payload: ConfirmationDialogValueDeletionPayload) => {
+            if (payload && payload.confirmed) {
+                this.deleteValue(payload.deletionComment);
             }
         });
     }
@@ -233,10 +234,11 @@ export class DisplayEditComponent implements OnInit {
      * Delete a value from a property.
      * Emits an event that can be listened to.
      */
-    deleteValue() {
+    deleteValue(comment?: string) {
         const deleteVal = new DeleteValue();
         deleteVal.id = this.displayValue.id;
         deleteVal.type = this.displayValue.type;
+        deleteVal.deleteComment = comment;
 
         const updateRes = new UpdateResource();
         updateRes.type = this.parentResource.type;
