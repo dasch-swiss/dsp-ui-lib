@@ -113,14 +113,6 @@ export class MessageComponent implements OnInit {
         ]
     };
 
-    footnote: any = {
-        text: 'Please try again later.',
-        team: {
-            dasch:
-                '<a href=\'https://docs.dasch.swiss/community/\' target=\'_blank\'>Contact the DaSCH support.</a>'
-        }
-    };
-
     constructor(
         private _router: Router,
         private _location: Location,
@@ -206,10 +198,6 @@ export class MessageComponent implements OnInit {
                     msg.statusText !== undefined
                         ? msg.statusText
                         : this.statusMsg[s].description;
-                tmpMsg.footnote =
-                    msg.footnote !== undefined
-                        ? msg.footnote
-                        : this.footnote.text + ' ' + this.footnote.team.dasch;
                 this.showLinks = (this.size === 'long');
                 break;
             case s >= 500 && s < 600:
@@ -224,8 +212,6 @@ export class MessageComponent implements OnInit {
                     msg.statusText !== undefined
                         ? msg.statusText
                         : this.statusMsg[s].description;
-                tmpMsg.footnote =
-                    this.footnote.text + ' ' + this.footnote.team.dasch;
                 this.showLinks = false;
                 break;
             default:
@@ -246,6 +232,10 @@ export class MessageComponent implements OnInit {
 
     closeMessage() {
         this.disable = !this.disable;
+    }
+
+    reload() {
+        window.location.reload();
     }
 
 }
