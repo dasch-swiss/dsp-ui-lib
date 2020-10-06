@@ -34,6 +34,7 @@ import { SearchListValueComponent } from './advanced-search/select-property/spec
 import { SearchDisplayListComponent } from './advanced-search/select-property/specify-property-value/search-list-value/search-display-list/search-display-list.component';
 import { SearchTextValueComponent } from './advanced-search/select-property/specify-property-value/search-text-value/search-text-value.component';
 import { SearchUriValueComponent } from './advanced-search/select-property/specify-property-value/search-uri-value/search-uri-value.component';
+import { DspActionModule } from '../action';
 
 
 
@@ -75,6 +76,7 @@ import { SearchUriValueComponent } from './advanced-search/select-property/speci
         MatInputModule,
         MatDatepickerModule,
         MatAutocompleteModule,
+        DspActionModule,
         DspViewerModule,
         TextFieldModule
     ],
