@@ -13,8 +13,10 @@ import { By } from '@angular/platform-browser';
 })
 class TestHostComponent {
 
+    // the href attribute of the external link is empty
+    // because otherwise the test browser would attempt to access it
     html =
-        'This is a test <a href="https://www.google.ch">external link</a> and a test <a class="salsah-link" href="http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw">internal link</a>';
+        'This is a test <a>external link</a> and a test <a class="salsah-link" href="http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw">internal link</a>';
 
     internalLinkClickedIri: string;
 
@@ -75,7 +77,7 @@ describe('TextValueHtmlLinkDirective', () => {
 
     });
 
-    /*it('should not react to clicking on an external link', () => {
+    it('should not react to clicking on an external link', () => {
         expect(testHostComponent).toBeTruthy();
 
         const hostCompDe = testHostFixture.debugElement;
@@ -89,7 +91,7 @@ describe('TextValueHtmlLinkDirective', () => {
 
         expect(testHostComponent.internalLinkClickedIri).toBeUndefined();
 
-    });*/
+    });
 
     it('should react to hovering over an internal link', () => {
         expect(testHostComponent).toBeTruthy();
