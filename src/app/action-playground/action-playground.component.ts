@@ -131,6 +131,10 @@ export class ActionPlaygroundComponent implements OnInit {
     confirmationDialogResponse: string;
     showTimedMessage: boolean;
 
+    // label for external link
+    domain = 'https://material.angular.io/';
+    label = 'Material Angular';
+
     constructor(
         private _sortingService: SortingService,
         private _dialog: MatDialog
