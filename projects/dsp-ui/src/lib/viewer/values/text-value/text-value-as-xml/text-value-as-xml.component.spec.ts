@@ -105,23 +105,6 @@ class TestHostCreateValueComponent implements OnInit {
 
 describe('TextValueAsXMLComponent', () => {
 
-    const appInitServiceMock = {
-        config: {
-            xmlTransform: {
-                'http://rdfh.ch/standoff/mappings/StandardMapping': {
-                    '<hr>': '<hr/>',
-                    '</hr>': '',
-                    '<s>': '<strike>',
-                    '</s>': '</strike>',
-                    '<i>': '<em>',
-                    '</i>': '</em>',
-                    '<figure class="table">': '',
-                    '</figure>': ''
-                }
-            }
-        }
-    };
-
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
@@ -134,9 +117,6 @@ describe('TextValueAsXMLComponent', () => {
                 ReactiveFormsModule,
                 MatInputModule,
                 BrowserAnimationsModule
-            ],
-            providers: [
-                {provide: AppInitService, useValue: appInitServiceMock}
             ]
         })
             .compileComponents();
@@ -145,6 +125,12 @@ describe('TextValueAsXMLComponent', () => {
     describe('display and edit a text value with xml markup', () => {
         let testHostComponent: TestHostDisplayValueComponent;
         let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
+
+        let valueComponentDe: DebugElement;
+
+        let valueReadModeDebugElement: DebugElement;
+        let valueReadModeNativeElement;
+
         let ckeditorDe: DebugElement;
 
         beforeEach(() => {
@@ -153,11 +139,17 @@ describe('TextValueAsXMLComponent', () => {
             testHostFixture.detectChanges();
 
             const hostCompDe = testHostFixture.debugElement;
+            valueComponentDe = hostCompDe.query(By.directive(TextValueAsXMLComponent));
 
-            ckeditorDe = hostCompDe.query(By.directive(TestCKEditorComponent));
+            valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+            valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
+
+            // reset before each it
+            ckeditorDe = undefined;
+
         });
 
-        it('should display an existing value', () => {
+        it('should display an existing value for the standard mapping as formatted text', () => {
 
             expect(testHostComponent.inputValueComponent.displayValue.xml).toEqual('<?xml version="1.0" encoding="UTF-8"?>\n<text><p>test with <strong>markup</strong></p></text>');
 
@@ -165,9 +157,32 @@ describe('TextValueAsXMLComponent', () => {
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-            expect(testHostComponent.inputValueComponent.valueFormControl.disabled).toBeTruthy();
+            expect(valueReadModeNativeElement.innerHTML).toEqual('\n<p>test with <strong>markup</strong></p>');
 
-            expect(ckeditorDe.componentInstance.value).toEqual('\n<p>test with <strong>markup</strong></p>');
+        });
+
+        it('should display an existing value for a custom mapping as XML source code', () => {
+
+            const newXml = new ReadTextValueAsXml();
+
+            newXml.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p>my updated text</p></text>';
+            newXml.mapping = 'http://rdfh.ch/standoff/mappings/customMapping';
+
+            newXml.id = 'id';
+
+            testHostComponent.displayInputVal = newXml;
+
+            testHostFixture.detectChanges();
+
+            valueReadModeDebugElement = valueComponentDe.query(By.css('.rm-value'));
+
+            valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
+
+            expect(valueReadModeNativeElement.innerText).toEqual(
+                '<?xml version="1.0" encoding="UTF-8"?><text><p>my updated text</p></text>');
+
+            // custom mappings are not supported by this component
+            expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
         });
 
@@ -176,6 +191,8 @@ describe('TextValueAsXMLComponent', () => {
             testHostComponent.mode = 'update';
 
             testHostFixture.detectChanges();
+
+            ckeditorDe = valueComponentDe.query(By.directive(TestCKEditorComponent));
 
             expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
@@ -208,6 +225,8 @@ describe('TextValueAsXMLComponent', () => {
 
             testHostFixture.detectChanges();
 
+            ckeditorDe = valueComponentDe.query(By.directive(TestCKEditorComponent));
+
             expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
@@ -234,6 +253,8 @@ describe('TextValueAsXMLComponent', () => {
 
             testHostFixture.detectChanges();
 
+            ckeditorDe = valueComponentDe.query(By.directive(TestCKEditorComponent));
+
             expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
@@ -258,7 +279,7 @@ describe('TextValueAsXMLComponent', () => {
 
             const newXml = new ReadTextValueAsXml();
 
-            newXml.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p>my updated text<p></text>';
+            newXml.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p>my updated text</p></text>';
             newXml.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
 
             newXml.id = 'updatedId';
@@ -267,7 +288,7 @@ describe('TextValueAsXMLComponent', () => {
 
             testHostFixture.detectChanges();
 
-            expect(ckeditorDe.componentInstance.value).toEqual('<p>my updated text<p>');
+            expect(valueReadModeNativeElement.innerHTML).toEqual('<p>my updated text</p>');
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -278,6 +299,8 @@ describe('TextValueAsXMLComponent', () => {
             testHostComponent.mode = 'update';
 
             testHostFixture.detectChanges();
+
+            ckeditorDe = valueComponentDe.query(By.directive(TestCKEditorComponent));
 
             // simulate input in ckeditor
             ckeditorDe.componentInstance.value = '<p>test <i>with</i> a lot of <i>markup</i></p>';
@@ -296,6 +319,8 @@ describe('TextValueAsXMLComponent', () => {
 
             testHostFixture.detectChanges();
 
+            ckeditorDe = valueComponentDe.query(By.directive(TestCKEditorComponent));
+
             // simulate input in ckeditor
             ckeditorDe.componentInstance.value = '<p>test with horizontal line <hr></hr></p>';
             ckeditorDe.componentInstance._handleInput();
@@ -313,6 +338,8 @@ describe('TextValueAsXMLComponent', () => {
 
             testHostFixture.detectChanges();
 
+            ckeditorDe = valueComponentDe.query(By.directive(TestCKEditorComponent));
+
             // simulate input in ckeditor
             ckeditorDe.componentInstance.value = '<p>test with <s>struck</s> word</p>';
             ckeditorDe.componentInstance._handleInput();
@@ -329,6 +356,8 @@ describe('TextValueAsXMLComponent', () => {
             testHostComponent.mode = 'update';
 
             testHostFixture.detectChanges();
+
+            ckeditorDe = valueComponentDe.query(By.directive(TestCKEditorComponent));
 
             // simulate input in ckeditor
             ckeditorDe.componentInstance.value = '<p><figure class="table"><table><tbody><tr><td>test</td><td>test</td></tr><tr><td>test</td><td>test</td></tr></tbody></table></figure></p>';

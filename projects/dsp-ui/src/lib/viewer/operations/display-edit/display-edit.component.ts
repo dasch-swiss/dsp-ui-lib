@@ -126,7 +126,7 @@ export class DisplayEditComponent implements OnInit {
 
         this.valueTypeOrClass = this._valueTypeService.getValueTypeOrClass(this.displayValue);
 
-        this.readOnlyValue = this._valueTypeService.isReadOnly(this.valueTypeOrClass);
+        this.readOnlyValue = this._valueTypeService.isReadOnly(this.valueTypeOrClass, this.displayValue);
 
         this._dspApiConnection.admin.usersEndpoint.getUserByIri(this.displayValue.attachedToUser).subscribe(
             (response: ApiResponseData<UserResponse>) => {
