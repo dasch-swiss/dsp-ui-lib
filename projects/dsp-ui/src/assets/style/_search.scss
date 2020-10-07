@@ -18,7 +18,6 @@ input[type="search"] {
 // input field
 $search-width: 480px;
 $advanced-search-width: 740px;
-// $search-height: $search-width;
 
 // width on smaller devices
 $search-width-small-device: 360px;
@@ -26,30 +25,21 @@ $search-width-small-device: 360px;
 // width of project filter
 $project-filter-width: 160px;
 
-// width of project filter
+// width of project filter on smaller devices
 $project-filter-width-small-device: 120px;
 
 
+// shared dropdown menu in fulltext-search and search-panel
 .dsp-search-menu {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   background-color: $bright;
   border-radius: $border-radius;
   overflow-y: auto;
-  width: calc(#{$search-width} - 32px);
   min-height: 320px;
-  // height: 100%;
-  margin-top: 6px; // -40px
+  margin-top: 6px;
   padding: 16px;
   z-index: -1;
   position: relative;
-
-  &.with-project-filter {
-    width: calc(#{$search-width} + #{$project-filter-width} - 32px);
-  }
-
-  &.with-advanced-search {
-    width: calc(#{$advanced-search-width} - 32px);
-  }
 
   .dsp-menu-header {
     background-color: rgba(249, 249, 249, 1);
@@ -62,50 +52,6 @@ $project-filter-width-small-device: 120px;
 
     .dsp-menu-title h4 {
       margin: 12px 0;
-    }
-  }
-
-  .dsp-previous-search-list {
-    .mat-list-item {
-      .dsp-previous-search-item {
-        cursor: pointer;
-        padding: 12px !important;
-      }
-
-      &:hover {
-        background-color: $grey;
-
-        .mat-icon {
-          display: inline-block;
-        }
-      }
-
-      .mat-icon {
-        display: none;
-      }
-
-      .dsp-previous-search-item {
-        display: inherit;
-
-        .dsp-project-filter-label {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          width: $project-filter-width;
-
-          &.not-empty {
-            &::before {
-              content: "[";
-            }
-            &::after {
-              content: "]";
-            }
-          }
-        }
-
-        .dsp-previous-search-query {
-          font-weight: bold;
-        }
-      }
     }
   }
 
@@ -162,27 +108,64 @@ $gc-small: $full-input-width - $gc-large - 4;
   color: $black-60-opacity;
 }
 
-@media (max-width: map-get($grid-breakpoints, desktop)) and (min-width: map-get($grid-breakpoints, tablet)) {
+// responsive style: desktop
+@media (min-width: map-get($grid-breakpoints, desktop)) {
+  .dsp-fulltext-search-panel {
+    width: $search-width;
 
-  .dsp-fulltext-search-panel,
-  .dsp-menu.advanced-search {
-    width: $search-width-small-device !important;
     &.with-project-filter {
-      width: calc(#{$search-width-small-device} + #{$project-filter-width}) !important;
+      width: calc(#{$search-width} + #{$project-filter-width});
+    }
+
+    .dsp-project-filter,
+    .dsp-project-filter-button {
+      width: $project-filter-width;
     }
   }
 
   .dsp-search-menu {
-    width: calc(#{$search-width-small-device} - 32px)  !important;
+    width: calc(#{$search-width} - 32px);
     &.with-project-filter {
-      width: calc(#{$search-width-small-device} + #{$project-filter-width} - 32px) !important;
+      width: calc(#{$search-width} + #{$project-filter-width} - 32px);
+    }
+    &.with-advanced-search {
+      width: calc(#{$advanced-search-width} - 32px);
     }
   }
 }
 
+
+// responsive style: tablet
+@media (max-width: map-get($grid-breakpoints, desktop)) and (min-width: map-get($grid-breakpoints, tablet)) {
+
+  .dsp-fulltext-search-panel {
+    width: $search-width-small-device;
+
+    &.with-project-filter {
+      width: calc(#{$search-width-small-device} + #{$project-filter-width-small-device});
+    }
+
+    .dsp-project-filter,
+    .dsp-project-filter-button {
+      width: $project-filter-width-small-device;
+    }
+  }
+
+  .dsp-search-menu {
+    width: calc(#{$search-width-small-device} - 32px);
+    &.with-project-filter {
+      width: calc(#{$search-width-small-device} + #{$project-filter-width-small-device} - 32px);
+    }
+    &.with-advanced-search {
+      width: 100vw;
+    }
+  }
+}
+
+// responsive style: phone
 @media (max-width: map-get($grid-breakpoints, tablet)) and (min-width: map-get($grid-breakpoints, phone)) {
   .dsp-fulltext-search-panel {
-    width: $search-width-small-device !important;
+    width: $search-width-small-device;
 
     &.with-project-filter {
       width: calc(#{$search-width-small-device} + 160px);
@@ -194,27 +177,12 @@ $gc-small: $full-input-width - $gc-large - 4;
     width: calc(#{$search-width-small-device} - 160px);
 
     &.with-project-filter {
-      width: 360px !important;
+      width: 360px;
     }
   }
 }
 
-.dsp-project-filter-menu {
-  width: $project-filter-width;
-
-  .mat-menu-item {
-    text-transform: capitalize;
-  }
-}
-
-.dsp-project-filter-menu-mobile {
-  width: calc(100vw - 32px);
-
-  .mat-menu-item {
-    text-transform: capitalize;
-  }
-}
-
+// TODO: what is this?
 .mat-menu-panel {
   max-width: 100% !important;
 }

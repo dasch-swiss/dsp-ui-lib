@@ -23,7 +23,6 @@
             </div>
         </mat-menu>
     </div>
-
     <div class="dsp-fulltext-search" [class.with-project-filter]="projectfilter">
         <div class="dsp-fulltext-search-field">
             <input #fulltextSearchInput class="dsp-fulltext-search-input" type="search" [(ngModel)]="searchQuery"
@@ -37,14 +36,14 @@
 
     <!-- PHONE VERSION *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** -->
     <div class="dsp-project-filter-mobile" *ngIf="projectfilter">
-        <button mat-stroked-button class="dsp-project-filter-button dsp-project-filter-button-mobile"
+        <button mat-stroked-button class="dsp-project-filter-button mobile-only"
             [matMenuTriggerFor]="selectProject" #btnToSelectProject="matMenuTrigger" isIconButton>
             <p class="mat-caption placeholder">Filter by project</p>
             <p class="label">{{projectLabel}}</p>
             <mat-icon class="icon" matSuffix>keyboard_arrow_down</mat-icon>
         </button>
         <mat-menu #selectProject="matMenu">
-            <div class="dsp-project-filter-menu-mobile">
+            <div class="dsp-project-filter-menu mobile-only">
                 <button mat-menu-item class="center"
                     (click)="setProject();changeFocus()">{{defaultProjectLabel}}</button>
                 <mat-divider></mat-divider>

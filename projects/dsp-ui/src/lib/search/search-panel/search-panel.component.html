@@ -1,7 +1,6 @@
 <div class="dsp-search-panel" #fullSearchPanel cdkOverlayOrigin>
 
-    <!-- DESKTOP VERSION -->
-    <dsp-fulltext-search class="dsp-fulltext-search" [projectfilter]="projectfilter" [filterbyproject]="filterbyproject"
+    <dsp-fulltext-search [projectfilter]="projectfilter" [filterbyproject]="filterbyproject"
         (search)="emitSearch($event)">
     </dsp-fulltext-search>
 

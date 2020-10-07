@@ -1,6 +1,5 @@
 @import "../../../assets/style/search";
 
-
 //
 // general css (applied on desktop/tablet versions)
 //
@@ -10,7 +9,6 @@
   display: flex;
   height: 40px;
   position: relative;
-  width: $search-width;
   z-index: 100;
   background-color: $bright;
 
@@ -18,15 +16,10 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   }
 
-  &.with-project-filter {
-    width: calc(#{$search-width} + #{$project-filter-width});
-  }
-
   .dsp-project-filter-button {
     font-size: inherit;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: $project-filter-width;
     border-top-left-radius: $border-radius;
     border-top-right-radius: 0;
     border-bottom-left-radius: $border-radius;
@@ -41,9 +34,9 @@
     position: relative;
     z-index: 10;
     border-radius: $border-radius;
+    width: 100%;
 
     &.with-project-filter {
-      width: calc(#{$search-width} + #{$project-filter-width});
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
@@ -58,10 +51,6 @@
         height: 38px;
         padding-left: 12px;
         width: 100%;
-
-        &.with-project-filter {
-          width: calc(100% - 40px - #{$project-filter-width});
-        }
 
         &:active,
         &:focus {
@@ -115,18 +104,64 @@
   .dsp-menu-content {
     display: block;
 
-    .mat-list {
+    .dsp-previous-search-list {
       padding-bottom: 8px;
 
-      .dsp-previous-search-query {
-        overflow: hidden;
-        text-overflow: ellipsis;
+      .mat-list-item {
+        .dsp-previous-search-item {
+          cursor: pointer;
+          padding: 12px !important;
+        }
 
-        &.fix-width {
-          width: calc(100% - #{$project-filter-width});
+        &:hover {
+          background-color: $grey;
+
+          .mat-icon {
+            display: inline-block;
+          }
+        }
+
+        .mat-icon {
+          display: none;
+        }
+
+        .dsp-previous-search-item {
+          display: inherit;
+
+          .dsp-project-filter-label {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: $project-filter-width;
+
+            &.not-empty {
+              &::before {
+                content: "[";
+              }
+              &::after {
+                content: "]";
+              }
+            }
+          }
+
+          .dsp-previous-search-query {
+            font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &.fix-width {
+              width: calc(100% - #{$project-filter-width});
+            }
+          }
         }
       }
     }
+  }
+}
+
+.dsp-project-filter-menu {
+  width: $project-filter-width;
+  .mat-menu-item {
+    text-transform: capitalize;
   }
 }
 
@@ -157,16 +192,9 @@
     top: -6px;
     float: right;
   }
-
-  &.dsp-project-filter-button-mobile {
-    height: 100% !important;
-    .label,
-    .icon {
-      top: 0;
-      font-size: inherit;
-    }
-  }
 }
+
+// TODO: clean up!!!
 
 // tablet and desktop devices: hide phone-version classes
 @media (min-width: map-get($grid-breakpoints, phone)) {
@@ -181,10 +209,7 @@
   }
 }
 
-//
-// mobile device: phone
-//
-
+// small mobile device: phone
 @media (max-width: map-get($grid-breakpoints, phone)) {
   .dsp-project-filter {
     display: none;
@@ -312,6 +337,7 @@
     }
   }
 
+  // TODO: do not use ng-deep anymore!!!
   ::ng-deep .cdk-overlay-pane {
     .mat-menu-panel {
       box-shadow: none;
