@@ -102,6 +102,9 @@ export class FulltextSearchComponent implements OnInit {
         Constants.DefaultSharedOntologyIRI
     ];
 
+    // toggle phone panel
+    displayPhonePanel = true;
+
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _sortingService: SortingService,
@@ -305,7 +308,9 @@ export class FulltextSearchComponent implements OnInit {
             this.prevSearch = [];
         }
         this.searchPanelFocus = true;
-        this.openPanelWithBackdrop();
+        if (!this.displayPhonePanel) {
+            this.openPanelWithBackdrop();
+        }
     }
 
     /**
@@ -373,6 +378,10 @@ export class FulltextSearchComponent implements OnInit {
         }
 
         this.search.emit(searchParams);
+    }
+
+    togglePhonePanel() {
+        this.displayPhonePanel = !this.displayPhonePanel;
     }
 
 }

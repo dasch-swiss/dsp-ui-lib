@@ -110,7 +110,7 @@ $gc-small: $full-input-width - $gc-large - 4;
 
 // responsive style: desktop
 @media (min-width: map-get($grid-breakpoints, desktop)) {
-  .dsp-fulltext-search-panel {
+  .dsp-fulltext-search {
     width: $search-width;
 
     &.with-project-filter {
@@ -136,9 +136,9 @@ $gc-small: $full-input-width - $gc-large - 4;
 
 
 // responsive style: tablet
-@media (max-width: map-get($grid-breakpoints, desktop)) and (min-width: map-get($grid-breakpoints, tablet)) {
+@media (max-width: map-get($grid-breakpoints, desktop)) and (min-width: map-get($grid-breakpoints, phone)) {
 
-  .dsp-fulltext-search-panel {
+  .dsp-fulltext-search {
     width: $search-width-small-device;
 
     &.with-project-filter {
@@ -162,27 +162,3 @@ $gc-small: $full-input-width - $gc-large - 4;
   }
 }
 
-// responsive style: phone
-@media (max-width: map-get($grid-breakpoints, tablet)) and (min-width: map-get($grid-breakpoints, phone)) {
-  .dsp-fulltext-search-panel {
-    width: $search-width-small-device;
-
-    &.with-project-filter {
-      width: calc(#{$search-width-small-device} + 160px);
-    }
-  }
-
-  .dsp-fulltext-search,
-  .dsp-menu.advanced-search {
-    width: calc(#{$search-width-small-device} - 160px);
-
-    &.with-project-filter {
-      width: 360px;
-    }
-  }
-}
-
-// TODO: what is this?
-.mat-menu-panel {
-  max-width: 100% !important;
-}

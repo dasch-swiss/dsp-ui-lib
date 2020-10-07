@@ -19,7 +19,7 @@ export class SearchPlaygroundComponent implements OnInit {
     limitToProject: string;
 
     filterByProject = false;
-    projectFilter = false;
+    projectFilter = true;
     advancedSearch = false;
     expertSearch = false;
 
