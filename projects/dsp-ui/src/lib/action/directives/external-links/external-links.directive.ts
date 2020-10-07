@@ -6,11 +6,11 @@ import { Directive, HostBinding, Inject, Input, OnChanges, PLATFORM_ID } from '@
 })
 export class ExternalLinksDirective implements OnChanges {
 
+    @Input() href: string;
     @HostBinding('attr.rel') relAttr = '';
     @HostBinding('attr.target') targetAttr = '';
     @HostBinding('attr.href') hrefAttr = '';
     @HostBinding('style.color') fontColor = 'primary';
-    @Input() href: string;
 
     // to check if we are running on the server, give a token value
     constructor(@Inject(PLATFORM_ID) private platformId: string) {}
