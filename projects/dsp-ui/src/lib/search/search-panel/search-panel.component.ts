@@ -55,8 +55,6 @@ export class SearchPanelComponent {
 
     openPanelWithBackdrop(type: string) {
 
-        console.warn('openPanel', type);
-
         this.showAdvanced = (type === 'advanced');
 
         const config = new OverlayConfig({
