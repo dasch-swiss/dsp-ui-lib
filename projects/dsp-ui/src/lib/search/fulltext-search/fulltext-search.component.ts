@@ -308,9 +308,7 @@ export class FulltextSearchComponent implements OnInit {
             this.prevSearch = [];
         }
         this.searchPanelFocus = true;
-        if (!this.displayPhonePanel) {
-            this.openPanelWithBackdrop();
-        }
+        this.openPanelWithBackdrop();
     }
 
     /**

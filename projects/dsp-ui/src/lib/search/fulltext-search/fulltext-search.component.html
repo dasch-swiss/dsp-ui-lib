@@ -102,8 +102,7 @@
         <div class="dsp-fulltext-search-field" [class.with-project-filter]="projectfilter">
             <input #fulltextSearchInput class="dsp-fulltext-search-input" type="search" [(ngModel)]="searchQuery"
                 name="fulltext-search" minlength="3" autocomplete="off" [placeholder]="'Search'"
-                (keyup.esc)="resetSearch(); togglePhonePanel()" (keyup.enter)="doSearch(); togglePhonePanel()"
-                (click)="setFocus()">
+                (keyup.esc)="resetSearch(); togglePhonePanel()" (keyup.enter)="doSearch(); togglePhonePanel()">
             <button mat-button color="primary" class="dsp-fulltext-search-button"
                 (click)="doSearch(); togglePhonePanel()" type="submit">
                 Search
