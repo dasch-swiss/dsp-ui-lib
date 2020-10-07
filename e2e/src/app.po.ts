@@ -68,8 +68,4 @@ export class AppPage {
     getAdvancedSearchComparisonOperatorSelection(loader: HarnessLoader): Promise<MatSelectHarness> {
         return loader.getHarness(MatSelectHarness.with({ selector: '.comparison-operator' }));
     }
-
-    getDaSCHLink() {
-        return element(by.css('.linkDasch'));
-    }
 }

@@ -15,8 +15,8 @@ class TestExternalLinkComponent {
 
 describe('ExternalLinksDirective', () => {
 
-    let component: TestExternalLinkComponent;
-    let fixture: ComponentFixture<TestExternalLinkComponent>;
+    let testHostComponent: TestExternalLinkComponent;
+    let testHostFixture: ComponentFixture<TestExternalLinkComponent>;
     let linkEl: DebugElement;
 
     beforeEach(() => {
@@ -27,19 +27,23 @@ describe('ExternalLinksDirective', () => {
             ]
         });
 
-        fixture = TestBed.createComponent(TestExternalLinkComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+        testHostFixture = TestBed.createComponent(TestExternalLinkComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
 
-        linkEl = fixture.debugElement.query(By.css('a[href]'));
+        linkEl = testHostFixture.debugElement.query(By.css('a[href]'));
+
+        expect(testHostComponent).toBeTruthy();
 
     });
 
     it('should create an instance', () => {
-        expect(component).toBeTruthy();
+        expect(testHostComponent).toBeTruthy();
     });
 
     it('should get the correct attributes', () => {
+        expect(testHostComponent).toBeTruthy();
+
         let relAttribute;
         let targetAttribute;
         let hrefAttribute;
@@ -51,5 +55,16 @@ describe('ExternalLinksDirective', () => {
         expect(relAttribute).toEqual('noopener');
         expect(targetAttribute).toEqual('_blank');
         expect(hrefAttribute).toEqual('http://dasch.swiss/');
+    });
+
+    it('should react to clicking on an external link', () => {
+        expect(testHostComponent).toBeTruthy();
+
+        linkEl.nativeElement.click();
+
+        testHostFixture.detectChanges();
+
+        expect(linkEl.attributes.href).toEqual('http://dasch.swiss/');
+        expect(testHostComponent.label).toEqual('DaSCH website');
     });
 });
