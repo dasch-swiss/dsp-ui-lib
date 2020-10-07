@@ -134,29 +134,18 @@ Value components may have additional specific inputs for configuration that can 
 
 #### Integration of CKEditor
 
+### General Setup
+
 To edit XML, the viewer module relies on CKEditor. `TextValueAsXMLComponent` integrates the CKEditor library for Angular.
 In addition, a custom build of CKEditor is needed which is accessible on [GitHub](https://github.com/dasch-swiss/ckeditor_custom_build).
 To make a new custom build, follow the [instructions](https://github.com/dasch-swiss/ckeditor_custom_build/blob/master/how-to-build.md).
-To add support for a specific mapping, a configuration object has to be added to the config file such as in the following example:
 
-```json
-  "xmlTransform": {
-    "http://rdfh.ch/standoff/mappings/StandardMapping": {
-      "<hr>": "<hr/>",
-      "</hr>": "",
-      "<s>": "<strike>",
-      "</s>": "</strike>",
-      "<i>": "<em>",
-      "</i>": "</em>",
-      "<figure class=\"table\">": "",
-      "</figure>": ""
-    }
-  }
-```
+Note that currently only the standard mapping is supported.
 
-The tags on the left will be replaced with the tags on the right,
-e.g. CKEditor's `<s>` will be converted to a `<strike` which is expected by Knora.
-Note that this is a simple search-and-replace algorithm which does not make use of an XML parser.
+### Handling Internal Links When Displaying Text
+
+When a text created with CKEditor is shown in read-mode, click and hover events on internal links can be reacted to by applying the directive `TextValueHtmlLinkDirective` with the selector `dspHtmlLink`.
+Internal links have the class "salsah-link".
 
 ## Search Module
 
