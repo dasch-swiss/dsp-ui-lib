@@ -61,8 +61,7 @@ export class LoginFormComponent implements OnInit {
     errorMessage: ApiResponseError;
 
     // specific error messages
-    loginErrorUser = false;
-    loginErrorPw = false;
+    loginFailed = false;
     loginErrorServer = false;
 
     // labels for the login form
@@ -157,15 +156,13 @@ export class LoginFormComponent implements OnInit {
             },
             (error: ApiResponseError) => {
                 // error handling
-                this.loginErrorUser = (error.status === 404);
-                this.loginErrorPw = (error.status === 401);
+                this.loginFailed = (error.status === 401 || error.status === 404);
                 this.loginErrorServer = (error.status === 0 || error.status >= 500 && error.status < 600);
 
                 this.loginSuccess.emit(false);
                 this.errorMessage = error;
 
                 this.loading = false;
-                // TODO: update error handling similar to the old method (see commented code below)
             }
         );
     }
@@ -190,7 +187,7 @@ export class LoginFormComponent implements OnInit {
             },
             (error: ApiResponseError) => {
                 console.error(error);
-                this.loginSuccess.emit(false);
+                this.logoutSuccess.emit(false);
                 this.loading = false;
             }
         );

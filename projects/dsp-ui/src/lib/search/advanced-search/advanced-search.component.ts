@@ -69,6 +69,8 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
     formChangesSubscription: Subscription;
 
+    errorMessage: ApiResponseError;
+
     // reference to the component that controls the resource class selection
     @ViewChild('resourceClass') resourceClassComponent: SelectResourceClassComponent;
 
@@ -133,7 +135,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
                 this.ontologiesMetadata = response;
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this.errorMessage = error;
             });
     }
 

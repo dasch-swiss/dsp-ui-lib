@@ -98,7 +98,6 @@ export class ListViewComponent implements OnChanges {
                     },
                     (error: ApiResponseError) => {
                         this.errorMessage = error;
-                        console.error(error);
                     }
                 );
             }
@@ -111,7 +110,6 @@ export class ListViewComponent implements OnChanges {
                 },
                 (error: ApiResponseError) => {
                     this.errorMessage = error;
-                    console.error(error);
                     this.loading = false;
                 }
             );
@@ -128,7 +126,6 @@ export class ListViewComponent implements OnChanges {
                     },
                     (error: ApiResponseError) => {
                         this.errorMessage = error;
-                        console.error(error);
                     }
                 );
             }
@@ -144,7 +141,6 @@ export class ListViewComponent implements OnChanges {
                     },
                     (error: ApiResponseError) => {
                         this.errorMessage = error;
-                        console.error(error);
                         this.loading = false;
                     }
                 );
