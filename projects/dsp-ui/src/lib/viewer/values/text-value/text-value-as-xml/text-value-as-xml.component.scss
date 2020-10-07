@@ -5,3 +5,9 @@
 ::ng-deep .ck-content code {
   font-family: monospace;
 }
+
+.rm-value {
+  ::ng-deep p {
+    margin: 0;
+  }
+}

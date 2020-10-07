@@ -212,8 +212,6 @@ describe('MessageComponent', () => {
             expect(spanShortMessageElement.nativeElement.innerText).toEqual('You just updated the user profile.');
 
             shortMsgDurationTestHostFixture.whenStable().then(() => {
-                console.log(shortMsgDurationTestHostComponent);
-
                 expect(shortMsgDurationTestHostComponent.messageComponent.disable).toBeTruthy();
             });
         }));

@@ -56,7 +56,7 @@ export class ValueTypeService {
         if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText') {
             return this._readTextValueAsString;
         } else if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
-            return this._readTextValueAsHtml;
+            return this._readTextValueAsXml;
         } else {
             throw new Error(`unknown TextValue class ${resourcePropDef}`);
         }
@@ -85,10 +85,14 @@ export class ValueTypeService {
      * Determines if the given value is readonly.
      *
      * @param valueTypeOrClass the type or class of the given value.
+     * @param value the given value.
      */
-    isReadOnly(valueTypeOrClass: string): boolean {
+    isReadOnly(valueTypeOrClass: string, value: ReadValue): boolean {
+        const xmlValueNonStandardMapping
+            = valueTypeOrClass === this._readTextValueAsXml
+            && (value instanceof ReadTextValueAsXml && value.mapping !== 'http://rdfh.ch/standoff/mappings/StandardMapping');
+
         return valueTypeOrClass === this._readTextValueAsHtml ||
-            valueTypeOrClass === this._readTextValueAsXml ||
-            valueTypeOrClass === this.constants.GeomValue;
+            valueTypeOrClass === this.constants.GeomValue || xmlValueNonStandardMapping;
     }
 }

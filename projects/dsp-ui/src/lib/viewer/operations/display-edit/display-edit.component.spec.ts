@@ -8,6 +8,7 @@ import { MatButtonHarness } from '@angular/material/button/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputHarness } from '@angular/material/input/testing';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -512,7 +513,7 @@ describe('DisplayEditComponent', () => {
     it('should return the type of a integer value as not readonly', () => {
       expect(valueTypeService.getValueTypeOrClass(testHostComponent.displayEditValueComponent.displayValue)).toEqual(Constants.IntValue);
 
-      expect(valueTypeService.isReadOnly(Constants.IntValue)).toBe(false);
+      expect(valueTypeService.isReadOnly(Constants.IntValue, testHostComponent.displayEditValueComponent.displayValue)).toBe(false);
     });
 
     it('should return the class of a html text value as readonly', () => {
@@ -522,18 +523,7 @@ describe('DisplayEditComponent', () => {
 
       expect(valueTypeService.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsHtml');
 
-      expect(valueTypeService.isReadOnly('ReadTextValueAsHtml')).toBe(true);
-
-    });
-
-    it('should return the class of an XML text value as readonly', () => {
-
-      const xmlTextVal = new ReadTextValueAsXml();
-      xmlTextVal.type = Constants.TextValue;
-
-      expect(valueTypeService.getValueTypeOrClass(xmlTextVal)).toEqual('ReadTextValueAsXml');
-
-      expect(valueTypeService.isReadOnly('ReadTextValueAsXml')).toBe(true);
+      expect(valueTypeService.isReadOnly('ReadTextValueAsHtml', htmlTextVal)).toBe(true);
 
     });
 
@@ -544,7 +534,7 @@ describe('DisplayEditComponent', () => {
 
       expect(valueTypeService.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsString');
 
-      expect(valueTypeService.isReadOnly('ReadTextValueAsString')).toBe(false);
+      expect(valueTypeService.isReadOnly('ReadTextValueAsString', plainTextVal)).toBe(false);
 
     });
 
@@ -937,6 +927,7 @@ describe('DisplayEditComponent', () => {
         const deleteVal = new DeleteValue();
         deleteVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/dJ1ES8QTQNepFKF5-EAqdg';
         deleteVal.type = 'http://api.knora.org/ontology/knora-api/v2#IntValue';
+        deleteVal.deleteComment = undefined;
 
         expectedUpdateResource.value = deleteVal;
 
@@ -948,6 +939,45 @@ describe('DisplayEditComponent', () => {
             expect(valueEventSpy.emit).toHaveBeenCalledWith(new EmitEvent(Events.ValueDeleted, new DeletedEventValue(deleteVal)));
         });
 
+    });
+
+    it('should send a deletion comment to Knora if one is provided', async () => {
+        const valueEventSpy = TestBed.inject(ValueOperationEventService);
+
+        const valuesSpy = TestBed.inject(DspApiConnectionToken);
+
+        (valueEventSpy as jasmine.SpyObj<ValueOperationEventService>).emit.and.stub();
+
+        (valuesSpy.v2.values as jasmine.SpyObj<ValuesEndpointV2>).deleteValue.and.callFake(
+            () => {
+
+                const response = new DeleteValueResponse();
+
+                response.result = 'success';
+
+                return of(response);
+            }
+        );
+
+        testHostComponent.displayEditValueComponent.deleteValue('my deletion comment');
+
+        const expectedUpdateResource = new UpdateResource();
+
+        expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+        expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
+        expectedUpdateResource.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
+
+        const deleteVal = new DeleteValue();
+        deleteVal.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/dJ1ES8QTQNepFKF5-EAqdg';
+        deleteVal.type = 'http://api.knora.org/ontology/knora-api/v2#IntValue';
+        deleteVal.deleteComment = 'my deletion comment';
+
+        expectedUpdateResource.value = deleteVal;
+
+        testHostFixture.whenStable().then(() => {
+            expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledWith(expectedUpdateResource);
+            expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledTimes(1);
+        });
     });
   });
 });

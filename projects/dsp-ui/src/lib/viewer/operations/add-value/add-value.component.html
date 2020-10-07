@@ -3,6 +3,7 @@
         <span [ngSwitch]="resourcePropertyDefinition.objectType">
             <dsp-text-value-as-string #createVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode"></dsp-text-value-as-string>
             <dsp-text-value-as-html #createVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode"></dsp-text-value-as-html>
+            <dsp-text-value-as-xml #createVal *ngSwitchCase="'ReadTextValueAsXml'" [mode]="mode"></dsp-text-value-as-xml>
             <dsp-int-value #createVal *ngSwitchCase="constants.IntValue" [mode]="mode"></dsp-int-value>
             <dsp-boolean-value #createVal *ngSwitchCase="constants.BooleanValue" [mode]="mode"></dsp-boolean-value>
             <dsp-uri-value #createVal *ngSwitchCase="constants.UriValue" [mode]="mode"></dsp-uri-value>
