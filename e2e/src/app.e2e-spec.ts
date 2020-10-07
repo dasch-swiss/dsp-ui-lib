@@ -239,6 +239,44 @@ describe('Test App', () => {
 
     });
 
+    describe('External link', () => {
+
+        it('should route to DaSCH website', async () => {
+            await browser.waitForAngularEnabled(false);
+            page.navigateTo('action');
+            await browser.waitForAngularEnabled(true);
+
+            browser.getWindowHandle().then(function (parentGUID) {
+                // click the link that opens in a new window
+                page.getDaSCHLink().click();
+                browser.sleep(5000);
+                // get the all the session ids of the opened tabs
+                browser.getAllWindowHandles().then(function (allGUID) {
+                    // console.log('Number of tabs opened: ' + allGUID.length);
+                    // iterate through the tabs
+                    for (const guid of allGUID) {
+                        // find the new browser tab
+                        if (guid !== parentGUID) {
+                            // switch to the tab
+                            browser.switchTo().window(guid);
+                            // break the loop
+                            break;
+                        }
+                    }
+                    // perform here any actions needed on the new tab
+                    expect(browser.driver.getCurrentUrl()).toEqual('https://dasch.swiss/');
+
+                    // close the new tab
+                    browser.close();
+
+                    // switch back to the parent tab
+                    browser.switchTo().window(parentGUID);
+                });
+            });
+        });
+
+    });
+
     afterEach(async () => {
         // Assert that there are no errors emitted from the browser
         const logs = await browser.manage().logs().get(logging.Type.BROWSER);
