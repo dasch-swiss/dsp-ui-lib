@@ -50,16 +50,14 @@
 
     .dsp-fulltext-search-field {
       flex: 1;
-      width: calc(#{$search-width} - 40px);
       margin: 1px;
 
       .dsp-fulltext-search-input {
         border-style: none;
         font-size: 14pt;
         height: 38px;
-        position: absolute;
         padding-left: 12px;
-        width: calc(100% - 40px);
+        width: 100%;
 
         &.with-project-filter {
           width: calc(100% - 40px - #{$project-filter-width});

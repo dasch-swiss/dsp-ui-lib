@@ -163,32 +163,32 @@ $gc-small: $full-input-width - $gc-large - 4;
 }
 
 @media (max-width: map-get($grid-breakpoints, desktop)) and (min-width: map-get($grid-breakpoints, tablet)) {
-  .dsp-fulltext-search {
-    width: $search-width-small-device;
 
-    &.input-field {
-      input {
-        width: calc(#{$search-width-small-device} - 80px);
-      }
+  .dsp-fulltext-search-panel,
+  .dsp-menu.advanced-search {
+    width: $search-width-small-device !important;
+    &.with-project-filter {
+      width: calc(#{$search-width-small-device} + #{$project-filter-width}) !important;
     }
   }
 
-  .dsp-fulltext-search,
-  .dsp-menu.advanced-search {
-    width: $search-width-small-device;
+  .dsp-search-menu {
+    width: calc(#{$search-width-small-device} - 32px)  !important;
+    &.with-project-filter {
+      width: calc(#{$search-width-small-device} + #{$project-filter-width} - 32px) !important;
+    }
   }
 }
 
 @media (max-width: map-get($grid-breakpoints, tablet)) and (min-width: map-get($grid-breakpoints, phone)) {
   .dsp-fulltext-search-panel {
-    width: $search-width-small-device;
+    width: $search-width-small-device !important;
 
     &.with-project-filter {
       width: calc(#{$search-width-small-device} + 160px);
     }
   }
 
-  .dsp-search-panel,
   .dsp-fulltext-search,
   .dsp-menu.advanced-search {
     width: calc(#{$search-width-small-device} - 160px);
