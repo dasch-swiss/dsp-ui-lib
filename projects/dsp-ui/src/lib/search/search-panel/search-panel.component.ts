@@ -97,7 +97,9 @@ export class SearchPanelComponent {
      * Close the search menu
      */
     closeMenu(): void {
-        this.overlayRef.detach();
+        if(this.overlayRef) {
+            this.overlayRef.detach();
+        }
     }
 
 }
