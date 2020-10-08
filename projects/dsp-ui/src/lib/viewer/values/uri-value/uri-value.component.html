@@ -1,6 +1,6 @@
 <span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
     <span class="rm-value">
-        <a class="link" target="_blank" href="{{valueFormControl.value}}">{{ label ? label : valueFormControl.value}}</a>
+        <a class="link" target="_blank" rel="noopener" href="{{valueFormControl.value}}">{{ label ? label : valueFormControl.value}}</a>
     </span>
     <span class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</span>
 </span>
