@@ -103,7 +103,7 @@ export class FulltextSearchComponent implements OnInit {
     ];
 
     // toggle phone panel
-    displayPhonePanel = true;
+    displayPhonePanel = false;
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,

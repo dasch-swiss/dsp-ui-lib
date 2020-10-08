@@ -224,7 +224,8 @@
     .dsp-project-filter {
       background: none;
       margin: 12px auto;
-      width: $search-width;
+      max-width: $search-width;
+      width: 90%;
 
       .dsp-project-filter-button {
         width: 100%;
