@@ -33,11 +33,16 @@
     </div>
 
     <!-- In case of 0 result -->
-    <div class="list-view zero" *ngIf="!loading && numberOfAllResults === 0">
+    <div class="list-view" *ngIf="!loading && numberOfAllResults === 0">
         <dsp-message
             [message]="{status: 404, statusMsg: 'No results', statusText: 'Sorry, but we couldn\'t find any results matching your search'}"
             [medium]="true">
         </dsp-message>
+    </div>
+
+    <!-- In case of server error -->
+    <div class="list-view server-error" *ngIf="errorMessage">
+        <dsp-message [apiError]="errorMessage"></dsp-message>
     </div>
 
 </div>

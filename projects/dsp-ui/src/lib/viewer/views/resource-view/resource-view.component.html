@@ -1,4 +1,4 @@
-<div class="resource-view" *ngIf="resource">
+<div class="resource-view" *ngIf="resource && !errorMessage">
 
     <!-- dsp-resource-representation -->
     <!-- TODO: here we will add the resource representation viewers like
@@ -17,4 +17,9 @@
     <ng-template #noProperty>The resource {{resource?.resourceClassLabel}} has no defined properties.</ng-template>
 
 </div>
-<dsp-progress-indicator *ngIf="!resource"></dsp-progress-indicator>
+
+<!-- progress indicator -->
+<dsp-progress-indicator *ngIf="!resource && !errorMessage"></dsp-progress-indicator>
+
+<!-- error message -->
+<dsp-message *ngIf="!resource && errorMessage" [apiError]="errorMessage"></dsp-message>
