@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiResponseData, ApiResponseError, KnoraApiConnection, LoginResponse, LogoutResponse } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken, Session, SessionService } from '../../../core';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
     selector: 'dsp-login-form',
@@ -100,6 +101,7 @@ export class LoginFormComponent implements OnInit {
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _sessionService: SessionService,
         private _fb: FormBuilder
     ) { }
@@ -159,6 +161,10 @@ export class LoginFormComponent implements OnInit {
                 this.loginFailed = (error.status === 401 || error.status === 404);
                 this.loginErrorServer = (error.status === 0 || error.status >= 500 && error.status < 600);
 
+                if (this.loginErrorServer) {
+                    this._notification.openSnackBar(error);
+                }
+
                 this.loginSuccess.emit(false);
                 this.errorMessage = error;
 
@@ -186,7 +192,7 @@ export class LoginFormComponent implements OnInit {
                 this.form.get('password').setValue('');
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
                 this.logoutSuccess.emit(false);
                 this.loading = false;
             }

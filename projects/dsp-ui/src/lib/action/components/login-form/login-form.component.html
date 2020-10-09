@@ -54,9 +54,6 @@
     </form>
 </div>
 
-<!-- api server error -->
-<dsp-message *ngIf="loginErrorServer" [apiError]="errorMessage"></dsp-message>
-
 <!-- a user is already logged in; show who it is and a logout button -->
 <div class="logout-container" *ngIf="session">
     <p>A user is already logged in:</p>
