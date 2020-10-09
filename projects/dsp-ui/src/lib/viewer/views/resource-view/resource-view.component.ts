@@ -73,6 +73,8 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     resource: ReadResource;
 
+    errorMessage: ApiResponseError;
+
     resPropInfoVals: PropertyInfoValues[] = []; // array of resource properties
 
     systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
@@ -145,7 +147,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
             },
             (error: ApiResponseError) => {
-                console.error('Error to get resource: ', error);
+                this.errorMessage = error;
             });
     }
 

@@ -4,17 +4,5 @@
   "apiPort": 3333,
   "apiPath": "",
   "jsonWebToken": "",
-  "logErrors": true,
-  "xmlTransform": {
-    "http://rdfh.ch/standoff/mappings/StandardMapping": {
-      "<hr>": "<hr/>",
-      "</hr>": "",
-      "<s>": "<strike>",
-      "</s>": "</strike>",
-      "<i>": "<em>",
-      "</i>": "</em>",
-      "<figure class=\"table\">": "",
-      "</figure>": ""
-    }
-  }
+  "logErrors": true
 }

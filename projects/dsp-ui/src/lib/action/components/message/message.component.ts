@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApiResponseError } from '@dasch-swiss/dsp-js';
 import { StatusMsg } from '../../../../assets/i18n/statusMsg';
 
 /**
@@ -19,36 +20,50 @@ export class DspMessageData {
 }
 
 @Component({
-  selector: 'dsp-message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss']
+    selector: 'dsp-message',
+    templateUrl: './message.component.html',
+    styleUrls: ['./message.component.scss']
 })
 export class MessageComponent implements OnInit {
 
     /**
-     * Message type: DspMessageData or ApiServiceError
+     * Message type: DspMessageData
      *
-     * @param message This type needs at least a status number (0-511).
-     * In this case, or if type is ApiServiceError, it takes the default status messages
+     * @param message This type needs at least a status number (0-599).
+     * In this case, or if type is ApiResponseError, it takes the default status messages
      * from the list of HTTP status codes (https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
      */
     @Input() message: DspMessageData = new DspMessageData();
 
-    // TODO: Refactor Inputs into one parameter (i.e. 'size')
-    // https://github.com/dasch-swiss/knora-ui-ng-lib/pull/95#discussion_r435978988
+    /**
+     * Message type: ApiResponseError
+     * @param apiError
+     */
+    @Input() apiError?: ApiResponseError;
 
     /**
+     * Size of the message: long, medium or short?
+     * @param size Default size is 'long'
+     */
+    @Input() size: 'short' | 'medium' | 'long' = 'long';
+
+    /**
+     * @deprecated
      * @param short Show short message only
      * A small message box to notify the user an event has occured.
      */
-    @Input() short = false;
+    @Input() short = (this.size === 'short');
 
     /**
+     * @deprecated
      * @param medium Show medium message
      * A message box without footnote or links.
      */
-    @Input() medium = false;
+    @Input() medium = (this.size === 'medium');
 
+    /**
+     * @param duration How long should the message be displayed
+     */
     @Input() duration?: number;
 
     statusMsg: any;
@@ -87,14 +102,6 @@ export class MessageComponent implements OnInit {
         ]
     };
 
-    footnote: any = {
-        text: 'If you think this is a mistake, please',
-        team: {
-            dasch:
-                '<a href=\'https://discuss.dasch.swiss\' target=\'_blank\'> inform the DaSCH development team.</a>'
-        }
-    };
-
     constructor(
         private _router: Router,
         private _location: Location,
@@ -103,6 +110,16 @@ export class MessageComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        // temporary solution as long we have to support the deprecated inputs "short" and "medium"
+        if (this.short || this.medium) {
+            this.size = (this.short ? 'short' : 'medium')
+        }
+
+
+        if (this.apiError) {
+            this.message.status = this.apiError.status;
+        }
+
         this.statusMsg = this._status.default;
 
         if (!this.message) {
@@ -170,11 +187,7 @@ export class MessageComponent implements OnInit {
                     msg.statusText !== undefined
                         ? msg.statusText
                         : this.statusMsg[s].description;
-                tmpMsg.footnote =
-                    msg.footnote !== undefined
-                        ? msg.footnote
-                        : this.footnote.text + ' ' + this.footnote.team.dasch;
-                this.showLinks = !this.medium;
+                this.showLinks = (this.size === 'long');
                 break;
             case s >= 500 && s < 600:
                 // the message is a server side (api) error
@@ -188,8 +201,6 @@ export class MessageComponent implements OnInit {
                     msg.statusText !== undefined
                         ? msg.statusText
                         : this.statusMsg[s].description;
-                tmpMsg.footnote =
-                    this.footnote.text + ' ' + this.footnote.team.dasch;
                 this.showLinks = false;
                 break;
             default:
@@ -210,6 +221,10 @@ export class MessageComponent implements OnInit {
 
     closeMessage() {
         this.disable = !this.disable;
+    }
+
+    reload() {
+        window.location.reload();
     }
 
 }
