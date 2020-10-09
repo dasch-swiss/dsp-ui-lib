@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ApiResponseError, CountQueryResponse, IFulltextSearchParams, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
+import { NotificationService } from '../../../action';
 import { DspApiConnectionToken } from '../../../core';
 import { AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
 
@@ -47,14 +48,12 @@ export class ListViewComponent implements OnChanges {
     // Number of all results
     numberOfAllResults: number;
 
-    // in case of an api request error
-    errorMessage: ApiResponseError;
-
     // progress status
     loading = true;
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _advancedSearchParamsService: AdvancedSearchParamsService,
     ) { }
 
@@ -97,7 +96,7 @@ export class ListViewComponent implements OnChanges {
                         this.numberOfAllResults = response.numberOfResults;
                     },
                     (error: ApiResponseError) => {
-                        this.errorMessage = error;
+                        this._notification.openSnackBar(error);
                     }
                 );
             }
@@ -109,7 +108,7 @@ export class ListViewComponent implements OnChanges {
                     this.loading = false;
                 },
                 (error: ApiResponseError) => {
-                    this.errorMessage = error;
+                    this._notification.openSnackBar(error);
                     this.loading = false;
                 }
             );
@@ -125,7 +124,7 @@ export class ListViewComponent implements OnChanges {
                         this.numberOfAllResults = response.numberOfResults;
                     },
                     (error: ApiResponseError) => {
-                        this.errorMessage = error;
+                        this._notification.openSnackBar(error);
                     }
                 );
             }
@@ -140,7 +139,7 @@ export class ListViewComponent implements OnChanges {
                         this.loading = false;
                     },
                     (error: ApiResponseError) => {
-                        this.errorMessage = error;
+                        this._notification.openSnackBar(error);
                         this.loading = false;
                     }
                 );
