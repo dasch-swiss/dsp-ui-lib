@@ -1,6 +1,6 @@
 # Changelog
 
-## Next release (01/01/1970)
+## v1.0.0-rc.9 (12/10/2020)
 
 ## Breaking changes
 
