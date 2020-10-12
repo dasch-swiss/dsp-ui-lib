@@ -18,7 +18,7 @@
 }
 
 .link {
-   cursor: pointer;
+  cursor: pointer;
 }
 
 .custom-error-message {
@@ -40,6 +40,20 @@
   margin: 0 0 !important;
 }
 
+dsp-color-value {
+
+  .mat-form-field-flex,
+  .color-picker-input {
+    cursor: pointer !important;
+  }
+
+  .mat-form-field-label span {
+    display: block;
+    padding: 8px 4px;
+    margin: 0 auto;
+  }
+}
+
 // String literal input
 // string literal textarea: overwrite material styling !important
 .string-literal {
@@ -50,7 +64,6 @@
   }
 
   &.long-text {
-
     .mat-button-toggle-appearance-standard {
       .mat-button-toggle-label-content {
         line-height: 36px !important;
@@ -79,4 +92,8 @@
 .mat-menu-panel.res-share-menu {
   max-width: 360px !important;
   padding: 6px !important;
+}
+
+.info-tooltip {
+  white-space: pre-line;
 }

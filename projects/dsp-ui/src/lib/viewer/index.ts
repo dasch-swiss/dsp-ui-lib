@@ -12,6 +12,7 @@ export * from './values/jdn-datepicker-directive/jdndatepicker.directive';
 export * from './values/link-value/link-value.component';
 export * from './values/list-value/list-value.component';
 export * from './values/text-value/text-value-as-html/text-value-as-html.component';
+export * from './values/text-value/text-value-as-xml/text-value-as-xml.component';
 export * from './values/text-value/text-value-as-string/text-value-as-string.component';
 export * from './values/time-value/time-value.component';
 export * from './values/uri-value/uri-value.component';
@@ -29,3 +30,5 @@ export * from './views/list-view/resource-grid/resource-grid.component';
 export * from './representation/still-image/still-image.component';
 // services
 export * from './services/value-type.service';
+// directives
+export * from './directives/text-value-html-link.directive';

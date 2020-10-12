@@ -56,23 +56,23 @@ export class ValueTypeService {
         if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText') {
             return this._readTextValueAsString;
         } else if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
-            return this._readTextValueAsHtml;
+            return this._readTextValueAsXml;
         } else {
             throw new Error(`unknown TextValue class ${resourcePropDef}`);
         }
     }
 
     /**
-     * Given the ObjectType of a PropertyDefinition, compares it to the type of the type of the provided value.
+     * Given the ObjectType of a PropertyDefinition, compares it to the provided value type.
      * Primarily used to check if a TextValue type is equal to one of the readonly strings in this class.
      *
      * @param objectType PropertyDefinition ObjectType
      * @param valueType Value type (ReadValue, DeleteValue, BaseValue, etc.)
      */
     compareObjectTypeWithValueType(objectType: string, valueType: string): boolean {
-        return objectType === this._readTextValueAsString ||
-                objectType === this._readTextValueAsHtml ||
-                objectType === this._readTextValueAsXml ||
+        return (objectType === this._readTextValueAsString && valueType === this.constants.TextValue) ||
+                (objectType === this._readTextValueAsHtml && valueType === this.constants.TextValue) ||
+                (objectType === this._readTextValueAsXml && valueType === this.constants.TextValue) ||
                 objectType === valueType;
     }
 
@@ -85,10 +85,14 @@ export class ValueTypeService {
      * Determines if the given value is readonly.
      *
      * @param valueTypeOrClass the type or class of the given value.
+     * @param value the given value.
      */
-    isReadOnly(valueTypeOrClass: string): boolean {
+    isReadOnly(valueTypeOrClass: string, value: ReadValue): boolean {
+        const xmlValueNonStandardMapping
+            = valueTypeOrClass === this._readTextValueAsXml
+            && (value instanceof ReadTextValueAsXml && value.mapping !== 'http://rdfh.ch/standoff/mappings/StandardMapping');
+
         return valueTypeOrClass === this._readTextValueAsHtml ||
-            valueTypeOrClass === this._readTextValueAsXml ||
-            valueTypeOrClass === this.constants.GeomValue;
+            valueTypeOrClass === this.constants.GeomValue || xmlValueNonStandardMapping;
     }
 }

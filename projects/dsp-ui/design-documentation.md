@@ -132,6 +132,21 @@ The value component's selector is chosen from `valueTypeOrClass`. Since all valu
 Value components may have additional specific inputs for configuration that can be handled in `DisplayEditComponent`'s template as well
 ,e.g., additional configuration of how do display a date.
 
+#### Integration of CKEditor
+
+### General Setup
+
+To edit XML, the viewer module relies on CKEditor. `TextValueAsXMLComponent` integrates the CKEditor library for Angular.
+In addition, a custom build of CKEditor is needed which is accessible on [GitHub](https://github.com/dasch-swiss/ckeditor_custom_build).
+To make a new custom build, follow the [instructions](https://github.com/dasch-swiss/ckeditor_custom_build/blob/master/how-to-build.md).
+
+Note that currently only the standard mapping is supported.
+
+### Handling Internal Links When Displaying Text
+
+When a text created with CKEditor is shown in read-mode, click and hover events on internal links can be reacted to by applying the directive `TextValueHtmlLinkDirective` with the selector `dspHtmlLink`.
+Internal links have the class "salsah-link".
+
 ## Search Module
 
 The search module allows different ways of searching in order to make simple or complex searches in DSP-API.

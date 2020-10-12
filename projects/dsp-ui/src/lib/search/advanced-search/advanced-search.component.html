@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="submit()" class="dsp-form-content">
+<form *ngIf="!errorMessage" [formGroup]="form" (ngSubmit)="submit()" class="dsp-form-content">
 
     <div *ngIf="ontologiesMetadata?.ontologies.length > 0">
         <dsp-select-ontology [formGroup]="form" [ontologiesMetadata]="ontologiesMetadata"
@@ -46,3 +46,5 @@
     </div>
 
 </form>
+
+<dsp-message *ngIf="errorMessage" [apiError]="errorMessage" [size]="'medium'"></dsp-message>
