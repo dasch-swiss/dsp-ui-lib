@@ -13,7 +13,6 @@ import {
     MockResource,
     MockUsers,
     ProjectsEndpointAdmin,
-    ReadProject,
     ReadResource,
     UsersEndpointAdmin
 } from '@dasch-swiss/dsp-js';
