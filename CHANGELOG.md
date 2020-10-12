@@ -4,39 +4,39 @@
 
 ## Breaking changes
 
-- #199 Integrate Ckeditor into Property View
+- #199 DSP-682 Integrate Ckeditor into Property View
 
 ## Enhancements
 
 - #207 DSP-806 - Add the attribute 'rel' to uri and geoname value component template
 - #201 DSP-779 Display error messages directly and not only in console
-- #202 Handle links in XML text values
-- #199 Integrate Ckeditor into Property View
-- #198 Value Deletion Comment
+- #202 DSP-657 Handle links in XML text values
+- #199 DSP-682 Integrate Ckeditor into Property View
+- #198 DSP-638 Value Deletion Comment
 - #200 DSP-777 Show message on all server errors in login component
-- #192 Default Boolean Value
+- #192 DSP-653 Default Boolean Value
 - #189 DSP-693 Sort button style
-- #157 System Prop Info
+- #157 DSP-369 System Prop Info
 
 ## Styling
 
-- #191 Color Value Polish
-- #184 Date Value Component Polish
-- #193 Geoname Value Styling
+- #191 DSP-623 Color Value Polish
+- #184 DSP-615 Date Value Component Polish
+- #193 DSP-651 Geoname Value Styling
 - #189 DSP-693 Sort button style
 
 ## Bug fixes
 
 - #205 DSP-674 Bug fix in search panel
-- #194 DSP-436 Fix workflow issue 
+- #194 DSP-436 Fix workflow issue
 
 ## Maintenance
 
 - #197 DSP-708 Refactor CI workflow script
-- #193 Geoname Value Styling
+- #193 DSP-651 Geoname Value Styling
 - #195 DSP-701 Add template for PRs
-- #192 Default Boolean Value
-- #187 Hide Geometry Property
+- #192 DSP-653 Default Boolean Value
+- #187 DSP-649 Hide Geometry Property
 
 ---
 
