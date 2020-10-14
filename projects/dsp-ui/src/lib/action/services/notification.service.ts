@@ -28,9 +28,9 @@ export class NotificationService {
 
             // get list of default http status message
             let defaultStatusMsg = this._statusMsg.default;
+            message = `${defaultStatusMsg[status].message} (status): ${defaultStatusMsg[status].description}`;
 
-            message = defaultStatusMsg[status].message + ' ('+status+'): '+ defaultStatusMsg[status].description;
-            // 15s
+            // display for 15s
             duration = 15000;
             panelClass = 'error';
         } else {
