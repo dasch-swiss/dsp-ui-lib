@@ -256,7 +256,7 @@ You can now access the app on your local machine under <http://localhost:4200/>.
 
 Before publishing:
 
-- Update README and CHANGELOG if necessary and commit the changes (currently, the CHANGELOG has to be updated manually)
+- Update README and CHANGELOG if necessary and commit the changes (currently, the CHANGELOG has to be updated manually with [gren](https://github.com/github-tools/github-release-notes): `gren changelog --override`)
 
 - Be sure that all dependencies to DSP-JS-LIB and DSP-API are set to the correct version:
   - Update DSP-API version in `Makefile`
@@ -265,7 +265,7 @@ Before publishing:
 
 A new version will be published with each Github release as it's part of Github actions' workflow. To make a new release, go to <https://github.com/dasch-swiss/dsp-ui-lib/releases> and update the draft called "Next release" by changing:
 
-- the tag version and the release title (same name) with the version number, e.g. `v3.0.0` or `v3.0.0-rc.0`
+- The tag version and the release title (same name) with the version number, e.g. `v3.0.0` or `v3.0.0-rc.0`
 - If this is a pre-release, check the box "This is a pre-release"
 
 New package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>.
