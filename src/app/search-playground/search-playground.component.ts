@@ -1,4 +1,4 @@
-import { Component, Inject, OnChanges, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SearchParams } from '@dasch-swiss/dsp-ui/lib/viewer';
 
@@ -20,8 +20,8 @@ export class SearchPlaygroundComponent implements OnInit {
 
     filterByProject = false;
     projectFilter = true;
-    advancedSearch = false;
-    expertSearch = false;
+    advancedSearch = true;
+    expertSearch = true;
 
     loading = false;
 

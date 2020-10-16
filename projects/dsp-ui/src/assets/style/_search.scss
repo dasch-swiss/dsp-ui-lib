@@ -134,7 +134,6 @@ $gc-small: $full-input-width - $gc-large - 4;
   }
 }
 
-
 // responsive style: tablet
 @media (max-width: map-get($grid-breakpoints, desktop)) and (min-width: map-get($grid-breakpoints, phone)) {
 
@@ -161,4 +160,3 @@ $gc-small: $full-input-width - $gc-large - 4;
     }
   }
 }
-

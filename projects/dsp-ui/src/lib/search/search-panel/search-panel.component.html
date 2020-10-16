@@ -5,16 +5,16 @@
     </dsp-fulltext-search>
 
     <!-- Do not display advanced and expert search on mobile devices smaller than tablet -->
-    <div class="desktop-only">
+    <div class="advanced-expert-buttons">
         <!-- advanced search button: if advanced === true -->
-        <button mat-button *ngIf="advanced && !expert" color="primary"
+        <button mat-flat-button *ngIf="advanced" [class.active]="showAdvanced"
             (click)="openPanelWithBackdrop('advanced')">advanced</button>
 
         <!-- expert search button: if expert === true -->
-        <button mat-button *ngIf="!advanced && expert" color="primary"
+        <button mat-flat-button *ngIf="expert" [class.active]="showExpert"
             (click)="openPanelWithBackdrop('expert')">expert</button>
 
-    <!-- button to select advanced or expert search: if advanced AND expert === true; open menu to select -->
+    <!-- button to select advanced or expert search: if advanced AND expert === true; open menu to select
         <button mat-button *ngIf="advanced && expert" [matMenuTriggerFor]="selectSearch">
             <mat-icon>filter_list</mat-icon>
         </button>
@@ -25,7 +25,7 @@
             <button mat-menu-item (click)="openPanelWithBackdrop('expert')">
                 <span>Expert search</span>
             </button>
-        </mat-menu>
+        </mat-menu> -->
     </div>
 
 </div>
