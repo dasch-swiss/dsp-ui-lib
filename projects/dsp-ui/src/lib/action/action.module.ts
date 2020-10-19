@@ -25,60 +25,63 @@ import { ReversePipe } from './pipes/array-transformation/reverse.pipe';
 import { SortByPipe } from './pipes/array-transformation/sort-by.pipe';
 import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe';
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
+import { SafePipe } from './pipes/sanitization-bypass/safe.pipe';
 import { StringifyStringLiteralPipe } from './pipes/string-transformation/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
 
 @NgModule({
   declarations: [
-    FormattedBooleanPipe,
-    KnoraDatePipe,
-    ReversePipe,
-    SortByPipe,
-    TruncatePipe,
-    StringifyStringLiteralPipe,
     AdminImageDirective,
-    ExistingNameDirective,
-    GndDirective,
-    ProgressIndicatorComponent,
-    MessageComponent,
-    SortButtonComponent,
-    StringLiteralInputComponent,
-    LoginFormComponent,
     ConfirmationDialogComponent,
-    ConfirmationMessageComponent
+    ConfirmationMessageComponent,
+    ExistingNameDirective,
+    FormattedBooleanPipe,
+    GndDirective,
+    KnoraDatePipe,
+    LoginFormComponent,
+    MessageComponent,
+    ProgressIndicatorComponent,
+    ReversePipe,
+    SafePipe,
+    SortButtonComponent,
+    SortByPipe,
+    StringifyStringLiteralPipe,
+    StringLiteralInputComponent,
+    TruncatePipe
   ],
   imports: [
-    CommonModule,
     BrowserAnimationsModule,
+    CommonModule,
     MatButtonModule,
-    MatDialogModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatCardModule,
-    MatListModule,
-    ReactiveFormsModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatCardModule,
+    MatDialogModule,
     MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    ReactiveFormsModule
   ],
   exports: [
-    FormattedBooleanPipe,
-    KnoraDatePipe,
-    ReversePipe,
-    SortByPipe,
-    TruncatePipe,
-    StringifyStringLiteralPipe,
     AdminImageDirective,
-    ExistingNameDirective,
-    ProgressIndicatorComponent,
-    MessageComponent,
-    SortButtonComponent,
-    StringLiteralInputComponent,
-    LoginFormComponent,
     ConfirmationDialogComponent,
+    ConfirmationMessageComponent,
+    ExistingNameDirective,
+    FormattedBooleanPipe,
     GndDirective,
-    ConfirmationMessageComponent
+    KnoraDatePipe,
+    LoginFormComponent,
+    MessageComponent,
+    ProgressIndicatorComponent,
+    ReversePipe,
+    SafePipe,
+    SortButtonComponent,
+    SortByPipe,
+    StringifyStringLiteralPipe,
+    StringLiteralInputComponent,
+    TruncatePipe
   ]
 })
 
