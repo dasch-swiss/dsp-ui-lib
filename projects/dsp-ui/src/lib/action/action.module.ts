@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationMessageComponent } from './components/confirmation-dialog/confirmation-message/confirmation-message.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { MessageComponent } from './components/message/message.component';
@@ -31,6 +32,7 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
 @NgModule({
   declarations: [
     AdminImageDirective,
+    ConfirmationDialogComponent,
     ConfirmationMessageComponent,
     ExistingNameDirective,
     FormattedBooleanPipe,
@@ -64,6 +66,7 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
   ],
   exports: [
     AdminImageDirective,
+    ConfirmationDialogComponent,
     ConfirmationMessageComponent,
     ExistingNameDirective,
     FormattedBooleanPipe,
