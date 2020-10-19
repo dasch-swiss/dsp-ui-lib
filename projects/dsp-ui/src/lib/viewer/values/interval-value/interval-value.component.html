@@ -1,12 +1,12 @@
-<div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-  <p class="rm-value interval-start">Start: {{valueFormControl.value?.start}}</p>
-  <p class="rm-value interval-end">End: {{valueFormControl.value?.end}}</p>
-  <p class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</p>
-</div>
+<span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
+  <span class="rm-value interval-start">Start: {{valueFormControl.value?.start}}</span>
+  <span class="rm-value interval-end">End: {{valueFormControl.value?.end}}</span>
+  <span class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</span>
+</span>
 <ng-template #showForm>
   <span [formGroup]="form">
       <mat-form-field class="large-field child-value-component" floatLabel="never">
-        <dsp-interval-input #intervalInput [formControlName]="'intervalValue'" class="value" placeholder="Interval value" [errorStateMatcher]="matcher"></dsp-interval-input>
+        <dsp-interval-input #intervalInput [formControlName]="'intervalValue'" class="value" [errorStateMatcher]="matcher"></dsp-interval-input>
         <mat-error *ngIf="form.controls.intervalValue.hasError('valueNotChanged') &&
                    (form.controls.intervalValue.touched || form.controls.intervalValue.dirty)">
              <span class="custom-error-message">New value must be different than the current value.</span>

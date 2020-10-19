@@ -27,7 +27,8 @@ $warn: rgb(244, 67, 54);
 
 .dsp-note,
 .dsp-hint {
-  background-color: rgba($primary, .4);
+  background-color: $primary;
+  color: #fff;
 }
 
 .dsp-error,
@@ -72,6 +73,15 @@ $warn: rgb(244, 67, 54);
 
   .message-footnote {
     padding: 24px;
+
+    .bolder {
+      font-weight: bolder;
+    }
+
+    .action {
+      margin: 48px auto 0 auto;
+      display: table;
+    }
   }
 }
 

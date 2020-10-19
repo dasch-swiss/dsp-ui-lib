@@ -19,6 +19,7 @@ export * from './components/sort-button/sort-button.component';
 export * from './components/login-form/login-form.component';
 export * from './components/string-literal-input/string-literal-input.component';
 export * from './components/confirmation-dialog/confirmation-dialog.component';
+export * from './components/confirmation-dialog/confirmation-message/confirmation-message.component';
 
 // directives
 export * from './directives/admin-image/admin-image.directive';

@@ -83,8 +83,23 @@ export class SearchPanelComponent {
         return overlayPosition;
     }
 
+    /**
+     * Emit the search parameters
+     *
+     * @param data
+     */
+    emitSearch(data: any) {
+        this.search.emit(data);
+        this.closeMenu();
+    }
+
+    /**
+     * Close the search menu
+     */
     closeMenu(): void {
-        this.overlayRef.detach();
+        if(this.overlayRef) {
+            this.overlayRef.detach();
+        }
     }
 
 }

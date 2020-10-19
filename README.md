@@ -246,6 +246,7 @@ To build and run the application in Docker, do the following:
 The first step builds the lib and app in Docker. Make sure to delete the contents of the `dist` folder on your local system first.
 
 The second step runs a container based on the image built in the previous step:
+
 - `-v` mounts a config file from your local file system in the Docker container, so you can set the config.
 - `--publish` maps the port on your local machine to the port in the Docker container.
 
@@ -253,22 +254,18 @@ You can now access the app on your local machine under <http://localhost:4200/>.
 
 ### Publish a new version to NPM
 
-A new version will be published with each github release as it's part of Github actions' workflow. Please follow the steps below to prepare the next release:
+Before publishing:
 
-- Create new branch from master called e.g. `prerelease/v1.0.0-rc.2` or `release/v2.0.0`
-- Run one of the corresponding make commands:
-  - `next-release-candidate`         updates version to next release candidate e.g. from 3.0.0-rc.0 to 3.0.0-rc.1 or from 3.0.0 to 3.0.1-rc.0
-  - `prerelease-major`               updates version to next MAJOR as release candidate e.g. from 4.0.0 to 5.0.0-rc.0
-  - `prerelease-minor`               updates version to next MINOR as release-candidate e.g. from 3.1.0 to 3.2.0-rc.0
-  - `prerelease-patch`               updates version to next PATCH as release-candidate e.g. from 3.0.1 to 3.0.2-rc.0
-  - `release-major`                  updates version to next MAJOR version e.g. from 3.0.0 to 4.0.0
-  - `release-minor`                  updates version to next MINOR version e.g. from 3.0.0 to 3.1.0
-  - `release-patch`                  updates version to next PATCH version e.g. from 3.0.0 to 3.0.1
-- The make command will commit and push to github (you have to fill in your GitHub username and password to log when you do not use any [github token](https://docs.github.com/en/enterprise/2.15/user/articles/creating-a-personal-access-token-for-the-command-line))
-- Update README and CHANGELOG if necessary and commit the changes (currently, the CHANGELOG has to be updated manually)
-- Create new pull request and merge into master
-- Draft new release on Github. This will build, test and publish the new package on npm. Additional it creates / overrides release notes on Github. Fill in:
-  - the tag version, the release title (same name)
-  - If this is a pre-release, check the box "This is a pre-release"
+- Update README and CHANGELOG if necessary and commit the changes (currently, the CHANGELOG has to be updated manually with [gren](https://github.com/github-tools/github-release-notes): `gren changelog --override`)
 
-New package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>
+- Be sure that all dependencies to DSP-JS-LIB and DSP-API are set to the correct version:
+  - Update DSP-API version in `Makefile`
+  - Update DSP-JS version in `package.json` and run `npm install` to update the `package-lock.json`
+  - Update DSP-JS version in section `peerDependencies` of `projects/dsp-ui/package.json`
+
+A new version will be published with each Github release as it's part of Github actions' workflow. To make a new release, go to <https://github.com/dasch-swiss/dsp-ui-lib/releases> and update the draft called "Next release" by changing:
+
+- The tag version and the release title (same name) with the version number, e.g. `v3.0.0` or `v3.0.0-rc.0`
+- If this is a pre-release, check the box "This is a pre-release"
+
+New package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>.

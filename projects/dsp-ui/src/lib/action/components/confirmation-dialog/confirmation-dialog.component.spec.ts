@@ -1,13 +1,14 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ConfirmationDialogComponent } from './confirmation-dialog.component';
+import { MockResource, ReadIntValue, ReadValue } from '@dasch-swiss/dsp-js';
+import { ConfirmationDialogComponent, ConfirmationDialogValueDeletionPayload } from './confirmation-dialog.component';
 
 /**
  * Test host component to simulate parent component with a confirmation dialog.
@@ -15,29 +16,44 @@ import { ConfirmationDialogComponent } from './confirmation-dialog.component';
 @Component({
     template: `<p> {{confirmationDialogResponse}} </p>`
 })
-class ConfirmationDialogTestHostComponent {
+class ConfirmationDialogTestHostComponent implements OnInit {
 
     confirmationDialogResponse: string;
+
+    testValue: ReadIntValue;
 
     constructor(private dialog: MatDialog) {
     }
 
+    ngOnInit() {
+        MockResource.getTestthing().subscribe(res => {
+            this.testValue = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger', ReadIntValue)[0];
+        });
+    }
+
     openDialog() {
+
         this.dialog.open(ConfirmationDialogComponent, {
             data: {
-                title: 'Title',
-                message: 'Message',
+                value: this.testValue,
                 buttonTextOk: 'OK',
                 buttonTextCancel: 'Cancel'
             }
-        }).afterClosed().subscribe((confirmed: boolean) => {
-            if (confirmed) {
+        }).afterClosed().subscribe((payload: ConfirmationDialogValueDeletionPayload) => {
+            if (payload.confirmed) {
                 this.confirmationDialogResponse = 'Action was confirmed!';
             } else {
                 this.confirmationDialogResponse = 'Action was cancelled';
             }
         });
       }
+}
+
+@Component({selector: 'dsp-confirmation-message', template: ''})
+class MockConfirmationMessageComponent {
+    @Input() value: ReadValue;
+
+    constructor() { }
 }
 
 describe('ConfirmationDialogComponent', () => {
@@ -50,7 +66,8 @@ describe('ConfirmationDialogComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 ConfirmationDialogComponent,
-                ConfirmationDialogTestHostComponent
+                ConfirmationDialogTestHostComponent,
+                MockConfirmationMessageComponent
             ],
             imports: [
                 MatDialogModule,
@@ -88,22 +105,22 @@ describe('ConfirmationDialogComponent', () => {
         overlayContainer.ngOnDestroy();
     });
 
-    it('should display a confirmation dialog', () => {
+    it('should display a confirmation dialog', async () => {
 
         testHostComponent.openDialog();
 
         testHostFixture.detectChanges();
 
-        testHostFixture.whenStable().then(() => {
-            const dialogDiv = document.querySelector('mat-dialog-container');
-            expect(dialogDiv).toBeTruthy();
+        await testHostFixture.whenStable();
 
-            const dialogTitle = dialogDiv.querySelector('.title');
-            expect(dialogTitle.innerHTML.trim()).toEqual('Title');
+        const dialogDiv = document.querySelector('mat-dialog-container');
+        expect(dialogDiv).toBeTruthy();
 
-            const dialogMessage = dialogDiv.querySelector('.message');
-            expect(dialogMessage.innerHTML.trim()).toEqual('Message');
-        });
+        const dspConfirmMsg = document.querySelector('dsp-confirmation-message');
+        expect(dspConfirmMsg).toBeTruthy();
+
+        const dialogTitle = dialogDiv.querySelector('.title');
+        expect(dialogTitle.innerHTML.trim()).toEqual('Are you sure you want to delete this value from Integer?');
 
     });
 

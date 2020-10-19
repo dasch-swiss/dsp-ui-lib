@@ -1,6 +1,6 @@
 {
   "name": "@dasch-swiss/dsp-ui",
-  "version": "1.0.0-rc.3",
+  "version": "0.0.0-PLACEHOLDER",
   "description": "Angular library to easily create a Knora/DSP user interface",
   "repository": {
     "type": "git",
@@ -21,11 +21,13 @@
     "@angular/core": "^9.0.0",
     "@angular/material": "^9.0.0",
     "@angular/cdk": "^9.0.0",
-    "@dasch-swiss/dsp-js": "1.0.0-rc.9",
+    "@dasch-swiss/dsp-js": "1.0.0-rc.13",
     "jdnconvertiblecalendar": "^0.0.5",
     "jdnconvertiblecalendardateadapter": "^0.0.13",
-    "ngx-color-picker": "^9.1.0",
+    "ngx-color-picker": "^10.0.1",
     "openseadragon": "^2.4.2",
-    "svg-overlay": "github:openseadragon/svg-overlay"
+    "svg-overlay": "github:openseadragon/svg-overlay",
+    "@ckeditor/ckeditor5-angular": "^1.2.3",
+    "ckeditor5-custom-build": "github:dasch-swiss/ckeditor_custom_build"
   }
 }

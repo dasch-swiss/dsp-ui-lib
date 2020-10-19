@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationMessageComponent } from './components/confirmation-dialog/confirmation-message/confirmation-message.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { MessageComponent } from './components/message/message.component';
 import { ProgressIndicatorComponent } from './components/progress-indicator/progress-indicator.component';
@@ -45,7 +45,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     SortButtonComponent,
     StringLiteralInputComponent,
     LoginFormComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    ConfirmationMessageComponent
   ],
   imports: [
     CommonModule,
@@ -78,7 +79,8 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     StringLiteralInputComponent,
     LoginFormComponent,
     ConfirmationDialogComponent,
-    GndDirective
+    GndDirective,
+    ConfirmationMessageComponent
   ]
 })
 

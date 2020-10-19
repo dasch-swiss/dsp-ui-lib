@@ -1,7 +1,7 @@
 <div class="infobar mat-caption" *ngIf="project && user">
-    <p>This source belongs to project
+    <p>This resource belongs to the project
         <span class="project link" (click)="openProject.emit(project)">
-            {{project?.shortname}}
+            <b>{{project?.shortname}}</b>
             <mat-icon inline>open_in_new</mat-icon>
         </span>
     </p>
@@ -26,10 +26,7 @@
         -->
 
         <!-- Toggle list of properties: all or only the ones with value -->
-        <button mat-button
-            class="toggle-props"
-            matTooltip="Toggle list of properties"
-            matTooltipPosition="above"
+        <button mat-button class="toggle-props" matTooltip="Toggle list of properties" matTooltipPosition="above"
             (click)="toggleProps.emit(!showAllProps)">
             <mat-icon>{{showAllProps ? 'unfold_less' : 'unfold_more'}}</mat-icon>
             <span class="desktop-only">{{showAllProps ? 'Hide empty' : 'Show all'}} properties</span>
@@ -43,13 +40,10 @@
         -->
 
         <!-- Share resource by copying the ark url -->
-        <button mat-button
-            class="share-res"
-            matTooltip="Share resource by copying ARK url"
-            matTooltipPosition="above"
+        <button mat-button class="share-res" matTooltip="Share resource by copying ARK url" matTooltipPosition="above"
             [matMenuTriggerFor]="share">
             <mat-icon>share</mat-icon>
-            <span  class="desktop-only">Citation Link</span>
+            <span class="desktop-only">Citation Link</span>
         </button>
         <mat-menu #share="matMenu" class="res-share-menu">
             <!-- citation link - ARK URL -->
@@ -57,19 +51,10 @@
                 <label for="clipboard-arkurl">Citation Link (ARK URL)</label>
             </div>
             <div class="ark-url-input">
-                <input
-                    id="clipboard-arkurl"
-                    class="clipboard-arkurl"
-                    cols="30"
-                    rows="10"
-                    readonly
+                <input id="clipboard-arkurl" class="clipboard-arkurl" cols="30" rows="10" readonly
                     [(ngModel)]="resource.versionArkUrl" />
-                <button mat-button
-                    class="btn-copy-arkurl"
-                    [cdkCopyToClipboard]="resource.versionArkUrl"
-                    matTooltip="Copy ARK url"
-                    matTooltipPosition="below"
-                    (click)="openSnackBar()">
+                <button mat-button class="btn-copy-arkurl" [cdkCopyToClipboard]="resource.versionArkUrl"
+                    matTooltip="Copy ARK url" matTooltipPosition="below" (click)="openSnackBar()">
                     <mat-icon class="icon-arkurl">content_copy</mat-icon>
                 </button>
             </div>

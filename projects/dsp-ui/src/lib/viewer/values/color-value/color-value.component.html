@@ -1,15 +1,13 @@
-<div *ngIf="mode === 'read'; else showForm" class="read-mode-view">
-    <p>Hex value:</p>
-    <p class="rm-value">{{ valueFormControl.value }}</p>
-    <p>Preview:</p>
-    <div
-        class="color-preview"
-        [style.background-color]="valueFormControl.value"
-    ></div>
-    <p class="rm-comment" *ngIf="shouldShowComment">
+<span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
+    <div class="color-preview"
+        [style.color]="textColor"
+        [style.background-color]="valueFormControl.value">
+        <span class="rm-value">{{ valueFormControl.value }}</span>
+    </div>
+    <span class="rm-comment" *ngIf="shouldShowComment">
         {{ commentFormControl.value }}
-    </p>
-</div>
+    </span>
+</span>
 <ng-template #showForm>
     <span [formGroup]="form">
         <mat-form-field class="large-field color-field child-value-component" floatLabel="never">
@@ -17,7 +15,6 @@
                 #colorInput
                 [formControlName]="'colorValue'"
                 class="value"
-                placeholder="Color value"
                 [errorStateMatcher]="matcher">
             </dsp-color-picker>
             <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">

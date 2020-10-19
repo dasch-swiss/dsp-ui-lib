@@ -10,20 +10,23 @@ import {
     ViewChildren
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DspApiConnectionToken } from '../../core';
 import {
     ApiResponseError,
     ClassDefinition,
+    Constants,
     KnoraApiConnection,
-    OntologiesMetadata, PropertyDefinition,
-    ResourceClassDefinition, ResourcePropertyDefinition
+    OntologiesMetadata,
+    PropertyDefinition,
+    ResourceClassDefinition,
+    ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
-import { Properties, SelectPropertyComponent } from './select-property/select-property.component';
-import { SelectResourceClassComponent } from './select-resource-class/select-resource-class.component';
 import { Subscription } from 'rxjs';
-import { PropertyWithValue } from './select-property/specify-property-value/operator';
-import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
+import { DspApiConnectionToken } from '../../core';
 import { SearchParams } from '../../viewer';
+import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
+import { Properties, SelectPropertyComponent } from './select-property/select-property.component';
+import { PropertyWithValue } from './select-property/specify-property-value/operator';
+import { SelectResourceClassComponent } from './select-resource-class/select-resource-class.component';
 
 // https://dev.to/krumpet/generic-type-guard-in-typescript-258l
 type Constructor<T> = { new(...args: any[]): T };
@@ -65,6 +68,8 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     properties: Properties;
 
     formChangesSubscription: Subscription;
+
+    errorMessage: ApiResponseError;
 
     // reference to the component that controls the resource class selection
     @ViewChild('resourceClass') resourceClassComponent: SelectResourceClassComponent;
@@ -124,10 +129,13 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     initializeOntologies(): void {
         this._dspApiConnection.v2.onto.getOntologiesMetadata().subscribe(
             (response: OntologiesMetadata) => {
+                // filter out system ontologies
+                response.ontologies = response.ontologies.filter(onto => onto.attachedToProject !== Constants.SystemProjectIRI);
+
                 this.ontologiesMetadata = response;
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this.errorMessage = error;
             });
     }
 
