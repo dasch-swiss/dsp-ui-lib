@@ -5,14 +5,16 @@ import { NotificationService } from './notification.service';
 
 describe('NotificationService', () => {
     let service: NotificationService;
+    const mockNotificationService = jasmine.createSpyObj('NotificationService', ['openSnackBar']);
 
     beforeEach(() => {
+        const spy = jasmine.createSpyObj('MatSnackBar', ['open']);
         TestBed.configureTestingModule({
             imports: [
                 MatSnackBarModule
             ],
             providers: [
-                NotificationService
+                {provide: NotificationService, useValue: mockNotificationService}
             ]
         });
         service = TestBed.inject(NotificationService);
@@ -20,5 +22,14 @@ describe('NotificationService', () => {
 
     it('should be created', () => {
         expect(service).toBeTruthy();
+    });
+
+    describe('openSnackBar', () => {
+        it('should open the snack bar', () => {
+            const arg = 'test';
+            mockNotificationService.openSnackBar.and.callThrough();
+            service.openSnackBar(arg);
+            expect(service.openSnackBar).toHaveBeenCalled();
+          });
     });
 });
