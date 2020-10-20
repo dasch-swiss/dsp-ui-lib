@@ -13,25 +13,18 @@ export class NotificationService {
         private _statusMsg: StatusMsg
     ) { }
 
-
     // TODO: maybe we can add more parameters like:
     // action: string = 'x', duration: number = 4200
     // and / or type: 'note' | 'warning' | 'error' | 'success'; which can be used for the panelClass
     openSnackBar(notification: string | ApiResponseError): void {
-
+        const duration = 5000;
         let message: string;
-        let duration = 4200;
         let panelClass: string;
 
         if (notification instanceof ApiResponseError) {
             const status = (notification.status === 0 ? 503 : notification.status);
-
-            // get list of default http status message
             const defaultStatusMsg = this._statusMsg.default;
             message = `${defaultStatusMsg[status].message} (status): ${defaultStatusMsg[status].description}`;
-
-            // display for 15s
-            duration = 15000;
             panelClass = 'error';
         } else {
             message = message;
@@ -44,7 +37,5 @@ export class NotificationService {
             verticalPosition: 'top',
             panelClass
         });
-
     }
-
 }

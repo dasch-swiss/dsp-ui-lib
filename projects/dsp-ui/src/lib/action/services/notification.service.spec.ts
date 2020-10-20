@@ -1,6 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-
 import { NotificationService } from './notification.service';
 
 describe('NotificationService', () => {
@@ -8,11 +6,7 @@ describe('NotificationService', () => {
     const mockNotificationService = jasmine.createSpyObj('NotificationService', ['openSnackBar']);
 
     beforeEach(() => {
-        const spy = jasmine.createSpyObj('MatSnackBar', ['open']);
         TestBed.configureTestingModule({
-            imports: [
-                MatSnackBarModule
-            ],
             providers: [
                 {provide: NotificationService, useValue: mockNotificationService}
             ]
@@ -30,6 +24,6 @@ describe('NotificationService', () => {
             mockNotificationService.openSnackBar.and.callThrough();
             service.openSnackBar(arg);
             expect(service.openSnackBar).toHaveBeenCalled();
-          });
+        });
     });
 });

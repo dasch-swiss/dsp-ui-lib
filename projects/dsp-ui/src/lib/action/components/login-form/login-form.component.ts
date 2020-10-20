@@ -58,8 +58,7 @@ export class LoginFormComponent implements OnInit {
     // show progress indicator
     loading = false;
 
-    // general error message
-    errorMessage: ApiResponseError;
+    isError: boolean;
 
     // specific error messages
     loginFailed = false;
@@ -136,9 +135,7 @@ export class LoginFormComponent implements OnInit {
     login() {
 
         this.loading = true;
-
-        // reset the error messages
-        this.errorMessage = undefined;
+        this.isError = false;
 
         // Grab values from form
         const identifier = this.form.get('username').value;
@@ -166,7 +163,7 @@ export class LoginFormComponent implements OnInit {
                 }
 
                 this.loginSuccess.emit(false);
-                this.errorMessage = error;
+                this.isError = true;
 
                 this.loading = false;
             }

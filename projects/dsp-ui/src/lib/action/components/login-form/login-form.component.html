@@ -40,11 +40,11 @@
             type="submit"
             [disabled]="!form.valid"
             class="full-width submit-button"
-            [class.mat-primary]="!errorMessage"
-            [class.mat-warn]="errorMessage">
+            [class.mat-primary]="!isError"
+            [class.mat-warn]="isError">
                 <dsp-progress-indicator [color]="'white'" [status]="0" *ngIf="loading" class="login-progress"></dsp-progress-indicator>
-                <mat-icon *ngIf="errorMessage && !loading">close</mat-icon>
-                {{errorMessage ? formLabel.retry : formLabel.submit}}
+                <mat-icon *ngIf="isError && !loading">close</mat-icon>
+                {{isError ? formLabel.retry : formLabel.submit}}
         </button>
 
         <br><br>
