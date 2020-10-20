@@ -21,6 +21,7 @@ import {
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
+import { NotificationService } from '../../action';
 import { DspApiConnectionToken } from '../../core';
 import { SearchParams } from '../../viewer';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
@@ -80,6 +81,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     constructor(
         @Inject(FormBuilder) private _fb: FormBuilder,
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _gravsearchGenerationService: GravsearchGenerationService) {
     }
 
@@ -135,6 +137,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
                 this.ontologiesMetadata = response;
             },
             (error: ApiResponseError) => {
+                this._notification.openSnackBar(error);
                 this.errorMessage = error;
             });
     }
@@ -205,8 +208,8 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
                 this.properties = this._makeResourceProperties(onto.get(ontologyIri).properties);
             },
-            err => {
-                console.error(err);
+            error => {
+                this._notification.openSnackBar(error);
             }
         );
     }

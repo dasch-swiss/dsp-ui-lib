@@ -22,6 +22,7 @@ import {
     ProjectsResponse,
     ReadProject
 } from '@dasch-swiss/dsp-js';
+import { NotificationService } from '../../action';
 import { SortingService } from '../../action/services/sorting.service';
 import { DspApiConnectionToken } from '../../core';
 import { SearchParams } from '../../viewer';
@@ -104,6 +105,7 @@ export class FulltextSearchComponent implements OnInit {
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _sortingService: SortingService,
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef
@@ -150,7 +152,7 @@ export class FulltextSearchComponent implements OnInit {
                 this.projects = this._sortingService.keySortByAlphabetical(response.body.projects, 'shortname');
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
                 this.error = error;
             }
         );
@@ -166,7 +168,7 @@ export class FulltextSearchComponent implements OnInit {
                 this.setProject(project.body.project);
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
             }
         );
     }
