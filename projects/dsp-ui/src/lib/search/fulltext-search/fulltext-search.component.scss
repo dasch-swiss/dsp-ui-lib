@@ -189,7 +189,6 @@
   }
 }
 
-// TODO: clean up!!!
 
 // tablet and desktop devices: hide phone-version classes
 @media (min-width: map-get($grid-breakpoints, phone)) {
@@ -211,13 +210,14 @@
   }
 
   .dsp-fulltext-search-mobile-panel {
-    height: 100vh !important;
-    background-color: rgba(220, 218, 218, 0.9);
-    position: fixed;
-    width: 100vw !important;
+    height: 100% !important;
+    width: 100% !important;
+    background-color: rgba(218, 218, 218, 0.96);
     z-index: 100;
+    position: fixed;
     display: block;
     border-radius: 0;
+    top: 0;
     left: 0;
 
     .dsp-fulltext-search-field,
@@ -226,6 +226,7 @@
       margin: 12px auto;
       max-width: $search-width;
       width: 90%;
+      display: flex;
 
       .dsp-project-filter-button {
         width: 100%;
@@ -247,115 +248,28 @@
   }
 
   .dsp-project-filter-menu {
-    width: $search-width;
+    width: 100vw;
   }
 
-  // .dsp-fulltext-search-panel {
-  //   height: 100vh !important;
-  //   background-color: rgba(220, 218, 218, 0.9);
-  //   position: relative;
-  //   width: 100% !important;
-  //   z-index: 100;
-  //   display: block;
-  //   border-radius: 0;
+  .dsp-search-menu {
+    height: auto;
+    box-shadow: none;
+    background-color: transparent;
+    position: absolute;
+    top: 128px;
+    height: calc(100vh - 128px);
+    width: 100%;
+    padding: 0;
 
-  //   &.with-project-filter {
-  //     width: 100% !important;
-  //   }
-
-  //   .dsp-project-filter-mobile {
-  //     height: 54px;
-  //     margin: 0 2% 5% 2%;
-  //     padding-top: 3%;
-
-  //     &.mat-stroked-button {
-  //       padding: 0;
-  //     }
-
-  //     .dsp-project-filter-button-mobile {
-  //       width: calc(100% - 16px);
-  //       margin: 8px;
-  //       height: 100%;
-  //       background-color: $grey;
-  //       cursor: pointer;
-  //     }
-
-  //     .dsp-project-filter-menu-mobile {
-  //       width: calc(100% - 32px) !important;
-  //       max-width: 100%;
-  //       margin: 0 8px 0 8px;
-  //       height: 100% !important;
-  //     }
-  //   }
-
-  //   .dsp-fulltext-search-mobile {
-  //     display: flex;
-  //     height: 64px;
-  //     margin-top: 5%;
-  //     margin-right: 4%;
-  //     margin-left: 4%;
-  //     .dsp-fulltext-search-field-mobile {
-  //       width: 80%;
-  //       margin-right: 2px;
-
-  //       .dsp-fulltext-search-input-mobile {
-  //         width: 72%;
-  //         height: 64px;
-  //         border-style: solid;
-  //         border-width: 0.6px;
-  //         border-color: $grey;
-  //         font-size: 14pt;
-  //         position: absolute;
-  //         padding-left: 12px;
-  //         border-radius: 5px;
-
-  //         &:active,
-  //         &:focus {
-  //           outline: none;
-  //         }
-  //       }
-  //     }
-
-  //     .dsp-fulltext-search-button-mobile {
-  //       background-color: #ffffff;
-  //       width: 20%;
-  //       height: 64px;
-  //       padding: 0;
-  //       margin-left: 2px;
-  //       border-radius: 5px;
-  //       border-style: solid;
-  //       border-width: 0.8px;
-  //       border-color: $grey;
-  //     }
-
-  //     .suffix {
-  //       border-top-left-radius: 0;
-  //       border-top-right-radius: $border-radius;
-  //       border-bottom-right-radius: $border-radius;
-  //       border-bottom-left-radius: 0;
-  //       margin: 1px 0 1px -3px;
-  //     }
-
-  //     .prefix,
-  //     .suffix {
-  //       border-style: none;
-  //       color: rgba($dark, 0.4);
-  //       cursor: pointer;
-  //       height: 100%;
-  //       outline: none;
-  //       position: relative;
-  //       width: 20%;
-
-  //       &.disabled {
-  //         cursor: auto;
-  //       }
-
-  //       &:active {
-  //         color: rgb(81, 81, 81);
-  //       }
-  //     }
-  //   }
-  // }
+    .dsp-menu-content {
+      text-align: left;
+      overflow-y: auto;
+    }
+    .dsp-menu-action {
+      position: absolute;
+      bottom: 12px;
+    }
+  }
 
   // TODO: do not use ng-deep anymore!!!
   ::ng-deep .cdk-overlay-pane {

@@ -64,6 +64,7 @@ export class FulltextSearchComponent implements OnInit {
     @ViewChild('fulltextSearchPanel', { static: false }) searchPanel: ElementRef;
 
     @ViewChild('fulltextSearchInput', { static: false }) searchInput: ElementRef;
+    @ViewChild('fulltextSearchInputMobile', { static: false }) searchInputMobile: ElementRef;
 
     @ViewChild('fulltextSearchMenu', { static: false }) searchMenu: TemplateRef<any>;
 
@@ -199,7 +200,6 @@ export class FulltextSearchComponent implements OnInit {
         const config = new OverlayConfig({
             hasBackdrop: true,
             backdropClass: 'cdk-overlay-transparent-backdrop',
-            // backdropClass: 'cdk-overlay-dark-backdrop',
             positionStrategy: this.getOverlayPosition(),
             scrollStrategy: this._overlay.scrollStrategies.block()
         });
@@ -291,11 +291,17 @@ export class FulltextSearchComponent implements OnInit {
      * Clear the whole list of search
      */
     resetSearch(): void {
-        this.searchPanelFocus = false;
-        this.searchInput.nativeElement.blur();
+        if (this.displayPhonePanel) {
+            this.searchInputMobile.nativeElement.blur();
+            this.togglePhonePanel();
+        } else {
+            this.searchPanelFocus = false;
+            this.searchInput.nativeElement.blur();
+        }
         if (this.overlayRef) {
             this.overlayRef.detach();
         }
+
     }
 
     /**
@@ -307,8 +313,11 @@ export class FulltextSearchComponent implements OnInit {
         } else {
             this.prevSearch = [];
         }
-        this.searchPanelFocus = true;
-        this.openPanelWithBackdrop();
+
+        if(!this.displayPhonePanel) {
+            this.searchPanelFocus = true;
+            this.openPanelWithBackdrop();
+        }
     }
 
     /**
