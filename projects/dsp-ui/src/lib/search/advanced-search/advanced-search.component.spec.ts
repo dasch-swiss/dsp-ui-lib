@@ -5,6 +5,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -167,7 +168,8 @@ describe('AdvancedSearchComponent', () => {
             imports: [
                 ReactiveFormsModule,
                 BrowserAnimationsModule,
-                MatIconModule
+                MatIconModule,
+                MatSnackBarModule
             ],
             providers: [
                 {
