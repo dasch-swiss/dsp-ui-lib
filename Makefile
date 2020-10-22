@@ -9,6 +9,7 @@ CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 # Clones the knora-api git repository
 .PHONY: clone-knora-stack
 clone-knora-stack:
+	@rm -rf $(CURRENT_DIR)/.tmp/knora-stack
 	@git clone --branch v13.0.0-rc.21 --single-branch --depth 1 https://github.com/dasch-swiss/knora-api.git $(CURRENT_DIR)/.tmp/knora-stack
 
 .PHONY: knora-stack
