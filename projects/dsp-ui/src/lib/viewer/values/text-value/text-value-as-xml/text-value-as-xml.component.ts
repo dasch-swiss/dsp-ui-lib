@@ -98,7 +98,9 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
                     { model: 'heading4', view: 'h4', title: 'Heading 4' },
                     { model: 'heading5', view: 'h5', title: 'Heading 5' },
                     { model: 'heading6', view: 'h6', title: 'Heading 6' },
-                    { model: 'formatted', view: 'pre', title: 'Formatted' }
+                    { model: 'formatted', view: 'pre', title: 'Formatted' },
+                    { model: 'cite', view: 'cite', title: 'Cited' }
+
                 ]
             },
             codeBlock: {
