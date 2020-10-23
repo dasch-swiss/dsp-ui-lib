@@ -1,10 +1,11 @@
 <div class="container" (click)="fileInput.click()" dspDragDrop (fileDropped)="uploadFile($event)">
-  <input hidden type="file" #fileInput (change)="uploadFile($event)">
+  <input hidden type="file" #fileInput (change)="uploadFile($event)" />
   <div class="upload-icon">and here will be icon</div>
   <div class="title">Upload file</div>
   <div class="bottom-line">Drag and drop or click to upload</div>
 </div>
-<div *ngIf="files.length" class="files-list">
+<!-- <div *ngIf="files.length" class="files-list"> -->
+<div *ngIf="file" class="files-list">
     <table>
       <thead>
         <tr>
@@ -15,12 +16,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let file of files; let i=index">
+        <!-- <tr *ngFor="let file of files; let i=index"> -->
+        <tr>
           <td>{{ file.name }}</td>
           <td>{{ convertBytes(file.size) }}</td>
           <td>{{ convertDate(file.lastModified) }}</td>
           <td>
-            <button class="delete-file" (click)="deleteAttachment(i)">
+            <!-- <button class="delete-file" (click)="deleteAttachment(i)"> -->
+            <button class="delete-file" (click)="deleteAttachment()">
               X
             </button>
           </td>

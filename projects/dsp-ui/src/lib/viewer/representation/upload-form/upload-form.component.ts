@@ -7,11 +7,14 @@ import { Component } from '@angular/core';
 })
 export class UploadFormComponent {
 
-    files: File[] = [];
+    // files: File[] = [];
+    file: File;
+    error: string;
 
     uploadFile(event: any): void {
-        const filesList = event.target?.files ? event.target.files : event as FileList;
-        console.log(filesList);
+        this.file = event.target?.files ? event.target.files[0] : event[0];
+        // const filesList = event.target?.files ? event.target.files : event as FileList;
+        console.log('LIST', this.file);
 
         // check if file or folder dropped
         // const items = event.dataTransfer.items;
@@ -26,15 +29,14 @@ export class UploadFormComponent {
         //     }
         // }
 
-        for (const file of filesList) {
-        this.files.push(file);
-        }
-        // this.files = event;
-        // console.log('??????', this.files);
+        // for (const file of filesList) {
+        // this.files.push(file);
+        // }
     }
 
-    deleteAttachment(i: number): void {
-        this.files.splice(i, 1);
+    deleteAttachment(i?: number): void {
+        // this.files.splice(i, 1);
+        this.file = undefined;
     }
 
     convertBytes(val: number): string {
