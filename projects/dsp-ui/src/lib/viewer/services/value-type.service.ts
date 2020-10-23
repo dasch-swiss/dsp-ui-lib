@@ -56,7 +56,7 @@ export class ValueTypeService {
         switch (resourcePropDef.guiElement) {
             case 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText':
                 return this._readTextValueAsString;
-            case 'http://api.knora.org/ontology/salsah-gui/v2#RichText':
+            case 'http://api.knora.org/ontology/salsah-gui/v2#Richtext':
                 return this._readTextValueAsXml;
             default:
                 return this._readTextValueAsString;
