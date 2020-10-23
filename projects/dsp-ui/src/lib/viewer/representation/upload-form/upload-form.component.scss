@@ -1,0 +1,71 @@
+.container {
+  // background-image: url("");
+  background-repeat: no-repeat;
+  background-size: 100px;
+  background-position: center;
+  height: 200px;
+  width: 80%;
+  margin: 20px auto;
+  border: 2px solid #000;
+  border-radius: 2px;
+
+  position: relative;
+  text-align: center;
+}
+.container:hover {
+  cursor: pointer;
+  background-color: #ddd !important;
+}
+
+.upload-icon {
+  bottom: 50%;
+}
+.title {
+  bottom: 20%;
+}
+.bottom-line,
+.title,
+.upload-icon {
+  width: 100%;
+  position: absolute;
+  padding: 5px 0;
+}
+.bottom-line {
+  bottom: 0;
+  color: #fff;
+  background-color: #000;
+}
+
+.files-list {
+  display: flex;
+  justify-content: space-between;
+  width: calc(80% + 4px);
+  margin: 10px auto;
+  background: #fff;
+  color: #000;
+}
+.files-list .delete-file {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+tr:hover {
+  background-color: #ddd;
+}
+th {
+  background-color: #9ecbec;
+  text-align: left;
+}
+td,
+th {
+  border: 1px solid #000;
+  padding: 3px;
+}

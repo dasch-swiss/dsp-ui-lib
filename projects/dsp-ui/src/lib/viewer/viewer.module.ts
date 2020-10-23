@@ -22,9 +22,12 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { DspActionModule } from '../action/action.module';
+import { DragDropDirective } from './directives/drag-drop.directive';
+import { TextValueHtmlLinkDirective } from './directives/text-value-html-link.directive';
 import { AddValueComponent } from './operations/add-value/add-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { StillImageComponent } from './representation/still-image/still-image.component';
+import { UploadFormComponent } from './representation/upload-form/upload-form.component';
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
 import { ColorValueComponent } from './values/color-value/color-value.component';
@@ -52,7 +55,6 @@ import { ResourceListComponent } from './views/list-view/resource-list/resource-
 import { PropertyToolbarComponent } from './views/property-view/property-toolbar/property-toolbar.component';
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
-import { TextValueHtmlLinkDirective } from './directives/text-value-html-link.directive';
 
 
 @NgModule({
@@ -87,7 +89,9 @@ import { TextValueHtmlLinkDirective } from './directives/text-value-html-link.di
         TimeInputComponent,
         TimeValueComponent,
         UriValueComponent,
-        TextValueHtmlLinkDirective
+        TextValueHtmlLinkDirective,
+        UploadFormComponent,
+        DragDropDirective
     ],
     imports: [
         ClipboardModule,
@@ -139,7 +143,9 @@ import { TextValueHtmlLinkDirective } from './directives/text-value-html-link.di
         TextValueAsStringComponent,
         TimeValueComponent,
         UriValueComponent,
-        TextValueHtmlLinkDirective
+        TextValueHtmlLinkDirective,
+        DragDropDirective,
+        UploadFormComponent
     ]
 })
 export class DspViewerModule {

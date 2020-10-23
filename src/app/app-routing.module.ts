@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UploadFormComponent } from 'projects/dsp-ui/src/lib/viewer';
 import { ActionPlaygroundComponent } from './action-playground/action-playground.component';
 import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground/advanced-search-playground.component';
 import { CkeditorPlaygroundComponent } from './ckeditor/ckeditor-playground/ckeditor-playground.component';
@@ -33,7 +34,8 @@ const routes: Routes = [
     { path: 'advanced-search', component: AdvancedSearchPlaygroundComponent}, // advanced search playground component
     { path: 'still-image', component: StillImagePlaygroundComponent}, // still image playground component
     { path: 'viewer', component: ViewerPlaygroundComponent}, // viewer playground component
-    { path: 'ckeditor', component: CkeditorPlaygroundComponent} // CKeditor playground component
+    { path: 'ckeditor', component: CkeditorPlaygroundComponent}, // CKeditor playground component
+    { path: 'upload-form', component: UploadFormComponent}
 ];
 
 @NgModule({
