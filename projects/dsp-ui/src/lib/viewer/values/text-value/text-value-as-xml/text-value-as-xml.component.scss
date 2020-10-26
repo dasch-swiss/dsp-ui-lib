@@ -6,6 +6,10 @@
   font-family: monospace;
 }
 
+::ng-deep .ck-content pre {
+  background-color: inherit;
+}
+
 .rm-value {
   ::ng-deep p {
     margin: 0;

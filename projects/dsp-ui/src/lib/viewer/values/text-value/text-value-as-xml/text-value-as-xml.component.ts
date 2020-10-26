@@ -33,7 +33,6 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     // XML conversion
     xmlTransform = {
         '<hr>': '<hr/>',
-        '</hr>': '',
         '<s>': '<strike>',
         '</s>': '</strike>',
         '<i>': '<em>',
