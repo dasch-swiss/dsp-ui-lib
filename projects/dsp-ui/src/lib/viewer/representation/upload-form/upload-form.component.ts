@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NotificationService } from '../../../action';
 
 @Component({
     selector: 'dsp-upload-form',
@@ -11,10 +12,22 @@ export class UploadFormComponent {
     file: File;
     error: string;
 
-    uploadFile(event: any): void {
-        this.file = event.target?.files ? event.target.files[0] : event[0];
+    constructor(private readonly notificationService: NotificationService) {}
+
+    uploadFile(event): void {
+        let files: File[] = [];
+        // this.file = event.target?.files ? event.target.files[0] : event[0];
+        files = event.target?.files ? event.target.files : event;
+        if (this.isMoreThanOneFile(files)) {
+            const error = 'ERROR: Only one file allowed at a time';
+            console.log(error);
+            this.notificationService.openSnackBar(error);
+            this.file = null;
+        } else {
+            this.file = files[0];
+        }
         // const filesList = event.target?.files ? event.target.files : event as FileList;
-        console.log('LIST', this.file);
+        console.log('LIST', event, this.file);
 
         // check if file or folder dropped
         // const items = event.dataTransfer.items;
@@ -32,6 +45,10 @@ export class UploadFormComponent {
         // for (const file of filesList) {
         // this.files.push(file);
         // }
+    }
+
+    isMoreThanOneFile(files: File[]): boolean {
+        return files.length > 1;
     }
 
     deleteAttachment(i?: number): void {

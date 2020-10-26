@@ -1,6 +1,6 @@
 <div class="container" (click)="fileInput.click()" dspDragDrop (fileDropped)="uploadFile($event)">
   <input hidden type="file" #fileInput (change)="uploadFile($event)" />
-  <div class="upload-icon">and here will be icon</div>
+  <mat-icon class="upload-icon">cloud_upload</mat-icon>
   <div class="title">Upload file</div>
   <div class="bottom-line">Drag and drop or click to upload</div>
 </div>

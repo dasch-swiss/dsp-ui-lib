@@ -18,14 +18,17 @@
 }
 
 .upload-icon {
-  bottom: 50%;
+  width: auto;
+  font-size: 48px;
+  padding: 0;
+  position: inherit;
+  top: 35%;
 }
 .title {
   bottom: 20%;
 }
 .bottom-line,
-.title,
-.upload-icon {
+.title {
   width: 100%;
   position: absolute;
   padding: 5px 0;
