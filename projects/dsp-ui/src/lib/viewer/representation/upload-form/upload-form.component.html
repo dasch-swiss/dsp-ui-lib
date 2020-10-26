@@ -1,68 +1,137 @@
 <div class="upload-container">
-    <h2 class="mat-title">Add new resource: {{resourceTyoe}}</h2>
+    <h2 class="mat-title">Add new resource: {{ resourceTyoe }}</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="dd-container" (click)="fileInput.click()" dspDragDrop (fileDropped)="uploadFile($event)">
-            <input hidden type="file" #fileInput (change)="uploadFile($event)" />
+        <div
+            dspDragDrop
+            (click)="fileInput.click()"
+            (fileDropped)="uploadFile($event)"
+            class="dd-container"
+        >
+            <input
+                hidden
+                type="file"
+                (change)="uploadFile($event)"
+                #fileInput
+            />
             <mat-icon class="upload-icon">cloud_upload</mat-icon>
-            <div class="title">{{fromLabels.drag_drop.upload}}</div>
-            <div class="bottom-line">{{fromLabels.drag_drop.drop_or_upload}}</div>
+            <div class="title">{{ fromLabels.drag_drop.upload }}</div>
+            <div class="bottom-line">
+                {{ fromLabels.drag_drop.drop_or_upload }}
+            </div>
         </div>
         <!-- <div *ngIf="files.length" class="files-list"> -->
         <div *ngIf="file" class="files-list">
             <table>
-            <thead>
-                <tr>
-                <th>Name</th>
-                <th>Size</th>
-                <th>Last Modified Date</th>
-                <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- <tr *ngFor="let file of files; let i=index"> -->
-                <tr>
-                <td>{{ file.name }}</td>
-                <td>{{ convertBytes(file.size) }}</td>
-                <td>{{ convertDate(file.lastModified) }}</td>
-                <td>
-                    <!-- <button class="delete-file" (click)="deleteAttachment(i)"> -->
-                    <button class="delete-file" (click)="deleteAttachment()">
-                    X
-                    </button>
-                </td>
-                </tr>
-            </tbody>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Last Modified Date</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr *ngFor="let file of files; let i=index"> -->
+                    <tr>
+                        <td>{{ file.name }}</td>
+                        <td>{{ convertBytes(file.size) }}</td>
+                        <td>{{ convertDate(file.lastModified) }}</td>
+                        <td>
+                            <!-- <button class="delete-file" (click)="deleteAttachment(i)"> -->
+                            <button
+                                class="delete-file"
+                                (click)="deleteAttachment()"
+                            >
+                                X
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
 
         <mat-form-field class="full-width">
-            <input matInput placeholder="{{fromLabels.title}}" formControlName="title" #title />
+            <input
+                matInput
+                formControlName="title"
+                placeholder="{{ fromLabels.title }}"
+                #title
+            />
         </mat-form-field>
         <br />
         <mat-form-field class="full-width">
-            <textarea matInput placeholder="{{fromLabels.description}}" formControlName="description" #description></textarea>
+            <textarea
+                matInput
+                formControlName="description"
+                placeholder="{{ fromLabels.description }}"
+                #description
+            ></textarea>
         </mat-form-field>
         <br />
         <mat-form-field class="full-width">
-            <input matInput placeholder="{{fromLabels.date}}" formControlName="date" #date type="date" />
+            <input
+                matInput
+                formControlName="date"
+                placeholder="{{ fromLabels.date }}"
+                #date
+                type="date"
+            />
         </mat-form-field>
         <br />
         <mat-form-field class="full-width">
-            <input matInput placeholder="{{fromLabels.duration}}" formControlName="duration" #duration />
+            <input
+                matInput
+                formControlName="duration"
+                placeholder="{{ fromLabels.duration }}"
+                #duration
+            />
         </mat-form-field>
         <br />
         <mat-form-field class="full-width">
-            <input matInput placeholder="{{fromLabels.person}}" formControlName="person" #person />
+            <input
+                matInput
+                formControlName="person"
+                placeholder="{{ fromLabels.person }}"
+                #person
+            />
         </mat-form-field>
         <br />
         <mat-form-field class="full-width">
-            <input matInput placeholder="{{fromLabels.location}}" formControlName="location" #location />
+            <input
+                matInput
+                formControlName="location"
+                placeholder="{{ fromLabels.location }}"
+                #location
+            />
         </mat-form-field>
         <br />
         <mat-form-field class="full-width">
-            <textarea matInput placeholder="{{fromLabels.transcript}}" formControlName="transcript" #transcript></textarea>
+            <textarea
+                matInput
+                formControlName="transcript"
+                placeholder="{{ fromLabels.transcript }}"
+                #transcript
+            ></textarea>
         </mat-form-field>
+
+        <button
+            mat-raised-button
+            (click)="form.reset()"
+            type="button"
+            class="reset-button"
+        >
+            {{ fromLabels.reset }}
+        </button>
+
+        <button
+            mat-raised-button
+            (click)="onSubmit()"
+            type="submit"
+            class="submit-button"
+        >
+            {{ fromLabels.save }}
+        </button>
     </form>
 </div>
 
- {{form.value | json}}
+{{ form.value | json }}
