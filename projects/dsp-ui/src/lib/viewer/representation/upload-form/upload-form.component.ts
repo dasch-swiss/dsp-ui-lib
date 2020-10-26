@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../action';
 
 @Component({
@@ -6,13 +7,44 @@ import { NotificationService } from '../../../action';
     templateUrl: './upload-form.component.html',
     styleUrls: ['./upload-form.component.scss']
 })
-export class UploadFormComponent {
+export class UploadFormComponent implements OnInit {
 
     // files: File[] = [];
+    resourceTyoe = 'Interview';
+    form: FormGroup;
+    readonly fromLabels = {
+        drag_drop: {
+            upload: 'Upload file',
+            drop_or_upload: 'Drag and drop or click to upload'
+        },
+        title: 'Title',
+        description: 'Description',
+        date: 'Creation Date',
+        duration: 'Duration',
+        person: 'Person', // author??
+        location: 'Location',
+        transcript: 'Transcript',
+        reset: 'Reset',
+        save: 'Save'
+    };
     file: File;
-    error: string;
 
-    constructor(private readonly notificationService: NotificationService) {}
+    constructor(
+        private readonly _n: NotificationService,
+        private readonly _fb: FormBuilder
+    ) {}
+
+    ngOnInit(): void {
+        this.form = this._fb.group({
+            title: ['', Validators.required],
+            description: ['', Validators.required],
+            date: ['', Validators.required],
+            duration: ['', Validators.required],
+            person: ['', Validators.required],
+            location: ['', Validators.required],
+            transcript: ['', Validators.required]
+        });
+    }
 
     uploadFile(event): void {
         let files: File[] = [];
@@ -21,7 +53,7 @@ export class UploadFormComponent {
         if (this.isMoreThanOneFile(files)) {
             const error = 'ERROR: Only one file allowed at a time';
             console.log(error);
-            this.notificationService.openSnackBar(error);
+            this._n.openSnackBar(error);
             this.file = null;
         } else {
             this.file = files[0];
@@ -46,6 +78,8 @@ export class UploadFormComponent {
         // this.files.push(file);
         // }
     }
+
+    onSubmit(): void {}
 
     isMoreThanOneFile(files: File[]): boolean {
         return files.length > 1;

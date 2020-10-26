@@ -68,6 +68,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         DateValueComponent,
         DecimalValueComponent,
         DisplayEditComponent,
+        DragDropDirective,
         GeonameValueComponent,
         IntervalInputComponent,
         IntervalValueComponent,
@@ -79,21 +80,21 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         PropertyToolbarComponent,
         PropertyViewComponent,
         ResourceGridComponent,
-        TextValueAsXMLComponent,
         ResourceListComponent,
         ResourceViewComponent,
         StillImageComponent,
         SublistValueComponent,
         TextValueAsHtmlComponent,
         TextValueAsStringComponent,
+        TextValueAsXMLComponent,
+        TextValueHtmlLinkDirective,
         TimeInputComponent,
         TimeValueComponent,
-        UriValueComponent,
-        TextValueHtmlLinkDirective,
         UploadFormComponent,
-        DragDropDirective
+        UriValueComponent
     ],
     imports: [
+        CKEditorModule,
         ClipboardModule,
         ColorPickerModule,
         CommonModule,
@@ -115,7 +116,6 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         MatSelectModule,
         MatSnackBarModule,
         MatToolbarModule,
-        CKEditorModule,
         MatTooltipModule,
         ReactiveFormsModule
     ],
@@ -126,6 +126,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         DateValueComponent,
         DecimalValueComponent,
         DisplayEditComponent,
+        DragDropDirective,
         GeonameValueComponent,
         IntervalValueComponent,
         IntValueComponent,
@@ -135,17 +136,16 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         ListViewComponent,
         PropertyViewComponent,
         ResourceGridComponent,
-        StillImageComponent,
-        TextValueAsXMLComponent,
         ResourceListComponent,
         ResourceViewComponent,
+        StillImageComponent,
         TextValueAsHtmlComponent,
         TextValueAsStringComponent,
-        TimeValueComponent,
-        UriValueComponent,
+        TextValueAsXMLComponent,
         TextValueHtmlLinkDirective,
-        DragDropDirective,
-        UploadFormComponent
+        TimeValueComponent,
+        UploadFormComponent,
+        UriValueComponent
     ]
 })
 export class DspViewerModule {

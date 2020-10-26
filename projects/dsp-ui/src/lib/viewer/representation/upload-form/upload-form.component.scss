@@ -1,18 +1,23 @@
-.container {
-  // background-image: url("");
-  background-repeat: no-repeat;
-  background-size: 100px;
-  background-position: center;
-  height: 200px;
-  width: 80%;
+.upload-container {
   margin: 20px auto;
+  width: 50%;
+}
+
+.dd-container {
+  // background-image: url("");
+  // background-repeat: no-repeat;
+  // background-size: 100px;
+  // background-position: center;
+  height: 200px;
+  // width: 80%;
+  margin: 20px 0;
   border: 2px solid #000;
   border-radius: 2px;
 
   position: relative;
   text-align: center;
 }
-.container:hover {
+.dd-container:hover {
   cursor: pointer;
   background-color: #ddd !important;
 }
@@ -71,4 +76,8 @@ td,
 th {
   border: 1px solid #000;
   padding: 3px;
+}
+
+.full-width {
+  width: 100%;
 }
