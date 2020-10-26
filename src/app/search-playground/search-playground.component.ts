@@ -1,4 +1,5 @@
-import { Component, OnChanges } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SearchParams } from '@dasch-swiss/dsp-ui/lib/viewer';
 
 @Component({
@@ -6,13 +7,49 @@ import { SearchParams } from '@dasch-swiss/dsp-ui/lib/viewer';
     templateUrl: './search-playground.component.html',
     styleUrls: ['./search-playground.component.scss']
 })
-export class SearchPlaygroundComponent {
+export class SearchPlaygroundComponent implements OnInit {
 
     searchParams: SearchParams;
 
-    display: 'fulltext' | 'advanced' | 'expert' | 'panel' = 'fulltext';
+    display: 'fulltext' | 'advanced' | 'expert' | 'panel' = 'panel';
 
-    constructor() { }
+    form: FormGroup;
+
+    projectIri = 'http://rdfh.ch/projects/0001';
+    limitToProject: string;
+
+    filterByProject = false;
+    projectFilter = true;
+    advancedSearch = true;
+    expertSearch = true;
+
+    loading = false;
+
+    constructor(@Inject(FormBuilder) private fb: FormBuilder) { }
+
+    ngOnInit() {
+        // set the default search view
+        // this.option = this.selection[5];
+
+        this.form = new FormGroup({
+            filterbyproject: new FormControl(this.filterByProject),
+            projectfilter: new FormControl(this.projectFilter),
+            advancedsearch: new FormControl(this.advancedSearch),
+            expertsearch: new FormControl(this.expertSearch)
+        });
+
+        this.form.valueChanges.subscribe(data => {
+            // this.option = data.selectSearch;
+
+            this.limitToProject = (data.filterbyproject ? this.projectIri : this.limitToProject = undefined);
+
+            this.projectFilter = data.projectfilter;
+            this.advancedSearch = data.advancedsearch;
+            this.expertSearch = data.expertsearch;
+
+            this.reload();
+        });
+    }
 
     doSearch(search: SearchParams) {
         // reset search params
@@ -29,6 +66,19 @@ export class SearchPlaygroundComponent {
     // playground helper method
     switchComponent(comp: 'fulltext' | 'advanced' | 'expert' | 'panel') {
         this.display = comp;
+    }
+
+    /**
+   * reload the search panel component tag
+   * reset previous search and project filter
+   */
+    reload() {
+        if (!this.limitToProject) {
+            localStorage.removeItem('currentProject');
+        }
+        localStorage.removeItem('prevSearch')
+        this.loading = true;
+        setTimeout(x => this.loading = false);
     }
 
 }

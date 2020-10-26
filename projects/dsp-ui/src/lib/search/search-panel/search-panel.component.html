@@ -1,30 +1,19 @@
 <div class="dsp-search-panel" #fullSearchPanel cdkOverlayOrigin>
 
-    <!-- DESKTOP VERSION -->
-    <dsp-fulltext-search class="dsp-fulltext-search" [projectfilter]="projectfilter" [filterbyproject]="filterbyproject"
+    <dsp-fulltext-search [projectfilter]="projectfilter" [filterbyproject]="filterbyproject"
         (search)="emitSearch($event)">
     </dsp-fulltext-search>
 
-    <!-- advanced search button: if advanced === true -->
-    <button mat-button *ngIf="advanced && !expert" color="primary"
-        (click)="openPanelWithBackdrop('advanced')">advanced</button>
+    <!-- Do not display advanced and expert search on mobile devices smaller than tablet -->
+    <div class="advanced-expert-buttons">
+        <!-- advanced search button: if advanced === true -->
+        <button mat-flat-button *ngIf="advanced" [class.active]="showAdvanced"
+            (click)="openPanelWithBackdrop('advanced')">advanced</button>
 
-    <!-- expert search button: if expert === true -->
-    <button mat-button *ngIf="!advanced && expert" color="primary"
-        (click)="openPanelWithBackdrop('expert')">expert</button>
-
-    <!-- button to select advanced or expert search: if advanced AND expert === true; open menu to select -->
-    <button mat-button *ngIf="advanced && expert" [matMenuTriggerFor]="selectSearch">
-        <mat-icon>filter_list</mat-icon>
-    </button>
-    <mat-menu #selectSearch="matMenu">
-        <button mat-menu-item (click)="openPanelWithBackdrop('advanced')">
-            <span>Advanced search</span>
-        </button>
-        <button mat-menu-item (click)="openPanelWithBackdrop('expert')">
-            <span>Expert search</span>
-        </button>
-    </mat-menu>
+        <!-- expert search button: if expert === true -->
+        <button mat-flat-button *ngIf="expert" [class.active]="showExpert"
+            (click)="openPanelWithBackdrop('expert')">expert</button>
+    </div>
 
 </div>
 

@@ -54,7 +54,6 @@ import { PropertyViewComponent } from './views/property-view/property-view.compo
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
 import { TextValueHtmlLinkDirective } from './directives/text-value-html-link.directive';
 
-
 @NgModule({
     declarations: [
         AddValueComponent,

@@ -99,8 +99,8 @@ describe('ExpertSearchComponent', () => {
         const textareaEle = textarea.nativeElement;
 
         expect(textareaEle.value).toBe(
-            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
-PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/v2#>
 
 CONSTRUCT {
     ?book knora-api:isMainResource true .
@@ -132,8 +132,8 @@ CONSTRUCT {
 
         // reset the textarea content
         expect(textareaEle.value).toBe(
-            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
-PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/v2#>
 
 CONSTRUCT {
     ?book knora-api:isMainResource true .
@@ -149,8 +149,8 @@ CONSTRUCT {
 
     it('should register the query in the params service', () => {
         const expectedGravsearch =
-            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
-PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/v2#>
 
 CONSTRUCT {
     ?book knora-api:isMainResource true .
@@ -177,8 +177,8 @@ CONSTRUCT {
 
     it('should emit the Gravsearch query', () => {
         const expectedGravsearch =
-            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
-PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/v2#>
 
 CONSTRUCT {
     ?book knora-api:isMainResource true .
@@ -213,8 +213,8 @@ CONSTRUCT {
         const textareaEle = textarea.nativeElement;
 
         expect(textareaEle.value).toBe(
-            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
-PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/v2#>
 
 CONSTRUCT {
     ?book knora-api:isMainResource true .
@@ -228,8 +228,8 @@ CONSTRUCT {
         );
 
         textareaEle.value =
-            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
-PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/simple/v2#>
+            `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX incunabula: <http://localhost:3333/ontology/0803/incunabula/v2#>
 
 CONSTRUCT {
     ?book knora-api:isMainResource true .
