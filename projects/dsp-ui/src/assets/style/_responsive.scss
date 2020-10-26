@@ -13,6 +13,6 @@ $grid-breakpoints: (
 
 @media (max-width: map-get($grid-breakpoints, phone)) {
   .desktop-only {
-    display: none;
+    display: none !important;
   }
 }
