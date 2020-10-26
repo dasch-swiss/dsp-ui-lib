@@ -47,7 +47,7 @@
 .files-list {
   display: flex;
   justify-content: space-between;
-  width: calc(80% + 4px);
+  // width: calc(80% + 4px);
   margin: 10px auto;
   background: #fff;
   color: #000;
@@ -62,7 +62,7 @@ table {
   width: 100%;
   border-collapse: collapse;
 }
-tr:nth-child(even){
+tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 tr:hover {
@@ -89,4 +89,26 @@ button {
 .submit-button {
   background-color: gold;
   float: right;
+}
+
+// smaller buttons: add value and value info
+.info,
+.create {
+  cursor: pointer;
+  border: none;
+  padding: 0em;
+  outline: none;
+  background-color: transparent;
+  color: #000000;
+}
+
+.info .material-icons,
+.create .material-icons {
+  font-size: 18px;
+}
+
+.info .mat-icon,
+.create .mat-icon {
+  width: 18px;
+  height: 18px;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../action';
 
 @Component({
@@ -9,9 +9,11 @@ import { NotificationService } from '../../../action';
 })
 export class UploadFormComponent implements OnInit {
 
-    // files: File[] = [];
     resourceTyoe = 'Interview';
     form: FormGroup;
+    get fileControl() { return this.form.get('file') as FormControl; }
+    get titlesArray() { return this.form.get('titles') as FormArray; }
+    get personsArray() { return this.form.get('persons') as FormArray; }
     readonly fromLabels = {
         drag_drop: {
             upload: 'Upload file',
@@ -36,11 +38,16 @@ export class UploadFormComponent implements OnInit {
 
     ngOnInit(): void {
         this.form = this._fb.group({
-            title: ['', Validators.required],
+            file: [undefined, Validators.required],
+            titles: this._fb.array([
+                this._fb.control('')
+            ]),
             description: ['', Validators.required],
             date: ['', Validators.required],
             duration: ['', Validators.required],
-            person: ['', Validators.required],
+            persons: this._fb.array([
+                this._fb.control('')
+            ]),
             location: ['', Validators.required],
             transcript: ['', Validators.required]
         });
@@ -48,7 +55,6 @@ export class UploadFormComponent implements OnInit {
 
     uploadFile(event): void {
         let files: File[] = [];
-        // this.file = event.target?.files ? event.target.files[0] : event[0];
         files = event.target?.files ? event.target.files : event;
         if (this.isMoreThanOneFile(files)) {
             const error = 'ERROR: Only one file allowed at a time';
@@ -58,28 +64,21 @@ export class UploadFormComponent implements OnInit {
         } else {
             this.file = files[0];
         }
-        // const filesList = event.target?.files ? event.target.files : event as FileList;
-        console.log('LIST', event, this.file);
-
-        // check if file or folder dropped
-        // const items = event.dataTransfer.items;
-        // for (const item of items) {
-        //     if (item.kind === 'file') {
-        //         const entry = item.webkitGetAsEntry();
-        //         if (entry.isFile) {
-        //             console.log('FILE');
-        //         } else if (entry.isDirectory) {
-        //             console.log('DIRECTORY');
-        //         }
-        //     }
-        // }
-
-        // for (const file of filesList) {
-        // this.files.push(file);
-        // }
+        this.fileControl.setValue(this.file);
+        console.log('LIST', event, this.file, this.fileControl);
     }
 
-    onSubmit(): void {}
+    onSubmit(): void {
+        console.log(this.form);
+    }
+
+    addTitle(): void {
+        this.titlesArray.push(this._fb.control(''));
+    }
+
+    addPerson(): void {
+        this.personsArray.push(this._fb.control(''));
+    }
 
     isMoreThanOneFile(files: File[]): boolean {
         return files.length > 1;

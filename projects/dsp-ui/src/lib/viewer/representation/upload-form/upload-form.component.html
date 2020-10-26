@@ -19,7 +19,6 @@
                 {{ fromLabels.drag_drop.drop_or_upload }}
             </div>
         </div>
-        <!-- <div *ngIf="files.length" class="files-list"> -->
         <div *ngIf="file" class="files-list">
             <table>
                 <thead>
@@ -31,7 +30,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- <tr *ngFor="let file of files; let i=index"> -->
                     <tr>
                         <td>{{ file.name }}</td>
                         <td>{{ convertBytes(file.size) }}</td>
@@ -49,15 +47,23 @@
                 </tbody>
             </table>
         </div>
-
-        <mat-form-field class="full-width">
-            <input
-                matInput
-                formControlName="title"
-                placeholder="{{ fromLabels.title }}"
-                #title
-            />
-        </mat-form-field>
+        <div formArrayName="titles">
+            <mat-form-field
+                *ngFor="let title of titlesArray.controls; let i = index"
+                class="full-width"
+            >
+                <input
+                    matInput
+                    [formControlName]="i"
+                    placeholder="{{ fromLabels.title }}"
+                    #title
+                />
+            </mat-form-field>
+        </div>
+        <button class="create" (click)="addTitle()" title="Add another title">
+            <mat-icon>add_box</mat-icon>
+            <!-- You can add moere than one title -->
+        </button>
         <br />
         <mat-form-field class="full-width">
             <textarea
@@ -87,14 +93,23 @@
             />
         </mat-form-field>
         <br />
-        <mat-form-field class="full-width">
-            <input
-                matInput
-                formControlName="person"
-                placeholder="{{ fromLabels.person }}"
-                #person
-            />
-        </mat-form-field>
+        <div formArrayName="persons">
+            <mat-form-field
+                *ngFor="let person of personsArray.controls; let i = index"
+                class="full-width"
+            >
+                <input
+                    matInput
+                    [formControlName]="i"
+                    placeholder="{{ fromLabels.person }}"
+                    #person
+                />
+            </mat-form-field>
+        </div>
+        <button class="create" (click)="addPerson()" title="Add another person">
+            <mat-icon>add_box</mat-icon>
+            <!-- You can add more tham one person -->
+        </button>
         <br />
         <mat-form-field class="full-width">
             <input
@@ -125,7 +140,7 @@
 
         <button
             mat-raised-button
-            (click)="onSubmit()"
+            [disabled]="!form.valid"
             type="submit"
             class="submit-button"
         >
@@ -134,4 +149,4 @@
     </form>
 </div>
 
-{{ form.value | json }}
+<pre>{{ form.value | json }}</pre>
