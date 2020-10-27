@@ -80,6 +80,18 @@ export class UploadFormComponent implements OnInit {
         this.personsArray.push(this._fb.control(''));
     }
 
+    resetForm(): void {
+        this.form.reset();
+        this.resetFormArray(this.titlesArray);
+        this.resetFormArray(this.personsArray);
+    }
+
+    resetFormArray(a: FormArray): void {
+        while (a.length > 1) {
+            a.removeAt(1);
+        }
+    }
+
     isMoreThanOneFile(files: File[]): boolean {
         return files.length > 1;
     }
@@ -87,6 +99,7 @@ export class UploadFormComponent implements OnInit {
     deleteAttachment(i?: number): void {
         // this.files.splice(i, 1);
         this.file = undefined;
+        this.fileControl.reset();
     }
 
     convertBytes(val: number): string {

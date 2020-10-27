@@ -1,4 +1,4 @@
-<div class="upload-container">
+<div class="form-container">
     <h2 class="mat-title">Add new resource: {{ resourceTyoe }}</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div
@@ -19,7 +19,7 @@
                 {{ fromLabels.drag_drop.drop_or_upload }}
             </div>
         </div>
-        <div *ngIf="file" class="files-list">
+        <div *ngIf="fileControl.value" class="files-list">
             <table>
                 <thead>
                     <tr>
@@ -60,7 +60,11 @@
                 />
             </mat-form-field>
         </div>
-        <button class="create" (click)="addTitle()" title="Add another title">
+        <button
+            class="add-button"
+            (click)="addTitle()"
+            title="Add another title"
+        >
             <mat-icon>add_box</mat-icon>
             <!-- You can add moere than one title -->
         </button>
@@ -106,7 +110,11 @@
                 />
             </mat-form-field>
         </div>
-        <button class="create" (click)="addPerson()" title="Add another person">
+        <button
+            class="add-button"
+            (click)="addPerson()"
+            title="Add another person"
+        >
             <mat-icon>add_box</mat-icon>
             <!-- You can add more tham one person -->
         </button>
@@ -131,7 +139,7 @@
 
         <button
             mat-raised-button
-            (click)="form.reset()"
+            (click)="resetForm()"
             type="button"
             class="reset-button"
         >

@@ -1,8 +1,20 @@
-.upload-container {
+// overall styles
+.form-container {
   margin: 20px auto;
   width: 50%;
 }
+.full-width {
+  width: 100%;
+}
+button {
+  cursor: pointer;
+}
+.submit-button {
+  background-color: gold;
+  float: right;
+}
 
+// drag & drop input
 .dd-container {
   // background-image: url("");
   // background-repeat: no-repeat;
@@ -21,7 +33,6 @@
   cursor: pointer;
   background-color: #ddd !important;
 }
-
 .upload-icon {
   width: auto;
   font-size: 48px;
@@ -44,6 +55,7 @@
   background-color: #000;
 }
 
+// files table
 .files-list {
   display: flex;
   justify-content: space-between;
@@ -57,7 +69,6 @@
   border: none;
   cursor: pointer;
 }
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -78,22 +89,8 @@ th {
   padding: 3px;
 }
 
-.full-width {
-  width: 100%;
-}
-
-button {
-  cursor: pointer;
-}
-
-.submit-button {
-  background-color: gold;
-  float: right;
-}
-
-// smaller buttons: add value and value info
-.info,
-.create {
+// add buttons
+.add-button {
   cursor: pointer;
   border: none;
   padding: 0em;
@@ -101,14 +98,10 @@ button {
   background-color: transparent;
   color: #000000;
 }
-
-.info .material-icons,
-.create .material-icons {
+.add-button .material-icons {
   font-size: 18px;
 }
-
-.info .mat-icon,
-.create .mat-icon {
+.add-button .mat-icon {
   width: 18px;
   height: 18px;
 }
