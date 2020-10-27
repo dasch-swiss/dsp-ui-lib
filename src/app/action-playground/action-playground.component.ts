@@ -10,6 +10,9 @@ import { ConfirmationDialogComponent, ConfirmationDialogData, DspMessageData, So
 })
 export class ActionPlaygroundComponent implements OnInit {
 
+    // userIRI filter for select-project component
+    userIri = 'http://rdfh.ch/users/9XBCrDV3SRa7kS1WwynB4Q';
+
     sortProps: any = [
         {
             key: 'firstname',
@@ -197,6 +200,9 @@ export class ActionPlaygroundComponent implements OnInit {
     openMessage() {
         this.showTimedMessage = true;
         setTimeout(() => { this.showTimedMessage = false; }, 2100);
+    }
+
+    getProjectInfo(projectName: string) {
     }
 
 }
