@@ -14,6 +14,9 @@ import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { BaseValueComponent } from '../base-value.component';
 
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-list-value',
     templateUrl: './list-value.component.html',
@@ -93,6 +96,11 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
         });
 
         this.resetFormControl();
+
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.addToParentFormGroup(this.formName, this.form);
+        });
     }
     ngOnChanges(changes: SimpleChanges): void {
         this.resetFormControl();
@@ -100,6 +108,11 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
     ngOnDestroy(): void {
         this.unsubscribeFromValueChanges();
+
+        resolvedPromise.then(() => {
+            // remove form from the parent form group
+            this.removeFromParentFormGroup(this.formName);
+        });
     }
 
     getNewValue(): CreateListValue | false {

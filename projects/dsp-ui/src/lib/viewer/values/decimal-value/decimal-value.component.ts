@@ -6,6 +6,9 @@ import { Subscription } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomRegex } from '../custom-regex';
 
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-decimal-value',
     templateUrl: './decimal-value.component.html',
@@ -54,6 +57,11 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
         });
 
         this.resetFormControl();
+
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.addToParentFormGroup(this.formName, this.form);
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -63,6 +71,11 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
     // unsubscribe when the object is destroyed to prevent memory leaks
     ngOnDestroy(): void {
         this.unsubscribeFromValueChanges();
+
+        resolvedPromise.then(() => {
+            // remove form from the parent form group
+            this.removeFromParentFormGroup(this.formName);
+        });
     }
 
     getNewValue(): CreateDecimalValue | false {

@@ -7,6 +7,9 @@ import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { CustomRegex } from '../custom-regex';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-color-value',
     templateUrl: './color-value.component.html',
@@ -59,6 +62,11 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
         this.resetFormControl();
 
         this.textColor = this.getTextColor(this.valueFormControl.value);
+
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.addToParentFormGroup(this.formName, this.form);
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -68,6 +76,11 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     // unsubscribe when the object is destroyed to prevent memory leaks
     ngOnDestroy(): void {
         this.unsubscribeFromValueChanges();
+
+        resolvedPromise.then(() => {
+            // remove form from the parent form group
+            this.removeFromParentFormGroup(this.formName);
+        });
     }
 
     getNewValue(): CreateColorValue | false {

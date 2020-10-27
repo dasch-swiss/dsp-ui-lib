@@ -19,6 +19,16 @@ export abstract class BaseValueComponent {
     @Input() mode: 'read' | 'update' | 'create' | 'search';
 
     /**
+     * Parent FormGroup that contains all child FormGroups
+     */
+    @Input() parentForm?: FormGroup;
+
+    /**
+     * name of the FormGroup, used to add to the parentForm because the name needs to be unique
+     */
+    @Input() formName = 'Untitled FormGroup';
+
+    /**
      * FormControl element for the value.
      */
     abstract valueFormControl: FormControl;
@@ -157,5 +167,23 @@ export abstract class BaseValueComponent {
      */
     abstract getUpdatedValue(): UpdateValue | false;
 
+    /**
+     * Add the value components FormGroup to a parent FormGroup if one is defined
+     */
+    addToParentFormGroup(name: string, form: FormGroup) {
+        if (this.parentForm) {
+            this.parentForm.addControl(name, form);
+        }
 
+        console.log('current form group: ', this.parentForm);
+    }
+
+    /**
+     * Remove the value components FormGroup from a parent FormGroup if one is defined
+     */
+    removeFromParentFormGroup(name: string) {
+        if (this.parentForm) {
+            this.parentForm.removeControl(name);
+        }
+    }
 }
