@@ -103,7 +103,7 @@ describe('SelectProjectComponent', () => {
         testHostFixture.detectChanges();
     });
 
-    fit('should create', () => {
+    it('should create', () => {
         expect(testHostComponent.selectProject).toBeTruthy();
     });
 
@@ -115,7 +115,7 @@ describe('SelectProjectComponent', () => {
         expect(testHostComponent.selectProject.projects.length).toEqual(8);
     });
 
-    fit('should get filtered list of projects based on input', async () => {
+    it('should get filtered list of projects based on input', async () => {
         const autoCompleteHarness = await loader.getHarness(MatAutocompleteHarness);
         await autoCompleteHarness.enterText('knora');
         const options = await autoCompleteHarness.getOptions();
