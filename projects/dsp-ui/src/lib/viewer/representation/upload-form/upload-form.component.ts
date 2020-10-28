@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../action';
+import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
 
 @Component({
     selector: 'dsp-upload-form',
@@ -9,11 +10,7 @@ import { NotificationService } from '../../../action';
 })
 export class UploadFormComponent implements OnInit {
 
-    resourceTyoe = 'Interview';
-    form: FormGroup;
-    get fileControl() { return this.form.get('file') as FormControl; }
-    get titlesArray() { return this.form.get('titles') as FormArray; }
-    get personsArray() { return this.form.get('persons') as FormArray; }
+    readonly resourceTyoe = 'Image'; // only StillImageRepresentation supported so far
     readonly fromLabels = {
         drag_drop: {
             upload: 'Upload file',
@@ -22,27 +19,37 @@ export class UploadFormComponent implements OnInit {
         title: 'Title',
         description: 'Description',
         date: 'Creation Date',
-        duration: 'Duration',
+        duration: 'Duration', // TODO: for image?
         person: 'Person', // author??
         location: 'Location',
         transcript: 'Transcript',
         reset: 'Reset',
         save: 'Save'
     };
+    form: FormGroup;
+    get fileControl() { return this.form.get('file') as FormControl; }
+    get titlesArray() { return this.form.get('titles') as FormArray; }
+    get personsArray() { return this.form.get('persons') as FormArray; }
     file: File;
+    fileTempUrl: string;
 
     constructor(
-        private readonly _n: NotificationService,
-        private readonly _fb: FormBuilder
+        private readonly _fb: FormBuilder,
+        private readonly _ns: NotificationService,
+        private readonly _ufs: UploadFileService
     ) {}
 
     ngOnInit(): void {
+        this.initializeForm();
+    }
+
+    initializeForm(): void {
         this.form = this._fb.group({
             file: [undefined, Validators.required],
             titles: this._fb.array([
                 this._fb.control('')
             ]),
-            description: ['', Validators.required],
+            description: [null, Validators.required],
             date: ['', Validators.required],
             duration: ['', Validators.required],
             persons: this._fb.array([
@@ -50,26 +57,36 @@ export class UploadFormComponent implements OnInit {
             ]),
             location: ['', Validators.required],
             transcript: ['', Validators.required]
-        });
+        }, {updateOn: 'blur'});
     }
 
-    uploadFile(event): void {
+    addFile(event): void {
         let files: File[] = [];
         files = event.target?.files ? event.target.files : event;
         if (this.isMoreThanOneFile(files)) {
             const error = 'ERROR: Only one file allowed at a time';
-            console.log(error);
-            this._n.openSnackBar(error);
+            this._ns.openSnackBar(error);
             this.file = null;
         } else {
+            const formData = new FormData();
             this.file = files[0];
+            formData.append(this.file.name, this.file);
+            this._ufs.upload(formData).subscribe(
+                (res: UploadedFileResponse) => {
+                    console.log(res);
+                    // this.fileTempUrl = res.uploadedFiles[0].temporaryUrl;
+                },
+                (e: Error) => this._ns.openSnackBar(e.message)
+            );
         }
         this.fileControl.setValue(this.file);
-        console.log('LIST', event, this.file, this.fileControl);
+        console.log('addFile', event, this.file, this.fileControl);
     }
 
     onSubmit(): void {
         console.log(this.form);
+        this._ufs.upload(this.form.value);
+        this.resetForm();
     }
 
     addTitle(): void {
@@ -78,6 +95,7 @@ export class UploadFormComponent implements OnInit {
 
     addPerson(): void {
         this.personsArray.push(this._fb.control(''));
+        // this.personsArray.insert(this.personsArray.length + 1, this._fb.control(''));
     }
 
     resetForm(): void {
@@ -98,7 +116,8 @@ export class UploadFormComponent implements OnInit {
 
     deleteAttachment(i?: number): void {
         // this.files.splice(i, 1);
-        this.file = undefined;
+        this.file = null;
+        this.fileTempUrl = null;
         this.fileControl.reset();
     }
 

@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -15,8 +16,9 @@ describe('UploadFormComponent', () => {
         declarations: [ UploadFormComponent ],
         imports: [
             BrowserAnimationsModule,
+            HttpClientModule,
             MatInputModule,
-            MatSnackBarModule,
+            MatSnackBarModule
         ],
         providers: [ FormBuilder ]
         })

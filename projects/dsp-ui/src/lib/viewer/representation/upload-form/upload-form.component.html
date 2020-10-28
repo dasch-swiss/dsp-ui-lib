@@ -1,18 +1,13 @@
 <div class="form-container">
     <h2 class="mat-title">Add new resource: {{ resourceTyoe }}</h2>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form">
         <div
             dspDragDrop
             (click)="fileInput.click()"
-            (fileDropped)="uploadFile($event)"
+            (fileDropped)="addFile($event)"
             class="dd-container"
         >
-            <input
-                hidden
-                type="file"
-                (change)="uploadFile($event)"
-                #fileInput
-            />
+            <input hidden type="file" (change)="addFile($event)" #fileInput />
             <mat-icon class="upload-icon">cloud_upload</mat-icon>
             <div class="title">{{ fromLabels.drag_drop.upload }}</div>
             <div class="bottom-line">
@@ -149,6 +144,7 @@
         <button
             mat-raised-button
             [disabled]="!form.valid"
+            (click)="onSubmit()"
             type="submit"
             class="submit-button"
         >
