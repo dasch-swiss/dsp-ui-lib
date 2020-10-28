@@ -1,19 +1,20 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { SearchListValueComponent } from './search-list-value.component';
-import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ListNodeV2, ListsEndpointV2, MockList, MockOntology, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { DspApiConnectionToken } from '../../../../../core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatMenu, MatMenuModule } from '@angular/material/menu';
-import { MatInputModule } from '@angular/material/input';
-import { of } from 'rxjs';
-import { IRI } from '../operator';
-import { By } from '@angular/platform-browser';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonHarness } from '@angular/material/button/testing';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenu, MatMenuModule } from '@angular/material/menu';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ListNodeV2, ListsEndpointV2, MockList, MockOntology, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
+import { of } from 'rxjs';
+import { DspApiConnectionToken } from '../../../../../core';
+import { IRI } from '../operator';
+import { SearchListValueComponent } from './search-list-value.component';
+
 
 /**
  * Test host component to simulate parent component.
@@ -80,8 +81,9 @@ describe('SearchListValueComponent', () => {
             imports: [
                 BrowserAnimationsModule,
                 ReactiveFormsModule,
+                MatInputModule,
                 MatMenuModule,
-                MatInputModule
+                MatSnackBarModule
             ],
             declarations: [
                 SearchListValueComponent,

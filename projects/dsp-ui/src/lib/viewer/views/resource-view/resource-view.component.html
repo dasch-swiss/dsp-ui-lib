@@ -1,4 +1,4 @@
-<div class="resource-view" *ngIf="resource && !errorMessage">
+<div class="resource-view" *ngIf="resource">
 
     <!-- dsp-resource-representation -->
     <!-- TODO: here we will add the resource representation viewers like
@@ -19,7 +19,4 @@
 </div>
 
 <!-- progress indicator -->
-<dsp-progress-indicator *ngIf="!resource && !errorMessage"></dsp-progress-indicator>
-
-<!-- error message -->
-<dsp-message *ngIf="!resource && errorMessage" [apiError]="errorMessage"></dsp-message>
+<dsp-progress-indicator *ngIf="!resource"></dsp-progress-indicator>

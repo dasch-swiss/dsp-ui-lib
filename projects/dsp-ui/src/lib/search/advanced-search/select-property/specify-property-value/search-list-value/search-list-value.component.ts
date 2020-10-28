@@ -10,6 +10,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { DspApiConnectionToken } from '../../../../../core';
+import { NotificationService } from '../../../../../action';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -38,6 +39,7 @@ export class SearchListValueComponent implements OnInit, OnDestroy, PropertyValu
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         @Inject(FormBuilder) private _fb: FormBuilder
     ) {
     }
@@ -60,7 +62,7 @@ export class SearchListValueComponent implements OnInit, OnDestroy, PropertyValu
                 this.listRootNode = response;
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
             }
         );
 

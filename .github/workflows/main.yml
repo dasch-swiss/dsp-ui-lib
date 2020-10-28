@@ -61,9 +61,7 @@ jobs:
       - name: Build lib in prod mode
         run: npm run build-lib
       - name: Run knora stack
-        run: |
-          make clone-knora-stack
-          make knora-stack
+        run: make knora-stack
       - run: npm run webdriver-update
       - name: Run e2e tests
         run: npm run e2e

@@ -1,23 +1,24 @@
+import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ListValueComponent } from './list-value.component';
-import { SublistValueComponent } from './subList-value/sublist-value.component';
-import {
-    ReadListValue,
-    MockResource,
-    ListNodeV2,
-    UpdateListValue,
-    CreateListValue,
-    ResourcePropertyDefinition,
-    ListsEndpointV2
-} from '@dasch-swiss/dsp-js';
-import { OnInit, Component, ViewChild, DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DspApiConnectionToken } from '../../../core';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+    CreateListValue,
+    ListNodeV2,
+    ListsEndpointV2,
+    MockResource,
+    ReadListValue,
+    ResourcePropertyDefinition,
+    UpdateListValue
+} from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
+import { DspApiConnectionToken } from '../../../core';
+import { ListValueComponent } from './list-value.component';
+import { SublistValueComponent } from './subList-value/sublist-value.component';
 /**
  * Test host component to simulate parent component.
  */
@@ -87,6 +88,7 @@ describe('ListValueComponent', () => {
         ReactiveFormsModule,
         MatInputModule,
         MatMenuModule,
+        MatSnackBarModule,
         BrowserAnimationsModule
       ],
       providers: [

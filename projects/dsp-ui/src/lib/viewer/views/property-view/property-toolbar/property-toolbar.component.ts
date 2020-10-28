@@ -11,6 +11,7 @@ import {
     UserResponse
 } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../../../core/core.module';
+import { NotificationService } from '../../../../action';
 
 @Component({
     selector: 'dsp-property-toolbar',
@@ -32,6 +33,7 @@ export class PropertyToolbarComponent implements OnInit {
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _snackBar: MatSnackBar
     ) { }
 
@@ -42,7 +44,7 @@ export class PropertyToolbarComponent implements OnInit {
                 this.project = response.body.project;
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
             }
         );
         // get user information
@@ -51,7 +53,7 @@ export class PropertyToolbarComponent implements OnInit {
                 this.user = response.body.user;
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
             }
         )
     }

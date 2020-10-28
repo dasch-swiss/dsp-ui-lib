@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,8 +25,7 @@ import { FulltextSearchComponent } from './fulltext-search.component';
     template: `
         <dsp-fulltext-search #fulltextSearch
             [projectfilter]="projectfilter"
-            [filterbyproject]="filterbyproject"
-            class="dsp-fulltext-search">
+            [filterbyproject]="filterbyproject">
         </dsp-fulltext-search>
     `
 })
@@ -65,7 +65,6 @@ describe('FulltextSearchComponent', () => {
             }
         };
 
-
         TestBed.configureTestingModule({
             declarations: [
                 FulltextSearchComponent,
@@ -80,7 +79,8 @@ describe('FulltextSearchComponent', () => {
                 MatTooltipModule,
                 MatIconModule,
                 MatDividerModule,
-                MatListModule
+                MatListModule,
+                MatSnackBarModule
             ],
             providers: [
                 {

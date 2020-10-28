@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationMessageComponent } from './components/confirmation-dialog/confirmation-message/confirmation-message.component';
@@ -32,59 +33,60 @@ import { SelectProjectComponent } from './components/select-project/select-proje
 
 @NgModule({
   declarations: [
-    FormattedBooleanPipe,
-    KnoraDatePipe,
-    ReversePipe,
-    SortByPipe,
-    TruncatePipe,
-    StringifyStringLiteralPipe,
     AdminImageDirective,
-    ExistingNameDirective,
-    GndDirective,
-    ProgressIndicatorComponent,
-    MessageComponent,
-    SortButtonComponent,
-    StringLiteralInputComponent,
-    LoginFormComponent,
     ConfirmationDialogComponent,
     ConfirmationMessageComponent,
-    SelectProjectComponent
+    ExistingNameDirective,
+    FormattedBooleanPipe,
+    GndDirective,
+    KnoraDatePipe,
+    LoginFormComponent,
+    MessageComponent,
+    ProgressIndicatorComponent,
+    ReversePipe,
+    SortButtonComponent,
+    SortByPipe,
+    StringifyStringLiteralPipe,
+    StringLiteralInputComponent,
+    SelectProjectComponent,
+    TruncatePipe
   ],
   imports: [
-    CommonModule,
     BrowserAnimationsModule,
+    CommonModule,
     MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
     MatDialogModule,
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatMenuModule,
-    MatCardModule,
     MatListModule,
     MatAutocompleteModule,
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatFormFieldModule,
+    MatMenuModule,
+    MatSnackBarModule,
+    ReactiveFormsModule
   ],
   exports: [
-    FormattedBooleanPipe,
-    KnoraDatePipe,
-    ReversePipe,
-    SortByPipe,
-    TruncatePipe,
-    StringifyStringLiteralPipe,
     AdminImageDirective,
-    ExistingNameDirective,
-    ProgressIndicatorComponent,
-    MessageComponent,
-    SortButtonComponent,
-    StringLiteralInputComponent,
-    LoginFormComponent,
     ConfirmationDialogComponent,
-    GndDirective,
     ConfirmationMessageComponent,
-    SelectProjectComponent
+    ExistingNameDirective,
+    FormattedBooleanPipe,
+    GndDirective,
+    KnoraDatePipe,
+    LoginFormComponent,
+    MessageComponent,
+    ProgressIndicatorComponent,
+    ReversePipe,
+    SortButtonComponent,
+    SortByPipe,
+    StringifyStringLiteralPipe,
+    StringLiteralInputComponent,
+    SelectProjectComponent,
+    TruncatePipe
   ]
 })
 

@@ -33,16 +33,15 @@
     </div>
 
     <!-- In case of 0 result -->
-    <div class="list-view" *ngIf="!loading && numberOfAllResults === 0">
-        <dsp-message
-            [message]="{status: 404, statusMsg: 'No results', statusText: 'Sorry, but we couldn\'t find any results matching your search'}"
-            [medium]="true">
-        </dsp-message>
-    </div>
-
-    <!-- In case of server error -->
-    <div class="list-view server-error" *ngIf="errorMessage">
-        <dsp-message [apiError]="errorMessage"></dsp-message>
+    <div class="list-view no-results" *ngIf="!loading && numberOfAllResults === 0">
+        <p>Your search <span *ngIf="search.mode === 'fulltext'">- <strong> {{search.query}}</strong> -</span> did not match any documents.</p>
+        <p>Suggestions:</p>
+        <ul>
+            <li>Make sure that all words are spelled correctly.</li>
+            <li>Try different keywords.</li>
+            <li>Try more general keywords.</li>
+            <li>Try fewer keywords.</li>
+        </ul>
     </div>
 
 </div>

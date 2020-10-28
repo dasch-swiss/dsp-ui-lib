@@ -20,6 +20,7 @@ import {
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
+import { NotificationService } from '../../../action';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import {
     AddedEventValue,
@@ -73,8 +74,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     resource: ReadResource;
 
-    errorMessage: ApiResponseError;
-
     resPropInfoVals: PropertyInfoValues[] = []; // array of resource properties
 
     systemPropDefs: SystemPropertyDefinition[] = []; // array of system properties
@@ -83,6 +82,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _valueOperationEventService: ValueOperationEventService,
         private _valueTypeService: ValueTypeService) { }
 
@@ -147,7 +147,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
             },
             (error: ApiResponseError) => {
-                this.errorMessage = error;
+                this._notification.openSnackBar(error);
             });
     }
 
