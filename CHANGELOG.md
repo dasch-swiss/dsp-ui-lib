@@ -1,5 +1,29 @@
 # Changelog
 
+## Next release (30/10/2020)
+
+## Enhancements
+
+- #208 DSP-762 Error handling and notification service
+
+## Styling
+
+- #206 DSP-522 Refactor search panel style
+
+## Bug fixes
+
+- #211 DSP-885 default gravsearch query
+
+## Dependencies
+
+- #215 Update dsp-js-lib
+
+## Maintenance
+
+- #210 DSP-881 - Value Component Base Class Changes
+
+---
+
 ## v1.0.0-rc.9 (12/10/2020)
 
 ## Breaking changes
@@ -28,7 +52,11 @@
 ## Bug fixes
 
 - #205 DSP-674 Bug fix in search panel
-- #194 DSP-436 Fix workflow issue
+- #194 DSP-436 Fix workflow issue 
+
+## Dependencies
+
+- #209 Update DSP-JS-Lib
 
 ## Maintenance
 
