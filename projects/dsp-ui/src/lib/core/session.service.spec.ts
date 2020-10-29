@@ -77,19 +77,19 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession(undefined, 'anything.user01', 'username').subscribe( () => {
+            service.setSession(undefined, 'root', 'username').subscribe( () => {
                 const ls: Session = JSON.parse(localStorage.getItem('session'));
 
                 expect(dspSpy.v2.jsonWebToken).toEqual('');
 
-                expect(ls.user.name).toEqual('anything.user01');
+                expect(ls.user.name).toEqual('root');
                 expect(ls.user.jwt).toBeUndefined();
                 expect(ls.user.lang).toEqual('de');
                 expect(ls.user.sysAdmin).toEqual(false);
                 expect(ls.user.projectAdmin.length).toEqual(0);
 
                 expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
-                expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'anything.user01');
+                expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'root');
 
                 expect(localStorage.setItem).toHaveBeenCalledTimes(1);
 
@@ -108,19 +108,19 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession('mytoken', 'anything.user01', 'username').subscribe( () => {
+            service.setSession('mytoken', 'root', 'username').subscribe( () => {
                 const ls: Session = JSON.parse(localStorage.getItem('session'));
 
                 expect(dspSpy.v2.jsonWebToken).toEqual('mytoken');
 
-                expect(ls.user.name).toEqual('anything.user01');
+                expect(ls.user.name).toEqual('root');
                 expect(ls.user.jwt).toEqual('mytoken');
                 expect(ls.user.lang).toEqual('de');
                 expect(ls.user.sysAdmin).toEqual(false);
                 expect(ls.user.projectAdmin.length).toEqual(0);
 
                 expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledTimes(1);
-                expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'anything.user01');
+                expect(dspSpy.admin.usersEndpoint.getUser).toHaveBeenCalledWith('username', 'root');
 
                 expect(localStorage.setItem).toHaveBeenCalledTimes(1);
 
