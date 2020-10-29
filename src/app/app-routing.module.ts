@@ -9,6 +9,7 @@ import { ReadComponent } from './read/read.component';
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
 import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
+import { UploadPlaygroundComponent } from './upload-playground/upload-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
 
 
@@ -35,7 +36,7 @@ const routes: Routes = [
     { path: 'still-image', component: StillImagePlaygroundComponent}, // still image playground component
     { path: 'viewer', component: ViewerPlaygroundComponent}, // viewer playground component
     { path: 'ckeditor', component: CkeditorPlaygroundComponent}, // CKeditor playground component
-    { path: 'upload-form', component: UploadFormComponent}
+    { path: 'upload-form', component: UploadPlaygroundComponent}
 ];
 
 @NgModule({

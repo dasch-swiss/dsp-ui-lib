@@ -30,33 +30,35 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { environment } from '../environments/environment';
 import { CkeditorPlaygroundComponent } from './ckeditor/ckeditor-playground/ckeditor-playground.component';
 import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
+import { UploadPlaygroundComponent } from './upload-playground/upload-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
 
 @NgModule({
     declarations: [
+        ActionPlaygroundComponent,
+        AdvancedSearchPlaygroundComponent,
         AppComponent,
+        CkeditorPlaygroundComponent,
         ModifyComponent,
         ReadComponent,
-        ActionPlaygroundComponent,
         SearchPlaygroundComponent,
         SearchResultsComponent,
-        AdvancedSearchPlaygroundComponent,
         StillImagePlaygroundComponent,
-        ViewerPlaygroundComponent,
-        CkeditorPlaygroundComponent
+        UploadPlaygroundComponent,
+        ViewerPlaygroundComponent
     ],
     imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
         AppRoutingModule,
-        DspCoreModule,
-        DspViewerModule,
-        DspActionModule,
-        DspSearchModule,
-        MatJDNConvertibleCalendarDateAdapterModule,
-        MatButtonModule,
-        MatListModule,
+        BrowserAnimationsModule,
+        BrowserModule,
         CKEditorModule,
+        DspActionModule,
+        DspCoreModule,
+        DspSearchModule,
+        DspViewerModule,
+        MatButtonModule,
+        MatJDNConvertibleCalendarDateAdapterModule,
+        MatListModule,
         ReactiveFormsModule
     ],
     providers: [
