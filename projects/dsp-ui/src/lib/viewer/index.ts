@@ -29,7 +29,6 @@ export * from './views/list-view/resource-grid/resource-grid.component';
 // media representations
 export * from './representation/still-image/still-image.component';
 // services
-export * from './services/value-operation-event.service';
 export * from './services/value-type.service';
 // directives
 export * from './directives/text-value-html-link.directive';

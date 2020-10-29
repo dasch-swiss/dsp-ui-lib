@@ -33,7 +33,7 @@ export class AddValueComponent implements OnInit, AfterViewInit {
 
     @Input() resourcePropertyDefinition: ResourcePropertyDefinition;
 
-    @Input() parentResource?: ReadResource;
+    @Input() parentResource: ReadResource;
 
     @Input() configuration?: object;
 

@@ -174,8 +174,6 @@ export abstract class BaseValueComponent {
         if (this.parentForm) {
             this.parentForm.addControl(name, form);
         }
-
-        console.log('current form group: ', this.parentForm);
     }
 
     /**
