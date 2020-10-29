@@ -172,6 +172,8 @@ describe('DateValueComponent', () => {
 
       expect(valueReadModeNativeElement.innerText).toEqual('13.05.2018');
 
+      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
+
     });
 
     it('should display an existing value with an era not supported by MatDatepicker', done => {
@@ -229,6 +231,8 @@ describe('DateValueComponent', () => {
           .toEqual(newKnoraDate);
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
 
       const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
@@ -515,6 +519,43 @@ describe('DateValueComponent', () => {
 
     });
 
+    it('should determine if a given date or period is editable', () => {
+
+        expect(DateValueComponent.isEditable(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13))).toBe(true);
+
+        expect(DateValueComponent.isEditable(new KnoraDate('GREGORIAN', 'AD', 2018, 5, 13))).toBe(true);
+
+        // before common era
+        expect(DateValueComponent.isEditable(new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 13))).toBe(false);
+
+        // before common era
+        expect(DateValueComponent.isEditable(new KnoraDate('GREGORIAN', 'BC', 2018, 5, 13))).toBe(false);
+
+        // month precision
+        expect(DateValueComponent.isEditable(new KnoraDate('GREGORIAN', 'CE', 2018, 5))).toBe(false);
+
+        // year precision
+        expect(DateValueComponent.isEditable(new KnoraDate('GREGORIAN', 'CE', 2018))).toBe(false);
+
+        expect(DateValueComponent.isEditable(new KnoraPeriod(
+            new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
+            new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+        ))).toBe(true);
+
+        // period starts with year precision
+        expect(DateValueComponent.isEditable(new KnoraPeriod(
+            new KnoraDate('GREGORIAN', 'CE', 2018),
+            new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+        ))).toBe(false);
+
+        // period starts with BCE date
+        expect(DateValueComponent.isEditable(new KnoraPeriod(
+            new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 13),
+            new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+        ))).toBe(false);
+
+    });
+
   });
 
   describe('create a date value', () => {
@@ -555,6 +596,8 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
+      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
+
       const newValue = testHostComponent.inputValueComponent.getNewValue();
 
       expect(newValue instanceof CreateDateValue).toBeTruthy();
@@ -592,6 +635,8 @@ describe('DateValueComponent', () => {
       testHostComponent.inputValueComponent.resetFormControl();
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
 
       expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(null);
 
