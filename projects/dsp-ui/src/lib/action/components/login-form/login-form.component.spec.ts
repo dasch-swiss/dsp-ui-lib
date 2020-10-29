@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     ApiResponseData,
@@ -77,6 +78,7 @@ describe('LoginFormComponent', () => {
         imports: [
             ReactiveFormsModule,
             MatInputModule,
+            MatSnackBarModule,
             BrowserAnimationsModule
         ]
         })
@@ -166,7 +168,7 @@ describe('LoginFormComponent', () => {
 
             const session = JSON.parse(localStorage.getItem('session'));
 
-            expect(session.user.name).toEqual('anything.user01');
+            expect(session.user.name).toEqual('root');
 
             expect(session.user.jwt).toEqual('myToken');
 

@@ -36,8 +36,8 @@ export class ExpertSearchComponent implements OnInit {
     queryFormControl: FormControl;
 
     defaultGravsearchQuery =
-        `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
-PREFIX incunabula: <${this._dspApiConfig.apiUrl}/ontology/0803/incunabula/simple/v2#>
+        `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+PREFIX incunabula: <${this._dspApiConfig.apiUrl}/ontology/0803/incunabula/v2#>
 
 CONSTRUCT {
     ?book knora-api:isMainResource true .

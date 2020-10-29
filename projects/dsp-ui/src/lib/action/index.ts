@@ -9,6 +9,7 @@ export * from './pipes/string-transformation/truncate.pipe';
 export * from './pipes/string-transformation/stringify-string-literal.pipe';
 
 // services
+export * from './services/notification.service';
 export * from './services/sorting.service';
 
 // components

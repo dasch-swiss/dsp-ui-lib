@@ -12,6 +12,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { DspApiConnectionToken } from '../../../core/core.module';
+import { NotificationService } from '../../../action';
 import { BaseValueComponent } from '../base-value.component';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
@@ -41,7 +42,9 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
     constructor(
         @Inject(FormBuilder) private _fb: FormBuilder,
-        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection) {
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService
+    ) {
         super();
     }
 
@@ -72,7 +75,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
                         (response2: ListNodeV2) => {
                             this.listRootNode.children.push(response2);
                         }, (error: ApiResponseError) => {
-                            console.error(error);
+                            this._notification.openSnackBar(error);
                         });
                 }
             } else {
