@@ -1,6 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ReadIntValue, ReadTextValueAsHtml, ReadTextValueAsString, ReadTextValueAsXml } from '@dasch-swiss/dsp-js';
+import {
+    KnoraDate,
+    MockResource, ReadDateValue,
+    ReadIntValue,
+    ReadTextValueAsHtml,
+    ReadTextValueAsString,
+    ReadTextValueAsXml
+} from '@dasch-swiss/dsp-js';
 import { ValueTypeService } from './value-type.service';
 
 describe('ValueTypeService', () => {
@@ -61,6 +68,75 @@ describe('ValueTypeService', () => {
             const valueClass = service.getValueTypeOrClass(readTextValueAsXml);
             expect(service.isReadOnly(valueClass, readTextValueAsXml)).toBeTruthy();
         });
+
+        it('should mark ReadDateValue with unsupported era as ReadOnly', done => {
+
+            MockResource.getTestthing().subscribe(res => {
+                const date: ReadDateValue =
+                    res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+
+                date.date = new KnoraDate('GREGORIAN', 'BCE', 2019, 5, 13);
+
+                const valueClass = service.getValueTypeOrClass(date);
+                expect(service.isReadOnly(valueClass, date)).toBeTruthy();
+
+                done();
+
+            });
+
+        });
+
+        it('should not mark ReadDateValue with supported era as ReadOnly', done => {
+
+            MockResource.getTestthing().subscribe(res => {
+                const date: ReadDateValue =
+                    res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+
+                date.date = new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13);
+
+                const valueClass = service.getValueTypeOrClass(date);
+                expect(service.isReadOnly(valueClass, date)).toBeFalsy();
+
+                done();
+
+            });
+
+        });
+
+        it('should mark ReadDateValue with unsupported precision as ReadOnly', done => {
+
+            MockResource.getTestthing().subscribe(res => {
+                const date: ReadDateValue =
+                    res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+
+                date.date = new KnoraDate('GREGORIAN', 'CE', 2019, 5);
+
+                const valueClass = service.getValueTypeOrClass(date);
+                expect(service.isReadOnly(valueClass, date)).toBeTruthy();
+
+                done();
+
+            });
+
+        });
+
+        it('should not mark ReadDateValue with supported precision as ReadOnly', done => {
+
+            MockResource.getTestthing().subscribe(res => {
+                const date: ReadDateValue =
+                    res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+
+                date.date = new KnoraDate('GREGORIAN', 'CE', 2019, 5, 1);
+
+                const valueClass = service.getValueTypeOrClass(date);
+                expect(service.isReadOnly(valueClass, date)).toBeFalsy();
+
+                done();
+
+            });
+
+        });
+
     });
 
     describe('compareObjectTypeWithValueType', () => {

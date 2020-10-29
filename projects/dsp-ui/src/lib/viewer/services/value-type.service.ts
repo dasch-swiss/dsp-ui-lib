@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
-    Constants,
+    Constants, ReadDateValue,
     ReadTextValueAsHtml,
     ReadTextValueAsString,
     ReadTextValueAsXml,
     ReadValue,
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
+import { DateValueComponent } from '../values/date-value/date-value.component';
 
 @Injectable({
     providedIn: 'root'
@@ -92,7 +93,11 @@ export class ValueTypeService {
             = valueTypeOrClass === this._readTextValueAsXml
             && (value instanceof ReadTextValueAsXml && value.mapping !== 'http://rdfh.ch/standoff/mappings/StandardMapping');
 
+        const dateNotEditable = valueTypeOrClass === this.constants.DateValue && (value instanceof ReadDateValue && !DateValueComponent.isEditable(value.date));
+
         return valueTypeOrClass === this._readTextValueAsHtml ||
-            valueTypeOrClass === this.constants.GeomValue || xmlValueNonStandardMapping;
+            valueTypeOrClass === this.constants.GeomValue ||
+            xmlValueNonStandardMapping ||
+            dateNotEditable;
     }
 }
