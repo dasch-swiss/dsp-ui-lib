@@ -35,12 +35,22 @@
                                 class="delete-file"
                                 (click)="deleteAttachment()"
                             >
-                                X
+                                <mat-icon>delete</mat-icon>
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div *ngIf="thumbnaillUrl">
+            <div>
+                <a href="{{ thumbnaillUrl }}" target="_blank">
+                    {{ thumbnaillUrl }}
+                </a>
+            </div>
+            <div>
+                <img src="{{ thumbnaillUrl }}" alt="thumbnail" />
+            </div>
         </div>
         <div formArrayName="titles">
             <mat-form-field

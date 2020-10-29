@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Session } from '../../core';
+import { AppInitService } from '../../core/app-init.service';
+import { SessionService } from '../../core/session.service';
 
 interface UploadedFile {
     fileType: string;
@@ -15,33 +16,27 @@ export interface UploadedFileResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class UploadFileService {
 
-    session: Session;
+    envUrl: string = this._is.config[`sipiUrl`];
 
     constructor(
-        // @Inject(DspApiConfigToken) private _apiToken: KnoraApiConnection,
-        private http: HttpClient
-        // private _ss: SessionService
+        private readonly _is: AppInitService,
+        private readonly _http: HttpClient,
+        private readonly _ss: SessionService
     ) { }
 
     upload(file: FormData): Observable<any> {
         // TODO add env variable from AppInitService.config
-        const baseUrl = 'http://localhost:1024/upload';
-        const jwt = this.getSession().user.jwt;
+        const baseUrl = `${this.envUrl}upload`;
+        const jwt = this._ss.getSession().user.jwt;
         const params = new HttpParams().set('token', jwt);
         const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*'); // TODO
         // TODO in order to track the progress change below to true and 'events'
         const options = { params, reportProgress: false, observe: 'body' as 'body', headers};
-        const message = 'SUCCESS: Representation uploaded succesfully';
-        return this.http.post<any>(baseUrl, file, options);
-
-        // console.log('upload', message, JSON.stringify(data));
-    }
-
-    getSession(): Session {
-        return JSON.parse(localStorage.getItem('session'));
+        console.log(`Uploaded to: ${baseUrl}`);
+        return this._http.post<any>(baseUrl, file, options);
     }
 }

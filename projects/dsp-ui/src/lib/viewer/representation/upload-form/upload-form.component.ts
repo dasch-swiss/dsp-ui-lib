@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '../../../action';
+import { NotificationService } from '../../../action/services/notification.service';
 import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class UploadFormComponent implements OnInit {
     get titlesArray() { return this.form.get('titles') as FormArray; }
     get personsArray() { return this.form.get('persons') as FormArray; }
     file: File;
-    fileTempUrl: string;
+    thumbnaillUrl: string;
 
     constructor(
         private readonly _fb: FormBuilder,
@@ -74,7 +74,8 @@ export class UploadFormComponent implements OnInit {
             this._ufs.upload(formData).subscribe(
                 (res: UploadedFileResponse) => {
                     console.log(res);
-                    // this.fileTempUrl = res.uploadedFiles[0].temporaryUrl;
+                    const url = res.uploadedFiles[0].temporaryUrl;
+                    this.thumbnaillUrl = url.replace('http://sipi:1024/', this._ufs.envUrl);
                 },
                 (e: Error) => this._ns.openSnackBar(e.message)
             );
@@ -117,7 +118,7 @@ export class UploadFormComponent implements OnInit {
     deleteAttachment(i?: number): void {
         // this.files.splice(i, 1);
         this.file = null;
-        this.fileTempUrl = null;
+        this.thumbnaillUrl = null;
         this.fileControl.reset();
     }
 

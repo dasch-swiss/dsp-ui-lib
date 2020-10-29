@@ -31,6 +31,7 @@ export * from './representation/still-image/still-image.component';
 export * from './representation/upload-form/upload-form.component';
 // services
 export * from './services/value-type.service';
+export * from './services/upload-file.service';
 // directives
 export * from './directives/text-value-html-link.directive';
 export * from './directives/drag-drop.directive';
