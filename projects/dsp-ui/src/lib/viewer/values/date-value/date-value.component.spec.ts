@@ -174,7 +174,7 @@ describe('DateValueComponent', () => {
 
     });
 
-    it('should display an existing value with an era not supported by MatDatePicker', done => {
+    it('should display an existing value with an era not supported by MatDatepicker', done => {
 
       MockResource.getTestthing().subscribe(res => {
           const inputVal: ReadDateValue =
@@ -198,7 +198,7 @@ describe('DateValueComponent', () => {
 
           const message: DebugElement = valueComponentDe.query(By.css('.not-editable'));
 
-          expect(message.nativeElement.innerText).toEqual('Date can not be edited: precision and/or era not supported by datepicker.');
+          expect(message.nativeElement.innerText).toEqual('Date cannot be edited: precision and/or era not supported by datepicker.');
 
           done();
       });
@@ -241,6 +241,39 @@ describe('DateValueComponent', () => {
       expect((updatedValue as UpdateDateValue).endMonth).toEqual(5);
       expect((updatedValue as UpdateDateValue).startDay).toEqual(13);
       expect((updatedValue as UpdateDateValue).endDay).toEqual(13);
+
+    });
+
+    it('should not make a value editable with an era not supported by MatDatePicker', done => {
+
+      MockResource.getTestthing().subscribe(res => {
+          const inputVal: ReadDateValue =
+              res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+
+          inputVal.date = new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14);
+
+          testHostComponent.displayInputVal = inputVal;
+
+          testHostComponent.mode = 'update';
+
+          testHostFixture.detectChanges();
+
+          expect(testHostComponent.inputValueComponent.displayValue.date).toEqual(new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14));
+
+          expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
+
+          expect(testHostComponent.inputValueComponent.mode).toEqual('update');
+
+          expect(valueReadModeNativeElement.innerText).toEqual('14.05.2018');
+
+          expect(testHostComponent.inputValueComponent.dateEditable).toBe(false);
+
+          const message: DebugElement = valueComponentDe.query(By.css('.not-editable'));
+
+          expect(message.nativeElement.innerText).toEqual('Date cannot be edited: precision and/or era not supported by datepicker.');
+
+          done();
+      });
 
     });
 
