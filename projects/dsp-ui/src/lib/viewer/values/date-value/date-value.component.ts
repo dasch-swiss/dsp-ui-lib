@@ -48,9 +48,27 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     }
 
     /**
-     * Determines if a date can be edited using this component.
+     * Given a date, checks if its precision is supported by the datepicker.
      *
-     * @param date the date to be edited.
+     * @param date date to be checked.
+     */
+    private static checkPrecision(date: KnoraDate): boolean {
+        return date.precision === Precision.dayPrecision;
+    }
+
+    /**
+     * Given a date, checks if its era is supported by the datepicker.
+     *
+     * @param date date to be checked.
+     */
+    private static checkEra(date: KnoraDate): boolean {
+        return date.era === 'CE' || date.era === 'AD';
+    }
+
+    /**
+     * Determines if a date or period can be edited using this component.
+     *
+     * @param date the date or period to be edited.
      */
     static isEditable(date: KnoraDate | KnoraPeriod): boolean {
 
@@ -60,11 +78,11 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         let eraSupported: boolean;
 
         if (date instanceof KnoraDate) {
-            precisionSupported = date.precision === Precision.dayPrecision;
-            eraSupported = date.era === 'CE' || date.era === 'AD';
+            precisionSupported = DateValueComponent.checkPrecision(date);
+            eraSupported = DateValueComponent.checkEra(date);
         } else {
-            precisionSupported = date.start.precision === Precision.dayPrecision && date.end.precision === Precision.dayPrecision;
-            eraSupported = (date.start.era === 'CE' || date.start.era === 'AD') && (date.end.era === 'CE' || date.end.era === 'AD');
+            precisionSupported = DateValueComponent.checkPrecision(date.start) && DateValueComponent.checkPrecision(date.end);
+            eraSupported = DateValueComponent.checkEra(date.start) && DateValueComponent.checkEra(date.end);
         }
 
         return precisionSupported && eraSupported;

@@ -548,10 +548,22 @@ describe('DateValueComponent', () => {
             new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
         ))).toBe(false);
 
+        // period ends with year precision
+        expect(DateValueComponent.isEditable(new KnoraPeriod(
+            new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
+            new KnoraDate('GREGORIAN', 'CE', 2019)
+        ))).toBe(false);
+
         // period starts with BCE date
         expect(DateValueComponent.isEditable(new KnoraPeriod(
             new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 13),
             new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+        ))).toBe(false);
+
+        // period ends with BCE date
+        expect(DateValueComponent.isEditable(new KnoraPeriod(
+            new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
+            new KnoraDate('GREGORIAN', 'BCE', 2019, 5, 13)
         ))).toBe(false);
 
     });
