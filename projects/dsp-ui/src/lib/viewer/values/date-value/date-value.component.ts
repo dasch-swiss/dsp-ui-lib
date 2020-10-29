@@ -1,6 +1,13 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue } from '@dasch-swiss/dsp-js';
+import {
+    CreateDateValue,
+    KnoraDate,
+    KnoraPeriod,
+    Precision,
+    ReadDateValue,
+    UpdateDateValue
+} from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
@@ -16,8 +23,11 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     @ViewChild('dateInput') dateInputComponent: DateInputComponent;
 
     @Input() displayValue?: ReadDateValue;
+
     @Input() displayOptions?: 'era' | 'calendar' | 'all';
+
     @Input() labels = false;
+
     @Input() ontologyDateFormat = 'dd.MM.YYYY';
 
     valueFormControl: FormControl;
@@ -31,15 +41,40 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     matcher = new ValueErrorStateMatcher();
 
+    dateEditable = true;
+
     constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
         super();
+    }
+
+    /**
+     * Determines if a date can be edited using this component.
+     *
+     * @param date the date to be edited.
+     */
+    static isEditable(date: KnoraDate | KnoraPeriod): boolean {
+
+        // only day precision is supported by the MatDatepicker
+        let precisionSupported: boolean;
+        // only common era is supported by the MatDatepicker
+        let eraSupported: boolean;
+
+        if (date instanceof KnoraDate) {
+            precisionSupported = date.precision === Precision.dayPrecision;
+            eraSupported = date.era === 'CE' || date.era === 'AD';
+        } else {
+            precisionSupported = date.start.precision === Precision.dayPrecision && date.end.precision === Precision.dayPrecision;
+            eraSupported = (date.start.era === 'CE' || date.start.era === 'AD') && (date.end.era === 'CE' || date.end.era === 'AD');
+        }
+
+        return precisionSupported && eraSupported;
     }
 
     /**
      * Returns true if both dates are the same.
      *
      * @param date1 date for comparison with date2
-     * @param date2 date for comparison with date 1
+     * @param date2 date for comparison with date1
      */
     sameDate(date1: KnoraDate, date2: KnoraDate): boolean {
         return (date1.calendar === date2.calendar && date1.year === date2.year && date1.month === date2.month && date1.day === date2.day);
@@ -85,10 +120,18 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         });
 
         this.resetFormControl();
+
+        if (this.displayValue !== undefined) {
+            this.dateEditable = DateValueComponent.isEditable(this.valueFormControl.value);
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         this.resetFormControl();
+
+        if (this.displayValue !== undefined && this.valueFormControl !== undefined) {
+            this.dateEditable = DateValueComponent.isEditable(this.valueFormControl.value);
+        }
     }
 
     // unsubscribe when the object is destroyed to prevent memory leaks

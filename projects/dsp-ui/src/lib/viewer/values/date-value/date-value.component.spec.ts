@@ -174,6 +174,37 @@ describe('DateValueComponent', () => {
 
     });
 
+    it('should display an existing value with an era not supported by MatDatePicker', done => {
+
+      MockResource.getTestthing().subscribe(res => {
+          const inputVal: ReadDateValue =
+              res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
+
+          inputVal.date = new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14);
+
+          testHostComponent.displayInputVal = inputVal;
+
+          testHostFixture.detectChanges();
+
+          expect(testHostComponent.inputValueComponent.displayValue.date).toEqual(new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14));
+
+          expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+          expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+
+          expect(valueReadModeNativeElement.innerText).toEqual('14.05.2018');
+
+          expect(testHostComponent.inputValueComponent.dateEditable).toBe(false);
+
+          const message: DebugElement = valueComponentDe.query(By.css('.not-editable'));
+
+          expect(message.nativeElement.innerText).toEqual('Date can not be edited: precision and/or era not supported by datepicker.');
+
+          done();
+      });
+
+    });
+
     it('should make an existing value editable', () => {
 
       testHostComponent.mode = 'update';
