@@ -10,7 +10,7 @@ import { UploadedFileResponse, UploadFileService } from '../../services/upload-f
 })
 export class UploadFormComponent implements OnInit {
 
-    @Input() resourceTyoe = 'Image'; // only StillImageRepresentation supported so far
+    @Input() readonly resourceTyoe = 'Image'; // only StillImageRepresentation supported so far
     readonly fromLabels = {
         upload: 'Upload file',
         drag_drop: 'Drag and drop or click to upload'
@@ -48,33 +48,57 @@ export class UploadFormComponent implements OnInit {
             // TODO file types restriction?
             const formData = new FormData();
             this.file = files[0];
-            // show loading indicator only for files > 1MB
-            this.isLoading = this.file.size > 1048576 ? true : false;
-            formData.append(this.file.name, this.file);
-            this._ufs.upload(formData).subscribe(
-                (res: UploadedFileResponse) => {
-                    const tempUrl = res.uploadedFiles[0].temporaryUrl;
-                    const thumbUri = `${tempUrl}/full/150,/0/default.jpg`;
-                    this.thumbnaillUrl = `${thumbUri}`.replace('http://sipi:1024/', this._ufs.envUrl);
-                    console.log(res);
-                },
-                (e: Error) => {
-                    this._ns.openSnackBar(e.message);
-                    this.isLoading = false;
-                    this.file = null;
-                    this.thumbnaillUrl = null;
-                },
-                () => {
-                    this.fileControl.setValue(this.file);
-                    this.isLoading = false;
-                }
-            );
+            if (!this.isFileTypeSupported(this.file.type)) {
+                const error = 'ERROR: File type not supported';
+                this._ns.openSnackBar(error);
+                this.file = null;
+            } else {
+                // show loading indicator only for files > 1MB
+                this.isLoading = this.file.size > 1048576 ? true : false;
+                formData.append(this.file.name, this.file);
+                this._ufs.upload(formData).subscribe(
+                    (res: UploadedFileResponse) => {
+                        const tempUrl = res.uploadedFiles[0].temporaryUrl;
+                        const thumbUri = `${tempUrl}/full/150,/0/default.jpg`;
+                        this.thumbnaillUrl = `${thumbUri}`.replace('http://sipi:1024/', this._ufs.envUrl);
+                        console.log(res);
+                    },
+                    (e: Error) => {
+                        this._ns.openSnackBar(e.message);
+                        this.isLoading = false;
+                        this.file = null;
+                        this.thumbnaillUrl = null;
+                    },
+                    () => {
+                        this.fileControl.setValue(this.file);
+                        this.isLoading = false;
+                    }
+                );
+            }
+
         }
         console.log('addFile', event, this.file, this.fileControl);
     }
 
     resetForm(): void {
         this.form.reset();
+    }
+
+    isFileTypeSupported(param: string): boolean {
+        return this.supportedFileTypes().includes(param) ? true : false;
+    }
+
+    supportedFileTypes(): string[] {
+        let allowedFileTypes: string[];
+        switch (this.resourceTyoe) {
+            case 'Image':
+                allowedFileTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
+                break;
+            default:
+                allowedFileTypes = [];
+                break;
+        }
+        return allowedFileTypes;
     }
 
     isMoreThanOneFile(files: File[]): boolean {
