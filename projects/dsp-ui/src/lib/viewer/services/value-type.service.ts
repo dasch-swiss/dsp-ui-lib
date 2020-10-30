@@ -53,13 +53,15 @@ export class ValueTypeService {
      * @param resourcePropDef the given ResourcePropertyDefinition.
      */
     getTextValueClass(resourcePropDef: ResourcePropertyDefinition): string {
-        if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText') {
-            return this._readTextValueAsString;
-        } else if (resourcePropDef.guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
-            return this._readTextValueAsXml;
-        } else {
-            throw new Error(`unknown TextValue class ${resourcePropDef}`);
+        switch (resourcePropDef.guiElement) {
+            case 'http://api.knora.org/ontology/salsah-gui/v2#SimpleText':
+                return this._readTextValueAsString;
+            case 'http://api.knora.org/ontology/salsah-gui/v2#Richtext':
+                return this._readTextValueAsXml;
+            default:
+                return this._readTextValueAsString;
         }
+
     }
 
     /**

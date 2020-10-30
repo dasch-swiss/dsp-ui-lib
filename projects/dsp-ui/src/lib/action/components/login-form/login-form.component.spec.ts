@@ -168,7 +168,7 @@ describe('LoginFormComponent', () => {
 
             const session = JSON.parse(localStorage.getItem('session'));
 
-            expect(session.user.name).toEqual('anything.user01');
+            expect(session.user.name).toEqual('root');
 
             expect(session.user.jwt).toEqual('myToken');
 
