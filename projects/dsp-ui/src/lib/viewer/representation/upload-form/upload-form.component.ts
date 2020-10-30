@@ -31,6 +31,7 @@ export class UploadFormComponent implements OnInit {
     get titlesArray() { return this.form.get('titles') as FormArray; }
     get personsArray() { return this.form.get('persons') as FormArray; }
     file: File;
+    isLoading = false;
     thumbnaillUrl: string;
 
     constructor(
@@ -68,19 +69,31 @@ export class UploadFormComponent implements OnInit {
             this._ns.openSnackBar(error);
             this.file = null;
         } else {
+            // TODO file types restriction?
             const formData = new FormData();
             this.file = files[0];
+            // show loading indicator only for files > 1MB
+            this.isLoading = this.file.size > 1048576 ? true : false;
             formData.append(this.file.name, this.file);
             this._ufs.upload(formData).subscribe(
                 (res: UploadedFileResponse) => {
-                    console.log(res);
-                    const url = res.uploadedFiles[0].temporaryUrl;
-                    this.thumbnaillUrl = url.replace('http://sipi:1024/', this._ufs.envUrl);
+                    const tempUrl = res.uploadedFiles[0].temporaryUrl;
+                    const thumbUri = `${tempUrl}/full/150,/0/default.jpg`;
+                    this.thumbnaillUrl = `${thumbUri}`.replace('http://sipi:1024/', this._ufs.envUrl);
+                    // this.isLoading = false;
                 },
-                (e: Error) => this._ns.openSnackBar(e.message)
+                (e: Error) => {
+                    this._ns.openSnackBar(e.message);
+                    this.isLoading = false;
+                    this.file = null;
+                    this.thumbnaillUrl = null;
+                },
+                () => {
+                    this.fileControl.setValue(this.file);
+                    this.isLoading = false;
+                }
             );
         }
-        this.fileControl.setValue(this.file);
         console.log('addFile', event, this.file, this.fileControl);
     }
 

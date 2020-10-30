@@ -8,50 +8,55 @@
             class="dd-container"
         >
             <input hidden type="file" (change)="addFile($event)" #fileInput />
-            <mat-icon class="upload-icon">cloud_upload</mat-icon>
+            <mat-icon *ngIf="!isLoading" class="upload-icon"
+                >cloud_upload</mat-icon
+            >
+            <dsp-progress-indicator *ngIf="isLoading"></dsp-progress-indicator>
             <div class="title">{{ fromLabels.drag_drop.upload }}</div>
             <div class="bottom-line">
                 {{ fromLabels.drag_drop.drop_or_upload }}
             </div>
         </div>
-        <div *ngIf="fileControl.value" class="files-list">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Last Modified Date</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ file.name }}</td>
-                        <td>{{ convertBytes(file.size) }}</td>
-                        <td>{{ convertDate(file.lastModified) }}</td>
-                        <td>
-                            <!-- <button class="delete-file" (click)="deleteAttachment(i)"> -->
-                            <button
-                                class="delete-file"
-                                (click)="deleteAttachment()"
-                            >
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div *ngIf="thumbnaillUrl">
-            <div>
-                <a href="{{ thumbnaillUrl }}" target="_blank">
-                    {{ thumbnaillUrl }}
-                </a>
+        <ng-container *ngIf="!isLoading && file">
+            <div class="files-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Last Modified Date</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ file.name }}</td>
+                            <td>{{ convertBytes(file.size) }}</td>
+                            <td>{{ convertDate(file.lastModified) }}</td>
+                            <td>
+                                <!-- <button class="delete-file" (click)="deleteAttachment(i)"> -->
+                                <button
+                                    class="delete-file"
+                                    (click)="deleteAttachment()"
+                                >
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div>
-                <img src="{{ thumbnaillUrl }}" alt="thumbnail" />
+            <div *ngIf="thumbnaillUrl">
+                <div>
+                    <a href="{{ thumbnaillUrl }}" target="_blank">
+                        {{ thumbnaillUrl }}
+                    </a>
+                </div>
+                <div>
+                    <img src="{{ thumbnaillUrl }}" alt="thumbnail" />
+                </div>
             </div>
-        </div>
+        </ng-container>
         <div formArrayName="titles">
             <mat-form-field
                 *ngFor="let title of titlesArray.controls; let i = index"

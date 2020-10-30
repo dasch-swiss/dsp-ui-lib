@@ -29,7 +29,6 @@ export class UploadFileService {
     ) { }
 
     upload(file: FormData): Observable<any> {
-        // TODO add env variable from AppInitService.config
         const baseUrl = `${this.envUrl}upload`;
         const jwt = this._ss.getSession().user.jwt;
         const params = new HttpParams().set('token', jwt);
