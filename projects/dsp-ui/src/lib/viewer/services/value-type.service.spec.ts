@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import {
-    KnoraDate,
+    KnoraDate, KnoraPeriod,
     MockResource, ReadDateValue,
     ReadIntValue,
     ReadTextValueAsHtml,
@@ -35,6 +35,81 @@ describe('ValueTypeService', () => {
             readTextValueAsString.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
             expect(service.getValueTypeOrClass(readTextValueAsString)).toEqual('ReadTextValueAsString');
         });
+    });
+
+    describe('isTextEditable', () => {
+
+        it('should determine if a given text with the standard mapping is editable', () => {
+
+            const readTextValueAsXml = new ReadTextValueAsXml();
+            readTextValueAsXml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+            readTextValueAsXml.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+            expect(service.isTextEditable(readTextValueAsXml)).toBeTruthy();
+
+        });
+
+        it('should determine if a given text with a custom mapping is editable', () => {
+
+            const readTextValueAsXml = new ReadTextValueAsXml();
+            readTextValueAsXml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+            readTextValueAsXml.mapping = 'http://rdfh.ch/standoff/mappings/CustomMapping';
+            expect(service.isTextEditable(readTextValueAsXml)).toBeFalsy();
+
+        });
+
+    });
+
+    describe('isDateEditable', () => {
+
+        it('should determine if a given date or period is editable', () => {
+
+            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13))).toBe(true);
+
+            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'AD', 2018, 5, 13))).toBe(true);
+
+            // before common era
+            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 13))).toBe(false);
+
+            // before common era
+            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'BC', 2018, 5, 13))).toBe(false);
+
+            // month precision
+            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'CE', 2018, 5))).toBe(false);
+
+            // year precision
+            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'CE', 2018))).toBe(false);
+
+            expect(service.isDateEditable(new KnoraPeriod(
+                new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
+                new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+            ))).toBe(true);
+
+            // period starts with year precision
+            expect(service.isDateEditable(new KnoraPeriod(
+                new KnoraDate('GREGORIAN', 'CE', 2018),
+                new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+            ))).toBe(false);
+
+            // period ends with year precision
+            expect(service.isDateEditable(new KnoraPeriod(
+                new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
+                new KnoraDate('GREGORIAN', 'CE', 2019)
+            ))).toBe(false);
+
+            // period starts with BCE date
+            expect(service.isDateEditable(new KnoraPeriod(
+                new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 13),
+                new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
+            ))).toBe(false);
+
+            // period ends with BCE date
+            expect(service.isDateEditable(new KnoraPeriod(
+                new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
+                new KnoraDate('GREGORIAN', 'BCE', 2019, 5, 13)
+            ))).toBe(false);
+
+        });
+
     });
 
     describe('isReadOnly', () => {

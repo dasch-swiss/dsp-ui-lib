@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-    Constants, ReadDateValue,
+    Constants, KnoraDate, KnoraPeriod, Precision, ReadDateValue,
     ReadTextValueAsHtml,
     ReadTextValueAsString,
     ReadTextValueAsXml,
@@ -80,6 +80,56 @@ export class ValueTypeService {
     }
 
     /**
+     * Given a date, checks if its precision is supported by the datepicker.
+     *
+     * @param date date to be checked.
+     */
+    private checkPrecision(date: KnoraDate): boolean {
+        return date.precision === Precision.dayPrecision;
+    }
+
+    /**
+     * Given a date, checks if its era is supported by the datepicker.
+     *
+     * @param date date to be checked.
+     */
+    private checkEra(date: KnoraDate): boolean {
+        return date.era === 'CE' || date.era === 'AD';
+    }
+
+    /**
+     * Determines if a date or period can be edited using this component.
+     *
+     * @param date the date or period to be edited.
+     */
+    isDateEditable(date: KnoraDate | KnoraPeriod): boolean {
+
+        // only day precision is supported by the MatDatepicker
+        let precisionSupported: boolean;
+        // only common era is supported by the MatDatepicker
+        let eraSupported: boolean;
+
+        if (date instanceof KnoraDate) {
+            precisionSupported = this.checkPrecision(date);
+            eraSupported = this.checkEra(date);
+        } else {
+            precisionSupported = this.checkPrecision(date.start) && this.checkPrecision(date.end);
+            eraSupported = this.checkEra(date.start) && this.checkEra(date.end);
+        }
+
+        return precisionSupported && eraSupported;
+    }
+
+    /**
+     * Determines if a text can be edited using the text editor.
+     *
+     * @param textValue the text value to be checked.
+     */
+    isTextEditable(textValue: ReadTextValueAsXml): boolean {
+        return textValue.mapping === 'http://rdfh.ch/standoff/mappings/StandardMapping';
+    }
+
+    /**
      * Equality checks with constants below are TEMPORARY until component is implemented.
      * Used so that the CRUD buttons do not show if a property doesn't have a value component.
      */
@@ -93,9 +143,9 @@ export class ValueTypeService {
     isReadOnly(valueTypeOrClass: string, value: ReadValue): boolean {
         const xmlValueNonStandardMapping
             = valueTypeOrClass === this._readTextValueAsXml
-            && (value instanceof ReadTextValueAsXml && value.mapping !== 'http://rdfh.ch/standoff/mappings/StandardMapping');
+            && (value instanceof ReadTextValueAsXml && !this.isTextEditable(value));
 
-        const dateNotEditable = valueTypeOrClass === this.constants.DateValue && (value instanceof ReadDateValue && !DateValueComponent.isEditable(value.date));
+        const dateNotEditable = valueTypeOrClass === this.constants.DateValue && (value instanceof ReadDateValue && !this.isDateEditable(value.date));
 
         return valueTypeOrClass === this._readTextValueAsHtml ||
             valueTypeOrClass === this.constants.GeomValue ||

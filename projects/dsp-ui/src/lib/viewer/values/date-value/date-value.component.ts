@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 import { DateInputComponent } from './date-input/date-input.component';
+import { ValueTypeService } from '../../services/value-type.service';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -46,49 +47,9 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     dateEditable = true;
 
-    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder,
+                private _valueType: ValueTypeService) {
         super();
-    }
-
-    /**
-     * Given a date, checks if its precision is supported by the datepicker.
-     *
-     * @param date date to be checked.
-     */
-    private static checkPrecision(date: KnoraDate): boolean {
-        return date.precision === Precision.dayPrecision;
-    }
-
-    /**
-     * Given a date, checks if its era is supported by the datepicker.
-     *
-     * @param date date to be checked.
-     */
-    private static checkEra(date: KnoraDate): boolean {
-        return date.era === 'CE' || date.era === 'AD';
-    }
-
-    /**
-     * Determines if a date or period can be edited using this component.
-     *
-     * @param date the date or period to be edited.
-     */
-    static isEditable(date: KnoraDate | KnoraPeriod): boolean {
-
-        // only day precision is supported by the MatDatepicker
-        let precisionSupported: boolean;
-        // only common era is supported by the MatDatepicker
-        let eraSupported: boolean;
-
-        if (date instanceof KnoraDate) {
-            precisionSupported = DateValueComponent.checkPrecision(date);
-            eraSupported = DateValueComponent.checkEra(date);
-        } else {
-            precisionSupported = DateValueComponent.checkPrecision(date.start) && DateValueComponent.checkPrecision(date.end);
-            eraSupported = DateValueComponent.checkEra(date.start) && DateValueComponent.checkEra(date.end);
-        }
-
-        return precisionSupported && eraSupported;
     }
 
     /**
@@ -143,7 +104,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         this.resetFormControl();
 
         if (this.displayValue !== undefined) {
-            this.dateEditable = DateValueComponent.isEditable(this.valueFormControl.value);
+            this.dateEditable = this._valueType.isDateEditable(this.valueFormControl.value);
         }
 
         resolvedPromise.then(() => {
@@ -157,7 +118,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         this.resetFormControl();
 
         if (this.displayValue !== undefined && this.valueFormControl !== undefined) {
-            this.dateEditable = DateValueComponent.isEditable(this.valueFormControl.value);
+            this.dateEditable = this._valueType.isDateEditable(this.valueFormControl.value);
         }
     }
 
