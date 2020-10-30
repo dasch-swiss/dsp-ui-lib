@@ -35,12 +35,12 @@ import {
     ReadValue,
     UpdateIntValue,
     UpdateResource,
-    UpdateValue,
+    UpdateValue, UserResponse,
     UsersEndpointAdmin,
     ValuesEndpointV2,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
-import { of, throwError } from 'rxjs';
+import { AsyncSubject, of, throwError } from 'rxjs';
 import { AjaxError } from 'rxjs/ajax';
 import { DspApiConnectionToken } from '../../../core';
 import {
@@ -52,6 +52,7 @@ import {
 } from '../../services/value-operation-event.service';
 import { ValueTypeService } from '../../services/value-type.service';
 import { DisplayEditComponent } from './display-edit.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: `dsp-text-value-as-string`,
@@ -274,15 +275,14 @@ describe('DisplayEditComponent', () => {
   beforeEach(async(() => {
 
     const valuesSpyObj = {
-        admin: {
-            usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUserByIri'])
-        },
         v2: {
             values: jasmine.createSpyObj('values', ['updateValue', 'getValue', 'deleteValue'])
         }
     };
 
     const eventSpy = jasmine.createSpyObj('ValueOperationEventService', ['emit']);
+
+    const userServiceSpy = jasmine.createSpyObj('UserService', ['getUser']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -318,6 +318,10 @@ describe('DisplayEditComponent', () => {
             useValue: eventSpy
         },
         {
+            provide: UserService,
+            useValue: userServiceSpy
+        },
+        {
             provide: MAT_DIALOG_DATA,
             useValue: {}
         },
@@ -336,13 +340,18 @@ describe('DisplayEditComponent', () => {
 
   beforeEach(() => {
 
-    const adminSpy = TestBed.inject(DspApiConnectionToken);
+    const userSpy = TestBed.inject(UserService);
 
     // mock getUserByIri response
-    (adminSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUserByIri.and.callFake(
+    (userSpy as jasmine.SpyObj<UserService>).getUser.and.callFake(
         () => {
             const user = MockUsers.mockUser();
-            return of(user);
+
+            const subj: AsyncSubject<UserResponse> = new AsyncSubject();
+            subj.next(user.body);
+            subj.complete();
+
+            return subj;
         }
     );
 

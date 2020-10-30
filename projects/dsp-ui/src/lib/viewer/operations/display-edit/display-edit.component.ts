@@ -24,6 +24,7 @@ import {
     ConfirmationDialogValueDeletionPayload
 } from '../../../action/components/confirmation-dialog/confirmation-dialog.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
+import { UserService } from '../../services/user.service';
 import {
     DeletedEventValue,
     EmitEvent,
@@ -106,7 +107,8 @@ export class DisplayEditComponent implements OnInit {
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
         private _valueTypeService: ValueTypeService,
-        private _dialog: MatDialog) {
+        private _dialog: MatDialog,
+        private _userService: UserService) {
     }
 
     ngOnInit() {
@@ -128,12 +130,10 @@ export class DisplayEditComponent implements OnInit {
 
         this.readOnlyValue = this._valueTypeService.isReadOnly(this.valueTypeOrClass, this.displayValue);
 
-        this._dspApiConnection.admin.usersEndpoint.getUserByIri(this.displayValue.attachedToUser).subscribe(
-            (response: ApiResponseData<UserResponse>) => {
-                this.user = response.body.user;
-            },
-            (error: ApiResponseError) => {
-                console.error(error);
+        // TODO: prevent call for system user (standoff links are managed by the system)
+        this._userService.getUser(this.displayValue.attachedToUser).subscribe(
+            user => {
+                this.user = user.user;
             }
         );
     }
