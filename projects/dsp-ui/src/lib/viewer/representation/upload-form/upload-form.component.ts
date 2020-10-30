@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../action/services/notification.service';
 import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
 
@@ -10,26 +10,13 @@ import { UploadedFileResponse, UploadFileService } from '../../services/upload-f
 })
 export class UploadFormComponent implements OnInit {
 
-    readonly resourceTyoe = 'Image'; // only StillImageRepresentation supported so far
+    @Input() resourceTyoe = 'Image'; // only StillImageRepresentation supported so far
     readonly fromLabels = {
-        drag_drop: {
-            upload: 'Upload file',
-            drop_or_upload: 'Drag and drop or click to upload'
-        },
-        title: 'Title',
-        description: 'Description',
-        date: 'Creation Date',
-        duration: 'Duration', // TODO: for image?
-        person: 'Person', // author??
-        location: 'Location',
-        transcript: 'Transcript',
-        reset: 'Reset',
-        save: 'Save'
+        upload: 'Upload file',
+        drag_drop: 'Drag and drop or click to upload'
     };
     form: FormGroup;
     get fileControl() { return this.form.get('file') as FormControl; }
-    get titlesArray() { return this.form.get('titles') as FormArray; }
-    get personsArray() { return this.form.get('persons') as FormArray; }
     file: File;
     isLoading = false;
     thumbnaillUrl: string;
@@ -46,18 +33,7 @@ export class UploadFormComponent implements OnInit {
 
     initializeForm(): void {
         this.form = this._fb.group({
-            file: [undefined, Validators.required],
-            titles: this._fb.array([
-                this._fb.control('')
-            ]),
-            description: [null, Validators.required],
-            date: ['', Validators.required],
-            duration: ['', Validators.required],
-            persons: this._fb.array([
-                this._fb.control('')
-            ]),
-            location: ['', Validators.required],
-            transcript: ['', Validators.required]
+            file: [undefined, Validators.required]
         }, {updateOn: 'blur'});
     }
 
@@ -80,7 +56,7 @@ export class UploadFormComponent implements OnInit {
                     const tempUrl = res.uploadedFiles[0].temporaryUrl;
                     const thumbUri = `${tempUrl}/full/150,/0/default.jpg`;
                     this.thumbnaillUrl = `${thumbUri}`.replace('http://sipi:1024/', this._ufs.envUrl);
-                    // this.isLoading = false;
+                    console.log(res);
                 },
                 (e: Error) => {
                     this._ns.openSnackBar(e.message);
@@ -97,31 +73,8 @@ export class UploadFormComponent implements OnInit {
         console.log('addFile', event, this.file, this.fileControl);
     }
 
-    onSubmit(): void {
-        console.log(this.form);
-        this._ufs.upload(this.form.value);
-        this.resetForm();
-    }
-
-    addTitle(): void {
-        this.titlesArray.push(this._fb.control(''));
-    }
-
-    addPerson(): void {
-        this.personsArray.push(this._fb.control(''));
-        // this.personsArray.insert(this.personsArray.length + 1, this._fb.control(''));
-    }
-
     resetForm(): void {
         this.form.reset();
-        this.resetFormArray(this.titlesArray);
-        this.resetFormArray(this.personsArray);
-    }
-
-    resetFormArray(a: FormArray): void {
-        while (a.length > 1) {
-            a.removeAt(1);
-        }
     }
 
     isMoreThanOneFile(files: File[]): boolean {

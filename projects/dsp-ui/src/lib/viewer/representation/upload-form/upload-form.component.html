@@ -9,12 +9,12 @@
         >
             <input hidden type="file" (change)="addFile($event)" #fileInput />
             <mat-icon *ngIf="!isLoading" class="upload-icon"
-                >cloud_upload</mat-icon
-            >
+                >cloud_upload
+            </mat-icon>
             <dsp-progress-indicator *ngIf="isLoading"></dsp-progress-indicator>
-            <div class="title">{{ fromLabels.drag_drop.upload }}</div>
+            <div class="title">{{ fromLabels.upload }}</div>
             <div class="bottom-line">
-                {{ fromLabels.drag_drop.drop_or_upload }}
+                {{ fromLabels.drag_drop }}
             </div>
         </div>
         <ng-container *ngIf="!isLoading && file">
@@ -57,7 +57,7 @@
                 </div>
             </div>
         </ng-container>
-        <div formArrayName="titles">
+        <!-- <div formArrayName="titles">
             <mat-form-field
                 *ngFor="let title of titlesArray.controls; let i = index"
                 class="full-width"
@@ -76,7 +76,6 @@
             title="Add another title"
         >
             <mat-icon>add_box</mat-icon>
-            <!-- You can add moere than one title -->
         </button>
         <br />
         <mat-form-field class="full-width">
@@ -126,7 +125,6 @@
             title="Add another person"
         >
             <mat-icon>add_box</mat-icon>
-            <!-- You can add more tham one person -->
         </button>
         <br />
         <mat-form-field class="full-width">
@@ -164,7 +162,7 @@
             class="submit-button"
         >
             {{ fromLabels.save }}
-        </button>
+        </button> -->
     </form>
 </div>
 

@@ -9,10 +9,6 @@
 button {
   cursor: pointer;
 }
-.submit-button {
-  background-color: gold;
-  float: right;
-}
 
 // drag & drop input
 .dd-container {
@@ -82,24 +78,4 @@ th {
 }
 tr td:last-child {
   text-align: center;
-}
-
-// add buttons
-.add-button {
-  cursor: pointer;
-  border: none;
-  padding: 0em;
-  outline: none;
-  background-color: transparent;
-  color: #000;
-}
-.add-button:hover {
-  color: green;
-}
-.add-button .material-icons {
-  font-size: 18px;
-}
-.add-button .mat-icon {
-  width: 18px;
-  height: 18px;
 }
