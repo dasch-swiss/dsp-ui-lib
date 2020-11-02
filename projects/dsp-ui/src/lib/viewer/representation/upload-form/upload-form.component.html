@@ -1,16 +1,18 @@
 <div class="form-container">
     <h2 class="mat-title">Add new resource: {{ resourceTyoe }}</h2>
     <form [formGroup]="form">
-        <div
-            dspDragDrop
+        <div dspDragDrop
             *ngIf="isLoading || !file"
             (click)="fileInput.click()"
             (fileDropped)="addFile($event)"
-            class="dd-container"
-        >
-            <input hidden type="file" (change)="addFile($event)" #fileInput />
-            <mat-icon *ngIf="!isLoading" class="upload-icon"
-                >cloud_upload
+            class="dd-container">
+            <input hidden
+                type="file"
+                (change)="addFile($event)"
+                #fileInput />
+            <mat-icon *ngIf="!isLoading"
+                class="upload-icon">
+                cloud_upload
             </mat-icon>
             <dsp-progress-indicator *ngIf="isLoading"></dsp-progress-indicator>
             <div class="title">{{ fromLabels.upload }}</div>
@@ -21,8 +23,10 @@
 
         <ng-container *ngIf="!isLoading && file">
             <div class="thumbnail">
-                <img src="{{ thumbnaillUrl }}" alt="thumbnail" />
-                <button mat-button (click)="deleteAttachment()">
+                <img src="{{ thumbnaillUrl }}"
+                    alt="thumbnail" />
+                <button mat-button
+                    (click)="deleteAttachment()">
                     <mat-icon>close</mat-icon>
                 </button>
             </div>
@@ -43,10 +47,8 @@
                             <td>{{ convertBytes(file.size) }}</td>
                             <td>{{ convertDate(file.lastModified) }}</td>
                             <td>
-                                <button
-                                    class="delete-file"
-                                    (click)="deleteAttachment()"
-                                >
+                                <button class="delete-file"
+                                    (click)="deleteAttachment()">
                                     <mat-icon>delete</mat-icon>
                                 </button>
                             </td>

@@ -26,7 +26,7 @@ export class UploadFormComponent implements OnInit {
         private readonly _fb: FormBuilder,
         private readonly _ns: NotificationService,
         private readonly _ufs: UploadFileService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.initializeForm();
@@ -35,7 +35,7 @@ export class UploadFormComponent implements OnInit {
     initializeForm(): void {
         this.form = this._fb.group({
             file: [undefined, Validators.required]
-        }, {updateOn: 'blur'});
+        }, { updateOn: 'blur' });
     }
 
     addFile(event): void {

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppInitService } from '../../core/app-init.service';
@@ -34,7 +34,7 @@ export class UploadFileService {
         const params = new HttpParams().set('token', jwt);
         // const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
         // TODO in order to track the progress change below to true and 'events'
-        const options = { params, reportProgress: false, observe: 'body' as 'body'};
+        const options = { params, reportProgress: false, observe: 'body' as 'body' };
         console.log(`Uploaded to: ${baseUrl}`);
         return this._http.post<any>(baseUrl, file, options);
     }
