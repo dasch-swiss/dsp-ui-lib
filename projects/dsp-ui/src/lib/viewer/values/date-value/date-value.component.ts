@@ -1,10 +1,18 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { CreateDateValue, KnoraDate, KnoraPeriod, ReadDateValue, UpdateDateValue } from '@dasch-swiss/dsp-js';
+import {
+    CreateDateValue,
+    KnoraDate,
+    KnoraPeriod,
+    Precision,
+    ReadDateValue,
+    UpdateDateValue
+} from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 import { DateInputComponent } from './date-input/date-input.component';
+import { ValueService } from '../../services/value.service';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -19,8 +27,11 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     @ViewChild('dateInput') dateInputComponent: DateInputComponent;
 
     @Input() displayValue?: ReadDateValue;
+
     @Input() displayOptions?: 'era' | 'calendar' | 'all';
+
     @Input() labels = false;
+
     @Input() ontologyDateFormat = 'dd.MM.YYYY';
 
     valueFormControl: FormControl;
@@ -34,7 +45,10 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     matcher = new ValueErrorStateMatcher();
 
-    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
+    dateEditable = true;
+
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder,
+                private _valueService: ValueService) {
         super();
     }
 
@@ -42,7 +56,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
      * Returns true if both dates are the same.
      *
      * @param date1 date for comparison with date2
-     * @param date2 date for comparison with date 1
+     * @param date2 date for comparison with date1
      */
     sameDate(date1: KnoraDate, date2: KnoraDate): boolean {
         return (date1.calendar === date2.calendar && date1.year === date2.year && date1.month === date2.month && date1.day === date2.day);
@@ -89,14 +103,23 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
         this.resetFormControl();
 
+        if (this.displayValue !== undefined) {
+            this.dateEditable = this._valueService.isDateEditable(this.valueFormControl.value);
+        }
+
         resolvedPromise.then(() => {
             // add form to the parent form group
             this.addToParentFormGroup(this.formName, this.form);
         });
+
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         this.resetFormControl();
+
+        if (this.displayValue !== undefined && this.valueFormControl !== undefined) {
+            this.dateEditable = this._valueService.isDateEditable(this.valueFormControl.value);
+        }
     }
 
     // unsubscribe when the object is destroyed to prevent memory leaks
