@@ -8,14 +8,14 @@ import {
     ReadTextValueAsString,
     ReadTextValueAsXml
 } from '@dasch-swiss/dsp-js';
-import { ValueTypeService } from './value-type.service';
+import { ValueService } from './value.service';
 
-describe('ValueTypeService', () => {
-    let service: ValueTypeService;
+describe('ValueService', () => {
+    let service: ValueService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(ValueTypeService);
+        service = TestBed.inject(ValueService);
     });
 
     it('should be created', () => {

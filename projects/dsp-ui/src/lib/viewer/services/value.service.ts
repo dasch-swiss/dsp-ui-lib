@@ -7,12 +7,11 @@ import {
     ReadValue,
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
-import { DateValueComponent } from '../values/date-value/date-value.component';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ValueTypeService {
+export class ValueService {
 
     private readonly _readTextValueAsString = 'ReadTextValueAsString';
 
@@ -130,22 +129,20 @@ export class ValueTypeService {
     }
 
     /**
-     * Equality checks with constants below are TEMPORARY until component is implemented.
-     * Used so that the CRUD buttons do not show if a property doesn't have a value component.
-     */
-
-    /**
-     * Determines if the given value is readonly.
+     * Determines if the given value can be edited.
      *
      * @param valueTypeOrClass the type or class of the given value.
      * @param value the given value.
      */
     isReadOnly(valueTypeOrClass: string, value: ReadValue): boolean {
+        // only texts complying with the standard mapping can be edited using CKEditor.
         const xmlValueNonStandardMapping
             = valueTypeOrClass === this._readTextValueAsXml
             && (value instanceof ReadTextValueAsXml && !this.isTextEditable(value));
 
-        const dateNotEditable = valueTypeOrClass === this.constants.DateValue && (value instanceof ReadDateValue && !this.isDateEditable(value.date));
+        // MatDatepicker only supports day precision and CE
+        const dateNotEditable
+            = valueTypeOrClass === this.constants.DateValue && (value instanceof ReadDateValue && !this.isDateEditable(value.date));
 
         return valueTypeOrClass === this._readTextValueAsHtml ||
             valueTypeOrClass === this.constants.GeomValue ||

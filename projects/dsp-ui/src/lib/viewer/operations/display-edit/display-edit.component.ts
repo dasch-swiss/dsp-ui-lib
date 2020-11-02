@@ -31,7 +31,7 @@ import {
     UpdatedEventValues,
     ValueOperationEventService
 } from '../../services/value-operation-event.service';
-import { ValueTypeService } from '../../services/value-type.service';
+import { ValueService } from '../../services/value.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
 @Component({
@@ -105,7 +105,7 @@ export class DisplayEditComponent implements OnInit {
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueTypeService: ValueTypeService,
+        private _valueTypeService: ValueService,
         private _dialog: MatDialog) {
     }
 

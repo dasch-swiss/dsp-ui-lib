@@ -29,7 +29,7 @@ import {
     UpdatedEventValues,
     ValueOperationEventService
 } from '../../services/value-operation-event.service';
-import { ValueTypeService } from '../../services/value-type.service';
+import { ValueService } from '../../services/value.service';
 
 // object of property information from ontology class, properties and property values
 export interface PropertyInfoValues {
@@ -84,7 +84,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _notification: NotificationService,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueTypeService: ValueTypeService) { }
+        private _valueTypeService: ValueService) { }
 
     ngOnInit() {
         // subscribe to the ValueOperationEventService and listen for an event to be emitted

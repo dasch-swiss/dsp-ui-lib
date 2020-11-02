@@ -19,7 +19,7 @@ import {
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { AddedEventValue, EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
-import { ValueTypeService } from '../../services/value-type.service';
+import { ValueService } from '../../services/value.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
 @Component({
@@ -55,7 +55,7 @@ export class AddValueComponent implements OnInit, AfterViewInit {
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueTypeService: ValueTypeService) { }
+        private _valueTypeService: ValueService) { }
 
     ngOnInit() {
 

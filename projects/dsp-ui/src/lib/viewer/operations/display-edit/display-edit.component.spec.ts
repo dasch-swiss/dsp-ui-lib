@@ -50,7 +50,7 @@ import {
     UpdatedEventValues,
     ValueOperationEventService
 } from '../../services/value-operation-event.service';
-import { ValueTypeService } from '../../services/value-type.service';
+import { ValueService } from '../../services/value.service';
 import { DisplayEditComponent } from './display-edit.component';
 
 @Component({
@@ -269,7 +269,7 @@ class TestHostDisplayValueComponent implements OnInit {
 describe('DisplayEditComponent', () => {
   let testHostComponent: TestHostDisplayValueComponent;
   let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
-  let valueTypeService: ValueTypeService;
+  let valueTypeService: ValueService;
 
   beforeEach(async(() => {
 
@@ -325,13 +325,13 @@ describe('DisplayEditComponent', () => {
             provide: MatDialogRef,
             useValue: {}
         },
-        ValueTypeService,
+        ValueService,
         FormBuilder
       ]
     })
       .compileComponents();
 
-    valueTypeService = TestBed.inject(ValueTypeService);
+    valueTypeService = TestBed.inject(ValueService);
   }));
 
   beforeEach(() => {

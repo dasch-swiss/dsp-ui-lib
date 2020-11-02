@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 import { DateInputComponent } from './date-input/date-input.component';
-import { ValueTypeService } from '../../services/value-type.service';
+import { ValueService } from '../../services/value.service';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -48,7 +48,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     dateEditable = true;
 
     constructor(@Inject(FormBuilder) private _fb: FormBuilder,
-                private _valueType: ValueTypeService) {
+                private _valueType: ValueService) {
         super();
     }
 
