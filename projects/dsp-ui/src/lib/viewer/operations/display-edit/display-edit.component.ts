@@ -130,12 +130,14 @@ export class DisplayEditComponent implements OnInit {
 
         this.readOnlyValue = this._valueService.isReadOnly(this.valueTypeOrClass, this.displayValue);
 
-        // TODO: prevent call for system user (standoff links are managed by the system)
-        this._userService.getUser(this.displayValue.attachedToUser).subscribe(
-            user => {
-                this.user = user.user;
-            }
-        );
+        // prevent getting info about system user (standoff link values are managed by the system)
+        if (this.displayValue.attachedToUser !== 'http://www.knora.org/ontology/knora-admin#SystemUser') {
+            this._userService.getUser(this.displayValue.attachedToUser).subscribe(
+                user => {
+                    this.user = user.user;
+                }
+            );
+        }
     }
 
     getTooltipText(): string {
