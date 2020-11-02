@@ -13,14 +13,14 @@ import {
     MockResource,
     MockUsers,
     ProjectsEndpointAdmin,
-    ReadResource, UserResponse,
-    UsersEndpointAdmin
+    ReadResource,
+    UserResponse
 } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from 'projects/dsp-ui/src/lib/core';
-import { of } from 'rxjs/internal/observable/of';
-import { PropertyToolbarComponent } from './property-toolbar.component';
-import { UserService } from '../../..';
 import { AsyncSubject } from 'rxjs';
+import { of } from 'rxjs/internal/observable/of';
+import { UserService } from '../../../services/user.service';
+import { PropertyToolbarComponent } from './property-toolbar.component';
 
 /**
  * Test host component to simulate parent component

@@ -33,8 +33,8 @@ import {
     ReadValue,
     UpdateIntValue,
     UpdateResource,
-    UpdateValue, UserResponse,
-    UsersEndpointAdmin,
+    UpdateValue,
+    UserResponse,
     ValuesEndpointV2,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
