@@ -16,13 +16,13 @@ button {
   margin: 20px 0;
   border: 2px solid #000;
   border-radius: 2px;
-
   position: relative;
   text-align: center;
-}
-.dd-container:hover {
-  cursor: pointer;
-  background-color: #ddd !important;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #ddd !important;
+  }
 }
 .upload-icon {
   width: auto;
@@ -46,6 +46,24 @@ button {
   background-color: #000;
 }
 
+// thumbnail
+.thumbnail {
+  text-align: center;
+
+  & button {
+    position: absolute;
+    padding: 0;
+  }
+
+  & mat-icon {
+    position: absolute;
+
+    &:hover {
+      color: red;
+    }
+  }
+}
+
 // files table
 .files-list {
   display: flex;
@@ -54,14 +72,16 @@ button {
   margin: 10px auto;
   background: #fff;
   color: #000;
-}
-.files-list .delete-file {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-.files-list .delete-file:hover {
-  color: red;
+
+  & .delete-file {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      color: red;
+    }
+  }
 }
 table {
   width: 100%;

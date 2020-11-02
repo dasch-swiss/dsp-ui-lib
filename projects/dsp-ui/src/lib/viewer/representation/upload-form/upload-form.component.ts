@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../action/services/notification.service';
 import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
@@ -11,13 +11,14 @@ import { UploadedFileResponse, UploadFileService } from '../../services/upload-f
 export class UploadFormComponent implements OnInit {
 
     @Input() readonly resourceTyoe = 'Image'; // only StillImageRepresentation supported so far
+    @Output() file: File;
+
     readonly fromLabels = {
         upload: 'Upload file',
         drag_drop: 'Drag and drop or click to upload'
     };
     form: FormGroup;
     get fileControl() { return this.form.get('file') as FormControl; }
-    file: File;
     isLoading = false;
     thumbnaillUrl: string;
 
@@ -45,7 +46,6 @@ export class UploadFormComponent implements OnInit {
             this._ns.openSnackBar(error);
             this.file = null;
         } else {
-            // TODO file types restriction?
             const formData = new FormData();
             this.file = files[0];
             if (!this.isFileTypeSupported(this.file.type)) {

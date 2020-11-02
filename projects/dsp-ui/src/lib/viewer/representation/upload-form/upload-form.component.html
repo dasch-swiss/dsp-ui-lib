@@ -3,6 +3,7 @@
     <form [formGroup]="form">
         <div
             dspDragDrop
+            *ngIf="isLoading || !file"
             (click)="fileInput.click()"
             (fileDropped)="addFile($event)"
             class="dd-container"
@@ -17,7 +18,15 @@
                 {{ fromLabels.drag_drop }}
             </div>
         </div>
+
         <ng-container *ngIf="!isLoading && file">
+            <div class="thumbnail">
+                <img src="{{ thumbnaillUrl }}" alt="thumbnail" />
+                <button mat-button (click)="deleteAttachment()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
             <div class="files-list">
                 <table>
                     <thead>
@@ -34,7 +43,6 @@
                             <td>{{ convertBytes(file.size) }}</td>
                             <td>{{ convertDate(file.lastModified) }}</td>
                             <td>
-                                <!-- <button class="delete-file" (click)="deleteAttachment(i)"> -->
                                 <button
                                     class="delete-file"
                                     (click)="deleteAttachment()"
@@ -46,124 +54,6 @@
                     </tbody>
                 </table>
             </div>
-            <div *ngIf="thumbnaillUrl">
-                <div>
-                    <a href="{{ thumbnaillUrl }}" target="_blank">
-                        {{ thumbnaillUrl }}
-                    </a>
-                </div>
-                <div>
-                    <img src="{{ thumbnaillUrl }}" alt="thumbnail" />
-                </div>
-            </div>
         </ng-container>
-        <!-- <div formArrayName="titles">
-            <mat-form-field
-                *ngFor="let title of titlesArray.controls; let i = index"
-                class="full-width"
-            >
-                <input
-                    matInput
-                    [formControlName]="i"
-                    placeholder="{{ fromLabels.title }}"
-                    #title
-                />
-            </mat-form-field>
-        </div>
-        <button
-            class="add-button"
-            (click)="addTitle()"
-            title="Add another title"
-        >
-            <mat-icon>add_box</mat-icon>
-        </button>
-        <br />
-        <mat-form-field class="full-width">
-            <textarea
-                matInput
-                formControlName="description"
-                placeholder="{{ fromLabels.description }}"
-                #description
-            ></textarea>
-        </mat-form-field>
-        <br />
-        <mat-form-field class="full-width">
-            <input
-                matInput
-                formControlName="date"
-                placeholder="{{ fromLabels.date }}"
-                #date
-                type="date"
-            />
-        </mat-form-field>
-        <br />
-        <mat-form-field class="full-width">
-            <input
-                matInput
-                formControlName="duration"
-                placeholder="{{ fromLabels.duration }}"
-                #duration
-            />
-        </mat-form-field>
-        <br />
-        <div formArrayName="persons">
-            <mat-form-field
-                *ngFor="let person of personsArray.controls; let i = index"
-                class="full-width"
-            >
-                <input
-                    matInput
-                    [formControlName]="i"
-                    placeholder="{{ fromLabels.person }}"
-                    #person
-                />
-            </mat-form-field>
-        </div>
-        <button
-            class="add-button"
-            (click)="addPerson()"
-            title="Add another person"
-        >
-            <mat-icon>add_box</mat-icon>
-        </button>
-        <br />
-        <mat-form-field class="full-width">
-            <input
-                matInput
-                formControlName="location"
-                placeholder="{{ fromLabels.location }}"
-                #location
-            />
-        </mat-form-field>
-        <br />
-        <mat-form-field class="full-width">
-            <textarea
-                matInput
-                formControlName="transcript"
-                placeholder="{{ fromLabels.transcript }}"
-                #transcript
-            ></textarea>
-        </mat-form-field>
-
-        <button
-            mat-raised-button
-            (click)="resetForm()"
-            type="button"
-            class="reset-button"
-        >
-            {{ fromLabels.reset }}
-        </button>
-
-        <button
-            mat-raised-button
-            [disabled]="!form.valid"
-            (click)="onSubmit()"
-            type="submit"
-            class="submit-button"
-        >
-            {{ fromLabels.save }}
-        </button> -->
     </form>
 </div>
-
-<pre>{{ form.value | json }}</pre>
