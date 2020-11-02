@@ -34,11 +34,11 @@ import {
     UpdateIntValue,
     UpdateResource,
     UpdateValue,
-    UsersEndpointAdmin,
+    UserResponse,
     ValuesEndpointV2,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
-import { of, throwError } from 'rxjs';
+import { AsyncSubject, of, throwError } from 'rxjs';
 import { AjaxError } from 'rxjs/ajax';
 import { DspApiConnectionToken } from '../../../core';
 import {
@@ -50,6 +50,7 @@ import {
 } from '../../services/value-operation-event.service';
 import { ValueService } from '../../services/value.service';
 import { DisplayEditComponent } from './display-edit.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: `dsp-text-value-as-string`,
@@ -271,15 +272,14 @@ describe('DisplayEditComponent', () => {
   beforeEach(async(() => {
 
     const valuesSpyObj = {
-        admin: {
-            usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUserByIri'])
-        },
         v2: {
             values: jasmine.createSpyObj('values', ['updateValue', 'getValue', 'deleteValue'])
         }
     };
 
     const eventSpy = jasmine.createSpyObj('ValueOperationEventService', ['emit']);
+
+    const userServiceSpy = jasmine.createSpyObj('UserService', ['getUser']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -316,6 +316,10 @@ describe('DisplayEditComponent', () => {
             useValue: eventSpy
         },
         {
+            provide: UserService,
+            useValue: userServiceSpy
+        },
+        {
             provide: MAT_DIALOG_DATA,
             useValue: {}
         },
@@ -331,13 +335,18 @@ describe('DisplayEditComponent', () => {
 
   beforeEach(() => {
 
-    const adminSpy = TestBed.inject(DspApiConnectionToken);
+    const userSpy = TestBed.inject(UserService);
 
     // mock getUserByIri response
-    (adminSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUserByIri.and.callFake(
+    (userSpy as jasmine.SpyObj<UserService>).getUser.and.callFake(
         () => {
             const user = MockUsers.mockUser();
-            return of(user);
+
+            const subj: AsyncSubject<UserResponse> = new AsyncSubject();
+            subj.next(user.body);
+            subj.complete();
+
+            return subj;
         }
     );
 
@@ -463,6 +472,31 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
       expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).parentResource instanceof ReadResource).toBe(true);
       expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
+
+      const userServiceSpy = TestBed.inject(UserService);
+
+      expect(userServiceSpy.getUser).toHaveBeenCalledTimes(1);
+      expect(userServiceSpy.getUser).toHaveBeenCalledWith('http://rdfh.ch/users/BhkfBc3hTeS_IDo-JgXRbQ');
+
+    });
+
+    it('should choose the apt component for a link value (standoff link) in the template', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
+      testHostComponent.readValue.property = Constants.KnoraApiV2 + Constants.Delimiter + 'hasStandoffLinkToValue';
+      testHostComponent.readValue.attachedToUser = 'http://www.knora.org/ontology/knora-admin#SystemUser'; // sstandoff links are managed by the system
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestLinkValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadLinkValue).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).parentResource instanceof ReadResource).toBe(true);
+      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue');
+
+      const userServiceSpy = TestBed.inject(UserService);
+
+      // user info should not be retrieved for system user
+      expect(userServiceSpy.getUser).toHaveBeenCalledTimes(0);
 
     });
 
