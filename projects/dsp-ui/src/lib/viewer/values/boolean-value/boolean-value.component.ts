@@ -42,7 +42,6 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     }
 
     ngOnInit() {
-        console.log('parent form: ', this.parentForm);
         // initialize form control elements
         this.valueFormControl = new FormControl(null);
         this.commentFormControl = new FormControl(null);
