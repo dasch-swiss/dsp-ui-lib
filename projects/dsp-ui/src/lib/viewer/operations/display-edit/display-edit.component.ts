@@ -143,8 +143,7 @@ export class DisplayEditComponent implements OnInit {
     getTooltipText(): string {
         const creationDate = 'Creation date: ' + this.displayValue.valueCreationDate;
 
-        const creatorInfo = this.user ? '\n Value creator: ' + this.user.givenName + ' ' + this.user.familyName : '';
-
+        const creatorInfo = this.user ? '\n Value creator: ' + this.user?.givenName + ' ' + this.user?.familyName : '';
 
         return creationDate + creatorInfo;
     }
