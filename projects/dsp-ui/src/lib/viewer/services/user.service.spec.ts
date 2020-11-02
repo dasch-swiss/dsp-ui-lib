@@ -39,9 +39,11 @@ describe('UserService', () => {
             }
         );
 
-        service.getUser('userIri').subscribe(
+        service.getUser('http://rdfh.ch/users/root').subscribe(
             user => {
                 expect(user.user.id).toEqual('http://rdfh.ch/users/root');
+                expect(userCacheSpy).toHaveBeenCalledTimes(1);
+                expect(userCacheSpy).toHaveBeenCalledWith('http://rdfh.ch/users/root');
                 done();
             }
         );

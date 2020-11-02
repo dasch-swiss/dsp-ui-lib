@@ -8,6 +8,7 @@ import { DspApiConnectionToken } from '../../core/core.module';
 })
 export class UserService {
 
+    // instance of user cache
     private _userCache: UserCache;
 
     constructor(@Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection) {
@@ -15,6 +16,11 @@ export class UserService {
         this._userCache = new UserCache(this._dspApiConnection);
     }
 
+    /**
+     * Retrieves information about the specified user.
+     *
+     * @param userIri the Iri identifying the user.
+     */
     getUser(userIri: string): AsyncSubject<UserResponse> {
         return this._userCache.getUser(userIri);
     }
