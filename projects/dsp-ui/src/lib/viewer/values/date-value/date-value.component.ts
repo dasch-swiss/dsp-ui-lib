@@ -48,7 +48,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     dateEditable = true;
 
     constructor(@Inject(FormBuilder) private _fb: FormBuilder,
-                private _valueType: ValueService) {
+                private _valueService: ValueService) {
         super();
     }
 
@@ -104,7 +104,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         this.resetFormControl();
 
         if (this.displayValue !== undefined) {
-            this.dateEditable = this._valueType.isDateEditable(this.valueFormControl.value);
+            this.dateEditable = this._valueService.isDateEditable(this.valueFormControl.value);
         }
 
         resolvedPromise.then(() => {
@@ -118,7 +118,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         this.resetFormControl();
 
         if (this.displayValue !== undefined && this.valueFormControl !== undefined) {
-            this.dateEditable = this._valueType.isDateEditable(this.valueFormControl.value);
+            this.dateEditable = this._valueService.isDateEditable(this.valueFormControl.value);
         }
     }
 

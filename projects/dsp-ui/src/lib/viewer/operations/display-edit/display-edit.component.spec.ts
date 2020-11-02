@@ -3,12 +3,11 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputHarness } from '@angular/material/input/testing';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,7 +28,6 @@ import {
     ReadResource,
     ReadTextValueAsHtml,
     ReadTextValueAsString,
-    ReadTextValueAsXml,
     ReadTimeValue,
     ReadUriValue,
     ReadValue,
@@ -269,7 +267,6 @@ class TestHostDisplayValueComponent implements OnInit {
 describe('DisplayEditComponent', () => {
   let testHostComponent: TestHostDisplayValueComponent;
   let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
-  let valueTypeService: ValueService;
 
   beforeEach(async(() => {
 
@@ -289,7 +286,8 @@ describe('DisplayEditComponent', () => {
         BrowserAnimationsModule,
         MatIconModule,
         MatDialogModule,
-        MatTooltipModule
+        MatTooltipModule,
+        ReactiveFormsModule
       ],
       declarations: [
         DisplayEditComponent,
@@ -324,14 +322,11 @@ describe('DisplayEditComponent', () => {
         {
             provide: MatDialogRef,
             useValue: {}
-        },
-        ValueService,
-        FormBuilder
+        }
       ]
     })
       .compileComponents();
 
-    valueTypeService = TestBed.inject(ValueService);
   }));
 
   beforeEach(() => {
@@ -498,6 +493,7 @@ describe('DisplayEditComponent', () => {
   describe('methods getValueType and isReadOnly', () => {
     let hostCompDe;
     let displayEditComponentDe;
+    let valueService;
 
     beforeEach(() => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
@@ -508,12 +504,14 @@ describe('DisplayEditComponent', () => {
       hostCompDe = testHostFixture.debugElement;
       displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
 
+      valueService = TestBed.inject(ValueService);
+
     });
 
     it('should return the type of a integer value as not readonly', () => {
-      expect(valueTypeService.getValueTypeOrClass(testHostComponent.displayEditValueComponent.displayValue)).toEqual(Constants.IntValue);
+      expect(valueService.getValueTypeOrClass(testHostComponent.displayEditValueComponent.displayValue)).toEqual(Constants.IntValue);
 
-      expect(valueTypeService.isReadOnly(Constants.IntValue, testHostComponent.displayEditValueComponent.displayValue)).toBe(false);
+      expect(valueService.isReadOnly(Constants.IntValue, testHostComponent.displayEditValueComponent.displayValue)).toBe(false);
     });
 
     it('should return the class of a html text value as readonly', () => {
@@ -521,9 +519,9 @@ describe('DisplayEditComponent', () => {
       const htmlTextVal = new ReadTextValueAsHtml();
       htmlTextVal.type = Constants.TextValue;
 
-      expect(valueTypeService.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsHtml');
+      expect(valueService.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsHtml');
 
-      expect(valueTypeService.isReadOnly('ReadTextValueAsHtml', htmlTextVal)).toBe(true);
+      expect(valueService.isReadOnly('ReadTextValueAsHtml', htmlTextVal)).toBe(true);
 
     });
 
@@ -532,9 +530,9 @@ describe('DisplayEditComponent', () => {
       const plainTextVal = new ReadTextValueAsString();
       plainTextVal.type = Constants.TextValue;
 
-      expect(valueTypeService.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsString');
+      expect(valueService.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsString');
 
-      expect(valueTypeService.isReadOnly('ReadTextValueAsString', plainTextVal)).toBe(false);
+      expect(valueService.isReadOnly('ReadTextValueAsString', plainTextVal)).toBe(false);
 
     });
 

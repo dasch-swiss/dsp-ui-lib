@@ -105,7 +105,7 @@ export class DisplayEditComponent implements OnInit {
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueTypeService: ValueService,
+        private _valueService: ValueService,
         private _dialog: MatDialog) {
     }
 
@@ -124,9 +124,9 @@ export class DisplayEditComponent implements OnInit {
         // check if comment toggle button should be shown
         this.checkCommentToggleVisibility();
 
-        this.valueTypeOrClass = this._valueTypeService.getValueTypeOrClass(this.displayValue);
+        this.valueTypeOrClass = this._valueService.getValueTypeOrClass(this.displayValue);
 
-        this.readOnlyValue = this._valueTypeService.isReadOnly(this.valueTypeOrClass, this.displayValue);
+        this.readOnlyValue = this._valueService.isReadOnly(this.valueTypeOrClass, this.displayValue);
 
         this._dspApiConnection.admin.usersEndpoint.getUserByIri(this.displayValue.attachedToUser).subscribe(
             (response: ApiResponseData<UserResponse>) => {

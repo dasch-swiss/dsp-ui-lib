@@ -55,7 +55,7 @@ export class AddValueComponent implements OnInit, AfterViewInit {
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueTypeService: ValueService) { }
+        private _valueService: ValueService) { }
 
     ngOnInit() {
 
@@ -64,7 +64,7 @@ export class AddValueComponent implements OnInit, AfterViewInit {
         // Since simple text values and rich text values share the same object type 'TextValue',
         // we need to use the ValueTypeService in order to assign it the correct object type for the ngSwitch in the template
         if (this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
-            this.resourcePropertyDefinition.objectType = this._valueTypeService.getTextValueClass(this.resourcePropertyDefinition);
+            this.resourcePropertyDefinition.objectType = this._valueService.getTextValueClass(this.resourcePropertyDefinition);
         }
 
     }

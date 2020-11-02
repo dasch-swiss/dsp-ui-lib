@@ -84,7 +84,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _notification: NotificationService,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueTypeService: ValueService) { }
+        private _valueService: ValueService) { }
 
     ngOnInit() {
         // subscribe to the ValueOperationEventService and listen for an event to be emitted
@@ -200,7 +200,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         if (this.resPropInfoVals) {
             this.resPropInfoVals
                 .filter(propInfoValueArray =>  // filter to the correct type
-                    this._valueTypeService.compareObjectTypeWithValueType(propInfoValueArray.propDef.objectType, valueToDelete.type))
+                    this._valueService.compareObjectTypeWithValueType(propInfoValueArray.propDef.objectType, valueToDelete.type))
                 .forEach(filteredpropInfoValueArray => {
                     filteredpropInfoValueArray.values.forEach((val, index) => { // loop through each value of the current property
                         if (val.id === valueToDelete.id) { // find the value that was deleted using the id
