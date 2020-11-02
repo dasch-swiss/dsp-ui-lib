@@ -473,6 +473,31 @@ describe('DisplayEditComponent', () => {
       expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).parentResource instanceof ReadResource).toBe(true);
       expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
 
+      const userServiceSpy = TestBed.inject(UserService);
+
+      expect(userServiceSpy.getUser).toHaveBeenCalledTimes(1);
+      expect(userServiceSpy.getUser).toHaveBeenCalledWith('http://rdfh.ch/users/BhkfBc3hTeS_IDo-JgXRbQ');
+
+    });
+
+    it('should choose the apt component for a link value (standoff link) in the template', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
+      testHostComponent.readValue.property = Constants.KnoraApiV2 + Constants.Delimiter + 'hasStandoffLinkToValue';
+      testHostComponent.readValue.attachedToUser = 'http://www.knora.org/ontology/knora-admin#SystemUser'; // sstandoff links are managed by the system
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestLinkValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadLinkValue).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).parentResource instanceof ReadResource).toBe(true);
+      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue');
+
+      const userServiceSpy = TestBed.inject(UserService);
+
+      // user info should not be retrieved for system user
+      expect(userServiceSpy.getUser).toHaveBeenCalledTimes(0);
+
     });
 
     it('should choose the apt component for a list value in the template', () => {
