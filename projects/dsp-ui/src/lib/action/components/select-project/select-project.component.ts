@@ -16,7 +16,8 @@ export class SelectProjectComponent implements OnInit {
     // user IRI so we could show only projects that belongs to this user
     @Input() userIri?: string;
 
-    @Output() projectInfo: EventEmitter<string> = new EventEmitter<string>();
+    // selected project
+    @Output() selectedProject: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
 
     // in case of an (api) error
     error: any;
@@ -26,9 +27,6 @@ export class SelectProjectComponent implements OnInit {
 
     // list of projects
     projects: ReadProject[];
-
-    // selected project
-    selectedProject: ReadProject;
 
     // form group
     selectProjectForm: FormGroup;
@@ -113,9 +111,14 @@ export class SelectProjectComponent implements OnInit {
      * @param val project shortname
      */
     getProject(val: string) {
-        // TODO: return readProject object
-        this.projectInfo.emit(val);
+        // return readProject object
+        let selected: ReadProject;
+        for (const proj of this.projects) {
+            if (proj.shortname === val) {
+                selected = proj;
+            }
+        }
+        this.selectedProject.emit(selected);
     }
-
 
 }

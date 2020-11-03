@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ApiResponseError, ReadValue, StringLiteral } from '@dasch-swiss/dsp-js';
+import { ApiResponseError, ReadProject, ReadValue, StringLiteral } from '@dasch-swiss/dsp-js';
 import { ConfirmationDialogComponent, ConfirmationDialogData, DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
 
 @Component({
@@ -202,6 +202,6 @@ export class ActionPlaygroundComponent implements OnInit {
         setTimeout(() => { this.showTimedMessage = false; }, 2100);
     }
 
-    getProjectInfo(projectName: string) {
+    getSelectedProject(selectedProject: ReadProject) {
     }
 }
