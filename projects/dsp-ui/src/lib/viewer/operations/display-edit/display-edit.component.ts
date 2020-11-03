@@ -71,7 +71,7 @@ export class DisplayEditComponent implements OnInit {
 
     @Input() configuration?: object;
 
-    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
     constants = Constants;
 

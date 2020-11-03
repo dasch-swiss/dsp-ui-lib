@@ -1,12 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Component, DebugElement, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    DebugElement,
+    Directive,
+    EventEmitter,
+    forwardRef,
+    Input,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateTextValueAsXml, MockResource, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
-import { AppInitService } from 'projects/dsp-ui/src/lib/core/app-init.service';
 import { TextValueAsXMLComponent } from './text-value-as-xml.component';
 
 /**
@@ -59,7 +68,7 @@ class TestCKEditorComponent implements ControlValueAccessor {
  */
 @Component({
     template: `
-        <dsp-text-value-as-xml #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-text-value-as-xml>`
+        <dsp-text-value-as-xml #inputVal [displayValue]="displayInputVal" [mode]="mode" (internalLinkClicked)="standoffLinkClicked($event)"></dsp-text-value-as-xml>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -68,6 +77,8 @@ class TestHostDisplayValueComponent implements OnInit {
     displayInputVal: ReadTextValueAsXml;
 
     mode: 'read' | 'update' | 'create' | 'search';
+
+    refRes: string;
 
     ngOnInit() {
 
@@ -80,6 +91,10 @@ class TestHostDisplayValueComponent implements OnInit {
             }
         );
 
+    }
+
+    standoffLinkClicked(refResIri: string) {
+        this.refRes = refResIri;
     }
 }
 
@@ -103,6 +118,15 @@ class TestHostCreateValueComponent implements OnInit {
     }
 }
 
+@Directive({
+    selector: '[dspHtmlLink]'
+})
+export class TestTextValueHtmlLinkDirective {
+
+    @Output() internalLinkClicked = new EventEmitter<string>();
+
+}
+
 describe('TextValueAsXMLComponent', () => {
 
     beforeEach(async(() => {
@@ -111,7 +135,8 @@ describe('TextValueAsXMLComponent', () => {
                 TextValueAsXMLComponent,
                 TestHostDisplayValueComponent,
                 TestCKEditorComponent,
-                TestHostCreateValueComponent
+                TestHostCreateValueComponent,
+                TestTextValueHtmlLinkDirective
             ],
             imports: [
                 ReactiveFormsModule,
@@ -158,6 +183,30 @@ describe('TextValueAsXMLComponent', () => {
             expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
             expect(valueReadModeNativeElement.innerHTML).toEqual('\n<p>test with <strong>markup</strong></p>');
+
+        });
+
+        it('should display an existing value for the standard mapping as formatted text and react to clicking on a standoff link', () => {
+
+            expect(testHostComponent.inputValueComponent.displayValue.xml).toEqual('<?xml version="1.0" encoding="UTF-8"?>\n<text><p>test with <strong>markup</strong></p></text>');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+            expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+
+            expect(valueReadModeNativeElement.innerHTML).toEqual('\n<p>test with <strong>markup</strong></p>');
+
+            expect(testHostComponent.refRes).toBeUndefined();
+
+            const debugElement = valueComponentDe.query(By.directive(TestTextValueHtmlLinkDirective));
+
+            // https://stackoverflow.com/questions/50611721/how-to-access-property-of-directive-in-a-test-host-in-angular-5/51716105
+            const linkDirective = debugElement.injector.get(TestTextValueHtmlLinkDirective);
+
+            // simulate click event on a standoff link
+            linkDirective.internalLinkClicked.emit('testIri');
+
+            expect(testHostComponent.refRes).toEqual('testIri');
 
         });
 

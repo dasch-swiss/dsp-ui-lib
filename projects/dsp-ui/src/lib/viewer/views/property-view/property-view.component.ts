@@ -56,7 +56,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      */
     @Input() showAllProps = false;
 
-    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
     addButtonIsVisible: boolean; // used to toggle add value button
     addValueFormIsVisible: boolean; // used to toggle add value form field
