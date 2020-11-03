@@ -28,14 +28,15 @@ export class UploadFileService {
         private readonly _ss: SessionService
     ) { }
 
-    upload(file: FormData): Observable<any> {
+    upload(file: FormData): Observable<UploadedFileResponse> {
         const baseUrl = `${this.envUrl}upload`;
+        console.log('SESSSION', this._ss.getSession());
         const jwt = this._ss.getSession().user.jwt;
         const params = new HttpParams().set('token', jwt);
         // const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
         // TODO in order to track the progress change below to true and 'events'
         const options = { params, reportProgress: false, observe: 'body' as 'body' };
         console.log(`Uploaded to: ${baseUrl}`);
-        return this._http.post<any>(baseUrl, file, options);
+        return this._http.post<UploadedFileResponse>(baseUrl, file, options);
     }
 }

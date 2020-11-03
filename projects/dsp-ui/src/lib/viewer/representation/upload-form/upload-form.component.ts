@@ -89,10 +89,11 @@ export class UploadFormComponent implements OnInit {
     }
 
     supportedFileTypes(): string[] {
+        const supportedImageTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
         let allowedFileTypes: string[];
         switch (this.resourceTyoe) {
             case 'Image':
-                allowedFileTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
+                allowedFileTypes = supportedImageTypes;
                 break;
             default:
                 allowedFileTypes = [];
