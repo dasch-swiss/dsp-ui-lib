@@ -13,25 +13,25 @@ import { SortingService } from '../../services/sorting.service';
 })
 export class SelectProjectComponent implements OnInit {
 
+    // user IRI so we could show only projects that belongs to this user
+    @Input() userIri?: string;
+
+    @Output() projectInfo: EventEmitter<string> = new EventEmitter<string>();
+
+    // in case of an (api) error
+    error: any;
+
+    // filter projects while typing (autocomplete)
+    filteredProjects: Observable<ReadProject[]>;
+
     // list of projects
     projects: ReadProject[];
 
     // selected project
     selectedProject: ReadProject;
 
-    // filter projects while typing (autocomplete)
-    filteredProjects: Observable<ReadProject[]>;
-
     // form group
     selectProjectForm: FormGroup;
-
-    // in case of an (api) error
-    error: any;
-
-    // user IRI so we could show only projects that belongs to this user
-    @Input() userIri?: string;
-
-    @Output() projectInfo: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,

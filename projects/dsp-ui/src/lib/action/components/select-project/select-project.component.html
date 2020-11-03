@@ -2,17 +2,24 @@
     <form class="form-content">
         <mat-form-field class="large-field select-project">
 
-            <input matInput [matAutocomplete]="project" [formControl]="selectProjectForm.controls['projectName']"
-                   placeholder="Select project">
+            <input
+                matInput
+                placeholder="Select project"
+                [matAutocomplete]="project"
+                [formControl]="selectProjectForm.controls['projectName']">
 
-            <button mat-icon-button matSuffix *ngIf="selectProjectForm.controls['projectName'].value"
-                    (click)="resetInput($event)" type="button">
+            <button
+                mat-icon-button
+                matSuffix
+                *ngIf="selectProjectForm.controls['projectName'].value"
+                type="button"
+                (click)="resetInput($event)">
                 <mat-icon>close</mat-icon>
             </button>
 
             <mat-autocomplete #project="matAutocomplete" (optionSelected)="getProject($event.option.value)">
                 <mat-option *ngFor="let project of filteredProjects | async" [value]="project?.shortname">
-                    {{ project?.shortname }} | {{ project?.longname }} | {{ project?.shortcode}}
+                    {{ project?.shortname }} | {{ project?.longname }} | {{ project?.shortcode }}
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>

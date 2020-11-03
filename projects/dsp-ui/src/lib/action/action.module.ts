@@ -63,11 +63,9 @@ import { SelectProjectComponent } from './components/select-project/select-proje
     MatInputModule,
     MatListModule,
     MatAutocompleteModule,
-    FormsModule,
     ReactiveFormsModule,
     MatMenuModule,
-    MatSnackBarModule,
-    ReactiveFormsModule
+    MatSnackBarModule
   ],
   exports: [
     AdminImageDirective,

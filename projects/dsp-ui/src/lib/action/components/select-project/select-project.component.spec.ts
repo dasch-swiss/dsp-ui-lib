@@ -2,7 +2,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MockProjects, ProjectsEndpointAdmin, UsersEndpointAdmin } from '@dasch-swiss/dsp-js';
+import { MockProjects, UsersEndpointAdmin } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs/internal/observable/of';
 import { DspApiConnectionToken } from '../../../core';
 
