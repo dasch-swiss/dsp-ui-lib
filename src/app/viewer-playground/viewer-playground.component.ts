@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionService } from '@dasch-swiss/dsp-ui';
-import { ReadProject } from '@dasch-swiss/dsp-js';
+import { ReadLinkValue, ReadProject } from '@dasch-swiss/dsp-js';
 import { prototype } from 'events';
 
 @Component({
@@ -23,5 +23,9 @@ export class ViewerPlaygroundComponent implements OnInit {
     openProject(project: ReadProject) {
         // here you can redirect a user to the project page
         console.log('redircet to project page e.g. /project/:shortname', project.shortname);
+    }
+
+    refResourceClicked(linkValue: ReadLinkValue) {
+        console.log(linkValue);
     }
 }

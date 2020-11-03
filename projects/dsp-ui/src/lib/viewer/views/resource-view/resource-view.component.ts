@@ -14,6 +14,7 @@ import {
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
     PropertyDefinition,
+    ReadLinkValue,
     ReadProject,
     ReadResource,
     ReadValue,
@@ -71,6 +72,8 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param  openProject EventEmitter which sends project information to parent component
      */
     @Output() openProject: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
 
     resource: ReadResource;
 

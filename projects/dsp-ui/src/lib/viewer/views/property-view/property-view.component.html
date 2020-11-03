@@ -21,7 +21,9 @@
                         <dsp-display-edit *ngIf="val"
                             #displayEdit
                             [parentResource]="parentResource"
-                            [displayValue]="val">
+                            [displayValue]="val"
+                            (referredResourceClicked)="referredResourceClicked.emit($event)"
+                        >
                         </dsp-display-edit>
                     </div>
                     <!-- Add value form -->

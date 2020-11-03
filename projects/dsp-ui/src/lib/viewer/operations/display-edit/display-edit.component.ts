@@ -1,20 +1,19 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
-    ApiResponseData,
     ApiResponseError,
     Constants,
     DeleteValue,
     DeleteValueResponse,
     KnoraApiConnection,
     PermissionUtil,
+    ReadLinkValue,
     ReadResource,
     ReadUser,
     ReadValue,
     UpdateResource,
     UpdateValue,
-    UserResponse,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
@@ -71,6 +70,8 @@ export class DisplayEditComponent implements OnInit {
     @Input() parentResource: ReadResource;
 
     @Input() configuration?: object;
+
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
 
     constants = Constants;
 

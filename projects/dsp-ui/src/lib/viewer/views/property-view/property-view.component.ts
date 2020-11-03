@@ -1,11 +1,18 @@
 import {
-    Component,
+    Component, EventEmitter,
     Input,
     OnDestroy,
     OnInit,
+    Output,
     ViewChild
 } from '@angular/core';
-import { CardinalityUtil, PermissionUtil, ReadResource, ResourcePropertyDefinition, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
+import {
+    CardinalityUtil,
+    PermissionUtil,
+    ReadLinkValue,
+    ReadResource,
+    SystemPropertyDefinition
+} from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
@@ -48,6 +55,8 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      * @param  (showAllProps)
      */
     @Input() showAllProps = false;
+
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
 
     addButtonIsVisible: boolean; // used to toggle add value button
     addValueFormIsVisible: boolean; // used to toggle add value form field
