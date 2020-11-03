@@ -256,7 +256,7 @@ You can now access the app on your local machine under <http://localhost:4200/>.
 
 Before publishing:
 
-- Update README and CHANGELOG if necessary and commit the changes (currently, the CHANGELOG has to be updated manually with [gren](https://github.com/github-tools/github-release-notes): `gren changelog --override`)
+- Update README if necessary and commit the changes
 
 - Be sure that all dependencies to DSP-JS-LIB and DSP-API are set to the correct version:
   - Update DSP-API version in `vars.mk`
