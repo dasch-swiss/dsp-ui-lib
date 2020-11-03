@@ -4,6 +4,8 @@ BIN = ./node_modules/.bin
 THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
+include vars.mk
+
 .PHONY: clean
 
 # Clones the knora-api git repository
