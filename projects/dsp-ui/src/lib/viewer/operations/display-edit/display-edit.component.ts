@@ -150,6 +150,28 @@ export class DisplayEditComponent implements OnInit {
     }
 
     /**
+     * React when a standoff link in a text has received a click event.
+     *
+     * @param resIri the Iri of the resource the standoff link refers to.
+     */
+    internalLinkClicked(resIri: string) {
+
+        const standoffLinkVals: ReadLinkValue[] = this.parentResource.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue', ReadLinkValue);
+
+        // find the corresponding standoff link value
+        const referredResStandoffLinkVal: ReadLinkValue[] = standoffLinkVals.filter(
+            standoffLinkVal => {
+                return standoffLinkVal.linkedResourceIri === resIri;
+            }
+        );
+
+        // only emit an event if the corresponding standoff link value could be found
+        if (referredResStandoffLinkVal.length === 1) {
+            this.referredResourceClicked.emit(referredResStandoffLinkVal[0]);
+        }
+    }
+
+    /**
      * Show the form components and CRUD buttons to update an existing value or add a new value.
      */
     activateEditMode() {
