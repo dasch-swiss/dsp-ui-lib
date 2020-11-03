@@ -6,6 +6,9 @@ import { BaseValueComponent } from '../base-value.component';
 import { CustomRegex } from '../custom-regex';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-geoname-value',
     templateUrl: './geoname-value.component.html',
@@ -56,6 +59,11 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
         });
 
         this.resetFormControl();
+
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.addToParentFormGroup(this.formName, this.form);
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -67,6 +75,11 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
     ngOnDestroy(): void {
         this.unsubscribeFromValueChanges();
+
+        resolvedPromise.then(() => {
+            // remove form from the parent form group
+            this.removeFromParentFormGroup(this.formName);
+        });
     }
 
     getNewValue(): CreateGeonameValue | false {

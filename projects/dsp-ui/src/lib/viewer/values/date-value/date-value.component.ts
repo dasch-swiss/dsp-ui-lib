@@ -6,6 +6,9 @@ import { BaseValueComponent } from '../base-value.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
 import { DateInputComponent } from './date-input/date-input.component';
 
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-date-value',
     templateUrl: './date-value.component.html',
@@ -85,6 +88,11 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         });
 
         this.resetFormControl();
+
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.addToParentFormGroup(this.formName, this.form);
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -94,6 +102,11 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     // unsubscribe when the object is destroyed to prevent memory leaks
     ngOnDestroy(): void {
         this.unsubscribeFromValueChanges();
+
+        resolvedPromise.then(() => {
+            // remove form from the parent form group
+            this.removeFromParentFormGroup(this.formName);
+        });
     }
 
     /**
