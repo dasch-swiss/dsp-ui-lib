@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.0.0-rc.11 (3/11/2020)
+
+## Breaking changes
+
+- #214 DSP-759 Check if a Given Date Can Be Edited
+
+## Enhancements
+
+- #217 Create user service
+- #214 DSP-759 Check if a Given Date Can Be Edited
+
+## Bug fixes
+
+- #217 Create user service
+
+## Maintenance
+
+- #216 DSP-920 Renaming default github branch to "main"
+
+---
+
 ## v1.0.0-rc.10 (30/10/2020)
 
 ## Enhancements
@@ -20,7 +41,8 @@
 
 ## Maintenance
 
-- #210 DSP-881 - Value Component Base Class Changes
+- #216 DSP-920 Renaming default github branch to "main"
+- #210 DSP-881 Value Component Base Class Changes
 
 ---
 
