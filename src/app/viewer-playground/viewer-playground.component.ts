@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionService } from '@dasch-swiss/dsp-ui';
 import { ReadProject } from '@dasch-swiss/dsp-js';
-import { prototype } from 'events';
+import { SessionService } from '@dasch-swiss/dsp-ui';
 
 @Component({
     selector: 'app-viewer-playground',

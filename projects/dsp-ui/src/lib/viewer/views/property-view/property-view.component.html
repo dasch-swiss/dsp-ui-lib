@@ -3,7 +3,7 @@
     <div class="properties">
 
         <!-- list of properties -->
-        <div *ngFor="let prop of propArray; let last = last" [class.border-bottom]="!last">
+        <div *ngFor="let prop of propArray; let last = last" [class.border-bottom]="!last && prop.values.length > 0">
             <!-- show property; all in case of showAll === true or only the ones with prop.values -->
             <div class="property" *ngIf="!prop.propDef['isLinkProperty'] && showAllProps || ( prop.values && prop.values.length > 0 )">
                 <div class="property-label">
