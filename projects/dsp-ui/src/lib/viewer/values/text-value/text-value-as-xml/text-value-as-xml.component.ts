@@ -32,6 +32,8 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
     @Output() internalLinkClicked: EventEmitter<string> = new EventEmitter<string>();
 
+    @Output() internalLinkHovered: EventEmitter<string> = new EventEmitter<string>();
+
     valueFormControl: FormControl;
     commentFormControl: FormControl;
 

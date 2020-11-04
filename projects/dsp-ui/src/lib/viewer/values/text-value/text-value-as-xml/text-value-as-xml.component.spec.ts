@@ -68,7 +68,7 @@ class TestCKEditorComponent implements ControlValueAccessor {
  */
 @Component({
     template: `
-        <dsp-text-value-as-xml #inputVal [displayValue]="displayInputVal" [mode]="mode" (internalLinkClicked)="standoffLinkClicked($event)"></dsp-text-value-as-xml>`
+        <dsp-text-value-as-xml #inputVal [displayValue]="displayInputVal" [mode]="mode" (internalLinkClicked)="standoffLinkClicked($event)" (internalLinkHovered)="standoffLinkHovered($event)"></dsp-text-value-as-xml>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -78,7 +78,9 @@ class TestHostDisplayValueComponent implements OnInit {
 
     mode: 'read' | 'update' | 'create' | 'search';
 
-    refRes: string;
+    refResClicked: string;
+
+    refResHovered: string;
 
     ngOnInit() {
 
@@ -94,7 +96,11 @@ class TestHostDisplayValueComponent implements OnInit {
     }
 
     standoffLinkClicked(refResIri: string) {
-        this.refRes = refResIri;
+        this.refResClicked = refResIri;
+    }
+
+    standoffLinkHovered(refResIri: string) {
+        this.refResHovered = refResIri;
     }
 }
 
@@ -124,6 +130,8 @@ class TestHostCreateValueComponent implements OnInit {
 export class TestTextValueHtmlLinkDirective {
 
     @Output() internalLinkClicked = new EventEmitter<string>();
+
+    @Output() internalLinkHovered = new EventEmitter<string>();
 
 }
 
@@ -196,7 +204,7 @@ describe('TextValueAsXMLComponent', () => {
 
             expect(valueReadModeNativeElement.innerHTML).toEqual('\n<p>test with <strong>markup</strong></p>');
 
-            expect(testHostComponent.refRes).toBeUndefined();
+            expect(testHostComponent.refResClicked).toBeUndefined();
 
             const debugElement = valueComponentDe.query(By.directive(TestTextValueHtmlLinkDirective));
 
@@ -206,7 +214,31 @@ describe('TextValueAsXMLComponent', () => {
             // simulate click event on a standoff link
             linkDirective.internalLinkClicked.emit('testIri');
 
-            expect(testHostComponent.refRes).toEqual('testIri');
+            expect(testHostComponent.refResClicked).toEqual('testIri');
+
+        });
+
+        it('should display an existing value for the standard mapping as formatted text and react to hovering on a standoff link', () => {
+
+            expect(testHostComponent.inputValueComponent.displayValue.xml).toEqual('<?xml version="1.0" encoding="UTF-8"?>\n<text><p>test with <strong>markup</strong></p></text>');
+
+            expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+            expect(testHostComponent.inputValueComponent.mode).toEqual('read');
+
+            expect(valueReadModeNativeElement.innerHTML).toEqual('\n<p>test with <strong>markup</strong></p>');
+
+            expect(testHostComponent.refResHovered).toBeUndefined();
+
+            const debugElement = valueComponentDe.query(By.directive(TestTextValueHtmlLinkDirective));
+
+            // https://stackoverflow.com/questions/50611721/how-to-access-property-of-directive-in-a-test-host-in-angular-5/51716105
+            const linkDirective = debugElement.injector.get(TestTextValueHtmlLinkDirective);
+
+            // simulate click event on a standoff link
+            linkDirective.internalLinkHovered.emit('testIri');
+
+            expect(testHostComponent.refResHovered).toEqual('testIri');
 
         });
 
