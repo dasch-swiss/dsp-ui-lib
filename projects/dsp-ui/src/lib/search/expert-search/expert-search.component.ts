@@ -35,9 +35,11 @@ export class ExpertSearchComponent implements OnInit {
     expertSearchForm: FormGroup;
     queryFormControl: FormControl;
 
+    iriBaseUrl = this.getIriBaseUrl();
+
     defaultGravsearchQuery =
         `PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-PREFIX incunabula: <${this._dspApiConfig.apiUrl}/ontology/0803/incunabula/v2#>
+PREFIX incunabula: <${this.iriBaseUrl}/ontology/0803/incunabula/v2#>
 
 CONSTRUCT {
     ?book knora-api:isMainResource true .
@@ -121,6 +123,18 @@ CONSTRUCT {
             this._searchParamsService.changeSearchParamsMsg(new AdvancedSearchParams(generateGravsearchWithCustomOffset));
         }
         return query + offsetTemplate;
+    }
+
+    /**
+     * Get the IRI base url without configured api protocol.
+     * The protocol in this case is always http
+     */
+    getIriBaseUrl(): string {
+        return (
+            ("http://" + this._dspApiConfig.apiHost) +
+            (this._dspApiConfig.apiPort !== null ? ":" + this._dspApiConfig.apiPort : "") +
+            this._dspApiConfig.apiPath
+        );
     }
 
 }
