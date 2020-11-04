@@ -24,6 +24,7 @@ import {
     ConfirmationDialogValueDeletionPayload
 } from '../../../action/components/confirmation-dialog/confirmation-dialog.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
+import { UserService } from '../../services/user.service';
 import {
     DeletedEventValue,
     EmitEvent,
@@ -105,8 +106,9 @@ export class DisplayEditComponent implements OnInit {
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueService: ValueService,
-        private _dialog: MatDialog) {
+        private _dialog: MatDialog,
+        private _userService: UserService,
+        private _valueService: ValueService,) {
     }
 
     ngOnInit() {
@@ -128,19 +130,22 @@ export class DisplayEditComponent implements OnInit {
 
         this.readOnlyValue = this._valueService.isReadOnly(this.valueTypeOrClass, this.displayValue);
 
-        this._dspApiConnection.admin.usersEndpoint.getUserByIri(this.displayValue.attachedToUser).subscribe(
-            (response: ApiResponseData<UserResponse>) => {
-                this.user = response.body.user;
-            },
-            (error: ApiResponseError) => {
-                console.error(error);
-            }
-        );
+        // prevent getting info about system user (standoff link values are managed by the system)
+        if (this.displayValue.attachedToUser !== 'http://www.knora.org/ontology/knora-admin#SystemUser') {
+            this._userService.getUser(this.displayValue.attachedToUser).subscribe(
+                user => {
+                    this.user = user.user;
+                }
+            );
+        }
     }
 
     getTooltipText(): string {
-        return 'Creation date: ' + this.displayValue.valueCreationDate +
-            '\n Value creator: ' + this.user?.givenName + ' ' + this.user?.familyName;
+        const creationDate = 'Creation date: ' + this.displayValue.valueCreationDate;
+
+        const creatorInfo = this.user ? '\n Value creator: ' + this.user?.givenName + ' ' + this.user?.familyName : '';
+
+        return creationDate + creatorInfo;
     }
 
     /**

@@ -12,6 +12,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../../../core/core.module';
 import { NotificationService } from '../../../../action';
+import { UserService } from '../../../services/user.service';
 
 @Component({
     selector: 'dsp-property-toolbar',
@@ -34,7 +35,8 @@ export class PropertyToolbarComponent implements OnInit {
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _notification: NotificationService,
-        private _snackBar: MatSnackBar
+        private _snackBar: MatSnackBar,
+        private _userService: UserService
     ) { }
 
     ngOnInit() {
@@ -47,15 +49,13 @@ export class PropertyToolbarComponent implements OnInit {
                 this._notification.openSnackBar(error);
             }
         );
+
         // get user information
-        this._dspApiConnection.admin.usersEndpoint.getUserByIri(this.resource.attachedToUser).subscribe(
-            (response: ApiResponseData<UserResponse>) => {
-                this.user = response.body.user;
-            },
-            (error: ApiResponseError) => {
-                this._notification.openSnackBar(error);
+        this._userService.getUser(this.resource.attachedToUser).subscribe(
+            user => {
+                this.user = user.user;
             }
-        )
+        );
     }
 
 
