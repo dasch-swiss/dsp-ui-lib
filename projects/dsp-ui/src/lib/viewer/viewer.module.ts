@@ -57,7 +57,6 @@ import { PropertyToolbarComponent } from './views/property-view/property-toolbar
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
 
-
 @NgModule({
     declarations: [
         AddValueComponent,

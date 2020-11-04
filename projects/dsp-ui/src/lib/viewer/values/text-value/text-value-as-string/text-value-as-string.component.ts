@@ -5,6 +5,9 @@ import { CreateTextValueAsString, ReadTextValueAsString, UpdateTextValueAsString
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-text-value-as-string',
     templateUrl: './text-value-as-string.component.html',
@@ -55,6 +58,11 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
         });
 
         this.resetFormControl();
+
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.addToParentFormGroup(this.formName, this.form);
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -66,6 +74,11 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
 
     ngOnDestroy(): void {
         this.unsubscribeFromValueChanges();
+
+        resolvedPromise.then(() => {
+            // remove form from the parent form group
+            this.removeFromParentFormGroup(this.formName);
+        });
     }
 
     getNewValue(): CreateTextValueAsString | false {
