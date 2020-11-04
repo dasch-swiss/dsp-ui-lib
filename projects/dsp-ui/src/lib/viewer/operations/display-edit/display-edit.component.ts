@@ -154,7 +154,7 @@ export class DisplayEditComponent implements OnInit {
      *
      * @param resIri the Iri of the resource the standoff link refers to.
      */
-    internalLinkClicked(resIri: string) {
+    standoffLinkClicked(resIri: string) {
 
         const standoffLinkVals: ReadLinkValue[] = this.parentResource.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue', ReadLinkValue);
 

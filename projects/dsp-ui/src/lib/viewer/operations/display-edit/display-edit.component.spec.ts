@@ -88,6 +88,8 @@ class TestLinkValueComponent {
   @Input() parentResource;
 
   @Input() propIri;
+
+  @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
 }
 
 @Component({
@@ -245,8 +247,9 @@ class TestDateValueComponent {
 @Component({
   selector: `lib-host-component`,
   template: `
-    <dsp-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
-                      [displayValue]="readValue" (referredResourceClicked)="standoffLinkClicked($event)"></dsp-display-edit>`
+      <dsp-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
+                        [displayValue]="readValue"
+                        (referredResourceClicked)="internalLinkClicked($event)"></dsp-display-edit>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -257,7 +260,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
   mode: 'read' | 'update' | 'create' | 'search';
 
-  standoffLinkVal: ReadLinkValue;
+  linkVal: ReadLinkValue;
 
   ngOnInit() {
 
@@ -289,8 +292,8 @@ class TestHostDisplayValueComponent implements OnInit {
     this.readValue = readVal;
   }
 
-   standoffLinkClicked(standoffLinkVal: ReadLinkValue) {
-      this.standoffLinkVal = standoffLinkVal;
+   internalLinkClicked(linkVal: ReadLinkValue) {
+      this.linkVal = linkVal;
    }
 }
 
@@ -415,13 +418,15 @@ describe('DisplayEditComponent', () => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
       testHostFixture.detectChanges();
 
+      expect(testHostComponent.linkVal).toBeUndefined();
+
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsXmlComponent).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadTextValueAsXml).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkClicked.emit('testIri');
 
-      expect(testHostComponent.standoffLinkVal.linkedResourceIri).toEqual('testIri');
+      expect(testHostComponent.linkVal.linkedResourceIri).toEqual('testIri');
 
     });
 
@@ -533,6 +538,33 @@ describe('DisplayEditComponent', () => {
 
       expect(userServiceSpy.getUser).toHaveBeenCalledTimes(1);
       expect(userServiceSpy.getUser).toHaveBeenCalledWith('http://rdfh.ch/users/BhkfBc3hTeS_IDo-JgXRbQ');
+
+    });
+
+    it('should choose the apt component for a link value in the template and react to a click event', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkVal).toBeUndefined();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestLinkValueComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadLinkValue).toBe(true);
+      expect((testHostComponent.displayEditValueComponent.displayValueComponent.displayValue as unknown as ReadLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).parentResource instanceof ReadResource).toBe(true);
+      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
+
+      const userServiceSpy = TestBed.inject(UserService);
+
+      expect(userServiceSpy.getUser).toHaveBeenCalledTimes(1);
+      expect(userServiceSpy.getUser).toHaveBeenCalledWith('http://rdfh.ch/users/BhkfBc3hTeS_IDo-JgXRbQ');
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
+          .referredResourceClicked
+          .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
+
+      expect(testHostComponent.linkVal.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
 
     });
 
