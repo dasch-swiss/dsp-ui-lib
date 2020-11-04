@@ -73,6 +73,8 @@ export class DisplayEditComponent implements OnInit {
 
     @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
     constants = Constants;
 
     mode: 'read' | 'update' | 'create' | 'search';
@@ -150,12 +152,12 @@ export class DisplayEditComponent implements OnInit {
     }
 
     /**
-     * React when a standoff link in a text has received a click event.
+     * Given a resource Iri, finds the corresponding standoff link value.
+     * Returns an empty array if the standoff link cannot be found.
      *
-     * @param resIri the Iri of the resource the standoff link refers to.
+     * @param resIri the Iri of the resource.
      */
-    standoffLinkClicked(resIri: string) {
-
+    private _getStandoffLinkValueForResource(resIri: string): ReadLinkValue[] {
         const standoffLinkVals: ReadLinkValue[] = this.parentResource.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue', ReadLinkValue);
 
         // find the corresponding standoff link value
@@ -165,10 +167,40 @@ export class DisplayEditComponent implements OnInit {
             }
         );
 
+        return referredResStandoffLinkVal;
+    }
+
+    /**
+     * React when a standoff link in a text has received a click event.
+     *
+     * @param resIri the Iri of the resource the standoff link refers to.
+     */
+    standoffLinkClicked(resIri: string): void {
+
+        // find the corresponding standoff link value
+        const referredResStandoffLinkVal: ReadLinkValue[] = this._getStandoffLinkValueForResource(resIri);
+
         // only emit an event if the corresponding standoff link value could be found
         if (referredResStandoffLinkVal.length === 1) {
             this.referredResourceClicked.emit(referredResStandoffLinkVal[0]);
         }
+    }
+
+    /**
+     * React when a standoff link in a text has received a hover event.
+     *
+     * @param resIri the Iri of the resource the standoff link refers to.
+     */
+    standoffLinkHovered(resIri: string): void {
+
+        // find the corresponding standoff link value
+        const referredResStandoffLinkVal: ReadLinkValue[] = this._getStandoffLinkValueForResource(resIri);
+
+        // only emit an event if the corresponding standoff link value could be found
+        if (referredResStandoffLinkVal.length === 1) {
+            this.referredResourceHovered.emit(referredResStandoffLinkVal[0]);
+        }
+
     }
 
     /**

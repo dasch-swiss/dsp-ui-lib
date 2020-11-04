@@ -7,7 +7,8 @@
             <!-- display value is cast as 'any' because the compiler cannot infer the value type expected by the child component -->
             <dsp-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-string>
             <dsp-text-value-as-html class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-html>
-            <dsp-text-value-as-xml class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsXml'" [mode]="mode" [displayValue]="$any(displayValue)" (internalLinkClicked)="standoffLinkClicked($event)"></dsp-text-value-as-xml>
+            <dsp-text-value-as-xml class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsXml'" [mode]="mode" [displayValue]="$any(displayValue)"
+                                   (internalLinkClicked)="standoffLinkClicked($event)" (internalLinkHovered)="standoffLinkHovered($event)"></dsp-text-value-as-xml>
             <dsp-int-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-int-value>
             <dsp-boolean-value class="parent-value-component" #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-boolean-value>
             <dsp-uri-value class="parent-value-component" #displayVal *ngSwitchCase="constants.UriValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-uri-value>
