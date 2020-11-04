@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
@@ -8,8 +8,8 @@ import { UploadedFileResponse, UploadFileService } from './upload-file.service';
 
 describe('UploadFileService', () => {
     let service: UploadFileService;
-    let httpMock: HttpTestingController;
-    // let httpClient: HttpClient;
+    let httpTestingController: HttpTestingController;
+    let httpClient: HttpClient;
 
     let initServiceSpy: jasmine.SpyObj<AppInitService>;
     let httpClientSpy: jasmine.SpyObj<HttpClient>;
@@ -33,8 +33,8 @@ describe('UploadFileService', () => {
             ]
         });
         service = TestBed.inject(UploadFileService);
-        httpMock = TestBed.inject(HttpTestingController);
-
+        httpTestingController = TestBed.inject(HttpTestingController);
+        httpClient = TestBed.inject(HttpClient);
         httpClientSpy = TestBed.inject(HttpClient) as jasmine.SpyObj<HttpClient>;
         initServiceSpy = TestBed.inject(AppInitService) as jasmine.SpyObj<AppInitService>;
         sessionServiceSpy = TestBed.inject(SessionService) as jasmine.SpyObj<SessionService>;
@@ -55,9 +55,20 @@ describe('UploadFileService', () => {
                 return session;
             }
         );
+    });
 
-        console.log(httpClientSpy);
+    it('should be created', () => {
+        expect(service).toBeTruthy();
+    });
 
+    it('should call the upload() method', () => {
+        service = new UploadFileService(initServiceSpy, httpClientSpy as any, sessionServiceSpy);
+        service.upload(mockUploadData);
+        expect(httpClientSpy.post).toHaveBeenCalled();
+        expect(httpClientSpy.post).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return expected file resposne (HttpClient called once)', () => {
         const expectedResponse: UploadedFileResponse = {
             uploadedFiles: [{
                 fileType: 'image',
@@ -69,63 +80,10 @@ describe('UploadFileService', () => {
 
         httpClientSpy.post.and.returnValue(of(expectedResponse));
 
+        service.upload(mockUploadData).subscribe(
+            res => expect(res).toEqual(expectedResponse, 'expected files response'),
+            fail
+        );
+        expect(httpClientSpy.post.calls.count()).toBe(1, 'one call');
     });
-
-    it('should be created', () => {
-        expect(service).toBeTruthy();
-    });
-
-    // it('should return stubbed value from a spy', () => {
-    //     const stubSession = sessionServiceSpy.setSession();
-    //     sessionServiceSpy.getSession.and.returnValue(stubSession);
-    //     expect(service.upload(mockUploadData)).toBe(stubSession, 'method rerutned stubbed value');
-    //     expect(sessionServiceSpy.getSession.calls.count())
-    //         .toBe(1, 'spy method was called once');
-    // });
-
-    it('should call the upload()', () => {
-        service = new UploadFileService(initServiceSpy, httpClientSpy as any, sessionServiceSpy);
-        service.upload(mockUploadData);
-
-        expect(httpClientSpy.post).toHaveBeenCalledTimes(1);
-
-        const baseUrl = 'undefinedupload';
-        const params = new HttpParams().set('token', 'myToken');
-        const options = { params, reportProgress: false, observe: 'body' as 'body' };
-
-        // expect(httpClientSpy.post).toHaveBeenCalledWith(baseUrl, file, options);
-    });
-
-    // it('should return expected file resposne (HttpClient called once)', () => {
-    //     const expectedResponse: UploadedFileResponse = {
-    //         uploadedFiles: [{
-    //             fileType: 'image',
-    //             internalFilename: '8R0cJE3TSgB-BssuQyeW1rE.jp2',
-    //             originalFilename: 'Screenshot 2020-10-28 at 14.16.34.png',
-    //             temporaryUrl: 'http://sipi:1024/tmp/8R0cJE3TSgB-BssuQyeW1rE.jp2'
-    //         }]
-    //     };
-
-    //     httpClientSpy.post.and.returnValue((expectedResponse));
-
-    //     service.upload(mockUploadData).subscribe(
-    //         res => expect(res).toEqual(expectedResponse, 'expected files response'),
-    //         fail
-    //     );
-    //     expect(httpClientSpy.post.calls.count()).toBe(1, 'one call');
-    // });
-
-    // it('should return an error when the server returns a 404', () => {
-    //     const errorResponse = new HttpErrorResponse({
-    //         error: 'test 404 error',
-    //         status: 404, statusText: 'Not Found'
-    //     });
-
-    //     httpClientSpy.post.and.returnValue((errorResponse));
-
-    //     service.upload(mockUploadData).subscribe(
-    //         res => fail('expected an error, not files'),
-    //         error => expect(error.message).toContain('test 404 error')
-    //     );
-    // });
 });

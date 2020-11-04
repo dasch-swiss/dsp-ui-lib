@@ -3,7 +3,6 @@ import { FormBuilder } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UploadFileService } from '../../services/upload-file.service';
-
 import { UploadFormComponent } from './upload-form.component';
 
 class MockUploadFileService {
