@@ -25,8 +25,7 @@ import { FulltextSearchComponent } from './fulltext-search.component';
     template: `
         <dsp-fulltext-search #fulltextSearch
             [projectfilter]="projectfilter"
-            [filterbyproject]="filterbyproject"
-            class="dsp-fulltext-search">
+            [filterbyproject]="filterbyproject">
         </dsp-fulltext-search>
     `
 })
@@ -65,7 +64,6 @@ describe('FulltextSearchComponent', () => {
                 projectsEndpoint: jasmine.createSpyObj('projectsEndpoint', ['getProjects', 'getProjectByIri'])
             }
         };
-
 
         TestBed.configureTestingModule({
             declarations: [
