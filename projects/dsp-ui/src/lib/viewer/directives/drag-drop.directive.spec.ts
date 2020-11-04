@@ -19,7 +19,7 @@ describe('DragDropDirective', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [UploadFormComponent, DragDropDirective],
+            declarations: [DragDropDirective],
             imports: [
                 BrowserAnimationsModule,
                 MatIconModule,
