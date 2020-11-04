@@ -131,8 +131,8 @@ CONSTRUCT {
      */
     getIriBaseUrl(): string {
         return (
-            ("http://" + this._dspApiConfig.apiHost) +
-            (this._dspApiConfig.apiPort !== null ? ":" + this._dspApiConfig.apiPort : "") +
+            ('http://' + this._dspApiConfig.apiHost) +
+            (this._dspApiConfig.apiPort !== null ? ':' + this._dspApiConfig.apiPort : '') +
             this._dspApiConfig.apiPath
         );
     }
