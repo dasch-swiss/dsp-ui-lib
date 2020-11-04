@@ -72,7 +72,14 @@ describe('DragDropDirective', () => {
 
     it('should change background-color of input on drop event', () => {
         const mockFile = new File(['1'], 'testfile');
-        const drop = new DragEvent('drop');
+
+        // https://stackoverflow.com/questions/57080760/fake-file-drop-event-for-unit-testing
+        const drop = {
+            preventDefault: () => {},
+            stopPropagation: () => {},
+            dataTransfer: { files: [mockFile] }
+        };
+
         const color = 'rgb(242, 242, 242)'; // = #f2f2f2
         spyOn(drop, 'preventDefault');
         spyOn(drop, 'stopPropagation');
