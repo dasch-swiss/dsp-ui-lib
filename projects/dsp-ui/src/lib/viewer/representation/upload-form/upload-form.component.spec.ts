@@ -1,9 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UploadFileService } from '../../services/upload-file.service';
 import { UploadFormComponent } from './upload-form.component';
+import { MatIconModule } from '@angular/material/icon';
 
 class MockUploadFileService {
     envUrl = 'envUrl';
@@ -20,11 +21,11 @@ describe('UploadFormComponent', () => {
             declarations: [UploadFormComponent],
             imports: [
                 MatInputModule,
-                MatSnackBarModule
+                MatSnackBarModule,
+                ReactiveFormsModule,
+                MatIconModule
             ],
             providers: [
-                UploadFormComponent,
-                FormBuilder,
                 { provide: UploadFileService, useClass: MockUploadFileService }
             ]
         })
