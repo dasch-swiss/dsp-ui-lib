@@ -90,6 +90,8 @@ class TestLinkValueComponent {
   @Input() propIri;
 
   @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
+
+  @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter();
 }
 
 @Component({
@@ -430,10 +432,6 @@ describe('DisplayEditComponent', () => {
 
       expect(testHostComponent.linkValClicked).toBeUndefined();
 
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsXmlComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadTextValueAsXml).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
-
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkClicked.emit('testIri');
 
       expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('testIri');
@@ -446,10 +444,6 @@ describe('DisplayEditComponent', () => {
       testHostFixture.detectChanges();
 
       expect(testHostComponent.linkValHovered).toBeUndefined();
-
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsXmlComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadTextValueAsXml).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkHovered.emit('testIri');
 
@@ -575,23 +569,26 @@ describe('DisplayEditComponent', () => {
 
       expect(testHostComponent.linkValClicked).toBeUndefined();
 
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestLinkValueComponent).toBe(true);
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadLinkValue).toBe(true);
-      expect((testHostComponent.displayEditValueComponent.displayValueComponent.displayValue as unknown as ReadLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
-      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
-      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).parentResource instanceof ReadResource).toBe(true);
-      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
-
-      const userServiceSpy = TestBed.inject(UserService);
-
-      expect(userServiceSpy.getUser).toHaveBeenCalledTimes(1);
-      expect(userServiceSpy.getUser).toHaveBeenCalledWith('http://rdfh.ch/users/BhkfBc3hTeS_IDo-JgXRbQ');
-
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
           .referredResourceClicked
           .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
 
       expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+
+    });
+
+    it('should choose the apt component for a link value in the template and react to a hover event', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValHovered).toBeUndefined();
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
+          .referredResourceHovered
+          .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
+
+      expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
 
     });
 
