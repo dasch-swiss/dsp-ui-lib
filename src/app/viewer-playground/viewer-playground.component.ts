@@ -26,6 +26,10 @@ export class ViewerPlaygroundComponent implements OnInit {
     }
 
     refResourceClicked(linkValue: ReadLinkValue) {
-        console.log(linkValue);
+        console.log('clicked: ', linkValue);
+    }
+
+    refResourceHovered(linkValue: ReadLinkValue) {
+        console.log('hovered: ', linkValue);
     }
 }

@@ -11,7 +11,12 @@
 
     <!-- dsp-property-view -->
     <dsp-property-view *ngIf="resPropInfoVals.length !== 0 || systemPropDefs.length !== 0; else noProperty"
-        [parentResource]="resource" [propArray]="resPropInfoVals" [systemPropArray]="systemPropDefs" [showAllProps]="showAllProps" (referredResourceClicked)="referredResourceClicked.emit($event)">
+        [parentResource]="resource"
+                       [propArray]="resPropInfoVals"
+                       [systemPropArray]="systemPropDefs"
+                       [showAllProps]="showAllProps"
+                       (referredResourceClicked)="referredResourceClicked.emit($event)"
+                       (referredResourceHovered)="referredResourceHovered.emit($event)">
     </dsp-property-view>
 
     <ng-template #noProperty>The resource {{resource?.resourceClassLabel}} has no defined properties.</ng-template>

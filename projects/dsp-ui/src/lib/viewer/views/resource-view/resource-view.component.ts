@@ -75,6 +75,8 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
     resource: ReadResource;
 
     resPropInfoVals: PropertyInfoValues[] = []; // array of resource properties
