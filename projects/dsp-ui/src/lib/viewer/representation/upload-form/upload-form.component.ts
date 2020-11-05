@@ -10,13 +10,12 @@ import { UploadedFileResponse, UploadFileService } from '../../services/upload-f
 })
 export class UploadFormComponent implements OnInit {
 
-    @Output() file: File;
-    // only StillImageRepresentation supported so far, consier changing below to @Input
     readonly fromLabels = {
         upload: 'Upload file',
         drag_drop: 'Drag and drop or click to upload'
     };
     readonly resourceTyoe = 'Image';
+    file: File; // only StillImageRepresentation supported so far
     form: FormGroup;
     get fileControl() { return this.form.get('file') as FormControl; }
     isLoading = false;
@@ -123,7 +122,7 @@ export class UploadFormComponent implements OnInit {
      */
     initializeForm(): void {
         this.form = this._fb.group({
-            file: [undefined, Validators.required]
+            file: [null, Validators.required]
         }, { updateOn: 'blur' });
     }
 
