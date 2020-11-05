@@ -20,7 +20,7 @@ export interface UploadedFileResponse {
 })
 export class UploadFileService {
 
-    envUrl: string = this._is.config[`sipiUrl`];
+    sipiHost: string = this._is.config[`sipiUrl`];
 
     constructor(
         private readonly _is: AppInitService,
@@ -28,15 +28,21 @@ export class UploadFileService {
         private readonly _ss: SessionService
     ) { }
 
+
+    /**
+     * Uploads files to SIPI
+     *
+     * @param (file)
+     */
     upload(file: FormData): Observable<UploadedFileResponse> {
-        const baseUrl = `${this.envUrl}upload`;
-        console.log('SESSSION', this._ss.getSession());
-        const jwt = this._ss.getSession().user.jwt;
+        const baseUrl = `${this.sipiHost}upload`;
+
+        // checks if user is logged in
+        const jwt = this._ss.getSession()?.user.jwt;
         const params = new HttpParams().set('token', jwt);
-        // const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+
         // TODO in order to track the progress change below to true and 'events'
         const options = { params, reportProgress: false, observe: 'body' as 'body' };
-        console.log(`Uploaded to: ${baseUrl}`);
         return this._http.post<UploadedFileResponse>(baseUrl, file, options);
     }
 }

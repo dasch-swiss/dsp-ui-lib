@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../action/services/notification.service';
 import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
@@ -10,13 +10,13 @@ import { UploadedFileResponse, UploadFileService } from '../../services/upload-f
 })
 export class UploadFormComponent implements OnInit {
 
-    @Input() readonly resourceTyoe = 'Image'; // only StillImageRepresentation supported so far
     @Output() file: File;
-
+    // only StillImageRepresentation supported so far, consier changing below to @Input
     readonly fromLabels = {
         upload: 'Upload file',
         drag_drop: 'Drag and drop or click to upload'
     };
+    readonly resourceTyoe = 'Image';
     form: FormGroup;
     get fileControl() { return this.form.get('file') as FormControl; }
     isLoading = false;
@@ -32,35 +32,38 @@ export class UploadFormComponent implements OnInit {
         this.initializeForm();
     }
 
-    initializeForm(): void {
-        this.form = this._fb.group({
-            file: [undefined, Validators.required]
-        }, { updateOn: 'blur' });
-    }
-
-    addFile(event): void {
+    /**
+     * Adds file and uploads to SIPI, checking before if conditions met
+     * @param event Drag
+     */
+    addFile(event: any): void {
         let files: File[] = [];
         files = event.target?.files ? event.target.files : event;
-        if (this.isMoreThanOneFile(files)) {
+
+        // only one file at a time supported
+        if (this._isMoreThanOneFile(files)) {
             const error = 'ERROR: Only one file allowed at a time';
             this._ns.openSnackBar(error);
             this.file = null;
         } else {
             const formData = new FormData();
             this.file = files[0];
-            if (!this.isFileTypeSupported(this.file.type)) {
+
+            // only certain filetypes are supported
+            if (!this._isFileTypeSupported(this.file.type)) {
                 const error = 'ERROR: File type not supported';
                 this._ns.openSnackBar(error);
                 this.file = null;
             } else {
                 // show loading indicator only for files > 1MB
                 this.isLoading = this.file.size > 1048576 ? true : false;
+
                 formData.append(this.file.name, this.file);
                 this._ufs.upload(formData).subscribe(
                     (res: UploadedFileResponse) => {
                         const tempUrl = res.uploadedFiles[0].temporaryUrl;
                         const thumbUri = `${tempUrl}/full/150,/0/default.jpg`;
-                        this.thumbnaillUrl = `${thumbUri}`.replace('http://sipi:1024/', this._ufs.envUrl);
+                        this.thumbnaillUrl = `${thumbUri}`.replace('http://sipi:1024/', this._ufs.sipiHost);
                         console.log(res);
                     },
                     (e: Error) => {
@@ -80,39 +83,10 @@ export class UploadFormComponent implements OnInit {
         console.log('addFile', event, this.file, this.fileControl);
     }
 
-    resetForm(): void {
-        this.form.reset();
-    }
-
-    isFileTypeSupported(param: string): boolean {
-        return this.supportedFileTypes().includes(param) ? true : false;
-    }
-
-    supportedFileTypes(): string[] {
-        const supportedImageTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
-        let allowedFileTypes: string[];
-        switch (this.resourceTyoe) {
-            case 'Image':
-                allowedFileTypes = supportedImageTypes;
-                break;
-            default:
-                allowedFileTypes = [];
-                break;
-        }
-        return allowedFileTypes;
-    }
-
-    isMoreThanOneFile(files: File[]): boolean {
-        return files.length > 1;
-    }
-
-    deleteAttachment(i?: number): void {
-        // this.files.splice(i, 1);
-        this.file = null;
-        this.thumbnaillUrl = null;
-        this.fileControl.reset();
-    }
-
+    /**
+     * Converst file size to display in KM or MB
+     * @param (val)
+     */
     convertBytes(val: number): string {
         const kilo = 1024;
         const mega = kilo * kilo;
@@ -127,8 +101,69 @@ export class UploadFormComponent implements OnInit {
         }
     }
 
+    /**
+     * Converts date to readable format
+     * @param (val)
+     */
     convertDate(val: number): string {
         return new Date(+`Date(${val})`.replace(/\D/g, '')).toLocaleDateString();
     }
 
+    /**
+     * Removes the attachement
+     */
+    deleteAttachment(): void {
+        this.file = null;
+        this.thumbnaillUrl = null;
+        this.fileControl.reset();
+    }
+
+    /**
+     * Initializes form group
+     */
+    initializeForm(): void {
+        this.form = this._fb.group({
+            file: [undefined, Validators.required]
+        }, { updateOn: 'blur' });
+    }
+
+    /**
+     * Resets form group
+     */
+    resetForm(): void {
+        this.form.reset();
+    }
+
+    /**
+     * Checks if added file type is supported for certain resource type
+     * @param (fileType)
+     */
+    private _isFileTypeSupported(fileType: string): boolean {
+        return this._supportedFileTypes().includes(fileType) ? true : false;
+    }
+
+    /**
+     * Returns supported file types list for certain resource type
+     */
+    private _supportedFileTypes(): string[] {
+        const supportedImageTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
+        let allowedFileTypes: string[];
+        switch (this.resourceTyoe) {
+            case 'Image':
+                allowedFileTypes = supportedImageTypes;
+                break;
+            default:
+                allowedFileTypes = [];
+                break;
+        }
+        return allowedFileTypes;
+    }
+
+    /**
+     * Checks if more than one file dropped
+     * @param (files)
+     */
+    private _isMoreThanOneFile(files: File[]): boolean {
+        return files.length > 1;
+    }
 }

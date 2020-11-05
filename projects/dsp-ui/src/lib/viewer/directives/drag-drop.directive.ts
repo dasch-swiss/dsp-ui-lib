@@ -7,7 +7,7 @@ export class DragDropDirective {
 
     @HostBinding('style.background-color') background = '#f2f2f2';
 
-    @Output() fileDropped = new EventEmitter<any>();
+    @Output() fileDropped = new EventEmitter<FileList>();
 
     @HostListener('dragover', ['$event']) onDragOver(event: DragEvent): void {
         event.preventDefault();
