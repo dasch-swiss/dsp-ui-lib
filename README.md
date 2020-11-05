@@ -255,7 +255,7 @@ You can now access the app on your local machine under <http://localhost:4200/>.
 ### Add a New Component to the Demo Application (Playground)
 
 The demo app demonstrates the functionality of dsp-ui-lib's modules.
-By default, The demo app's main component routes to the page demonstrating the resource viewer in read mode.
+By default, the demo app's main component routes to the page demonstrating the resource viewer in read mode.
 
 Before adding a new component to the demo app,
 check if the desired demo could be added to an existing component of the demo app.
