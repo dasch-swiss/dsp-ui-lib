@@ -36,13 +36,13 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     // XML conversion
     xmlTransform = {
         '<hr>': '<hr/>',
+        '</hr>': '',
         '<s>': '<strike>',
         '</s>': '</strike>',
         '<i>': '<em>',
         '</i>': '</em>',
         '<figure class="table">': '',
-        '</figure>': '',
-        '<br>': '<br/>'
+        '</figure>': ''
     };
 
     // TODO: get this from config via AppInitService
@@ -93,16 +93,12 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
             toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat', 'redo', 'undo'],
             heading: {
                 options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading1', view: 'h1', title: 'Heading 1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3' },
-                    { model: 'heading4', view: 'h4', title: 'Heading 4' },
-                    { model: 'heading5', view: 'h5', title: 'Heading 5' },
-                    { model: 'heading6', view: 'h6', title: 'Heading 6' },
-                    { model: 'formatted', view: 'pre', title: 'Formatted' },
-                    { model: 'cite', view: 'cite', title: 'Cited' }
-
+                    {model: 'heading1', view: 'h1', title: 'Heading 1'},
+                    {model: 'heading2', view: 'h2', title: 'Heading 2'},
+                    {model: 'heading3', view: 'h3', title: 'Heading 3'},
+                    {model: 'heading4', view: 'h4', title: 'Heading 4'},
+                    {model: 'heading5', view: 'h5', title: 'Heading 5'},
+                    {model: 'heading6', view: 'h6', title: 'Heading 6'},
                 ]
             },
             codeBlock: {
