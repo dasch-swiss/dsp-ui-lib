@@ -140,7 +140,7 @@ Before testing the new component inside of the demo app, you have to rebuild aft
 npm run build-lib
 ```
 
-### Run the DSP-UI-LIB Demo Application
+### Run the DSP-UI-LIB Demo Application (Playground)
 
 Run the app with the command line: `npm run start`.
 
@@ -251,6 +251,11 @@ The second step runs a container based on the image built in the previous step:
 - `--publish` maps the port on your local machine to the port in the Docker container.
 
 You can now access the app on your local machine under <http://localhost:4200/>.
+
+### Add a New Component to the Demo Application (Playground)
+
+The demo app demonstrates the functionality of dsp-ui-lib's modules.
+By default, The demo app's main component routes to the page demonstrating the resource viewer in read mode.
 
 ### Publish a new version to NPM
 
