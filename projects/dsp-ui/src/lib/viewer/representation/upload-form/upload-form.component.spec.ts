@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UploadFileService } from '../../services/upload-file.service';
 import { UploadFormComponent } from './upload-form.component';
-import { MatIconModule } from '@angular/material/icon';
 
 class MockUploadFileService {
     envUrl = 'envUrl';
@@ -43,7 +43,7 @@ describe('UploadFormComponent', () => {
     });
 
     it('should display resource type', () => {
-        expect(component.resourceTyoe).toBeDefined();
+        expect(component.resourceType).toBeUndefined();
     });
 
     it('should be created with no fille', () => {
@@ -76,7 +76,9 @@ describe('UploadFormComponent', () => {
     describe('isFileTypeSupported', () => {
         it('should return true for the supported image files', () => {
             const fileTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
+            component.resourceType = 'Image';
             for (const type of fileTypes) {
+                console.log(type);
                 expect(component['_isFileTypeSupported'](type)).toBeTruthy();
             }
         });

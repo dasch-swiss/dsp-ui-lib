@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../action/services/notification.service';
 import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
@@ -10,11 +10,11 @@ import { UploadedFileResponse, UploadFileService } from '../../services/upload-f
 })
 export class UploadFormComponent implements OnInit {
 
+    @Input() resourceType: string;
     readonly fromLabels = {
         upload: 'Upload file',
         drag_drop: 'Drag and drop or click to upload'
     };
-    readonly resourceTyoe = 'Image';
     file: File; // only StillImageRepresentation supported so far
     form: FormGroup;
     get fileControl() { return this.form.get('file') as FormControl; }
@@ -81,7 +81,7 @@ export class UploadFormComponent implements OnInit {
     }
 
     /**
-     * Converst file size to display in KM or MB
+     * Converst file size to display in KB or MB
      * @param (val)
      */
     convertBytes(val: number): string {
@@ -145,7 +145,7 @@ export class UploadFormComponent implements OnInit {
     private _supportedFileTypes(): string[] {
         const supportedImageTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
         let allowedFileTypes: string[];
-        switch (this.resourceTyoe) {
+        switch (this.resourceType) {
             case 'Image':
                 allowedFileTypes = supportedImageTypes;
                 break;
