@@ -60,10 +60,9 @@ export class UploadFormComponent implements OnInit {
                 formData.append(this.file.name, this.file);
                 this._ufs.upload(formData).subscribe(
                     (res: UploadedFileResponse) => {
-                        const tempUrl = res.uploadedFiles[0].temporaryUrl;
-                        const thumbUri = `${tempUrl}/full/150,/0/default.jpg`;
-                        this.thumbnaillUrl = `${thumbUri}`.replace('http://sipi:1024/', this._ufs.sipiHost);
-                        console.log(res);
+                        const temporaryUrl = res.uploadedFiles[0].temporaryUrl;
+                        const thumbnailUri = '/full/150,/0/default.jpg';
+                        this.thumbnaillUrl = `${temporaryUrl}${thumbnailUri}`;
                     },
                     (e: Error) => {
                         this._ns.openSnackBar(e.message);
@@ -79,7 +78,6 @@ export class UploadFormComponent implements OnInit {
             }
 
         }
-        console.log('addFile', event, this.file, this.fileControl);
     }
 
     /**
