@@ -28,7 +28,6 @@ export class DragDropDirective {
         const files = event.dataTransfer.files;
         if (files.length > 0) {
             this.fileDropped.emit(files);
-            console.log(`Dropped ${files.length} files.`, files);
         }
     }
 }

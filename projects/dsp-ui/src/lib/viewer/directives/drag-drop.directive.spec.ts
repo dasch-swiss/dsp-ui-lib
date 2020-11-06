@@ -1,4 +1,4 @@
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,39 +6,54 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UploadFormComponent } from '../representation/upload-form/upload-form.component';
-import { UploadFileService } from '../services/upload-file.service';
 import { DragDropDirective } from './drag-drop.directive';
 
-class MockUploadFileService { }
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `<div dspDragDrop class="dd-container" (fileDropped)="filesDropped($event)"></div>`
+})
+class TestHostComponent {
+
+    files: FileList;
+
+    filesDropped(files: FileList) {
+        this.files = files;
+    }
+
+}
 
 describe('DragDropDirective', () => {
-    let component: UploadFormComponent;
-    let fixture: ComponentFixture<UploadFormComponent>;
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
     let dragDropInput: DebugElement;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [DragDropDirective],
+            declarations: [
+                DragDropDirective,
+                TestHostComponent
+            ],
             imports: [
                 BrowserAnimationsModule,
                 MatIconModule,
                 MatInputModule,
                 MatSnackBarModule,
                 ReactiveFormsModule
-            ],
-            providers: [
-                { provide: UploadFileService, useClass: MockUploadFileService }
             ]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(UploadFormComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-        dragDropInput = fixture.debugElement.query(By.css('.dd-container'));
+        testHostFixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
+
+        dragDropInput = testHostFixture.debugElement.query(By.css('.dd-container'));
+
+        expect(testHostComponent).toBeTruthy();
     });
 
     it('should create an instance', () => {
@@ -49,11 +64,15 @@ describe('DragDropDirective', () => {
     it('should change background-color of input on dragover event', () => {
         const dragOver = new DragEvent('dragover');
         const color = 'rgb(221, 221, 221)'; // = #ddd
+
         spyOn(dragOver, 'preventDefault');
         spyOn(dragOver, 'stopPropagation');
+
         dragDropInput.triggerEventHandler('dragover', dragOver);
-        fixture.detectChanges();
+        testHostFixture.detectChanges();
+
         expect(dragDropInput.nativeElement.style.backgroundColor).toBe(color);
+
         expect(dragOver.stopPropagation).toHaveBeenCalled();
         expect(dragOver.preventDefault).toHaveBeenCalled();
     });
@@ -61,11 +80,15 @@ describe('DragDropDirective', () => {
     it('should change background-color of input on dragleave event', () => {
         const dragLeave = new DragEvent('dragleave');
         const color = 'rgb(242, 242, 242)'; // = #f2f2f2
+
         spyOn(dragLeave, 'preventDefault');
         spyOn(dragLeave, 'stopPropagation');
+
         dragDropInput.triggerEventHandler('dragleave', dragLeave);
-        fixture.detectChanges();
+        testHostFixture.detectChanges();
+
         expect(dragDropInput.nativeElement.style.backgroundColor).toBe(color);
+
         expect(dragLeave.stopPropagation).toHaveBeenCalled();
         expect(dragLeave.preventDefault).toHaveBeenCalled();
     });
@@ -81,11 +104,19 @@ describe('DragDropDirective', () => {
         };
 
         const color = 'rgb(242, 242, 242)'; // = #f2f2f2
+
         spyOn(drop, 'preventDefault');
         spyOn(drop, 'stopPropagation');
+
+        expect(testHostComponent.files).toBeUndefined();
+
         dragDropInput.triggerEventHandler('drop', drop);
-        fixture.detectChanges();
+        testHostFixture.detectChanges();
+
         expect(dragDropInput.nativeElement.style.backgroundColor).toBe(color);
+        expect(testHostComponent.files.length).toEqual(1);
+        expect(testHostComponent.files[0].name).toEqual('testfile');
+
         expect(drop.stopPropagation).toHaveBeenCalled();
         expect(drop.preventDefault).toHaveBeenCalled();
     });
