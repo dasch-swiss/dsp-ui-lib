@@ -6,8 +6,10 @@
 .full-width {
   width: 100%;
 }
-button {
-  cursor: pointer;
+.delete-file {
+  &:hover {
+    color: red;
+  }
 }
 
 // drag & drop input
@@ -57,10 +59,6 @@ button {
 
   & mat-icon {
     position: absolute;
-
-    &:hover {
-      color: red;
-    }
   }
 }
 
@@ -72,16 +70,6 @@ button {
   margin: 10px auto;
   background: #fff;
   color: #000;
-
-  & .delete-file {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-
-    &:hover {
-      color: red;
-    }
-  }
 }
 table {
   width: 100%;

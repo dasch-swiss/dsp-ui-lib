@@ -26,6 +26,7 @@
                 <img src="{{ thumbnaillUrl }}"
                     alt="thumbnail" />
                 <button mat-button
+                    class="delete-file"
                     title="delete file"
                     (click)="deleteAttachment()">
                     <mat-icon>close</mat-icon>
@@ -48,7 +49,8 @@
                             <td>{{ convertBytes(file.size) }}</td>
                             <td>{{ convertDate(file.lastModified) }}</td>
                             <td>
-                                <button class="delete-file"
+                                <button mat-icon-button
+                                    class="delete-file"
                                     title="delete file"
                                     (click)="deleteAttachment()">
                                     <mat-icon>delete</mat-icon>
