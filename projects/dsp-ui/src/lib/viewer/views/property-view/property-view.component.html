@@ -3,9 +3,11 @@
     <div class="properties">
 
         <!-- list of properties -->
-        <div *ngFor="let prop of propArray; let last = last" [class.border-bottom]="!last && prop.values.length > 0">
+        <div *ngFor="let prop of propArray; let last = last">
             <!-- show property; all in case of showAll === true or only the ones with prop.values -->
-            <div class="property" *ngIf="!prop.propDef['isLinkProperty'] && showAllProps || ( prop.values && prop.values.length > 0 )">
+            <div *ngIf="!prop.propDef['isLinkProperty'] && showAllProps || ( prop.values && prop.values.length > 0 )"
+                [class.border-bottom]="prop.values"
+                class="property">
                 <div class="property-label">
                     <!-- label of the property -->
                     <h3 class="label mat-subheading-1"
@@ -26,8 +28,7 @@
                     </div>
                     <!-- Add value form -->
                     <div *ngIf="addValueFormIsVisible && propID === prop.propDef.id">
-                        <dsp-add-value
-                            #addValue
+                        <dsp-add-value #addValue
                             class="add-value"
                             [parentResource]="parentResource"
                             [resourcePropertyDefinition]="$any(parentResource.entityInfo.properties[prop.propDef.id])"
@@ -36,7 +37,9 @@
                     </div>
                     <!-- Add button -->
                     <div *ngIf="addValueIsAllowed(prop)">
-                        <button class="create" (click)="showAddValueForm(prop)" title="Add a new value">
+                        <button class="create"
+                            (click)="showAddValueForm(prop)"
+                            title="Add a new value">
                             <mat-icon>add_box</mat-icon>
                         </button>
                     </div>
