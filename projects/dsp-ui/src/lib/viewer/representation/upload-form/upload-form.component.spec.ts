@@ -77,7 +77,7 @@ describe('UploadFormComponent', () => {
         it('should return true for the supported image files', () => {
             const fileTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
             for (const type of fileTypes) {
-                expect(component.isFileTypeSupported(type)).toBeTruthy();
+                expect(component['_isFileTypeSupported'](type)).toBeTruthy();
             }
         });
 
@@ -85,7 +85,7 @@ describe('UploadFormComponent', () => {
             // TODO: add real unsupported filetypes?
             const fileTypes = ['image/a', 'image/b', 'image/c', 'image/d', 'image/e'];
             for (const type of fileTypes) {
-                expect(component.isFileTypeSupported(type)).toBeFalsy();
+                expect(component['_isFileTypeSupported'](type)).toBeFalsy();
             }
         });
     });
@@ -94,13 +94,13 @@ describe('UploadFormComponent', () => {
         it('should return false for one file array', () => {
             const filesArray: File[] = [];
             filesArray.push(mockFile);
-            expect(component.isMoreThanOneFile(filesArray)).toBeFalsy();
+            expect(component['_isMoreThanOneFile'](filesArray)).toBeFalsy();
         });
 
         it('should return false for more than one file', () => {
             const filesArray: File[] = [];
             filesArray.push(mockFile, mockFile, mockFile);
-            expect(component.isMoreThanOneFile(filesArray)).toBeTruthy();
+            expect(component['_isMoreThanOneFile'](filesArray)).toBeTruthy();
         });
     });
 });
