@@ -128,8 +128,9 @@ CONSTRUCT {
     /**
      * Get the IRI base url without configured api protocol.
      * The protocol in this case is always http
+     * TODO: move to DSP-JS-Lib similar to `get ApiUrl`
      */
-    getIriBaseUrl(): string {
+    private getIriBaseUrl(): string {
         return (
             ('http://' + this._dspApiConfig.apiHost) +
             (this._dspApiConfig.apiPort !== null ? ':' + this._dspApiConfig.apiPort : '') +
