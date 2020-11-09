@@ -25,7 +25,7 @@ import { LinkValueComponent } from './link-value.component';
 @Component({
   template: `
     <dsp-link-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [parentResource]="parentResource"
-                    [propIri]="propIri" (referredResourceClicked)="refResClicked($event)"></dsp-link-value>`
+                    [propIri]="propIri" (referredResourceClicked)="refResClicked($event)" (referredResourceHovered)="refResHovered($event)"></dsp-link-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -35,7 +35,8 @@ class TestHostDisplayValueComponent implements OnInit {
   parentResource: ReadResource;
   propIri: string;
   mode: 'read' | 'update' | 'create' | 'search';
-  linkValueSelected: ReadLinkValue;
+  linkValueClicked: ReadLinkValue;
+  linkValueHovered: ReadLinkValue;
 
   ngOnInit() {
 
@@ -52,7 +53,11 @@ class TestHostDisplayValueComponent implements OnInit {
   }
 
   refResClicked(readLinkValue: ReadLinkValue) {
-    this.linkValueSelected = readLinkValue;
+    this.linkValueClicked = readLinkValue;
+  }
+
+  refResHovered(readLinkValue: ReadLinkValue) {
+    this.linkValueHovered = readLinkValue;
   }
 }
 
@@ -417,8 +422,27 @@ describe('LinkValueComponent', () => {
     }));
 
     it('should emit the displayValue when the value is clicked on', () => {
+
+        expect(testHostComponent.linkValueClicked).toBeUndefined();
+
         valueReadModeNativeElement.click();
-        expect(testHostComponent.linkValueSelected).toEqual(testHostComponent.displayInputVal);
+
+        expect(testHostComponent.linkValueClicked).toEqual(testHostComponent.displayInputVal);
+    });
+
+    it('should emit the displayValue when the value is hovered', () => {
+
+        expect(testHostComponent.linkValueHovered).toBeUndefined();
+
+        valueReadModeNativeElement.dispatchEvent(
+            new MouseEvent('mouseover', {
+                view: window,
+                bubbles: true,
+                cancelable: true
+            })
+        );
+
+        expect(testHostComponent.linkValueHovered).toEqual(testHostComponent.displayInputVal);
     });
 
   });

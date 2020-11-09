@@ -7,7 +7,8 @@
             <!-- display value is cast as 'any' because the compiler cannot infer the value type expected by the child component -->
             <dsp-text-value-as-string class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsString'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-string>
             <dsp-text-value-as-html class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsHtml'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-html>
-            <dsp-text-value-as-xml class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsXml'" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-text-value-as-xml>
+            <dsp-text-value-as-xml class="parent-value-component" #displayVal *ngSwitchCase="'ReadTextValueAsXml'" [mode]="mode" [displayValue]="$any(displayValue)"
+                                   (internalLinkClicked)="standoffLinkClicked($event)" (internalLinkHovered)="standoffLinkHovered($event)"></dsp-text-value-as-xml>
             <dsp-int-value class="parent-value-component" #displayVal *ngSwitchCase="constants.IntValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-int-value>
             <dsp-boolean-value class="parent-value-component" #displayVal *ngSwitchCase="constants.BooleanValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-boolean-value>
             <dsp-uri-value class="parent-value-component" #displayVal *ngSwitchCase="constants.UriValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-uri-value>
@@ -17,7 +18,7 @@
             <dsp-time-value class="parent-value-component" #displayVal *ngSwitchCase="constants.TimeValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-time-value>
             <dsp-geoname-value class="parent-value-component" #displayVal *ngSwitchCase="constants.GeonameValue" [mode]="mode" [displayValue]="$any(displayValue)"></dsp-geoname-value>
             <dsp-link-value class="parent-value-component" #displayVal *ngSwitchCase="constants.LinkValue" [mode]="mode" [displayValue]="$any(displayValue)"
-                        [parentResource]="parentResource" [propIri]="displayValue.property"></dsp-link-value>
+                        [parentResource]="parentResource" [propIri]="displayValue.property" (referredResourceClicked)="referredResourceClicked.emit($event)" (referredResourceHovered)="referredResourceHovered.emit($event)"></dsp-link-value>
             <dsp-date-value class="parent-value-component" #displayVal *ngSwitchCase="constants.DateValue" [mode]="mode" [displayValue]="$any(displayValue)" [displayOptions]="dateDisplayOptions" [labels]="showDateLabels" [ontologyDateFormat]="dateFormat"></dsp-date-value>
             <dsp-list-value class="parent-value-component" #displayVal *ngSwitchCase="constants.ListValue" [mode]="mode" [displayValue]="$any(displayValue)"
                         [propertyDef]="$any(parentResource.entityInfo.properties[displayValue.property])"></dsp-list-value>
