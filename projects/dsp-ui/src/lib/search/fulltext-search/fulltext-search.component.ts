@@ -25,7 +25,7 @@ import {
 import { NotificationService } from '../../action/services/notification.service';
 import { SortingService } from '../../action/services/sorting.service';
 import { DspApiConnectionToken } from '../../core/core.module';
-import { SearchParams } from '../../viewer';
+import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 
 export interface PrevSearchItem {
     projectIri?: string;
