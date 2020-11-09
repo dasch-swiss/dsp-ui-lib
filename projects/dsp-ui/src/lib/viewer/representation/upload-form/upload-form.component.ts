@@ -33,7 +33,7 @@ export class UploadFormComponent implements OnInit {
 
     /**
      * Adds file and uploads to SIPI, checking before if conditions met
-     * @param event Drag
+     * @param event DragDrop event containing upload files
      */
     addFile(event: any): void {
         let files: File[] = [];
@@ -82,7 +82,7 @@ export class UploadFormComponent implements OnInit {
 
     /**
      * Converst file size to display in KB or MB
-     * @param (val)
+     * @param val file size to be converted
      */
     convertBytes(val: number): string {
         const kilo = 1024;
@@ -100,10 +100,10 @@ export class UploadFormComponent implements OnInit {
 
     /**
      * Converts date to readable format
-     * @param (val)
+     * @param date date to be converted
      */
-    convertDate(val: number): string {
-        return new Date(+`Date(${val})`.replace(/\D/g, '')).toLocaleDateString();
+    convertDate(date: number): string {
+        return new Date(+`Date(${date})`.replace(/\D/g, '')).toLocaleDateString();
     }
 
     /**
@@ -133,7 +133,7 @@ export class UploadFormComponent implements OnInit {
 
     /**
      * Checks if added file type is supported for certain resource type
-     * @param (fileType)
+     * @param fileType file type to be checked
      */
     private _isFileTypeSupported(fileType: string): boolean {
         return this._supportedFileTypes().includes(fileType) ? true : false;
@@ -158,7 +158,7 @@ export class UploadFormComponent implements OnInit {
 
     /**
      * Checks if more than one file dropped
-     * @param (files)
+     * @param files files array to be checked
      */
     private _isMoreThanOneFile(files: File[]): boolean {
         return files.length > 1;
