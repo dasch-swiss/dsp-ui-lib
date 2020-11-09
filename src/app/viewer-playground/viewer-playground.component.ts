@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ReadProject } from '@dasch-swiss/dsp-js';
 import { SessionService } from '@dasch-swiss/dsp-ui';
+import { ReadLinkValue, ReadProject } from '@dasch-swiss/dsp-js';
 
 @Component({
     selector: 'app-viewer-playground',
@@ -9,7 +9,6 @@ import { SessionService } from '@dasch-swiss/dsp-ui';
 })
 export class ViewerPlaygroundComponent implements OnInit {
 
-    // resource = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
     resource = 'http://rdfh.ch/0803/18a671b8a601';
 
     constructor(
@@ -23,5 +22,13 @@ export class ViewerPlaygroundComponent implements OnInit {
     openProject(project: ReadProject) {
         // here you can redirect a user to the project page
         console.log('redircet to project page e.g. /project/:shortname', project.shortname);
+    }
+
+    refResourceClicked(linkValue: ReadLinkValue) {
+        console.log('clicked: ', linkValue);
+    }
+
+    refResourceHovered(linkValue: ReadLinkValue) {
+        console.log('hovered: ', linkValue);
     }
 }
