@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnChanges, Output } from '@angu
 import { PageEvent } from '@angular/material/paginator';
 import { ApiResponseError, CountQueryResponse, IFulltextSearchParams, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { NotificationService } from '../../../action';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
 import { AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
 
 /**

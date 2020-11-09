@@ -22,7 +22,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../../action';
-import { DspApiConnectionToken } from '../../core';
+import { DspApiConnectionToken } from '../../core/core.module';
 import { SearchParams } from '../../viewer';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
 import { Properties, SelectPropertyComponent } from './select-property/select-property.component';

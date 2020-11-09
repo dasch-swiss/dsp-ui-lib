@@ -18,10 +18,9 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { of, throwError } from 'rxjs';
 import { AjaxError } from 'rxjs/ajax';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
 import { AddedEventValue, EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { AddValueComponent } from './add-value.component';
-
 
 @Component({
     selector: `dsp-int-value`,

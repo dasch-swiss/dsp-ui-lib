@@ -14,7 +14,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
 import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { PropertyInfoValues, ResourceViewComponent } from './resource-view.component';
 

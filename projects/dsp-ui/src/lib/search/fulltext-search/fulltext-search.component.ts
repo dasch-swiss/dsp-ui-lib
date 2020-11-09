@@ -24,7 +24,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { NotificationService } from '../../action';
 import { SortingService } from '../../action/services/sorting.service';
-import { DspApiConnectionToken } from '../../core';
+import { DspApiConnectionToken } from '../../core/core.module';
 import { SearchParams } from '../../viewer';
 
 export interface PrevSearchItem {
