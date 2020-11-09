@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionService } from '@dasch-swiss/dsp-ui';
 import { ReadLinkValue, ReadProject } from '@dasch-swiss/dsp-js';
-import { prototype } from 'events';
 
 @Component({
     selector: 'app-viewer-playground',
@@ -10,11 +9,11 @@ import { prototype } from 'events';
 })
 export class ViewerPlaygroundComponent implements OnInit {
 
-    resource = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+    resource = 'http://rdfh.ch/0803/18a671b8a601';
 
     constructor(
         private _sessionService: SessionService
-     ) { }
+    ) { }
 
     ngOnInit(): void {
         this._sessionService.isSessionValid().subscribe(status => console.log('session valid: ', status));
