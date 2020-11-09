@@ -21,7 +21,7 @@ import {
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
-import { NotificationService } from '../../action';
+import { NotificationService } from '../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../core/core.module';
 import { SearchParams } from '../../viewer';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
