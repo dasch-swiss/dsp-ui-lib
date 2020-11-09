@@ -22,10 +22,10 @@ import {
     ProjectsResponse,
     ReadProject
 } from '@dasch-swiss/dsp-js';
-import { NotificationService } from '../../action';
+import { NotificationService } from '../../action/services/notification.service';
 import { SortingService } from '../../action/services/sorting.service';
-import { DspApiConnectionToken } from '../../core';
-import { SearchParams } from '../../viewer';
+import { DspApiConnectionToken } from '../../core/core.module';
+import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 
 export interface PrevSearchItem {
     projectIri?: string;

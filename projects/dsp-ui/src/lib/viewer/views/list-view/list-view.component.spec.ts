@@ -6,7 +6,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CountQueryResponse, IFulltextSearchParams, MockResource, ReadResourceSequence, SearchEndpointV2 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
 import { AdvancedSearchParams, AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
 import { ListViewComponent, SearchParams } from './list-view.component';
 

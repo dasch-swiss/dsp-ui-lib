@@ -19,7 +19,7 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { OntologyCache } from '@dasch-swiss/dsp-js/src/cache/ontology-cache/OntologyCache';
 import { of } from 'rxjs';
-import { DspApiConnectionToken } from '../../core';
+import { DspApiConnectionToken } from '../../core/core.module';
 import { AdvancedSearchComponent } from './advanced-search.component';
 import { Properties } from './select-property/select-property.component';
 

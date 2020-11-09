@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockProjects, ProjectsEndpointAdmin } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs/internal/observable/of';
 import { SortingService } from '../../action/services/sorting.service';
-import { DspApiConnectionToken } from '../../core';
+import { DspApiConnectionToken } from '../../core/core.module';
 import { FulltextSearchComponent } from './fulltext-search.component';
 
 /**

@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { StringLiteral } from '@dasch-swiss/dsp-js';
-import { SessionService } from '../../../core';
+import { SessionService } from '../../../core/session.service';
 
 @Component({
   selector: 'dsp-string-literal-input',

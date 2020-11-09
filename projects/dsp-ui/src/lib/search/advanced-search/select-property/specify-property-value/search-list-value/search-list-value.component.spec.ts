@@ -11,7 +11,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ListNodeV2, ListsEndpointV2, MockList, MockOntology, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
-import { DspApiConnectionToken } from '../../../../../core';
+import { DspApiConnectionToken } from '../../../../../core/core.module';
 import { IRI } from '../operator';
 import { SearchListValueComponent } from './search-list-value.component';
 
