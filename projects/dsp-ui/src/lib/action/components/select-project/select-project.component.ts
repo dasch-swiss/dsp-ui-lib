@@ -48,7 +48,7 @@ export class SelectProjectComponent implements OnInit {
         this.selectProjectForm = this._formBuilder.group({
             projectName: new FormControl({
                 value: '', disabled: false
-            })
+            }) as FormControl
         });
 
         this.filteredProjects = this.selectProjectForm.controls.projectName.valueChanges
