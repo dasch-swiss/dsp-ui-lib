@@ -4,7 +4,7 @@
 [![CI](https://github.com/dasch-swiss/knora-ui-ng-lib/workflows/CI/badge.svg)](https://github.com/dasch-swiss/knora-ui-ng-lib/actions?query=workflow%3ACI)
 [![npm downloads](https://img.shields.io/npm/dt/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
-[![license](https://img.shields.io/npm/l/@dasch-swiss/dsp-ui.svg?style=flat)](https://github.com/dasch-swiss/dsp-ui-lib/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/@dasch-swiss/dsp-ui.svg?style=flat)](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/LICENSE)
 
 This is the demo and developing environment for DSP-UI-LIB ([@dasch-swiss/dsp-ui](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)) comprised of 4 modules.
 
@@ -256,10 +256,10 @@ You can now access the app on your local machine under <http://localhost:4200/>.
 
 Before publishing:
 
-- Update README and CHANGELOG if necessary and commit the changes (currently, the CHANGELOG has to be updated manually with [gren](https://github.com/github-tools/github-release-notes): `gren changelog --override`)
+- Update README if necessary and commit the changes
 
 - Be sure that all dependencies to DSP-JS-LIB and DSP-API are set to the correct version:
-  - Update DSP-API version in `Makefile`
+  - Update DSP-API version in `vars.mk`
   - Update DSP-JS version in `package.json` and run `npm install` to update the `package-lock.json`
   - Update DSP-JS version in section `peerDependencies` of `projects/dsp-ui/package.json`
 
