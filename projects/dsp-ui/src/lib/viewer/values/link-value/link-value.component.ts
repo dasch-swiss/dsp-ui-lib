@@ -40,7 +40,11 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     @Input() displayValue?: ReadLinkValue;
     @Input() parentResource: ReadResource;
     @Input() propIri: string;
+
     @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
+
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter();
+
     resources: ReadResource[] = [];
     restrictToResourceClass: string;
     valueFormControl: FormControl;
@@ -187,9 +191,16 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     }
 
     /**
-     * Emits the displayValue
+     * Emits the displayValue on click.
      */
     refResClicked() {
         this.referredResourceClicked.emit(this.displayValue);
+    }
+
+    /**
+     * Emits the displayValue on hover.
+     */
+    refResHovered() {
+        this.referredResourceHovered.emit(this.displayValue);
     }
 }

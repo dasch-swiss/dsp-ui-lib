@@ -1,4 +1,14 @@
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Inject,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Constants, CreateTextValueAsXml, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import * as Editor from 'ckeditor5-custom-build';
@@ -19,6 +29,10 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     readonly standardMapping = 'http://rdfh.ch/standoff/mappings/StandardMapping'; // TODO: define this somewhere else
 
     @Input() displayValue?: ReadTextValueAsXml;
+
+    @Output() internalLinkClicked: EventEmitter<string> = new EventEmitter<string>();
+
+    @Output() internalLinkHovered: EventEmitter<string> = new EventEmitter<string>();
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
