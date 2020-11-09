@@ -15,9 +15,8 @@ import {
     UpdateLinkValue
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
 import { LinkValueComponent } from './link-value.component';
-
 
 /**
  * Test host component to simulate parent component.

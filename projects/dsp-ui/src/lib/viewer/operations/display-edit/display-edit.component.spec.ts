@@ -5,7 +5,7 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } fro
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonHarness } from '@angular/material/button/testing';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -40,7 +40,8 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { AsyncSubject, of, throwError } from 'rxjs';
 import { AjaxError } from 'rxjs/ajax';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
+import { UserService } from '../../services/user.service';
 import {
     DeletedEventValue,
     EmitEvent,
@@ -50,7 +51,6 @@ import {
 } from '../../services/value-operation-event.service';
 import { ValueService } from '../../services/value.service';
 import { DisplayEditComponent } from './display-edit.component';
-import { UserService } from '../../services/user.service';
 
 @Component({
   selector: `dsp-text-value-as-string`,

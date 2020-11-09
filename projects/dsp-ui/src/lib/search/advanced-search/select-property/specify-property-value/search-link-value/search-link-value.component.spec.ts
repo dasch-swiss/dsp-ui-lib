@@ -14,7 +14,7 @@ import {
     SearchEndpointV2
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
-import { DspApiConnectionToken } from '../../../../../core';
+import { DspApiConnectionToken } from '../../../../../core/core.module';
 import { IRI } from '../operator';
 import { SearchLinkValueComponent } from './search-link-value.component';
 

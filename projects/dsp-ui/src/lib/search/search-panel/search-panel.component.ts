@@ -1,7 +1,7 @@
 import { ConnectionPositionPair, Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Component, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { SearchParams } from '../../viewer';
+import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 
 @Component({
     selector: 'dsp-search-panel',

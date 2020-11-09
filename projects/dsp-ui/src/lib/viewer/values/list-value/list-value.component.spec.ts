@@ -16,9 +16,10 @@ import {
     UpdateListValue
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
 import { ListValueComponent } from './list-value.component';
 import { SublistValueComponent } from './subList-value/sublist-value.component';
+
 /**
  * Test host component to simulate parent component.
  */

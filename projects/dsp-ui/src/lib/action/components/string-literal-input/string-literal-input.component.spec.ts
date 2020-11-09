@@ -13,7 +13,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StringLiteral } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken, SessionService } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
+import { SessionService } from '../../../core/session.service';
 import { StringLiteralInputComponent } from './string-literal-input.component';
 
 /**
