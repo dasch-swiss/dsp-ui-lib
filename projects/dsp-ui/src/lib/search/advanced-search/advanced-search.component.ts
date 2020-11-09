@@ -21,9 +21,9 @@ import {
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
-import { NotificationService } from '../../action';
-import { DspApiConnectionToken } from '../../core';
-import { SearchParams } from '../../viewer';
+import { NotificationService } from '../../action/services/notification.service';
+import { DspApiConnectionToken } from '../../core/core.module';
+import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
 import { Properties, SelectPropertyComponent } from './select-property/select-property.component';
 import { PropertyWithValue } from './select-property/specify-property-value/operator';

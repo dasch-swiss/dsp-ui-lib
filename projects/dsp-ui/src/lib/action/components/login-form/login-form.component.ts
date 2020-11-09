@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiResponseData, ApiResponseError, KnoraApiConnection, LoginResponse, LogoutResponse } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken, Session, SessionService } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
+import { Session, SessionService } from '../../../core/session.service';
 import { NotificationService } from '../../services/notification.service';
 
 @Component({

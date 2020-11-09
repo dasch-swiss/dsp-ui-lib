@@ -14,13 +14,14 @@ import {
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
     PropertyDefinition,
+    ReadLinkValue,
     ReadProject,
     ReadResource,
     ReadValue,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
-import { NotificationService } from '../../../action';
+import { NotificationService } from '../../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import {
     AddedEventValue,
@@ -71,6 +72,10 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param  openProject EventEmitter which sends project information to parent component
      */
     @Output() openProject: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
     resource: ReadResource;
 

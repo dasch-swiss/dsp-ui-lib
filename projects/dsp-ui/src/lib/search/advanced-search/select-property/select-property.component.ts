@@ -1,10 +1,10 @@
 import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ResourceClassDefinition, ResourcePropertyDefinition, Cardinality, IHasProperty } from '@dasch-swiss/dsp-js';
+import { Cardinality, IHasProperty, ResourceClassDefinition, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
-import { SortingService } from '../../../action';
-import { SpecifyPropertyValueComponent } from './specify-property-value/specify-property-value.component';
+import { SortingService } from '../../../action/services/sorting.service';
 import { ComparisonOperatorAndValue, PropertyWithValue } from './specify-property-value/operator';
+import { SpecifyPropertyValueComponent } from './specify-property-value/specify-property-value.component';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
