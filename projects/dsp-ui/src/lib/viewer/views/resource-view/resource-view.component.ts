@@ -144,9 +144,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                                     propDef: prop.propertyDefinition,
                                     guiDef: prop,
                                     values: this.resource.getValuesAs(prop.propertyIndex, ReadStillImageFileValue)
-                                }
+                                };
                                 this.stillImageRepresentations = [new StillImageRepresentation(
-                                    this.resource.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue', ReadStillImageFileValue)[0], [])];
+                                    this.resource.getValuesAs(Constants.HasStillImageFileValue, ReadStillImageFileValue)[0], [])];
 
                                 break;
 
