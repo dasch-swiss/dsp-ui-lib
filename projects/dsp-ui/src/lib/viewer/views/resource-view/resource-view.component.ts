@@ -17,12 +17,14 @@ import {
     ReadLinkValue,
     ReadProject,
     ReadResource,
+    ReadStillImageFileValue,
     ReadValue,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../../core/core.module';
+import { StillImageRepresentation } from '../../representation/still-image/still-image.component';
 import {
     AddedEventValue,
     DeletedEventValue,
@@ -85,6 +87,8 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     valueOperationEventSubscriptions: Subscription[] = []; // array of ValueOperationEvent subscriptions
 
+    stillImageRepresentations: StillImageRepresentation[];
+
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _notification: NotificationService,
@@ -132,11 +136,28 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                 // gather resource property information
                 this.resPropInfoVals = this.resource.entityInfo.classes[this.resource.type].getResourcePropertiesList().map(
                     (prop: IHasPropertyWithPropertyDefinition) => {
-                        const propInfoAndValues: PropertyInfoValues = {
-                            propDef: prop.propertyDefinition,
-                            guiDef: prop,
-                            values: this.resource.getValues(prop.propertyIndex)
-                        };
+                        let propInfoAndValues: PropertyInfoValues;
+
+                        switch (prop.propertyDefinition.objectType) {
+                            case Constants.StillImageFileValue:
+                                propInfoAndValues = {
+                                    propDef: prop.propertyDefinition,
+                                    guiDef: prop,
+                                    values: this.resource.getValuesAs(prop.propertyIndex, ReadStillImageFileValue)
+                                }
+                                this.stillImageRepresentations = [new StillImageRepresentation(
+                                    this.resource.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStillImageFileValue', ReadStillImageFileValue)[0], [])];
+
+                                break;
+
+                            default:
+                                propInfoAndValues = {
+                                    propDef: prop.propertyDefinition,
+                                    guiDef: prop,
+                                    values: this.resource.getValues(prop.propertyIndex)
+                                };
+                        }
+
                         return propInfoAndValues;
                     }
                 );

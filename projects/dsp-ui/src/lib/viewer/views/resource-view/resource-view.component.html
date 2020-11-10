@@ -1,9 +1,10 @@
 <div class="resource-view" *ngIf="resource">
 
     <!-- dsp-resource-representation -->
-    <!-- TODO: here we will add the resource representation viewers like
-        still-image-viewer, moving-image-viewer, audio-player etc.
-    -->
+    <div class="center">
+        <dsp-still-image *ngIf="stillImageRepresentations" [images]="stillImageRepresentations">
+        </dsp-still-image>
+    </div>
 
     <!-- dsp-property-toolbar with action buttons and project information -->
     <dsp-property-toolbar *ngIf="showToolbar" [resource]="resource" [showAllProps]="showAllProps" (toggleProps)="toggleProps($event)" (openProject)="openProject.emit($event)">
