@@ -28,7 +28,7 @@ export * from './views/list-view/resource-list/resource-list.component';
 export * from './views/list-view/resource-grid/resource-grid.component';
 // media representations
 export * from './representation/still-image/still-image.component';
-export * from './representation/upload-form/upload-form.component';
+export * from './representation/upload-form/upload-file.component';
 // services
 export * from './services/upload-file.service';
 export * from './services/user.service';

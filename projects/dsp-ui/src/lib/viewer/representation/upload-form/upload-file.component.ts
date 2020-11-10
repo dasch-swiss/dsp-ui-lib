@@ -6,10 +6,10 @@ import { UploadedFileResponse, UploadFileService } from '../../services/upload-f
 
 @Component({
     selector: 'dsp-upload-form',
-    templateUrl: './upload-form.component.html',
-    styleUrls: ['./upload-form.component.scss']
+    templateUrl: './upload-file.component.html',
+    styleUrls: ['./upload-file.component.scss']
 })
-export class UploadFormComponent implements OnInit {
+export class UploadFileComponent implements OnInit {
 
     @Input() representation: string; // only StillImageRepresentation supported so far
     readonly fromLabels = {

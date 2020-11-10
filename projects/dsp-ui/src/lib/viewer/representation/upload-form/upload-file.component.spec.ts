@@ -5,21 +5,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Constants } from '@dasch-swiss/dsp-js';
 import { UploadFileService } from '../../services/upload-file.service';
-import { UploadFormComponent } from './upload-form.component';
+import { UploadFileComponent } from './upload-file.component';
 
 class MockUploadFileService {
     envUrl = 'envUrl';
 }
 
-describe('UploadFormComponent', () => {
+describe('UploadFileComponent', () => {
     const mockFile = new File(['1'], 'testfile');
     const fb = new FormBuilder();
-    let component: UploadFormComponent;
-    let fixture: ComponentFixture<UploadFormComponent>;
+    let component: UploadFileComponent;
+    let fixture: ComponentFixture<UploadFileComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [UploadFormComponent],
+            declarations: [UploadFileComponent],
             imports: [
                 MatInputModule,
                 MatSnackBarModule,
@@ -34,7 +34,7 @@ describe('UploadFormComponent', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(UploadFormComponent);
+        fixture = TestBed.createComponent(UploadFileComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

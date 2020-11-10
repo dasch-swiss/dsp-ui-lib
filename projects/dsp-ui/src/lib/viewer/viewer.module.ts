@@ -28,7 +28,7 @@ import { TextValueHtmlLinkDirective } from './directives/text-value-html-link.di
 import { AddValueComponent } from './operations/add-value/add-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { StillImageComponent } from './representation/still-image/still-image.component';
-import { UploadFormComponent } from './representation/upload-form/upload-form.component';
+import { UploadFileComponent } from './representation/upload-form/upload-file.component';
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
 import { ColorValueComponent } from './values/color-value/color-value.component';
@@ -90,7 +90,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         TextValueHtmlLinkDirective,
         TimeInputComponent,
         TimeValueComponent,
-        UploadFormComponent,
+        UploadFileComponent,
         UriValueComponent
     ],
     imports: [
@@ -145,7 +145,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         TextValueAsXMLComponent,
         TextValueHtmlLinkDirective,
         TimeValueComponent,
-        UploadFormComponent,
+        UploadFileComponent,
         UriValueComponent
     ]
 })
