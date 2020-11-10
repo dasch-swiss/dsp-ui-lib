@@ -28,10 +28,8 @@ export class UploadFileService {
         private readonly _ss: SessionService
     ) { }
 
-
     /**
      * Uploads files to SIPI
-     *
      * @param (file)
      */
     upload(file: FormData): Observable<UploadedFileResponse> {

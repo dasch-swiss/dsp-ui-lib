@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Constants } from '@dasch-swiss/dsp-js';
 
 @Component({
     selector: 'app-upload-playground',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
     styleUrls: ['./upload-playground.component.scss']
 })
 export class UploadPlaygroundComponent {
-    type = 'Image';
+
+    type = Constants.StillImageFileValue;
 }

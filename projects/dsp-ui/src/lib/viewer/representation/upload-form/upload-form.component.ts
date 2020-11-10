@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Constants } from '@dasch-swiss/dsp-js';
 import { NotificationService } from '../../../action/services/notification.service';
 import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
 
@@ -10,12 +11,12 @@ import { UploadedFileResponse, UploadFileService } from '../../services/upload-f
 })
 export class UploadFormComponent implements OnInit {
 
-    @Input() resourceType: string;
+    @Input() representation: string; // only StillImageRepresentation supported so far
     readonly fromLabels = {
         upload: 'Upload file',
         drag_drop: 'Drag and drop or click to upload'
     };
-    file: File; // only StillImageRepresentation supported so far
+    file: File;
     form: FormGroup;
     get fileControl() { return this.form.get('file') as FormControl; }
     isLoading = false;
@@ -145,8 +146,8 @@ export class UploadFormComponent implements OnInit {
     private _supportedFileTypes(): string[] {
         const supportedImageTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
         let allowedFileTypes: string[];
-        switch (this.resourceType) {
-            case 'Image':
+        switch (this.representation) {
+            case Constants.StillImageFileValue:
                 allowedFileTypes = supportedImageTypes;
                 break;
             default:

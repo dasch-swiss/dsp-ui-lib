@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { Constants } from '@dasch-swiss/dsp-js';
 import { UploadFileService } from '../../services/upload-file.service';
 import { UploadFormComponent } from './upload-form.component';
 
@@ -43,7 +44,7 @@ describe('UploadFormComponent', () => {
     });
 
     it('should display resource type', () => {
-        expect(component.resourceType).toBeUndefined();
+        expect(component.representation).toBeUndefined();
     });
 
     it('should be created with no fille', () => {
@@ -76,7 +77,7 @@ describe('UploadFormComponent', () => {
     describe('isFileTypeSupported', () => {
         it('should return true for the supported image files', () => {
             const fileTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
-            component.resourceType = 'Image';
+            component.representation = Constants.StillImageFileValue;
             for (const type of fileTypes) {
                 console.log(type);
                 expect(component['_isFileTypeSupported'](type)).toBeTruthy();
