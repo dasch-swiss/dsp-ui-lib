@@ -5,7 +5,7 @@ import { NotificationService } from '../../../action/services/notification.servi
 import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
 
 @Component({
-    selector: 'dsp-upload-form',
+    selector: 'dsp-upload-file',
     templateUrl: './upload-file.component.html',
     styleUrls: ['./upload-file.component.scss']
 })

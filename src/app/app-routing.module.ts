@@ -36,7 +36,7 @@ const routes: Routes = [
     { path: 'still-image', component: StillImagePlaygroundComponent }, // still image playground component
     { path: 'viewer', component: ViewerPlaygroundComponent }, // viewer playground component
     { path: 'ckeditor', component: CkeditorPlaygroundComponent }, // CKeditor playground component
-    { path: 'upload-form', component: UploadPlaygroundComponent }
+    { path: 'upload-file', component: UploadPlaygroundComponent }
 ];
 
 @NgModule({
