@@ -1,11 +1,11 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonHarness } from '@angular/material/button/testing';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -27,7 +27,7 @@ import {
     ReadListValue,
     ReadResource,
     ReadTextValueAsHtml,
-    ReadTextValueAsString,
+    ReadTextValueAsString, ReadTextValueAsXml,
     ReadTimeValue,
     ReadUriValue,
     ReadValue,
@@ -40,7 +40,8 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { AsyncSubject, of, throwError } from 'rxjs';
 import { AjaxError } from 'rxjs/ajax';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
+import { UserService } from '../../services/user.service';
 import {
     DeletedEventValue,
     EmitEvent,
@@ -50,7 +51,6 @@ import {
 } from '../../services/value-operation-event.service';
 import { ValueService } from '../../services/value.service';
 import { DisplayEditComponent } from './display-edit.component';
-import { UserService } from '../../services/user.service';
 
 @Component({
   selector: `dsp-text-value-as-string`,
@@ -88,6 +88,10 @@ class TestLinkValueComponent {
   @Input() parentResource;
 
   @Input() propIri;
+
+  @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
+
+  @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter();
 }
 
 @Component({
@@ -99,6 +103,21 @@ class TestTextValueAsHtmlComponent {
   @Input() mode;
 
   @Input() displayValue;
+}
+
+@Component({
+    selector: `dsp-text-value-as-xml`,
+    template: ``
+})
+class TestTextValueAsXmlComponent {
+
+    @Input() mode;
+
+    @Input() displayValue;
+
+    @Output() internalLinkClicked: EventEmitter<string> = new EventEmitter<string>();
+
+    @Output() internalLinkHovered: EventEmitter<string> = new EventEmitter<string>();
 }
 
 @Component({
@@ -232,8 +251,11 @@ class TestDateValueComponent {
 @Component({
   selector: `lib-host-component`,
   template: `
-    <dsp-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
-                      [displayValue]="readValue"></dsp-display-edit>`
+      <dsp-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
+                        [displayValue]="readValue"
+                        (referredResourceClicked)="internalLinkClicked($event)"
+                        (referredResourceHovered)="internalLinkHovered($event)"
+      ></dsp-display-edit>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -243,6 +265,10 @@ class TestHostDisplayValueComponent implements OnInit {
   readValue: ReadValue;
 
   mode: 'read' | 'update' | 'create' | 'search';
+
+  linkValClicked: ReadLinkValue;
+
+  linkValHovered: ReadLinkValue;
 
   ngOnInit() {
 
@@ -261,8 +287,26 @@ class TestHostDisplayValueComponent implements OnInit {
     readVal.userHasPermission = 'M';
 
     readVal.valueHasComment = comment;
+
+    // standoff link value handling
+    if (prop === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext') {
+        const standoffLinkVal: ReadLinkValue
+            = this.readResource.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue)[0];
+
+        standoffLinkVal.linkedResourceIri = 'testIri';
+        this.readResource.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = [standoffLinkVal];
+    }
+
     this.readValue = readVal;
   }
+
+   internalLinkClicked(linkVal: ReadLinkValue) {
+      this.linkValClicked = linkVal;
+   }
+
+   internalLinkHovered(linkVal: ReadLinkValue) {
+      this.linkValHovered = linkVal;
+   }
 }
 
 describe('DisplayEditComponent', () => {
@@ -294,6 +338,7 @@ describe('DisplayEditComponent', () => {
         TestHostDisplayValueComponent,
         TestTextValueAsStringComponent,
         TestTextValueAsHtmlComponent,
+        TestTextValueAsXmlComponent,
         TestIntValueComponent,
         TestLinkValueComponent,
         TestIntervalValueComponent,
@@ -367,6 +412,43 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsStringComponent).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadTextValueAsString).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+    });
+
+    it('should choose the apt component for an XML value in the template', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsXmlComponent).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadTextValueAsXml).toBe(true);
+      expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+
+    });
+
+    it('should choose the apt component for an XML value in the template and react to clicking on a standoff link', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValClicked).toBeUndefined();
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkClicked.emit('testIri');
+
+      expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('testIri');
+
+    });
+
+    it('should choose the apt component for an XML value in the template and react to hovering on a standoff link', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValHovered).toBeUndefined();
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkHovered.emit('testIri');
+
+      expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('testIri');
+
     });
 
     it('should choose the apt component for an HTML text value in the template', () => {
@@ -477,6 +559,36 @@ describe('DisplayEditComponent', () => {
 
       expect(userServiceSpy.getUser).toHaveBeenCalledTimes(1);
       expect(userServiceSpy.getUser).toHaveBeenCalledWith('http://rdfh.ch/users/BhkfBc3hTeS_IDo-JgXRbQ');
+
+    });
+
+    it('should choose the apt component for a link value in the template and react to a click event', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValClicked).toBeUndefined();
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
+          .referredResourceClicked
+          .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
+
+      expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+
+    });
+
+    it('should choose the apt component for a link value in the template and react to a hover event', () => {
+
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValHovered).toBeUndefined();
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
+          .referredResourceHovered
+          .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
+
+      expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
 
     });
 

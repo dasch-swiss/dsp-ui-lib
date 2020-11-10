@@ -3,4 +3,10 @@
     components like one of the representation viewer or the value components. All of them can
     also be used individually.</p>
 
-<dsp-resource-view [iri]="resource" [showToolbar]="true" (openProject)="openProject($event)"></dsp-resource-view>
+<dsp-resource-view
+    [iri]="resource"
+    [showToolbar]="true"
+    (openProject)="openProject($event)"
+    (referredResourceClicked)="refResourceClicked($event)"
+    (referredResourceHovered)="refResourceHovered($event)">
+</dsp-resource-view>
