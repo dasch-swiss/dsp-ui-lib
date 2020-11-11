@@ -27,7 +27,7 @@ export class NotificationService {
             message = `${defaultStatusMsg[status].message} (status): ${defaultStatusMsg[status].description}`;
             panelClass = 'error';
         } else {
-            message = message;
+            message = notification;
             panelClass = 'success';
         }
 
