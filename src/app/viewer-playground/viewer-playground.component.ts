@@ -9,6 +9,7 @@ import { ReadLinkValue, ReadProject } from '@dasch-swiss/dsp-js';
 })
 export class ViewerPlaygroundComponent implements OnInit {
 
+    // resorce from incunabula: book page
     resource = 'http://rdfh.ch/0803/18a671b8a601';
 
     constructor(
@@ -21,7 +22,7 @@ export class ViewerPlaygroundComponent implements OnInit {
 
     openProject(project: ReadProject) {
         // here you can redirect a user to the project page
-        console.log('redircet to project page e.g. /project/:shortname', project.shortname);
+        console.log('redircet to project page e.g. /project/:shortcode', project.shortcode);
     }
 
     refResourceClicked(linkValue: ReadLinkValue) {

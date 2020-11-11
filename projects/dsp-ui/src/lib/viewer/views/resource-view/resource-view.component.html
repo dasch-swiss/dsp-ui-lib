@@ -4,7 +4,10 @@
     <div class="center">
         <dsp-still-image *ngIf="stillImageRepresentations" [images]="stillImageRepresentations">
         </dsp-still-image>
+        <!-- TODO: here we'll add more viewers and players dsp-moving-image, dsp-audio etc. -->
+        <mat-divider></mat-divider>
     </div>
+
 
     <!-- dsp-property-toolbar with action buttons and project information -->
     <dsp-property-toolbar *ngIf="showToolbar" [resource]="resource" [showAllProps]="showAllProps" (toggleProps)="toggleProps($event)" (openProject)="openProject.emit($event)">
