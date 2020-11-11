@@ -14,7 +14,6 @@ $bright: #ccc;
 
 .still-image-viewer {
   display: inline-flex;
-  // max-width: $max-width;
   width: 100%;
 
   @media (max-height: 636px) {
@@ -36,8 +35,6 @@ $bright: #ccc;
 
   .content {
     height: $full-height;
-    // max-width: $osd-max-width;
-    // width: $osd-width;
     width: 100%;
 
     .osd-container {
