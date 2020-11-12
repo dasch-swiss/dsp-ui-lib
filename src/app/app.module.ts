@@ -30,36 +30,38 @@ import { ReadComponent } from './read/read.component';
 import { SearchPlaygroundComponent } from './search-playground/search-playground.component';
 import { SearchResultsComponent } from './search-playground/search-results/search-results.component';
 import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
+import { UploadPlaygroundComponent } from './upload-playground/upload-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
 
 @NgModule({
     declarations: [
+        ActionPlaygroundComponent,
+        AdvancedSearchPlaygroundComponent,
         AppComponent,
+        CkeditorPlaygroundComponent,
         ModifyComponent,
         ReadComponent,
-        ActionPlaygroundComponent,
         SearchPlaygroundComponent,
         SearchResultsComponent,
-        AdvancedSearchPlaygroundComponent,
         StillImagePlaygroundComponent,
-        ViewerPlaygroundComponent,
-        CkeditorPlaygroundComponent
+        UploadPlaygroundComponent,
+        ViewerPlaygroundComponent
     ],
     imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
         AppRoutingModule,
-        DspCoreModule,
-        DspViewerModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        CKEditorModule,
         DspActionModule,
+        DspCoreModule,
         DspSearchModule,
+        DspViewerModule,
         MatButtonModule,
         MatCheckboxModule,
         MatExpansionModule,
         MatJDNConvertibleCalendarDateAdapterModule,
         MatListModule,
         MatSlideToggleModule,
-        CKEditorModule,
         ReactiveFormsModule
     ],
     providers: [
