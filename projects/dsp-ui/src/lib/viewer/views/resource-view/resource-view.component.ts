@@ -16,8 +16,8 @@ import {
     PropertyDefinition,
     ReadLinkValue,
     ReadProject,
-    ReadResource,
-    ReadStillImageFileValue,
+    ReadResource, ReadResourceSequence,
+    ReadStillImageFileValue, ReadTextValueAsXml,
     ReadValue,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
@@ -183,12 +183,16 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param valueToAdd the value to add to the end of the values array of the filtered property
      */
     addValueToResource(valueToAdd: ReadValue): void {
+        console.log("add: ", valueToAdd, valueToAdd instanceof ReadTextValueAsXml);
         if (this.resPropInfoVals) {
             this.resPropInfoVals
                 .filter(propInfoValueArray =>
                     propInfoValueArray.propDef.id === valueToAdd.property) // filter to the correct property
                 .forEach(propInfoValue =>
                     propInfoValue.values.push(valueToAdd)); // push new value to array
+            if (valueToAdd instanceof ReadTextValueAsXml) {
+                this._updateStandoffLinkValue();
+            }
         } else {
             console.error('No properties exist for this resource');
         }
@@ -201,6 +205,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param updatedValue the value to replace valueToReplace with
      */
     updateValueInResource(valueToReplace: ReadValue, updatedValue: ReadValue): void {
+        console.log("updated: ", valueToReplace, updatedValue, updatedValue instanceof ReadTextValueAsXml);
         if (this.resPropInfoVals && updatedValue !== null) {
             this.resPropInfoVals
                 .filter(propInfoValueArray =>
@@ -212,6 +217,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                         }
                     });
                 });
+            if (updatedValue instanceof ReadTextValueAsXml) {
+                this._updateStandoffLinkValue();
+            }
         } else {
             console.error('No properties exist for this resource');
         }
@@ -223,6 +231,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param valueToDelete the value to remove from the values array of the filtered property
      */
     deleteValueFromResource(valueToDelete: DeleteValue): void {
+        console.log("delete1: ", valueToDelete);
         if (this.resPropInfoVals) {
             this.resPropInfoVals
                 .filter(propInfoValueArray =>  // filter to the correct type
@@ -230,7 +239,11 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                 .forEach(filteredpropInfoValueArray => {
                     filteredpropInfoValueArray.values.forEach((val, index) => { // loop through each value of the current property
                         if (val.id === valueToDelete.id) { // find the value that was deleted using the id
+                            console.log("delete2: ", val, val instanceof ReadTextValueAsXml);
                             filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
+                            if (val instanceof ReadTextValueAsXml) {
+                                this._updateStandoffLinkValue();
+                            }
                         }
                     });
                 }
@@ -238,6 +251,51 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         } else {
             console.error('No properties exist for this resource');
         }
+    }
+
+    /**
+     * Updates the standoff link value for the resource being displayed.
+     *
+     */
+    private _updateStandoffLinkValue() {
+
+        if (this.resource === undefined) {
+            return;
+        }
+
+        const gravsearchQuery = `
+ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+ CONSTRUCT {
+     ?res knora-api:isMainResource true .
+     ?res knora-api:hasStandoffLinkTo ?target .
+ } WHERE {
+     BIND(<${this.resource.id}> as ?res) .
+     OPTIONAL {
+         ?res knora-api:hasStandoffLinkTo ?target .
+     }
+ }
+ OFFSET 0
+        `;
+
+        this._dspApiConnection.v2.search.doExtendedSearch(gravsearchQuery).subscribe(
+            (res: ReadResourceSequence) => {
+                const newStandoffLinkVals = res.resources[0].getValuesAs("http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue", ReadLinkValue);
+
+                const existingStandoffLinkVals = this.resPropInfoVals.filter(
+                    resPropInfoVal => {
+                        return resPropInfoVal.propDef.id === "http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue";
+                    }
+                );
+
+                console.log(existingStandoffLinkVals);
+                console.log(newStandoffLinkVals);
+
+            },
+            err => {
+                console.error(err);
+            }
+        );
+
     }
 
     /**
