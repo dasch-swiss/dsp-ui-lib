@@ -277,7 +277,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      }
  }
  OFFSET 0
-        `;
+ `;
 
         this._dspApiConnection.v2.search.doExtendedSearch(gravsearchQuery).subscribe(
             (res: ReadResourceSequence) => {

@@ -197,11 +197,6 @@ describe('ResourceViewComponent', () => {
 
         expect((propArrayIntValues[0].values[1] as ReadIntValue).int).toEqual(123);
 
-        const propArrStandoffLinkValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
-            propInfoValueArray => propInfoValueArray.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
-        );
-
-        expect(propArrStandoffLinkValues[0].values.length).toEqual(0);
     });
 
     it('should add a value to a property of a resource updating the standoff link values', () => {
@@ -232,7 +227,7 @@ describe('ResourceViewComponent', () => {
 
         const newReadXmlValue = new ReadTextValueAsXml();
 
-        newReadXmlValue.xml = '<?xml version="1.0" encoding="UTF-8"?>\n<text><p>test</p></text>';
+        newReadXmlValue.xml = '<?xml version="1.0" encoding="UTF-8"?>\n<text><p><a href="testId" class="salsah-link">test-link</a></p></text>';
         newReadXmlValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext';
 
         testHostComponent.resourceViewComponent.addValueToResource(newReadXmlValue);
@@ -247,9 +242,27 @@ describe('ResourceViewComponent', () => {
 
         expect(propArrayXmlValues[0].values.length).toEqual(2);
 
-        expect((propArrayXmlValues[0].values[1] as ReadTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?>\n<text><p>test</p></text>');
+        expect((propArrayXmlValues[0].values[1] as ReadTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?>\n<text><p><a href="testId" class="salsah-link">test-link</a></p></text>');
 
         expect(propArrStandoffLinkValues[0].values.length).toEqual(1);
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledTimes(1);
+
+        const expectedQuery = `
+ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+ CONSTRUCT {
+     ?res knora-api:isMainResource true .
+     ?res knora-api:hasStandoffLinkTo ?target .
+ } WHERE {
+     BIND(<http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw> as ?res) .
+     OPTIONAL {
+         ?res knora-api:hasStandoffLinkTo ?target .
+     }
+ }
+ OFFSET 0
+ `;
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith(expectedQuery);
     });
 
     it('should delete an int value from a property of a resource', () => {
