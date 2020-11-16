@@ -1,2 +1,2 @@
-<dsp-resource-view *ngIf="!loading" [iri]="resourceIri"></dsp-resource-view>
+<dsp-resource-view *ngIf="!loading" [iri]="resourceIri" (referredResourceClicked)="internalLinkClicked($event)"></dsp-resource-view>
 <dsp-progress-indicator *ngIf="loading"></dsp-progress-indicator>
