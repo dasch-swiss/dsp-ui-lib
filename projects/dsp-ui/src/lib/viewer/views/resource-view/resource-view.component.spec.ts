@@ -203,6 +203,7 @@ describe('ResourceViewComponent', () => {
 
         const resSpy = TestBed.inject(DspApiConnectionToken);
 
+        // once the Xml text value is added, there will be a standoff link val
         (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
             (query: string) => {
 
@@ -316,6 +317,84 @@ describe('ResourceViewComponent', () => {
 
         // expect there to be one value left after deleting the newly created value
         expect(propArrayIntValues[0].values.length).toEqual(1);
+
+    });
+
+    it('should delete an XML text value linking to a resource from a property of a resource', () => {
+
+        const resSpy = TestBed.inject(DspApiConnectionToken);
+
+        // once the XML text value is deleted, there is no more standoff link value
+        (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
+            (query: string) => {
+
+                return MockResource.getTestthing().pipe(
+                    map(
+                        res => {
+                            return new ReadResourceSequence([res]);
+                        }
+                    )
+                );
+
+            }
+        );
+
+        // add new value to be deleted (so that I can ensure the id will be what I expect)
+        const readTextValueAsXml = new ReadTextValueAsXml();
+
+        readTextValueAsXml.id = 'myNewReadTextValueAsXmlId';
+        readTextValueAsXml.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p><a href="testId" class="salsah-link">test-link</a></p></text>';
+        readTextValueAsXml.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext';
+
+        const existingXmlVal = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfo => propInfo.propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext'
+        );
+
+        // add value
+        existingXmlVal[0].values.push(readTextValueAsXml);
+
+        const existingStandoffLinkVal = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfo => propInfo.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+        );
+
+        const standoffLinkVal = new ReadLinkValue();
+
+        standoffLinkVal.linkedResourceIri = 'testId';
+        standoffLinkVal.property = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+        // add corresponding link val
+        existingStandoffLinkVal[0].values.push(standoffLinkVal);
+
+        // delete the value
+        const valueToBeDeleted = new DeleteValue();
+
+        valueToBeDeleted.id = 'myNewReadTextValueAsXmlId';
+        valueToBeDeleted.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+
+        testHostComponent.resourceViewComponent.deleteValueFromResource(valueToBeDeleted);
+
+        expect(existingXmlVal[0].values.length).toEqual(1);
+        expect(existingXmlVal[0].values[0].id).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/rvB4eQ5MTF-Qxq0YgkwaDg');
+
+        expect(existingStandoffLinkVal.values.length).toEqual(0);
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledTimes(1);
+
+        const expectedQuery = `
+ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+ CONSTRUCT {
+     ?res knora-api:isMainResource true .
+     ?res knora-api:hasStandoffLinkTo ?target .
+ } WHERE {
+     BIND(<http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw> as ?res) .
+     OPTIONAL {
+         ?res knora-api:hasStandoffLinkTo ?target .
+     }
+ }
+ OFFSET 0
+ `;
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith(expectedQuery);
 
     });
 
