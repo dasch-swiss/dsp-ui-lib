@@ -161,6 +161,7 @@ export class DisplayEditComponent implements OnInit {
      * @param resIri the Iri of the resource.
      */
     private _getStandoffLinkValueForResource(resIri: string): ReadLinkValue[] {
+
         const standoffLinkPropInfoVals: PropertyInfoValues[] = this.propArray.filter(
             resPropInfoVal => {
                 return resPropInfoVal.propDef.id === "http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue";

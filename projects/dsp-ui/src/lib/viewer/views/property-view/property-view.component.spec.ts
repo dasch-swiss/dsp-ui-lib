@@ -94,6 +94,7 @@ class TestDisplayValueComponent {
 
     @Input() parentResource: ReadResource;
     @Input() displayValue: ReadValue;
+    @Input() propArray: PropertyInfoValues[];
     @Input() configuration?: object;
 
 }

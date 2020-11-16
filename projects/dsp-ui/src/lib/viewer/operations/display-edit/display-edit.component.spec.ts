@@ -51,6 +51,7 @@ import {
 } from '../../services/value-operation-event.service';
 import { ValueService } from '../../services/value.service';
 import { DisplayEditComponent } from './display-edit.component';
+import { PropertyInfoValues } from '../../views/resource-view/resource-view.component';
 
 @Component({
   selector: `dsp-text-value-as-string`,
@@ -253,6 +254,7 @@ class TestDateValueComponent {
   template: `
       <dsp-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
                         [displayValue]="readValue"
+                        [propArray]="propArray"
                         (referredResourceClicked)="internalLinkClicked($event)"
                         (referredResourceHovered)="internalLinkHovered($event)"
       ></dsp-display-edit>`
@@ -263,6 +265,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
   readResource: ReadResource;
   readValue: ReadValue;
+  propArray: PropertyInfoValues[] = [];
 
   mode: 'read' | 'update' | 'create' | 'search';
 
@@ -290,11 +293,29 @@ class TestHostDisplayValueComponent implements OnInit {
 
     // standoff link value handling
     if (prop === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext') {
+
+        // adapt ReadLinkValue so it looks like a standoff link value
         const standoffLinkVal: ReadLinkValue
             = this.readResource.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue)[0];
 
         standoffLinkVal.linkedResourceIri = 'testIri';
-        this.readResource.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = [standoffLinkVal];
+
+        const propDefinition = this.readResource.entityInfo.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue'];
+        propDefinition.id = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+        const guiDefinition = this.readResource.entityInfo.classes['http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'].propertiesList.filter(
+            propDefForGui => propDefForGui.propertyIndex === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue'
+        );
+
+        guiDefinition[0].propertyIndex = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+        const propInfo: PropertyInfoValues = {
+            values: [standoffLinkVal],
+            propDef: propDefinition,
+            guiDef: guiDefinition[0]
+        };
+
+        this.propArray.push(propInfo);
     }
 
     this.readValue = readVal;
