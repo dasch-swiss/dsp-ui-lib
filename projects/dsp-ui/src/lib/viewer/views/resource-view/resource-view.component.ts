@@ -16,8 +16,10 @@ import {
     PropertyDefinition,
     ReadLinkValue,
     ReadProject,
-    ReadResource, ReadResourceSequence,
-    ReadStillImageFileValue, ReadTextValueAsXml,
+    ReadResource,
+    ReadResourceSequence,
+    ReadStillImageFileValue,
+    ReadTextValueAsXml,
     ReadValue,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
@@ -279,11 +281,11 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
         this._dspApiConnection.v2.search.doExtendedSearch(gravsearchQuery).subscribe(
             (res: ReadResourceSequence) => {
-                const newStandoffLinkVals = res.resources[0].getValuesAs("http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue", ReadLinkValue);
+                const newStandoffLinkVals = res.resources[0].getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue', ReadLinkValue);
 
                 this.resPropInfoVals.filter(
                     resPropInfoVal => {
-                        return resPropInfoVal.propDef.id === "http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue";
+                        return resPropInfoVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
                     }
                 ).forEach(
                     standoffLinkResPropInfoVal => {

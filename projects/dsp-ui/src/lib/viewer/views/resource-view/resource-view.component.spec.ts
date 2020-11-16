@@ -8,9 +8,13 @@ import {
     MockResource,
     PropertyDefinition,
     ReadIntValue,
+    ReadLinkValue,
     ReadResource,
+    ReadResourceSequence,
     ReadTextValueAsString,
-    ResourcesEndpointV2
+    ReadTextValueAsXml,
+    ResourcesEndpointV2,
+    SearchEndpointV2
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
@@ -84,7 +88,8 @@ describe('ResourceViewComponent', () => {
 
         const spyObj = {
             v2: {
-                res: jasmine.createSpyObj('res', ['getResource'])
+                res: jasmine.createSpyObj('res', ['getResource']),
+                search: jasmine.createSpyObj('search', ['doExtendedSearch'])
             }
         };
 
@@ -191,6 +196,60 @@ describe('ResourceViewComponent', () => {
         expect(propArrayIntValues[0].values.length).toEqual(2);
 
         expect((propArrayIntValues[0].values[1] as ReadIntValue).int).toEqual(123);
+
+        const propArrStandoffLinkValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+        );
+
+        expect(propArrStandoffLinkValues[0].values.length).toEqual(0);
+    });
+
+    it('should add a value to a property of a resource updating the standoff link values', () => {
+
+        const resSpy = TestBed.inject(DspApiConnectionToken);
+
+        (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
+            (query: string) => {
+
+                return MockResource.getTestthing().pipe(
+                    map(
+                        res => {
+
+                            const linkVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue);
+
+                            linkVal[0].id = 'testId';
+                            linkVal[0].property = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+                            res.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = linkVal;
+
+                            return new ReadResourceSequence([res]);
+                        }
+                    )
+                );
+
+            }
+        );
+
+        const newReadXmlValue = new ReadTextValueAsXml();
+
+        newReadXmlValue.xml = '<?xml version="1.0" encoding="UTF-8"?>\n<text><p>test</p></text>';
+        newReadXmlValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext';
+
+        testHostComponent.resourceViewComponent.addValueToResource(newReadXmlValue);
+
+        const propArrayXmlValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === newReadXmlValue.property
+        );
+
+        const propArrStandoffLinkValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+        );
+
+        expect(propArrayXmlValues[0].values.length).toEqual(2);
+
+        expect((propArrayXmlValues[0].values[1] as ReadTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?>\n<text><p>test</p></text>');
+
+        expect(propArrStandoffLinkValues[0].values.length).toEqual(1);
     });
 
     it('should delete an int value from a property of a resource', () => {
