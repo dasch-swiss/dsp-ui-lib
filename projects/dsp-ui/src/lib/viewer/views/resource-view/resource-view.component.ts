@@ -112,7 +112,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges() {
-        this.getResource(this.iri);
+        if (this.iri) {
+            this.getResource(this.iri);
+        }
     }
 
     ngOnDestroy() {

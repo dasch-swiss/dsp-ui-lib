@@ -1,5 +1,8 @@
 <mat-list class="resource-list">
-    <mat-list-item class="link" [class.border-bottom]="!last"
+    <mat-list-item
+        class="link"
+        [ngClass]="{'selected-resource': selectedResourceIdx === i}"
+        [class.border-bottom]="!last"
         *ngFor="let res of resources.resources; let i = index; let last = last"
         (click)="resourceSelected.emit(res.id)">
         <mat-icon matListIcon>image_search</mat-icon>
