@@ -431,6 +431,87 @@ describe('ResourceViewComponent', () => {
         expect((propArrayIntValues[0].values[1] as ReadIntValue).int).toEqual(321);
     });
 
+    it('should update an XMl text value of a property of a resource so it links to another resource', () => {
+
+        const resSpy = TestBed.inject(DspApiConnectionToken);
+
+        // once the Xml text value is updated, there will be a standoff link val
+        (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
+            (query: string) => {
+
+                return MockResource.getTestthing().pipe(
+                    map(
+                        res => {
+
+                            const linkVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue);
+
+                            linkVal[0].id = 'testId';
+                            linkVal[0].property = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+                            res.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = linkVal;
+
+                            return new ReadResourceSequence([res]);
+                        }
+                    )
+                );
+
+            }
+        );
+
+        const newReadXmlValue = new ReadTextValueAsXml();
+
+        newReadXmlValue.id = 'myNewReadXmlId';
+        newReadXmlValue.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p>test</p></text>';
+        newReadXmlValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext';
+
+        const propArrayXmlValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === newReadXmlValue.property
+        );
+
+        propArrayXmlValues[0].values.push(newReadXmlValue);
+
+        expect(propArrayXmlValues[0].values.length).toEqual(2);
+
+        expect((propArrayXmlValues[0].values[1] as ReadTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test</p></text>');
+
+        const propArrStandoffLinkValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+        );
+
+        expect(propArrStandoffLinkValues[0].values.length).toEqual(0);
+
+        const updateReadXmlValue = new ReadTextValueAsXml();
+
+        updateReadXmlValue.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p><a href="testId" class="salsah-link">test-link</a></p></text>';
+        updateReadXmlValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
+
+        testHostComponent.resourceViewComponent.updateValueInResource(newReadXmlValue, updateReadXmlValue);
+
+        expect(propArrayXmlValues[0].values.length).toEqual(2);
+
+        expect((propArrayXmlValues[0].values[1] as ReadTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p><a href="testId" class="salsah-link">test-link</a></p></text>');
+
+        expect(propArrStandoffLinkValues[0].values.length).toEqual(1);
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledTimes(1);
+
+        const expectedQuery = `
+ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+ CONSTRUCT {
+     ?res knora-api:isMainResource true .
+     ?res knora-api:hasStandoffLinkTo ?target .
+ } WHERE {
+     BIND(<http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw> as ?res) .
+     OPTIONAL {
+         ?res knora-api:hasStandoffLinkTo ?target .
+     }
+ }
+ OFFSET 0
+ `;
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith(expectedQuery);
+    });
+
     // TODO: currently not possible to test copy to clipboard from Material Angular
     // https://stackoverflow.com/questions/60337742/test-copy-to-clipboard-function
 
