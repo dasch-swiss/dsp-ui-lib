@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -7,6 +7,7 @@ import {
     ApiResponseError,
     IHasPropertyWithPropertyDefinition,
     MockResource,
+    ReadLinkValue,
     ReadResource,
     ReadValue,
     ResourcePropertyDefinition,
@@ -26,7 +27,9 @@ import { PropertyViewComponent } from './property-view.component';
       [parentResource]="parentResource"
       [propArray]="propArray"
       [systemPropArray]="systemPropArray"
-      [showAllProps]="showAllProps">
+      [showAllProps]="showAllProps"
+      (referredResourceClicked)="internalLinkClicked($event)"
+      (referredResourceHovered)="internalLinkHovered($event)">
     </dsp-property-view>`
 })
 class TestPropertyParentComponent implements OnInit, OnDestroy {
@@ -44,6 +47,10 @@ class TestPropertyParentComponent implements OnInit, OnDestroy {
     voeSubscription: Subscription;
 
     myNum = 0;
+
+    linkValClicked: ReadLinkValue;
+
+    linkValHovered: ReadLinkValue;
 
     constructor(public _valueOperationEventService: ValueOperationEventService) { }
 
@@ -76,10 +83,19 @@ class TestPropertyParentComponent implements OnInit, OnDestroy {
             console.error('Error to get the mock resource', error);
         });
     }
+
     ngOnDestroy() {
         if (this.voeSubscription) {
             this.voeSubscription.unsubscribe();
         }
+    }
+
+    internalLinkClicked(linkVal: ReadLinkValue) {
+        this.linkValClicked = linkVal;
+    }
+
+    internalLinkHovered(linkVal: ReadLinkValue) {
+        this.linkValHovered = linkVal;
     }
 }
 
@@ -96,6 +112,9 @@ class TestDisplayValueComponent {
     @Input() displayValue: ReadValue;
     @Input() propArray: PropertyInfoValues[];
     @Input() configuration?: object;
+
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
 }
 
@@ -180,6 +199,36 @@ describe('PropertyViewComponent', () => {
 
         // check if the first system property is an ARK url
         expect(testHostComponent.systemPropArray[0].label).toEqual('ARK URL');
+
+    });
+
+    it('should propagate a click event on a link value', () => {
+
+        const displayEdit = testHostFixture.debugElement.query(By.directive(TestDisplayValueComponent));
+
+        const linkVal = new ReadLinkValue();
+        linkVal.linkedResourceIri = 'testIri';
+
+        expect(testHostComponent.linkValClicked).toBeUndefined();
+
+        (displayEdit.componentInstance as TestDisplayValueComponent).referredResourceClicked.emit(linkVal);
+
+        expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('testIri');
+
+    });
+
+    it('should propagate a hover event on a link value', () => {
+
+        const displayEdit = testHostFixture.debugElement.query(By.directive(TestDisplayValueComponent));
+
+        const linkVal = new ReadLinkValue();
+        linkVal.linkedResourceIri = 'testIri';
+
+        expect(testHostComponent.linkValHovered).toBeUndefined();
+
+        (displayEdit.componentInstance as TestDisplayValueComponent).referredResourceHovered.emit(linkVal);
+
+        expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('testIri');
 
     });
 
