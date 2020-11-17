@@ -337,6 +337,7 @@ describe('ResourceViewComponent', () => {
                 return MockResource.getTestthing().pipe(
                     map(
                         res => {
+                            // no standoff link link value exists anymore
                             return new ReadResourceSequence([res]);
                         }
                     )
@@ -356,12 +357,12 @@ describe('ResourceViewComponent', () => {
             propInfo => propInfo.propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext'
         );
 
-        // add value
-        existingXmlVal[0].values.push(readTextValueAsXml);
-
         const existingStandoffLinkVal = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
             propInfo => propInfo.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
         );
+
+        // add value
+        existingXmlVal[0].values.push(readTextValueAsXml);
 
         const standoffLinkVal = new ReadLinkValue();
 
@@ -371,7 +372,11 @@ describe('ResourceViewComponent', () => {
         // add corresponding link val
         existingStandoffLinkVal[0].values.push(standoffLinkVal);
 
+        expect(existingXmlVal[0].values.length).toEqual(2);
+        expect(existingStandoffLinkVal[0].values.length).toEqual(1);
+
         // delete the value
+        // after that, there won't be any standoff link value
         const valueToBeDeleted = new DeleteValue();
 
         valueToBeDeleted.id = 'myNewReadTextValueAsXmlId';
