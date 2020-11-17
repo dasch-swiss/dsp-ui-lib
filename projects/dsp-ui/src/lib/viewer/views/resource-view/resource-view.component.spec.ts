@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -36,6 +36,10 @@ class TestPropertyViewComponent implements OnInit {
     @Input() systemPropArray: PropertyDefinition;
     @Input() showAllProps: boolean;
 
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
     ngOnInit() { }
 }
 
@@ -44,7 +48,8 @@ class TestPropertyViewComponent implements OnInit {
  */
 @Component({
 template: `
-    <dsp-resource-view #resView [iri]="resourceIri"></dsp-resource-view>`
+    <dsp-resource-view #resView [iri]="resourceIri" (referredResourceClicked)="internalLinkClicked($event)"
+                       (referredResourceHovered)="internalLinkHovered($event)"></dsp-resource-view>`
 })
 class TestParentComponent implements OnInit, OnDestroy {
 
@@ -56,6 +61,10 @@ class TestParentComponent implements OnInit, OnDestroy {
 
     myNum = 0;
 
+    linkValClicked: ReadLinkValue;
+
+    linkValHovered: ReadLinkValue;
+
     constructor(public _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
@@ -63,6 +72,15 @@ class TestParentComponent implements OnInit, OnDestroy {
         this.voeSubscriptions.push(this._valueOperationEventService.on(Events.ValueUpdated, () => this.myNum = 2));
         this.voeSubscriptions.push(this._valueOperationEventService.on(Events.ValueDeleted, () => this.myNum = 3));
     }
+
+    internalLinkClicked(linkVal: ReadLinkValue) {
+        this.linkValClicked = linkVal;
+    }
+
+    internalLinkHovered(linkVal: ReadLinkValue) {
+        this.linkValHovered = linkVal;
+    }
+
 
     ngOnDestroy() {
         if (this.voeSubscriptions) {
@@ -150,6 +168,36 @@ describe('ResourceViewComponent', () => {
 
         expect(resSpy.v2.res.getResource).toHaveBeenCalledTimes(1);
         expect(resSpy.v2.res.getResource).toHaveBeenCalledWith(testHostComponent.resourceIri);
+    });
+
+    it('should propagate a click event on a link value', () => {
+
+        const displayEdit = testHostFixture.debugElement.query(By.directive(TestPropertyViewComponent));
+
+        const linkVal = new ReadLinkValue();
+        linkVal.linkedResourceIri = 'testIri';
+
+        expect(testHostComponent.linkValClicked).toBeUndefined();
+
+        (displayEdit.componentInstance as TestPropertyViewComponent).referredResourceClicked.emit(linkVal);
+
+        expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('testIri');
+
+    });
+
+    it('should propagate a hover event on a link value', () => {
+
+        const displayEdit = testHostFixture.debugElement.query(By.directive(TestPropertyViewComponent));
+
+        const linkVal = new ReadLinkValue();
+        linkVal.linkedResourceIri = 'testIri';
+
+        expect(testHostComponent.linkValHovered).toBeUndefined();
+
+        (displayEdit.componentInstance as TestPropertyViewComponent).referredResourceHovered.emit(linkVal);
+
+        expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('testIri');
+
     });
 
     it('should trigger the correct callback when an event is emitted', () => {
