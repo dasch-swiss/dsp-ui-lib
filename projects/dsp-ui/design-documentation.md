@@ -20,6 +20,16 @@ Any pipe relating to the transformation of strings must be placed in the folder 
 
 ## Viewer Module
 
+### Resource View Component
+
+The `ResourceViewComponent` initially gets a resource and passes the retrieved information to its child components to deal with the values.
+As the user adds more values, edits existing ones etc., these changes are reflected in `ResourceViewComponent.resPropInfoVals`. 
+*This means the `ResourceViewComponent.resource` that was initially retrieved still represents the state of the past since its values are not updated.*
+Therefore, solely `ResourceViewComponent.resPropInfoVals` are used to represent a resource's values in the template.
+
+When updating, adding, or deleting an XML text value, ad additional request is performed to retrieve the resource's standoff link values
+which are then updated in `ResourceViewComponent.resPropInfoVals`.
+
 ### CRUD UI Components
 
 The viewer module provides components to perform CRUD operations. 
