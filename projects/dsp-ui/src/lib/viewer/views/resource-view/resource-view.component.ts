@@ -185,7 +185,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param valueToAdd the value to add to the end of the values array of the filtered property
      */
     addValueToResource(valueToAdd: ReadValue): void {
-        console.log("add: ", valueToAdd, valueToAdd instanceof ReadTextValueAsXml);
         if (this.resPropInfoVals) {
             this.resPropInfoVals
                 .filter(propInfoValueArray =>
@@ -207,7 +206,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param updatedValue the value to replace valueToReplace with
      */
     updateValueInResource(valueToReplace: ReadValue, updatedValue: ReadValue): void {
-        console.log("updated: ", valueToReplace, updatedValue, updatedValue instanceof ReadTextValueAsXml);
         if (this.resPropInfoVals && updatedValue !== null) {
             this.resPropInfoVals
                 .filter(propInfoValueArray =>
@@ -233,7 +231,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param valueToDelete the value to remove from the values array of the filtered property
      */
     deleteValueFromResource(valueToDelete: DeleteValue): void {
-        console.log("delete1: ", valueToDelete);
         if (this.resPropInfoVals) {
             this.resPropInfoVals
                 .filter(propInfoValueArray =>  // filter to the correct type
@@ -241,7 +238,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                 .forEach(filteredpropInfoValueArray => {
                     filteredpropInfoValueArray.values.forEach((val, index) => { // loop through each value of the current property
                         if (val.id === valueToDelete.id) { // find the value that was deleted using the id
-                            console.log("delete2: ", val, val instanceof ReadTextValueAsXml);
                             filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
                             if (val instanceof ReadTextValueAsXml) {
                                 this._updateStandoffLinkValue();
