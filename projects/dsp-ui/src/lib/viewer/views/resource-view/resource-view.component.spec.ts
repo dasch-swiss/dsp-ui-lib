@@ -446,7 +446,7 @@ describe('ResourceViewComponent', () => {
 
         const resSpy = TestBed.inject(DspApiConnectionToken);
 
-        // once the Xml text value is updated, there will be a standoff link val
+        // once the XML text value is updated, there will be a standoff link value
         (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
             (query: string) => {
 
@@ -456,7 +456,7 @@ describe('ResourceViewComponent', () => {
 
                             const linkVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue);
 
-                            linkVal[0].id = 'testId';
+                            linkVal[0].linkedResourceIri = 'testId';
                             linkVal[0].property = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
 
                             res.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = linkVal;
@@ -479,15 +479,15 @@ describe('ResourceViewComponent', () => {
             propInfoValueArray => propInfoValueArray.propDef.id === newReadXmlValue.property
         );
 
+        const propArrStandoffLinkValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+        );
+
         propArrayXmlValues[0].values.push(newReadXmlValue);
 
         expect(propArrayXmlValues[0].values.length).toEqual(2);
 
         expect((propArrayXmlValues[0].values[1] as ReadTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test</p></text>');
-
-        const propArrStandoffLinkValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
-            propInfoValueArray => propInfoValueArray.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
-        );
 
         expect(propArrStandoffLinkValues[0].values.length).toEqual(0);
 
@@ -503,6 +503,8 @@ describe('ResourceViewComponent', () => {
         expect((propArrayXmlValues[0].values[1] as ReadTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p><a href="testId" class="salsah-link">test-link</a></p></text>');
 
         expect(propArrStandoffLinkValues[0].values.length).toEqual(1);
+
+        expect((propArrStandoffLinkValues[0].values[0] as ReadLinkValue).linkedResourceIri).toEqual('testId');
 
         expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledTimes(1);
 
