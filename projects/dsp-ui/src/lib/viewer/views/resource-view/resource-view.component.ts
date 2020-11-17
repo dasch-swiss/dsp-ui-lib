@@ -277,6 +277,12 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
         this._dspApiConnection.v2.search.doExtendedSearch(gravsearchQuery).subscribe(
             (res: ReadResourceSequence) => {
+
+                // one resource is expected
+                if (res.resources.length !== 1) {
+                    return;
+                }
+
                 const newStandoffLinkVals = res.resources[0].getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue', ReadLinkValue);
 
                 this.resPropInfoVals.filter(
