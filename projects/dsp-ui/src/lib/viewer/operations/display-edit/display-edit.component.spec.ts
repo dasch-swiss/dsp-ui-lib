@@ -292,6 +292,7 @@ class TestHostDisplayValueComponent implements OnInit {
     readVal.valueHasComment = comment;
 
     // standoff link value handling
+    // a text value linking to another resource has a corresponding standoff link value
     if (prop === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext') {
 
         // adapt ReadLinkValue so it looks like a standoff link value
@@ -315,6 +316,7 @@ class TestHostDisplayValueComponent implements OnInit {
             guiDef: guiDefinition[0]
         };
 
+        // add standoff link value to property array
         this.propArray.push(propInfo);
     }
 

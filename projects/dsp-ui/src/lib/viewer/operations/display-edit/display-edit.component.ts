@@ -162,6 +162,7 @@ export class DisplayEditComponent implements OnInit {
      */
     private _getStandoffLinkValueForResource(resIri: string): ReadLinkValue[] {
 
+        // find the PropertyInfoValues for the standoff link value
         const standoffLinkPropInfoVals: PropertyInfoValues[] = this.propArray.filter(
             resPropInfoVal => {
                 return resPropInfoVal.propDef.id === "http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue";
@@ -178,9 +179,13 @@ export class DisplayEditComponent implements OnInit {
                 }
             );
 
+            // if no corresponding standoff link value was found,
+            // this array is empty
             return referredResStandoffLinkVal as ReadLinkValue[];
 
         } else {
+            // this should actually never happen
+            // because all resource types have a cardinality for a standoff link value
             return [];
         }
     }
