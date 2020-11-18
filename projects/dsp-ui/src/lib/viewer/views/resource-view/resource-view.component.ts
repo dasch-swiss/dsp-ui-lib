@@ -255,7 +255,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * Updates the standoff link value for the resource being displayed.
      *
      */
-    private _updateStandoffLinkValue() {
+    private _updateStandoffLinkValue(): void {
 
         if (this.resource === undefined) {
             // this should never happen:

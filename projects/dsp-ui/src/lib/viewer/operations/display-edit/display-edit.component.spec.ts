@@ -448,8 +448,9 @@ describe('DisplayEditComponent', () => {
 
     });
 
-    it('should choose the apt component for an XML value in the template and react to clicking on a standoff link', () => {
+    it('should react to clicking on a standoff link', () => {
 
+      // assign value also updates the standoff link in propArray
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
       testHostFixture.detectChanges();
 
@@ -461,8 +462,27 @@ describe('DisplayEditComponent', () => {
 
     });
 
-    it('should choose the apt component for an XML value in the template and react to hovering on a standoff link', () => {
+    it('should not react to clicking on a standoff link when there is no corresponding standoff link value', () => {
 
+      // assign value also updates the standoff link in propArray
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
+
+      // simulate situation
+      // where the standoff link was not updated
+      testHostComponent.propArray[0].values = [];
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValClicked).toBeUndefined();
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkClicked.emit('testIri');
+
+      expect(testHostComponent.linkValClicked).toBeUndefined();
+    });
+
+    it('should react to hovering on a standoff link', () => {
+
+      // assign value also updates the standoff link in propArray
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
       testHostFixture.detectChanges();
 
@@ -471,6 +491,25 @@ describe('DisplayEditComponent', () => {
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkHovered.emit('testIri');
 
       expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('testIri');
+
+    });
+
+    it('should not react to hovering on a standoff link when there is no corresponding standoff link value', () => {
+
+      // assign value also updates the standoff link in propArray
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
+
+      // simulate situation
+      // where the standoff link was not updated
+      testHostComponent.propArray[0].values = [];
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValHovered).toBeUndefined();
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkHovered.emit('testIri');
+
+      expect(testHostComponent.linkValHovered).toBeUndefined();
 
     });
 
