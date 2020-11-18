@@ -258,6 +258,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     private _updateStandoffLinkValue() {
 
         if (this.resource === undefined) {
+            // this should never happen:
+            // if the user was able to click on a standoff link,
+            // then the resource must have been initialised before.
             return;
         }
 
