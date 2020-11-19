@@ -51,6 +51,7 @@ import {
 } from '../../services/value-operation-event.service';
 import { ValueService } from '../../services/value.service';
 import { DisplayEditComponent } from './display-edit.component';
+import { PropertyInfoValues } from '../../views/resource-view/resource-view.component';
 
 @Component({
   selector: `dsp-text-value-as-string`,
@@ -253,6 +254,7 @@ class TestDateValueComponent {
   template: `
       <dsp-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
                         [displayValue]="readValue"
+                        [propArray]="propArray"
                         (referredResourceClicked)="internalLinkClicked($event)"
                         (referredResourceHovered)="internalLinkHovered($event)"
       ></dsp-display-edit>`
@@ -263,12 +265,13 @@ class TestHostDisplayValueComponent implements OnInit {
 
   readResource: ReadResource;
   readValue: ReadValue;
+  propArray: PropertyInfoValues[] = [];
 
   mode: 'read' | 'update' | 'create' | 'search';
 
-  linkValClicked: ReadLinkValue;
-
-  linkValHovered: ReadLinkValue;
+  linkValClicked: ReadLinkValue | string = 'init'; // "init" is set because there is a test that checks that this does not emit for standoff links
+                                                   // (and if it emits undefined because of a bug, we cannot check)
+  linkValHovered: ReadLinkValue | string = 'init'; // see comment above
 
   ngOnInit() {
 
@@ -289,12 +292,32 @@ class TestHostDisplayValueComponent implements OnInit {
     readVal.valueHasComment = comment;
 
     // standoff link value handling
+    // a text value linking to another resource has a corresponding standoff link value
     if (prop === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext') {
+
+        // adapt ReadLinkValue so it looks like a standoff link value
         const standoffLinkVal: ReadLinkValue
             = this.readResource.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue)[0];
 
         standoffLinkVal.linkedResourceIri = 'testIri';
-        this.readResource.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = [standoffLinkVal];
+
+        const propDefinition = this.readResource.entityInfo.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue'];
+        propDefinition.id = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+        const guiDefinition = this.readResource.entityInfo.classes['http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'].propertiesList.filter(
+            propDefForGui => propDefForGui.propertyIndex === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue'
+        );
+
+        guiDefinition[0].propertyIndex = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+        const propInfo: PropertyInfoValues = {
+            values: [standoffLinkVal],
+            propDef: propDefinition,
+            guiDef: guiDefinition[0]
+        };
+
+        // add standoff link value to property array
+        this.propArray.push(propInfo);
     }
 
     this.readValue = readVal;
@@ -425,29 +448,68 @@ describe('DisplayEditComponent', () => {
 
     });
 
-    it('should choose the apt component for an XML value in the template and react to clicking on a standoff link', () => {
+    it('should react to clicking on a standoff link', () => {
 
+      // assign value also updates the standoff link in propArray
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValClicked).toBeUndefined();
+      expect(testHostComponent.linkValClicked).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkClicked.emit('testIri');
 
-      expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('testIri');
+      expect((testHostComponent.linkValClicked as ReadLinkValue).linkedResourceIri).toEqual('testIri');
 
     });
 
-    it('should choose the apt component for an XML value in the template and react to hovering on a standoff link', () => {
+    it('should not react to clicking on a standoff link when there is no corresponding standoff link value', () => {
 
+      // assign value also updates the standoff link in propArray
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
+
+      // simulate situation
+      // where the standoff link was not updated
+      testHostComponent.propArray[0].values = [];
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValClicked).toEqual('init');
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkClicked.emit('testIri');
+
+      expect(testHostComponent.linkValClicked).toEqual('init');
+    });
+
+    it('should react to hovering on a standoff link', () => {
+
+      // assign value also updates the standoff link in propArray
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValHovered).toBeUndefined();
+      expect(testHostComponent.linkValHovered).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkHovered.emit('testIri');
 
-      expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('testIri');
+      expect((testHostComponent.linkValHovered as ReadLinkValue).linkedResourceIri).toEqual('testIri');
+
+    });
+
+    it('should not react to hovering on a standoff link when there is no corresponding standoff link value', () => {
+
+      // assign value also updates the standoff link in propArray
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
+
+      // simulate situation
+      // where the standoff link was not updated
+      testHostComponent.propArray[0].values = [];
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValHovered).toEqual('init');
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkHovered.emit('testIri');
+
+      expect(testHostComponent.linkValHovered).toEqual('init');
 
     });
 
@@ -567,13 +629,13 @@ describe('DisplayEditComponent', () => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValClicked).toBeUndefined();
+      expect(testHostComponent.linkValClicked).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
           .referredResourceClicked
           .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
 
-      expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect((testHostComponent.linkValClicked as ReadLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
 
     });
 
@@ -582,13 +644,13 @@ describe('DisplayEditComponent', () => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValHovered).toBeUndefined();
+      expect(testHostComponent.linkValHovered).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
           .referredResourceHovered
           .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
 
-      expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect((testHostComponent.linkValHovered as ReadLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
 
     });
 

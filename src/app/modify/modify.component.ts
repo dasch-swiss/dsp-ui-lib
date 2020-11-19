@@ -4,7 +4,8 @@ import {
     ApiResponseData,
     ApiResponseError,
     KnoraApiConnection,
-    LoginResponse
+    LoginResponse,
+    ReadLinkValue
 } from '@dasch-swiss/dsp-js';
 
 @Component({
@@ -30,6 +31,10 @@ export class ModifyComponent implements OnInit {
                 console.log('User failed to log in');
             }
         );
+    }
+
+    internalLinkClicked(linkVal: ReadLinkValue) {
+        console.log(linkVal);
     }
 
 }
