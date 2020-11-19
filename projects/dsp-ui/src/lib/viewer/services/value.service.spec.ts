@@ -6,7 +6,8 @@ import {
     ReadIntValue,
     ReadTextValueAsHtml,
     ReadTextValueAsString,
-    ReadTextValueAsXml
+    ReadTextValueAsXml,
+    ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { ValueService } from './value.service';
 
@@ -117,31 +118,47 @@ describe('ValueService', () => {
         it('should not mark ReadTextValueAsString as ReadOnly', () => {
             const readTextValueAsString = new ReadTextValueAsString();
             readTextValueAsString.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+
+            const resPropDef = new ResourcePropertyDefinition();
+            resPropDef.isEditable = true;
+
             const valueClass = service.getValueTypeOrClass(readTextValueAsString);
-            expect(service.isReadOnly(valueClass, readTextValueAsString)).toBeFalsy();
+            expect(service.isReadOnly(valueClass, readTextValueAsString, resPropDef)).toBeFalsy();
         });
 
         it('should mark ReadTextValueAsHtml as ReadOnly', () => {
             const readTextValueAsHtml = new ReadTextValueAsHtml();
             readTextValueAsHtml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+
+            const resPropDef = new ResourcePropertyDefinition();
+            resPropDef.isEditable = true;
+
             const valueClass = service.getValueTypeOrClass(readTextValueAsHtml);
-            expect(service.isReadOnly(valueClass, readTextValueAsHtml)).toBeTruthy();
+            expect(service.isReadOnly(valueClass, readTextValueAsHtml, resPropDef)).toBeTruthy();
         });
 
         it('should not mark ReadTextValueAsXml with standard mapping as ReadOnly', () => {
             const readTextValueAsXml = new ReadTextValueAsXml();
             readTextValueAsXml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
             readTextValueAsXml.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+
+            const resPropDef = new ResourcePropertyDefinition();
+            resPropDef.isEditable = true;
+
             const valueClass = service.getValueTypeOrClass(readTextValueAsXml);
-            expect(service.isReadOnly(valueClass, readTextValueAsXml)).toBeFalsy();
+            expect(service.isReadOnly(valueClass, readTextValueAsXml, resPropDef)).toBeFalsy();
         });
 
         it('should mark ReadTextValueAsXml with custom mapping as ReadOnly', () => {
             const readTextValueAsXml = new ReadTextValueAsXml();
             readTextValueAsXml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
             readTextValueAsXml.mapping = 'http://rdfh.ch/standoff/mappings/CustomMapping';
+
+            const resPropDef = new ResourcePropertyDefinition();
+            resPropDef.isEditable = true;
+
             const valueClass = service.getValueTypeOrClass(readTextValueAsXml);
-            expect(service.isReadOnly(valueClass, readTextValueAsXml)).toBeTruthy();
+            expect(service.isReadOnly(valueClass, readTextValueAsXml, resPropDef)).toBeTruthy();
         });
 
         it('should mark ReadDateValue with unsupported era as ReadOnly', done => {
@@ -152,8 +169,11 @@ describe('ValueService', () => {
 
                 date.date = new KnoraDate('GREGORIAN', 'BCE', 2019, 5, 13);
 
+                const resPropDef = new ResourcePropertyDefinition();
+                resPropDef.isEditable = true;
+
                 const valueClass = service.getValueTypeOrClass(date);
-                expect(service.isReadOnly(valueClass, date)).toBeTruthy();
+                expect(service.isReadOnly(valueClass, date, resPropDef)).toBeTruthy();
 
                 done();
 
@@ -169,8 +189,11 @@ describe('ValueService', () => {
 
                 date.date = new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13);
 
+                const resPropDef = new ResourcePropertyDefinition();
+                resPropDef.isEditable = true;
+
                 const valueClass = service.getValueTypeOrClass(date);
-                expect(service.isReadOnly(valueClass, date)).toBeFalsy();
+                expect(service.isReadOnly(valueClass, date, resPropDef)).toBeFalsy();
 
                 done();
 
@@ -186,8 +209,11 @@ describe('ValueService', () => {
 
                 date.date = new KnoraDate('GREGORIAN', 'CE', 2019, 5);
 
+                const resPropDef = new ResourcePropertyDefinition();
+                resPropDef.isEditable = true;
+
                 const valueClass = service.getValueTypeOrClass(date);
-                expect(service.isReadOnly(valueClass, date)).toBeTruthy();
+                expect(service.isReadOnly(valueClass, date, resPropDef)).toBeTruthy();
 
                 done();
 
@@ -203,8 +229,11 @@ describe('ValueService', () => {
 
                 date.date = new KnoraDate('GREGORIAN', 'CE', 2019, 5, 1);
 
+                const resPropDef = new ResourcePropertyDefinition();
+                resPropDef.isEditable = true;
+
                 const valueClass = service.getValueTypeOrClass(date);
-                expect(service.isReadOnly(valueClass, date)).toBeFalsy();
+                expect(service.isReadOnly(valueClass, date, resPropDef)).toBeFalsy();
 
                 done();
 

@@ -12,6 +12,7 @@ import {
     ReadResource,
     ReadUser,
     ReadValue,
+    ResourcePropertyDefinition,
     UpdateResource,
     UpdateValue,
     WriteValueResponse
@@ -114,7 +115,7 @@ export class DisplayEditComponent implements OnInit {
         private _valueOperationEventService: ValueOperationEventService,
         private _dialog: MatDialog,
         private _userService: UserService,
-        private _valueService: ValueService,) {
+        private _valueService: ValueService) {
     }
 
     ngOnInit() {
@@ -134,7 +135,17 @@ export class DisplayEditComponent implements OnInit {
 
         this.valueTypeOrClass = this._valueService.getValueTypeOrClass(this.displayValue);
 
-        this.readOnlyValue = this._valueService.isReadOnly(this.valueTypeOrClass, this.displayValue);
+        // get the resource property definition
+        const resPropDef = this.parentResource.entityInfo.getPropertyDefinitionsByType(ResourcePropertyDefinition).filter(
+            (propDef: ResourcePropertyDefinition) => propDef.id === this.displayValue.property
+        );
+
+        if (resPropDef.length !== 1) {
+            // this should never happen because we always have the property info for the given value
+            throw new Error('Resource Property Definition could not be found: ' + this.displayValue.property);
+        }
+
+        this.readOnlyValue = this._valueService.isReadOnly(this.valueTypeOrClass, this.displayValue, resPropDef[0]);
 
         // prevent getting info about system user (standoff link values are managed by the system)
         if (this.displayValue.attachedToUser !== 'http://www.knora.org/ontology/knora-admin#SystemUser') {

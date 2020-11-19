@@ -928,6 +928,7 @@ describe('DisplayEditComponent', () => {
     it('should not display the edit button', () => {
       const inputVal: ReadTextValueAsHtml = new ReadTextValueAsHtml();
 
+      inputVal.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext';
       inputVal.hasPermissions = 'CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser';
       inputVal.userHasPermission = 'CR';
       inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
