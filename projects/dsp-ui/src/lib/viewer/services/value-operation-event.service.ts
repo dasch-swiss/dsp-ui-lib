@@ -10,7 +10,7 @@ import { filter, map } from 'rxjs/operators';
  * The ValueOperationEventService essentially creates a direct communication channel between
  * the emitting component and the listening component.
  */
-@Injectable() // must be provided on component level, i.d. resource view component.
+@Injectable() // must be provided on component level, i.e. resource view component.
 export class ValueOperationEventService {
 
     // Create a subject to hold data which can be subscribed to.
