@@ -698,54 +698,6 @@ describe('DisplayEditComponent', () => {
 
   });
 
-  describe('methods getValueType and isReadOnly', () => {
-    let hostCompDe;
-    let displayEditComponentDe;
-    let valueService;
-
-    beforeEach(() => {
-      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
-      testHostFixture.detectChanges();
-
-      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
-
-      hostCompDe = testHostFixture.debugElement;
-      displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
-
-      valueService = TestBed.inject(ValueService);
-
-    });
-
-    it('should return the type of a integer value as not readonly', () => {
-      expect(valueService.getValueTypeOrClass(testHostComponent.displayEditValueComponent.displayValue)).toEqual(Constants.IntValue);
-
-      expect(valueService.isReadOnly(Constants.IntValue, testHostComponent.displayEditValueComponent.displayValue)).toBe(false);
-    });
-
-    it('should return the class of a html text value as readonly', () => {
-
-      const htmlTextVal = new ReadTextValueAsHtml();
-      htmlTextVal.type = Constants.TextValue;
-
-      expect(valueService.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsHtml');
-
-      expect(valueService.isReadOnly('ReadTextValueAsHtml', htmlTextVal)).toBe(true);
-
-    });
-
-    it('should return the type of a plain text value as not readonly', () => {
-
-      const plainTextVal = new ReadTextValueAsString();
-      plainTextVal.type = Constants.TextValue;
-
-      expect(valueService.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsString');
-
-      expect(valueService.isReadOnly('ReadTextValueAsString', plainTextVal)).toBe(false);
-
-    });
-
-  });
-
   describe('change from display to edit mode', () => {
     let hostCompDe;
     let displayEditComponentDe;

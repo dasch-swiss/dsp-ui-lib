@@ -115,6 +115,19 @@ describe('ValueService', () => {
 
     describe('isReadOnly', () => {
 
+        it('should not mark a ReadIntValue as ReadOnly', () => {
+
+            const readIntValue = new ReadIntValue();
+            readIntValue.type = 'http://api.knora.org/ontology/knora-api/v2#IntValue';
+
+            const resPropDef = new ResourcePropertyDefinition();
+            resPropDef.isEditable = true;
+
+            const valueClass = service.getValueTypeOrClass(readIntValue);
+            expect(service.isReadOnly(valueClass, readIntValue, resPropDef)).toBeFalsy();
+
+        });
+
         it('should not mark ReadTextValueAsString as ReadOnly', () => {
             const readTextValueAsString = new ReadTextValueAsString();
             readTextValueAsString.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
