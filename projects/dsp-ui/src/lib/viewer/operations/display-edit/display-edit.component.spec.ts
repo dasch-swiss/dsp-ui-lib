@@ -269,9 +269,9 @@ class TestHostDisplayValueComponent implements OnInit {
 
   mode: 'read' | 'update' | 'create' | 'search';
 
-  linkValClicked: ReadLinkValue;
-
-  linkValHovered: ReadLinkValue;
+  linkValClicked: ReadLinkValue | string = 'init'; // "init" is set because there is a test that checks that this does not emit for standoff links
+                                                   // (and if it emits undefined because of a bug, we cannot check)
+  linkValHovered: ReadLinkValue | string = 'init'; // see comment above
 
   ngOnInit() {
 
@@ -454,11 +454,11 @@ describe('DisplayEditComponent', () => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValClicked).toBeUndefined();
+      expect(testHostComponent.linkValClicked).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkClicked.emit('testIri');
 
-      expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('testIri');
+      expect((testHostComponent.linkValClicked as ReadLinkValue).linkedResourceIri).toEqual('testIri');
 
     });
 
@@ -473,11 +473,11 @@ describe('DisplayEditComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValClicked).toBeUndefined();
+      expect(testHostComponent.linkValClicked).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkClicked.emit('testIri');
 
-      expect(testHostComponent.linkValClicked).toBeUndefined();
+      expect(testHostComponent.linkValClicked).toEqual('init');
     });
 
     it('should react to hovering on a standoff link', () => {
@@ -486,11 +486,11 @@ describe('DisplayEditComponent', () => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValHovered).toBeUndefined();
+      expect(testHostComponent.linkValHovered).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkHovered.emit('testIri');
 
-      expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('testIri');
+      expect((testHostComponent.linkValHovered as ReadLinkValue).linkedResourceIri).toEqual('testIri');
 
     });
 
@@ -505,11 +505,11 @@ describe('DisplayEditComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValHovered).toBeUndefined();
+      expect(testHostComponent.linkValHovered).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkHovered.emit('testIri');
 
-      expect(testHostComponent.linkValHovered).toBeUndefined();
+      expect(testHostComponent.linkValHovered).toEqual('init');
 
     });
 
@@ -629,13 +629,13 @@ describe('DisplayEditComponent', () => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValClicked).toBeUndefined();
+      expect(testHostComponent.linkValClicked).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
           .referredResourceClicked
           .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
 
-      expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect((testHostComponent.linkValClicked as ReadLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
 
     });
 
@@ -644,13 +644,13 @@ describe('DisplayEditComponent', () => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValHovered).toBeUndefined();
+      expect(testHostComponent.linkValHovered).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
           .referredResourceHovered
           .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
 
-      expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect((testHostComponent.linkValHovered as ReadLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
 
     });
 
