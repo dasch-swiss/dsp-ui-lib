@@ -141,7 +141,7 @@ describe('ResourceViewComponent', () => {
         (resSpy.v2.res as jasmine.SpyObj<ResourcesEndpointV2>).getResource.and.callFake(
             (id: string) => {
 
-                return MockResource.getTestthing().pipe(
+                return MockResource.getTestThing().pipe(
                     map(
                         (res: ReadResource) => {
                             res.id = id;
@@ -255,7 +255,7 @@ describe('ResourceViewComponent', () => {
         (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
             (query: string) => {
 
-                return MockResource.getTestthing().pipe(
+                return MockResource.getTestThing().pipe(
                     map(
                         res => {
 
@@ -382,7 +382,7 @@ describe('ResourceViewComponent', () => {
         (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
             (query: string) => {
 
-                return MockResource.getTestthing().pipe(
+                return MockResource.getTestThing().pipe(
                     map(
                         res => {
                             // no standoff link link value exists anymore
@@ -498,7 +498,7 @@ describe('ResourceViewComponent', () => {
         (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
             (query: string) => {
 
-                return MockResource.getTestthing().pipe(
+                return MockResource.getTestThing().pipe(
                     map(
                         res => {
 
