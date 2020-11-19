@@ -4,7 +4,7 @@
 [![CI](https://github.com/dasch-swiss/knora-ui-ng-lib/workflows/CI/badge.svg)](https://github.com/dasch-swiss/knora-ui-ng-lib/actions?query=workflow%3ACI)
 [![npm downloads](https://img.shields.io/npm/dt/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
-[![license](https://img.shields.io/npm/l/@dasch-swiss/dsp-ui.svg?style=flat)](https://github.com/dasch-swiss/dsp-ui-lib/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/@dasch-swiss/dsp-ui.svg?style=flat)](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/LICENSE)
 
 This is the demo and developing environment for DSP-UI-LIB ([@dasch-swiss/dsp-ui](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)) comprised of 4 modules.
 
@@ -140,7 +140,7 @@ Before testing the new component inside of the demo app, you have to rebuild aft
 npm run build-lib
 ```
 
-### Run the DSP-UI-LIB Demo Application
+### Run the DSP-UI-LIB Demo Application (Playground)
 
 Run the app with the command line: `npm run start`.
 
@@ -252,14 +252,28 @@ The second step runs a container based on the image built in the previous step:
 
 You can now access the app on your local machine under <http://localhost:4200/>.
 
+### Add a New Component to the Demo Application (Playground)
+
+The demo app demonstrates the functionality of dsp-ui-lib's modules.
+By default, the demo app's main component routes to the page demonstrating the resource viewer in read mode.
+
+Before adding a new component to the demo app,
+check if the desired demo could be added to an existing component of the demo app.
+
+Follow these steps to add a new component to the demo app:
+- create a new component in the demo app:
+    - create a new component using Angular CLI in `src/app`
+    - demonstrate a part of dsp-ui-lib (component, service etc.) in the new component of the demo app
+- in `AppRoutingModule` and `AppComponent`'s template, set up the routing for your new component in the demo app. 
+
 ### Publish a new version to NPM
 
 Before publishing:
 
-- Update README and CHANGELOG if necessary and commit the changes (currently, the CHANGELOG has to be updated manually with [gren](https://github.com/github-tools/github-release-notes): `gren changelog --override`)
+- Update README if necessary and commit the changes
 
 - Be sure that all dependencies to DSP-JS-LIB and DSP-API are set to the correct version:
-  - Update DSP-API version in `Makefile`
+  - Update DSP-API version in `vars.mk`
   - Update DSP-JS version in `package.json` and run `npm install` to update the `package-lock.json`
   - Update DSP-JS version in section `peerDependencies` of `projects/dsp-ui/package.json`
 

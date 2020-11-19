@@ -4,5 +4,6 @@
   "apiPort": 3333,
   "apiPath": "",
   "jsonWebToken": "",
-  "logErrors": false
+  "logErrors": false,
+  "sipiUrl": "https://iiif.dasch.swiss:1024/"
 }

@@ -1,20 +1,19 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
-    ApiResponseData,
     ApiResponseError,
     Constants,
     DeleteValue,
     DeleteValueResponse,
     KnoraApiConnection,
     PermissionUtil,
+    ReadLinkValue,
     ReadResource,
     ReadUser,
     ReadValue,
     UpdateResource,
     UpdateValue,
-    UserResponse,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
@@ -24,6 +23,7 @@ import {
     ConfirmationDialogValueDeletionPayload
 } from '../../../action/components/confirmation-dialog/confirmation-dialog.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
+import { UserService } from '../../services/user.service';
 import {
     DeletedEventValue,
     EmitEvent,
@@ -31,8 +31,9 @@ import {
     UpdatedEventValues,
     ValueOperationEventService
 } from '../../services/value-operation-event.service';
-import { ValueTypeService } from '../../services/value-type.service';
+import { ValueService } from '../../services/value.service';
 import { BaseValueComponent } from '../../values/base-value.component';
+import { PropertyInfoValues } from '../../views/resource-view/resource-view.component';
 
 @Component({
     selector: 'dsp-display-edit',
@@ -67,9 +68,15 @@ export class DisplayEditComponent implements OnInit {
 
     @Input() displayValue: ReadValue;
 
+    @Input() propArray: PropertyInfoValues[];
+
     @Input() parentResource: ReadResource;
 
     @Input() configuration?: object;
+
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
     constants = Constants;
 
@@ -105,8 +112,9 @@ export class DisplayEditComponent implements OnInit {
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueTypeService: ValueTypeService,
-        private _dialog: MatDialog) {
+        private _dialog: MatDialog,
+        private _userService: UserService,
+        private _valueService: ValueService,) {
     }
 
     ngOnInit() {
@@ -124,23 +132,95 @@ export class DisplayEditComponent implements OnInit {
         // check if comment toggle button should be shown
         this.checkCommentToggleVisibility();
 
-        this.valueTypeOrClass = this._valueTypeService.getValueTypeOrClass(this.displayValue);
+        this.valueTypeOrClass = this._valueService.getValueTypeOrClass(this.displayValue);
 
-        this.readOnlyValue = this._valueTypeService.isReadOnly(this.valueTypeOrClass, this.displayValue);
+        this.readOnlyValue = this._valueService.isReadOnly(this.valueTypeOrClass, this.displayValue);
 
-        this._dspApiConnection.admin.usersEndpoint.getUserByIri(this.displayValue.attachedToUser).subscribe(
-            (response: ApiResponseData<UserResponse>) => {
-                this.user = response.body.user;
-            },
-            (error: ApiResponseError) => {
-                console.error(error);
-            }
-        );
+        // prevent getting info about system user (standoff link values are managed by the system)
+        if (this.displayValue.attachedToUser !== 'http://www.knora.org/ontology/knora-admin#SystemUser') {
+            this._userService.getUser(this.displayValue.attachedToUser).subscribe(
+                user => {
+                    this.user = user.user;
+                }
+            );
+        }
     }
 
     getTooltipText(): string {
-        return 'Creation date: ' + this.displayValue.valueCreationDate +
-            '\n Value creator: ' + this.user?.givenName + ' ' + this.user?.familyName;
+        const creationDate = 'Creation date: ' + this.displayValue.valueCreationDate;
+
+        const creatorInfo = this.user ? '\n Value creator: ' + this.user?.givenName + ' ' + this.user?.familyName : '';
+
+        return creationDate + creatorInfo;
+    }
+
+    /**
+     * Given a resource Iri, finds the corresponding standoff link value.
+     * Returns an empty array if the standoff link cannot be found.
+     *
+     * @param resIri the Iri of the resource.
+     */
+    private _getStandoffLinkValueForResource(resIri: string): ReadLinkValue[] {
+
+        // find the PropertyInfoValues for the standoff link value
+        const standoffLinkPropInfoVals: PropertyInfoValues[] = this.propArray.filter(
+            resPropInfoVal => {
+                return resPropInfoVal.propDef.id === "http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue";
+            }
+        );
+
+        if (standoffLinkPropInfoVals.length === 1) {
+
+            // find the corresponding standoff link value
+            const referredResStandoffLinkVal: ReadValue[] = standoffLinkPropInfoVals[0].values.filter(
+                (standoffLinkVal: ReadValue) => {
+                    return standoffLinkVal instanceof ReadLinkValue
+                        && (standoffLinkVal as ReadLinkValue).linkedResourceIri === resIri;
+                }
+            );
+
+            // if no corresponding standoff link value was found,
+            // this array is empty
+            return referredResStandoffLinkVal as ReadLinkValue[];
+
+        } else {
+            // this should actually never happen
+            // because all resource types have a cardinality for a standoff link value
+            return [];
+        }
+    }
+
+    /**
+     * React when a standoff link in a text has received a click event.
+     *
+     * @param resIri the Iri of the resource the standoff link refers to.
+     */
+    standoffLinkClicked(resIri: string): void {
+
+        // find the corresponding standoff link value
+        const referredResStandoffLinkVal: ReadLinkValue[] = this._getStandoffLinkValueForResource(resIri);
+
+        // only emit an event if the corresponding standoff link value could be found
+        if (referredResStandoffLinkVal.length === 1) {
+            this.referredResourceClicked.emit(referredResStandoffLinkVal[0]);
+        }
+    }
+
+    /**
+     * React when a standoff link in a text has received a hover event.
+     *
+     * @param resIri the Iri of the resource the standoff link refers to.
+     */
+    standoffLinkHovered(resIri: string): void {
+
+        // find the corresponding standoff link value
+        const referredResStandoffLinkVal: ReadLinkValue[] = this._getStandoffLinkValueForResource(resIri);
+
+        // only emit an event if the corresponding standoff link value could be found
+        if (referredResStandoffLinkVal.length === 1) {
+            this.referredResourceHovered.emit(referredResStandoffLinkVal[0]);
+        }
+
     }
 
     /**

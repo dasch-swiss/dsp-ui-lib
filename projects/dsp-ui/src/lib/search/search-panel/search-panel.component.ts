@@ -1,7 +1,7 @@
 import { ConnectionPositionPair, Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Component, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { SearchParams } from '../../viewer';
+import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 
 @Component({
     selector: 'dsp-search-panel',
@@ -47,6 +47,7 @@ export class SearchPanelComponent {
 
     // show advanced or expert search
     showAdvanced: boolean;
+    showExpert: boolean;
 
     constructor(
         private _overlay: Overlay,
@@ -56,6 +57,7 @@ export class SearchPanelComponent {
     openPanelWithBackdrop(type: string) {
 
         this.showAdvanced = (type === 'advanced');
+        this.showExpert = (type === 'expert');
 
         const config = new OverlayConfig({
             hasBackdrop: true,
@@ -67,6 +69,8 @@ export class SearchPanelComponent {
         this.overlayRef = this._overlay.create(config);
         this.overlayRef.attach(new TemplatePortal(this.searchMenu, this._viewContainerRef));
         this.overlayRef.backdropClick().subscribe(() => {
+            this.showAdvanced = false;
+            this.showExpert = false;
             this.overlayRef.detach();
         });
     }
@@ -97,6 +101,8 @@ export class SearchPanelComponent {
      * Close the search menu
      */
     closeMenu(): void {
+        this.showAdvanced = false;
+        this.showExpert = false;
         if(this.overlayRef) {
             this.overlayRef.detach();
         }

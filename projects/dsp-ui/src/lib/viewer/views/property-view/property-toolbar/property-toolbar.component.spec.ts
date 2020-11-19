@@ -13,12 +13,13 @@ import {
     MockResource,
     MockUsers,
     ProjectsEndpointAdmin,
-    ReadProject,
     ReadResource,
-    UsersEndpointAdmin
+    UserResponse
 } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from 'projects/dsp-ui/src/lib/core';
+import { AsyncSubject } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
+import { UserService } from '../../../services/user.service';
 import { PropertyToolbarComponent } from './property-toolbar.component';
 
 /**
@@ -67,10 +68,11 @@ describe('PropertyToolbarComponent', () => {
 
         const adminSpyObj = {
             admin: {
-                usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUserByIri']),
                 projectsEndpoint: jasmine.createSpyObj('projectsEndpoint', ['getProjectByIri'])
             }
         };
+
+        const userServiceSpy = jasmine.createSpyObj('UserService', ['getUser']);
 
         TestBed.configureTestingModule({
             declarations: [
@@ -89,7 +91,11 @@ describe('PropertyToolbarComponent', () => {
                 {
                     provide: DspApiConnectionToken,
                     useValue: adminSpyObj
-                }
+                },
+                {
+                    provide: UserService,
+                    useValue: userServiceSpy
+                },
             ]
         })
             .compileComponents();
@@ -106,11 +112,20 @@ describe('PropertyToolbarComponent', () => {
                 return of(project);
             }
         );
+
         // mock getUserByIri response
-        (adminSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUserByIri.and.callFake(
+        const userSpy = TestBed.inject(UserService);
+
+        // mock getUserByIri response
+        (userSpy as jasmine.SpyObj<UserService>).getUser.and.callFake(
             () => {
                 const user = MockUsers.mockUser();
-                return of(user);
+
+                const subj: AsyncSubject<UserResponse> = new AsyncSubject();
+                subj.next(user.body);
+                subj.complete();
+
+                return subj;
             }
         );
 

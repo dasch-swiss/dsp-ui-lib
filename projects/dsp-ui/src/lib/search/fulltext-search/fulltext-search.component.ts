@@ -22,9 +22,10 @@ import {
     ProjectsResponse,
     ReadProject
 } from '@dasch-swiss/dsp-js';
+import { NotificationService } from '../../action/services/notification.service';
 import { SortingService } from '../../action/services/sorting.service';
-import { DspApiConnectionToken } from '../../core';
-import { SearchParams } from '../../viewer';
+import { DspApiConnectionToken } from '../../core/core.module';
+import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 
 export interface PrevSearchItem {
     projectIri?: string;
@@ -64,6 +65,7 @@ export class FulltextSearchComponent implements OnInit {
     @ViewChild('fulltextSearchPanel', { static: false }) searchPanel: ElementRef;
 
     @ViewChild('fulltextSearchInput', { static: false }) searchInput: ElementRef;
+    @ViewChild('fulltextSearchInputMobile', { static: false }) searchInputMobile: ElementRef;
 
     @ViewChild('fulltextSearchMenu', { static: false }) searchMenu: TemplateRef<any>;
 
@@ -102,8 +104,12 @@ export class FulltextSearchComponent implements OnInit {
         Constants.DefaultSharedOntologyIRI
     ];
 
+    // toggle phone panel
+    displayPhonePanel = false;
+
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _sortingService: SortingService,
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef
@@ -150,7 +156,7 @@ export class FulltextSearchComponent implements OnInit {
                 this.projects = this._sortingService.keySortByAlphabetical(response.body.projects, 'shortname');
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
                 this.error = error;
             }
         );
@@ -166,7 +172,7 @@ export class FulltextSearchComponent implements OnInit {
                 this.setProject(project.body.project);
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
             }
         );
     }
@@ -196,7 +202,6 @@ export class FulltextSearchComponent implements OnInit {
         const config = new OverlayConfig({
             hasBackdrop: true,
             backdropClass: 'cdk-overlay-transparent-backdrop',
-            // backdropClass: 'cdk-overlay-dark-backdrop',
             positionStrategy: this.getOverlayPosition(),
             scrollStrategy: this._overlay.scrollStrategies.block()
         });
@@ -288,11 +293,17 @@ export class FulltextSearchComponent implements OnInit {
      * Clear the whole list of search
      */
     resetSearch(): void {
-        this.searchPanelFocus = false;
-        this.searchInput.nativeElement.blur();
+        if (this.displayPhonePanel) {
+            this.searchInputMobile.nativeElement.blur();
+            this.togglePhonePanel();
+        } else {
+            this.searchPanelFocus = false;
+            this.searchInput.nativeElement.blur();
+        }
         if (this.overlayRef) {
             this.overlayRef.detach();
         }
+
     }
 
     /**
@@ -304,8 +315,11 @@ export class FulltextSearchComponent implements OnInit {
         } else {
             this.prevSearch = [];
         }
-        this.searchPanelFocus = true;
-        this.openPanelWithBackdrop();
+
+        if(!this.displayPhonePanel) {
+            this.searchPanelFocus = true;
+            this.openPanelWithBackdrop();
+        }
     }
 
     /**
@@ -373,6 +387,10 @@ export class FulltextSearchComponent implements OnInit {
         }
 
         this.search.emit(searchParams);
+    }
+
+    togglePhonePanel() {
+        this.displayPhonePanel = !this.displayPhonePanel;
     }
 
 }

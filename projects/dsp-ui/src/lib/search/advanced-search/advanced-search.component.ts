@@ -21,8 +21,9 @@ import {
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
-import { DspApiConnectionToken } from '../../core';
-import { SearchParams } from '../../viewer';
+import { NotificationService } from '../../action/services/notification.service';
+import { DspApiConnectionToken } from '../../core/core.module';
+import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
 import { Properties, SelectPropertyComponent } from './select-property/select-property.component';
 import { PropertyWithValue } from './select-property/specify-property-value/operator';
@@ -80,6 +81,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     constructor(
         @Inject(FormBuilder) private _fb: FormBuilder,
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _gravsearchGenerationService: GravsearchGenerationService) {
     }
 
@@ -135,6 +137,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
                 this.ontologiesMetadata = response;
             },
             (error: ApiResponseError) => {
+                this._notification.openSnackBar(error);
                 this.errorMessage = error;
             });
     }
@@ -205,8 +208,8 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
                 this.properties = this._makeResourceProperties(onto.get(ontologyIri).properties);
             },
-            err => {
-                console.error(err);
+            error => {
+                this._notification.openSnackBar(error);
             }
         );
     }

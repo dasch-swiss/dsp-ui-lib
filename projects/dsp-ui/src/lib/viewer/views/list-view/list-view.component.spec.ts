@@ -3,9 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CountQueryResponse, IFulltextSearchParams, MockResource, ReadResourceSequence, SearchEndpointV2 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
 import { AdvancedSearchParams, AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
 import { ListViewComponent, SearchParams } from './list-view.component';
 
@@ -114,7 +115,8 @@ describe('ListViewComponent', () => {
             imports: [
                 MatButtonModule,
                 MatIconModule,
-                MatPaginatorModule
+                MatPaginatorModule,
+                MatSnackBarModule
             ],
             providers: [
                 {

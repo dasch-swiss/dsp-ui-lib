@@ -11,8 +11,12 @@ import {
     UpdateListValue
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
+import { NotificationService } from '../../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { BaseValueComponent } from '../base-value.component';
+
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
 
 @Component({
     selector: 'dsp-list-value',
@@ -38,7 +42,9 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
     constructor(
         @Inject(FormBuilder) private _fb: FormBuilder,
-        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection) {
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService
+    ) {
         super();
     }
 
@@ -69,7 +75,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
                         (response2: ListNodeV2) => {
                             this.listRootNode.children.push(response2);
                         }, (error: ApiResponseError) => {
-                            console.error(error);
+                            this._notification.openSnackBar(error);
                         });
                 }
             } else {
@@ -93,6 +99,11 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
         });
 
         this.resetFormControl();
+
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.addToParentFormGroup(this.formName, this.form);
+        });
     }
     ngOnChanges(changes: SimpleChanges): void {
         this.resetFormControl();
@@ -100,6 +111,11 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
     ngOnDestroy(): void {
         this.unsubscribeFromValueChanges();
+
+        resolvedPromise.then(() => {
+            // remove form from the parent form group
+            this.removeFromParentFormGroup(this.formName);
+        });
     }
 
     getNewValue(): CreateListValue | false {

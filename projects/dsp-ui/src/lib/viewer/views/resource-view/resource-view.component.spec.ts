@@ -1,19 +1,24 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import {
     DeleteValue,
     MockResource,
     PropertyDefinition,
     ReadIntValue,
+    ReadLinkValue,
     ReadResource,
+    ReadResourceSequence,
     ReadTextValueAsString,
-    ResourcesEndpointV2
+    ReadTextValueAsXml,
+    ResourcesEndpointV2,
+    SearchEndpointV2
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
 import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { PropertyInfoValues, ResourceViewComponent } from './resource-view.component';
 
@@ -31,6 +36,10 @@ class TestPropertyViewComponent implements OnInit {
     @Input() systemPropArray: PropertyDefinition;
     @Input() showAllProps: boolean;
 
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
     ngOnInit() { }
 }
 
@@ -39,7 +48,8 @@ class TestPropertyViewComponent implements OnInit {
  */
 @Component({
 template: `
-    <dsp-resource-view #resView [iri]="resourceIri"></dsp-resource-view>`
+    <dsp-resource-view #resView [iri]="resourceIri" (referredResourceClicked)="internalLinkClicked($event)"
+                       (referredResourceHovered)="internalLinkHovered($event)"></dsp-resource-view>`
 })
 class TestParentComponent implements OnInit, OnDestroy {
 
@@ -51,6 +61,10 @@ class TestParentComponent implements OnInit, OnDestroy {
 
     myNum = 0;
 
+    linkValClicked: ReadLinkValue;
+
+    linkValHovered: ReadLinkValue;
+
     constructor(public _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
@@ -58,6 +72,15 @@ class TestParentComponent implements OnInit, OnDestroy {
         this.voeSubscriptions.push(this._valueOperationEventService.on(Events.ValueUpdated, () => this.myNum = 2));
         this.voeSubscriptions.push(this._valueOperationEventService.on(Events.ValueDeleted, () => this.myNum = 3));
     }
+
+    internalLinkClicked(linkVal: ReadLinkValue) {
+        this.linkValClicked = linkVal;
+    }
+
+    internalLinkHovered(linkVal: ReadLinkValue) {
+        this.linkValHovered = linkVal;
+    }
+
 
     ngOnDestroy() {
         if (this.voeSubscriptions) {
@@ -83,7 +106,8 @@ describe('ResourceViewComponent', () => {
 
         const spyObj = {
             v2: {
-                res: jasmine.createSpyObj('res', ['getResource'])
+                res: jasmine.createSpyObj('res', ['getResource']),
+                search: jasmine.createSpyObj('search', ['doExtendedSearch'])
             }
         };
 
@@ -95,7 +119,8 @@ describe('ResourceViewComponent', () => {
             MockDspPropertyToolbarComponent
         ],
         imports: [
-            MatIconModule
+            MatIconModule,
+            MatSnackBarModule
         ],
         providers: [
             {
@@ -145,6 +170,36 @@ describe('ResourceViewComponent', () => {
         expect(resSpy.v2.res.getResource).toHaveBeenCalledWith(testHostComponent.resourceIri);
     });
 
+    it('should propagate a click event on a link value', () => {
+
+        const displayEdit = testHostFixture.debugElement.query(By.directive(TestPropertyViewComponent));
+
+        const linkVal = new ReadLinkValue();
+        linkVal.linkedResourceIri = 'testIri';
+
+        expect(testHostComponent.linkValClicked).toBeUndefined();
+
+        (displayEdit.componentInstance as TestPropertyViewComponent).referredResourceClicked.emit(linkVal);
+
+        expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('testIri');
+
+    });
+
+    it('should propagate a hover event on a link value', () => {
+
+        const displayEdit = testHostFixture.debugElement.query(By.directive(TestPropertyViewComponent));
+
+        const linkVal = new ReadLinkValue();
+        linkVal.linkedResourceIri = 'testIri';
+
+        expect(testHostComponent.linkValHovered).toBeUndefined();
+
+        (displayEdit.componentInstance as TestPropertyViewComponent).referredResourceHovered.emit(linkVal);
+
+        expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('testIri');
+
+    });
+
     it('should trigger the correct callback when an event is emitted', () => {
 
         expect(testHostComponent.myNum).toEqual(0);
@@ -189,6 +244,80 @@ describe('ResourceViewComponent', () => {
         expect(propArrayIntValues[0].values.length).toEqual(2);
 
         expect((propArrayIntValues[0].values[1] as ReadIntValue).int).toEqual(123);
+
+    });
+
+    it('should add an XML text value to a property of a resource updating the standoff link value', () => {
+
+        const resSpy = TestBed.inject(DspApiConnectionToken);
+
+        // once the XML text value is added, there will be a standoff link val
+        (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
+            (query: string) => {
+
+                return MockResource.getTestthing().pipe(
+                    map(
+                        res => {
+
+                            const linkVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue);
+
+                            linkVal[0].property = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+                            linkVal[0].linkedResourceIri = 'testId';
+
+                            res.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = linkVal;
+
+                            return new ReadResourceSequence([res]);
+                        }
+                    )
+                );
+
+            }
+        );
+
+        const newReadXmlValue = new ReadTextValueAsXml();
+
+        newReadXmlValue.xml = '<?xml version="1.0" encoding="UTF-8"?>\n<text><p><a href="testId" class="salsah-link">test-link</a></p></text>';
+        newReadXmlValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext';
+
+        const propArrayXmlValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === newReadXmlValue.property
+        );
+
+        const propArrStandoffLinkValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+        );
+
+        expect(propArrayXmlValues[0].values.length).toEqual(1);
+
+        expect(propArrStandoffLinkValues[0].values.length).toEqual(0);
+
+        testHostComponent.resourceViewComponent.addValueToResource(newReadXmlValue);
+
+        expect(propArrayXmlValues[0].values.length).toEqual(2);
+
+        expect((propArrayXmlValues[0].values[1] as ReadTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?>\n<text><p><a href="testId" class="salsah-link">test-link</a></p></text>');
+
+        expect(propArrStandoffLinkValues[0].values.length).toEqual(1);
+
+        expect((propArrStandoffLinkValues[0].values[0] as ReadLinkValue).linkedResourceIri).toEqual('testId');
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledTimes(1);
+
+        const expectedQuery = `
+ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+ CONSTRUCT {
+     ?res knora-api:isMainResource true .
+     ?res knora-api:hasStandoffLinkTo ?target .
+ } WHERE {
+     BIND(<http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw> as ?res) .
+     OPTIONAL {
+         ?res knora-api:hasStandoffLinkTo ?target .
+     }
+ }
+ OFFSET 0
+ `;
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith(expectedQuery);
     });
 
     it('should delete an int value from a property of a resource', () => {
@@ -245,6 +374,89 @@ describe('ResourceViewComponent', () => {
 
     });
 
+    it('should delete an XML text value linking to a resource from a property of a resource', () => {
+
+        const resSpy = TestBed.inject(DspApiConnectionToken);
+
+        // once the XML text value is deleted, there is no more standoff link value
+        (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
+            (query: string) => {
+
+                return MockResource.getTestthing().pipe(
+                    map(
+                        res => {
+                            // no standoff link link value exists anymore
+                            return new ReadResourceSequence([res]);
+                        }
+                    )
+                );
+
+            }
+        );
+
+        // add new value to be deleted (so that I can ensure the id will be what I expect)
+        const readTextValueAsXml = new ReadTextValueAsXml();
+
+        readTextValueAsXml.id = 'myNewReadTextValueAsXmlId';
+        readTextValueAsXml.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p><a href="testId" class="salsah-link">test-link</a></p></text>';
+        readTextValueAsXml.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext';
+
+        const existingXmlVal = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfo => propInfo.propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext'
+        );
+
+        const existingStandoffLinkVal = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfo => propInfo.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+        );
+
+        // add value
+        existingXmlVal[0].values.push(readTextValueAsXml);
+
+        const standoffLinkVal = new ReadLinkValue();
+
+        standoffLinkVal.linkedResourceIri = 'testId';
+        standoffLinkVal.property = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+        // add corresponding link val
+        existingStandoffLinkVal[0].values.push(standoffLinkVal);
+
+        expect(existingXmlVal[0].values.length).toEqual(2);
+        expect(existingStandoffLinkVal[0].values.length).toEqual(1);
+
+        // delete the value
+        // after that, there won't be any standoff link value
+        const valueToBeDeleted = new DeleteValue();
+
+        valueToBeDeleted.id = 'myNewReadTextValueAsXmlId';
+        valueToBeDeleted.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
+
+        testHostComponent.resourceViewComponent.deleteValueFromResource(valueToBeDeleted);
+
+        expect(existingXmlVal[0].values.length).toEqual(1);
+        expect(existingXmlVal[0].values[0].id).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw/values/rvB4eQ5MTF-Qxq0YgkwaDg');
+
+        expect(existingStandoffLinkVal.values.length).toEqual(0);
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledTimes(1);
+
+        const expectedQuery = `
+ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+ CONSTRUCT {
+     ?res knora-api:isMainResource true .
+     ?res knora-api:hasStandoffLinkTo ?target .
+ } WHERE {
+     BIND(<http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw> as ?res) .
+     OPTIONAL {
+         ?res knora-api:hasStandoffLinkTo ?target .
+     }
+ }
+ OFFSET 0
+ `;
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith(expectedQuery);
+
+    });
+
     it('should update a value of a property of a resource', () => {
         const newReadIntValue = new ReadIntValue();
 
@@ -276,6 +488,89 @@ describe('ResourceViewComponent', () => {
         expect(propArrayIntValues[0].values.length).toEqual(2);
 
         expect((propArrayIntValues[0].values[1] as ReadIntValue).int).toEqual(321);
+    });
+
+    it('should update an XMl text value of a property of a resource so it links to another resource', () => {
+
+        const resSpy = TestBed.inject(DspApiConnectionToken);
+
+        // once the XML text value is updated, there will be a standoff link value
+        (resSpy.v2.search as jasmine.SpyObj<SearchEndpointV2>).doExtendedSearch.and.callFake(
+            (query: string) => {
+
+                return MockResource.getTestthing().pipe(
+                    map(
+                        res => {
+
+                            const linkVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue);
+
+                            linkVal[0].linkedResourceIri = 'testId';
+                            linkVal[0].property = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+                            res.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = linkVal;
+
+                            return new ReadResourceSequence([res]);
+                        }
+                    )
+                );
+
+            }
+        );
+
+        const newReadXmlValue = new ReadTextValueAsXml();
+
+        newReadXmlValue.id = 'myNewReadXmlId';
+        newReadXmlValue.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p>test</p></text>';
+        newReadXmlValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext';
+
+        const propArrayXmlValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === newReadXmlValue.property
+        );
+
+        const propArrStandoffLinkValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
+            propInfoValueArray => propInfoValueArray.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+        );
+
+        propArrayXmlValues[0].values.push(newReadXmlValue);
+
+        expect(propArrayXmlValues[0].values.length).toEqual(2);
+
+        expect((propArrayXmlValues[0].values[1] as ReadTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test</p></text>');
+
+        expect(propArrStandoffLinkValues[0].values.length).toEqual(0);
+
+        const updateReadXmlValue = new ReadTextValueAsXml();
+
+        updateReadXmlValue.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p><a href="testId" class="salsah-link">test-link</a></p></text>';
+        updateReadXmlValue.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger';
+
+        testHostComponent.resourceViewComponent.updateValueInResource(newReadXmlValue, updateReadXmlValue);
+
+        expect(propArrayXmlValues[0].values.length).toEqual(2);
+
+        expect((propArrayXmlValues[0].values[1] as ReadTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p><a href="testId" class="salsah-link">test-link</a></p></text>');
+
+        expect(propArrStandoffLinkValues[0].values.length).toEqual(1);
+
+        expect((propArrStandoffLinkValues[0].values[0] as ReadLinkValue).linkedResourceIri).toEqual('testId');
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledTimes(1);
+
+        const expectedQuery = `
+ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+ CONSTRUCT {
+     ?res knora-api:isMainResource true .
+     ?res knora-api:hasStandoffLinkTo ?target .
+ } WHERE {
+     BIND(<http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw> as ?res) .
+     OPTIONAL {
+         ?res knora-api:hasStandoffLinkTo ?target .
+     }
+ }
+ OFFSET 0
+ `;
+
+        expect(resSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith(expectedQuery);
     });
 
     // TODO: currently not possible to test copy to clipboard from Material Angular

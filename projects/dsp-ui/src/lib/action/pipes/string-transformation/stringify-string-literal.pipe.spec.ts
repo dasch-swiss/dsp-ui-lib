@@ -1,6 +1,7 @@
 import { async, TestBed } from '@angular/core/testing';
 import { StringLiteral } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken, Session, SessionService } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
+import { Session, SessionService } from '../../../core/session.service';
 import { StringifyStringLiteralPipe } from './stringify-string-literal.pipe';
 
 describe('StringifyStringLiteralPipe', () => {

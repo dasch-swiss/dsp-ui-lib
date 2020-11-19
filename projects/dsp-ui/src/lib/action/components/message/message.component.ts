@@ -19,6 +19,9 @@ export class DspMessageData {
     url?: string;
 }
 
+/**
+ * @deprecated Will be replaced by notification service with material snackbar
+ */
 @Component({
     selector: 'dsp-message',
     templateUrl: './message.component.html',

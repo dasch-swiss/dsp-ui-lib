@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     ApiResponseData,
@@ -13,7 +14,8 @@ import {
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { AjaxResponse } from 'rxjs/ajax';
-import { DspApiConnectionToken, Session, SessionService } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
+import { Session, SessionService } from '../../../core/session.service';
 import { LoginFormComponent } from './login-form.component';
 
 /**
@@ -77,6 +79,7 @@ describe('LoginFormComponent', () => {
         imports: [
             ReactiveFormsModule,
             MatInputModule,
+            MatSnackBarModule,
             BrowserAnimationsModule
         ]
         })
@@ -166,7 +169,7 @@ describe('LoginFormComponent', () => {
 
             const session = JSON.parse(localStorage.getItem('session'));
 
-            expect(session.user.name).toEqual('anything.user01');
+            expect(session.user.name).toEqual('root');
 
             expect(session.user.jwt).toEqual('myToken');
 

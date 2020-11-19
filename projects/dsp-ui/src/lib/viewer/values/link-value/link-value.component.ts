@@ -27,6 +27,9 @@ export function resourceValidator(control: AbstractControl) {
     return invalid ? { invalidType: { value: control.value } } : null;
 }
 
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-link-value',
     templateUrl: './link-value.component.html',
@@ -37,7 +40,11 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     @Input() displayValue?: ReadLinkValue;
     @Input() parentResource: ReadResource;
     @Input() propIri: string;
+
     @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter();
+
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter();
+
     resources: ReadResource[] = [];
     restrictToResourceClass: string;
     valueFormControl: FormControl;
@@ -125,6 +132,11 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
         });
 
         this.resetFormControl();
+
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.addToParentFormGroup(this.formName, this.form);
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -138,6 +150,11 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
         if (this.labelChangesSubscription !== undefined) {
             this.labelChangesSubscription.unsubscribe();
         }
+
+        resolvedPromise.then(() => {
+            // remove form from the parent form group
+            this.removeFromParentFormGroup(this.formName);
+        });
     }
 
     getNewValue(): CreateLinkValue | false {
@@ -174,9 +191,16 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     }
 
     /**
-     * Emits the displayValue
+     * Emits the displayValue on click.
      */
     refResClicked() {
         this.referredResourceClicked.emit(this.displayValue);
+    }
+
+    /**
+     * Emits the displayValue on hover.
+     */
+    refResHovered() {
+        this.referredResourceHovered.emit(this.displayValue);
     }
 }
