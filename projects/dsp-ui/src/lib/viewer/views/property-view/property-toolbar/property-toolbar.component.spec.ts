@@ -45,7 +45,7 @@ class TestPropertyParentComponent implements OnInit {
 
     ngOnInit() {
 
-        MockResource.getTestthing().subscribe(
+        MockResource.getTestThing().subscribe(
             response => {
                 this.parentResource = response;
             },

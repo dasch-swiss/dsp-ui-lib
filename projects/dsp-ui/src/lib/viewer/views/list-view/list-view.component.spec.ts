@@ -159,7 +159,7 @@ describe('ListViewComponent', () => {
 
                 let resources: ReadResourceSequence;
                 // mock list of resourcses to simulate full-text search response
-                MockResource.getTesthings(5).subscribe(res => {
+                MockResource.getTestThings(5).subscribe(res => {
                     resources = res;
                 });
                 if (resources.resources.length) {
@@ -181,7 +181,7 @@ describe('ListViewComponent', () => {
 
                 let resources: ReadResourceSequence;
                 // mock list of resourcses to simulate full-text search response
-                MockResource.getTesthings(5).subscribe(res => {
+                MockResource.getTestThings(5).subscribe(res => {
                     resources = res;
                 });
                 if (resources.resources.length) {
