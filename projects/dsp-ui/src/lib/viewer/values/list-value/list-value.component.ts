@@ -11,8 +11,8 @@ import {
     UpdateListValue
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
+import { NotificationService } from '../../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../../core/core.module';
-import { NotificationService } from '../../../action';
 import { BaseValueComponent } from '../base-value.component';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror

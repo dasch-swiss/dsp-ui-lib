@@ -16,9 +16,10 @@ import {
     UpdateListValue
 } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
 import { ListValueComponent } from './list-value.component';
 import { SublistValueComponent } from './subList-value/sublist-value.component';
+
 /**
  * Test host component to simulate parent component.
  */
@@ -36,7 +37,7 @@ class TestHostDisplayValueComponent implements OnInit {
   mode: 'read' | 'update' | 'create' | 'search';
   ngOnInit() {
 
-    MockResource.getTestthing().subscribe(res => {
+    MockResource.getTestThing().subscribe(res => {
       const inputVal: ReadListValue =
         res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasListItem', ReadListValue)[0];
       this.displayInputVal = inputVal;

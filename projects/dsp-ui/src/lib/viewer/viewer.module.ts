@@ -1,5 +1,6 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -22,10 +23,12 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { DspActionModule } from '../action/action.module';
+import { DragDropDirective } from './directives/drag-drop.directive';
 import { TextValueHtmlLinkDirective } from './directives/text-value-html-link.directive';
 import { AddValueComponent } from './operations/add-value/add-value.component';
 import { DisplayEditComponent } from './operations/display-edit/display-edit.component';
 import { StillImageComponent } from './representation/still-image/still-image.component';
+import { UploadFileComponent } from './representation/upload-file/upload-file.component';
 import { BooleanValueComponent } from './values/boolean-value/boolean-value.component';
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
 import { ColorValueComponent } from './values/color-value/color-value.component';
@@ -65,6 +68,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         DateValueComponent,
         DecimalValueComponent,
         DisplayEditComponent,
+        DragDropDirective,
         GeonameValueComponent,
         IntervalInputComponent,
         IntervalValueComponent,
@@ -76,24 +80,27 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         PropertyToolbarComponent,
         PropertyViewComponent,
         ResourceGridComponent,
-        TextValueAsXMLComponent,
         ResourceListComponent,
         ResourceViewComponent,
         StillImageComponent,
         SublistValueComponent,
         TextValueAsHtmlComponent,
         TextValueAsStringComponent,
+        TextValueAsXMLComponent,
+        TextValueHtmlLinkDirective,
         TimeInputComponent,
         TimeValueComponent,
-        UriValueComponent,
-        TextValueHtmlLinkDirective
+        UploadFileComponent,
+        UriValueComponent
     ],
     imports: [
+        CKEditorModule,
         ClipboardModule,
         ColorPickerModule,
         CommonModule,
         DspActionModule,
         FormsModule,
+        HttpClientModule,
         MatAutocompleteModule,
         MatButtonModule,
         MatButtonToggleModule,
@@ -110,7 +117,6 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         MatSelectModule,
         MatSnackBarModule,
         MatToolbarModule,
-        CKEditorModule,
         MatTooltipModule,
         ReactiveFormsModule
     ],
@@ -121,6 +127,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         DateValueComponent,
         DecimalValueComponent,
         DisplayEditComponent,
+        DragDropDirective,
         GeonameValueComponent,
         IntervalValueComponent,
         IntValueComponent,
@@ -130,15 +137,16 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         ListViewComponent,
         PropertyViewComponent,
         ResourceGridComponent,
-        StillImageComponent,
-        TextValueAsXMLComponent,
         ResourceListComponent,
         ResourceViewComponent,
+        StillImageComponent,
         TextValueAsHtmlComponent,
         TextValueAsStringComponent,
+        TextValueAsXMLComponent,
+        TextValueHtmlLinkDirective,
         TimeValueComponent,
-        UriValueComponent,
-        TextValueHtmlLinkDirective
+        UploadFileComponent,
+        UriValueComponent
     ]
 })
 export class DspViewerModule {

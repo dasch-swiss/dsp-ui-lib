@@ -1,20 +1,19 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
-    ApiResponseData,
     ApiResponseError,
     Constants,
     DeleteValue,
     DeleteValueResponse,
     KnoraApiConnection,
     PermissionUtil,
+    ReadLinkValue,
     ReadResource,
     ReadUser,
     ReadValue,
     UpdateResource,
     UpdateValue,
-    UserResponse,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
 import { mergeMap } from 'rxjs/operators';
@@ -34,6 +33,7 @@ import {
 } from '../../services/value-operation-event.service';
 import { ValueService } from '../../services/value.service';
 import { BaseValueComponent } from '../../values/base-value.component';
+import { PropertyInfoValues } from '../../views/resource-view/resource-view.component';
 
 @Component({
     selector: 'dsp-display-edit',
@@ -68,9 +68,15 @@ export class DisplayEditComponent implements OnInit {
 
     @Input() displayValue: ReadValue;
 
+    @Input() propArray: PropertyInfoValues[];
+
     @Input() parentResource: ReadResource;
 
     @Input() configuration?: object;
+
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
     constants = Constants;
 
@@ -146,6 +152,75 @@ export class DisplayEditComponent implements OnInit {
         const creatorInfo = this.user ? '\n Value creator: ' + this.user?.givenName + ' ' + this.user?.familyName : '';
 
         return creationDate + creatorInfo;
+    }
+
+    /**
+     * Given a resource Iri, finds the corresponding standoff link value.
+     * Returns an empty array if the standoff link cannot be found.
+     *
+     * @param resIri the Iri of the resource.
+     */
+    private _getStandoffLinkValueForResource(resIri: string): ReadLinkValue[] {
+
+        // find the PropertyInfoValues for the standoff link value
+        const standoffLinkPropInfoVals: PropertyInfoValues[] = this.propArray.filter(
+            resPropInfoVal => {
+                return resPropInfoVal.propDef.id === "http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue";
+            }
+        );
+
+        if (standoffLinkPropInfoVals.length === 1) {
+
+            // find the corresponding standoff link value
+            const referredResStandoffLinkVal: ReadValue[] = standoffLinkPropInfoVals[0].values.filter(
+                (standoffLinkVal: ReadValue) => {
+                    return standoffLinkVal instanceof ReadLinkValue
+                        && (standoffLinkVal as ReadLinkValue).linkedResourceIri === resIri;
+                }
+            );
+
+            // if no corresponding standoff link value was found,
+            // this array is empty
+            return referredResStandoffLinkVal as ReadLinkValue[];
+
+        } else {
+            // this should actually never happen
+            // because all resource types have a cardinality for a standoff link value
+            return [];
+        }
+    }
+
+    /**
+     * React when a standoff link in a text has received a click event.
+     *
+     * @param resIri the Iri of the resource the standoff link refers to.
+     */
+    standoffLinkClicked(resIri: string): void {
+
+        // find the corresponding standoff link value
+        const referredResStandoffLinkVal: ReadLinkValue[] = this._getStandoffLinkValueForResource(resIri);
+
+        // only emit an event if the corresponding standoff link value could be found
+        if (referredResStandoffLinkVal.length === 1) {
+            this.referredResourceClicked.emit(referredResStandoffLinkVal[0]);
+        }
+    }
+
+    /**
+     * React when a standoff link in a text has received a hover event.
+     *
+     * @param resIri the Iri of the resource the standoff link refers to.
+     */
+    standoffLinkHovered(resIri: string): void {
+
+        // find the corresponding standoff link value
+        const referredResStandoffLinkVal: ReadLinkValue[] = this._getStandoffLinkValueForResource(resIri);
+
+        // only emit an event if the corresponding standoff link value could be found
+        if (referredResStandoffLinkVal.length === 1) {
+            this.referredResourceHovered.emit(referredResStandoffLinkVal[0]);
+        }
+
     }
 
     /**

@@ -24,10 +24,10 @@ export class NotificationService {
         if (notification instanceof ApiResponseError) {
             const status = (notification.status === 0 ? 503 : notification.status);
             const defaultStatusMsg = this._statusMsg.default;
-            message = `${defaultStatusMsg[status].message} (status): ${defaultStatusMsg[status].description}`;
+            message = `${defaultStatusMsg[status].message} (${status}): ${defaultStatusMsg[status].description}`;
             panelClass = 'error';
         } else {
-            message = message;
+            message = notification;
             panelClass = 'success';
         }
 
