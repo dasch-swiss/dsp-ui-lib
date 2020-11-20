@@ -64,7 +64,7 @@ describe('StillImageComponent', () => {
         (dspSpy.v2.res as jasmine.SpyObj<ResourcesEndpointV2>).getResource.and.callFake(
             (id: string) => {
 
-                return MockResource.getTestthing().pipe(
+                return MockResource.getTestThing().pipe(
                     map(
                         (res: ReadResource) => {
                             res.id = id;

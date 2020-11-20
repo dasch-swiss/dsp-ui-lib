@@ -57,7 +57,7 @@ class TestPropertyParentComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.voeSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.myNum += 1);
 
-        MockResource.getTestthing().subscribe(response => {
+        MockResource.getTestThing().subscribe(response => {
             this.parentResource = response;
 
             // gather resource property information

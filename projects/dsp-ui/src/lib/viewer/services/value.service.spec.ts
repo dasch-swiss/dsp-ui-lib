@@ -176,7 +176,7 @@ describe('ValueService', () => {
 
         it('should mark ReadDateValue with unsupported era as ReadOnly', done => {
 
-            MockResource.getTestthing().subscribe(res => {
+            MockResource.getTestThing().subscribe(res => {
                 const date: ReadDateValue =
                     res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
@@ -196,7 +196,7 @@ describe('ValueService', () => {
 
         it('should not mark ReadDateValue with supported era as ReadOnly', done => {
 
-            MockResource.getTestthing().subscribe(res => {
+            MockResource.getTestThing().subscribe(res => {
                 const date: ReadDateValue =
                     res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
@@ -216,7 +216,7 @@ describe('ValueService', () => {
 
         it('should mark ReadDateValue with unsupported precision as ReadOnly', done => {
 
-            MockResource.getTestthing().subscribe(res => {
+            MockResource.getTestThing().subscribe(res => {
                 const date: ReadDateValue =
                     res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
@@ -236,7 +236,7 @@ describe('ValueService', () => {
 
         it('should not mark ReadDateValue with supported precision as ReadOnly', done => {
 
-            MockResource.getTestthing().subscribe(res => {
+            MockResource.getTestThing().subscribe(res => {
                 const date: ReadDateValue =
                     res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
