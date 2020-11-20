@@ -203,5 +203,6 @@ export class ActionPlaygroundComponent implements OnInit {
     }
 
     getSelectedProject(selectedProject: ReadProject) {
+        console.log(selectedProject);
     }
 }

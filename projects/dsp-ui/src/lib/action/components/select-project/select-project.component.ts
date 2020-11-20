@@ -30,6 +30,7 @@ export class SelectProjectComponent implements OnInit {
 
     // form group
     selectProjectForm: FormGroup;
+    projectNameFormControl: FormControl;
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
@@ -42,16 +43,17 @@ export class SelectProjectComponent implements OnInit {
         // clean autocomplete list
         this.projects = [];
 
+        // initialize form control element
+        this.projectNameFormControl = new FormControl(null);
+
         // get list of all projects
         this.getAllProjects();
 
         this.selectProjectForm = this._formBuilder.group({
-            projectName: new FormControl({
-                value: '', disabled: false
-            }) as FormControl
+            projectName: this.projectNameFormControl
         });
 
-        this.filteredProjects = this.selectProjectForm.controls.projectName.valueChanges
+        this.filteredProjects = this.projectNameFormControl.valueChanges
             .pipe(
                 startWith(''),
                 map(project => project ? this.filter(this.projects, project) : [])

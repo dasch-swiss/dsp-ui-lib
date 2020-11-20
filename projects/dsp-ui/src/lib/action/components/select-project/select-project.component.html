@@ -1,17 +1,17 @@
 <div class="dsp-select-project-component">
-    <form class="form-content">
+    <form class="form-content" [formGroup]="selectProjectForm">
         <mat-form-field class="large-field select-project">
 
             <input
                 matInput
                 placeholder="Select project"
                 [matAutocomplete]="project"
-                [formControl]="selectProjectForm.controls['projectName']">
+                [formControlName]="'projectName'">
 
             <button
                 mat-icon-button
                 matSuffix
-                *ngIf="selectProjectForm.controls['projectName'].value"
+                *ngIf="projectNameFormControl.value"
                 type="button"
                 (click)="resetInput($event)">
                 <mat-icon>close</mat-icon>
