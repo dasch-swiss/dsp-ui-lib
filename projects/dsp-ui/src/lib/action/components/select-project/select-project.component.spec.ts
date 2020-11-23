@@ -11,9 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MockProjects, UsersEndpointAdmin } from '@dasch-swiss/dsp-js';
+import { MockProjects, ReadProject, UsersEndpointAdmin } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs/internal/observable/of';
-import { DspApiConnectionToken } from '../../../core';
+import { DspApiConnectionToken } from '../../../core/core.module';
 
 import { SelectProjectComponent } from './select-project.component';
 
@@ -23,11 +23,8 @@ import { SelectProjectComponent } from './select-project.component';
 @Component({
     selector: `dsp-select-project-host-component`,
     template: `
-        <dsp-select-project #selectProject
-            [userIri]="userIri"
-            (projectInfo)="getProjectInfo($event)">
-        </dsp-select-project>
-    `
+        <dsp-select-project #selectProject [userIri]="userIri" (selectedProject)="getSelectedProject($event)">
+        </dsp-select-project>`
 })
 class TestHostSelectProjectComponent {
 
@@ -36,10 +33,8 @@ class TestHostSelectProjectComponent {
     // userIRI filter for select-project component
     userIri = 'http://rdfh.ch/users/9XBCrDV3SRa7kS1WwynB4Q';
 
-    selectedProjectCode: string;
-
-    getProjectInfo(projectName: string) {
-        this.selectedProjectCode = projectName;
+    getSelectedProject(selectedProject: ReadProject) {
+        console.log(selectedProject);
     }
 
 }
@@ -54,7 +49,6 @@ describe('SelectProjectComponent', () => {
 
         dspConnSpy = {
             admin: {
-                // projectsEndpoint: jasmine.createSpyObj('projectsEndpoint', ['getProjects']),
                 usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUserProjectMemberships'])
             }
         };
@@ -91,7 +85,7 @@ describe('SelectProjectComponent', () => {
         const valuesSpy = TestBed.inject(DspApiConnectionToken);
 
         (valuesSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUserProjectMemberships.and.callFake(
-            () => {
+            (userIri) => {
                 const projects = MockProjects.mockProjects();
                 return of(projects);
             }
