@@ -317,6 +317,37 @@ describe('PropertyViewComponent', () => {
             expect(propertyViewComponentDe.query(By.css('.add-value'))).toBeDefined();
 
         });
+
+        it('should determine that adding a standoff link value is not allowed', () => {
+
+            const standoffLinkVal = testHostComponent.propArray.filter(
+                propVal => propVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+            );
+
+            expect(testHostComponent.propertyViewComponent.addValueIsAllowed(standoffLinkVal[0])).toBeFalsy();
+
+        });
+
+        it('should determine that adding a incoming link value is not allowed', () => {
+
+            const standoffLinkVal = testHostComponent.propArray.filter(
+                propVal => propVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasIncomingLinkValue'
+            );
+
+            expect(testHostComponent.propertyViewComponent.addValueIsAllowed(standoffLinkVal[0])).toBeFalsy();
+
+        });
+
+        it('should determine that adding an int value is allowed', () => {
+
+            const standoffLinkVal = testHostComponent.propArray.filter(
+                propVal => propVal.propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger'
+            );
+
+            expect(testHostComponent.propertyViewComponent.addValueIsAllowed(standoffLinkVal[0])).toBeTruthy();
+
+        });
+
     });
 
 });
