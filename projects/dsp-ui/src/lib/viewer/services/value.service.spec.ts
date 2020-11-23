@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import {
     KnoraDate, KnoraPeriod,
     MockResource, ReadDateValue,
-    ReadIntValue,
+    ReadIntValue, ReadLinkValue,
     ReadTextValueAsHtml,
     ReadTextValueAsString,
     ReadTextValueAsXml,
@@ -172,6 +172,17 @@ describe('ValueService', () => {
 
             const valueClass = service.getValueTypeOrClass(readTextValueAsXml);
             expect(service.isReadOnly(valueClass, readTextValueAsXml, resPropDef)).toBeTruthy();
+        });
+
+        it('should mark a standoff link value as ReadOnly', () => {
+            const readStandoffLinkValue = new ReadLinkValue();
+            readStandoffLinkValue.type = 'http://api.knora.org/ontology/knora-api/v2#LinkValue';
+
+            const resPropDef = new ResourcePropertyDefinition();
+            resPropDef.isEditable = false;
+
+            const valueClass = service.getValueTypeOrClass(readStandoffLinkValue);
+            expect(service.isReadOnly(valueClass, readStandoffLinkValue, resPropDef)).toBeTruthy();
         });
 
         it('should mark ReadDateValue with unsupported era as ReadOnly', done => {
