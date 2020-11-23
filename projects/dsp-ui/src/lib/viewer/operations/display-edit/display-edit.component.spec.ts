@@ -31,6 +31,7 @@ import {
     ReadTimeValue,
     ReadUriValue,
     ReadValue,
+    ResourcePropertyDefinition,
     UpdateIntValue,
     UpdateResource,
     UpdateValue,
@@ -332,7 +333,7 @@ class TestHostDisplayValueComponent implements OnInit {
    }
 }
 
-describe('DisplayEditComponent', () => {
+fdescribe('DisplayEditComponent', () => {
   let testHostComponent: TestHostDisplayValueComponent;
   let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
@@ -347,6 +348,8 @@ describe('DisplayEditComponent', () => {
     const eventSpy = jasmine.createSpyObj('ValueOperationEventService', ['emit']);
 
     const userServiceSpy = jasmine.createSpyObj('UserService', ['getUser']);
+
+    const valueServiceSpy = jasmine.createSpyObj('ValueService', ['getValueTypeOrClass', 'isReadOnly']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -394,6 +397,10 @@ describe('DisplayEditComponent', () => {
         {
             provide: MatDialogRef,
             useValue: {}
+        },
+        {
+            provide: ValueService,
+            useValue: valueServiceSpy
         }
       ]
     })
@@ -418,6 +425,26 @@ describe('DisplayEditComponent', () => {
         }
     );
 
+    const valueServiceSpy = TestBed.inject(ValueService);
+
+    // actual ValueService
+    // mocking the service's behaviour would duplicate the actual implementation
+    const valueService = new ValueService();
+
+    // spy for getValueTypeOrClass
+    (valueServiceSpy as jasmine.SpyObj<ValueService>).getValueTypeOrClass.and.callFake(
+        (value: ReadValue) => {
+            return valueService.getValueTypeOrClass(value);
+        }
+    );
+
+    // spy for isReadOnly
+    (valueServiceSpy as jasmine.SpyObj<ValueService>).isReadOnly.and.callFake(
+      (typeOrClass: string, value: ReadValue, propDef: ResourcePropertyDefinition) => {
+          return valueService.isReadOnly(typeOrClass, value, propDef);
+      }
+    );
+
     testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
     testHostComponent = testHostFixture.componentInstance;
     testHostFixture.detectChanges();
@@ -429,12 +456,33 @@ describe('DisplayEditComponent', () => {
 
     it('should choose the apt component for a plain text value in the template', () => {
 
+      const valueServiceSpy = TestBed.inject(ValueService);
+
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsStringComponent).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadTextValueAsString).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+
+      // make sure the value service has been called as expected on initialization
+
+      expect(valueServiceSpy.getValueTypeOrClass).toHaveBeenCalledTimes(1);
+      expect(valueServiceSpy.getValueTypeOrClass).toHaveBeenCalledWith(jasmine.objectContaining({
+          type: 'http://api.knora.org/ontology/knora-api/v2#TextValue'
+      }));
+
+      expect(valueServiceSpy.isReadOnly).toHaveBeenCalledTimes(1);
+      expect(valueServiceSpy.isReadOnly).toHaveBeenCalledWith(
+          'ReadTextValueAsString',
+          jasmine.objectContaining({
+            type: 'http://api.knora.org/ontology/knora-api/v2#TextValue'
+          }),
+          jasmine.objectContaining({
+              id: 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText'
+          })
+      );
+
     });
 
     it('should choose the apt component for an XML value in the template', () => {
