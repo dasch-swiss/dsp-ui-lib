@@ -34,7 +34,7 @@ class TestParentComponent implements OnInit {
 
     ngOnInit() {
 
-        MockResource.getTesthings(5).subscribe(res => {
+        MockResource.getTestThings(5).subscribe(res => {
             this.resources = res;
         });
     }

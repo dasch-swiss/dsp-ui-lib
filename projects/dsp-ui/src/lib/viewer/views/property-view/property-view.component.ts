@@ -11,6 +11,7 @@ import {
     PermissionUtil,
     ReadLinkValue,
     ReadResource,
+    ResourcePropertyDefinition,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
@@ -102,7 +103,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     /**
      * Called from the template when the user clicks on the cancel button
      */
-    hideAddValueForm() {
+    hideAddValueForm() {
         this.addValueFormIsVisible = false;
         this.addButtonIsVisible = true;
         this.propID = undefined;
@@ -114,11 +115,12 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      * @param prop the resource property
      */
     addValueIsAllowed(prop: PropertyInfoValues): boolean {
-        // temporary until CkEditor is integrated
-        // const guiElement = (prop.propDef as ResourcePropertyDefinition).guiElement;
-        // if (guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
-        //     return false;
-        // }
+
+        // if the ontology flags this as a read-only property,
+        // don't ever allow to add a value
+        if (prop.propDef instanceof ResourcePropertyDefinition && !prop.propDef.isEditable) {
+           return false;
+        }
 
         const isAllowed = CardinalityUtil.createValueForPropertyAllowed(
             prop.propDef.id, prop.values.length, this.parentResource.entityInfo.classes[this.parentResource.type]);

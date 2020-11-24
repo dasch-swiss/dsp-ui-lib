@@ -195,3 +195,19 @@ button.cancel .mat-icon {
 .deletion-dialog-message .deletion-comment {
   min-width: 80%;
 }
+
+
+.ck-content code {
+  font-family: monospace !important;
+}
+
+.ck-content pre {
+  background-color: inherit !important;
+}
+
+code, pre {
+  font-family: monospace !important;
+  background-color: hsla(0,0%,78%,.3);
+  padding: .15em;
+  border-radius: 2px;
+}

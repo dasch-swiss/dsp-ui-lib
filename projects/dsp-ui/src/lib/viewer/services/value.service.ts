@@ -133,8 +133,16 @@ export class ValueService {
      *
      * @param valueTypeOrClass the type or class of the given value.
      * @param value the given value.
+     * @param propertyDef the given values property definition.
      */
-    isReadOnly(valueTypeOrClass: string, value: ReadValue): boolean {
+    isReadOnly(valueTypeOrClass: string, value: ReadValue, propertyDef: ResourcePropertyDefinition): boolean {
+
+        // if value is not editable in general from the ontology,
+        // flag it as read-only
+        if (!propertyDef.isEditable) {
+            return true;
+        }
+
         // only texts complying with the standard mapping can be edited using CKEditor.
         const xmlValueNonStandardMapping
             = valueTypeOrClass === this._readTextValueAsXml

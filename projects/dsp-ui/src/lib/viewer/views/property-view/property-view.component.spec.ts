@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -7,6 +7,7 @@ import {
     ApiResponseError,
     IHasPropertyWithPropertyDefinition,
     MockResource,
+    ReadLinkValue,
     ReadResource,
     ReadValue,
     ResourcePropertyDefinition,
@@ -26,7 +27,9 @@ import { PropertyViewComponent } from './property-view.component';
       [parentResource]="parentResource"
       [propArray]="propArray"
       [systemPropArray]="systemPropArray"
-      [showAllProps]="showAllProps">
+      [showAllProps]="showAllProps"
+      (referredResourceClicked)="internalLinkClicked($event)"
+      (referredResourceHovered)="internalLinkHovered($event)">
     </dsp-property-view>`
 })
 class TestPropertyParentComponent implements OnInit, OnDestroy {
@@ -45,12 +48,16 @@ class TestPropertyParentComponent implements OnInit, OnDestroy {
 
     myNum = 0;
 
+    linkValClicked: ReadLinkValue;
+
+    linkValHovered: ReadLinkValue;
+
     constructor(public _valueOperationEventService: ValueOperationEventService) { }
 
     ngOnInit() {
         this.voeSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.myNum += 1);
 
-        MockResource.getTestthing().subscribe(response => {
+        MockResource.getTestThing().subscribe(response => {
             this.parentResource = response;
 
             // gather resource property information
@@ -76,10 +83,19 @@ class TestPropertyParentComponent implements OnInit, OnDestroy {
             console.error('Error to get the mock resource', error);
         });
     }
+
     ngOnDestroy() {
         if (this.voeSubscription) {
             this.voeSubscription.unsubscribe();
         }
+    }
+
+    internalLinkClicked(linkVal: ReadLinkValue) {
+        this.linkValClicked = linkVal;
+    }
+
+    internalLinkHovered(linkVal: ReadLinkValue) {
+        this.linkValHovered = linkVal;
     }
 }
 
@@ -94,7 +110,11 @@ class TestDisplayValueComponent {
 
     @Input() parentResource: ReadResource;
     @Input() displayValue: ReadValue;
+    @Input() propArray: PropertyInfoValues[];
     @Input() configuration?: object;
+
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
 }
 
@@ -182,6 +202,36 @@ describe('PropertyViewComponent', () => {
 
     });
 
+    it('should propagate a click event on a link value', () => {
+
+        const displayEdit = testHostFixture.debugElement.query(By.directive(TestDisplayValueComponent));
+
+        const linkVal = new ReadLinkValue();
+        linkVal.linkedResourceIri = 'testIri';
+
+        expect(testHostComponent.linkValClicked).toBeUndefined();
+
+        (displayEdit.componentInstance as TestDisplayValueComponent).referredResourceClicked.emit(linkVal);
+
+        expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('testIri');
+
+    });
+
+    it('should propagate a hover event on a link value', () => {
+
+        const displayEdit = testHostFixture.debugElement.query(By.directive(TestDisplayValueComponent));
+
+        const linkVal = new ReadLinkValue();
+        linkVal.linkedResourceIri = 'testIri';
+
+        expect(testHostComponent.linkValHovered).toBeUndefined();
+
+        (displayEdit.componentInstance as TestDisplayValueComponent).referredResourceHovered.emit(linkVal);
+
+        expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('testIri');
+
+    });
+
     it('should trigger the callback when an event is emitted', () => {
 
         expect(testHostComponent.myNum).toEqual(0);
@@ -231,17 +281,21 @@ describe('PropertyViewComponent', () => {
 
             let addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
 
-            // current amount of buttons should equal 19 because the boolean property shouldn't have an add button if it has a value
-            expect(addButtons.length).toEqual(19);
+            // current amount of buttons should equal 17
+            // because the boolean property shouldn't have an add button if it has a value
+            // standoff links value and has incoming link value are system props and cannot be added: -2
+            expect(addButtons.length).toEqual(17);
 
             // remove value from the boolean property
             testHostComponent.propArray[9].values = [];
 
             testHostFixture.detectChanges();
 
-            // now the boolean property should have an add button so the amount of add buttons on the page should increase by 1
+            // now the boolean property should have an add button
+            // so the amount of add buttons on the page should increase by 1
+            // standoff links value and has incoming link value are system props and cannot be added: -2
             addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
-            expect(addButtons.length).toEqual(20);
+            expect(addButtons.length).toEqual(18);
 
         });
 
@@ -263,6 +317,37 @@ describe('PropertyViewComponent', () => {
             expect(propertyViewComponentDe.query(By.css('.add-value'))).toBeDefined();
 
         });
+
+        it('should determine that adding a standoff link value is not allowed', () => {
+
+            const standoffLinkVal = testHostComponent.propArray.filter(
+                propVal => propVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+            );
+
+            expect(testHostComponent.propertyViewComponent.addValueIsAllowed(standoffLinkVal[0])).toBeFalsy();
+
+        });
+
+        it('should determine that adding a incoming link value is not allowed', () => {
+
+            const standoffLinkVal = testHostComponent.propArray.filter(
+                propVal => propVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasIncomingLinkValue'
+            );
+
+            expect(testHostComponent.propertyViewComponent.addValueIsAllowed(standoffLinkVal[0])).toBeFalsy();
+
+        });
+
+        it('should determine that adding an int value is allowed', () => {
+
+            const standoffLinkVal = testHostComponent.propArray.filter(
+                propVal => propVal.propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger'
+            );
+
+            expect(testHostComponent.propertyViewComponent.addValueIsAllowed(standoffLinkVal[0])).toBeTruthy();
+
+        });
+
     });
 
 });

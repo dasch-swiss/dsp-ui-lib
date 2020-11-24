@@ -31,6 +31,7 @@ import {
     ReadTimeValue,
     ReadUriValue,
     ReadValue,
+    ResourcePropertyDefinition,
     UpdateIntValue,
     UpdateResource,
     UpdateValue,
@@ -51,6 +52,7 @@ import {
 } from '../../services/value-operation-event.service';
 import { ValueService } from '../../services/value.service';
 import { DisplayEditComponent } from './display-edit.component';
+import { PropertyInfoValues } from '../../views/resource-view/resource-view.component';
 
 @Component({
   selector: `dsp-text-value-as-string`,
@@ -253,6 +255,7 @@ class TestDateValueComponent {
   template: `
       <dsp-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
                         [displayValue]="readValue"
+                        [propArray]="propArray"
                         (referredResourceClicked)="internalLinkClicked($event)"
                         (referredResourceHovered)="internalLinkHovered($event)"
       ></dsp-display-edit>`
@@ -263,16 +266,17 @@ class TestHostDisplayValueComponent implements OnInit {
 
   readResource: ReadResource;
   readValue: ReadValue;
+  propArray: PropertyInfoValues[] = [];
 
   mode: 'read' | 'update' | 'create' | 'search';
 
-  linkValClicked: ReadLinkValue;
-
-  linkValHovered: ReadLinkValue;
+  linkValClicked: ReadLinkValue | string = 'init'; // "init" is set because there is a test that checks that this does not emit for standoff links
+                                                   // (and if it emits undefined because of a bug, we cannot check)
+  linkValHovered: ReadLinkValue | string = 'init'; // see comment above
 
   ngOnInit() {
 
-    MockResource.getTestthing().subscribe(res => {
+    MockResource.getTestThing().subscribe(res => {
       this.readResource = res;
 
       this.mode = 'read';
@@ -289,12 +293,32 @@ class TestHostDisplayValueComponent implements OnInit {
     readVal.valueHasComment = comment;
 
     // standoff link value handling
+    // a text value linking to another resource has a corresponding standoff link value
     if (prop === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext') {
+
+        // adapt ReadLinkValue so it looks like a standoff link value
         const standoffLinkVal: ReadLinkValue
             = this.readResource.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue)[0];
 
         standoffLinkVal.linkedResourceIri = 'testIri';
-        this.readResource.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = [standoffLinkVal];
+
+        const propDefinition = this.readResource.entityInfo.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue'];
+        propDefinition.id = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+        const guiDefinition = this.readResource.entityInfo.classes['http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'].propertiesList.filter(
+            propDefForGui => propDefForGui.propertyIndex === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue'
+        );
+
+        guiDefinition[0].propertyIndex = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+
+        const propInfo: PropertyInfoValues = {
+            values: [standoffLinkVal],
+            propDef: propDefinition,
+            guiDef: guiDefinition[0]
+        };
+
+        // add standoff link value to property array
+        this.propArray.push(propInfo);
     }
 
     this.readValue = readVal;
@@ -324,6 +348,8 @@ describe('DisplayEditComponent', () => {
     const eventSpy = jasmine.createSpyObj('ValueOperationEventService', ['emit']);
 
     const userServiceSpy = jasmine.createSpyObj('UserService', ['getUser']);
+
+    const valueServiceSpy = jasmine.createSpyObj('ValueService', ['getValueTypeOrClass', 'isReadOnly']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -371,6 +397,10 @@ describe('DisplayEditComponent', () => {
         {
             provide: MatDialogRef,
             useValue: {}
+        },
+        {
+            provide: ValueService,
+            useValue: valueServiceSpy
         }
       ]
     })
@@ -395,6 +425,26 @@ describe('DisplayEditComponent', () => {
         }
     );
 
+    const valueServiceSpy = TestBed.inject(ValueService);
+
+    // actual ValueService
+    // mocking the service's behaviour would duplicate the actual implementation
+    const valueService = new ValueService();
+
+    // spy for getValueTypeOrClass
+    (valueServiceSpy as jasmine.SpyObj<ValueService>).getValueTypeOrClass.and.callFake(
+        (value: ReadValue) => {
+            return valueService.getValueTypeOrClass(value);
+        }
+    );
+
+    // spy for isReadOnly
+    (valueServiceSpy as jasmine.SpyObj<ValueService>).isReadOnly.and.callFake(
+      (typeOrClass: string, value: ReadValue, propDef: ResourcePropertyDefinition) => {
+          return valueService.isReadOnly(typeOrClass, value, propDef);
+      }
+    );
+
     testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
     testHostComponent = testHostFixture.componentInstance;
     testHostFixture.detectChanges();
@@ -406,12 +456,33 @@ describe('DisplayEditComponent', () => {
 
     it('should choose the apt component for a plain text value in the template', () => {
 
+      const valueServiceSpy = TestBed.inject(ValueService);
+
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasText');
       testHostFixture.detectChanges();
 
       expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestTextValueAsStringComponent).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadTextValueAsString).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
+
+      // make sure the value service has been called as expected on initialization
+
+      expect(valueServiceSpy.getValueTypeOrClass).toHaveBeenCalledTimes(1);
+      expect(valueServiceSpy.getValueTypeOrClass).toHaveBeenCalledWith(jasmine.objectContaining({
+          type: 'http://api.knora.org/ontology/knora-api/v2#TextValue'
+      }));
+
+      expect(valueServiceSpy.isReadOnly).toHaveBeenCalledTimes(1);
+      expect(valueServiceSpy.isReadOnly).toHaveBeenCalledWith(
+          'ReadTextValueAsString',
+          jasmine.objectContaining({
+            type: 'http://api.knora.org/ontology/knora-api/v2#TextValue'
+          }),
+          jasmine.objectContaining({
+              id: 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasText'
+          })
+      );
+
     });
 
     it('should choose the apt component for an XML value in the template', () => {
@@ -425,29 +496,68 @@ describe('DisplayEditComponent', () => {
 
     });
 
-    it('should choose the apt component for an XML value in the template and react to clicking on a standoff link', () => {
+    it('should react to clicking on a standoff link', () => {
 
+      // assign value also updates the standoff link in propArray
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValClicked).toBeUndefined();
+      expect(testHostComponent.linkValClicked).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkClicked.emit('testIri');
 
-      expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('testIri');
+      expect((testHostComponent.linkValClicked as ReadLinkValue).linkedResourceIri).toEqual('testIri');
 
     });
 
-    it('should choose the apt component for an XML value in the template and react to hovering on a standoff link', () => {
+    it('should not react to clicking on a standoff link when there is no corresponding standoff link value', () => {
 
+      // assign value also updates the standoff link in propArray
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
+
+      // simulate situation
+      // where the standoff link was not updated
+      testHostComponent.propArray[0].values = [];
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValClicked).toEqual('init');
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkClicked.emit('testIri');
+
+      expect(testHostComponent.linkValClicked).toEqual('init');
+    });
+
+    it('should react to hovering on a standoff link', () => {
+
+      // assign value also updates the standoff link in propArray
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValHovered).toBeUndefined();
+      expect(testHostComponent.linkValHovered).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkHovered.emit('testIri');
 
-      expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('testIri');
+      expect((testHostComponent.linkValHovered as ReadLinkValue).linkedResourceIri).toEqual('testIri');
+
+    });
+
+    it('should not react to hovering on a standoff link when there is no corresponding standoff link value', () => {
+
+      // assign value also updates the standoff link in propArray
+      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext');
+
+      // simulate situation
+      // where the standoff link was not updated
+      testHostComponent.propArray[0].values = [];
+
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent.linkValHovered).toEqual('init');
+
+      (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestTextValueAsXmlComponent).internalLinkHovered.emit('testIri');
+
+      expect(testHostComponent.linkValHovered).toEqual('init');
 
     });
 
@@ -455,6 +565,7 @@ describe('DisplayEditComponent', () => {
 
       const inputVal: ReadTextValueAsHtml = new ReadTextValueAsHtml();
 
+      inputVal.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext';
       inputVal.hasPermissions = 'CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser';
       inputVal.userHasPermission = 'CR';
       inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
@@ -567,13 +678,13 @@ describe('DisplayEditComponent', () => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValClicked).toBeUndefined();
+      expect(testHostComponent.linkValClicked).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
           .referredResourceClicked
           .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
 
-      expect(testHostComponent.linkValClicked.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect((testHostComponent.linkValClicked as ReadLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
 
     });
 
@@ -582,13 +693,13 @@ describe('DisplayEditComponent', () => {
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
       testHostFixture.detectChanges();
 
-      expect(testHostComponent.linkValHovered).toBeUndefined();
+      expect(testHostComponent.linkValHovered).toEqual('init');
 
       (testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent)
           .referredResourceHovered
           .emit((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).displayValue);
 
-      expect(testHostComponent.linkValHovered.linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
+      expect((testHostComponent.linkValHovered as ReadLinkValue).linkedResourceIri).toEqual('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ');
 
     });
 
@@ -632,54 +743,6 @@ describe('DisplayEditComponent', () => {
         expect(testHostComponent.displayEditValueComponent.displayValueComponent instanceof TestGeonameValueComponent).toBe(true);
         expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadGeonameValue).toBe(true);
         expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
-    });
-
-  });
-
-  describe('methods getValueType and isReadOnly', () => {
-    let hostCompDe;
-    let displayEditComponentDe;
-    let valueService;
-
-    beforeEach(() => {
-      testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
-      testHostFixture.detectChanges();
-
-      expect(testHostComponent.displayEditValueComponent).toBeTruthy();
-
-      hostCompDe = testHostFixture.debugElement;
-      displayEditComponentDe = hostCompDe.query(By.directive(DisplayEditComponent));
-
-      valueService = TestBed.inject(ValueService);
-
-    });
-
-    it('should return the type of a integer value as not readonly', () => {
-      expect(valueService.getValueTypeOrClass(testHostComponent.displayEditValueComponent.displayValue)).toEqual(Constants.IntValue);
-
-      expect(valueService.isReadOnly(Constants.IntValue, testHostComponent.displayEditValueComponent.displayValue)).toBe(false);
-    });
-
-    it('should return the class of a html text value as readonly', () => {
-
-      const htmlTextVal = new ReadTextValueAsHtml();
-      htmlTextVal.type = Constants.TextValue;
-
-      expect(valueService.getValueTypeOrClass(htmlTextVal)).toEqual('ReadTextValueAsHtml');
-
-      expect(valueService.isReadOnly('ReadTextValueAsHtml', htmlTextVal)).toBe(true);
-
-    });
-
-    it('should return the type of a plain text value as not readonly', () => {
-
-      const plainTextVal = new ReadTextValueAsString();
-      plainTextVal.type = Constants.TextValue;
-
-      expect(valueService.getValueTypeOrClass(plainTextVal)).toEqual('ReadTextValueAsString');
-
-      expect(valueService.isReadOnly('ReadTextValueAsString', plainTextVal)).toBe(false);
-
     });
 
   });
@@ -866,6 +929,7 @@ describe('DisplayEditComponent', () => {
     it('should not display the edit button', () => {
       const inputVal: ReadTextValueAsHtml = new ReadTextValueAsHtml();
 
+      inputVal.property = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext';
       inputVal.hasPermissions = 'CR knora-admin:Creator|M knora-admin:ProjectMember|V knora-admin:KnownUser|RV knora-admin:UnknownUser';
       inputVal.userHasPermission = 'CR';
       inputVal.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';

@@ -12,6 +12,7 @@ import {
     ReadResource,
     ReadUser,
     ReadValue,
+    ResourcePropertyDefinition,
     UpdateResource,
     UpdateValue,
     WriteValueResponse
@@ -33,6 +34,7 @@ import {
 } from '../../services/value-operation-event.service';
 import { ValueService } from '../../services/value.service';
 import { BaseValueComponent } from '../../values/base-value.component';
+import { PropertyInfoValues } from '../../views/resource-view/resource-view.component';
 
 @Component({
     selector: 'dsp-display-edit',
@@ -66,6 +68,8 @@ export class DisplayEditComponent implements OnInit {
     @ViewChild('displayVal') displayValueComponent: BaseValueComponent;
 
     @Input() displayValue: ReadValue;
+
+    @Input() propArray: PropertyInfoValues[];
 
     @Input() parentResource: ReadResource;
 
@@ -111,7 +115,7 @@ export class DisplayEditComponent implements OnInit {
         private _valueOperationEventService: ValueOperationEventService,
         private _dialog: MatDialog,
         private _userService: UserService,
-        private _valueService: ValueService,) {
+        private _valueService: ValueService) {
     }
 
     ngOnInit() {
@@ -131,7 +135,17 @@ export class DisplayEditComponent implements OnInit {
 
         this.valueTypeOrClass = this._valueService.getValueTypeOrClass(this.displayValue);
 
-        this.readOnlyValue = this._valueService.isReadOnly(this.valueTypeOrClass, this.displayValue);
+        // get the resource property definition
+        const resPropDef = this.parentResource.entityInfo.getPropertyDefinitionsByType(ResourcePropertyDefinition).filter(
+            (propDef: ResourcePropertyDefinition) => propDef.id === this.displayValue.property
+        );
+
+        if (resPropDef.length !== 1) {
+            // this should never happen because we always have the property info for the given value
+            throw new Error('Resource Property Definition could not be found: ' + this.displayValue.property);
+        }
+
+        this.readOnlyValue = this._valueService.isReadOnly(this.valueTypeOrClass, this.displayValue, resPropDef[0]);
 
         // prevent getting info about system user (standoff link values are managed by the system)
         if (this.displayValue.attachedToUser !== 'http://www.knora.org/ontology/knora-admin#SystemUser') {
@@ -158,16 +172,33 @@ export class DisplayEditComponent implements OnInit {
      * @param resIri the Iri of the resource.
      */
     private _getStandoffLinkValueForResource(resIri: string): ReadLinkValue[] {
-        const standoffLinkVals: ReadLinkValue[] = this.parentResource.getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue', ReadLinkValue);
 
-        // find the corresponding standoff link value
-        const referredResStandoffLinkVal: ReadLinkValue[] = standoffLinkVals.filter(
-            standoffLinkVal => {
-                return standoffLinkVal.linkedResourceIri === resIri;
+        // find the PropertyInfoValues for the standoff link value
+        const standoffLinkPropInfoVals: PropertyInfoValues[] = this.propArray.filter(
+            resPropInfoVal => {
+                return resPropInfoVal.propDef.id === "http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue";
             }
         );
 
-        return referredResStandoffLinkVal;
+        if (standoffLinkPropInfoVals.length === 1) {
+
+            // find the corresponding standoff link value
+            const referredResStandoffLinkVal: ReadValue[] = standoffLinkPropInfoVals[0].values.filter(
+                (standoffLinkVal: ReadValue) => {
+                    return standoffLinkVal instanceof ReadLinkValue
+                        && (standoffLinkVal as ReadLinkValue).linkedResourceIri === resIri;
+                }
+            );
+
+            // if no corresponding standoff link value was found,
+            // this array is empty
+            return referredResStandoffLinkVal as ReadLinkValue[];
+
+        } else {
+            // this should actually never happen
+            // because all resource types have a cardinality for a standoff link value
+            return [];
+        }
     }
 
     /**

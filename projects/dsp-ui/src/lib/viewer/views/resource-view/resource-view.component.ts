@@ -17,7 +17,9 @@ import {
     ReadLinkValue,
     ReadProject,
     ReadResource,
+    ReadResourceSequence,
     ReadStillImageFileValue,
+    ReadTextValueAsXml,
     ReadValue,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
@@ -191,6 +193,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                     propInfoValueArray.propDef.id === valueToAdd.property) // filter to the correct property
                 .forEach(propInfoValue =>
                     propInfoValue.values.push(valueToAdd)); // push new value to array
+            if (valueToAdd instanceof ReadTextValueAsXml) {
+                this._updateStandoffLinkValue();
+            }
         } else {
             console.error('No properties exist for this resource');
         }
@@ -214,6 +219,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                         }
                     });
                 });
+            if (updatedValue instanceof ReadTextValueAsXml) {
+                this._updateStandoffLinkValue();
+            }
         } else {
             console.error('No properties exist for this resource');
         }
@@ -233,6 +241,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                     filteredpropInfoValueArray.values.forEach((val, index) => { // loop through each value of the current property
                         if (val.id === valueToDelete.id) { // find the value that was deleted using the id
                             filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
+                            if (val instanceof ReadTextValueAsXml) {
+                                this._updateStandoffLinkValue();
+                            }
                         }
                     });
                 }
@@ -240,6 +251,67 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         } else {
             console.error('No properties exist for this resource');
         }
+    }
+
+    /**
+     * Updates the standoff link value for the resource being displayed.
+     *
+     */
+    private _updateStandoffLinkValue(): void {
+
+        if (this.resource === undefined) {
+            // this should never happen:
+            // if the user was able to click on a standoff link,
+            // then the resource must have been initialised before.
+            return;
+        }
+
+        const gravsearchQuery = `
+ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+ CONSTRUCT {
+     ?res knora-api:isMainResource true .
+     ?res knora-api:hasStandoffLinkTo ?target .
+ } WHERE {
+     BIND(<${this.resource.id}> as ?res) .
+     OPTIONAL {
+         ?res knora-api:hasStandoffLinkTo ?target .
+     }
+ }
+ OFFSET 0
+ `;
+
+        this._dspApiConnection.v2.search.doExtendedSearch(gravsearchQuery).subscribe(
+            (res: ReadResourceSequence) => {
+
+                // one resource is expected
+                if (res.resources.length !== 1) {
+                    return;
+                }
+
+                const newStandoffLinkVals = res.resources[0].getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue', ReadLinkValue);
+
+                this.resPropInfoVals.filter(
+                    resPropInfoVal => {
+                        return resPropInfoVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+                    }
+                ).forEach(
+                    standoffLinkResPropInfoVal => {
+                        // delete all the existing standoff link values
+                        standoffLinkResPropInfoVal.values = [];
+                        // push standoff link values retrieved for the resource
+                        newStandoffLinkVals.forEach(
+                            standoffLinkVal => {
+                                standoffLinkResPropInfoVal.values.push(standoffLinkVal);
+                            }
+                        );
+                    });
+
+            },
+            err => {
+                console.error(err);
+            }
+        );
+
     }
 
     /**

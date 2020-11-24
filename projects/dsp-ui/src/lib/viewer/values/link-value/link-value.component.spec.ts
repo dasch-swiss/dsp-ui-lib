@@ -39,7 +39,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
   ngOnInit() {
 
-    MockResource.getTestthing().subscribe(res => {
+    MockResource.getTestThing().subscribe(res => {
       const inputVal: ReadLinkValue =
         res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue)[0];
 
@@ -76,7 +76,7 @@ class TestHostCreateValueComponent implements OnInit {
 
   ngOnInit() {
 
-    MockResource.getTestthing().subscribe(res => {
+    MockResource.getTestThing().subscribe(res => {
       this.propIri = 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue';
       this.parentResource = res;
       this.mode = 'create';
