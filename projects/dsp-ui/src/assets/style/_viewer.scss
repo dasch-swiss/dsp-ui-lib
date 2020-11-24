@@ -7,7 +7,8 @@
 }
 
 .selected-resource {
-  background-color: lightgray;
+  background-color: $grey;
+  opacity: $black-12-opacity;
 }
 
 // css for parent value components

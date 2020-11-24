@@ -1,7 +1,7 @@
 <div class="resource-grid">
     <mat-card
         class="grid-card link"
-        [ngClass]="{'selected-resource': selectedResourceIdx === i}"
+        [class.selected-resource]="selectedResourceIdx === i"
         *ngFor="let res of resources.resources; let i = index;"
         (click)="resourceSelected.emit(res.id)">
         <!-- TODO: add the representation preview here, mat-card-image can be used for images -->
