@@ -84,7 +84,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
   ngOnInit() {
 
-    MockResource.getTestthing().subscribe(res => {
+    MockResource.getTestThing().subscribe(res => {
       const inputVal: ReadDateValue =
         res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
@@ -178,7 +178,7 @@ describe('DateValueComponent', () => {
 
     it('should display an existing value with an era not supported by MatDatepicker', done => {
 
-      MockResource.getTestthing().subscribe(res => {
+      MockResource.getTestThing().subscribe(res => {
           const inputVal: ReadDateValue =
               res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
@@ -250,7 +250,7 @@ describe('DateValueComponent', () => {
 
     it('should not make a value editable with an era not supported by MatDatePicker', done => {
 
-      MockResource.getTestthing().subscribe(res => {
+      MockResource.getTestThing().subscribe(res => {
           const inputVal: ReadDateValue =
               res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 
@@ -396,7 +396,7 @@ describe('DateValueComponent', () => {
 
     it('should set a new display value', done => {
 
-      MockResource.getTestthing().subscribe(res => {
+      MockResource.getTestThing().subscribe(res => {
         const newDate: ReadDateValue =
           res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
 

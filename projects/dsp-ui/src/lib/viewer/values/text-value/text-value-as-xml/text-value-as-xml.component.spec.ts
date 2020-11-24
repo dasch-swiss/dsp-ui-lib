@@ -84,7 +84,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
     ngOnInit() {
 
-        MockResource.getTestthing().subscribe(
+        MockResource.getTestThing().subscribe(
             res => {
 
                 this.displayInputVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext', ReadTextValueAsXml)[0];

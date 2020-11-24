@@ -29,7 +29,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
   ngOnInit() {
 
-    MockResource.getTestthing().subscribe(res => {
+    MockResource.getTestThing().subscribe(res => {
       const inputVal: ReadGeonameValue =
         res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasGeoname', ReadGeonameValue)[0];
 

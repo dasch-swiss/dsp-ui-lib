@@ -85,7 +85,7 @@ class DspAddValueTestComponent implements OnInit {
 
     ngOnInit() {
 
-        MockResource.getTestthing().subscribe(res => {
+        MockResource.getTestThing().subscribe(res => {
             this.readResource = res;
         });
 
