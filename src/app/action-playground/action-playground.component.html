@@ -10,6 +10,13 @@ We will implement the login form here as soon its moved from the old knora-ui.
 <dsp-progress-indicator *ngIf="loading"></dsp-progress-indicator>
 -->
 
+<hr>
+
+<p>Select project component</p>
+
+<dsp-select-project [userIri]="userIri" (selectedProject)="getSelectedProject($event)">
+</dsp-select-project>
+
 
 <hr>
 
