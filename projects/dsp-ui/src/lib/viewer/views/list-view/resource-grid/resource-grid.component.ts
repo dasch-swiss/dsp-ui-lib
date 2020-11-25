@@ -15,6 +15,8 @@ export class ResourceGridComponent {
      */
     @Input() resources: ReadResourceSequence;
 
+    @Input() selectedResourceIdx: number;
+
     /**
      * Click on an item will emit the resource iri
      *
