@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     ApiResponseData,
@@ -7,7 +7,8 @@ import {
     ProjectResponse,
     ReadProject,
     ReadResource,
-    ReadUser
+    ReadUser,
+    UserResponse
 } from '@dasch-swiss/dsp-js';
 import { NotificationService } from '../../../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../../../core/core.module';
@@ -18,7 +19,7 @@ import { UserService } from '../../../services/user.service';
     templateUrl: './property-toolbar.component.html',
     styleUrls: ['./property-toolbar.component.scss']
 })
-export class PropertyToolbarComponent implements OnInit {
+export class PropertyToolbarComponent implements OnChanges {
 
     @Input() resource: ReadResource;
 
@@ -53,7 +54,7 @@ export class PropertyToolbarComponent implements OnInit {
         private _userService: UserService
     ) { }
 
-    ngOnInit() {
+    ngOnChanges() {
         // get project information
         this._dspApiConnection.admin.projectsEndpoint.getProjectByIri(this.resource.attachedToProject).subscribe(
             (response: ApiResponseData<ProjectResponse>) => {
@@ -66,8 +67,8 @@ export class PropertyToolbarComponent implements OnInit {
 
         // get user information
         this._userService.getUser(this.resource.attachedToUser).subscribe(
-            user => {
-                this.user = user.user;
+            (response: UserResponse) => {
+                this.user = response.user;
             }
         );
     }
