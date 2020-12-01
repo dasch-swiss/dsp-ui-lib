@@ -57,7 +57,7 @@
 <!-- additional line with project and user information -->
 <div class="infobar mat-caption" *ngIf="project && user">
     <p>This resource belongs to the project
-        <span class="project link" (click)="openProject.emit(project)">
+        <span class="project link" (click)="projectClicked(project)" (mouseover)="projectHovered(project)">
             <b>{{project?.shortname}}</b>
             <mat-icon inline>open_in_new</mat-icon>
         </span>

@@ -6,7 +6,8 @@
 <dsp-resource-view
     [iri]="resource"
     [showToolbar]="true"
-    (openProject)="openProject($event)"
+    (referredProjectClicked)="refProjectClicked($event)"
+    (referredProjectHovered)="refProjectHovered($event)"
     (referredResourceClicked)="refResourceClicked($event)"
     (referredResourceHovered)="refResourceHovered($event)">
 </dsp-resource-view>

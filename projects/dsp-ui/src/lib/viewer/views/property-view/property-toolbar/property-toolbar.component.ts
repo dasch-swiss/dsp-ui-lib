@@ -26,7 +26,22 @@ export class PropertyToolbarComponent implements OnInit {
 
     @Output() toggleProps: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    /**
+     * @deprecated Use `referredProjectClicked` instead
+     */
     @Output() openProject: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
+    /**
+     * Output `referredProjectClicked` of resource view component:
+     * Can be used to go to project page
+     */
+    @Output() referredProjectClicked: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
+    /**
+     * Output `referredProjectHovered` of resource view component:
+     * Can be used for preview when hovering on project
+     */
+    @Output() referredProjectHovered: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
 
     project: ReadProject;
     user: ReadUser;
@@ -57,6 +72,19 @@ export class PropertyToolbarComponent implements OnInit {
         );
     }
 
+    /**
+     * Emits the project information on click.
+     */
+    projectClicked(project: ReadProject) {
+        this.referredProjectClicked.emit(project);
+    }
+
+    /**
+     * Emits the project information on hover.
+     */
+    projectHovered(project: ReadProject) {
+        this.referredProjectHovered.emit(project);
+    }
 
     /**
      * Display message to confirm the copy of the citation link (ARK URL)

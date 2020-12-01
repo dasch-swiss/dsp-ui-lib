@@ -20,9 +20,13 @@ export class ViewerPlaygroundComponent implements OnInit {
         this._sessionService.isSessionValid().subscribe(status => console.log('session valid: ', status));
     }
 
-    openProject(project: ReadProject) {
+    refProjectClicked(project: ReadProject) {
         // here you can redirect a user to the project page
-        console.log('redircet to project page e.g. /project/:shortcode', project.shortcode);
+        console.log('project clicked: redircet to project page e.g. /project/:shortcode', project);
+    }
+
+    refProjectHovered(project: ReadProject) {
+        console.log('project hovered: show preview', project);
     }
 
     refResourceClicked(linkValue: ReadLinkValue) {
