@@ -63,5 +63,9 @@
         </span>
     </p>
     <span class="fill-remaining-space"></span>
-    <p>Created by {{user?.username}} on {{resource.creationDate | date}}</p>
+    <p *ngIf="user || resource.creationDate">
+        Created
+        <span *ngIf="user">by {{(user.username ? user.username : user.givenName + ' ' + user.familyName)}}</span>
+        <span *ngIf="resource.creationDate"> on {{resource.creationDate | date}}</span>
+    </p>
 </div>
