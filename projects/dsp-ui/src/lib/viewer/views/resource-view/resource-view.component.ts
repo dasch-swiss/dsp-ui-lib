@@ -154,6 +154,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      */
     getResource(iri: string): void {
 
+        // reset still image representations
+        this.stillImageRepresentations = [];
+
         this._dspApiConnection.v2.res.getResource(iri).subscribe(
             (response: ReadResource) => {
                 this.resource = response;
