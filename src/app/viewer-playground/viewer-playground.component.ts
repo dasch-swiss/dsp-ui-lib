@@ -10,7 +10,14 @@ import { ReadLinkValue, ReadProject } from '@dasch-swiss/dsp-js';
 export class ViewerPlaygroundComponent implements OnInit {
 
     // resorce from incunabula: book page
-    resource = 'http://rdfh.ch/0803/18a671b8a601';
+    resources = [
+        'http://rdfh.ch/0803/18a671b8a601',
+        'http://rdfh.ch/0803/7e4cfc5417',
+        'http://rdfh.ch/0803/6ad3e2c47501',
+        'http://rdfh.ch/0001/a-thing-with-text-valuesLanguage'
+    ];
+    resourceIri: string = this.resources[0];
+
 
     constructor(
         private _sessionService: SessionService
