@@ -2,11 +2,20 @@
     The example here shows the usage of <span>dsp-resource-view</span> which combines smaller
     components like one of the representation viewer or the value components. All of them can
     also be used individually.</p>
+<ul>
+    <li *ngFor="let res of resources; let i = index"
+        class="link"
+        [class.active]="resourceIri === res"
+        (click)="resourceIri = res">
+        Example {{i}}: {{res}}
+    </li>
+</ul>
 
 <dsp-resource-view
-    [iri]="resource"
+    [iri]="resourceIri"
     [showToolbar]="true"
-    (openProject)="openProject($event)"
+    (referredProjectClicked)="refProjectClicked($event)"
+    (referredProjectHovered)="refProjectHovered($event)"
     (referredResourceClicked)="refResourceClicked($event)"
     (referredResourceHovered)="refResourceHovered($event)">
 </dsp-resource-view>
