@@ -166,8 +166,6 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                     (prop: IHasPropertyWithPropertyDefinition) => {
                         let propInfoAndValues: PropertyInfoValues;
 
-                        console.log(prop);
-
                         switch (prop.propertyDefinition.objectType) {
                             case Constants.StillImageFileValue:
                                 propInfoAndValues = {
