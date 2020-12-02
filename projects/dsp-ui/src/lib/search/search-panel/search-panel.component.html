@@ -1,6 +1,8 @@
 <div class="dsp-search-panel" #fullSearchPanel cdkOverlayOrigin>
 
-    <dsp-fulltext-search [projectfilter]="projectfilter" [filterbyproject]="filterbyproject"
+    <dsp-fulltext-search
+        [projectfilter]="projectfilter"
+        [(limitToProject)]="limitToProject"
         (search)="emitSearch($event)">
     </dsp-fulltext-search>
 
@@ -33,7 +35,7 @@
             </span>
         </div>
         <div class="dsp-menu-content">
-            <dsp-advanced-search *ngIf="showAdvanced" (search)="emitSearch($event)"></dsp-advanced-search>
+            <dsp-advanced-search *ngIf="showAdvanced" [limitToProject]="limitToProject" (search)="emitSearch($event)"></dsp-advanced-search>
             <dsp-expert-search *ngIf="!showAdvanced" (search)="emitSearch($event)"></dsp-expert-search>
         </div>
     </div>

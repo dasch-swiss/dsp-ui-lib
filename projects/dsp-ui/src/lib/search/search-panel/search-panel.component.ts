@@ -1,6 +1,6 @@
 import { ConnectionPositionPair, Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 
 @Component({
@@ -8,7 +8,7 @@ import { SearchParams } from '../../viewer/views/list-view/list-view.component';
     templateUrl: './search-panel.component.html',
     styleUrls: ['./search-panel.component.scss']
 })
-export class SearchPanelComponent {
+export class SearchPanelComponent implements OnInit, AfterViewInit {
 
     /**
      * @param [projectfilter] If true it shows the selection of projects to filter by one of them
@@ -16,10 +16,19 @@ export class SearchPanelComponent {
     @Input() projectfilter?: boolean = false;
 
     /**
+     * @deprecated Use `limitToProject` instead
+     *
      * @param [filterbyproject] If your full-text search should be filtered by one project, you can define it with project
      * iri in the parameter filterbyproject.
      */
     @Input() filterbyproject?: string;
+
+    /**
+     * Filter ontologies in advanced search or query in fulltext search by specified project IRI
+     *
+     * @param limitToProject
+     */
+    @Input() limitToProject?: string;
 
     /**
      * @param [advanced] Adds the extended / advanced search to the panel
@@ -54,6 +63,18 @@ export class SearchPanelComponent {
         private _viewContainerRef: ViewContainerRef
     ) { }
 
+    ngOnInit() {
+        // filterbyproject is set as deprecated. To avoid breaking changes we still support the parameter
+        if (this.filterbyproject) {
+            this.limitToProject = this.filterbyproject;
+        }
+        console.log('OnInit', this.limitToProject);
+    }
+
+    ngAfterViewInit() {
+        console.log('AfterViewInit', this.limitToProject);
+    }
+
     openPanelWithBackdrop(type: string) {
 
         this.showAdvanced = (type === 'advanced');
@@ -85,6 +106,11 @@ export class SearchPanelComponent {
         const overlayPosition = this._overlay.position().flexibleConnectedTo(this.searchPanel).withPositions(positions).withLockedPosition(false);
 
         return overlayPosition;
+    }
+
+    updateLimitToProject(id: string) {
+        console.log('updateLimitToProject', id);
+        this.limitToProject = id;
     }
 
     /**
