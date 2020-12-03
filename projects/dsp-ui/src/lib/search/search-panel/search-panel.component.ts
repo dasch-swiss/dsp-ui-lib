@@ -21,6 +21,7 @@ export class SearchPanelComponent implements OnInit {
 
     /**
      * @param [projectfilter] If true it shows the selection of projects to filter by one of them
+     * Default value: false
      */
     @Input() projectfilter?: boolean = false;
 
@@ -41,11 +42,13 @@ export class SearchPanelComponent implements OnInit {
 
     /**
      * @param [advanced] Adds the extended / advanced search to the panel
+     * Default value: false
      */
     @Input() advanced?: boolean = false;
 
     /**
      * @param [expert] Adds the expert search / gravsearch editor to the panel
+     * Default value: false
      */
     @Input() expert?: boolean = false;
 
