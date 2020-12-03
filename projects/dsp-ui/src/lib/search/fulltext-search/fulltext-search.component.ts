@@ -34,12 +34,14 @@ export interface PrevSearchItem {
     query: string;
 }
 
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-fulltext-search',
     templateUrl: './fulltext-search.component.html',
     styleUrls: ['./fulltext-search.component.scss']
 })
-export class FulltextSearchComponent implements OnInit {
+export class FulltextSearchComponent implements OnInit, OnChanges {
 
     /**
      *
@@ -147,15 +149,25 @@ export class FulltextSearchComponent implements OnInit {
             this.getProject(this.limitToProject);
         }
 
-        if (this.projectfilter) {
-            this.getAllProjects();
 
-            if (localStorage.getItem('currentProject') !== null) {
-                this.setProject(
-                    JSON.parse(localStorage.getItem('currentProject'))
-                );
-            }
-        }
+    }
+
+    ngOnChanges() {
+        // resource classes have been reinitialized
+            // reset form
+            resolvedPromise.then(() => {
+
+                if (this.projectfilter) {
+                    this.getAllProjects();
+
+                    if (localStorage.getItem('currentProject') !== null) {
+                        this.setProject(
+                            JSON.parse(localStorage.getItem('currentProject'))
+                        );
+                    }
+                }
+
+            });
     }
 
     /**

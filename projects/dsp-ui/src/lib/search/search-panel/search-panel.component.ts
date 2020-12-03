@@ -1,6 +1,15 @@
 import { ConnectionPositionPair, Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { AfterContentInit, AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input, OnInit,
+    Output,
+    TemplateRef,
+    ViewChild,
+    ViewContainerRef
+} from '@angular/core';
 import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 
 @Component({
@@ -8,7 +17,7 @@ import { SearchParams } from '../../viewer/views/list-view/list-view.component';
     templateUrl: './search-panel.component.html',
     styleUrls: ['./search-panel.component.scss']
 })
-export class SearchPanelComponent implements OnInit, AfterViewInit {
+export class SearchPanelComponent implements OnInit {
 
     /**
      * @param [projectfilter] If true it shows the selection of projects to filter by one of them
@@ -68,11 +77,6 @@ export class SearchPanelComponent implements OnInit, AfterViewInit {
         if (this.filterbyproject) {
             this.limitToProject = this.filterbyproject;
         }
-        console.log('OnInit', this.limitToProject);
-    }
-
-    ngAfterViewInit() {
-        console.log('AfterViewInit', this.limitToProject);
     }
 
     openPanelWithBackdrop(type: string) {
@@ -109,7 +113,6 @@ export class SearchPanelComponent implements OnInit, AfterViewInit {
     }
 
     updateLimitToProject(id: string) {
-        console.log('updateLimitToProject', id);
         this.limitToProject = id;
     }
 
@@ -129,7 +132,7 @@ export class SearchPanelComponent implements OnInit, AfterViewInit {
     closeMenu(): void {
         this.showAdvanced = false;
         this.showExpert = false;
-        if(this.overlayRef) {
+        if (this.overlayRef) {
             this.overlayRef.detach();
         }
     }
