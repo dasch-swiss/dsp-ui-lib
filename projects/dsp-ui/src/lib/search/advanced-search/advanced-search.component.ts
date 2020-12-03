@@ -2,6 +2,7 @@ import {
     Component,
     EventEmitter,
     Inject,
+    Input,
     OnDestroy,
     OnInit,
     Output,
@@ -42,6 +43,13 @@ const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
     styleUrls: ['./advanced-search.component.scss']
 })
 export class AdvancedSearchComponent implements OnInit, OnDestroy {
+
+    /**
+     * Filter ontologies by specified project IRI
+     *
+     * @param limitToProject
+     */
+    @Input() limitToProject?: string;
 
     /**
      * The data event emitter of type SearchParams
@@ -94,7 +102,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
             this.formValid = this._validateForm();
         });
-
         // initialize ontologies to be used for the ontologies selection in the search form
         this.initializeOntologies();
     }
@@ -129,17 +136,34 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      * @returns void
      */
     initializeOntologies(): void {
-        this._dspApiConnection.v2.onto.getOntologiesMetadata().subscribe(
-            (response: OntologiesMetadata) => {
-                // filter out system ontologies
-                response.ontologies = response.ontologies.filter(onto => onto.attachedToProject !== Constants.SystemProjectIRI);
 
-                this.ontologiesMetadata = response;
-            },
-            (error: ApiResponseError) => {
-                this._notification.openSnackBar(error);
-                this.errorMessage = error;
-            });
+        if (this.limitToProject) {
+            this._dspApiConnection.v2.onto.getOntologiesByProjectIri(this.limitToProject).subscribe(
+                (response: OntologiesMetadata) => {
+                    // filter out system ontologies
+                    response.ontologies = response.ontologies.filter(onto => onto.attachedToProject !== Constants.SystemProjectIRI);
+
+                    this.ontologiesMetadata = response;
+                },
+                (error: ApiResponseError) => {
+                    this._notification.openSnackBar(error);
+                    this.errorMessage = error;
+                });
+        } else {
+            this._dspApiConnection.v2.onto.getOntologiesMetadata().subscribe(
+                (response: OntologiesMetadata) => {
+                    // filter out system ontologies
+                    response.ontologies = response.ontologies.filter(onto => onto.attachedToProject !== Constants.SystemProjectIRI);
+
+                    this.ontologiesMetadata = response;
+                },
+                (error: ApiResponseError) => {
+                    this._notification.openSnackBar(error);
+                    this.errorMessage = error;
+                });
+        }
+
+
     }
 
     /**
