@@ -149,7 +149,9 @@ export class FulltextSearchComponent implements OnInit, OnChanges {
             this.getProject(this.limitToProject);
         }
 
-
+        if (this.projectfilter) {
+            this.getAllProjects();
+        }
     }
 
     ngOnChanges() {
@@ -157,14 +159,10 @@ export class FulltextSearchComponent implements OnInit, OnChanges {
             // reset form
             resolvedPromise.then(() => {
 
-                if (this.projectfilter) {
-                    this.getAllProjects();
-
-                    if (localStorage.getItem('currentProject') !== null) {
-                        this.setProject(
-                            JSON.parse(localStorage.getItem('currentProject'))
-                        );
-                    }
+                if (localStorage.getItem('currentProject') !== null) {
+                    this.setProject(
+                        JSON.parse(localStorage.getItem('currentProject'))
+                    );
                 }
 
             });
