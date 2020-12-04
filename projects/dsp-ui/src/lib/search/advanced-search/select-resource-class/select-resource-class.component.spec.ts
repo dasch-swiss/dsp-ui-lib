@@ -164,18 +164,8 @@ describe('SelectResourceClassComponent', () => {
         // simulate an existing resource class selection
         testHostComponent.selectResourceClass['_selectedResourceClassIri'] = 'http://0.0.0.0:3333/ontology/0001/anything/v2#BlueThing';
 
-        const resClasses = MockOntology.mockReadOntology('http://api.knora.org/ontology/knora-api/v2').classes;
-
-        const resClassIris = Object.keys(resClasses);
-
         // get resource class defs
-        testHostComponent.resourceClassDefs = resClassIris.filter(resClassIri => {
-            return typeGuard(resClasses[resClassIri], ResourceClassDefinition);
-        }).map(
-            (resClassIri: string) => {
-                return resClasses[resClassIri] as ResourceClassDefinition;
-            }
-        );
+        testHostComponent.resourceClassDefs = MockOntology.mockReadOntology('http://api.knora.org/ontology/knora-api/v2').getClassDefinitionsByType(ResourceClassDefinition);
 
         testHostFixture.detectChanges();
 
