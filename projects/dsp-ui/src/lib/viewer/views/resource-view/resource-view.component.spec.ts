@@ -21,6 +21,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
 import { PropertyInfoValues, ResourceViewComponent } from './resource-view.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 /**
  * Test host component to simulate child component, here property-view.
@@ -120,7 +121,8 @@ describe('ResourceViewComponent', () => {
         ],
         imports: [
             MatIconModule,
-            MatSnackBarModule
+            MatSnackBarModule,
+            MatDividerModule
         ],
         providers: [
             {
