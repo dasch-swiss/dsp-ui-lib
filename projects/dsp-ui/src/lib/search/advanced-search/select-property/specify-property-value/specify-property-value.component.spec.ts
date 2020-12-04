@@ -13,29 +13,6 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { IRI, Value, ValueLiteral } from './operator';
 
-// https://dev.to/krumpet/generic-type-guard-in-typescript-258l
-type Constructor<T> = { new(...args: any[]): T };
-
-const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
-    return o instanceof className;
-};
-
-const makeProperties = (props: { [index: string]: PropertyDefinition }): Properties => {
-    const propIris = Object.keys(props);
-
-    const resProps = {};
-
-    propIris.filter(
-        (propIri: string) => {
-            return typeGuard(props[propIri], ResourcePropertyDefinition);
-        }
-    ).forEach((propIri: string) => {
-        resProps[propIri] = (props[propIri] as ResourcePropertyDefinition);
-    });
-
-    return resProps;
-};
-
 /**
  * Test host component to simulate parent component.
  */
@@ -57,11 +34,9 @@ class TestHostComponent implements OnInit {
     ngOnInit() {
         this.form = this._fb.group({});
 
-        const props = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties;
+        const resProps = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getPropertyDefinitionsByType(ResourcePropertyDefinition);
 
-        const resProps = makeProperties(props);
-
-        this.propertyDef = resProps['http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger'];
+        this.propertyDef = resProps.filter(propDef => propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger')[0];
     }
 
 }
