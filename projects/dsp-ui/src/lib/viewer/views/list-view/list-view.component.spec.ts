@@ -21,6 +21,8 @@ class TestResourceListComponent {
 
     @Input() resources: ReadResourceSequence;
 
+    @Input() selectedResourceIdx: number;
+
 }
 
 /**

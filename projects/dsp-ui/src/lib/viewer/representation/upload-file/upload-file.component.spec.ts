@@ -79,7 +79,6 @@ describe('UploadFileComponent', () => {
             const fileTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
             component.representation = Constants.StillImageFileValue;
             for (const type of fileTypes) {
-                console.log(type);
                 expect(component['_isFileTypeSupported'](type)).toBeTruthy();
             }
         });
