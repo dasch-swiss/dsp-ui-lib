@@ -13,11 +13,11 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
     ApiResponseError,
-    ClassDefinition,
     Constants,
     KnoraApiConnection,
     OntologiesMetadata,
-    PropertyDefinition,
+    ReadOntology,
+    ResourceClassAndPropertyDefinitions,
     ResourceClassDefinition,
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
@@ -26,16 +26,9 @@ import { NotificationService } from '../../action/services/notification.service'
 import { DspApiConnectionToken } from '../../core/core.module';
 import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
-import { Properties, SelectPropertyComponent } from './select-property/select-property.component';
+import { SelectPropertyComponent } from './select-property/select-property.component';
 import { PropertyWithValue } from './select-property/specify-property-value/operator';
 import { SelectResourceClassComponent } from './select-resource-class/select-resource-class.component';
-
-// https://dev.to/krumpet/generic-type-guard-in-typescript-258l
-type Constructor<T> = { new(...args: any[]): T };
-
-const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
-    return o instanceof className;
-};
 
 @Component({
     selector: 'dsp-advanced-search',
@@ -74,7 +67,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
     activeProperties: boolean[] = [];
 
-    properties: Properties;
+    properties: ResourcePropertyDefinition[];
 
     formChangesSubscription: Subscription;
 
@@ -167,49 +160,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Given a map of class definitions,
-     * returns an array of resource class definitions.
-     *
-     * @param classDefs a map of class definitions
-     */
-    private _makeResourceClassesArray(classDefs: { [index: string]: ClassDefinition }): ResourceClassDefinition[] {
-
-        const classIris = Object.keys(classDefs);
-
-        // get resource class defs
-        return classIris.filter(resClassIri => {
-            return typeGuard(classDefs[resClassIri], ResourceClassDefinition);
-        }).map(
-            (resClassIri: string) => {
-                return classDefs[resClassIri] as ResourceClassDefinition;
-            }
-        );
-
-    }
-
-    /**
-     * Given a map of property definitions,
-     * returns a map of resource property definitions.
-     *
-     * @param propertyDefs a map of property definitions
-     */
-    private _makeResourceProperties(propertyDefs: { [index: string]: PropertyDefinition }): Properties {
-        const resProps: Properties = {};
-
-        const propIris = Object.keys(propertyDefs);
-
-        propIris.filter(
-            (propIri: string) => {
-                return typeGuard(propertyDefs[propIri], ResourcePropertyDefinition);
-            }
-        ).forEach((propIri: string) => {
-            resProps[propIri] = (propertyDefs[propIri] as ResourcePropertyDefinition);
-        });
-
-        return resProps;
-    }
-
-    /**
      * Initialises resources classes and properties,
      * when an ontology is selected
      *
@@ -226,11 +176,11 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         this.activeOntology = ontologyIri;
 
         this._dspApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
-            onto => {
+            (onto: Map<string, ReadOntology>) => {
 
-                this.resourceClasses = this._makeResourceClassesArray(onto.get(ontologyIri).classes);
+                this.resourceClasses = onto.get(ontologyIri).getClassDefinitionsByType(ResourceClassDefinition);
 
-                this.properties = this._makeResourceProperties(onto.get(ontologyIri).properties);
+                this.properties = onto.get(ontologyIri).getPropertyDefinitionsByType(ResourcePropertyDefinition);
             },
             error => {
                 this._notification.openSnackBar(error);
@@ -256,10 +206,11 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         } else {
 
             this._dspApiConnection.v2.ontologyCache.getResourceClassDefinition(resourceClassIri).subscribe(
-                onto => {
+                (onto: ResourceClassAndPropertyDefinitions) => {
+
                     this.activeResourceClass = onto.classes[resourceClassIri];
 
-                    this.properties = this._makeResourceProperties(onto.properties);
+                    this.properties = onto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
 
                 }
             );
