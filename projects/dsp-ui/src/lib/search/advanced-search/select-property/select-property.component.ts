@@ -9,10 +9,6 @@ import { SpecifyPropertyValueComponent } from './specify-property-value/specify-
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
 
-export interface Properties {
-    [index: string]: ResourcePropertyDefinition;
-}
-
 @Component({
     selector: 'dsp-select-property',
     templateUrl: './select-property.component.html',

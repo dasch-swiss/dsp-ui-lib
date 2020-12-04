@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Properties, SelectPropertyComponent } from './select-property.component';
+import { SelectPropertyComponent } from './select-property.component';
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
