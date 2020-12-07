@@ -46,11 +46,12 @@ The action module contains special buttons (e.g. to sort a list), pipes and dire
 
 ---
 
-## Developers note
+## Developers notes
 
 ### Prerequisites
 
-We develop DSP-UI-LIB modules using Angular 9, with heavy reliance on Angular-cli, which requires the following tools:
+We develop DSP-UI-LIB modules using Angular 9,
+with heavy reliance on Angular-cli, which requires the following tools:
 
 #### Node.js
 
@@ -63,7 +64,7 @@ For other platforms, please visit the [Node.js download page](https://nodejs.org
 brew install node@12
 ```
 
-_Developer hint: To switch between various node versions, we recommand to use [n &mdash; Node.js versions manager](https://www.npmjs.com/package/n)._
+_Developer hint: To switch between various node versions, we recommend to use [n &mdash; Node.js versions manager](https://www.npmjs.com/package/n)._
 
 To install it, run:
 
@@ -92,6 +93,40 @@ and build the library with:
 ```bash
 npm run build-lib
 ```
+
+### Scripts For Development
+
+The following scripts can be used for development:
+
+- `npm test`: runs the unit tests of the demo application and the lib's unit tests.
+- `npm test-lib`: runs the lib's unit tests in headless mode.
+- `npm test-lib-local`: runs the lib's unit test. 
+- `npm run build`: builds the lib in productive mode.
+- `npm run build-dev`: builds the lib in development mode.
+- `npm build-app`: builds the demo application in productive mode.
+- `npm run yalc-publish-lib`: builds the lib and publishes it locally using `yalc`.
+- `npm run webdriver-update`: installs Chrome webdriver in the required version for the E2E test.
+- `npm run e2e`: runs the E2E tests from the demo application.
+
+#### Running Tests
+
+The library contains only unit tests. They can be run with `npm test-lib-local`
+and do not require a running instance of Knora.
+
+The E2E tests have to be run from the demo application.
+They require a running instance of DSP-API compatible with the release specified in [vars.mk](vars.mk).
+Before running the E2E tests, reload the data in DSP-API's db.
+The E2E test can be run as follows:
+- `npm run webdriver-update`
+- `npm run e2e`
+
+#### Building the Library
+
+The library is built in productive mode for publication, using [tsconfig.lib.prod.json](projects/dsp-ui/tsconfig.lib.prod.json).
+
+To perform additional checks during development, the library can be built in development mode,
+using [tsconfig.lib.json](projects/dsp-ui/tsconfig.lib.json). Development builds use Ivy and perform strict template checks.
+
 
 ### Contribution
 
