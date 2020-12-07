@@ -125,7 +125,7 @@ The E2E test can be run as follows:
 The library is built in productive mode for publication, using [tsconfig.lib.prod.json](projects/dsp-ui/tsconfig.lib.prod.json).
 
 To perform additional checks during development, the library can be built in development mode,
-using [tsconfig.lib.json](projects/dsp-ui/tsconfig.lib.json). Development builds use Ivy and perform strict template checks.
+using [tsconfig.lib.json](projects/dsp-ui/tsconfig.lib.json). Development builds use Ivy and perform [strict template checks](https://angular.io/guide/template-typecheck#template-type-checking).
 
 
 ### Contribution
