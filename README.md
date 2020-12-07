@@ -112,6 +112,8 @@ The following scripts can be used for development:
 
 The library contains only unit tests. They can be run with `npm test-lib-local`
 and do not require a running instance of Knora.
+Note that `npm test` runs both the lib's and the demo application's unit test.
+
 
 The E2E tests have to be run from the demo application.
 They require a running instance of DSP-API compatible with the release specified in [vars.mk](vars.mk).
