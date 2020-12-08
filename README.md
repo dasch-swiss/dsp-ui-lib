@@ -98,25 +98,24 @@ npm run build-lib
 
 The following scripts can be used for development:
 
+#### Testing
 - `npm test`: runs the unit tests of the demo application and the lib's unit tests.
-- `npm test-lib`: runs the lib's unit tests in headless mode.
-- `npm test-lib-local`: runs the lib's unit test. 
-- `npm run build`: builds the lib in productive mode.
-- `npm run build-dev`: builds the lib in development mode.
-- `npm build-app`: builds the demo application in productive mode.
+- `npm test-lib`: runs the lib's unit tests in headless mode (no browser UI).
+- `npm test-lib-local`: runs the lib's unit test with the browser UI (for local development of the lib). 
+- `npm run webdriver-update`: installs Chrome webdriver in the required version for the E2E tests.
+- `npm run e2e`: runs the E2E tests from the demo application, see section [E2E Tests](README.md#E2E Tests).
+
+#### Building
+- `npm run build`: builds the lib in productive mode, see section [Building the Library](README.md#Building the Library).
+- `npm run build-dev`: builds the lib in development mode, see section [Building the Library](README.md#Building the Library).
+- `npm build-app`: builds the demo application in productive mode, see also section [Run the application in productive mode](README.md#Run the application in productive mode)
 - `npm run yalc-publish-lib`: builds the lib and publishes it locally using `yalc`.
-- `npm run webdriver-update`: installs Chrome webdriver in the required version for the E2E test.
-- `npm run e2e`: runs the E2E tests from the demo application.
 
-#### Running Tests
 
-The library contains only unit tests. They can be run with `npm test-lib-local`
-and do not require a running instance of Knora.
-Note that `npm test` runs both the lib's and the demo application's unit test.
-
+#### E2E Tests
 
 The E2E tests have to be run from the demo application.
-They require a running instance of DSP-API compatible with the release specified in [vars.mk](vars.mk).
+Unlike the unit tests, they require a running instance of DSP-API compatible with the release specified in [vars.mk](vars.mk).
 Before running the E2E tests, reload the data in DSP-API's db.
 The E2E test can be run as follows:
 - `npm run webdriver-update`
