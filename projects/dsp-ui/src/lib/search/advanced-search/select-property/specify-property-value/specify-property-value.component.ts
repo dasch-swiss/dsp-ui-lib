@@ -135,6 +135,7 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
             case Constants.TextFileValue:
             case Constants.ColorValue:
             case Constants.IntervalValue:
+            case Constants.GeonameValue:
                 this.comparisonOperators = [new Exists()];
                 break;
 
