@@ -103,7 +103,7 @@ The following scripts can be used for development:
 - `npm test-lib`: runs the lib's unit tests in headless mode (no browser UI).
 - `npm test-lib-local`: runs the lib's unit test with the browser UI (for local development of the lib). 
 - `npm run webdriver-update`: installs Chrome webdriver in the required version for the E2E tests.
-- `npm run e2e`: runs the E2E tests from the demo application, see section [E2E Tests](README.md#E2E Tests).
+- `npm run e2e`: runs the E2E tests from the demo application, see section [E2E Tests](README.md#Unit and E2E Tests).
 
 #### Building
 - `npm run build`: builds the lib in productive mode, see section [Building the Library](README.md#Building the Library).
@@ -112,7 +112,10 @@ The following scripts can be used for development:
 - `npm run yalc-publish-lib`: builds the lib and publishes it locally using `yalc`.
 
 
-#### E2E Tests
+#### Unit and E2E Tests
+
+There are unit tests for the lib (`projects/dsp-ui/src`)
+and some basic unit tests for the demo application playground components (`src/app`). 
 
 The E2E tests have to be run from the demo application.
 Unlike the unit tests, they require a running instance of DSP-API compatible with the release specified in [vars.mk](vars.mk).
