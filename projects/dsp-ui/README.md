@@ -52,7 +52,7 @@ This library has the following peer dependencies, which you also have to meet:
 - [openseadragon](https://openseadragon.github.io/#download)
 - [svg-overlay](https://github.com/openseadragon/svg-overlay)
 - [@ckeditor/ckeditor5-angular](https://www.npmjs.com/package/@ckeditor/ckeditor5-angular)
-- [ckeditor-build](github:dasch-swiss/ckeditor_custom_build)
+- [ckeditor-build](http://github.com/dasch-swiss/ckeditor_custom_build)
 
 ### Supported DSP-API Version
 Check [vars.mk](../../vars.mk) to see which version of DSP-API this library is compatible with.
