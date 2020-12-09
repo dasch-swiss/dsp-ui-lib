@@ -35,49 +35,52 @@ see [Angular docs](https://angular.io/guide/creating-libraries#building-and-rebu
 
 ### Prerequisites
 
-We develop DSP-UI-LIB modules using Angular 9,
-with heavy reliance on Angular-cli, which requires the following tools:
-
 #### Node.js
 
-Angular requires a [current, active LTS, or maintenance LTS](https://nodejs.org/about/releases/) version of Node.js. We recommend installing [Node version 12.x](https://nodejs.org/download/release/latest-v12.x/).
+Angular requires a [current, active LTS, or maintenance LTS](https://angular.io/guide/setup-local#prerequisites) version of Node.js.
 
-On MacOs, install node with [Homebrew](https://brew.sh).
-For other platforms, please visit the [Node.js download page](https://nodejs.org/en/download/).
-
-```bash
-brew install node@12
-```
-
-_Developer hint: To switch between various node versions, we recommend to use [n &mdash; Node.js versions manager](https://www.npmjs.com/package/n)._
-
-To install it, run:
-
-```bash
-npm install -g n
-```
-
-and switch to the desired node version, e.g. 12.16.2 with `n v12.16.2`
+We recommend using [n](https://www.npmjs.com/package/n),
+a tool that installs and manages Node.js versions on your local system.
 
 #### NPM package manager
 
-We use [npm](https://docs.npmjs.com/cli/install) instead of yarn, which is installed with Node.js by default.
+Angular requires the [npm package manager](https://angular.io/guide/setup-local#prerequisites).
 
-To check that you have the npm client installed, run `npm -v`.
+#### DSP-API
+
+The demo application requires a running instance of [DSP-API (Knora)](https://docs.knora.org/04-publishing-deployment/getting-started/)
+compatible with the version defined in [vars.mk](vars.mk). 
 
 ### First steps
 
-Install the node packages with:
+Clone this repository:
+
+```bash
+git clone https://github.com/dasch-swiss/dsp-ui-lib/
+```
+
+Install the dependencies with:
 
 ```bash
 npm install
 ```
 
-and build the library with:
+Build the library with:
 
 ```bash
 npm run build-lib
 ```
+
+Run the demo application:
+
+```bash
+npm run ng s
+```
+
+And access `http://localhost:4200` in your browser.
+
+**When you are developing the library and want to try out things that you have implemented using the demo application,
+you always have to rebuild the library.**
 
 ### Scripts For Development
 
@@ -96,8 +99,14 @@ The following scripts can be used for development:
 - `npm build-app`: builds the demo application in productive mode, see also section [Run the application in productive mode](README.md#Run the application in productive mode)
 - `npm run yalc-publish-lib`: builds the lib and publishes it locally using `yalc`.
 
+### Library Build Options
 
-#### Unit and E2E Tests
+The library is built in productive mode for publication, using [tsconfig.lib.prod.json](projects/dsp-ui/tsconfig.lib.prod.json).
+
+To perform additional checks during development, the library can be built in development mode,
+using [tsconfig.lib.json](projects/dsp-ui/tsconfig.lib.json). Development builds use Ivy and perform [strict template checks](https://angular.io/guide/template-typecheck#template-type-checking).
+
+### Unit and E2E Tests
 
 There are unit tests for the lib (`projects/dsp-ui/src`)
 and some basic unit tests for the demo application playground components (`src/app`). 
@@ -108,14 +117,6 @@ Before running the E2E tests, reload the data in DSP-API's db.
 The E2E test can be run as follows:
 - `npm run webdriver-update`
 - `npm run e2e`
-
-#### Building the Library
-
-The library is built in productive mode for publication, using [tsconfig.lib.prod.json](projects/dsp-ui/tsconfig.lib.prod.json).
-
-To perform additional checks during development, the library can be built in development mode,
-using [tsconfig.lib.json](projects/dsp-ui/tsconfig.lib.json). Development builds use Ivy and perform [strict template checks](https://angular.io/guide/template-typecheck#template-type-checking).
-
 
 ### Contribution
 
@@ -163,14 +164,6 @@ Before testing the new component inside of the demo app, you have to rebuild aft
 ```bash
 npm run build-lib
 ```
-
-### Run the DSP-UI-LIB Demo Application (Playground)
-
-Run the app with the command line: `npm run start`.
-
-The demo app runs on <http://0.0.0.0:4200>.
-
-Documentation can be found on [DSP-UI-LIB Github page](https://dasch-swiss.github.io/knora-ui).
 
 #### YALC
 
