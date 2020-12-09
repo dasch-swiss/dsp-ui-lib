@@ -23,7 +23,7 @@ This project consists of two main parts:
 1. The Angular library `DSP-UI-LIB (@dasch-swiss/dsp-ui)` in `project/dsp-ui`.
 1. The demo Angular Application (Playground) in `src/app`.
 
-The Angular library contains the code that is published on npm. 
+The Angular library contains the code that is published on NPM. 
 The demo Angular application's purpose is to demonstrate the library's functionality.
 The library needs to be built first in order to use it withing the demo application.
 
@@ -79,8 +79,8 @@ npm run ng s
 
 And access `http://localhost:4200` in your browser.
 
-**When you are developing the library and want to try out things that you have implemented using the demo application,
-you always have to rebuild the library.**
+**When you are developing the library
+you always have to rebuild the library before using it from the demo application.**
 
 ### Scripts For Development
 
@@ -106,7 +106,7 @@ The library is built in productive mode for publication, using [tsconfig.lib.pro
 To perform additional checks during development, the library can be built in development mode,
 using [tsconfig.lib.json](projects/dsp-ui/tsconfig.lib.json). Development builds use Ivy and perform [strict template checks](https://angular.io/guide/template-typecheck#template-type-checking).
 
-### Unit and E2E Tests
+### Unit Tests and E2E Tests
 
 There are unit tests for the lib (`projects/dsp-ui/src`)
 and some basic unit tests for the demo application playground components (`src/app`). 
@@ -118,101 +118,23 @@ The E2E test can be run as follows:
 - `npm run webdriver-update`
 - `npm run e2e`
 
-### Contribution
+### Demo Application (Playground)
 
-If you want to add more components, services and so on to a module of the library, you can do it with:
+#### Add a New Component to the Demo Application
 
-```bash
-ng generate component [path/in/the/module/][name-of-component] --project @dasch-swiss/dsp-ui
-```
+The demo app demonstrates the functionality of dsp-ui-lib's modules.
+By default, the demo app's main component routes to the page demonstrating the resource viewer in read mode.
 
-For example:
+Before adding a new component to the demo app,
+check if the desired demo could be added to an existing component of the demo app.
 
-```bash
-ng generate component core/test --project @dasch-swiss/dsp-ui
-```
+Follow these steps to add a new component to the demo app:
+- create a new component in the demo app:
+    - create a new component using Angular CLI in `src/app`
+    - demonstrate a part of dsp-ui-lib (component, service etc.) in the new component of the demo app
+- in `AppRoutingModule` and `AppComponent`'s template, set up the routing for your new component in the demo app.
 
-will create a component-folder called `test` inside of `projects/dsp-ui/src/lib/core/` with four files:
-
-- `test.component.scss`
-- `test.component.html`
-- `test.component.spec.ts`
-- `test.component.ts`
-
-The main component file should look as follows:
-
-```typescript
-import { Component, OnInit } from '@angular/core';
-
-@Component({
-  selector: 'dsp-test',
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.scss']
-})
-export class TestComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
-```
-
-Before testing the new component inside of the demo app, you have to rebuild after each change:
-
-```bash
-npm run build-lib
-```
-
-#### YALC
-
-In some cases we have to work with unpublished npm packages like our own [@dasch-swiss/dsp-js](https://github.com/dasch-swiss/knora-api-js-lib), a JavaScript library that allows a developer to implement the DSP API without knowing technical details about it.
-To publish and add local packages we use [yalc](https://www.npmjs.com/package/yalc). Yalc publishes the packages to a local store (not the npm website).
-From there, the packages can be added to your project.
-
-##### Installation
-
-```bash
-npm i yalc -g
-```
-
-##### Usage
-
-Publish library to local store:
-
-```bash
-npm run build-app
-npm run yalc-publish
-```
-
-Use them in your application:
-
-```bash
-yalc add @dasch-swiss/dsp-ui
-npm install
-```
-
-To remove from the project and restore `package.json`, run:
-
-```bash
-yalc remove --all
-```
-
-#### Conflicts
-
-In the event of an issue with package-lock.json (e.g. merge conflict) where you have to reset/delete package-lock file, run the following commands in this exact order:
-
-```bash
-yalc remove --all
-rm -rf node_modules
-rm package-lock.json
-npm install
-yalc add @dasch-swiss/dsp-js
-npm install
-```
-
-### Run the application locally in dev mode with Live Reloading
+#### Run the application locally in dev mode with Live Reloading
 
 To make changes to the DSP-UI and have your changes reflected immediately upon saving, follow these steps:
 
@@ -220,7 +142,7 @@ To make changes to the DSP-UI and have your changes reflected immediately upon s
 - open a new tab and run `npm run start` from the project root directory
 - now, anytime you make a change to DSP-UI and save, the library will be re-built and the webpage will refresh and you will see the changes
 
-### Run the application in productive mode
+#### Run the application in productive mode
 
 To simulate a production environment, the application should be built with optimization and served locally
 (not in dev mode, but from a local web server).
@@ -253,7 +175,7 @@ To simulate a production environment, the application should be built with optim
 - Build the test app with optimization: `npm run build-app`
 - Access it via <http://dspuiapp.local:8090>
 
-### Build and run the application in Docker
+#### Build and run the application in Docker
 
 To build and run the application in Docker, do the following:
 
@@ -267,21 +189,7 @@ The second step runs a container based on the image built in the previous step:
 - `-v` mounts a config file from your local file system in the Docker container, so you can set the config.
 - `--publish` maps the port on your local machine to the port in the Docker container.
 
-You can now access the app on your local machine under <http://localhost:4200/>.
-
-### Add a New Component to the Demo Application (Playground)
-
-The demo app demonstrates the functionality of dsp-ui-lib's modules.
-By default, the demo app's main component routes to the page demonstrating the resource viewer in read mode.
-
-Before adding a new component to the demo app,
-check if the desired demo could be added to an existing component of the demo app.
-
-Follow these steps to add a new component to the demo app:
-- create a new component in the demo app:
-    - create a new component using Angular CLI in `src/app`
-    - demonstrate a part of dsp-ui-lib (component, service etc.) in the new component of the demo app
-- in `AppRoutingModule` and `AppComponent`'s template, set up the routing for your new component in the demo app. 
+You can now access the app on your local machine under <http://localhost:4200/>. 
 
 ### Publish a new version to NPM
 
@@ -294,9 +202,14 @@ Before publishing:
   - Update DSP-JS version in `package.json` and run `npm install` to update the `package-lock.json`
   - Update DSP-JS version in section `peerDependencies` of `projects/dsp-ui/package.json`
 
-A new version will be published with each Github release as it's part of Github actions' workflow. To make a new release, go to <https://github.com/dasch-swiss/dsp-ui-lib/releases> and update the draft called "Next release" by changing:
+A new version will be published with each Github release as it's part of Github actions' workflow.
+To make a new release, go to <https://github.com/dasch-swiss/dsp-ui-lib/releases> and update the draft called "Next release" by changing:
 
 - The tag version and the release title (same name) with the version number, e.g. `v3.0.0` or `v3.0.0-rc.0`
 - If this is a pre-release, check the box "This is a pre-release"
 
 New package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>.
+
+
+### Contribution
+See our [contribution guidelines](projects/dsp-ui/Contribution.md).
