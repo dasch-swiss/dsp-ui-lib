@@ -6,41 +6,35 @@
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
 [![license](https://img.shields.io/npm/l/@dasch-swiss/dsp-ui.svg?style=flat)](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/LICENSE)
 
-The modules help create a GUI to allow the user to use [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/) in a quick and simple way from within a web application. The modules are written in Typescript for use with **[Angular](https://angular.io) (version 9)**. We decided to style components and directives with [Angular Material design](https://material.angular.io).
+The modules contained in DSP-UI-LIB help create an [Angular](https://angular.io) application to allow the user to connect to [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/)
+in a quick and simple way.
+Components and directives rely on [Angular Material](https://material.angular.io).
 
-DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@dasch-swiss/dsp-js) to connect with DSP API. DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
-
-Please check our [DSP Release Compatibility Matrix](https://docs.google.com/spreadsheets/d/e/2PACX-1vQe-0nFKqYHwHT3cNI2M_ZCycKOgDZBxtaabxEQDDkNKJf6funMVrJBJPgMFEJdiBdCesahUhURN6MS/pubhtml) to use this library with the correct and required versions of the dependent packages.
-
-DSP-API and DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
+DSP-UI-LIB is [free software](http://www.gnu.org/philosophy/free-sw.en.html),
+released under [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html) license.
 
 ## Library modules
+
+This library consists of four Angular modules that are briefly described below.
+See [design documentation](design-documentation.md) for more detailed information.
 
 ### DspCoreModule
 
 The core module contains configuration files and all injection tokens needed to connect to DSP-API.
-
----
 
 ### DspViewerModule
 
 The viewer module contains components to show the resource class representations from DSP-API, the GUI-elements for the property values
 and frameworks to display these values in different ways.
 
----
-
 ### DspSearchModule
 
 The search module allows the user to make simple or extended searches in DSP-API.
 In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
 
----
-
 ### DspActionModule
 
 The action module contains special buttons (e.g. to sort a list), pipes and directives.
-
----
 
 ## Installation
 
@@ -50,18 +44,21 @@ npm install @dasch-swiss/dsp-ui
 
 ### Dependencies
 
-The module has the following package dependencies, which you also have to install.
+#### NPM Dependencies
+This library has the following peer dependencies, which you also have to meet:
 
 <!-- TODO: the following package will be renamed to @dasch-swiss/dsp-js and the list of dependencies incl. version will be added to an external matrix file -->
 - [@dasch-swiss/dsp-js](https://www.npmjs.com/package/@dasch-swiss/dsp-js)
-- [jdnconvertiblecalendar@0.0.5](https://www.npmjs.com/package/jdnconvertiblecalendar)
-- [jdnconvertiblecalendardateadapter@0.0.13](https://www.npmjs.com/package/jdnconvertiblecalendardateadapter)
-- [ngx-color-picker@9.1.0](https://www.npmjs.com/package/ngx-color-picker)
+- [jdnconvertiblecalendar](https://www.npmjs.com/package/jdnconvertiblecalendar)
+- [jdnconvertiblecalendardateadapter](https://www.npmjs.com/package/jdnconvertiblecalendardateadapter)
+- [ngx-color-picker](https://www.npmjs.com/package/ngx-color-picker)
 - [openseadragon](https://openseadragon.github.io/#download)
 - [svg-overlay](https://github.com/openseadragon/svg-overlay)
+- [@ckeditor/ckeditor5-angular](https://www.npmjs.com/package/@ckeditor/ckeditor5-angular)
+- [ckeditor-build](github:dasch-swiss/ckeditor_custom_build)
 
-Please check our [DSP Release Compatibility Matrix](https://docs.google.com/spreadsheets/d/e/2PACX-1vQe-0nFKqYHwHT3cNI2M_ZCycKOgDZBxtaabxEQDDkNKJf6funMVrJBJPgMFEJdiBdCesahUhURN6MS/pubhtml)
-to use this library with the correct and required versions of the dependent packages.
+#### Supported DSP-API Version
+Check [vars.mk](../../vars.mk) to see which version of DSP-API this library is compatible with.
 
 ## Setup
 

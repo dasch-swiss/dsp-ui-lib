@@ -189,25 +189,5 @@ The second step runs a container based on the image built in the previous step:
 
 You can now access the app on your local machine under <http://localhost:4200/>. 
 
-## Publish a new version to NPM
-
-Before publishing:
-
-- Update README if necessary and commit the changes
-
-- Be sure that all dependencies to DSP-JS-LIB and DSP-API are set to the correct version:
-  - Update DSP-API version in `vars.mk`
-  - Update DSP-JS version in `package.json` and run `npm install` to update the `package-lock.json`
-  - Update DSP-JS version in section `peerDependencies` of `projects/dsp-ui/package.json`
-
-A new version will be published with each Github release as it's part of Github actions' workflow.
-To make a new release, go to <https://github.com/dasch-swiss/dsp-ui-lib/releases> and update the draft called "Next release" by changing:
-
-- The tag version and the release title (same name) with the version number, e.g. `v3.0.0` or `v3.0.0-rc.0`
-- If this is a pre-release, check the box "This is a pre-release"
-
-New package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>.
-
-
 ## Contribution
 See our [contribution guidelines](projects/dsp-ui/Contribution.md).
