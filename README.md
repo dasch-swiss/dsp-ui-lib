@@ -1,50 +1,35 @@
 # DSP-UI-LIB &mdash; A library to easily create Knora/DSP Apps
 
+## Introduction
+
 [![npm version](https://badge.fury.io/js/%40dasch-swiss%2Fdsp-ui.svg)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
 [![CI](https://github.com/dasch-swiss/knora-ui-ng-lib/workflows/CI/badge.svg)](https://github.com/dasch-swiss/knora-ui-ng-lib/actions?query=workflow%3ACI)
 [![npm downloads](https://img.shields.io/npm/dt/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/@dasch-swiss/dsp-ui.svg?style=flat)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
 [![license](https://img.shields.io/npm/l/@dasch-swiss/dsp-ui.svg?style=flat)](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/LICENSE)
 
-This is the demo and developing environment for DSP-UI-LIB ([@dasch-swiss/dsp-ui](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)) comprised of 4 modules.
+This is the demo and developing environment for the NPM package [DSP-UI-LIB (@dasch-swiss/dsp-ui)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui).
 
-The modules help create a GUI to allow the user to use [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/) in a quick and simple way from within a web application. The modules are written in Typescript for use with [Angular](https://angular.io) (version 9). We decided to style components and directives with [Angular Material design](https://material.angular.io).
+The modules contained in DSP-UI-LIB help create an [Angular](https://angular.io) application to allow the user to connect to [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/)
+in a quick and simple way.
+Components and directives rely on [Angular Material](https://material.angular.io).
 
-DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@dasch-swiss/dsp-js) to connect with [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/). DSP-API is a software framework for storing, sharing, and working with primary sources and data in the humanities.
+DSP-UI-LIB is [free software](http://www.gnu.org/philosophy/free-sw.en.html),
+released under [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html) license.
 
-Please check our [DSP Release Compatibility Matrix](https://docs.google.com/spreadsheets/d/e/2PACX-1vQe-0nFKqYHwHT3cNI2M_ZCycKOgDZBxtaabxEQDDkNKJf6funMVrJBJPgMFEJdiBdCesahUhURN6MS/pubhtml) to use this library with the correct and required versions of the dependent packages.
+## Structure of This Project 
 
-DSP-API and DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html) license.
+This project consists of two main parts:
+1. The Angular library `DSP-UI-LIB (@dasch-swiss/dsp-ui)` in `project/dsp-ui`.
+1. The demo Angular Application (Playground) in `src/app`.
 
-## Library modules
+The Angular library contains the code that is published on npm. 
+The demo Angular application's purpose is to demonstrate the library's functionality.
+The library needs to be built first in order to use it withing the demo application.
 
-### DspCoreModule
-
-The core module contains configuration files and all injection tokens needed to connect to DSP-API.
-[read more...](https://dasch-swiss.github.io/knora-ui/modules/core)
-
----
-
-### DspViewerModule
-
-The viewer module contains object components to show the resource class representations from DSP-API, the GUI-elements for the property values and frameworks to display these values in different ways.
-[read more...](https://dasch-swiss.github.io/knora-ui/modules/viewer)
-
----
-
-### DspSearchModule
-
-The search module allows you to make simple or extended searches in DSP-API. In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
-[read more...](https://dasch-swiss.github.io/knora-ui/modules/search)
-
----
-
-### DspActionModule
-
-The action module contains special buttons (e.g. to sort a list), pipes and directives.
-[read more...](https://dasch-swiss.github.io/knora-ui/modules/action)
-
----
+The demo application uses the **locally built version** of `@dasch-swiss/dsp-js`
+which is configured in [tsconfig.json](tsconfig.json) (`compilerOptions.paths`),
+see [Angular docs](https://angular.io/guide/creating-libraries#building-and-rebuilding-your-library).
 
 ## Developers notes
 

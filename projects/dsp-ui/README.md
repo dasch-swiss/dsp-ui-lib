@@ -14,6 +14,34 @@ Please check our [DSP Release Compatibility Matrix](https://docs.google.com/spre
 
 DSP-API and DSP-UI-LIB are [free software](http://www.gnu.org/philosophy/free-sw.en.html), released under the [GNU Affero General Public](http://www.gnu.org/licenses/agpl-3.0.en.html).
 
+## Library modules
+
+### DspCoreModule
+
+The core module contains configuration files and all injection tokens needed to connect to DSP-API.
+
+---
+
+### DspViewerModule
+
+The viewer module contains components to show the resource class representations from DSP-API, the GUI-elements for the property values
+and frameworks to display these values in different ways.
+
+---
+
+### DspSearchModule
+
+The search module allows the user to make simple or extended searches in DSP-API.
+In the extended search, resource class and its properties related to one specific ontology are selected to create your query.
+
+---
+
+### DspActionModule
+
+The action module contains special buttons (e.g. to sort a list), pipes and directives.
+
+---
+
 ## Installation
 
 ```bash
@@ -31,6 +59,9 @@ The module has the following package dependencies, which you also have to instal
 - [ngx-color-picker@9.1.0](https://www.npmjs.com/package/ngx-color-picker)
 - [openseadragon](https://openseadragon.github.io/#download)
 - [svg-overlay](https://github.com/openseadragon/svg-overlay)
+
+Please check our [DSP Release Compatibility Matrix](https://docs.google.com/spreadsheets/d/e/2PACX-1vQe-0nFKqYHwHT3cNI2M_ZCycKOgDZBxtaabxEQDDkNKJf6funMVrJBJPgMFEJdiBdCesahUhURN6MS/pubhtml)
+to use this library with the correct and required versions of the dependent packages.
 
 ## Setup
 
