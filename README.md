@@ -31,27 +31,25 @@ The demo application uses the **locally built version** of `@dasch-swiss/dsp-js`
 which is configured in [tsconfig.json](tsconfig.json) (`compilerOptions.paths`),
 see [Angular docs](https://angular.io/guide/creating-libraries#building-and-rebuilding-your-library).
 
-## Developers notes
+## Prerequisites
 
-### Prerequisites
-
-#### Node.js
+### Node.js
 
 Angular requires a [current, active LTS, or maintenance LTS](https://angular.io/guide/setup-local#prerequisites) version of Node.js.
 
 We recommend using [n](https://www.npmjs.com/package/n),
 a tool that installs and manages Node.js versions on your local system.
 
-#### NPM package manager
+### NPM package manager
 
 Angular requires the [npm package manager](https://angular.io/guide/setup-local#prerequisites).
 
-#### DSP-API
+### DSP-API
 
 The demo application requires a running instance of [DSP-API (Knora)](https://docs.knora.org/04-publishing-deployment/getting-started/)
 compatible with the version defined in [vars.mk](vars.mk). 
 
-### First steps
+## First steps
 
 Clone this repository:
 
@@ -82,31 +80,31 @@ And access `http://localhost:4200` in your browser.
 **When you are developing the library
 you always have to rebuild the library before using it from the demo application.**
 
-### Scripts For Development
+## Scripts For Development
 
 The following scripts can be used for development:
 
-#### Testing
+### Testing
 - `npm test`: runs the unit tests of the demo application and the lib's unit tests.
 - `npm test-lib`: runs the lib's unit tests in headless mode (no browser UI).
 - `npm test-lib-local`: runs the lib's unit test with the browser UI (for local development of the lib). 
 - `npm run webdriver-update`: installs Chrome webdriver in the required version for the E2E tests.
 - `npm run e2e`: runs the E2E tests from the demo application, see section [E2E Tests](README.md#Unit and E2E Tests).
 
-#### Building
+### Building
 - `npm run build`: builds the lib in productive mode, see section [Building the Library](README.md#Building the Library).
 - `npm run build-dev`: builds the lib in development mode, see section [Building the Library](README.md#Building the Library).
 - `npm build-app`: builds the demo application in productive mode, see also section [Run the application in productive mode](README.md#Run the application in productive mode)
 - `npm run yalc-publish-lib`: builds the lib and publishes it locally using `yalc`.
 
-### Library Build Options
+## Library Build Options
 
 The library is built in productive mode for publication, using [tsconfig.lib.prod.json](projects/dsp-ui/tsconfig.lib.prod.json).
 
 To perform additional checks during development, the library can be built in development mode,
 using [tsconfig.lib.json](projects/dsp-ui/tsconfig.lib.json). Development builds use Ivy and perform [strict template checks](https://angular.io/guide/template-typecheck#template-type-checking).
 
-### Unit Tests and E2E Tests
+## Unit Tests and E2E Tests
 
 There are unit tests for the lib (`projects/dsp-ui/src`)
 and some basic unit tests for the demo application playground components (`src/app`). 
@@ -118,9 +116,9 @@ The E2E test can be run as follows:
 - `npm run webdriver-update`
 - `npm run e2e`
 
-### Demo Application (Playground)
+## Demo Application (Playground)
 
-#### Add a New Component to the Demo Application
+### Add a New Component to the Demo Application
 
 The demo app demonstrates the functionality of dsp-ui-lib's modules.
 By default, the demo app's main component routes to the page demonstrating the resource viewer in read mode.
@@ -134,7 +132,7 @@ Follow these steps to add a new component to the demo app:
     - demonstrate a part of dsp-ui-lib (component, service etc.) in the new component of the demo app
 - in `AppRoutingModule` and `AppComponent`'s template, set up the routing for your new component in the demo app.
 
-#### Run the application locally in dev mode with Live Reloading
+### Run the application locally in dev mode with Live Reloading
 
 To make changes to the DSP-UI and have your changes reflected immediately upon saving, follow these steps:
 
@@ -142,7 +140,7 @@ To make changes to the DSP-UI and have your changes reflected immediately upon s
 - open a new tab and run `npm run start` from the project root directory
 - now, anytime you make a change to DSP-UI and save, the library will be re-built and the webpage will refresh and you will see the changes
 
-#### Run the application in productive mode
+### Run the application in productive mode
 
 To simulate a production environment, the application should be built with optimization and served locally
 (not in dev mode, but from a local web server).
@@ -175,7 +173,7 @@ To simulate a production environment, the application should be built with optim
 - Build the test app with optimization: `npm run build-app`
 - Access it via <http://dspuiapp.local:8090>
 
-#### Build and run the application in Docker
+### Build and run the application in Docker
 
 To build and run the application in Docker, do the following:
 
@@ -191,7 +189,7 @@ The second step runs a container based on the image built in the previous step:
 
 You can now access the app on your local machine under <http://localhost:4200/>. 
 
-### Publish a new version to NPM
+## Publish a new version to NPM
 
 Before publishing:
 
@@ -211,5 +209,5 @@ To make a new release, go to <https://github.com/dasch-swiss/dsp-ui-lib/releases
 New package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>.
 
 
-### Contribution
+## Contribution
 See our [contribution guidelines](projects/dsp-ui/Contribution.md).
