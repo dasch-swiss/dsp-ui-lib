@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
@@ -28,6 +29,7 @@ import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe'
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { StringifyStringLiteralPipe } from './pipes/string-transformation/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
+import { SelectProjectComponent } from './components/select-project/select-project.component';
 
 @NgModule({
   declarations: [
@@ -46,12 +48,12 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     SortByPipe,
     StringifyStringLiteralPipe,
     StringLiteralInputComponent,
+    SelectProjectComponent,
     TruncatePipe
   ],
   imports: [
     BrowserAnimationsModule,
     CommonModule,
-    MatButtonModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -60,9 +62,11 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatAutocompleteModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatMenuModule,
-    MatSnackBarModule,
-    ReactiveFormsModule
+    MatSnackBarModule
   ],
   exports: [
     AdminImageDirective,
@@ -80,6 +84,7 @@ import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
     SortByPipe,
     StringifyStringLiteralPipe,
     StringLiteralInputComponent,
+    SelectProjectComponent,
     TruncatePipe
   ]
 })

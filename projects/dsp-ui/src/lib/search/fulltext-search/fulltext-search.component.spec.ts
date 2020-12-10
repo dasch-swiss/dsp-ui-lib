@@ -25,7 +25,7 @@ import { FulltextSearchComponent } from './fulltext-search.component';
     template: `
         <dsp-fulltext-search #fulltextSearch
             [projectfilter]="projectfilter"
-            [filterbyproject]="filterbyproject">
+            [limitToProject]="limitToProject">
         </dsp-fulltext-search>
     `
 })
@@ -36,7 +36,8 @@ class TestHostFulltextSearchComponent implements OnInit {
     sortingService: SortingService = new SortingService();
 
     projectfilter?: boolean = true;
-    filterbyproject?: string;
+
+    limitToProject?: string;
 
     ngOnInit() {
     }

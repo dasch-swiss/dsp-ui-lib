@@ -57,7 +57,7 @@ class TestPropertyParentComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.voeSubscription = this._valueOperationEventService.on(Events.ValueAdded, () => this.myNum += 1);
 
-        MockResource.getTestthing().subscribe(response => {
+        MockResource.getTestThing().subscribe(response => {
             this.parentResource = response;
 
             // gather resource property information
@@ -281,17 +281,21 @@ describe('PropertyViewComponent', () => {
 
             let addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
 
-            // current amount of buttons should equal 19 because the boolean property shouldn't have an add button if it has a value
-            expect(addButtons.length).toEqual(19);
+            // current amount of buttons should equal 17
+            // because the boolean property shouldn't have an add button if it has a value
+            // standoff links value and has incoming link value are system props and cannot be added: -2
+            expect(addButtons.length).toEqual(17);
 
             // remove value from the boolean property
             testHostComponent.propArray[9].values = [];
 
             testHostFixture.detectChanges();
 
-            // now the boolean property should have an add button so the amount of add buttons on the page should increase by 1
+            // now the boolean property should have an add button
+            // so the amount of add buttons on the page should increase by 1
+            // standoff links value and has incoming link value are system props and cannot be added: -2
             addButtons = propertyViewComponentDe.queryAll(By.css('button.create'));
-            expect(addButtons.length).toEqual(20);
+            expect(addButtons.length).toEqual(18);
 
         });
 
@@ -313,6 +317,37 @@ describe('PropertyViewComponent', () => {
             expect(propertyViewComponentDe.query(By.css('.add-value'))).toBeDefined();
 
         });
+
+        it('should determine that adding a standoff link value is not allowed', () => {
+
+            const standoffLinkVal = testHostComponent.propArray.filter(
+                propVal => propVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+            );
+
+            expect(testHostComponent.propertyViewComponent.addValueIsAllowed(standoffLinkVal[0])).toBeFalsy();
+
+        });
+
+        it('should determine that adding a incoming link value is not allowed', () => {
+
+            const standoffLinkVal = testHostComponent.propArray.filter(
+                propVal => propVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasIncomingLinkValue'
+            );
+
+            expect(testHostComponent.propertyViewComponent.addValueIsAllowed(standoffLinkVal[0])).toBeFalsy();
+
+        });
+
+        it('should determine that adding an int value is allowed', () => {
+
+            const standoffLinkVal = testHostComponent.propArray.filter(
+                propVal => propVal.propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger'
+            );
+
+            expect(testHostComponent.propertyViewComponent.addValueIsAllowed(standoffLinkVal[0])).toBeTruthy();
+
+        });
+
     });
 
 });

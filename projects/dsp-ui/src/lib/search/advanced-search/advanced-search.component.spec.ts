@@ -21,45 +21,6 @@ import { OntologyCache } from '@dasch-swiss/dsp-js/src/cache/ontology-cache/Onto
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../core/core.module';
 import { AdvancedSearchComponent } from './advanced-search.component';
-import { Properties } from './select-property/select-property.component';
-
-// https://dev.to/krumpet/generic-type-guard-in-typescript-258l
-type Constructor<T> = { new(...args: any[]): T };
-
-const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
-    return o instanceof className;
-};
-
-const makeResourceClassDefs = (resClassDefs: { [ index: string ]: ClassDefinition}): ResourceClassDefinition[] => {
-    const classIris = Object.keys(resClassDefs);
-
-    // get resource class defs
-    return classIris.filter(resClassIri => {
-        return typeGuard(resClassDefs[resClassIri], ResourceClassDefinition);
-    }).map(
-        (resClassIri: string) => {
-            return resClassDefs[resClassIri] as ResourceClassDefinition;
-        }
-    );
-};
-
-const makeProperties = (propDefs: { [ index: string ]: PropertyDefinition}): Properties => {
-
-    const propIris = Object.keys(propDefs);
-
-    // get property defs
-    const resProps: Properties = {};
-
-    propIris.filter(
-        (propIri: string) => {
-            return typeGuard(propDefs[propIri], ResourcePropertyDefinition);
-        }
-    ).forEach((propIri: string) => {
-        resProps[propIri] = (propDefs[propIri] as ResourcePropertyDefinition);
-    });
-
-    return resProps;
-};
 
 /**
  * Test component to simulate select ontology component.
@@ -114,7 +75,7 @@ class TestSelectPropertyComponent implements OnInit {
 
     @Input() formGroup: FormGroup;
 
-    @Input() properties: Properties;
+    @Input() properties: ResourcePropertyDefinition[];
 
     @Input() index: number;
 
@@ -297,9 +258,9 @@ describe('AdvancedSearchComponent', () => {
             const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
             // get resource class defs
-            testHostComponent.advancedSearch.resourceClasses = makeResourceClassDefs(anythingOnto.classes);
+            testHostComponent.advancedSearch.resourceClasses = anythingOnto.getClassDefinitionsByType(ResourceClassDefinition);
 
-            const resProps = makeProperties(anythingOnto.properties);
+            const resProps = anythingOnto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
 
             testHostComponent.advancedSearch.properties = resProps;
 
@@ -335,9 +296,9 @@ describe('AdvancedSearchComponent', () => {
             const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
             // get resource class defs
-            testHostComponent.advancedSearch.resourceClasses = makeResourceClassDefs(anythingOnto.classes);
+            testHostComponent.advancedSearch.resourceClasses = anythingOnto.getClassDefinitionsByType(ResourceClassDefinition);
 
-            const resProps = makeProperties(anythingOnto.properties);
+            const resProps = anythingOnto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
 
             testHostComponent.advancedSearch.properties = resProps;
 
@@ -374,9 +335,9 @@ describe('AdvancedSearchComponent', () => {
             const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
             // get resource class defs
-            testHostComponent.advancedSearch.resourceClasses = makeResourceClassDefs(anythingOnto.classes);
+            testHostComponent.advancedSearch.resourceClasses = anythingOnto.getClassDefinitionsByType(ResourceClassDefinition);
 
-            const resProps = makeProperties(anythingOnto.properties);
+            const resProps = anythingOnto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
 
             testHostComponent.advancedSearch.properties = resProps;
 
@@ -406,9 +367,9 @@ describe('AdvancedSearchComponent', () => {
             const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
             // get resource class defs
-            testHostComponent.advancedSearch.resourceClasses = makeResourceClassDefs(anythingOnto.classes);
+            testHostComponent.advancedSearch.resourceClasses = anythingOnto.getClassDefinitionsByType(ResourceClassDefinition);
 
-            const resProps = makeProperties(anythingOnto.properties);
+            const resProps = anythingOnto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
 
             testHostComponent.advancedSearch.properties = resProps;
 

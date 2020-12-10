@@ -84,7 +84,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
     ngOnInit() {
 
-        MockResource.getTestthing().subscribe(
+        MockResource.getTestThing().subscribe(
             res => {
 
                 this.displayInputVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasRichtext', ReadTextValueAsXml)[0];
@@ -394,7 +394,7 @@ describe('TextValueAsXMLComponent', () => {
 
         });
 
-        it('convert markup received from CKEditor: <hr></hr> -> <hr/>', () => {
+        it('convert markup received from CKEditor: <hr> -> <hr/>', () => {
 
             testHostComponent.mode = 'update';
 
@@ -403,13 +403,32 @@ describe('TextValueAsXMLComponent', () => {
             ckeditorDe = valueComponentDe.query(By.directive(TestCKEditorComponent));
 
             // simulate input in ckeditor
-            ckeditorDe.componentInstance.value = '<p>test with horizontal line <hr></hr></p>';
+            ckeditorDe.componentInstance.value = '<p>test with horizontal line <hr></p>';
             ckeditorDe.componentInstance._handleInput();
 
             testHostFixture.detectChanges();
 
             expect((testHostComponent.inputValueComponent.getUpdatedValue() as UpdateTextValueAsXml).xml)
                 .toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test with horizontal line <hr/></p></text>');
+
+        });
+
+        it('convert markup received from CKEditor: <br> -> <br/>', () => {
+
+            testHostComponent.mode = 'update';
+
+            testHostFixture.detectChanges();
+
+            ckeditorDe = valueComponentDe.query(By.directive(TestCKEditorComponent));
+
+            // simulate input in ckeditor
+            ckeditorDe.componentInstance.value = '<p>test with soft break <br></p>';
+            ckeditorDe.componentInstance._handleInput();
+
+            testHostFixture.detectChanges();
+
+            expect((testHostComponent.inputValueComponent.getUpdatedValue() as UpdateTextValueAsXml).xml)
+                .toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>test with soft break <br/></p></text>');
 
         });
 

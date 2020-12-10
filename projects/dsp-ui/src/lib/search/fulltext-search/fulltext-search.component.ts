@@ -6,6 +6,7 @@ import {
     EventEmitter,
     Inject,
     Input,
+    OnChanges,
     OnInit,
     Output,
     TemplateRef,
@@ -33,12 +34,14 @@ export interface PrevSearchItem {
     query: string;
 }
 
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-fulltext-search',
     templateUrl: './fulltext-search.component.html',
     styleUrls: ['./fulltext-search.component.scss']
 })
-export class FulltextSearchComponent implements OnInit {
+export class FulltextSearchComponent implements OnInit, OnChanges {
 
     /**
      *
@@ -48,6 +51,7 @@ export class FulltextSearchComponent implements OnInit {
     @Input() projectfilter?: boolean = false;
 
     /**
+     * @deprecated Use `limitToProject` instead
      *
      * @param [filterbyproject] If the full-text search should be
      * filtered by one project, you can define it with project iri.
@@ -55,12 +59,24 @@ export class FulltextSearchComponent implements OnInit {
     @Input() filterbyproject?: string;
 
     /**
+     * Filter ontologies in advanced search or query in fulltext search by specified project IRI
+     *
+     * @param limitToProject
+     */
+    @Input() limitToProject?: string;
+
+
+    /**
+     * Emits selected project in case of projectfilter
+     */
+    @Output() limitToProjectChange = new EventEmitter<string>();
+
+    /**
      * The data event emitter of type SearchParams
      *
      * @param  search
      */
     @Output() search = new EventEmitter<SearchParams>();
-
 
     @ViewChild('fulltextSearchPanel', { static: false }) searchPanel: ElementRef;
 
@@ -80,7 +96,7 @@ export class FulltextSearchComponent implements OnInit {
     // list of projects, in case of filterproject is true
     projects: ReadProject[];
 
-    // selected project, in case of filterbyproject and/or projectfilter is true
+    // selected project, in case of limitToProject and/or projectfilter is true
     project: ReadProject;
 
     defaultProjectLabel = 'All projects';
@@ -116,6 +132,10 @@ export class FulltextSearchComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        // filterbyproject is set as deprecated. To avoid breaking changes we still support it
+        if (this.filterbyproject) {
+            this.limitToProject = this.filterbyproject;
+        }
 
         // initialise prevSearch
         const prevSearchOption = JSON.parse(localStorage.getItem('prevSearch'));
@@ -125,19 +145,27 @@ export class FulltextSearchComponent implements OnInit {
             this.prevSearch = [];
         }
 
-        if (this.filterbyproject) {
-            this.getProject(this.filterbyproject);
+        if (this.limitToProject) {
+            this.getProject(this.limitToProject);
         }
 
         if (this.projectfilter) {
             this.getAllProjects();
-
-            if (localStorage.getItem('currentProject') !== null) {
-                this.setProject(
-                    JSON.parse(localStorage.getItem('currentProject'))
-                );
-            }
         }
+    }
+
+    ngOnChanges() {
+        // resource classes have been reinitialized
+            // reset form
+            resolvedPromise.then(() => {
+
+                if (localStorage.getItem('currentProject') !== null) {
+                    this.setProject(
+                        JSON.parse(localStorage.getItem('currentProject'))
+                    );
+                }
+
+            });
     }
 
     /**
@@ -186,11 +214,15 @@ export class FulltextSearchComponent implements OnInit {
             // set default project: all
             this.projectLabel = this.defaultProjectLabel;
             this.projectIri = undefined;
+            this.limitToProject = undefined;
+            this.limitToProjectChange.emit(this.limitToProject);
             localStorage.removeItem('currentProject');
         } else {
             // set current project shortname and id
             this.projectLabel = project.shortname;
             this.projectIri = project.id;
+            this.limitToProject = project.id;
+            this.limitToProjectChange.emit(this.limitToProject);
             localStorage.setItem('currentProject', JSON.stringify(project));
         }
     }

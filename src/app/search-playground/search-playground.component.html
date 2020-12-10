@@ -58,7 +58,7 @@ Select the component to play with:
                 </mat-expansion-panel-header>
                 <pre>
       &lt;dsp-search-panel
-        [filterbyproject]="{{limitToProject}}"
+        [limitToProject]="{{limitToProject}}"
         [projectfilter]="{{projectFilter}}"
         [advanced]="{{advancedSearch}}"
         [expert]="{{expertSearch}}"
@@ -73,7 +73,7 @@ Select the component to play with:
             <!-- simulate header -->
             <div class="header">
                 <dsp-search-panel *ngIf="!loading" class="center" [projectfilter]="projectFilter"
-                    [filterbyproject]="limitToProject" [advanced]="advancedSearch" [expert]="expertSearch" (search)="doSearch($event)">
+                    [limitToProject]="limitToProject" [advanced]="advancedSearch" [expert]="expertSearch" (search)="doSearch($event)">
                 </dsp-search-panel>
                 <!--  -->
 

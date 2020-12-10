@@ -13,7 +13,7 @@ import { SearchPanelComponent } from './search-panel.component';
 class TestFulltextSearchComponent implements OnInit {
 
     @Input() projectfilter?: boolean = false;
-    @Input() filterbyproject?: string;
+    @Input() limitToProject?: string;
     @Input() show: boolean;
     @Output() showState = new EventEmitter();
 

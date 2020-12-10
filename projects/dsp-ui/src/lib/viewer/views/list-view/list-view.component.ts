@@ -42,6 +42,8 @@ export class ListViewComponent implements OnChanges {
 
     resources: ReadResourceSequence;
 
+    selectedResourceIdx = 0;
+
     // MatPaginator Output
     pageEvent: PageEvent;
 
@@ -75,6 +77,13 @@ export class ListViewComponent implements OnChanges {
     }
 
     emitSelectedResource(id: string) {
+        // get selected resource index from list to highlight it
+        for (let idx = 0; idx < this.resources.resources.length; idx++) {
+            if (this.resources.resources[idx].id === id) {
+                this.selectedResourceIdx = idx;
+                break;
+            }
+        }
         this.resourceSelected.emit(id);
     }
 
@@ -106,6 +115,7 @@ export class ListViewComponent implements OnChanges {
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;
+                    this.emitSelectedResource(this.resources.resources[0].id);
                 },
                 (error: ApiResponseError) => {
                     this._notification.openSnackBar(error);
@@ -137,6 +147,7 @@ export class ListViewComponent implements OnChanges {
                     (response: ReadResourceSequence) => {
                         this.resources = response;
                         this.loading = false;
+                        this.emitSelectedResource(this.resources.resources[0].id);
                     },
                     (error: ApiResponseError) => {
                         this._notification.openSnackBar(error);

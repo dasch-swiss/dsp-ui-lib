@@ -73,12 +73,33 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     @Input() showToolbar = true;
 
     /**
+     * @deprecated Use `referredProjectClicked` instead
      * @param  openProject EventEmitter which sends project information to parent component
      */
     @Output() openProject: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
 
+    /**
+     * Output `referredProjectClicked` of resource view component:
+     * Can be used to go to project page
+     */
+    @Output() referredProjectClicked: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
+    /**
+     * Output `referredProjectHovered` of resource view component:
+     * Can be used for preview when hovering on project
+     */
+    @Output() referredProjectHovered: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
+    /**
+     * Output `referredResourceClicked` of resource view component:
+     * Can be used to open resource
+     */
     @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
+    /**
+     * Output `referredResourceHovered` of resource view component:
+     * Can be used for preview of resource on hover
+     */
     @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
 
     resource: ReadResource;
@@ -114,7 +135,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges() {
-        this.getResource(this.iri);
+        if (this.iri) {
+            this.getResource(this.iri);
+        }
     }
 
     ngOnDestroy() {
@@ -130,6 +153,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      * @param iri resourceIri
      */
     getResource(iri: string): void {
+
+        // reset still image representations
+        this.stillImageRepresentations = [];
 
         this._dspApiConnection.v2.res.getResource(iri).subscribe(
             (response: ReadResource) => {
@@ -148,7 +174,8 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                                     values: this.resource.getValuesAs(prop.propertyIndex, ReadStillImageFileValue)
                                 };
                                 this.stillImageRepresentations = [new StillImageRepresentation(
-                                    this.resource.getValuesAs(Constants.HasStillImageFileValue, ReadStillImageFileValue)[0], [])];
+                                    this.resource.getValuesAs(Constants.HasStillImageFileValue, ReadStillImageFileValue)[0], [])
+                                ];
 
                                 break;
 
