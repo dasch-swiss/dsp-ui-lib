@@ -162,7 +162,7 @@ export class AppModule { }
 ```
 
 The contents of the configuration can be accessed via `AppInitService`s member `config`.
-Just inject `AppInitService` in you service's or component's constructor.
+Just inject `AppInitService` in your service's or component's constructor.
 
 The library needs a global styling in the app to override some material design rules.
 If you're using Angular CLI, this is as simple as including one line in your `styles.scss` file:
@@ -239,9 +239,10 @@ export class ProjectsComponent implements OnInit {
 }
 ```
 
-**DspViewerModule** contains components to display resources; as single item or as a list for search results.
-It is comprised of resource sub-components such as file representations components to display still image, video, audio or text only
-and also value components to use single property elements.
+**DspViewerModule** contains components to display resources; as a single item or as a list for search results.
+It is comprised of resource sub-components such as file representations components to display still image, video, audio or simply text.
+
+It also contains value components which provide the necessary tools to display, edit, create, and delete values.
 
 Import DspViewerModule in the `app.module.ts`:
 
@@ -304,8 +305,6 @@ The example shows how to display the search panel that includes the full text se
     [advanced]="false">
 </dsp-search-panel>
 ```
-
-<!-- TODO: link to main documentation or playground: e.g. https://docs.dasch.swiss/developers/knora-ui/documentation/ -->
 
 ## Contribution
 See our [contribution guidelines](Contribution.md).

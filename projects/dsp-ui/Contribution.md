@@ -1,6 +1,6 @@
 # Contribution
 
-## How to Contribute to this Project
+## How to Contribute to This Project
 
 If you are interested in contributing to this project,
 please read our [general contribution guidelines](https://docs.dasch.swiss/developers/dsp/contribution/) first.
@@ -13,7 +13,7 @@ Install [Angular CLI](https://angular.io/cli) globally:
  npm install -g @angular/cli
 ```
  
-To add additional components etc. to a module of the library, do:
+To add additional components etc. to a module of the library, run:
 
 ```bash
 ng generate component [path/in/the/module/][name-of-component] --project @dasch-swiss/dsp-ui
@@ -34,6 +34,8 @@ Before testing the new component inside of the demo app, you have to rebuild it 
 npm run build-lib
 ```
 
+Alternatively, you can use [Live Reloading](https://github.com/dasch-swiss/dsp-ui-lib/blob/wip/dsp-1104-docs/README.md#run-the-application-locally-in-dev-mode-with-live-reloading).
+
 See [repository README](../../README.md#add-a-new-component-to-the-demo-application)
 for more information about how to add new components to the demo application.
 
@@ -41,9 +43,9 @@ for more information about how to add new components to the demo application.
 See [design documentation](design-documentation.md).
 
 ## Local Publishing of DSP-UI-LIB
-The demo application uses the locally built version of DSP-JS-LIB, see the repository's [README](../../README.md#structure-of-this-project).
+The demo application uses the locally built version of DSP-UI-LIB, see the repository's [README](../../README.md#structure-of-this-project).
 
-If you want to install an unpublished version of DSP-JS-LIB in your Angular application, you can use [yalc](https://www.npmjs.com/package/yalc).
+If you want to install an unpublished version of DSP-UI-LIB in your Angular application, you can use [yalc](https://www.npmjs.com/package/yalc).
 `yalc` publishes DSP-UI-LIB to a local store.
 
 Install `yalc`:
@@ -89,5 +91,5 @@ To make a new release, go to <https://github.com/dasch-swiss/dsp-ui-lib/releases
 - The tag version and the release title (same name) with the version number, e.g. `v3.0.0` or `v3.0.0-rc.0`
 - If this is a pre-release, check the box "This is a pre-release"
 
-New package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>.
+The new package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>.
 

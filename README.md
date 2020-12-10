@@ -27,7 +27,7 @@ The Angular library contains the code that is published on NPM.
 The demo Angular application's purpose is to demonstrate the library's functionality.
 The library needs to be built first in order to use it withing the demo application.
 
-The demo application uses the **locally built version** of `@dasch-swiss/dsp-js`
+The demo application uses the **locally built version** of `@dasch-swiss/dsp-ui`
 which is configured in [tsconfig.json](tsconfig.json) (`compilerOptions.paths`),
 see [Angular docs](https://angular.io/guide/creating-libraries#building-and-rebuilding-your-library).
 
@@ -112,7 +112,7 @@ and some basic unit tests for the demo application playground components (`src/a
 The E2E tests have to be run from the demo application.
 Unlike the unit tests, they require a running instance of DSP-API compatible with the release specified in [vars.mk](vars.mk).
 Before running the E2E tests, reload the data in DSP-API's db.
-The E2E test can be run as follows:
+The E2E tests can be run as follows:
 - `npm run webdriver-update`
 - `npm run e2e`
 
@@ -132,7 +132,7 @@ Follow these steps to add a new component to the demo app:
     - demonstrate a part of dsp-ui-lib (component, service etc.) in the new component of the demo app
 - in `AppRoutingModule` and `AppComponent`'s template, set up the routing for your new component in the demo app.
 
-### Run the application locally in dev mode with Live Reloading
+### Run the Application Locally in Dev Mode With Live Reloading
 
 To make changes to the DSP-UI and have your changes reflected immediately upon saving, follow these steps:
 
@@ -140,7 +140,7 @@ To make changes to the DSP-UI and have your changes reflected immediately upon s
 - open a new tab and run `npm run start` from the project root directory
 - now, anytime you make a change to DSP-UI and save, the library will be re-built and the webpage will refresh and you will see the changes
 
-### Run the application in productive mode
+### Run the Application in Productive Mode
 
 To simulate a production environment, the application should be built with optimization and served locally
 (not in dev mode, but from a local web server).
@@ -173,7 +173,7 @@ To simulate a production environment, the application should be built with optim
 - Build the test app with optimization: `npm run build-app`
 - Access it via <http://dspuiapp.local:8090>
 
-### Build and run the application in Docker
+### Build and Run the Application in Docker
 
 To build and run the application in Docker, do the following:
 
