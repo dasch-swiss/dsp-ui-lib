@@ -75,8 +75,9 @@ In your Angular project, create the file `config.dev.json` inside `src/config/`:
 ```
 
 Likewise, create a file `config.prod.json` with `logErrors` set to `false`.
+The configuration files are needed to establish a connection to DSP-API.
 
-Add the corresponding name in `src/environments/environment.ts`:
+Create the property `name` in `src/environments/environment.ts` and set it to "dev":
 
 ```typescript
 export const environment = {
@@ -85,7 +86,7 @@ export const environment = {
 };
 ```
 
-And in `src/environments/environment.prodts`:
+In `src/environments/environment.prod.ts`:
 
 ```typescript
 export const environment = {
@@ -93,6 +94,9 @@ export const environment = {
   production: true
 };
 ```
+
+Depending on the [build options](https://angular.io/guide/build#configuring-application-environments) (dev or prod),
+the environment and configuration are chosen.
 
 The config files have to be integrated in `angular.json` in the "assets" section:
 
@@ -104,9 +108,9 @@ The config files have to be integrated in `angular.json` in the "assets" section
 ]
 ```
 
-Define the following three factory methods in `app.module.ts`:
+Define the following three [factory providers](https://angular.io/guide/dependency-injection-providers#using-factory-providers) in your application's `app.module.ts`:
 
- 1. Return a function that calls `AppInitService`'s method `Init` and return its return value which is a `Promise`.
+ 1. Provide a function that calls `AppInitService`'s method `Init` and returns its return value which is a `Promise`.
    Angular waits for this `Promise` to be resolved.
    The `Promise` will be resolved once the configuration file has been fetched and its contents have been assigned.
  1. Get the config from the `AppInitService` instance and provide it as `DspApiConfigToken`.
@@ -140,13 +144,13 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
     // 2.
     {
       provide: DspApiConfigToken,
-      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig, // AppInitService is passed to the factory method
+      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig,
       deps: [AppInitService] // depends on AppInitService
     },
     // 3.
     {
       provide: DspApiConnectionToken,
-      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig), // AppInitService is passed to the factory method
+      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig),
       deps: [AppInitService] // depends on AppInitService
    }
   ],
@@ -158,7 +162,7 @@ export class AppModule { }
 The contents of the configuration can be accessed via `AppInitService`s member `config`.
 Just inject `AppInitService` in you service's or component's constructor.
 
-The module needs a global styling in the app to override some material design rules.
+The library needs a global styling in the app to override some material design rules.
 If you're using Angular CLI, this is as simple as including one line in your `styles.scss` file:
 
 ```css
@@ -195,8 +199,10 @@ export class AppModule { }
 ```
 
 <!-- example of component e.g. get all projects and display as a list -->
-The **DspCoreModule** is a configuration handler for [`@dasch-swiss/dsp-js`](https://www.npmjs.com/package/@dasch-swiss/dsp-js) which offers all the services to make [DSP-API requests](https://docs.dasch.swiss/developers/knora/api-reference/queries/).
-The following `ProjectsComponent` example shows how to implement the two libraries to get all projects form DSP-API:
+**DspCoreModule** implements the `InjectionToken` `DspApiConnectionToken`.
+The token provides an instance of `KnoraApiConnection` from [`@dasch-swiss/dsp-js`](https://www.npmjs.com/package/@dasch-swiss/dsp-js)
+which offers methods to make requests to [DSP-API](https://docs.dasch.swiss/developers/knora/api-reference/queries/).
+The following `ProjectsComponent` example shows how to retrieve all projects from DSP-API:
 
 ```typescript
 import { Component, Inject, OnInit } from '@angular/core';
@@ -231,7 +237,9 @@ export class ProjectsComponent implements OnInit {
 }
 ```
 
-The **DspViewerModule** contains components to display resources; as single item or as a list for search results. It is comprised of resource sub-components such as file representations components to display still image, video, audio or text only and also value components to use single property elements.
+**DspViewerModule** contains components to display resources; as single item or as a list for search results.
+It is comprised of resource sub-components such as file representations components to display still image, video, audio or text only
+and also value components to use single property elements.
 
 Import DspViewerModule in the `app.module.ts`:
 
@@ -260,7 +268,7 @@ And use it in the component template as follows. The example shows how to displa
 <dsp-resource-view [iri]="'http://rdfh.ch/0803/18a671b8a601'"></dsp-resource-view>
 ```
 
-The **DspSearchModule** allows different ways of searching in order to make simple or complex searches in DSP-API. This module contains various components you can use to search and all of them can either be used individually or in combination with one another using the search panel.
+**DspSearchModule** allows different ways of searching in order to make simple or complex searches in DSP-API. This module contains various components you can use to search and all of them can either be used individually or in combination with one another using the search panel.
 
 Import DspSearchModule in the `app.module.ts`:
 
