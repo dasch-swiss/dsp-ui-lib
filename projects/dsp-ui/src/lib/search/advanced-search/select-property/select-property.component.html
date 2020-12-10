@@ -1,7 +1,7 @@
-<span *ngIf="propertiesAsArray.length > 0" [formGroup]="form" >
+<span *ngIf="properties.length > 0" [formGroup]="form" >
     <mat-form-field class="search-property-field medium-field">
         <mat-select placeholder="Select Properties" [formControlName]="'property'" class="select-property">
-            <mat-option *ngFor="let prop of propertiesAsArray" [value]="prop.id">{{ prop.label }}</mat-option>
+            <mat-option *ngFor="let prop of properties" [value]="prop">{{ prop.label }}</mat-option>
         </mat-select>
     </mat-form-field>
 
