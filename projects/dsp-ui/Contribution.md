@@ -5,7 +5,7 @@
 If you are interested in contributing to this project,
 please read our [general contribution guidelines](https://docs.dasch.swiss/developers/dsp/contribution/) first.
 
-## Adding New Componentsetc. to the Library
+## Adding New Components etc. to the Library
 
 Install [Angular CLI](https://angular.io/cli) globally:
 
@@ -41,7 +41,7 @@ for more information about how to add new components to the demo application.
 See [design documentation](design-documentation.md).
 
 ## Local Publishing of DSP-UI-LIB
-The demo application uses the locally built version of DSP-JS-LIB, see the repository's [README](../../README.md#Structure of This Project).
+The demo application uses the locally built version of DSP-JS-LIB, see the repository's [README](../../README.md#structure-of-this-project).
 
 If you want to install an unpublished version of DSP-JS-LIB in your Angular application, you can use [yalc](https://www.npmjs.com/package/yalc).
 `yalc` publishes DSP-UI-LIB to a local store.
