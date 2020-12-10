@@ -113,8 +113,8 @@ Define the following three [factory providers](https://angular.io/guide/dependen
  1. Provide a function that calls `AppInitService`'s method `Init` and returns its return value which is a `Promise`.
    Angular waits for this `Promise` to be resolved.
    The `Promise` will be resolved once the configuration file has been fetched and its contents have been assigned.
- 1. Get the config from the `AppInitService` instance and provide it as `DspApiConfigToken`.
- 1. Create an KnoraApiConnection instance with the config and provide it as `DspApiConnectionToken`.  
+ 1. Get the [KnoraApiConfig](https://www.npmjs.com/package/@dasch-swiss/dsp-js) instance from the `AppInitService` instance and provide it as `DspApiConfigToken`.
+ 1. Create a [KnoraApiConnection](https://www.npmjs.com/package/@dasch-swiss/dsp-js) instance with the config and provide it as `DspApiConnectionToken`.  
 
 Provide it in the main module and include the desired DSP-UI modules in the imports:
 
@@ -144,13 +144,13 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
     // 2.
     {
       provide: DspApiConfigToken,
-      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig,
+      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig, // return the instance of KnoraApiConfig provided by AppInitService
       deps: [AppInitService] // depends on AppInitService
     },
     // 3.
     {
       provide: DspApiConnectionToken,
-      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig),
+      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig), // create and return an instance of KnoraApiConnection
       deps: [AppInitService] // depends on AppInitService
    }
   ],
