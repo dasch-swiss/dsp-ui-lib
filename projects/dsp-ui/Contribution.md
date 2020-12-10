@@ -34,7 +34,7 @@ Before testing the new component inside of the demo app, you have to rebuild it 
 npm run build-lib
 ```
 
-See [repository README](../../README.md#Add a New Component to the Demo Application)
+See [repository README](../../README.md#add-a-new-component-to-the-demo-application-playground)
 for more information about how to add new components to the demo application.
 
 ## Architecture of the Library
