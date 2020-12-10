@@ -144,13 +144,15 @@ Provide it in the main module and include the desired DSP-UI modules in the impo
     // 2.
     {
       provide: DspApiConfigToken,
-      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig, // return the instance of KnoraApiConfig provided by AppInitService
+      // return the instance of KnoraApiConfig provided by AppInitService  
+      useFactory: (appInitService: AppInitService) => appInitService.dspApiConfig,
       deps: [AppInitService] // depends on AppInitService
     },
     // 3.
     {
       provide: DspApiConnectionToken,
-      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig), // create and return an instance of KnoraApiConnection
+      // create and return an instance of KnoraApiConnection
+      useFactory: (appInitService: AppInitService) => new KnoraApiConnection(appInitService.dspApiConfig),
       deps: [AppInitService] // depends on AppInitService
    }
   ],
