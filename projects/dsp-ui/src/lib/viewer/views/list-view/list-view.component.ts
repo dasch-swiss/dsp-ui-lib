@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ApiResponseError, CountQueryResponse, IFulltextSearchParams, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken } from '../../../core';
+import { NotificationService } from '../../../action/services/notification.service';
+import { DspApiConnectionToken } from '../../../core/core.module';
 import { AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
 
 /**
@@ -41,20 +42,20 @@ export class ListViewComponent implements OnChanges {
 
     resources: ReadResourceSequence;
 
+    selectedResourceIdx = 0;
+
     // MatPaginator Output
     pageEvent: PageEvent;
 
     // Number of all results
     numberOfAllResults: number;
 
-    // in case of an api request error
-    errorMessage: ApiResponseError;
-
     // progress status
     loading = true;
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _advancedSearchParamsService: AdvancedSearchParamsService,
     ) { }
 
@@ -76,6 +77,13 @@ export class ListViewComponent implements OnChanges {
     }
 
     emitSelectedResource(id: string) {
+        // get selected resource index from list to highlight it
+        for (let idx = 0; idx < this.resources.resources.length; idx++) {
+            if (this.resources.resources[idx].id === id) {
+                this.selectedResourceIdx = idx;
+                break;
+            }
+        }
         this.resourceSelected.emit(id);
     }
 
@@ -97,7 +105,7 @@ export class ListViewComponent implements OnChanges {
                         this.numberOfAllResults = response.numberOfResults;
                     },
                     (error: ApiResponseError) => {
-                        this.errorMessage = error;
+                        this._notification.openSnackBar(error);
                     }
                 );
             }
@@ -107,9 +115,10 @@ export class ListViewComponent implements OnChanges {
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;
+                    this.emitSelectedResource(this.resources.resources[0].id);
                 },
                 (error: ApiResponseError) => {
-                    this.errorMessage = error;
+                    this._notification.openSnackBar(error);
                     this.loading = false;
                 }
             );
@@ -125,7 +134,7 @@ export class ListViewComponent implements OnChanges {
                         this.numberOfAllResults = response.numberOfResults;
                     },
                     (error: ApiResponseError) => {
-                        this.errorMessage = error;
+                        this._notification.openSnackBar(error);
                     }
                 );
             }
@@ -138,9 +147,10 @@ export class ListViewComponent implements OnChanges {
                     (response: ReadResourceSequence) => {
                         this.resources = response;
                         this.loading = false;
+                        this.emitSelectedResource(this.resources.resources[0].id);
                     },
                     (error: ApiResponseError) => {
-                        this.errorMessage = error;
+                        this._notification.openSnackBar(error);
                         this.loading = false;
                     }
                 );

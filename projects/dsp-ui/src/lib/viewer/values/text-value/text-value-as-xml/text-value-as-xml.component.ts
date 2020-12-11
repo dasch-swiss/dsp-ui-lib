@@ -1,10 +1,23 @@
-import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Inject,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Constants, CreateTextValueAsXml, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import * as Editor from 'ckeditor5-custom-build';
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../../base-value.component';
 import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
+
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
 
 @Component({
     selector: 'dsp-text-value-as-xml',
@@ -16,6 +29,10 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     readonly standardMapping = 'http://rdfh.ch/standoff/mappings/StandardMapping'; // TODO: define this somewhere else
 
     @Input() displayValue?: ReadTextValueAsXml;
+
+    @Output() internalLinkClicked: EventEmitter<string> = new EventEmitter<string>();
+
+    @Output() internalLinkHovered: EventEmitter<string> = new EventEmitter<string>();
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
@@ -33,13 +50,13 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
     // XML conversion
     xmlTransform = {
         '<hr>': '<hr/>',
-        '</hr>': '',
         '<s>': '<strike>',
         '</s>': '</strike>',
         '<i>': '<em>',
         '</i>': '</em>',
         '<figure class="table">': '',
-        '</figure>': ''
+        '</figure>': '',
+        '<br>': '<br/>'
     };
 
     // TODO: get this from config via AppInitService
@@ -90,12 +107,16 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
             toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'underline', 'strikethrough', 'subscript', 'superscript', 'horizontalline', 'insertTable', 'code', 'codeBlock', 'removeformat', 'redo', 'undo'],
             heading: {
                 options: [
-                    {model: 'heading1', view: 'h1', title: 'Heading 1'},
-                    {model: 'heading2', view: 'h2', title: 'Heading 2'},
-                    {model: 'heading3', view: 'h3', title: 'Heading 3'},
-                    {model: 'heading4', view: 'h4', title: 'Heading 4'},
-                    {model: 'heading5', view: 'h5', title: 'Heading 5'},
-                    {model: 'heading6', view: 'h6', title: 'Heading 6'},
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    { model: 'heading1', view: 'h1', title: 'Heading 1' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2' },
+                    { model: 'heading3', view: 'h3', title: 'Heading 3' },
+                    { model: 'heading4', view: 'h4', title: 'Heading 4' },
+                    { model: 'heading5', view: 'h5', title: 'Heading 5' },
+                    { model: 'heading6', view: 'h6', title: 'Heading 6' },
+                    { model: 'formatted', view: 'pre', title: 'Formatted' },
+                    { model: 'cite', view: 'cite', title: 'Cited' }
+
                 ]
             },
             codeBlock: {
@@ -123,6 +144,11 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
         this.resetFormControl();
 
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.addToParentFormGroup(this.formName, this.form);
+        });
+
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -135,6 +161,11 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
     ngOnDestroy(): void {
         this.unsubscribeFromValueChanges();
+
+        resolvedPromise.then(() => {
+            // remove form from the parent form group
+            this.removeFromParentFormGroup(this.formName);
+        });
     }
 
     getNewValue(): CreateTextValueAsXml | false {

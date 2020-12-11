@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationMessageComponent } from './components/confirmation-dialog/confirmation-message/confirmation-message.component';
@@ -27,58 +29,63 @@ import { FormattedBooleanPipe } from './pipes/formatting/formatted-boolean.pipe'
 import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { StringifyStringLiteralPipe } from './pipes/string-transformation/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
+import { SelectProjectComponent } from './components/select-project/select-project.component';
 
 @NgModule({
   declarations: [
-    FormattedBooleanPipe,
-    KnoraDatePipe,
-    ReversePipe,
-    SortByPipe,
-    TruncatePipe,
-    StringifyStringLiteralPipe,
     AdminImageDirective,
-    ExistingNameDirective,
-    GndDirective,
-    ProgressIndicatorComponent,
-    MessageComponent,
-    SortButtonComponent,
-    StringLiteralInputComponent,
-    LoginFormComponent,
     ConfirmationDialogComponent,
-    ConfirmationMessageComponent
+    ConfirmationMessageComponent,
+    ExistingNameDirective,
+    FormattedBooleanPipe,
+    GndDirective,
+    KnoraDatePipe,
+    LoginFormComponent,
+    MessageComponent,
+    ProgressIndicatorComponent,
+    ReversePipe,
+    SortButtonComponent,
+    SortByPipe,
+    StringifyStringLiteralPipe,
+    StringLiteralInputComponent,
+    SelectProjectComponent,
+    TruncatePipe
   ],
   imports: [
-    CommonModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatCardModule,
-    MatListModule,
-    ReactiveFormsModule,
+    CommonModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatCardModule,
+    MatDialogModule,
     MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatAutocompleteModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatSnackBarModule
   ],
   exports: [
-    FormattedBooleanPipe,
-    KnoraDatePipe,
-    ReversePipe,
-    SortByPipe,
-    TruncatePipe,
-    StringifyStringLiteralPipe,
     AdminImageDirective,
-    ExistingNameDirective,
-    ProgressIndicatorComponent,
-    MessageComponent,
-    SortButtonComponent,
-    StringLiteralInputComponent,
-    LoginFormComponent,
     ConfirmationDialogComponent,
+    ConfirmationMessageComponent,
+    ExistingNameDirective,
+    FormattedBooleanPipe,
     GndDirective,
-    ConfirmationMessageComponent
+    KnoraDatePipe,
+    LoginFormComponent,
+    MessageComponent,
+    ProgressIndicatorComponent,
+    ReversePipe,
+    SortButtonComponent,
+    SortByPipe,
+    StringifyStringLiteralPipe,
+    StringLiteralInputComponent,
+    SelectProjectComponent,
+    TruncatePipe
   ]
 })
 

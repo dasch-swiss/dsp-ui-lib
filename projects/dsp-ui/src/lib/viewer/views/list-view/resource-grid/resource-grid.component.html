@@ -1,5 +1,9 @@
 <div class="resource-grid">
-    <mat-card class="grid-card link" *ngFor="let res of resources.resources" (click)="resourceSelected.emit(res.id)">
+    <mat-card
+        class="grid-card link"
+        [class.selected-resource]="selectedResourceIdx === i"
+        *ngFor="let res of resources.resources; let i = index;"
+        (click)="resourceSelected.emit(res.id)">
         <!-- TODO: add the representation preview here, mat-card-image can be used for images -->
         <mat-card-header class="grid-card-header">
             <mat-card-subtitle class="res-class-label">{{ res.entityInfo.classes[res.type].label }}</mat-card-subtitle>

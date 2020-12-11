@@ -19,7 +19,7 @@ import {
 import { mergeMap } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { AddedEventValue, EmitEvent, Events, ValueOperationEventService } from '../../services/value-operation-event.service';
-import { ValueTypeService } from '../../services/value-type.service';
+import { ValueService } from '../../services/value.service';
 import { BaseValueComponent } from '../../values/base-value.component';
 
 @Component({
@@ -55,7 +55,7 @@ export class AddValueComponent implements OnInit, AfterViewInit {
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueTypeService: ValueTypeService) { }
+        private _valueService: ValueService) { }
 
     ngOnInit() {
 
@@ -64,7 +64,7 @@ export class AddValueComponent implements OnInit, AfterViewInit {
         // Since simple text values and rich text values share the same object type 'TextValue',
         // we need to use the ValueTypeService in order to assign it the correct object type for the ngSwitch in the template
         if (this.resourcePropertyDefinition.objectType === 'http://api.knora.org/ontology/knora-api/v2#TextValue') {
-            this.resourcePropertyDefinition.objectType = this._valueTypeService.getTextValueClass(this.resourcePropertyDefinition);
+            this.resourcePropertyDefinition.objectType = this._valueService.getTextValueClass(this.resourcePropertyDefinition);
         }
 
     }
@@ -80,64 +80,68 @@ export class AddValueComponent implements OnInit, AfterViewInit {
      * Add a new value to an existing property of a resource.
      */
     saveAddValue() {
-        // hide the CRUD buttons
-        this.createModeActive = false;
+        if (this.parentResource) {
+            // hide the CRUD buttons
+            this.createModeActive = false;
 
-        // show the progress indicator
-        this.submittingValue = true;
+            // show the progress indicator
+            this.submittingValue = true;
 
-        // get a new CreateValue from the base class and grab the values from the form
-        const createVal = this.createValueComponent.getNewValue();
+            // get a new CreateValue from the base class and grab the values from the form
+            const createVal = this.createValueComponent.getNewValue();
 
-        if (createVal instanceof CreateValue) {
+            if (createVal instanceof CreateValue) {
 
-            // create a new UpdateResource with the same properties as the parent resource
-            const updateRes = new UpdateResource();
-            updateRes.id = this.parentResource.id;
-            updateRes.type = this.parentResource.type;
-            updateRes.property = this.resourcePropertyDefinition.id;
+                // create a new UpdateResource with the same properties as the parent resource
+                const updateRes = new UpdateResource();
+                updateRes.id = this.parentResource.id;
+                updateRes.type = this.parentResource.type;
+                updateRes.property = this.resourcePropertyDefinition.id;
 
-            // assign the new value to the UpdateResource value
-            updateRes.value = createVal;
+                // assign the new value to the UpdateResource value
+                updateRes.value = createVal;
 
-            this._dspApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
-                mergeMap((res: WriteValueResponse) => {
-                    // if successful, get the newly created value
-                    return this._dspApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
-                })
-            ).subscribe(
-                (res2: ReadResource) => {
-                    // emit a ValueAdded event to the listeners in:
-                    // property-view component to hide the add value form
-                    // resource-view component to trigger a refresh of the resource
-                    this._valueOperationEventService.emit(
-                        new EmitEvent(Events.ValueAdded, new AddedEventValue(res2.getValues(updateRes.property)[0])));
+                this._dspApiConnection.v2.values.createValue(updateRes as UpdateResource<CreateValue>).pipe(
+                    mergeMap((res: WriteValueResponse) => {
+                        // if successful, get the newly created value
+                        return this._dspApiConnection.v2.values.getValue(this.parentResource.id, res.uuid);
+                    })
+                ).subscribe(
+                    (res2: ReadResource) => {
+                        // emit a ValueAdded event to the listeners in:
+                        // property-view component to hide the add value form
+                        // resource-view component to trigger a refresh of the resource
+                        this._valueOperationEventService.emit(
+                            new EmitEvent(Events.ValueAdded, new AddedEventValue(res2.getValues(updateRes.property)[0])));
 
-                    // hide the progress indicator
-                    this.submittingValue = false;
-                },
-                (error: ApiResponseError) => {
-                    // hide the progress indicator
-                    this.submittingValue = false;
+                        // hide the progress indicator
+                        this.submittingValue = false;
+                    },
+                    (error: ApiResponseError) => {
+                        // hide the progress indicator
+                        this.submittingValue = false;
 
-                    // show the CRUD buttons
-                    this.createModeActive = true;
+                        // show the CRUD buttons
+                        this.createModeActive = true;
 
-                    switch (error.status) {
-                        case 400:
-                            this.createValueComponent.valueFormControl.setErrors({duplicateValue: true});
-                            break;
-                        default:
-                            console.log('There was an error processing your request. Details: ', error);
-                            break;
+                        switch (error.status) {
+                            case 400:
+                                this.createValueComponent.valueFormControl.setErrors({duplicateValue: true});
+                                break;
+                            default:
+                                console.log('There was an error processing your request. Details: ', error);
+                                break;
+                        }
                     }
-                }
-            );
-        } else {
-            console.error('Expected instance of CreateVal, received: ', createVal);
+                );
+            } else {
+                console.error('Expected instance of CreateVal, received: ', createVal);
 
-            // hide the progress indicator
-            this.submittingValue = false;
+                // hide the progress indicator
+                this.submittingValue = false;
+            }
+        } else {
+            console.error('A ReadResource is required to save a new value.');
         }
     }
 

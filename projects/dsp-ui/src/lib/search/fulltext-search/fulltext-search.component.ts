@@ -6,6 +6,7 @@ import {
     EventEmitter,
     Inject,
     Input,
+    OnChanges,
     OnInit,
     Output,
     TemplateRef,
@@ -22,9 +23,10 @@ import {
     ProjectsResponse,
     ReadProject
 } from '@dasch-swiss/dsp-js';
+import { NotificationService } from '../../action/services/notification.service';
 import { SortingService } from '../../action/services/sorting.service';
-import { DspApiConnectionToken } from '../../core';
-import { SearchParams } from '../../viewer';
+import { DspApiConnectionToken } from '../../core/core.module';
+import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 
 export interface PrevSearchItem {
     projectIri?: string;
@@ -32,12 +34,14 @@ export interface PrevSearchItem {
     query: string;
 }
 
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-fulltext-search',
     templateUrl: './fulltext-search.component.html',
     styleUrls: ['./fulltext-search.component.scss']
 })
-export class FulltextSearchComponent implements OnInit {
+export class FulltextSearchComponent implements OnInit, OnChanges {
 
     /**
      *
@@ -47,11 +51,25 @@ export class FulltextSearchComponent implements OnInit {
     @Input() projectfilter?: boolean = false;
 
     /**
+     * @deprecated Use `limitToProject` instead
      *
      * @param [filterbyproject] If the full-text search should be
      * filtered by one project, you can define it with project iri.
      */
     @Input() filterbyproject?: string;
+
+    /**
+     * Filter ontologies in advanced search or query in fulltext search by specified project IRI
+     *
+     * @param limitToProject
+     */
+    @Input() limitToProject?: string;
+
+
+    /**
+     * Emits selected project in case of projectfilter
+     */
+    @Output() limitToProjectChange = new EventEmitter<string>();
 
     /**
      * The data event emitter of type SearchParams
@@ -60,10 +78,10 @@ export class FulltextSearchComponent implements OnInit {
      */
     @Output() search = new EventEmitter<SearchParams>();
 
-
     @ViewChild('fulltextSearchPanel', { static: false }) searchPanel: ElementRef;
 
     @ViewChild('fulltextSearchInput', { static: false }) searchInput: ElementRef;
+    @ViewChild('fulltextSearchInputMobile', { static: false }) searchInputMobile: ElementRef;
 
     @ViewChild('fulltextSearchMenu', { static: false }) searchMenu: TemplateRef<any>;
 
@@ -78,7 +96,7 @@ export class FulltextSearchComponent implements OnInit {
     // list of projects, in case of filterproject is true
     projects: ReadProject[];
 
-    // selected project, in case of filterbyproject and/or projectfilter is true
+    // selected project, in case of limitToProject and/or projectfilter is true
     project: ReadProject;
 
     defaultProjectLabel = 'All projects';
@@ -102,14 +120,22 @@ export class FulltextSearchComponent implements OnInit {
         Constants.DefaultSharedOntologyIRI
     ];
 
+    // toggle phone panel
+    displayPhonePanel = false;
+
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _sortingService: SortingService,
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef
     ) { }
 
     ngOnInit(): void {
+        // filterbyproject is set as deprecated. To avoid breaking changes we still support it
+        if (this.filterbyproject) {
+            this.limitToProject = this.filterbyproject;
+        }
 
         // initialise prevSearch
         const prevSearchOption = JSON.parse(localStorage.getItem('prevSearch'));
@@ -119,19 +145,27 @@ export class FulltextSearchComponent implements OnInit {
             this.prevSearch = [];
         }
 
-        if (this.filterbyproject) {
-            this.getProject(this.filterbyproject);
+        if (this.limitToProject) {
+            this.getProject(this.limitToProject);
         }
 
         if (this.projectfilter) {
             this.getAllProjects();
-
-            if (localStorage.getItem('currentProject') !== null) {
-                this.setProject(
-                    JSON.parse(localStorage.getItem('currentProject'))
-                );
-            }
         }
+    }
+
+    ngOnChanges() {
+        // resource classes have been reinitialized
+            // reset form
+            resolvedPromise.then(() => {
+
+                if (localStorage.getItem('currentProject') !== null) {
+                    this.setProject(
+                        JSON.parse(localStorage.getItem('currentProject'))
+                    );
+                }
+
+            });
     }
 
     /**
@@ -150,7 +184,7 @@ export class FulltextSearchComponent implements OnInit {
                 this.projects = this._sortingService.keySortByAlphabetical(response.body.projects, 'shortname');
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
                 this.error = error;
             }
         );
@@ -166,7 +200,7 @@ export class FulltextSearchComponent implements OnInit {
                 this.setProject(project.body.project);
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
             }
         );
     }
@@ -180,11 +214,15 @@ export class FulltextSearchComponent implements OnInit {
             // set default project: all
             this.projectLabel = this.defaultProjectLabel;
             this.projectIri = undefined;
+            this.limitToProject = undefined;
+            this.limitToProjectChange.emit(this.limitToProject);
             localStorage.removeItem('currentProject');
         } else {
             // set current project shortname and id
             this.projectLabel = project.shortname;
             this.projectIri = project.id;
+            this.limitToProject = project.id;
+            this.limitToProjectChange.emit(this.limitToProject);
             localStorage.setItem('currentProject', JSON.stringify(project));
         }
     }
@@ -196,7 +234,6 @@ export class FulltextSearchComponent implements OnInit {
         const config = new OverlayConfig({
             hasBackdrop: true,
             backdropClass: 'cdk-overlay-transparent-backdrop',
-            // backdropClass: 'cdk-overlay-dark-backdrop',
             positionStrategy: this.getOverlayPosition(),
             scrollStrategy: this._overlay.scrollStrategies.block()
         });
@@ -288,11 +325,17 @@ export class FulltextSearchComponent implements OnInit {
      * Clear the whole list of search
      */
     resetSearch(): void {
-        this.searchPanelFocus = false;
-        this.searchInput.nativeElement.blur();
+        if (this.displayPhonePanel) {
+            this.searchInputMobile.nativeElement.blur();
+            this.togglePhonePanel();
+        } else {
+            this.searchPanelFocus = false;
+            this.searchInput.nativeElement.blur();
+        }
         if (this.overlayRef) {
             this.overlayRef.detach();
         }
+
     }
 
     /**
@@ -304,8 +347,11 @@ export class FulltextSearchComponent implements OnInit {
         } else {
             this.prevSearch = [];
         }
-        this.searchPanelFocus = true;
-        this.openPanelWithBackdrop();
+
+        if(!this.displayPhonePanel) {
+            this.searchPanelFocus = true;
+            this.openPanelWithBackdrop();
+        }
     }
 
     /**
@@ -373,6 +419,10 @@ export class FulltextSearchComponent implements OnInit {
         }
 
         this.search.emit(searchParams);
+    }
+
+    togglePhonePanel() {
+        this.displayPhonePanel = !this.displayPhonePanel;
     }
 
 }

@@ -14,13 +14,19 @@ import {
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
     PropertyDefinition,
+    ReadLinkValue,
     ReadProject,
     ReadResource,
+    ReadResourceSequence,
+    ReadStillImageFileValue,
+    ReadTextValueAsXml,
     ReadValue,
     SystemPropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
+import { NotificationService } from '../../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../../core/core.module';
+import { StillImageRepresentation } from '../../representation/still-image/still-image.component';
 import {
     AddedEventValue,
     DeletedEventValue,
@@ -28,7 +34,7 @@ import {
     UpdatedEventValues,
     ValueOperationEventService
 } from '../../services/value-operation-event.service';
-import { ValueTypeService } from '../../services/value-type.service';
+import { ValueService } from '../../services/value.service';
 
 // object of property information from ontology class, properties and property values
 export interface PropertyInfoValues {
@@ -67,13 +73,36 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     @Input() showToolbar = true;
 
     /**
+     * @deprecated Use `referredProjectClicked` instead
      * @param  openProject EventEmitter which sends project information to parent component
      */
     @Output() openProject: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
 
-    resource: ReadResource;
+    /**
+     * Output `referredProjectClicked` of resource view component:
+     * Can be used to go to project page
+     */
+    @Output() referredProjectClicked: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
 
-    errorMessage: ApiResponseError;
+    /**
+     * Output `referredProjectHovered` of resource view component:
+     * Can be used for preview when hovering on project
+     */
+    @Output() referredProjectHovered: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
+    /**
+     * Output `referredResourceClicked` of resource view component:
+     * Can be used to open resource
+     */
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
+    /**
+     * Output `referredResourceHovered` of resource view component:
+     * Can be used for preview of resource on hover
+     */
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
+    resource: ReadResource;
 
     resPropInfoVals: PropertyInfoValues[] = []; // array of resource properties
 
@@ -81,10 +110,13 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
     valueOperationEventSubscriptions: Subscription[] = []; // array of ValueOperationEvent subscriptions
 
+    stillImageRepresentations: StillImageRepresentation[];
+
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _valueOperationEventService: ValueOperationEventService,
-        private _valueTypeService: ValueTypeService) { }
+        private _valueService: ValueService) { }
 
     ngOnInit() {
         // subscribe to the ValueOperationEventService and listen for an event to be emitted
@@ -103,7 +135,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges() {
-        this.getResource(this.iri);
+        if (this.iri) {
+            this.getResource(this.iri);
+        }
     }
 
     ngOnDestroy() {
@@ -120,6 +154,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
      */
     getResource(iri: string): void {
 
+        // reset still image representations
+        this.stillImageRepresentations = [];
+
         this._dspApiConnection.v2.res.getResource(iri).subscribe(
             (response: ReadResource) => {
                 this.resource = response;
@@ -127,11 +164,29 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                 // gather resource property information
                 this.resPropInfoVals = this.resource.entityInfo.classes[this.resource.type].getResourcePropertiesList().map(
                     (prop: IHasPropertyWithPropertyDefinition) => {
-                        const propInfoAndValues: PropertyInfoValues = {
-                            propDef: prop.propertyDefinition,
-                            guiDef: prop,
-                            values: this.resource.getValues(prop.propertyIndex)
-                        };
+                        let propInfoAndValues: PropertyInfoValues;
+
+                        switch (prop.propertyDefinition.objectType) {
+                            case Constants.StillImageFileValue:
+                                propInfoAndValues = {
+                                    propDef: prop.propertyDefinition,
+                                    guiDef: prop,
+                                    values: this.resource.getValuesAs(prop.propertyIndex, ReadStillImageFileValue)
+                                };
+                                this.stillImageRepresentations = [new StillImageRepresentation(
+                                    this.resource.getValuesAs(Constants.HasStillImageFileValue, ReadStillImageFileValue)[0], [])
+                                ];
+
+                                break;
+
+                            default:
+                                propInfoAndValues = {
+                                    propDef: prop.propertyDefinition,
+                                    guiDef: prop,
+                                    values: this.resource.getValues(prop.propertyIndex)
+                                };
+                        }
+
                         return propInfoAndValues;
                     }
                 );
@@ -147,7 +202,7 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
 
             },
             (error: ApiResponseError) => {
-                this.errorMessage = error;
+                this._notification.openSnackBar(error);
             });
     }
 
@@ -163,6 +218,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                     propInfoValueArray.propDef.id === valueToAdd.property) // filter to the correct property
                 .forEach(propInfoValue =>
                     propInfoValue.values.push(valueToAdd)); // push new value to array
+            if (valueToAdd instanceof ReadTextValueAsXml) {
+                this._updateStandoffLinkValue();
+            }
         } else {
             console.error('No properties exist for this resource');
         }
@@ -186,6 +244,9 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                         }
                     });
                 });
+            if (updatedValue instanceof ReadTextValueAsXml) {
+                this._updateStandoffLinkValue();
+            }
         } else {
             console.error('No properties exist for this resource');
         }
@@ -200,11 +261,14 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         if (this.resPropInfoVals) {
             this.resPropInfoVals
                 .filter(propInfoValueArray =>  // filter to the correct type
-                    this._valueTypeService.compareObjectTypeWithValueType(propInfoValueArray.propDef.objectType, valueToDelete.type))
+                    this._valueService.compareObjectTypeWithValueType(propInfoValueArray.propDef.objectType, valueToDelete.type))
                 .forEach(filteredpropInfoValueArray => {
                     filteredpropInfoValueArray.values.forEach((val, index) => { // loop through each value of the current property
                         if (val.id === valueToDelete.id) { // find the value that was deleted using the id
                             filteredpropInfoValueArray.values.splice(index, 1); // remove the value from the values array
+                            if (val instanceof ReadTextValueAsXml) {
+                                this._updateStandoffLinkValue();
+                            }
                         }
                     });
                 }
@@ -212,6 +276,67 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
         } else {
             console.error('No properties exist for this resource');
         }
+    }
+
+    /**
+     * Updates the standoff link value for the resource being displayed.
+     *
+     */
+    private _updateStandoffLinkValue(): void {
+
+        if (this.resource === undefined) {
+            // this should never happen:
+            // if the user was able to click on a standoff link,
+            // then the resource must have been initialised before.
+            return;
+        }
+
+        const gravsearchQuery = `
+ PREFIX knora-api: <http://api.knora.org/ontology/knora-api/simple/v2#>
+ CONSTRUCT {
+     ?res knora-api:isMainResource true .
+     ?res knora-api:hasStandoffLinkTo ?target .
+ } WHERE {
+     BIND(<${this.resource.id}> as ?res) .
+     OPTIONAL {
+         ?res knora-api:hasStandoffLinkTo ?target .
+     }
+ }
+ OFFSET 0
+ `;
+
+        this._dspApiConnection.v2.search.doExtendedSearch(gravsearchQuery).subscribe(
+            (res: ReadResourceSequence) => {
+
+                // one resource is expected
+                if (res.resources.length !== 1) {
+                    return;
+                }
+
+                const newStandoffLinkVals = res.resources[0].getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue', ReadLinkValue);
+
+                this.resPropInfoVals.filter(
+                    resPropInfoVal => {
+                        return resPropInfoVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+                    }
+                ).forEach(
+                    standoffLinkResPropInfoVal => {
+                        // delete all the existing standoff link values
+                        standoffLinkResPropInfoVal.values = [];
+                        // push standoff link values retrieved for the resource
+                        newStandoffLinkVals.forEach(
+                            standoffLinkVal => {
+                                standoffLinkResPropInfoVal.values.push(standoffLinkVal);
+                            }
+                        );
+                    });
+
+            },
+            err => {
+                console.error(err);
+            }
+        );
+
     }
 
     /**

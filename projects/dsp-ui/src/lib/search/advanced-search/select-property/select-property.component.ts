@@ -1,17 +1,13 @@
 import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ResourceClassDefinition, ResourcePropertyDefinition, Cardinality, IHasProperty } from '@dasch-swiss/dsp-js';
+import { Cardinality, IHasProperty, ResourceClassDefinition, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
-import { SortingService } from '../../../action';
-import { SpecifyPropertyValueComponent } from './specify-property-value/specify-property-value.component';
+import { SortingService } from '../../../action/services/sorting.service';
 import { ComparisonOperatorAndValue, PropertyWithValue } from './specify-property-value/operator';
+import { SpecifyPropertyValueComponent } from './specify-property-value/specify-property-value.component';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
-
-export interface Properties {
-    [index: string]: ResourcePropertyDefinition;
-}
 
 @Component({
     selector: 'dsp-select-property',
@@ -26,12 +22,15 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
     // index of the given property (unique)
     @Input() index: number;
 
+    // properties that can be selected from
+    private _properties: ResourcePropertyDefinition[];
+
     // setter method for properties when being updated by parent component
     @Input()
-    set properties(value: Properties) {
+    set properties(value: ResourcePropertyDefinition[]) {
         this.propertySelected = undefined; // reset selected property (overwriting any previous selection)
-        this._properties = value;
-        this._updatePropertiesArray();
+        this._properties = this._sortingService.keySortByAlphabetical(value, 'label')
+            .filter(propDef => propDef.isEditable && !propDef.isLinkValueProperty);
     }
 
     get properties() {
@@ -46,14 +45,8 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
         this._activeResourceClass = value;
     }
 
-    // properties that can be selected from
-    private _properties: Properties;
-
     // reference to child component: combination of comparison operator and value for chosen property
     @ViewChild('specifyPropertyValue', { static: false }) specifyPropertyValue: SpecifyPropertyValueComponent;
-
-    // properties as an Array structure (based on this.properties)
-    propertiesAsArray: Array<ResourcePropertyDefinition>;
 
     // represents the currently selected property
     propertySelected: ResourcePropertyDefinition;
@@ -80,8 +73,8 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
 
         // update the selected property
         this.propertyChangesSubscription = this.form.valueChanges.subscribe((data) => {
-            const propIri = data.property;
-            this.propertySelected = this._properties[propIri];
+            // data.property points to a ResourcePropertyDefinition
+            this.propertySelected = data.property;
         });
 
         resolvedPromise.then(() => {
@@ -103,29 +96,6 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
 
             this.formGroup.removeControl(this.propIndex);
         });
-    }
-
-    /**
-     * Updates the properties array that is accessed by the template.
-     */
-    private _updatePropertiesArray() {
-
-        // represent the properties as an array to be accessed by the template
-        const propsArray = [];
-
-        for (const propIri in this._properties) {
-            if (this._properties.hasOwnProperty(propIri)) {
-                const prop = this._properties[propIri];
-
-                // only list editable props that are not link value props
-                if (prop.isEditable && !prop.isLinkValueProperty) {
-                    propsArray.push(this._properties[propIri]);
-                }
-            }
-        }
-
-        // sort properties by label (ascending)
-        this.propertiesAsArray = this._sortingService.keySortByAlphabetical(propsArray, 'label');
     }
 
     /**

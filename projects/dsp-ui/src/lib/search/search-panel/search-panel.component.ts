@@ -1,33 +1,54 @@
 import { ConnectionPositionPair, Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Component, ElementRef, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { SearchParams } from '../../viewer';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input, OnInit,
+    Output,
+    TemplateRef,
+    ViewChild,
+    ViewContainerRef
+} from '@angular/core';
+import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 
 @Component({
     selector: 'dsp-search-panel',
     templateUrl: './search-panel.component.html',
     styleUrls: ['./search-panel.component.scss']
 })
-export class SearchPanelComponent {
+export class SearchPanelComponent implements OnInit {
 
     /**
      * @param [projectfilter] If true it shows the selection of projects to filter by one of them
+     * Default value: false
      */
     @Input() projectfilter?: boolean = false;
 
     /**
+     * @deprecated Use `limitToProject` instead
+     *
      * @param [filterbyproject] If your full-text search should be filtered by one project, you can define it with project
      * iri in the parameter filterbyproject.
      */
     @Input() filterbyproject?: string;
 
     /**
+     * Filter ontologies in advanced search or query in fulltext search by specified project IRI
+     *
+     * @param limitToProject
+     */
+    @Input() limitToProject?: string;
+
+    /**
      * @param [advanced] Adds the extended / advanced search to the panel
+     * Default value: false
      */
     @Input() advanced?: boolean = false;
 
     /**
      * @param [expert] Adds the expert search / gravsearch editor to the panel
+     * Default value: false
      */
     @Input() expert?: boolean = false;
 
@@ -47,15 +68,24 @@ export class SearchPanelComponent {
 
     // show advanced or expert search
     showAdvanced: boolean;
+    showExpert: boolean;
 
     constructor(
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef
     ) { }
 
+    ngOnInit() {
+        // filterbyproject is set as deprecated. To avoid breaking changes we still support the parameter
+        if (this.filterbyproject) {
+            this.limitToProject = this.filterbyproject;
+        }
+    }
+
     openPanelWithBackdrop(type: string) {
 
         this.showAdvanced = (type === 'advanced');
+        this.showExpert = (type === 'expert');
 
         const config = new OverlayConfig({
             hasBackdrop: true,
@@ -67,6 +97,8 @@ export class SearchPanelComponent {
         this.overlayRef = this._overlay.create(config);
         this.overlayRef.attach(new TemplatePortal(this.searchMenu, this._viewContainerRef));
         this.overlayRef.backdropClick().subscribe(() => {
+            this.showAdvanced = false;
+            this.showExpert = false;
             this.overlayRef.detach();
         });
     }
@@ -83,6 +115,10 @@ export class SearchPanelComponent {
         return overlayPosition;
     }
 
+    updateLimitToProject(id: string) {
+        this.limitToProject = id;
+    }
+
     /**
      * Emit the search parameters
      *
@@ -97,7 +133,9 @@ export class SearchPanelComponent {
      * Close the search menu
      */
     closeMenu(): void {
-        if(this.overlayRef) {
+        this.showAdvanced = false;
+        this.showExpert = false;
+        if (this.overlayRef) {
             this.overlayRef.detach();
         }
     }

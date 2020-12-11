@@ -4,6 +4,9 @@ import { CreateBooleanValue, ReadBooleanValue, UpdateBooleanValue } from '@dasch
 import { Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-boolean-value',
     templateUrl: './boolean-value.component.html',
@@ -56,6 +59,11 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
         });
 
         this.resetFormControl();
+
+        resolvedPromise.then(() => {
+            // add form to the parent form group
+            this.addToParentFormGroup(this.formName, this.form);
+        });
     }
     onSubmit() {
         this.form.controls.booleanValue.markAsDirty();
@@ -67,6 +75,11 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     // unsubscribe when the object is destroyed to prevent memory leaks
     ngOnDestroy(): void {
         this.unsubscribeFromValueChanges();
+
+        resolvedPromise.then(() => {
+            // remove form from the parent form group
+            this.removeFromParentFormGroup(this.formName);
+        });
     }
 
     getNewValue(): CreateBooleanValue | false {

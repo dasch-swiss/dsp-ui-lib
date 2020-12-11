@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     ApiResponseData,
@@ -10,14 +10,16 @@ import {
     ReadUser,
     UserResponse
 } from '@dasch-swiss/dsp-js';
+import { NotificationService } from '../../../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../../../core/core.module';
+import { UserService } from '../../../services/user.service';
 
 @Component({
     selector: 'dsp-property-toolbar',
     templateUrl: './property-toolbar.component.html',
     styleUrls: ['./property-toolbar.component.scss']
 })
-export class PropertyToolbarComponent implements OnInit {
+export class PropertyToolbarComponent implements OnChanges {
 
     @Input() resource: ReadResource;
 
@@ -25,37 +27,65 @@ export class PropertyToolbarComponent implements OnInit {
 
     @Output() toggleProps: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    /**
+     * @deprecated Use `referredProjectClicked` instead
+     */
     @Output() openProject: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
+    /**
+     * Output `referredProjectClicked` of resource view component:
+     * Can be used to go to project page
+     */
+    @Output() referredProjectClicked: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
+
+    /**
+     * Output `referredProjectHovered` of resource view component:
+     * Can be used for preview when hovering on project
+     */
+    @Output() referredProjectHovered: EventEmitter<ReadProject> = new EventEmitter<ReadProject>();
 
     project: ReadProject;
     user: ReadUser;
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
-        private _snackBar: MatSnackBar
+        private _notification: NotificationService,
+        private _snackBar: MatSnackBar,
+        private _userService: UserService
     ) { }
 
-    ngOnInit() {
+    ngOnChanges() {
         // get project information
         this._dspApiConnection.admin.projectsEndpoint.getProjectByIri(this.resource.attachedToProject).subscribe(
             (response: ApiResponseData<ProjectResponse>) => {
                 this.project = response.body.project;
             },
             (error: ApiResponseError) => {
-                console.error(error);
+                this._notification.openSnackBar(error);
             }
         );
+
         // get user information
-        this._dspApiConnection.admin.usersEndpoint.getUserByIri(this.resource.attachedToUser).subscribe(
-            (response: ApiResponseData<UserResponse>) => {
-                this.user = response.body.user;
-            },
-            (error: ApiResponseError) => {
-                console.error(error);
+        this._userService.getUser(this.resource.attachedToUser).subscribe(
+            (response: UserResponse) => {
+                this.user = response.user;
             }
-        )
+        );
     }
 
+    /**
+     * Emits the project information on click.
+     */
+    projectClicked(project: ReadProject) {
+        this.referredProjectClicked.emit(project);
+    }
+
+    /**
+     * Emits the project information on hover.
+     */
+    projectHovered(project: ReadProject) {
+        this.referredProjectHovered.emit(project);
+    }
 
     /**
      * Display message to confirm the copy of the citation link (ARK URL)

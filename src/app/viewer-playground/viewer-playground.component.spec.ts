@@ -8,12 +8,13 @@ import {
     ProjectsEndpointAdmin,
     ReadResource,
     ResourcesEndpointV2,
-    UsersEndpointAdmin
+    UserResponse,
 } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken, DspViewerModule } from '@dasch-swiss/dsp-ui';
+import { DspApiConnectionToken, DspViewerModule, UserService } from '@dasch-swiss/dsp-ui';
 import { of } from 'rxjs/internal/observable/of';
 import { map } from 'rxjs/internal/operators/map';
 import { ViewerPlaygroundComponent } from './viewer-playground.component';
+import { AsyncSubject } from 'rxjs';
 
 describe('ViewerPlaygroundComponent', () => {
     let component: ViewerPlaygroundComponent;
@@ -23,13 +24,14 @@ describe('ViewerPlaygroundComponent', () => {
 
         const apiSpyObj = {
             admin: {
-                usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUserByIri']),
                 projectsEndpoint: jasmine.createSpyObj('projectsEndpoint', ['getProjectByIri'])
             },
             v2: {
                 res: jasmine.createSpyObj('res', ['getResource'])
             }
         };
+
+        const userServiceSpy = jasmine.createSpyObj('UserService', ['getUser']);
 
         TestBed.configureTestingModule({
             declarations: [
@@ -44,7 +46,11 @@ describe('ViewerPlaygroundComponent', () => {
                 {
                     provide: DspApiConnectionToken,
                     useValue: apiSpyObj
-                }
+                },
+                {
+                    provide: UserService,
+                    useValue: userServiceSpy
+                },
             ]
         })
             .compileComponents();
@@ -56,7 +62,7 @@ describe('ViewerPlaygroundComponent', () => {
         (resSpy.v2.res as jasmine.SpyObj<ResourcesEndpointV2>).getResource.and.callFake(
             (id: string) => {
 
-                return MockResource.getTestthing().pipe(
+                return MockResource.getTestThing().pipe(
                     map(
                         (res: ReadResource) => {
                             res.id = id;
@@ -75,11 +81,19 @@ describe('ViewerPlaygroundComponent', () => {
                 return of(project);
             }
         );
+
+        const userSpy = TestBed.inject(UserService);
+
         // mock getUserByIri response
-        (adminSpy.admin.usersEndpoint as jasmine.SpyObj<UsersEndpointAdmin>).getUserByIri.and.callFake(
+        (userSpy as jasmine.SpyObj<UserService>).getUser.and.callFake(
             () => {
                 const user = MockUsers.mockUser();
-                return of(user);
+
+                const subj: AsyncSubject<UserResponse> = new AsyncSubject();
+                subj.next(user.body);
+                subj.complete();
+
+                return subj;
             }
         );
 

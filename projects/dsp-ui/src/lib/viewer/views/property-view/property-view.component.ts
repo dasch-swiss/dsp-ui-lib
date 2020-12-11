@@ -1,11 +1,19 @@
 import {
-    Component,
+    Component, EventEmitter,
     Input,
     OnDestroy,
     OnInit,
+    Output,
     ViewChild
 } from '@angular/core';
-import { CardinalityUtil, PermissionUtil, ReadResource, ResourcePropertyDefinition, SystemPropertyDefinition } from '@dasch-swiss/dsp-js';
+import {
+    CardinalityUtil,
+    PermissionUtil,
+    ReadLinkValue,
+    ReadResource,
+    ResourcePropertyDefinition,
+    SystemPropertyDefinition
+} from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { AddValueComponent } from '../../operations/add-value/add-value.component';
 import { DisplayEditComponent } from '../../operations/display-edit/display-edit.component';
@@ -49,6 +57,10 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      */
     @Input() showAllProps = false;
 
+    @Output() referredResourceClicked: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
+    @Output() referredResourceHovered: EventEmitter<ReadLinkValue> = new EventEmitter<ReadLinkValue>();
+
     addButtonIsVisible: boolean; // used to toggle add value button
     addValueFormIsVisible: boolean; // used to toggle add value form field
     propID: string; // used in template to show only the add value form of the corresponding value
@@ -91,7 +103,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     /**
      * Called from the template when the user clicks on the cancel button
      */
-    hideAddValueForm() {
+    hideAddValueForm() {
         this.addValueFormIsVisible = false;
         this.addButtonIsVisible = true;
         this.propID = undefined;
@@ -103,11 +115,12 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
      * @param prop the resource property
      */
     addValueIsAllowed(prop: PropertyInfoValues): boolean {
-        // temporary until CkEditor is integrated
-        // const guiElement = (prop.propDef as ResourcePropertyDefinition).guiElement;
-        // if (guiElement === 'http://api.knora.org/ontology/salsah-gui/v2#Richtext') {
-        //     return false;
-        // }
+
+        // if the ontology flags this as a read-only property,
+        // don't ever allow to add a value
+        if (prop.propDef instanceof ResourcePropertyDefinition && !prop.propDef.isEditable) {
+           return false;
+        }
 
         const isAllowed = CardinalityUtil.createValueForPropertyAllowed(
             prop.propDef.id, prop.values.length, this.parentResource.entityInfo.classes[this.parentResource.type]);

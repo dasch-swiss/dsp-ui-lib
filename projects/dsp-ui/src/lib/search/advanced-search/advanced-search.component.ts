@@ -2,6 +2,7 @@ import {
     Component,
     EventEmitter,
     Inject,
+    Input,
     OnDestroy,
     OnInit,
     Output,
@@ -12,28 +13,22 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
     ApiResponseError,
-    ClassDefinition,
     Constants,
     KnoraApiConnection,
     OntologiesMetadata,
-    PropertyDefinition,
+    ReadOntology,
+    ResourceClassAndPropertyDefinitions,
     ResourceClassDefinition,
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
-import { DspApiConnectionToken } from '../../core';
-import { SearchParams } from '../../viewer';
+import { NotificationService } from '../../action/services/notification.service';
+import { DspApiConnectionToken } from '../../core/core.module';
+import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
-import { Properties, SelectPropertyComponent } from './select-property/select-property.component';
+import { SelectPropertyComponent } from './select-property/select-property.component';
 import { PropertyWithValue } from './select-property/specify-property-value/operator';
 import { SelectResourceClassComponent } from './select-resource-class/select-resource-class.component';
-
-// https://dev.to/krumpet/generic-type-guard-in-typescript-258l
-type Constructor<T> = { new(...args: any[]): T };
-
-const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
-    return o instanceof className;
-};
 
 @Component({
     selector: 'dsp-advanced-search',
@@ -41,6 +36,13 @@ const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
     styleUrls: ['./advanced-search.component.scss']
 })
 export class AdvancedSearchComponent implements OnInit, OnDestroy {
+
+    /**
+     * Filter ontologies by specified project IRI
+     *
+     * @param limitToProject
+     */
+    @Input() limitToProject?: string;
 
     /**
      * The data event emitter of type SearchParams
@@ -65,7 +67,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
     activeProperties: boolean[] = [];
 
-    properties: Properties;
+    properties: ResourcePropertyDefinition[];
 
     formChangesSubscription: Subscription;
 
@@ -80,6 +82,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     constructor(
         @Inject(FormBuilder) private _fb: FormBuilder,
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        private _notification: NotificationService,
         private _gravsearchGenerationService: GravsearchGenerationService) {
     }
 
@@ -92,7 +95,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
             this.formValid = this._validateForm();
         });
-
         // initialize ontologies to be used for the ontologies selection in the search form
         this.initializeOntologies();
     }
@@ -127,59 +129,34 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      * @returns void
      */
     initializeOntologies(): void {
-        this._dspApiConnection.v2.onto.getOntologiesMetadata().subscribe(
-            (response: OntologiesMetadata) => {
-                // filter out system ontologies
-                response.ontologies = response.ontologies.filter(onto => onto.attachedToProject !== Constants.SystemProjectIRI);
 
-                this.ontologiesMetadata = response;
-            },
-            (error: ApiResponseError) => {
-                this.errorMessage = error;
-            });
-    }
+        if (this.limitToProject) {
+            this._dspApiConnection.v2.onto.getOntologiesByProjectIri(this.limitToProject).subscribe(
+                (response: OntologiesMetadata) => {
+                    // filter out system ontologies
+                    response.ontologies = response.ontologies.filter(onto => onto.attachedToProject !== Constants.SystemProjectIRI);
 
-    /**
-     * Given a map of class definitions,
-     * returns an array of resource class definitions.
-     *
-     * @param classDefs a map of class definitions
-     */
-    private _makeResourceClassesArray(classDefs: { [index: string]: ClassDefinition }): ResourceClassDefinition[] {
+                    this.ontologiesMetadata = response;
+                },
+                (error: ApiResponseError) => {
+                    this._notification.openSnackBar(error);
+                    this.errorMessage = error;
+                });
+        } else {
+            this._dspApiConnection.v2.onto.getOntologiesMetadata().subscribe(
+                (response: OntologiesMetadata) => {
+                    // filter out system ontologies
+                    response.ontologies = response.ontologies.filter(onto => onto.attachedToProject !== Constants.SystemProjectIRI);
 
-        const classIris = Object.keys(classDefs);
+                    this.ontologiesMetadata = response;
+                },
+                (error: ApiResponseError) => {
+                    this._notification.openSnackBar(error);
+                    this.errorMessage = error;
+                });
+        }
 
-        // get resource class defs
-        return classIris.filter(resClassIri => {
-            return typeGuard(classDefs[resClassIri], ResourceClassDefinition);
-        }).map(
-            (resClassIri: string) => {
-                return classDefs[resClassIri] as ResourceClassDefinition;
-            }
-        );
 
-    }
-
-    /**
-     * Given a map of property definitions,
-     * returns a map of resource property definitions.
-     *
-     * @param propertyDefs a map of property definitions
-     */
-    private _makeResourceProperties(propertyDefs: { [index: string]: PropertyDefinition }): Properties {
-        const resProps: Properties = {};
-
-        const propIris = Object.keys(propertyDefs);
-
-        propIris.filter(
-            (propIri: string) => {
-                return typeGuard(propertyDefs[propIri], ResourcePropertyDefinition);
-            }
-        ).forEach((propIri: string) => {
-            resProps[propIri] = (propertyDefs[propIri] as ResourcePropertyDefinition);
-        });
-
-        return resProps;
     }
 
     /**
@@ -199,14 +176,14 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         this.activeOntology = ontologyIri;
 
         this._dspApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
-            onto => {
+            (onto: Map<string, ReadOntology>) => {
 
-                this.resourceClasses = this._makeResourceClassesArray(onto.get(ontologyIri).classes);
+                this.resourceClasses = onto.get(ontologyIri).getClassDefinitionsByType(ResourceClassDefinition);
 
-                this.properties = this._makeResourceProperties(onto.get(ontologyIri).properties);
+                this.properties = onto.get(ontologyIri).getPropertyDefinitionsByType(ResourcePropertyDefinition);
             },
-            err => {
-                console.error(err);
+            error => {
+                this._notification.openSnackBar(error);
             }
         );
     }
@@ -229,10 +206,11 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         } else {
 
             this._dspApiConnection.v2.ontologyCache.getResourceClassDefinition(resourceClassIri).subscribe(
-                onto => {
+                (onto: ResourceClassAndPropertyDefinitions) => {
+
                     this.activeResourceClass = onto.classes[resourceClassIri];
 
-                    this.properties = this._makeResourceProperties(onto.properties);
+                    this.properties = onto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
 
                 }
             );

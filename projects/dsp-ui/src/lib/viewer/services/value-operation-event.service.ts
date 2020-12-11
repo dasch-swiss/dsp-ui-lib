@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { DeleteValue, ReadValue } from '@dasch-swiss/dsp-js';
 import { Subject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -10,7 +11,7 @@ import { Injectable } from "@angular/core";
  * The ValueOperationEventService essentially creates a direct communication channel between
  * the emitting component and the listening component.
  */
-@Injectable()
+@Injectable() // must be provided on component level, i.e. resource view component.
 export class ValueOperationEventService {
 
     // Create a subject to hold data which can be subscribed to.

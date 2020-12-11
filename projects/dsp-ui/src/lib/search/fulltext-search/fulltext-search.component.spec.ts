@@ -7,13 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MockProjects, ProjectsEndpointAdmin } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs/internal/observable/of';
 import { SortingService } from '../../action/services/sorting.service';
-import { DspApiConnectionToken } from '../../core';
+import { DspApiConnectionToken } from '../../core/core.module';
 import { FulltextSearchComponent } from './fulltext-search.component';
 
 /**
@@ -24,8 +25,7 @@ import { FulltextSearchComponent } from './fulltext-search.component';
     template: `
         <dsp-fulltext-search #fulltextSearch
             [projectfilter]="projectfilter"
-            [filterbyproject]="filterbyproject"
-            class="dsp-fulltext-search">
+            [limitToProject]="limitToProject">
         </dsp-fulltext-search>
     `
 })
@@ -36,7 +36,8 @@ class TestHostFulltextSearchComponent implements OnInit {
     sortingService: SortingService = new SortingService();
 
     projectfilter?: boolean = true;
-    filterbyproject?: string;
+
+    limitToProject?: string;
 
     ngOnInit() {
     }
@@ -65,7 +66,6 @@ describe('FulltextSearchComponent', () => {
             }
         };
 
-
         TestBed.configureTestingModule({
             declarations: [
                 FulltextSearchComponent,
@@ -80,7 +80,8 @@ describe('FulltextSearchComponent', () => {
                 MatTooltipModule,
                 MatIconModule,
                 MatDividerModule,
-                MatListModule
+                MatListModule,
+                MatSnackBarModule
             ],
             providers: [
                 {

@@ -11,13 +11,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectHarness } from '@angular/material/select/testing';
 
-// https://dev.to/krumpet/generic-type-guard-in-typescript-258l
-type Constructor<T> = { new(...args: any[]): T };
-
-const typeGuard = <T>(o: any, className: Constructor<T>): o is T => {
-    return o instanceof className;
-};
-
 /**
  * Test host component to simulate parent component.
  */
@@ -42,18 +35,8 @@ class TestHostComponent implements OnInit {
     ngOnInit() {
         this.form = this._fb.group({});
 
-        const resClasses = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').classes;
-
-        const resClassIris = Object.keys(resClasses);
-
         // get resource class defs
-        this.resourceClassDefs = resClassIris.filter(resClassIri => {
-            return typeGuard(resClasses[resClassIri], ResourceClassDefinition);
-        }).map(
-            (resClassIri: string) => {
-                return resClasses[resClassIri] as ResourceClassDefinition;
-            }
-        );
+        this.resourceClassDefs = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getClassDefinitionsByType(ResourceClassDefinition);
 
     }
 
@@ -187,18 +170,8 @@ describe('SelectResourceClassComponent', () => {
         // simulate an existing resource class selection
         testHostComponent.selectResourceClass['_selectedResourceClassIri'] = 'http://0.0.0.0:3333/ontology/0001/anything/v2#BlueThing';
 
-        const resClasses = MockOntology.mockReadOntology('http://api.knora.org/ontology/knora-api/v2').classes;
-
-        const resClassIris = Object.keys(resClasses);
-
         // get resource class defs
-        testHostComponent.resourceClassDefs = resClassIris.filter(resClassIri => {
-            return typeGuard(resClasses[resClassIri], ResourceClassDefinition);
-        }).map(
-            (resClassIri: string) => {
-                return resClasses[resClassIri] as ResourceClassDefinition;
-            }
-        );
+        testHostComponent.resourceClassDefs = MockOntology.mockReadOntology('http://api.knora.org/ontology/knora-api/v2').getClassDefinitionsByType(ResourceClassDefinition);
 
         testHostFixture.detectChanges();
 

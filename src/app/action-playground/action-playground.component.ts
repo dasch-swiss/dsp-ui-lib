@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ApiResponseError, ReadValue, StringLiteral } from '@dasch-swiss/dsp-js';
+import { ApiResponseError, ReadProject, ReadValue, StringLiteral } from '@dasch-swiss/dsp-js';
 import { ConfirmationDialogComponent, ConfirmationDialogData, DspMessageData, SortingService } from '@dasch-swiss/dsp-ui';
 
 @Component({
@@ -9,6 +9,9 @@ import { ConfirmationDialogComponent, ConfirmationDialogData, DspMessageData, So
   styleUrls: ['./action-playground.component.scss']
 })
 export class ActionPlaygroundComponent implements OnInit {
+
+    // userIRI filter for select-project component
+    userIri = 'http://rdfh.ch/users/9XBCrDV3SRa7kS1WwynB4Q';
 
     sortProps: any = [
         {
@@ -199,4 +202,7 @@ export class ActionPlaygroundComponent implements OnInit {
         setTimeout(() => { this.showTimedMessage = false; }, 2100);
     }
 
+    getSelectedProject(selectedProject: ReadProject) {
+        console.log(selectedProject);
+    }
 }
