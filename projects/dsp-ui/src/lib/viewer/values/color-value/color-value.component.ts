@@ -55,7 +55,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
         );
 
         this.form = this._fb.group({
-            colorValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
