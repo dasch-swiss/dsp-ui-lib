@@ -53,7 +53,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
         );
 
         this.form = this._fb.group({
-            textValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
@@ -82,9 +82,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     }
 
     getNewValue(): CreateTextValueAsString | false {
-        console.log('value form control: ', this.valueFormControl.value + ', ' + this.isEmptyVal());
-
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 
