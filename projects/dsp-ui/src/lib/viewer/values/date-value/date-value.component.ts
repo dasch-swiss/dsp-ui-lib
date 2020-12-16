@@ -97,7 +97,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         );
 
         this.form = this._fb.group({
-            dateValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
