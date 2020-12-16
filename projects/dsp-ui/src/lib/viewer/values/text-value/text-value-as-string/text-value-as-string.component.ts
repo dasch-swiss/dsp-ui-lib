@@ -82,6 +82,7 @@ export class TextValueAsStringComponent extends BaseValueComponent implements On
     }
 
     getNewValue(): CreateTextValueAsString | false {
+        console.log('value form control: ', this.valueFormControl.value + ', ' + this.isEmptyVal());
 
         if (this.mode !== 'create' || !this.form.valid) {
             return false;

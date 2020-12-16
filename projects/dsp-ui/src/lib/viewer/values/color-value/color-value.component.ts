@@ -84,7 +84,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     }
 
     getNewValue(): CreateColorValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 

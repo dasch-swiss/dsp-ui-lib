@@ -158,7 +158,7 @@ export class LinkValueComponent extends BaseValueComponent implements OnInit, On
     }
 
     getNewValue(): CreateLinkValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
         const newLinkValue = new CreateLinkValue();

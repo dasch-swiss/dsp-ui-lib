@@ -79,7 +79,7 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
     }
 
     getNewValue(): CreateDecimalValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid  || this.isEmptyVal()) {
             return false;
         }
 

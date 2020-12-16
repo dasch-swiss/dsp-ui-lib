@@ -84,7 +84,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
     getNewValue(): CreateGeonameValue | false {
 
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 

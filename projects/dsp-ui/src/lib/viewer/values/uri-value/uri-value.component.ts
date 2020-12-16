@@ -77,7 +77,7 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
     }
 
     getNewValue(): CreateUriValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 

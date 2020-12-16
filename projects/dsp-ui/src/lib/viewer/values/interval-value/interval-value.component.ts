@@ -92,7 +92,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
     }
 
     getNewValue(): CreateIntervalValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 

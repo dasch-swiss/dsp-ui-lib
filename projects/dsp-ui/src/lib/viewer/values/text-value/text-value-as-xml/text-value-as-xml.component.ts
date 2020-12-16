@@ -170,7 +170,7 @@ export class TextValueAsXMLComponent extends BaseValueComponent implements OnIni
 
     getNewValue(): CreateTextValueAsXml | false {
 
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 

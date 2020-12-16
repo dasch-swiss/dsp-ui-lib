@@ -80,7 +80,8 @@ export class IntValueComponent extends BaseValueComponent implements OnInit, OnC
     }
 
     getNewValue(): CreateIntValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 
