@@ -54,7 +54,7 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
         );
 
         this.form = this._fb.group({
-            booleanValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
@@ -65,9 +65,11 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
             this.addToParentFormGroup(this.formName, this.form);
         });
     }
+
     onSubmit() {
-        this.form.controls.booleanValue.markAsDirty();
+        this.form.controls.value.markAsDirty();
     }
+
     ngOnChanges(changes: SimpleChanges): void {
         this.resetFormControl();
     }
