@@ -52,7 +52,7 @@ export class DecimalValueComponent extends BaseValueComponent implements OnInit,
         );
 
         this.form = this._fb.group({
-            decimalValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
