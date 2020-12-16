@@ -50,7 +50,7 @@ The base class defines the following members
 (some of them are declared as abstract and have to be implemented in the value components.):
 - `@Input abstract displayValue?: ReadValue`: value to be displayed and/or updated, if any. The value has to be a subclass of `ReadValue`.
 - `@Input` `mode: 'read' | 'update' | 'create' | 'search'`: sets the mode of the value component.
-- `@Input() valueRequiredValidator?`: controls if the value should be required. Defaults to false.
+- `@Input() valueRequiredValidator?`: controls if the value should be required. Defaults to true.
 - members ` abstract valueFormControl: FormControl` for the value and `abstract commentFormControl: FormControl` its comment.
 - `abstract getInitValue(): any`: gets the value from the displayValue, if any.
 - `getInitComment: : string | null` gets the comment from displayValue, if any.
@@ -67,6 +67,18 @@ This method has to be overridden for complex types (e.g., an interval, which is 
 
 Each value component contains the necessary logic to convert between a `ReadValue` and the representation in the UI
 as well as to convert between an edited value in the UI and a `UpdateValue` or `CreateValue`.
+
+##### Validation
+
+Each value component creates a form and sets the appropriate validators that can be data type specific.
+By default, a value is required and cannot be empty, i.e., the `Validators.required` is set.
+The default behaviour can be changed by setting `@Input: valueRequiredValidator` to false,
+in which case empty values are allowed.
+
+Note that the method `getNewValue()` will filter out empty values,
+i.e., return `false` instead of an instance of `CreateValue`.
+
+This is used in the event that a user should be able to submit a form without filling out every form field.
 
 ##### Simple and Complex Values
 

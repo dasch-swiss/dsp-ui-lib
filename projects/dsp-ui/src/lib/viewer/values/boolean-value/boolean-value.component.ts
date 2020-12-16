@@ -83,7 +83,7 @@ export class BooleanValueComponent extends BaseValueComponent implements OnInit,
     }
 
     getNewValue(): CreateBooleanValue | false {
-        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
+        if (this.mode !== 'create' || !this.form.valid) {
             return false;
         }
 
