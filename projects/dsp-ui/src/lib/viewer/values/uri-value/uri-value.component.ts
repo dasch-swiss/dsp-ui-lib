@@ -51,7 +51,7 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
         );
 
         this.form = this._fb.group({
-            uriValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
