@@ -94,7 +94,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
             }
         );
         this.form = this._fb.group({
-            listValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
