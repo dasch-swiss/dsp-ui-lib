@@ -57,7 +57,7 @@ export class TimeValueComponent extends BaseValueComponent implements OnInit, On
         );
 
         this.form = this._fb.group({
-            timeValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl,
         });
 
