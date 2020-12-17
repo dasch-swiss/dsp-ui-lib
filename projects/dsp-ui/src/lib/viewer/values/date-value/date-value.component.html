@@ -34,12 +34,12 @@
 
         <mat-form-field class="large-field child-value-component" floatLabel="never">
 
-            <dsp-date-input #dateInput [formControlName]="'dateValue'" class="value" [errorStateMatcher]="matcher"></dsp-date-input>
+            <dsp-date-input #dateInput [formControlName]="'value'" class="value" [errorStateMatcher]="matcher"></dsp-date-input>
 
-            <mat-error *ngIf="form.controls.dateValue.hasError('valueNotChanged')">
+            <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
                 <span class="custom-error-message">New value must be different than the current value.</span>
             </mat-error>
-            <mat-error *ngIf="form.controls.dateValue.hasError('duplicateValue')">
+            <mat-error *ngIf="valueFormControl.hasError('duplicateValue')">
                 <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
             </mat-error>
         </mat-form-field>
