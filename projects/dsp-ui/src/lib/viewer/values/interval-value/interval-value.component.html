@@ -6,12 +6,12 @@
 <ng-template #showForm>
   <span [formGroup]="form">
       <mat-form-field class="large-field child-value-component" floatLabel="never">
-        <dsp-interval-input #intervalInput [formControlName]="'intervalValue'" class="value" [errorStateMatcher]="matcher"></dsp-interval-input>
-        <mat-error *ngIf="form.controls.intervalValue.hasError('valueNotChanged') &&
-                   (form.controls.intervalValue.touched || form.controls.intervalValue.dirty)">
+        <dsp-interval-input #intervalInput [formControlName]="'value'" class="value" [errorStateMatcher]="matcher"></dsp-interval-input>
+        <mat-error *ngIf="valueFormControl.hasError('valueNotChanged') &&
+                   (valueFormControl.touched || valueFormControl.dirty)">
              <span class="custom-error-message">New value must be different than the current value.</span>
         </mat-error>
-        <mat-error *ngIf="form.controls.intervalValue.hasError('duplicateValue')">
+        <mat-error *ngIf="valueFormControl.hasError('duplicateValue')">
             <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
         </mat-error>
       </mat-form-field>

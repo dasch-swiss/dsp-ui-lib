@@ -94,7 +94,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
             }
         );
         this.form = this._fb.group({
-            listValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
@@ -119,7 +119,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
     }
 
     getNewValue(): CreateListValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 

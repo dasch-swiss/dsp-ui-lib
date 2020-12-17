@@ -51,7 +51,7 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
         );
 
         this.form = this._fb.group({
-            uriValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
@@ -77,7 +77,7 @@ export class UriValueComponent extends BaseValueComponent implements OnInit, OnC
     }
 
     getNewValue(): CreateUriValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 

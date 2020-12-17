@@ -5,15 +5,15 @@
 <ng-template #showForm>
     <span [formGroup]="form">
         <mat-form-field class="large-field child-value-component" floatLabel="never">
-            <input matInput [formControlName]="'textValue'" class="value" placeholder="Text value" type="text" [errorStateMatcher]="matcher">
-            <mat-error *ngIf="form.controls.textValue.hasError('valueNotChanged') &&
-                (form.controls.textValue.touched || form.controls.textValue.dirty)">
+            <input matInput [formControlName]="'value'" class="value" placeholder="Text value" type="text" [errorStateMatcher]="matcher">
+            <mat-error *ngIf="valueFormControl.hasError('valueNotChanged') &&
+                (valueFormControl.touched || valueFormControl.dirty)">
                 <span class="custom-error-message">New value must be different than the current value.</span>
             </mat-error>
-            <mat-error *ngIf="form.controls.textValue.hasError('required')">
+            <mat-error *ngIf="valueFormControl.hasError('required')">
                 A text value is <strong>required</strong>.
             </mat-error>
-            <mat-error *ngIf="form.controls.textValue.hasError('duplicateValue')">
+            <mat-error *ngIf="valueFormControl.hasError('duplicateValue')">
                 <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
             </mat-error>
         </mat-form-field>
