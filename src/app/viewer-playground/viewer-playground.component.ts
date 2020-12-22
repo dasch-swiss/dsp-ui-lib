@@ -9,12 +9,13 @@ import { ReadLinkValue, ReadProject } from '@dasch-swiss/dsp-js';
 })
 export class ViewerPlaygroundComponent implements OnInit {
 
-    // resorce from incunabula: book page
+    // resorce examples: book pages (incunabula), facsimile (beol), thing (antyhing), book (incunabula)
     resources = [
         'http://rdfh.ch/0803/18a671b8a601',
         'http://rdfh.ch/0803/7e4cfc5417',
-        'http://rdfh.ch/0803/6ad3e2c47501',
-        'http://rdfh.ch/0001/a-thing-with-text-valuesLanguage'
+        'http://rdfh.ch/0801/page_resource',
+        'http://rdfh.ch/0001/a-thing-with-text-valuesLanguage',
+        'http://rdfh.ch/0803/5e77e98d2603'
     ];
     resourceIri: string = this.resources[0];
 
