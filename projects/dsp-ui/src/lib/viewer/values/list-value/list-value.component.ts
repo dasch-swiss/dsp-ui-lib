@@ -158,7 +158,7 @@ export class ListValueComponent extends BaseValueComponent implements OnInit, On
 
     getSelectedNode(item: ListNodeV2) {
         this.menuTrigger.closeMenu();
-        this.form.controls.listValue.markAsDirty();
+        this.valueFormControl.markAsDirty();
         this.selectedNode = item;
         this.valueFormControl.setValue(item.id);
     }
