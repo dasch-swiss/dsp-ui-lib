@@ -7,19 +7,19 @@
 <ng-template #showForm>
   <span [formGroup]="form">
     <mat-form-field class="child-value-component" floatLabel="never">
-          <input matInput [formControlName]="'linkValue'" class="value" type="text" placeholder="Link value" aria-label="resource" [matAutocomplete]="auto">
+          <input matInput [formControlName]="'value'" class="value" type="text" placeholder="Link value" aria-label="resource" [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayResource">
             <mat-option *ngFor="let res of resources" [value]="res">
                 {{res?.label}}
             </mat-option>
           </mat-autocomplete>
-        <mat-error *ngIf="form.controls.linkValue.hasError('valueNotChanged')">
+        <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
                  <span class="custom-error-message">New value must be different than the current value.</span>
             </mat-error>
-        <mat-error *ngIf="form.controls.linkValue.hasError('invalidType')">
+        <mat-error *ngIf="valueFormControl.hasError('invalidType')">
                  <span class="custom-error-message">New value must be a valid resource type.</span>
         </mat-error>
-        <mat-error *ngIf="form.controls.linkValue.hasError('duplicateValue')">
+        <mat-error *ngIf="valueFormControl.hasError('duplicateValue')">
             <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
         </mat-error>
       </mat-form-field>

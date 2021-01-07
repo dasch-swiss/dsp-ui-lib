@@ -65,7 +65,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
         );
 
         this.form = this._fb.group({
-            intervalValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
@@ -92,7 +92,7 @@ export class IntervalValueComponent extends BaseValueComponent implements OnInit
     }
 
     getNewValue(): CreateIntervalValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 

@@ -29,6 +29,11 @@ export abstract class BaseValueComponent {
     @Input() formName = 'Untitled FormGroup';
 
     /**
+     * Controls if the value should be required.
+     */
+    @Input() valueRequiredValidator = true;
+
+    /**
      * FormControl element for the value.
      */
     abstract valueFormControl: FormControl;
@@ -124,8 +129,11 @@ export abstract class BaseValueComponent {
                 this.valueFormControl.setValidators([Validators.required, this.standardValidatorFunc(initialValue, initialComment, this.commentFormControl)].concat(this.customValidators));
             } else {
                 // console.log('reset read/create validators');
-                this.valueFormControl.setValidators([Validators.required].concat(this.customValidators));
-
+                if (this.valueRequiredValidator) {
+                    this.valueFormControl.setValidators([Validators.required].concat(this.customValidators));
+                } else {
+                    this.valueFormControl.setValidators(this.customValidators);
+                }
             }
 
             this.valueFormControl.updateValueAndValidity();
@@ -183,5 +191,12 @@ export abstract class BaseValueComponent {
         if (this.parentForm) {
             this.parentForm.removeControl(name);
         }
+    }
+
+    /**
+     * Checks if the value is empty.
+     */
+    isEmptyVal(): boolean {
+        return this.valueFormControl.value === null || this.valueFormControl.value === '';
     }
 }

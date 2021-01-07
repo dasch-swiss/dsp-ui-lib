@@ -66,7 +66,7 @@ export class SearchDateValueComponent implements OnInit, OnDestroy, PropertyValu
         // get the date
         const dateString = `${calendarFormat.toUpperCase()}:${calendarPeriod.periodStart.year}-${calendarPeriod.periodStart.month}-${calendarPeriod.periodStart.day}:${calendarPeriod.periodEnd.year}-${calendarPeriod.periodEnd.month}-${calendarPeriod.periodEnd.day}`;
 
-        return new ValueLiteral(String(dateString), Constants.KnoraApi + '/ontology/knora-api/simple/v2' + Constants.Delimiter + 'Date');
+        return new ValueLiteral(String(dateString), Constants.KnoraApi + '/ontology/knora-api/simple/v2' + Constants.HashDelimiter + 'Date');
     }
 
 }

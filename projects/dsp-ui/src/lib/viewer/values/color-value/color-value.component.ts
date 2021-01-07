@@ -55,7 +55,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
         );
 
         this.form = this._fb.group({
-            colorValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
@@ -84,7 +84,7 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
     }
 
     getNewValue(): CreateColorValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 

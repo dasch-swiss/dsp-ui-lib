@@ -706,7 +706,7 @@ describe('DisplayEditComponent', () => {
     it('should choose the apt component for a link value (standoff link) in the template', () => {
 
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
-      testHostComponent.readValue.property = Constants.KnoraApiV2 + Constants.Delimiter + 'hasStandoffLinkToValue';
+      testHostComponent.readValue.property = Constants.KnoraApiV2 + Constants.HashDelimiter + 'hasStandoffLinkToValue';
       testHostComponent.readValue.attachedToUser = 'http://www.knora.org/ontology/knora-admin#SystemUser'; // sstandoff links are managed by the system
       testHostFixture.detectChanges();
 

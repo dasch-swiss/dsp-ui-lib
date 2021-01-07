@@ -60,6 +60,26 @@ class TestHostCreateValueComponent implements OnInit {
     }
 }
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+    <dsp-int-value #inputVal [mode]="mode" [valueRequiredValidator]="false"></dsp-int-value>`
+})
+class TestHostCreateValueNoValueRequiredComponent implements OnInit {
+
+    @ViewChild('inputVal') inputValueComponent: IntValueComponent;
+
+    mode: 'read' | 'update' | 'create' | 'search';
+
+    ngOnInit() {
+
+        this.mode = 'create';
+
+    }
+}
+
 describe('IntValueComponent', () => {
 
     beforeEach(async(() => {
@@ -67,7 +87,8 @@ describe('IntValueComponent', () => {
             declarations: [
                 IntValueComponent,
                 TestHostDisplayValueComponent,
-                TestHostCreateValueComponent
+                TestHostCreateValueComponent,
+                TestHostCreateValueNoValueRequiredComponent
             ],
             imports: [
                 ReactiveFormsModule,
@@ -310,6 +331,23 @@ describe('IntValueComponent', () => {
 
             expect(await commentElement.getValue()).toEqual('');
 
+        });
+    });
+
+    describe('create value no required value', () => {
+        let testHostComponent: TestHostCreateValueComponent;
+        let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+
+        beforeEach(async () => {
+            testHostFixture = TestBed.createComponent(TestHostCreateValueNoValueRequiredComponent);
+            testHostComponent = testHostFixture.componentInstance;
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent).toBeTruthy();
+        });
+
+        it('should not create an empty value', () => {
+            expect(testHostComponent.inputValueComponent.getNewValue()).toEqual(false);
         });
     });
 });

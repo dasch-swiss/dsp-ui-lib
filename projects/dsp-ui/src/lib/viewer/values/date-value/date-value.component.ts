@@ -97,7 +97,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         );
 
         this.form = this._fb.group({
-            dateValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
@@ -171,7 +171,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
     }
 
     getNewValue(): CreateDateValue | false {
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 

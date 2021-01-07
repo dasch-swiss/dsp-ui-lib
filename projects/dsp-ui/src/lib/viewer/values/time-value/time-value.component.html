@@ -6,12 +6,12 @@
 <ng-template #showForm>
   <span [formGroup]="form" class="parent-component-wrapper">
       <mat-form-field class="large-field child-value-component" floatLabel="never">
-        <dsp-time-input #timeInput [formControlName]="'timeValue'" class="value" [errorStateMatcher]="matcher"></dsp-time-input>
-          <mat-error *ngIf="form.controls.timeValue.hasError('valueNotChanged') &&
-                (form.controls.timeValue.touched || form.controls.timeValue.dirty)">
+        <dsp-time-input #timeInput [formControlName]="'value'" class="value" [errorStateMatcher]="matcher"></dsp-time-input>
+          <mat-error *ngIf="valueFormControl.hasError('valueNotChanged') &&
+                (valueFormControl.touched || valueFormControl.dirty)">
             <span class="custom-error-message">New value must be different than the current value.</span>
           </mat-error>
-          <mat-error *ngIf="form.controls.timeValue.hasError('duplicateValue')">
+          <mat-error *ngIf="valueFormControl.hasError('duplicateValue')">
             <span class="custom-error-message">This value already exists for this property. Duplicate values are not allowed.</span>
         </mat-error>
       </mat-form-field>

@@ -54,7 +54,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
         );
 
         this.form = this._fb.group({
-            geonameValue: this.valueFormControl,
+            value: this.valueFormControl,
             comment: this.commentFormControl
         });
 
@@ -84,7 +84,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
     getNewValue(): CreateGeonameValue | false {
 
-        if (this.mode !== 'create' || !this.form.valid) {
+        if (this.mode !== 'create' || !this.form.valid || this.isEmptyVal()) {
             return false;
         }
 
