@@ -85,10 +85,9 @@ jobs:
       - uses: GoogleCloudPlatform/release-please-action@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
-          release-type: node
           path: projects/dsp-ui
-          package-name: dsp-ui
-          changelog-types: '[{"type": "feat","section": "Enhancements","hidden": false }, {"type": "fix","section": "Bug Fixes","hidden": false }, {"type": "chore","section": "Maintenance","hidden": false }, {"type": "docs","section": "Documentation","hidden": false }]'
+          release-type: node
+          changelog-types: '[{"type": "feat", "section": "Enhancements", "hidden": false }, {"type": "fix", "section": "Bug Fixes", "hidden": false }, {"type": "chore", "section": "Maintenance", "hidden": false }, {"type": "docs", "section": "Documentation", "hidden": false }]'
 
   publish:
     name: Publish to npm
