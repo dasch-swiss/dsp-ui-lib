@@ -33,6 +33,7 @@ class TestIntervalInputComponent implements ControlValueAccessor, MatFormFieldCo
     @Input() required: boolean;
     @Input() shouldLabelFloat: boolean;
     @Input() errorStateMatcher: ErrorStateMatcher;
+    @Input() valueRequiredValidator = true;
 
     errorState = false;
     focused = false;

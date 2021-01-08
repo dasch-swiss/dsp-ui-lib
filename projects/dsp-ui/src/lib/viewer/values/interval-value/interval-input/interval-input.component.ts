@@ -1,6 +1,6 @@
-import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self } from '@angular/core';
+import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
-import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, Validators } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgControl, NgForm, ValidatorFn, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -27,6 +27,20 @@ export class IntervalInputErrorStateMatcher implements ErrorStateMatcher {
     }
 }
 
+/** Interval must have a start and end of the same type, either both numbers or both null */
+export function startEndSameTypeValidator(otherInterval: FormControl): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+
+        let invalid = true;
+        if (typeof(control.value) === 'number' && typeof(otherInterval.value) === 'number' ||
+            typeof(control.value) === 'object' && typeof(otherInterval.value) === 'object') {
+            invalid = false;
+        }
+
+        return invalid ? { 'startEndSameTypeRequired': { value: control.value } } : null;
+    };
+}
+
 class MatInputBase {
     constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
         public _parentForm: NgForm,
@@ -43,7 +57,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
     styleUrls: ['./interval-input.component.scss'],
     providers: [{ provide: MatFormFieldControl, useExisting: IntervalInputComponent }]
 })
-export class IntervalInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<Interval>, DoCheck, CanUpdateErrorState, OnDestroy {
+export class IntervalInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<Interval>, DoCheck, CanUpdateErrorState, OnDestroy, OnInit {
     static nextId = 0;
 
     form: FormGroup;
@@ -53,11 +67,16 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
     errorState = false;
     controlType = 'dsp-interval-input';
     matcher = new IntervalInputErrorStateMatcher();
-    onChange = (_: any) => { };
-    onTouched = () => { };
+
+    startIntervalControl: FormControl;
+    endIntervalControl: FormControl;
 
     @Input() intervalStartLabel = 'start';
     @Input() intervalEndLabel = 'end';
+    @Input() valueRequiredValidator = true;
+
+    onChange = (_: any) => { };
+    onTouched = () => { };
 
     get empty() {
         const userInput = this.form.value;
@@ -127,6 +146,10 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
         } else {
             this.form.setValue({ start: null, end: null });
         }
+
+        this.startIntervalControl.updateValueAndValidity();
+        this.endIntervalControl.updateValueAndValidity();
+
         this.stateChanges.next();
     }
 
@@ -142,9 +165,12 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
 
         super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
+        this.startIntervalControl = new FormControl(null);
+        this.endIntervalControl = new FormControl(null);
+
         this.form = fb.group({
-            start: [null, Validators.required],
-            end: [null, Validators.required]
+            start: this.startIntervalControl,
+            end: this.endIntervalControl
         });
 
         _fm.monitor(_elRef.nativeElement, true).subscribe(origin => {
@@ -155,6 +181,16 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
         if (this.ngControl != null) {
             this.ngControl.valueAccessor = this;
         }
+    }
+
+    ngOnInit() {
+        if (this.valueRequiredValidator) {
+            this.startIntervalControl.setValidators([Validators.required, startEndSameTypeValidator(this.endIntervalControl)]);
+            this.endIntervalControl.setValidators([Validators.required, startEndSameTypeValidator(this.startIntervalControl)]);
+        }
+
+        this.startIntervalControl.updateValueAndValidity();
+        this.endIntervalControl.updateValueAndValidity();
     }
 
     ngDoCheck() {
@@ -190,6 +226,8 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
     }
 
     _handleInput(): void {
+        this.startIntervalControl.updateValueAndValidity();
+        this.endIntervalControl.updateValueAndValidity();
         this.onChange(this.value);
     }
 
