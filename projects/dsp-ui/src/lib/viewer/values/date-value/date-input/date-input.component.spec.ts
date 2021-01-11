@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DateInputComponent } from './date-input.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { KnoraDate, KnoraPeriod } from '@dasch-swiss/dsp-js';
 import { JDNDatepickerDirective } from '../../jdn-datepicker-directive/jdndatepicker.directive';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -41,6 +41,35 @@ class TestHostComponent implements OnInit {
 
         this.form = this._fb.group({
             date: [new KnoraDate('JULIAN', 'CE', 2018, 5, 19)]
+        });
+
+    }
+}
+
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+    <div [formGroup]="form">
+      <mat-form-field>
+        <dsp-date-input #dateInput [formControlName]="'date'" [valueRequiredValidator]="false"></dsp-date-input>
+      </mat-form-field>
+    </div>`
+})
+class NoValueRequiredTestHostComponent implements OnInit {
+
+    @ViewChild('dateInput') dateInputComponent: DateInputComponent;
+
+    form: FormGroup;
+
+    constructor(private _fb: FormBuilder) {
+    }
+
+    ngOnInit(): void {
+
+        this.form = this._fb.group({
+            date: new FormControl(null)
         });
 
     }
@@ -261,4 +290,48 @@ describe('DateInputComponent', () => {
 
     });
 
+    it('should mark the form\'s validity correctly', () => {
+        expect(testHostComponent.dateInputComponent.valueRequiredValidator).toBe(true);
+        expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
+
+        testHostComponent.dateInputComponent.startDateControl.setValue(null);
+
+        testHostComponent.dateInputComponent._handleInput();
+
+        expect(testHostComponent.dateInputComponent.form.valid).toBe(false);
+    });
+
+});
+
+describe('NoValueRequiredTestHostComponent', () => {
+    let testHostComponent: NoValueRequiredTestHostComponent;
+    let testHostFixture: ComponentFixture<NoValueRequiredTestHostComponent>;
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                ReactiveFormsModule,
+                MatFormFieldModule,
+                MatInputModule,
+                MatDatepickerModule,
+                MatCheckboxModule,
+                MatJDNConvertibleCalendarDateAdapterModule,
+                BrowserAnimationsModule
+            ],
+            declarations: [DateInputComponent, NoValueRequiredTestHostComponent, JDNDatepickerDirective]
+        })
+            .compileComponents();
+    }));
+
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(NoValueRequiredTestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should recieve the propagated valueRequiredValidator from the parent component', () => {
+        expect(testHostComponent.dateInputComponent.valueRequiredValidator).toBe(false);
+    });
 });

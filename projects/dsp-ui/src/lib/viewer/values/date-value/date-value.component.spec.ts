@@ -648,7 +648,12 @@ describe('DateValueComponent', () => {
     });
 
     it('should not create an empty value', () => {
-        expect(testHostComponent.inputValueComponent.getNewValue()).toEqual(false);
+        expect(testHostComponent.inputValueComponent.getNewValue()).toBe(false);
+        expect(testHostComponent.inputValueComponent.form.valid).toBe(true);
+    });
+
+    it('should propagate valueRequiredValidator to child component', () => {
+        expect(testHostComponent.inputValueComponent.valueRequiredValidator).toBe(false);
     });
 
   });
