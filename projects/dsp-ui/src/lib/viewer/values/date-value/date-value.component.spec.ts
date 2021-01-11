@@ -36,6 +36,7 @@ class TestDateInputComponent implements ControlValueAccessor, MatFormFieldContro
   @Input() required: boolean;
   @Input() shouldLabelFloat: boolean;
   @Input() errorStateMatcher: ErrorStateMatcher;
+  @Input() valueRequiredValidator = true;
 
   errorState = false;
   focused = false;
@@ -116,6 +117,26 @@ class TestHostCreateValueComponent implements OnInit {
   }
 }
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+      <dsp-date-value #inputVal [mode]="mode" [valueRequiredValidator]="false"></dsp-date-value>`
+  })
+  class TestHostCreateValueNoValueRequiredComponent implements OnInit {
+
+    @ViewChild('inputVal') inputValueComponent: DateValueComponent;
+
+    mode: 'read' | 'update' | 'create' | 'search';
+
+    ngOnInit() {
+
+      this.mode = 'create';
+
+    }
+  }
+
 describe('DateValueComponent', () => {
 
   beforeEach(async(() => {
@@ -130,6 +151,7 @@ describe('DateValueComponent', () => {
         TestDateInputComponent,
         TestHostDisplayValueComponent,
         TestHostCreateValueComponent,
+        TestHostCreateValueNoValueRequiredComponent,
         KnoraDatePipe
       ]
     })
@@ -611,5 +633,29 @@ describe('DateValueComponent', () => {
 
   });
 
+  describe('create a date value no required value', () => {
+
+    let testHostComponent: TestHostCreateValueNoValueRequiredComponent;
+    let testHostFixture: ComponentFixture<TestHostCreateValueNoValueRequiredComponent>;
+
+    beforeEach(() => {
+      testHostFixture = TestBed.createComponent(TestHostCreateValueNoValueRequiredComponent);
+      testHostComponent = testHostFixture.componentInstance;
+      testHostFixture.detectChanges();
+
+      expect(testHostComponent).toBeTruthy();
+      expect(testHostComponent.inputValueComponent).toBeTruthy();
+    });
+
+    it('should not create an empty value', () => {
+        expect(testHostComponent.inputValueComponent.getNewValue()).toBe(false);
+        expect(testHostComponent.inputValueComponent.form.valid).toBe(true);
+    });
+
+    it('should propagate valueRequiredValidator to child component', () => {
+        expect(testHostComponent.inputValueComponent.valueRequiredValidator).toBe(false);
+    });
+
+  });
 
 });

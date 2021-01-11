@@ -335,8 +335,8 @@ describe('IntValueComponent', () => {
     });
 
     describe('create value no required value', () => {
-        let testHostComponent: TestHostCreateValueComponent;
-        let testHostFixture: ComponentFixture<TestHostCreateValueComponent>;
+        let testHostComponent: TestHostCreateValueNoValueRequiredComponent;
+        let testHostFixture: ComponentFixture<TestHostCreateValueNoValueRequiredComponent>;
 
         beforeEach(async () => {
             testHostFixture = TestBed.createComponent(TestHostCreateValueNoValueRequiredComponent);
