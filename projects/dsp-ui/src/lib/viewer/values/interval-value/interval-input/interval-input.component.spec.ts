@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Interval, IntervalInputComponent } from './interval-input.component';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,6 +32,35 @@ class TestHostComponent implements OnInit {
 
         this.form = this._fb.group({
             interval: [new Interval(1, 2)]
+        });
+
+    }
+}
+
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+    <div [formGroup]="form">
+      <mat-form-field>
+        <dsp-interval-input #intervalInput [formControlName]="'interval'" [valueRequiredValidator]="false"></dsp-interval-input>
+      </mat-form-field>
+    </div>`
+})
+class NoValueRequiredTestHostComponent implements OnInit {
+
+    @ViewChild('intervalInput') intervalInputComponent: IntervalInputComponent;
+
+    form: FormGroup;
+
+    constructor(private _fb: FormBuilder) {
+    }
+
+    ngOnInit(): void {
+
+        this.form = this._fb.group({
+            interval: new FormControl(null)
         });
 
     }
@@ -119,6 +148,47 @@ describe('InvertalInputComponent', () => {
         expect(startInputNativeElement.value).toEqual('');
         expect(endInputNativeElement.value).toEqual('');
 
+    });
+
+    it('should mark the form\'s validity correctly', () => {
+        expect(testHostComponent.intervalInputComponent.valueRequiredValidator).toBe(true);
+        expect(testHostComponent.intervalInputComponent.form.valid).toBe(true);
+
+        testHostComponent.intervalInputComponent.startIntervalControl.setValue(null);
+
+        testHostComponent.intervalInputComponent._handleInput();
+
+        expect(testHostComponent.intervalInputComponent.form.valid).toBe(false);
+    });
+
+});
+
+describe('InvertalInputComponent', () => {
+    let testHostComponent: NoValueRequiredTestHostComponent;
+    let testHostFixture: ComponentFixture<NoValueRequiredTestHostComponent>;
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
+            declarations: [IntervalInputComponent, NoValueRequiredTestHostComponent]
+        })
+            .compileComponents();
+    }));
+
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(NoValueRequiredTestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should recieve the propagated valueRequiredValidator from the parent component', () => {
+        expect(testHostComponent.intervalInputComponent.valueRequiredValidator).toBe(false);
+    });
+
+    it('should mark the form\'s validity correctly', () => {
+        expect(testHostComponent.intervalInputComponent.form.valid).toBe(true);
     });
 
 });
