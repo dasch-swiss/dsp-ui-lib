@@ -334,4 +334,8 @@ describe('NoValueRequiredTestHostComponent', () => {
     it('should recieve the propagated valueRequiredValidator from the parent component', () => {
         expect(testHostComponent.dateInputComponent.valueRequiredValidator).toBe(false);
     });
+
+    it('should mark the form\'s validity correctly', () => {
+        expect(testHostComponent.dateInputComponent.form.valid).toBe(true);
+    });
 });
