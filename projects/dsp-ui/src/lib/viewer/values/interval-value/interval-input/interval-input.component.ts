@@ -31,11 +31,8 @@ export class IntervalInputErrorStateMatcher implements ErrorStateMatcher {
 export function startEndSameTypeValidator(otherInterval: FormControl): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
 
-        let invalid = true;
-        if (typeof(control.value) === 'number' && typeof(otherInterval.value) === 'number' ||
-            typeof(control.value) === 'object' && typeof(otherInterval.value) === 'object') {
-            invalid = false;
-        }
+        // valid if both start and end are null or have values
+        const invalid = !(control.value === null && otherInterval.value === null || control.value !== null && otherInterval.value !== null);
 
         return invalid ? { 'startEndSameTypeRequired': { value: control.value } } : null;
     };
@@ -187,6 +184,9 @@ export class IntervalInputComponent extends _MatInputMixinBase implements Contro
         if (this.valueRequiredValidator) {
             this.startIntervalControl.setValidators([Validators.required, startEndSameTypeValidator(this.endIntervalControl)]);
             this.endIntervalControl.setValidators([Validators.required, startEndSameTypeValidator(this.startIntervalControl)]);
+        } else {
+            this.startIntervalControl.setValidators(startEndSameTypeValidator(this.endIntervalControl));
+            this.endIntervalControl.setValidators(startEndSameTypeValidator(this.startIntervalControl));
         }
 
         this.startIntervalControl.updateValueAndValidity();
