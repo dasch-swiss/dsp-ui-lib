@@ -189,6 +189,12 @@ describe('InvertalInputComponent', () => {
 
     it('should mark the form\'s validity correctly', () => {
         expect(testHostComponent.intervalInputComponent.form.valid).toBe(true);
+
+        testHostComponent.intervalInputComponent.startIntervalControl.setValue(1);
+
+        testHostComponent.intervalInputComponent._handleInput();
+
+        expect(testHostComponent.intervalInputComponent.form.valid).toBe(false);
     });
 
 });
