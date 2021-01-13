@@ -621,8 +621,6 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      console.log('date form: ', testHostComponent.inputValueComponent.form);
-
       expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
 
       expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(null);

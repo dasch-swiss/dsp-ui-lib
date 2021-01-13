@@ -98,7 +98,7 @@ class TestHostDisplayValueComponent implements OnInit {
  */
 @Component({
     template: `
-    <dsp-time-value #inputVal [mode]="mode" [valueRequiredValidator]="false"></dsp-time-value>`
+    <dsp-time-value #inputVal [mode]="mode"></dsp-time-value>`
 })
 class TestHostCreateValueComponent implements OnInit {
 
@@ -134,7 +134,13 @@ class TestHostCreateValueNoValueRequiredComponent implements OnInit {
 describe('TimeValueComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [TimeValueComponent, TestHostDisplayValueComponent, TestTimeInputComponent, TestHostCreateValueComponent, TestHostCreateValueNoValueRequiredComponent],
+            declarations: [
+                TimeValueComponent,
+                TestHostDisplayValueComponent,
+                TestTimeInputComponent,
+                TestHostCreateValueComponent,
+                TestHostCreateValueNoValueRequiredComponent
+            ],
             imports: [
                 ReactiveFormsModule,
                 MatInputModule,
@@ -390,8 +396,6 @@ describe('TimeValueComponent', () => {
             testHostComponent.inputValueComponent.resetFormControl();
 
             expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
-            console.log('form: ', testHostComponent.inputValueComponent.form);
 
             expect(testHostComponent.inputValueComponent.timeInputComponent.value).toEqual(null);
 
