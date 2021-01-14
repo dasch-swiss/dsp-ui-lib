@@ -16,8 +16,8 @@
         </mat-error>
     </mat-form-field>
     <div class="date-form-error">
-        <mat-error *ngIf="((dateFormControl.hasError('validDateTimeRequired') || timeFormControl.hasError('validDateTimeRequired')) &&
-                            (dateFormControl.value !== null || timeFormControl.value !== null))">
+        <mat-error *ngIf="((dateFormControl.value !== null || timeFormControl.value !== null)) &&
+                            (dateFormControl.hasError('validDateTimeRequired') || timeFormControl.hasError('validDateTimeRequired'))">
             <span class="custom-error-message">A time value must have a <strong>date</strong> and <strong>time</strong>.</span>
         </mat-error>
       </div>

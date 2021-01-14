@@ -25,13 +25,9 @@ import { CustomRegex } from '../../custom-regex';
 export function dateTimeValidator(otherControl: FormControl): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
 
-        // valid if both date and time are null or have values
-        let invalid = !(control.value === null && otherControl.value === null || control.value !== null && otherControl.value !== null);
-
-        // ensure the time value does not contain an empty string
-        if (control.value === "" || otherControl.value === "") {
-            invalid = true;
-        }
+        // valid if both date and time are null or have values, excluding empty strings
+        const invalid = !(control.value === null && otherControl.value === null ||
+                        ((control.value !== null && control.value !== '') && (otherControl.value !== null && otherControl.value !== '')));
 
         return invalid ? { 'validDateTimeRequired': { value: control.value } } : null;
     };
