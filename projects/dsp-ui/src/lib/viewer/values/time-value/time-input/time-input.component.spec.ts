@@ -206,7 +206,7 @@ describe('TimeInputComponent no value required', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should recieve the propagated valueRequiredValidator from the parent component', () => {
+    it('should receive the propagated valueRequiredValidator from the parent component', () => {
         expect(testHostComponent.timeInputComponent.valueRequiredValidator).toBe(false);
     });
 

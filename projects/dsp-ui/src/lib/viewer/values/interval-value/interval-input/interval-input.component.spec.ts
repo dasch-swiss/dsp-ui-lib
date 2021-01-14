@@ -183,7 +183,7 @@ describe('InvertalInputComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should recieve the propagated valueRequiredValidator from the parent component', () => {
+    it('should receive the propagated valueRequiredValidator from the parent component', () => {
         expect(testHostComponent.intervalInputComponent.valueRequiredValidator).toBe(false);
     });
 
