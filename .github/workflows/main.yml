@@ -106,8 +106,6 @@ jobs:
         run: npm install
       - name: Build lib in prod mode
         run: npm run build-lib
-      - name: Add CHANGELOG to build
-        run: cp CHANGELOG.md ${{env.dist-directory}}
       - if: "github.event.release.prerelease"
         name: Publish pre-release to npm
         run: npm publish ${{env.dist-directory}} --tag rc --access public
