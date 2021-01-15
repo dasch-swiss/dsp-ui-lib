@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimeInputComponent, DateTime } from './time-input.component';
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
-import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,6 +37,35 @@ class TestHostComponent implements OnInit {
 
         this.form = this._fb.group({
             time: '2019-08-06T12:00:00Z'
+        });
+
+    }
+}
+
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+    <div [formGroup]="form">
+      <mat-form-field>
+        <dsp-time-input #timeInput [formControlName]="'time'" [valueRequiredValidator]="false"></dsp-time-input>
+      </mat-form-field>
+    </div>`
+})
+class NoValueRequiredTestHostComponent implements OnInit {
+
+    @ViewChild('timeInput') timeInputComponent: TimeInputComponent;
+
+    form: FormGroup;
+
+    constructor(private _fb: FormBuilder) {
+    }
+
+    ngOnInit(): void {
+
+        this.form = this._fb.group({
+            time: new FormControl(null)
         });
 
     }
@@ -131,5 +160,63 @@ describe('TimeInputComponent', () => {
 
         expect(dateTime.time).toEqual('12:00');
 
+    });
+
+    it('should mark the form\'s validity correctly', () => {
+        expect(testHostComponent.timeInputComponent.valueRequiredValidator).toBe(true);
+        expect(testHostComponent.timeInputComponent.form.valid).toBe(true);
+
+        testHostComponent.timeInputComponent.timeFormControl.setValue(null);
+
+        testHostComponent.timeInputComponent._handleInput();
+
+        expect(testHostComponent.timeInputComponent.form.valid).toBe(false);
+
+        testHostComponent.timeInputComponent.timeFormControl.setValue("");
+
+        testHostComponent.timeInputComponent._handleInput();
+
+        expect(testHostComponent.timeInputComponent.form.valid).toBe(false);
+    });
+});
+
+describe('TimeInputComponent no value required', () => {
+    let testHostComponent: NoValueRequiredTestHostComponent;
+    let testHostFixture: ComponentFixture<NoValueRequiredTestHostComponent>;
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                ReactiveFormsModule,
+                MatFormFieldModule,
+                MatInputModule,
+                MatDatepickerModule,
+                MatJDNConvertibleCalendarDateAdapterModule,
+                BrowserAnimationsModule],
+            declarations: [TimeInputComponent, NoValueRequiredTestHostComponent, JDNDatepickerDirective]
+        })
+            .compileComponents();
+    }));
+
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(NoValueRequiredTestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should receive the propagated valueRequiredValidator from the parent component', () => {
+        expect(testHostComponent.timeInputComponent.valueRequiredValidator).toBe(false);
+    });
+
+    it('should mark the form\'s validity correctly', () => {
+        expect(testHostComponent.timeInputComponent.form.valid).toBe(true);
+
+        testHostComponent.timeInputComponent.timeFormControl.setValue('2019-08-06T12:00:00Z');
+
+        testHostComponent.timeInputComponent._handleInput();
+
+        expect(testHostComponent.timeInputComponent.form.valid).toBe(false);
     });
 });

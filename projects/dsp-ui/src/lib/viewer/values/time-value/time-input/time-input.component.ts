@@ -2,8 +2,9 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DatePipe } from '@angular/common';
 import { ValueErrorStateMatcher } from '../../value-error-state-matcher';
-import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self } from '@angular/core';
+import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
 import {
+    AbstractControl,
     ControlValueAccessor,
     FormBuilder,
     FormControl,
@@ -11,6 +12,7 @@ import {
     FormGroupDirective,
     NgControl,
     NgForm,
+    ValidatorFn,
     Validators
 } from '@angular/forms';
 import { CanUpdateErrorState, CanUpdateErrorStateCtor, ErrorStateMatcher, mixinErrorState } from '@angular/material/core';
@@ -19,6 +21,17 @@ import { CalendarDate, CalendarPeriod, GregorianCalendarDate } from 'jdnconverti
 import { Subject } from 'rxjs';
 import { CustomRegex } from '../../custom-regex';
 
+/** A valid time value must have both a date and a time, or both inputs must be null */
+export function dateTimeValidator(otherControl: FormControl): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+
+        // valid if both date and time are null or have values, excluding empty strings
+        const invalid = !(control.value === null && otherControl.value === null ||
+                        ((control.value !== null && control.value !== '') && (otherControl.value !== null && otherControl.value !== '')));
+
+        return invalid ? { 'validDateTimeRequired': { value: control.value } } : null;
+    };
+}
 
 class MatInputBase {
     constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
@@ -43,7 +56,7 @@ export class DateTime {
     styleUrls: ['./time-input.component.scss'],
     providers: [{ provide: MatFormFieldControl, useExisting: TimeInputComponent }]
 })
-export class TimeInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<string>, DoCheck, CanUpdateErrorState, OnDestroy {
+export class TimeInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<string>, DoCheck, CanUpdateErrorState, OnDestroy, OnInit {
 
     static nextId = 0;
 
@@ -59,6 +72,7 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
     @Input() dateLabel = 'Date';
     @Input() timeLabel = 'Time';
+    @Input() valueRequiredValidator = true;
 
     dateFormControl: FormControl;
     timeFormControl: FormControl;
@@ -144,6 +158,10 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
         } else {
             this.form.setValue({ date: null, time: null });
         }
+
+        this.dateFormControl.updateValueAndValidity();
+        this.timeFormControl.updateValueAndValidity();
+
         this.stateChanges.next();
     }
 
@@ -159,9 +177,9 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
 
         super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-        this.dateFormControl = new FormControl(null, [Validators.required]);
+        this.dateFormControl = new FormControl(null);
 
-        this.timeFormControl = new FormControl(null, [Validators.required, Validators.pattern(CustomRegex.TIME_REGEX)]);
+        this.timeFormControl = new FormControl(null);
 
         this.form = fb.group({
             date: this.dateFormControl,
@@ -176,6 +194,19 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
         if (this.ngControl != null) {
             this.ngControl.valueAccessor = this;
         }
+    }
+
+    ngOnInit() {
+        if (this.valueRequiredValidator) {
+            this.dateFormControl.setValidators([Validators.required, dateTimeValidator(this.timeFormControl)]);
+            this.timeFormControl.setValidators([Validators.required, dateTimeValidator(this.dateFormControl), Validators.pattern(CustomRegex.TIME_REGEX)]);
+        } else {
+            this.dateFormControl.setValidators(dateTimeValidator(this.timeFormControl));
+            this.timeFormControl.setValidators([dateTimeValidator(this.dateFormControl), Validators.pattern(CustomRegex.TIME_REGEX)]);
+        }
+
+        this.dateFormControl.updateValueAndValidity();
+        this.timeFormControl.updateValueAndValidity();
     }
 
     ngDoCheck() {
@@ -211,6 +242,8 @@ export class TimeInputComponent extends _MatInputMixinBase implements ControlVal
     }
 
     _handleInput(): void {
+        this.dateFormControl.updateValueAndValidity();
+        this.timeFormControl.updateValueAndValidity();
         this.onChange(this.value);
     }
 

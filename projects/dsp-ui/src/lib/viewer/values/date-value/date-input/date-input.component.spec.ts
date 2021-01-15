@@ -331,7 +331,7 @@ describe('NoValueRequiredTestHostComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should recieve the propagated valueRequiredValidator from the parent component', () => {
+    it('should receive the propagated valueRequiredValidator from the parent component', () => {
         expect(testHostComponent.dateInputComponent.valueRequiredValidator).toBe(false);
     });
 
