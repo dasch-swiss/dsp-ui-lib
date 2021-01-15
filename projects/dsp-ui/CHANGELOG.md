@@ -8,7 +8,7 @@
 * **Date Value Validators:** Propagate valueRequiredValidator to child component (DSP-1188) ([#251](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/251)) ([27502f5](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/27502f5595b15e02a02c80404d046b1a71ee9beb))
 * **Interval Value Validators:** Propagate valueRequiredValidator to child component (DSP-1193) ([#253](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/253)) ([3424831](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/342483123d18205872b58c8a18983ea7ef5941d7))
 * **Time Value Validators:** Propagate valueRequiredValidator to child component (DSP-1218) ([#257](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/257)) ([dd8fd80](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/dd8fd80bebddd92d1f6449908f0c0bdfc5a3f6e6))
-
+* fix: Value Form Control Name (DSP-1186) ([#250](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/250)) ([3098bfa](https://github.com/dasch-swiss/dsp-ui-lib/commit/3098bfa88bc39367abaf48df69143c077bb9967e))
 
 ### Maintenance
 
