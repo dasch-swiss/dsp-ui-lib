@@ -23,7 +23,7 @@ import { DspApiConnectionToken } from '../../../core/core.module';
 import { BaseValueComponent } from '../base-value.component';
 
 export function resourceValidator(control: AbstractControl) {
-    const invalid = !(control.value instanceof ReadResource);
+    const invalid = !(control.value === null || control.value === '' || control.value instanceof ReadResource);
     return invalid ? { invalidType: { value: control.value } } : null;
 }
 
