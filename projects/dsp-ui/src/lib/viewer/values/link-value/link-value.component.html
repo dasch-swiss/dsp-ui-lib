@@ -16,7 +16,7 @@
         <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
                  <span class="custom-error-message">New value must be different than the current value.</span>
             </mat-error>
-        <mat-error *ngIf="valueFormControl.hasError('invalidType')">
+        <mat-error *ngIf="valueRequiredValidator && valueFormControl.hasError('invalidType')">
                  <span class="custom-error-message">New value must be a valid resource type.</span>
         </mat-error>
         <mat-error *ngIf="valueFormControl.hasError('duplicateValue')">
