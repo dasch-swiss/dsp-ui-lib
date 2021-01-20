@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.1.0...v1.1.1) (2021-01-18)
+
+
+### Bug Fixes
+
+* **Link Value:** custom validator should allow null (DSP-1237) ([#261](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/261)) ([01da692](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/01da6922219ec11ebc2d71584c2d4bb9716b6b1d))
+
 ## [1.1.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.0.1...v1.1.0) (2021-01-15)
 
 
