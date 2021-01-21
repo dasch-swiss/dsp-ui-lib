@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import {
+    Constants,
     KnoraDate, KnoraPeriod,
     MockResource, ReadDateValue,
     ReadIntValue, ReadLinkValue,
@@ -44,7 +45,7 @@ describe('ValueService', () => {
 
             const readTextValueAsXml = new ReadTextValueAsXml();
             readTextValueAsXml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
-            readTextValueAsXml.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+            readTextValueAsXml.mapping = Constants.StandardMapping;
             expect(service.isTextEditable(readTextValueAsXml)).toBeTruthy();
 
         });
@@ -153,7 +154,7 @@ describe('ValueService', () => {
         it('should not mark ReadTextValueAsXml with standard mapping as ReadOnly', () => {
             const readTextValueAsXml = new ReadTextValueAsXml();
             readTextValueAsXml.type = 'http://api.knora.org/ontology/knora-api/v2#TextValue';
-            readTextValueAsXml.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+            readTextValueAsXml.mapping = Constants.StandardMapping;
 
             const resPropDef = new ResourcePropertyDefinition();
             resPropDef.isEditable = true;
