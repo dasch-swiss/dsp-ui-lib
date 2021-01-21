@@ -313,11 +313,11 @@ export class ResourceViewComponent implements OnInit, OnChanges, OnDestroy {
                     return;
                 }
 
-                const newStandoffLinkVals = res.resources[0].getValuesAs('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue', ReadLinkValue);
+                const newStandoffLinkVals = res.resources[0].getValuesAs(Constants.HasStandoffLinkToValue, ReadLinkValue);
 
                 this.resPropInfoVals.filter(
                     resPropInfoVal => {
-                        return resPropInfoVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+                        return resPropInfoVal.propDef.id === Constants.HasStandoffLinkToValue;
                     }
                 ).forEach(
                     standoffLinkResPropInfoVal => {
