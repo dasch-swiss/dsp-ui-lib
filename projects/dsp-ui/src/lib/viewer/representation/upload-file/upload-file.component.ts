@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Constants } from '@dasch-swiss/dsp-js';
 import { NotificationService } from '../../../action/services/notification.service';
@@ -20,7 +20,10 @@ export class UploadFileComponent implements OnInit {
     form: FormGroup;
     get fileControl() { return this.form.get('file') as FormControl; }
     isLoading = false;
-    thumbnaillUrl: string;
+    thumbnailUrl: string;
+
+    // emit event when file has been uploaded to Sipi
+    @Output() fileUpload = new EventEmitter<UploadedFileResponse>();
 
     constructor(
         private readonly _fb: FormBuilder,
@@ -56,20 +59,23 @@ export class UploadFileComponent implements OnInit {
                 this.file = null;
             } else {
                 // show loading indicator only for files > 1MB
-                this.isLoading = this.file.size > 1048576 ? true : false;
+                this.isLoading = this.file.size > 1048576;
 
                 formData.append(this.file.name, this.file);
                 this._ufs.upload(formData).subscribe(
                     (res: UploadedFileResponse) => {
                         const temporaryUrl = res.uploadedFiles[0].temporaryUrl;
                         const thumbnailUri = '/full/150,/0/default.jpg';
-                        this.thumbnaillUrl = `${temporaryUrl}${thumbnailUri}`;
+                        this.thumbnailUrl = `${temporaryUrl}${thumbnailUri}`;
+
+                        // emit event
+                        this.fileUpload.emit(res);
                     },
                     (e: Error) => {
                         this._ns.openSnackBar(e.message);
                         this.isLoading = false;
                         this.file = null;
-                        this.thumbnaillUrl = null;
+                        this.thumbnailUrl = null;
                     },
                     () => {
                         this.fileControl.setValue(this.file);
@@ -82,7 +88,7 @@ export class UploadFileComponent implements OnInit {
     }
 
     /**
-     * Converst file size to display in KB or MB
+     * Converts file size to display in KB or MB
      * @param val file size to be converted
      */
     convertBytes(val: number): string {
@@ -112,7 +118,7 @@ export class UploadFileComponent implements OnInit {
      */
     deleteAttachment(): void {
         this.file = null;
-        this.thumbnaillUrl = null;
+        this.thumbnailUrl = null;
         this.fileControl.reset();
     }
 

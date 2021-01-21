@@ -54,11 +54,11 @@ describe('UploadFileComponent', () => {
     it('should delete attachement', () => {
         component.file = mockFile;
         component.fileControl.setValue(mockFile);
-        component.thumbnaillUrl = 'test';
+        component.thumbnailUrl = 'test';
         component.deleteAttachment();
         expect(component.file).toBeNull();
         expect(component.fileControl.value).toBeNull();
-        expect(component.thumbnaillUrl).toBeNull();
+        expect(component.thumbnailUrl).toBeNull();
     });
 
     describe('form', () => {
