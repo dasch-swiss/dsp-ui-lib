@@ -18,12 +18,15 @@ export class UploadFileComponent implements OnInit {
     };
     file: File;
     form: FormGroup;
-    get fileControl() { return this.form.get('file') as FormControl; }
+    fileControl: FormControl;
     isLoading = false;
     thumbnailUrl: string;
 
-    // emit event when file has been uploaded to Sipi
+    // emits event when file has been uploaded to Sipi
     @Output() fileUpload = new EventEmitter<UploadedFileResponse>();
+
+    // emits event when user cancels upload
+    @Output() cancelUpload = new EventEmitter<void>();
 
     constructor(
         private readonly _fb: FormBuilder,
@@ -106,7 +109,7 @@ export class UploadFileComponent implements OnInit {
     }
 
     /**
-     * Converts date to readable format
+     * Converts date to a readable format.
      * @param date date to be converted
      */
     convertDate(date: number): string {
@@ -114,20 +117,25 @@ export class UploadFileComponent implements OnInit {
     }
 
     /**
-     * Removes the attachement
+     * Removes the attachment
      */
     deleteAttachment(): void {
         this.file = null;
         this.thumbnailUrl = null;
         this.fileControl.reset();
+
+        // emit event
+        this.cancelUpload.emit();
     }
 
     /**
      * Initializes form group
      */
     initializeForm(): void {
+        this.fileControl = new FormControl(null, Validators.required);
+
         this.form = this._fb.group({
-            file: [null, Validators.required]
+            file: this.fileControl
         }, { updateOn: 'blur' });
     }
 
@@ -143,7 +151,7 @@ export class UploadFileComponent implements OnInit {
      * @param fileType file type to be checked
      */
     private _isFileTypeSupported(fileType: string): boolean {
-        return this._supportedFileTypes().includes(fileType) ? true : false;
+        return this._supportedFileTypes().includes(fileType);
     }
 
     /**
