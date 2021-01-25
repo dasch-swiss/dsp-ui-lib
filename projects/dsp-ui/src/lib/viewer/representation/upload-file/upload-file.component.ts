@@ -121,10 +121,7 @@ export class UploadFileComponent implements OnInit {
      * Removes the attachment
      */
     deleteAttachment(): void {
-        this.file = null;
-        this.thumbnailUrl = null;
         this.fileControl.reset();
-
     }
 
     /**
@@ -132,6 +129,16 @@ export class UploadFileComponent implements OnInit {
      */
     initializeForm(): void {
         this.fileControl = new FormControl(null, Validators.required);
+
+        this.fileControl.valueChanges.subscribe(
+            val => {
+                // check if the form has been reset
+                if (val === null) {
+                    this.file = null;
+                    this.thumbnailUrl = null;
+                }
+            }
+        );
 
         this.form = this._fb.group({
             file: this.fileControl
