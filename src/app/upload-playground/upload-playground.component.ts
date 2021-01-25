@@ -7,20 +7,9 @@ import { UploadFileComponent } from '@dasch-swiss/dsp-ui';
     templateUrl: './upload-playground.component.html',
     styleUrls: ['./upload-playground.component.scss']
 })
-export class UploadPlaygroundComponent implements OnInit {
+export class UploadPlaygroundComponent {
     @ViewChild('upload') uploadComp: UploadFileComponent;
 
     type = Constants.StillImageFileValue;
 
-    ngOnInit() {
-        console.log(this);
-    }
-
-    uploadFile(fileUpload: any) {
-        console.log(fileUpload);
-    }
-
-    cancelUpload() {
-        console.log('upload cancelled');
-    }
 }
