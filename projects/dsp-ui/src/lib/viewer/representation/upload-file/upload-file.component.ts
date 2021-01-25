@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
     Constants,
@@ -151,6 +151,9 @@ export class UploadFileComponent implements OnInit {
         this.form.reset();
     }
 
+    /**
+     * Create a new file value.
+     */
     getNewValue(): CreateFileValue | false {
 
         if (!this.form.valid) {
@@ -159,7 +162,7 @@ export class UploadFileComponent implements OnInit {
 
         const filename = this.fileControl.value.internalFilename;
 
-        // TODO: handle file types
+        // TODO: handle different file types
 
         const fileValue = new CreateStillImageFileValue();
         fileValue.filename = filename;
@@ -168,6 +171,11 @@ export class UploadFileComponent implements OnInit {
 
     }
 
+    /**
+     * Create an updated file value.
+     *
+     * @param id the current file value's id.
+     */
     getUpdatedValue(id: string): UpdateFileValue | false {
 
         if (!this.form.valid) {
@@ -176,7 +184,7 @@ export class UploadFileComponent implements OnInit {
 
         const filename = this.fileControl.value.internalFilename;
 
-        // TODO: handle file types
+        // TODO: handle different file types
 
         const fileValue = new UpdateStillImageFileValue();
         fileValue.filename = filename;

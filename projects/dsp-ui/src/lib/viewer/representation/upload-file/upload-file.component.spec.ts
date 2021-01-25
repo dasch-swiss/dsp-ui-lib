@@ -3,14 +3,11 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { Constants } from '@dasch-swiss/dsp-js';
-import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
+import { Constants, CreateStillImageFileValue } from '@dasch-swiss/dsp-js';
+import { UploadFileService } from '../../services/upload-file.service';
 import { UploadFileComponent } from './upload-file.component';
 import { Component, ViewChild } from '@angular/core';
-
-class MockUploadFileService {
-    envUrl = 'envUrl';
-}
+import { of } from 'rxjs';
 
 /**
  * Test host component to simulate parent component.
@@ -29,13 +26,17 @@ class TestHostComponent {
 
 
 describe('UploadFileComponent', () => {
-    const mockFile = new File(['1'], 'testfile');
+    const mockFile = new File(['1'], 'testfile', { type: 'image/jpeg' });
+
     const fb = new FormBuilder();
 
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
 
     beforeEach(async(() => {
+
+        const uploadServiceSpy = jasmine.createSpyObj('UploadFileService', ['upload']);
+
         TestBed.configureTestingModule({
             declarations: [UploadFileComponent, TestHostComponent],
             imports: [
@@ -45,7 +46,7 @@ describe('UploadFileComponent', () => {
                 MatIconModule
             ],
             providers: [
-                { provide: UploadFileService, useClass: MockUploadFileService }
+                { provide: UploadFileService, useValue: uploadServiceSpy }
             ]
         })
             .compileComponents();
@@ -123,5 +124,50 @@ describe('UploadFileComponent', () => {
             filesArray.push(mockFile, mockFile, mockFile);
             expect(testHostComponent.uploadFileComp['_isMoreThanOneFile'](filesArray)).toBeTruthy();
         });
+    });
+
+    describe('addFile', () => {
+
+        it('should make a request to Sipi when a file is added', () => {
+
+            expect(testHostComponent.uploadFileComp.form.valid).toBe(false);
+
+            const uploadService = TestBed.inject(UploadFileService) as jasmine.SpyObj<UploadFileService>;
+
+            uploadService.upload.and.returnValue(of({
+                uploadedFiles: [
+                    {
+                        fileType: 'image',
+                        temporaryUrl: 'http://localhost:1024/tmp/8oDdefPSkaz-EG187srxBFZ.jp2',
+                        originalFilename: 'beaver.jpg',
+                        internalFilename: '8oDdefPSkaz-EG187srxBFZ.jp2'
+                    }
+                ]
+            }));
+
+            // https://stackoverflow.com/questions/57080760/fake-file-drop-event-for-unit-testing
+            const drop = {
+                preventDefault: () => {},
+                stopPropagation: () => {},
+                target: { files: [mockFile] }
+            };
+
+            testHostComponent.uploadFileComp.addFile(drop);
+
+            expect(testHostComponent.uploadFileComp.form.valid).toBe(true);
+
+            const createFileVal = testHostComponent.uploadFileComp.getNewValue();
+
+            expect(createFileVal instanceof CreateStillImageFileValue).toBe(true);
+            expect((createFileVal as CreateStillImageFileValue).filename).toEqual('8oDdefPSkaz-EG187srxBFZ.jp2');
+
+            const expectedFormData = new FormData();
+            expectedFormData.append(mockFile.name, mockFile);
+
+            expect(uploadService.upload).toHaveBeenCalledTimes(1);
+            expect(uploadService.upload).toHaveBeenCalledWith(expectedFormData);
+
+        });
+
     });
 });
