@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Constants } from '@dasch-swiss/dsp-js';
+import {
+    Constants,
+    CreateFileValue,
+    CreateStillImageFileValue,
+    UpdateFileValue,
+    UpdateStillImageFileValue
+} from '@dasch-swiss/dsp-js';
 import { NotificationService } from '../../../action/services/notification.service';
 import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
 
@@ -143,6 +149,41 @@ export class UploadFileComponent implements OnInit {
      */
     resetForm(): void {
         this.form.reset();
+    }
+
+    getNewValue(): CreateFileValue | false {
+
+        if (!this.form.valid) {
+            return false;
+        }
+
+        const filename = this.fileControl.value.internalFilename;
+
+        // TODO: handle file types
+
+        const fileValue = new CreateStillImageFileValue();
+        fileValue.filename = filename;
+
+        return fileValue;
+
+    }
+
+    getUpdatedValue(id: string): UpdateFileValue | false {
+
+        if (!this.form.valid) {
+            return false;
+        }
+
+        const filename = this.fileControl.value.internalFilename;
+
+        // TODO: handle file types
+
+        const fileValue = new UpdateStillImageFileValue();
+        fileValue.filename = filename;
+        fileValue.id = id;
+
+        return fileValue;
+
     }
 
     /**
