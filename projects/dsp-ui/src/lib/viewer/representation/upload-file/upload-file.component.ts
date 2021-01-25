@@ -4,12 +4,17 @@ import { Constants } from '@dasch-swiss/dsp-js';
 import { NotificationService } from '../../../action/services/notification.service';
 import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
 
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
+
 @Component({
     selector: 'dsp-upload-file',
     templateUrl: './upload-file.component.html',
     styleUrls: ['./upload-file.component.scss']
 })
 export class UploadFileComponent implements OnInit {
+
+    @Input() parentForm?: FormGroup;
 
     @Input() representation: string; // only StillImageRepresentation supported so far
     readonly fromLabels = {
@@ -21,12 +26,6 @@ export class UploadFileComponent implements OnInit {
     fileControl: FormControl;
     isLoading = false;
     thumbnailUrl: string;
-
-    // emits event when file has been uploaded to Sipi
-    @Output() fileUpload = new EventEmitter<UploadedFileResponse>();
-
-    // emits event when user cancels upload
-    @Output() cancelUpload = new EventEmitter<void>();
 
     constructor(
         private readonly _fb: FormBuilder,
@@ -71,18 +70,14 @@ export class UploadFileComponent implements OnInit {
                         const thumbnailUri = '/full/150,/0/default.jpg';
                         this.thumbnailUrl = `${temporaryUrl}${thumbnailUri}`;
 
-                        // emit event
-                        this.fileUpload.emit(res);
+                        this.fileControl.setValue(res.uploadedFiles[0]);
+                        this.isLoading = false;
                     },
                     (e: Error) => {
                         this._ns.openSnackBar(e.message);
                         this.isLoading = false;
                         this.file = null;
                         this.thumbnailUrl = null;
-                    },
-                    () => {
-                        this.fileControl.setValue(this.file);
-                        this.isLoading = false;
                     }
                 );
             }
@@ -124,8 +119,6 @@ export class UploadFileComponent implements OnInit {
         this.thumbnailUrl = null;
         this.fileControl.reset();
 
-        // emit event
-        this.cancelUpload.emit();
     }
 
     /**
@@ -137,6 +130,12 @@ export class UploadFileComponent implements OnInit {
         this.form = this._fb.group({
             file: this.fileControl
         }, { updateOn: 'blur' });
+
+        if (this.parentForm !== undefined) {
+            resolvedPromise.then(() => {
+                this.parentForm.addControl('file', this.form);
+            });
+        }
     }
 
     /**

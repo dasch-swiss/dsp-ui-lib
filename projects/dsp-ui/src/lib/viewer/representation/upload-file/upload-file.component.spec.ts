@@ -17,25 +17,13 @@ class MockUploadFileService {
  */
 @Component({
     template: `
-    <dsp-upload-file #upload [representation]="representation" (cancelUpload)="uploadCancelled()"></dsp-upload-file>`
+    <dsp-upload-file #upload [representation]="representation"></dsp-upload-file>`
 })
 class TestHostComponent {
 
     @ViewChild('upload') uploadFileComp: UploadFileComponent;
 
     representation = Constants.StillImageFileValue;
-
-    upload: UploadedFileResponse;
-
-    uploadCancelledState = false;
-
-    uploadFile(file: UploadedFileResponse) {
-        this.upload = file;
-    }
-
-    uploadCancelled() {
-        this.uploadCancelledState = true;
-    }
 
 }
 
@@ -83,8 +71,6 @@ describe('UploadFileComponent', () => {
     });
 
     it('should delete attachment', () => {
-        expect(testHostComponent.uploadCancelledState).toBe(false);
-
         testHostComponent.uploadFileComp.file = mockFile;
         testHostComponent.uploadFileComp.fileControl.setValue(mockFile);
         testHostComponent.uploadFileComp.thumbnailUrl = 'test';
@@ -92,8 +78,6 @@ describe('UploadFileComponent', () => {
         expect(testHostComponent.uploadFileComp.file).toBeNull();
         expect(testHostComponent.uploadFileComp.fileControl.value).toBeNull();
         expect(testHostComponent.uploadFileComp.thumbnailUrl).toBeNull();
-
-        expect(testHostComponent.uploadCancelledState).toBe(true);
     });
 
     describe('form', () => {
