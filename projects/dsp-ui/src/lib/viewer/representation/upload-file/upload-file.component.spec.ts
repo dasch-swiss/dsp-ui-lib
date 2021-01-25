@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Constants, CreateStillImageFileValue } from '@dasch-swiss/dsp-js';
 import { UploadFileService } from '../../services/upload-file.service';
 import { UploadFileComponent } from './upload-file.component';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { of } from 'rxjs';
 
 /**
@@ -14,13 +14,22 @@ import { of } from 'rxjs';
  */
 @Component({
     template: `
-    <dsp-upload-file #upload [representation]="representation"></dsp-upload-file>`
+    <dsp-upload-file #upload [representation]="representation" [parentForm]="form"></dsp-upload-file>`
 })
-class TestHostComponent {
+class TestHostComponent implements OnInit {
 
     @ViewChild('upload') uploadFileComp: UploadFileComponent;
 
     representation = Constants.StillImageFileValue;
+
+    form: FormGroup;
+
+    constructor(private _fb: FormBuilder) {
+    }
+
+    ngOnInit() {
+        this.form = this._fb.group({});
+    }
 
 }
 
@@ -82,10 +91,18 @@ describe('UploadFileComponent', () => {
     });
 
     describe('form', () => {
-        it('should create form group and file control', () => {
-            expect(testHostComponent.uploadFileComp.form).toBeDefined();
-            expect(testHostComponent.uploadFileComp.fileControl).toBeTruthy();
-        });
+        it('should create form group and file control and add it to the parent form', async(() => {
+
+            testHostFixture.whenStable().then(() => {
+
+                expect(testHostComponent.uploadFileComp.form).toBeDefined();
+                expect(testHostComponent.uploadFileComp.fileControl).toBeTruthy();
+
+                // check that the form control has been added to the parent form
+                expect(testHostComponent.form.contains('file')).toBe(true);
+
+            });
+        }));
 
         it('should reset the form', () => {
             testHostComponent.uploadFileComp.form = fb.group({ test: '' });
