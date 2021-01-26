@@ -35,6 +35,8 @@ describe('Test App', () => {
 
         it('should edit an integer value', async () => {
 
+            const EC = browser.ExpectedConditions;
+
             await page.navigateTo('modify');
 
             let valueEleComp: WebElement = await page.getComponentBySelector('dsp-int-value', timeout);
@@ -42,6 +44,8 @@ describe('Test App', () => {
             const displayEditComp: WebElement = await page.getDisplayEditComponentFromValueComponent(valueEleComp);
 
             await browser.actions().mouseMove(element(by.cssContainingText('.value-component', /^1$/))).perform();
+
+            await browser.wait(EC.presenceOf(element(by.css('.action-bubble'))), timeout, 'Wait for action bubble to be visible.');
 
             expect(element(by.css('.action-bubble')).isDisplayed()).toBeTruthy();
 
@@ -59,8 +63,6 @@ describe('Test App', () => {
 
             await saveButton.click();
 
-            const EC = browser.ExpectedConditions;
-
             await browser.wait(EC.presenceOf(element(by.css('.rm-value'))), timeout,
                 'Wait for read value to be visible.');
 
@@ -70,6 +72,8 @@ describe('Test App', () => {
 
             const readEle = await page.getReadValueFieldFromValueComponent(valueEleComp);
             expect(await readEle.getText()).toEqual('3');
+
+            // browser.sleep(200000);
 
         });
 
