@@ -1,13 +1,13 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Constants, CreateStillImageFileValue } from '@dasch-swiss/dsp-js';
+import { of } from 'rxjs';
 import { UploadFileService } from '../../services/upload-file.service';
 import { UploadFileComponent } from './upload-file.component';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { of } from 'rxjs';
 
 /**
  * Test host component to simulate parent component.
