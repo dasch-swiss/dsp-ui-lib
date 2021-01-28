@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.1.1...v1.2.0) (2021-01-28)
+
+
+### Enhancements
+
+* **string-literal-input:** updates input on label changes ([#269](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/269)) ([5659391](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/5659391b0025946084049ebec3dc475a186c7366))
+* **viewer:** integrate file upload component in form logic (DSP-1257) ([#264](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/264)) ([1d208d1](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/1d208d1c539a6afb8db571401bb442d71b8598e3))
+
+
+### Maintenance
+
+* **package.json:** update dsp-js ([#265](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/265)) ([61f6079](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/61f6079b22cf76d75b9cee27affbde7bfbdf1211))
+* update dsp-js version to 1.2.1 ([#270](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/270)) ([3c54c4e](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/3c54c4ecae8bc1c6ef3a97ddab0760049ae69cf1))
+
 ### [1.1.1](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.1.0...v1.1.1) (2021-01-18)
 
 
