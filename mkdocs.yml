@@ -1,0 +1,44 @@
+site_name: DSP-UI documentation
+
+nav:
+    - Home: index.md
+    - Manual:
+        - Introduction: manual/index.md
+        - Action module:
+            - Readme: manual/action/index-action.md
+            - AdminImage: manual/action/admin-image.md
+            - ExistingName: manual/action/existing-name.md
+            - Key: manual/action/key.md
+            - Message: manual/action/message.md
+            - Progress indicator: manual/action/progress-indicator.md
+            - SortButton: manual/action/sort-button.md
+            - StringifyStringLiteral: manual/action/stringify-string-literal.md
+            - Truncate: manual/action/truncate.md
+        - Core module:
+          - Readme: manual/core/index-core.md
+        - Search module:
+          - Readme: manual/search/index-search.md
+          - Search-panel: manual/search/search-panel.md
+          - Fulltext search: manual/search/fulltext-search.md
+          - Extended search: manual/search/extended-search.md
+          - Expert search: manual/search/expert-search.md
+        - Viewer module:
+          - Readme: manual/viewer/index-viewer.md
+          - Search-results: manual/viewer/search-results.md
+    - Contribution:
+      - How to contribute: contribution/index.md
+      - Design Documentation: contribution/design-documentation.md
+
+theme:
+  name: material
+  logo: 'assets/icons/dasch-icon-white.svg'
+  favicon: 'assets/icons/dasch-favicon.ico'
+  palette:
+    primary: 'deep purple'
+    accent: 'deep purple'
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+
+extra_css:
+  - 'assets/style/theme.css'
