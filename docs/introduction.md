@@ -32,7 +32,7 @@ DSP-UI-LIB implements [DSP-JS-LIB](https://www.npmjs.com/package/@knora/api) to 
 
 ## Installation
 
-```bash
+```shell
 npm install @dasch-swiss/dsp-ui
 ```
 

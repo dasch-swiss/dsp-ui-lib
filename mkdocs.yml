@@ -26,9 +26,9 @@ nav:
           - Readme: how-to-use/viewer/index-viewer.md
           - Search-results: how-to-use/viewer/search-results.md
     - Contribution:
-      - How to contribute: how-to-support/contribution.md
-      - Design Documentation: how-to-support/design-documentation.md
-      - Release Notes: how-to-support/release-notes.md
+      - How to contribute: how-to-contribute/contribution.md
+      - Design Documentation: how-to-contribute/design-documentation.md
+      - Release Notes: how-to-contribute/release-notes.md
 
 plugins:
     - include-markdown
