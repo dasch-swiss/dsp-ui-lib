@@ -87,6 +87,12 @@ describe('UploadFileService', () => {
 
         expect(httpRequest.request.method).toEqual('POST');
 
+        const expectedFormData = new FormData();
+        const mockFile = new File(['1'], 'testfile', { type: 'image/jpeg' });
+
+        expectedFormData.append(mockFile.name, mockFile);
+        expect(httpRequest.request.body).toEqual(expectedFormData);
+
         httpRequest.flush(expectedResponse);
 
     });

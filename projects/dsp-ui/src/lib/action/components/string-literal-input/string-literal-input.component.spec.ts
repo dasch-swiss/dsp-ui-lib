@@ -313,4 +313,34 @@ describe('StringLiteralInputComponent', () => {
         expect(await inputElement.getValue()).toEqual('Brave New World');
 
     });
+
+    it('should update values and assign them to the correct language when langauges object is changed', async () => {
+
+        const inputElement = await loader.getHarness(MatInputHarness.with({selector: '.inputValue'}));
+
+        expect(await inputElement.getValue()).toEqual('World');
+
+        testHostComponent.labels = [
+            {
+                value: 'Welt',
+                language: 'de'
+            },
+            {
+                value: 'Brave New World',
+                language: 'en'
+            },
+            {
+                value: 'Monde',
+                language: 'fr'
+            },
+            {
+                value: 'Mondo',
+                language: 'it'
+            },
+        ];
+
+        testHostFixture.detectChanges();
+
+        expect(await inputElement.getValue()).toEqual('Brave New World');
+    });
 });
