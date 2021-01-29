@@ -131,7 +131,6 @@ jobs:
   # build documentation
   docs-build-test:
     name: Docs Build Test
-    needs: compile
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
