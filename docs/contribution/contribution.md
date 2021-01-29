@@ -76,7 +76,7 @@ yalc remove --all
 
 ## Publish a New Version of the Library to NPM
 
-Please follow the general DSP documentation about [release process](https://docs.dasch.swiss/developers/dsp/contribution/#prepare-release).
+Please follow the general DSP documentation about the release process: [prepare](https://docs.dasch.swiss/developers/dsp/contribution/#prepare-release) and [publish](https://docs.dasch.swiss/developers/dsp/contribution/#create-release).
 
 Before publishing:
 
@@ -87,11 +87,6 @@ Before publishing:
   - Update DSP-JS version in `package.json` and run `npm install` to update the `package-lock.json`
   - Update DSP-JS version in section `peerDependencies` of `projects/dsp-ui/package.json`
 
-A new version will be published with each Github release as it's part of Github actions' workflow.
-
-To make a new release, go to <https://github.com/dasch-swiss/dsp-ui-lib/releases> and update the draft called "Next release" by changing:
-
-- The tag version and the release title (same name) with the version number, e.g. `v3.0.0` or `v3.0.0-rc.0`
-- If this is a pre-release, check the box "This is a pre-release"
+A new version will be published with each Github release as it's part of Github actions' workflow. To make a new release, you have to merge the open release PR.
 
 The new package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>.
