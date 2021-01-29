@@ -1,8 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Constants } from '@dasch-swiss/dsp-js';
+import {
+    Constants,
+    CreateFileValue,
+    CreateStillImageFileValue,
+    UpdateFileValue,
+    UpdateStillImageFileValue
+} from '@dasch-swiss/dsp-js';
 import { NotificationService } from '../../../action/services/notification.service';
 import { UploadedFileResponse, UploadFileService } from '../../services/upload-file.service';
+
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
 
 @Component({
     selector: 'dsp-upload-file',
@@ -11,6 +20,8 @@ import { UploadedFileResponse, UploadFileService } from '../../services/upload-f
 })
 export class UploadFileComponent implements OnInit {
 
+    @Input() parentForm?: FormGroup;
+
     @Input() representation: string; // only StillImageRepresentation supported so far
     readonly fromLabels = {
         upload: 'Upload file',
@@ -18,9 +29,9 @@ export class UploadFileComponent implements OnInit {
     };
     file: File;
     form: FormGroup;
-    get fileControl() { return this.form.get('file') as FormControl; }
+    fileControl: FormControl;
     isLoading = false;
-    thumbnaillUrl: string;
+    thumbnailUrl: string;
 
     constructor(
         private readonly _fb: FormBuilder,
@@ -56,24 +67,23 @@ export class UploadFileComponent implements OnInit {
                 this.file = null;
             } else {
                 // show loading indicator only for files > 1MB
-                this.isLoading = this.file.size > 1048576 ? true : false;
+                this.isLoading = this.file.size > 1048576;
 
                 formData.append(this.file.name, this.file);
                 this._ufs.upload(formData).subscribe(
                     (res: UploadedFileResponse) => {
                         const temporaryUrl = res.uploadedFiles[0].temporaryUrl;
                         const thumbnailUri = '/full/150,/0/default.jpg';
-                        this.thumbnaillUrl = `${temporaryUrl}${thumbnailUri}`;
+                        this.thumbnailUrl = `${temporaryUrl}${thumbnailUri}`;
+
+                        this.fileControl.setValue(res.uploadedFiles[0]);
+                        this.isLoading = false;
                     },
                     (e: Error) => {
                         this._ns.openSnackBar(e.message);
                         this.isLoading = false;
                         this.file = null;
-                        this.thumbnaillUrl = null;
-                    },
-                    () => {
-                        this.fileControl.setValue(this.file);
-                        this.isLoading = false;
+                        this.thumbnailUrl = null;
                     }
                 );
             }
@@ -82,7 +92,7 @@ export class UploadFileComponent implements OnInit {
     }
 
     /**
-     * Converst file size to display in KB or MB
+     * Converts file size to display in KB or MB
      * @param val file size to be converted
      */
     convertBytes(val: number): string {
@@ -100,7 +110,7 @@ export class UploadFileComponent implements OnInit {
     }
 
     /**
-     * Converts date to readable format
+     * Converts date to a readable format.
      * @param date date to be converted
      */
     convertDate(date: number): string {
@@ -108,11 +118,9 @@ export class UploadFileComponent implements OnInit {
     }
 
     /**
-     * Removes the attachement
+     * Removes the attachment
      */
     deleteAttachment(): void {
-        this.file = null;
-        this.thumbnaillUrl = null;
         this.fileControl.reset();
     }
 
@@ -120,9 +128,27 @@ export class UploadFileComponent implements OnInit {
      * Initializes form group
      */
     initializeForm(): void {
+        this.fileControl = new FormControl(null, Validators.required);
+
+        this.fileControl.valueChanges.subscribe(
+            val => {
+                // check if the form has been reset
+                if (val === null) {
+                    this.file = null;
+                    this.thumbnailUrl = null;
+                }
+            }
+        );
+
         this.form = this._fb.group({
-            file: [null, Validators.required]
+            file: this.fileControl
         }, { updateOn: 'blur' });
+
+        if (this.parentForm !== undefined) {
+            resolvedPromise.then(() => {
+                this.parentForm.addControl('file', this.form);
+            });
+        }
     }
 
     /**
@@ -133,11 +159,54 @@ export class UploadFileComponent implements OnInit {
     }
 
     /**
+     * Create a new file value.
+     */
+    getNewValue(): CreateFileValue | false {
+
+        if (!this.form.valid) {
+            return false;
+        }
+
+        const filename = this.fileControl.value.internalFilename;
+
+        // TODO: handle different file types
+
+        const fileValue = new CreateStillImageFileValue();
+        fileValue.filename = filename;
+
+        return fileValue;
+
+    }
+
+    /**
+     * Create an updated file value.
+     *
+     * @param id the current file value's id.
+     */
+    getUpdatedValue(id: string): UpdateFileValue | false {
+
+        if (!this.form.valid) {
+            return false;
+        }
+
+        const filename = this.fileControl.value.internalFilename;
+
+        // TODO: handle different file types
+
+        const fileValue = new UpdateStillImageFileValue();
+        fileValue.filename = filename;
+        fileValue.id = id;
+
+        return fileValue;
+
+    }
+
+    /**
      * Checks if added file type is supported for certain resource type
      * @param fileType file type to be checked
      */
     private _isFileTypeSupported(fileType: string): boolean {
-        return this._supportedFileTypes().includes(fileType) ? true : false;
+        return this._supportedFileTypes().includes(fileType);
     }
 
     /**

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { StringLiteral } from '@dasch-swiss/dsp-js';
@@ -9,7 +9,7 @@ import { SessionService } from '../../../core/session.service';
   templateUrl: './string-literal-input.component.html',
   styleUrls: ['./string-literal-input.component.scss']
 })
-export class StringLiteralInputComponent implements OnInit {
+export class StringLiteralInputComponent implements OnInit, OnChanges {
 
     languages: string[] = ['de', 'fr', 'it', 'en'];
 
@@ -125,8 +125,12 @@ export class StringLiteralInputComponent implements OnInit {
         // get value from stringLiterals
         const val = this.getValueFromStringLiteral(this.language);
         this.updateFormField(val);
+    }
 
-
+    ngOnChanges() {
+        // get value from stringLiterals
+        const val = this.getValueFromStringLiteral(this.language);
+        this.updateFormField(val);
     }
 
     /**
@@ -209,6 +213,9 @@ export class StringLiteralInputComponent implements OnInit {
     updateFormField(value: string) {
         if (!value) {
             value = '';
+        }
+        if (!this.form) {
+            return;
         }
         this.form.controls.text.setValue(value);
     }
