@@ -1,7 +1,5 @@
 # DSP-UI VIEWER module
 
-[![npm (scoped)](https://img.shields.io/npm/v/@dasch-swiss/dsp-ui)](https://www.npmjs.com/package/@dasch-swiss/dsp-ui)
-
 DspViewerModule contains components to display resources; as single item or as a list for search results. It is comprised of resource sub-components such as file representations components to display still image, video, audio or text only and also value components to use single property elements.
 
 ## Prerequisites

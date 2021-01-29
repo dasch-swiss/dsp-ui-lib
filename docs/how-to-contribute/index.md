@@ -35,7 +35,7 @@ Angular requires the [npm package manager](https://angular.io/guide/setup-local#
 
 The demo application requires a running instance of
 [DSP-API (Knora)](https://docs.knora.org/04-publishing-deployment/getting-started/)
-compatible with the version defined in [vars.mk](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/vars.mk).
+compatible with the version defined in [vars.mk](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/vars.mk): {% include-markdown "../../vars.mk" %}
 
 ## First steps
 
@@ -97,7 +97,7 @@ There are unit tests for the lib (`projects/dsp-ui/src`)
 and some basic unit tests for the demo application playground components (`src/app`).
 
 The E2E tests have to be run from the demo application.
-Unlike the unit tests, they require a running instance of DSP-API compatible with the release specified in [vars.mk](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/vars.mk).
+Unlike the unit tests, they require a running instance of DSP-API compatible with the release specified in [vars.mk](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/vars.mk): {% include-markdown "../../vars.mk" %}
 Before running the E2E tests, reload the data in DSP-API's db.
 The E2E tests can be run as follows:
 

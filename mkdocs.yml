@@ -3,30 +3,30 @@ site_name: DSP-UI documentation
 nav:
   - Home: index.md
   - User Guide:
-      - Getting Started: how-to-use/getting-started.md
-      - Action module:
-          - Readme: how-to-use/action/index.md
-          - AdminImage: how-to-use/action/admin-image.md
-          - ExistingName: how-to-use/action/existing-name.md
-          - Key: how-to-use/action/key.md
-          - Message: how-to-use/action/message.md
-          - Progress indicator: how-to-use/action/progress-indicator.md
-          - SortButton: how-to-use/action/sort-button.md
-          - StringifyStringLiteral: how-to-use/action/stringify-string-literal.md
-          - Truncate: how-to-use/action/truncate.md
+      - Getting Started: how-to-use/index.md
       - Core module:
-        - Readme: how-to-use/core/index.md
+        - Index: how-to-use/core/index.md
+      - Viewer module:
+        - Index: how-to-use/viewer/index.md
+        - Search-results: how-to-use/viewer/search-results.md
       - Search module:
-        - Readme: how-to-use/search/index.md
+        - Index: how-to-use/search/index.md
         - Search-panel: how-to-use/search/search-panel.md
         - Fulltext search: how-to-use/search/fulltext-search.md
         - Extended search: how-to-use/search/extended-search.md
         - Expert search: how-to-use/search/expert-search.md
-      - Viewer module:
-        - Readme: how-to-use/viewer/index.md
-        - Search-results: how-to-use/viewer/search-results.md
+      - Action module:
+        - Index: how-to-use/action/index.md
+        - AdminImage: how-to-use/action/admin-image.md
+        - ExistingName: how-to-use/action/existing-name.md
+        - Key: how-to-use/action/key.md
+        - Message: how-to-use/action/message.md
+        - Progress indicator: how-to-use/action/progress-indicator.md
+        - SortButton: how-to-use/action/sort-button.md
+        - StringifyStringLiteral: how-to-use/action/stringify-string-literal.md
+        - Truncate: how-to-use/action/truncate.md
   - Contribution:
-    - How to contribute: how-to-contribute/contribution.md
+    - How to contribute: how-to-contribute/index.md
     - Design Documentation: how-to-contribute/design-documentation.md
     - Release Notes: how-to-contribute/release-notes.md
 
