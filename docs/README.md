@@ -19,25 +19,18 @@ If you have to contribute and you want to add or edit entries, please read the f
 
 ### File structure
 
-The documentation consists of three main topics with subordinate themes:
+The documentation consists of two main topics with subordinate themes:
 
-1. **User-Guide** contains all about the usage of the generic web application.
-    - Introduction / index = Web app overview
-    - Project management = Admin interface, where a project or system admin can define a project, build a team and user groups permissions but also define the data model (ontology and list editor).
-    - Data management = Research tools are part of the workspace where a user can look for sources, open and work on them: edit metadata, annotate and expand data by using e.g. a transcription tool.
-    - User management = All information related to the user account, e.g. user profile, user's projects and collections, update password.
-    - System management = System admin interface where a system admin can manage all projects and all users.
-    - Publication = Manifest++ will be the data presentation part where a user can configure a project specific webpage.
-1. **Developers** contains all information for people who wants to use Knora or to help improving one of the software mentioned above.
-    - Documentation = Information about the tools and usage
-    - Installation / Setup = Guide with the usual content about "getting started"
-    - API reference = all about Knora-API incl. Sipi IIIF routes
-    - Contribution = Design documentation to help people who want to write
-1. **Community** almost links to other services and support pages
-      - Discuss Forum = Link to [discuss.dasch.swiss](https://discuss.dasch.swiss)
-      - FAQ = List of questions and answers
-      - Product Updates = List of release notes
-      - About us = all about DaSCH and DaSCH developers
+1. **how-to-use** contains all about the usage of the DSP-UI modules.
+    - Getting Started = All about installation and init configuration
+    - Action = Documentation for action module content
+    - Core = Documentation for core module content
+    - Search = Documentation for search module content
+    - Viewer = Documentation for viewer module content
+1. **how-to-contribute** contains all information for people who wants to contribute to DSP-UI-LIB
+    - Contribution = How to contribute incl. link to the general DSP contribution guidelines (<https://docs.dasch.swiss/developers/dsp/contribution/>)
+    - Design Documentation
+    - Release Notes = Contains the CHANGELOG file of DSP-UI
 
 Images like screenshots and so on has to be stored in `assets/images`.
 
@@ -49,12 +42,12 @@ To run the documentation locally you'll need [Python](https://www.python.org/) i
 
 ```shell
 $ python --version
-Python 2.7.2
+Python 3.8.2
 $ pip --version
-pip 1.5.2
+pip 20.0.2 from /usr/local/lib/python3.8/site-packages/pip (python 3.8)
 ```
 
-MkDocs supports Python versions 2.7, 3.4, 3.5, 3.6, 3.7 and [pypy](https://pypy.org).
+MkDocs supports Python versions 3.5, 3.6, 3.7, 3.8, and pypy3.
 
 ### Installing dependencies
 
@@ -66,10 +59,10 @@ make install-requirements
 
 ### Getting started
 
-MkDocs comes with a built-in dev-server that lets you preview your documentation as you work on it. Make sure you're in the same directory as the mkdocs.yml configuration file, and then start the server by running the following command:
+MkDocs comes with a built-in dev-server that lets you preview your documentation as you work on it. Make sure you're in the same directory as the `mkdocs.yml` (repository's root folder) configuration file, and then start the server by running the following command:
 
 ```shell
-$ make serve-docs
+$ make docs-serve
 INFO    -  Building documentation...
 INFO    -  Cleaning site directory
 [I 160402 15:50:43 server:271] Serving on http://127.0.0.1:8000
@@ -77,12 +70,12 @@ INFO    -  Cleaning site directory
 [I 160402 15:50:43 handlers:60] Start detecting changes
 ```
 
-Open up http://127.0.0.1:8000/ in your browser, and you'll see the documentation start page being.
+Open up <http://127.0.0.1:8000/> in your browser, and you'll see the documentation start page being.
 
 In case you need to clean the project directory, run:
 
 ```shell
-make clean
+make docs-clean
 ```
 
 To get some help about the `make` commands, run:
@@ -96,9 +89,9 @@ make help
 To build the documentation just run
 
 ```shell
-make build-docs
+make docs-build
 ```
 
 ### Deploying github page
 
-On each push into `main` branch, a Github action script will build and deploy the documentation on [docs.dasch.swiss](https://docs.dasch.swiss). Behind the scenes, MkDocs builds the documentation and use the [ghp-import](https://github.com/davisp/ghp-import) tool to commit them to the gh-pages branch and then push the gh-pages branch to GitHub. That's it!
+On each release of DSP-UI-LIB, a Github action script will build and deploy the documentation on [dasch-swiss.github.io/dsp-ui-lib](https://dasch-swiss.github.io/dsp-ui-lib). Behind the scenes, MkDocs builds the documentation and use the [mkdocs-deploy-gh-pages](https://github.com/marketplace/actions/deploy-mkdocs) actions script to deploy them to the gh-pages. That's it!
