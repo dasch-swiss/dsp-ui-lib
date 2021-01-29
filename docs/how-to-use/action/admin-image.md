@@ -36,7 +36,7 @@ imgDefaultUser: string = 'root@example.com';
 imgSalsahUser: string = 'salsah@dasch.ch';
 ```
 
-![User avatars](../../../../assets/images/dsp-ui/admin-image1.png)
+![User avatars](../../assets/images/admin-image1.png)
 
 <hr>
 
@@ -57,4 +57,4 @@ imgDefaultProject: string = undefined;
 imgDaschProject: string = 'http://dasch.swiss/content/images/2017/11/DaSCH_Logo_RGB.png';
 ```
 
-![Default project logos](../../../../assets/images/dsp-ui/admin-image2.png)
+![Default project logos../../../assets/images/admin-image2.png)

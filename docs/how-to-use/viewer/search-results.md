@@ -19,7 +19,7 @@ The search-results gets the search mode and parameters from routes or inputs, an
 <kui-search-results></kui-search-results>
 ```
 
-![Simple search results example](../../../../assets/images/dsp-ui/search-results-simple.png)
+![Simple search results example../../../assets/images/search-results-simple.png)
 
 ## Search results filtered by project example
 
@@ -40,7 +40,7 @@ export class SearchResultsComponent {
 }
 ```
 
-![Search results filtered by project example](../../../../assets/images/dsp-ui/search-results-filter.png)
+![Search results filtered by project example../../../assets/images/search-results-filter.png)
 
 ## Search results providing search mode and query parameters example
 
@@ -69,4 +69,4 @@ export class SearchResultsComponent {
 }
 ```
 
-![Search results providing search mode and query parameters example](../../../../assets/images/dsp-ui/search-results-filter.png)
+![Search results providing search mode and query parameters example../../../assets/images/search-results-filter.png)

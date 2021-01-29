@@ -61,7 +61,7 @@ errorMessage: ApiServiceError = {
 };
 ```
 
-![Message in short version](../../../../assets/images/dsp-ui/message-short.png)
+![Message in short version../../../assets/images/message-short.png)
 
 <hr>
 
@@ -86,4 +86,4 @@ errorMessage: ApiServiceError = {
 };
 ```
 
-![Error message in default size version](../../../../assets/images/dsp-ui/message-error.png)
+![Error message in default size version../../../assets/images/message-error.png)

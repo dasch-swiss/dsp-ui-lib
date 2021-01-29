@@ -1,33 +1,37 @@
 site_name: DSP-UI documentation
 
 nav:
-    - Home: index.md
-    - Manual:
-        - Introduction: manual/index.md
+    - Introduction: introduction.md
+    - User Guide:
+        - Getting Started: how-to-use/getting-started.md
         - Action module:
-            - Readme: manual/action/index-action.md
-            - AdminImage: manual/action/admin-image.md
-            - ExistingName: manual/action/existing-name.md
-            - Key: manual/action/key.md
-            - Message: manual/action/message.md
-            - Progress indicator: manual/action/progress-indicator.md
-            - SortButton: manual/action/sort-button.md
-            - StringifyStringLiteral: manual/action/stringify-string-literal.md
-            - Truncate: manual/action/truncate.md
+            - Readme: how-to-use/action/index-action.md
+            - AdminImage: how-to-use/action/admin-image.md
+            - ExistingName: how-to-use/action/existing-name.md
+            - Key: how-to-use/action/key.md
+            - Message: how-to-use/action/message.md
+            - Progress indicator: how-to-use/action/progress-indicator.md
+            - SortButton: how-to-use/action/sort-button.md
+            - StringifyStringLiteral: how-to-use/action/stringify-string-literal.md
+            - Truncate: how-to-use/action/truncate.md
         - Core module:
-          - Readme: manual/core/index-core.md
+          - Readme: how-to-use/core/index-core.md
         - Search module:
-          - Readme: manual/search/index-search.md
-          - Search-panel: manual/search/search-panel.md
-          - Fulltext search: manual/search/fulltext-search.md
-          - Extended search: manual/search/extended-search.md
-          - Expert search: manual/search/expert-search.md
+          - Readme: how-to-use/search/index-search.md
+          - Search-panel: how-to-use/search/search-panel.md
+          - Fulltext search: how-to-use/search/fulltext-search.md
+          - Extended search: how-to-use/search/extended-search.md
+          - Expert search: how-to-use/search/expert-search.md
         - Viewer module:
-          - Readme: manual/viewer/index-viewer.md
-          - Search-results: manual/viewer/search-results.md
+          - Readme: how-to-use/viewer/index-viewer.md
+          - Search-results: how-to-use/viewer/search-results.md
     - Contribution:
-      - How to contribute: contribution/index.md
-      - Design Documentation: contribution/design-documentation.md
+      - How to contribute: how-to-support/contribution.md
+      - Design Documentation: how-to-support/design-documentation.md
+      - Release Notes: how-to-support/release-notes.md
+
+plugins:
+    - include-markdown
 
 theme:
   name: material

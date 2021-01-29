@@ -22,4 +22,4 @@ Extended search panel
 <router-outlet></router-outlet>
 ```
 
-![Advanced search panel with a search example](../../../../assets/images/dsp-ui/extended-search.png)
+![Advanced search panel with a search example../../../assets/images/extended-search.png)

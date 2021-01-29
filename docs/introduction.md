@@ -1,6 +1,6 @@
 # DSP-UI library
 
-## User Interface library for DSP-API
+## Angular modules for DSP-API
 
 DSP-UI library is published on [npmJS](https://www.npmjs.com/package/@dasch-swiss/dsp-ui). DSP-UI contains 4 modules: core, viewer, search and action.
 

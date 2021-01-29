@@ -20,4 +20,4 @@ Extended search panel
 <kui-expert-search (gravsearch)="setGravsearch($event)"></kui-expert-search>
 ```
 
-![Expert search panel with a default Gravsearch query](../../../../assets/images/dsp-ui/expert-search.png)
+![Expert search panel with a default Gravsearch query../../../assets/images/expert-search.png)

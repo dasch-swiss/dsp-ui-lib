@@ -21,7 +21,7 @@ filterbyproject (optional) | string | If the full-text search should be filtere
 <router-outlet></router-outlet>
 ```
 
-![Simple full-text search](../../../../assets/images/dsp-ui/fulltext-search-simple.png)
+![Simple full-text search../../../assets/images/fulltext-search-simple.png)
 
 ### Full-text search with project filter
 
@@ -32,4 +32,4 @@ filterbyproject (optional) | string | If the full-text search should be filtere
 <router-outlet></router-outlet>
 ```
 
-![Full-text search with project filter](../../../../assets/images/dsp-ui/fulltext-search-with-project-filter.png)
+![Full-text search with project filter../../../assets/images/fulltext-search-with-project-filter.png)

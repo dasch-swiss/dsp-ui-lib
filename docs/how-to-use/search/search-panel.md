@@ -27,4 +27,4 @@ Implement the search panel in your HTML file:
 <router-outlet></router-outlet>
 ```
 
-![Full search panel](../../../../assets/images/dsp-ui/search-panel.png)
+![Full search panel../../../assets/images/search-panel.png)
