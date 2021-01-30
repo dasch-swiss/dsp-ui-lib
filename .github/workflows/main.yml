@@ -181,8 +181,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           EXTRA_PACKAGES:
-            mkdocs-include-markdown-plugin
-            mkdocs-git-revision-date-plugin
+            mkdocs-include-markdown-plugin@2.7.1
+            mkdocs-git-revision-date-plugin@0.3.1
       - name: Disk Free After
         run: |
           df -h
