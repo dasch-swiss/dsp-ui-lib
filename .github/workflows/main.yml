@@ -168,21 +168,11 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r docs/requirements.txt
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          EXTRA_PACKAGES:
-            mkdocs-include-markdown-plugin@2.7.1
-            mkdocs-git-revision-date-plugin@0.3.1
+          REQUIREMENTS: docs/requirements.txt
       - name: Disk Free After
         run: |
           df -h
