@@ -180,6 +180,9 @@ jobs:
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          EXTRA_PACKAGES:
+            mkdocs-include-markdown-plugin
+            mkdocs-git-revision-date-plugin
       - name: Disk Free After
         run: |
           df -h
