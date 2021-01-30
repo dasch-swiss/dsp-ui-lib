@@ -1,4 +1,4 @@
-# How to Contribute to This Project
+# How to Contribute to this Project
 
 If you are interested in contributing to this project,
 please read our [general DSP contribution guidelines](https://docs.dasch.swiss/developers/dsp/contribution/) first.

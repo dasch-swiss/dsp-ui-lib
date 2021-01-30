@@ -17,9 +17,9 @@ Extended search panel
 ```html
 <!-- param route is where the router-outlet is defined for search results -->
 
-<kui-extended-search [route]="'/search'"></kui-search>
+<dsp-extended-search [route]="'/search'"></dsp-search>
 
 <router-outlet></router-outlet>
 ```
 
-![Advanced search panel with a search example../../../assets/images/extended-search.png)
+![Advanced search panel with a search example](../../assets/images/extended-search.png)

@@ -16,17 +16,17 @@ The search-results gets the search mode and parameters from routes or inputs, an
 ### HTML file
 
 ```html
-<kui-search-results></kui-search-results>
+<dsp-search-results></dsp-search-results>
 ```
 
-![Simple search results example../../../assets/images/search-results-simple.png)
+![Simple search results example](../../assets/images/search-results-simple.png)
 
 ## Search results filtered by project example
 
 ### HTML file
 
 ```html
-<kui-search-results [projectIri]="projectIri"></kui-search-results>
+<dsp-search-results [projectIri]="projectIri"></dsp-search-results>
 ```
 
 ### Typescript file
@@ -40,7 +40,7 @@ export class SearchResultsComponent {
 }
 ```
 
-![Search results filtered by project example../../../assets/images/search-results-filter.png)
+![Search results filtered by project example](../../assets/images/search-results-filter.png)
 
 ## Search results providing search mode and query parameters example
 
@@ -48,7 +48,7 @@ export class SearchResultsComponent {
 
 ```html
 <!-- example of an extended search where we pass a gravsearch query as search parameter -->
-<kui-search-results [searchMode]="'extended'" [searchQuery]="gravsearch"></kui-search-results>
+<dsp-search-results [searchMode]="'extended'" [searchQuery]="gravsearch"></dsp-search-results>
 ```
 
 ### Typescript file
@@ -69,4 +69,4 @@ export class SearchResultsComponent {
 }
 ```
 
-![Search results providing search mode and query parameters example../../../assets/images/search-results-filter.png)
+![Search results providing search mode and query parameters example](../../assets/images/search-results-filter.png)

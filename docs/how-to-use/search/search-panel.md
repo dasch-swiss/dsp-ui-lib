@@ -1,6 +1,6 @@
 # Search panel (Component)
 
-The search-panel contains the list of projects to filter and kui-fulltext-search and links to kui-extended-search and kui-expert-search.
+The search-panel contains the list of projects to filter and dsp-fulltext-search and links to dsp-extended-search and dsp-expert-search.
 
 ## Parameters
 
@@ -17,14 +17,14 @@ expert (optional) | boolean | Adds the expert search / gravsearch editor to the 
 Implement the search panel in your HTML file:
 
 ```html
-<kui-search-panel
+<dsp-search-panel
     [filterbyproject]="http://rdfh.ch/projects/0001"
     [projectfilter]="true"
     [advanced]="true"
     [expert]="true">
-</kui-search-panel>
+</dsp-search-panel>
 
 <router-outlet></router-outlet>
 ```
 
-![Full search panel../../../assets/images/search-panel.png)
+![Full search panel](../../assets/images/search-panel.png)

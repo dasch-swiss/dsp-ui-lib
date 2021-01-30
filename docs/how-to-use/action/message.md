@@ -35,8 +35,8 @@ medium (optional) | boolean |
 #### HTML file
 
 ```html
-<kui-message [message]="shortMessage" [short]="true"></kui-message>
-<kui-message [message]="errorMessage" [short]="true"></kui-message>
+<dsp-message [message]="shortMessage" [short]="true"></dsp-message>
+<dsp-message [message]="errorMessage" [short]="true"></dsp-message>
 ```
 
 #### Typescript file
@@ -61,7 +61,7 @@ errorMessage: ApiServiceError = {
 };
 ```
 
-![Message in short version../../../assets/images/message-short.png)
+![Message in short version](../../assets/images/message-short.png)
 
 <hr>
 
@@ -70,7 +70,7 @@ errorMessage: ApiServiceError = {
 #### HTML file
 
 ```html
-<kui-message [message]="errorMessage"></kui-message>
+<dsp-message [message]="errorMessage"></dsp-message>
 ```
 
 #### Typescript file
@@ -86,4 +86,4 @@ errorMessage: ApiServiceError = {
 };
 ```
 
-![Error message in default size version../../../assets/images/message-error.png)
+![Error message in default size version](../../assets/images/message-error.png)

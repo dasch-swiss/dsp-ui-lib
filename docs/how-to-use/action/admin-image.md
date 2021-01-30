@@ -57,4 +57,4 @@ imgDefaultProject: string = undefined;
 imgDaschProject: string = 'http://dasch.swiss/content/images/2017/11/DaSCH_Logo_RGB.png';
 ```
 
-![Default project logos../../../assets/images/admin-image2.png)
+![Default project logos](../../assets/images/admin-image2.png)

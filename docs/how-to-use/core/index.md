@@ -10,7 +10,7 @@ For existing apps, follow these steps to begin using DSP-UI CORE.
 
 ## Installation
 
-DspCoreModule is part of @dasch-swiss/dsp-ui, follow [the installation guide](/developers/dsp-ui/documentation/#installation).
+DspCoreModule is part of @dasch-swiss/dsp-ui, follow [the installation guide](/how-to-use/getting-started/).
 
 ## Usage
 
@@ -19,7 +19,13 @@ DspCoreModule is part of @dasch-swiss/dsp-ui, follow [the installation guide](/d
 ```typescript
 import { Component, Inject, OnInit } from '@angular/core';
 import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
-import { ApiResponseData, ApiResponseError, KnoraApiConnection, ProjectsResponse, ReadProject } from '@knora/api';
+import { 
+    ApiResponseData,
+    ApiResponseError,
+    KnoraApiConnection,
+    ProjectsResponse,
+    ReadProject
+} from '@dasch-swiss/dsp-js';
 
 @Component({
   selector: 'app-projects',

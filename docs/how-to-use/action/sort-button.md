@@ -21,7 +21,7 @@ sortKey | string | Set and get (two-way data binding) of current sort key
 ### HTML file
 
 ```html
-<kui-sort-button [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="'right'"></kui-sort-button>
+<dsp-sort-button [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="'right'"></dsp-sort-button>
 
 <ul>
     <li *ngFor="let item of list | kuiSortBy: sortKey">

@@ -10,15 +10,15 @@ For existing apps, follow these steps to begin using DSP-UI SEARCH.
 
 ## Installation
 
-DspSearchModule is part of @dasch-swiss/dsp-ui, follow [the installation guide](/developers/dsp-ui/documentation/#installation).
+DspSearchModule is part of @dasch-swiss/dsp-ui, follow [the installation guide](/how-to-use/getting-started/).
 
 ## Components
 
-This module contains various components to search. The main component is the kui-search-panel, which contains the kui-fulltext-search, kui-extended-search and kui-expert-search. All of them can be used standalone or in combination in kui-search-panel.
+This module contains various components to search. The main component is the dsp-search-panel, which contains the dsp-fulltext-search, dsp-extended-search and dsp-expert-search. All of them can be used standalone or in combination in dsp-search-panel.
 
 ### [Search panel](/developers/dsp-ui/documentation/search/search-panel)
 
-Fully customizable panel. You can set the following parameters in kui-search-panel:
+Fully customizable panel. You can set the following parameters in dsp-search-panel:
 
 - route: string; url-route for search results
 - filterbyproject: string; project iri to limit search results by project
@@ -30,7 +30,7 @@ If everything is set to false or undefined the search-panel is a simple full-tex
 
 ### [Full-text search (Deprecated)](/developers/dsp-ui/documentation/search/fulltext-search)
 
-`<kui-fulltext-search [route]="/search-results"></kui-fulltext-search>`
+`<dsp-fulltext-search [route]="/search-results"></dsp-fulltext-search>`
 
 The parameter `route` defines the route where the search-results-component of the app is defined.
 

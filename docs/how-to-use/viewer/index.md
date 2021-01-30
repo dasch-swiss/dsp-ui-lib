@@ -10,7 +10,7 @@ For existing apps, follow these steps to begin using DSP-UI VIEWER.
 
 ## Installation
 
-DspViewerModule is part of @dasch-swiss/dsp-ui, follow [the installation guide](/developers/dsp-ui/documentation/#installation).
+DspViewerModule is part of @dasch-swiss/dsp-ui, follow [the installation guide](/how-to-use/getting-started/).
 
 ## Setup
 

@@ -17,7 +17,7 @@ Extended search panel
 ```html
 <!-- param gravsearch is where the gravsearch query is cached or sent to Knora -->
 
-<kui-expert-search (gravsearch)="setGravsearch($event)"></kui-expert-search>
+<dsp-expert-search (gravsearch)="setGravsearch($event)"></dsp-expert-search>
 ```
 
-![Expert search panel with a default Gravsearch query../../../assets/images/expert-search.png)
+![Expert search panel with a default Gravsearch query](../../assets/images/expert-search.png)

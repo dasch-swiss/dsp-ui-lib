@@ -16,20 +16,20 @@ filterbyproject (optional) | string | If the full-text search should be filtere
 
 ```html
 <!-- param route is where the router-outlet is defined for search results -->
-<kui-fulltext-search [route]="'/search'"></kui-fulltext-search>
+<dsp-fulltext-search [route]="'/search'"></dsp-fulltext-search>
 
 <router-outlet></router-outlet>
 ```
 
-![Simple full-text search../../../assets/images/fulltext-search-simple.png)
+![Simple full-text search](../../assets/images/fulltext-search-simple.png)
 
 ### Full-text search with project filter
 
 ```html
 <!-- param route is where the router-outlet is defined for search results -->
-<kui-fulltext-search [route]="'/search'" [projectfilter]="true"></kui-fulltext-search>
+<dsp-fulltext-search [route]="'/search'" [projectfilter]="true"></dsp-fulltext-search>
 
 <router-outlet></router-outlet>
 ```
 
-![Full-text search with project filter../../../assets/images/fulltext-search-with-project-filter.png)
+![Full-text search with project filter](../../assets/images/fulltext-search-with-project-filter.png)

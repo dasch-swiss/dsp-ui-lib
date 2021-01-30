@@ -19,7 +19,7 @@ You can use the progress indicator in two ways:
 #### HTML file
 
 ```html
-<kui-progress-indicator></kui-progress-indicator>
+<dsp-progress-indicator></dsp-progress-indicator>
 ```
 
 <!-- <iframe src="https://stackblitz.com/edit/mini-examples?embed=1&file=src/main.ts&hideExplorer=1&hideNavigation=1&view=preview" width="700px" height="300px"></iframe> -->
@@ -30,7 +30,7 @@ You can use the progress indicator in two ways:
 
 e.g. as a list style type while submitting form data
 
-![Submit form data loader../../../assets/images/submit-form-data-loader.png)
+![Submit form data loader](../../assets/images/submit-form-data-loader.png)
 
 Angular Material Icons is required. You have to import the style file into your app and add the following line in your main styling file:
 
@@ -42,6 +42,6 @@ We recommend to host the Material Icons font in your app e.g. by using the [Mate
 
 ### Dynamic example of Submit-form-data loader
 
-![Loader before submit stage../../../assets/images/loader-before-submit-status.png)
-![Loader submitting stage../../../assets/images/loader-submitting-status.png)
-![Loader after submit stage../../../assets/images/loader-after-submit-status.png)
+![Loader before submit stage](../../assets/images/loader-before-submit-status.png)
+![Loader submitting stage](../../assets/images/loader-submitting-status.png)
+![Loader after submit stage](../../assets/images/loader-after-submit-status.png)
