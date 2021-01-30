@@ -23,21 +23,24 @@ The library consists of four Angular modules that are briefly described below.
 
 ### ➡ [DspCoreModule](https://dasch-swiss.github.io/dsp-ui-lib/how-to-use/core/)
 
-The core module contains configuration files and all injection tokens needed to connect to DSP-API.
+*Services for API requests*
+> DspCoreModule is a configuration handler for [`@dasch-swiss/dsp-js`](https://www.npmjs.com/package/@dasch-swiss/dsp-js) which offers all the services to make [DSP-API requests](https://docs.dasch.swiss/developers/knora/api-reference/queries/).
 
 ### ➡ [DspViewerModule](https://dasch-swiss.github.io/dsp-ui-lib/how-to-use/viewer/)
 
-The viewer module contains components to display resources of different types from DSP-API, and CRUD components to display, edit, create, and delete values.
+*Resources, Properties, Lists, Value components*
+> DspViewerModule contains object components to show a resource class representation, the property gui-elements and various view frameworks.
 
 ### ➡ [DspSearchModule](https://dasch-swiss.github.io/dsp-ui-lib/how-to-use/search/)
 
-The search module allows the user to make fulltext and advanced searches in DSP-API,
-using a graphical interface.
+*Search panel for all kind of search queries*
+> DspSearchModule allows to make full text or extended searches in DSP-API. Filter by resource class and its properties related to an ontology.
 
 ### ➡ [DspActionModule](https://dasch-swiss.github.io/dsp-ui-lib/how-to-use/action/)
 
-The action module contains special buttons (e.g. to sort a list), pipes and directives.
+*Special pipes and buttons*
+> DspActionModule contains special pipes to sort lists or to get the index key in arrays, but also directives and components for images, sort buttons and s.o.
 
 ## Contribution
 
-See our [general DSP contribution guidelines](https://docs.dasch.swiss/developers/dsp/contribution/) or the [DSP-UI specific contribution guidelines](https://dasch-swiss.github.io/dsp-ui/how-to-contribute/contribution/) and the [design documentation](https://dasch-swiss.github.io/dsp-ui/how-to-contribute/design-documentation/).
+If you want to contribute to develop DSP-UI modules with us, please consult the  [general DSP contribution guidelines](https://docs.dasch.swiss/developers/dsp/contribution/) or the [DSP-UI specific contribution guidelines](https://dasch-swiss.github.io/dsp-ui/how-to-contribute/contribution/) and the [design documentation](https://dasch-swiss.github.io/dsp-ui/how-to-contribute/design-documentation/).
