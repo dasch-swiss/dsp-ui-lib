@@ -90,7 +90,7 @@ jobs:
           changelog-types: '[{"type": "feat", "section": "Enhancements", "hidden": false }, {"type": "fix", "section": "Bug Fixes", "hidden": false }, {"type": "chore", "section": "Maintenance", "hidden": false }, {"type": "docs", "section": "Documentation", "hidden": false }]'
 
   publish:
-    name: Publish to npm
+    name: Publish to npm (on release only)
     needs: [build-test, e2e-test]
     runs-on: ubuntu-latest
     env:
