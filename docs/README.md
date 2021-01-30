@@ -26,6 +26,10 @@ The documentation consists of three main topics with subordinate themes:
 
 Images like screenshots and so on has to be stored in `assets/images`.
 
+The `mkdocs.yml` file is present in the top-level directory of the repo and the source files are in the `docs/` folder.
+
+Plugins have to be defined in `requirements.txt` and in github actions workflow `deploy-docs` step under `EXTRA_PACKAGES`.
+
 ## Getting Started
 
 To run the documentation locally you'll need [Python](https://www.python.org/) installed, as well as the Python package manager [pip](http://pip.readthedocs.io/en/stable/installing/). You can check if you have these already installed from the command line:
