@@ -45,7 +45,7 @@ MkDocs supports Python versions 3.5, 3.6, 3.7, 3.8, and pypy3.
 
 ### Installing dependencies
 
-Install the required packages by running
+Install the required packages by running the following command:
 
 ```shell
 make install-requirements
@@ -80,7 +80,7 @@ make help
 
 ### Building the documentation
 
-To build the documentation just run
+To build the documentation, run:
 
 ```shell
 make docs-build
@@ -88,4 +88,4 @@ make docs-build
 
 ### Deploying github page
 
-On each release of DSP-UI, a github action script will build and deploy the documentation on [dasch-swiss.github.io/dsp-ui-lib](https://dasch-swiss.github.io/dsp-ui-lib). Behind the scenes, MkDocs builds the documentation and use the [mkdocs-deploy-gh-pages](https://github.com/marketplace/actions/deploy-mkdocs) actions script to deploy them to the gh-pages. That's it!
+On each release of DSP-UI, a github action script will build and deploy the documentation on [dasch-swiss.github.io/dsp-ui-lib](https://dasch-swiss.github.io/dsp-ui-lib). Behind the scenes, MkDocs builds the documentation and uses the [mkdocs-deploy-gh-pages](https://github.com/marketplace/actions/deploy-mkdocs) actions script to deploy them to the gh-pages. That's it!
