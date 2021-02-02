@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.0...v1.2.1) (2021-02-02)
+
+
+### Documentation
+
+* update the READMEs and init mkDocs (DSP-1298) ([#271](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/271)) ([b436a31](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/b436a310a48a565e01c2511abdfa97252478db7f))
+
+
+### Maintenance
+
+* bumps DSP-JS and DSP-API version numbers ([#275](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/275)) ([c79e403](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/c79e4037432e7fc346e2ef51790550eeeb5d96c6))
+
 ## [1.2.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.1.1...v1.2.0) (2021-01-28)
 
 
