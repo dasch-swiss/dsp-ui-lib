@@ -43,4 +43,4 @@ The library consists of four Angular modules that are briefly described below.
 
 ## Contribution
 
-If you want to contribute to develop DSP-UI modules with us, please consult the  [general DSP contribution guidelines](https://docs.dasch.swiss/developers/dsp/contribution/) or the [DSP-UI specific contribution guidelines](https://dasch-swiss.github.io/dsp-ui-lib/how-to-contribute/) and the [design documentation](https://dasch-swiss.github.io/dsp-ui-lib/how-to-contribute/design-documentation/).
+If you would like to contribute to the development of the DSP-UI modules alongside us, please consult the  [general DSP contribution guidelines](https://docs.dasch.swiss/developers/dsp/contribution/) or the [DSP-UI specific contribution guidelines](https://dasch-swiss.github.io/dsp-ui-lib/how-to-contribute/) and the [design documentation](https://dasch-swiss.github.io/dsp-ui-lib/how-to-contribute/design-documentation/).
