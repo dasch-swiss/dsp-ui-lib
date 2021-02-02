@@ -18,16 +18,16 @@ type | string | type of image; you can use it with:<br> - project <br> - user
 **HTML file**
 ```html
 // Default user profile image
-<img kuiAdminImage [image]="imgDefaultUser" [type]="'user'" />
+<img dspAdminImage [image]="imgDefaultUser" [type]="'user'" />
 
 // Avatar example: 'salsah' user
-<img kuiAdminImage [image]="imgSalsahUser" [type]="'user'" />
+<img dspAdminImage [image]="imgSalsahUser" [type]="'user'" />
 
 // User image on error
-<img kuiAdminImage [image]="null" [type]="'user'" />
+<img dspAdminImage [image]="null" [type]="'user'" />
 
 // Default error image
-<img kuiAdminImage [image]="'null'" />
+<img dspAdminImage [image]="'null'" />
 ```
 
 **Typescript file**
@@ -45,10 +45,10 @@ imgSalsahUser: string = 'salsah@dasch.ch';
 **HTML file**
 ```html
 // Default project image
-<img kuiAdminImage [image]="imgDefaultProject" [type]="'project'" />
+<img dspAdminImage [image]="imgDefaultProject" [type]="'project'" />
 
 // Logo example: 'dasch' project
-<img kuiAdminImage [image]="imgDaschProject" [type]="'project'" />
+<img dspAdminImage [image]="imgDaschProject" [type]="'project'" />
 ```
 
 **Typescript file**

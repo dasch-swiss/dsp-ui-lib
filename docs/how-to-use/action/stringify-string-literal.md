@@ -10,10 +10,10 @@ Otherwise the pipe displays the value corresponding to the default language whic
 
 ```html
 <strong>Show all values</strong>
-<p>{{labels | kuiStringifyStringLiteral:'all'}}</p>
+<p>{{labels | dspStringifyStringLiteral:'all'}}</p>
 
 <strong>Show only one value</strong>
-<p>{{labels | kuiStringifyStringLiteral}}</p>
+<p>{{labels | dspStringifyStringLiteral}}</p>
 ```
 
 ### Typescript file

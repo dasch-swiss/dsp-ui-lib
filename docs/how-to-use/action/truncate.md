@@ -4,11 +4,11 @@ This pipe can be used to shorten long text by a defined length.
 
 In markup:
 
-`{{ str | kuiTruncate:[24] }}`
+`{{ str | dspTruncate:[24] }}`
 
 or
 
-`{{ str | kuiTruncate:[24, '...'] }}`
+`{{ str | dspTruncate:[24, '...'] }}`
 
 The first parameter defines the length where to truncate the string.
 Second optional parameter defines the characters to append to the shortened string. Default is `...`.
@@ -21,7 +21,7 @@ The same construct with Angular slice pipe looks as follow: `{{ (str.length>24)?
 ### HTML file
 
 ```html
-<p>{{longText | kuiTruncate:[24]}}</p>
+<p>{{longText | dspTruncate:[24]}}</p>
 ```
 
 ### Typescript file

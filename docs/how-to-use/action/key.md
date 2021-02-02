@@ -12,7 +12,7 @@ When the value is an object with name and label, you get them with `{{item.value
 
 ```html
 <ul>
-    <li *ngFor="let item of array | kuiKey">
+    <li *ngFor="let item of array | dspKey">
         {{item.key}}: {{item.value}}
     </li>
 </ul>

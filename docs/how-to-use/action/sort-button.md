@@ -24,7 +24,7 @@ sortKey | string | Set and get (two-way data binding) of current sort key
 <dsp-sort-button [sortProps]="sortProps" [(sortKey)]="sortKey" [position]="'right'"></dsp-sort-button>
 
 <ul>
-    <li *ngFor="let item of list | kuiSortBy: sortKey">
+    <li *ngFor="let item of list | dspSortBy: sortKey">
         <span [class.active]="sortKey === 'prename'">{{item.prename}} </span>
         <span [class.active]="sortKey === 'lastname'">{{item.lastname}} </span>
         by
