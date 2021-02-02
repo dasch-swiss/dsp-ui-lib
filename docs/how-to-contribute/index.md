@@ -3,16 +3,16 @@
 If you are interested in contributing to this project,
 please read our [general DSP contribution guidelines](https://docs.dasch.swiss/developers/dsp/contribution/) first.
 
-## Structure of This Project
+## Structure of this Project
 
 This project consists of two main parts:
 
-1. The Angular library `DSP-UI-LIB (@dasch-swiss/dsp-ui)` in `project/dsp-ui`.
+1. The Angular library `DSP-UI (@dasch-swiss/dsp-ui)` in `project/dsp-ui`.
 1. The demo Angular Application (Playground) in `src/app`.
 
 The Angular library contains the code that is published on NPM.
 The demo Angular application's purpose is to demonstrate the library's functionality.
-The library needs to be built first in order to use it withing the demo application.
+The library needs to be built first in order to use it within the demo application.
 
 The demo application uses the **locally built version** of `@dasch-swiss/dsp-ui`
 which is configured in [tsconfig.json](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/tsconfig.json) (`compilerOptions.paths`),
@@ -37,7 +37,7 @@ The demo application requires a running instance of
 [DSP-API (Knora)](https://docs.knora.org/04-publishing-deployment/getting-started/)
 compatible with the version defined in [vars.mk](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/vars.mk): {% include-markdown "../../vars.mk" %}
 
-## First steps
+## First Steps
 
 Clone this repository:
 
@@ -104,7 +104,7 @@ The E2E tests can be run as follows:
 - `npm run webdriver-update`
 - `npm run e2e`
 
-## DSP-UI library developement
+## DSP-UI Library Developement
 
 ### Adding New Components etc. to the Library
 
@@ -210,19 +210,16 @@ The second step runs a container based on the image built in the previous step:
 
 You can now access the app on your local machine under <http://localhost:4200/>.
 
-
-
-
 ## Architecture of the Library
 
 See [design documentation](./design-documentation.md).
 
-## Local Publishing of DSP-UI-LIB
+## Local Publishing of DSP-UI
 
-The demo application uses the locally built version of DSP-UI-LIB, see the repository's [structure](#structure-of-this-project).
+The demo application uses the locally built version of DSP-UI, see the repository's [structure](#structure-of-this-project).
 
-If you want to install an unpublished version of DSP-UI-LIB in your Angular application, you can use [yalc](https://www.npmjs.com/package/yalc).
-`yalc` publishes DSP-UI-LIB to a local store.
+If you want to install an unpublished version of DSP-UI in your Angular application, you can use [yalc](https://www.npmjs.com/package/yalc).
+`yalc` publishes DSP-UI to a local store.
 
 Install `yalc`:
 

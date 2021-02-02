@@ -11,7 +11,7 @@ If you would like to add your own contributions to the docs, please read the fol
 
 The documentation consists of three main topics with subordinate themes:
 
-1. **index** contains general information about the DSP-UI
+1. **index** contains all information about the DSP-UI
 1. **how-to-use** contains all about the usage of the DSP-UI modules
     - Getting Started = All about the installation and init configuration
     - Core = Documentation for the core module content

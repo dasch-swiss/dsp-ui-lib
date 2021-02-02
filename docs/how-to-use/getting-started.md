@@ -26,7 +26,7 @@ This library has the following peer dependencies, which you also have to meet:
 
 The library is compatible with the DSP-API version defined in [vars.mk](https://github.com/dasch-swiss/dsp-ui-lib/blob/main/vars.mk): {% include-markdown "../../vars.mk" %}
 
-DSP-UI-LIB supports runtime configuration.
+The DSP-UI library supports runtime configuration.
 The configuration is loaded when your Angular application starts.
 
 In your Angular project, create the file `config.dev.json` inside `src/config/`:
