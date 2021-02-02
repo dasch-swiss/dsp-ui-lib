@@ -6,11 +6,11 @@ It can be used to give feedbacks in a form e.g. update process: show success or 
 
 ## Parameters
 
-### Message type: KuiMessageData or ApiServiceError
+### Message type: DspMessageData or ApiServiceError
 
 Name | Type | Description
 --- | --- | ---
-message | KuiMessageData, ApiServiceError | This type needs at least a status number (0-511). In this case, or if type is ApiServiceError, it takes the default status messages from the list of HTTP status codes <br> (https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
+message | DspMessageData, ApiServiceError | This type needs at least a status number (0-511). In this case, or if type is ApiServiceError, it takes the default status messages from the list of HTTP status codes <br> (https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
 
 <hr>
 
@@ -43,7 +43,7 @@ medium (optional) | boolean |
 
 ```ts
 // short message example
-shortMessage: KuiMessageData = {
+shortMessage: DspMessageData = {
     status: 200,
     statusMsg: 'Success',
     statusText: 'You just update the user profile.',

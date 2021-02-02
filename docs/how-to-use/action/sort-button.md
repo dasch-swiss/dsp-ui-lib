@@ -1,7 +1,7 @@
 # SortButton (Component)
 
 A component with a list of properties to sort a list by one of them.
-It can be used together with the KuiSortBy pipe.
+It can be used together with the DspSortBy pipe.
 
 ## Parameters
 
