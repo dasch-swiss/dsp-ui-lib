@@ -34,7 +34,7 @@ which are then updated in `ResourceViewComponent.resPropInfoVals`.
 
 The viewer module provides components to perform CRUD operations.
 These are split into two groups called **value** and **operation** components.
-The value components deal with the specifics of each value type supported by Knora,
+The value components deal with the specifics of each value type supported by DSP-API,
 the operation components deal with the actual CRUD operations.
 With the current design, an operation component can be written in a generic way so that it supports all value types.
 Therefore, there is no need to write value specific operation components.
@@ -136,7 +136,7 @@ This is [necessary](https://indepth.dev/never-again-be-confused-when-implementin
 #### Operation Components
 
 Operation components work with any value. They control the value components' inputs `displayValue` and `mode`.
-They are responsible for the communication with the Knora API using `@dasch-swiss/dsp-js` when updating or creating a value.
+They are responsible for the communication with the DSP-API using `@dasch-swiss/dsp-js` when updating or creating a value.
 
 `DisplayEditComponent` is an operation component that displays an existing value and makes it editable
  if the user has the necessary permissions.
