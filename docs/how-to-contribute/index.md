@@ -260,6 +260,6 @@ Before publishing:
   - Update DSP-JS version in `package.json` and run `npm install` to update the `package-lock.json`
   - Update DSP-JS version in section `peerDependencies` of `projects/dsp-ui/package.json`
 
-A new version will be published with each Github release as it's part of Github actions' workflow. To make a new release, you have to merge the open release PR as described [here](https://docs.dasch.swiss/developers/dsp/contribution/#create-release).
+A new version will be published with each github release as it's part of github actions' workflow. To make a new release, you have to merge the open release PR as described [here](https://docs.dasch.swiss/developers/dsp/contribution/#create-release).
 
 The new package will be available on <https://www.npmjs.com/package/@dasch-swiss/dsp-ui>.

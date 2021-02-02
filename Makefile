@@ -13,7 +13,7 @@ include vars.mk
 #################################
 
 .PHONY: docs-publish
-docs-publish: ## build and publish docs to Github Pages
+docs-publish: ## build and publish docs to github Pages
 	mkdocs gh-deploy
 
 .PHONY: docs-build

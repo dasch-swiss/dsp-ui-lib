@@ -28,7 +28,7 @@ Images like screenshots and so on have to be stored in `assets/images`.
 
 The `mkdocs.yml` file is present in the top-level directory of the repo and the source files are in the `docs/` folder.
 
-Plugins have to be defined in `requirements.txt` and in github actions workflow `deploy-docs` step under `EXTRA_PACKAGES`.
+Plugins have to be defined in `requirements.txt` and in the github actions workflow `deploy-docs` step under `EXTRA_PACKAGES`.
 
 ## Getting Started
 
@@ -88,4 +88,4 @@ make docs-build
 
 ### Deploying github page
 
-On each release of DSP-UI, a Github action script will build and deploy the documentation on [dasch-swiss.github.io/dsp-ui-lib](https://dasch-swiss.github.io/dsp-ui-lib). Behind the scenes, MkDocs builds the documentation and use the [mkdocs-deploy-gh-pages](https://github.com/marketplace/actions/deploy-mkdocs) actions script to deploy them to the gh-pages. That's it!
+On each release of DSP-UI, a github action script will build and deploy the documentation on [dasch-swiss.github.io/dsp-ui-lib](https://dasch-swiss.github.io/dsp-ui-lib). Behind the scenes, MkDocs builds the documentation and use the [mkdocs-deploy-gh-pages](https://github.com/marketplace/actions/deploy-mkdocs) actions script to deploy them to the gh-pages. That's it!
