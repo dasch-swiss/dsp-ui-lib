@@ -1,6 +1,6 @@
 # SortButton (Component)
 
-A component with a list of properties to sort a list by one of them.
+A component with a list of properties to sort a list by.
 It can be used together with the DspSortBy pipe.
 
 ## Parameters

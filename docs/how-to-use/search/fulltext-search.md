@@ -7,7 +7,7 @@ Input field to perform a full text search.
 Name | Type | Description
 --- | --- | ---
 route | string | Route to navigate after search. This route path should contain a component for search results.
-projectfilter (optional) | boolean | If true it shows the selection of projects to filter by one of them
+projectfilter (optional) | boolean | If true it shows the selection of projects to filter by.
 filterbyproject (optional) | string | If the full-text search should be filtered by one project, you can define it with project iri.
 
 ## Examples

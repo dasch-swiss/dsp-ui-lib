@@ -2,7 +2,7 @@
 
 You can use the admin image module for user avatar together with gravatar.com and for project logos.
 
-The feature of this module ist the error handling: In case of a 404 error of the image source (img src) the module shows a default image-not-found image. Or a default user profile icon (type=user), or a default project icon (type=project).
+The feature of this module is the error handling: In case of a 404 error of the image source (img src) the module shows a default image-not-found image. Or a default user profile icon (type=user), or a default project icon (type=project).
 
 ## Parameters
 

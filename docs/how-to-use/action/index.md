@@ -51,4 +51,4 @@ TODO: fill in this section with an example -->
 
 ## Components, Directives and Pipes
 
-This module contains various components like a progress indicator, sort button and sort-by pipe, but also helper for images (in the admin interface) and existing names.
+This module contains various components like a progress indicator, sort button and sort-by pipe, but also directives for images (in the admin interface) and existing names.

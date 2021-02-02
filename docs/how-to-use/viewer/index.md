@@ -1,6 +1,6 @@
 # DSP-UI VIEWER module
 
-DspViewerModule contains components to display resources; as single item or as a list for search results. It is comprised of resource sub-components such as file representations components to display still image, video, audio or text only and also value components to use single property elements.
+DspViewerModule contains components to display resources; as a single item or as a list for search results. It is comprised of resource sub-components such as file representations components to display still images, video, audio or text only and also value components to use single property elements.
 
 ## Prerequisites
 

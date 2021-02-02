@@ -1,8 +1,7 @@
-# ExistingName (Directive)
+# ExistingName (Directive)
 
-With the ExistingNameDirective, we could prevent to use a name which has to be unique but already exists
-e.g. get a list of all project shortnames, then we can use this list as existing names;
-you can also use it for a list of blacklisted (not allowed) words.
+With the ExistingNameDirective, we can prevent the usage of a name which should be unique but already exists.
+e.g. It can be used to get a list of all project shortnames which can then be used as a list of existing names when checking the validity of a new project shortname. Alternatively, you can also use this as a blacklist for words you don't want the user to be able to enter.
 
 ## Methods
 

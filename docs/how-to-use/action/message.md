@@ -1,4 +1,4 @@
-# Message (Component)
+# Message (Component) - DEPRECATED
 
 Message component to handle notes, warning and error messages.
 If you set the paramater `[short]="true"`, it shows a smaller message.
@@ -14,7 +14,7 @@ message | DspMessageData, ApiServiceError | This type needs at least a status nu
 
 <hr>
 
-**Show short message only: it can be used in form to show if a post was successfull or not.**
+**Show short message only: it can be used in a form to show if a post was successfull or not.**
 
 Name | Type | Description
 --- | --- | ---
@@ -22,7 +22,7 @@ short (optional) | boolean |
 
 <hr>
 
-**Show medium message: a message box without footnote and withou links.**
+**Show medium message: a message box without footnotes or links.**
 
 Name | Type | Description
 --- | --- | ---

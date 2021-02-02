@@ -22,7 +22,7 @@ Fully customizable panel. You can set the following parameters in dsp-search-pan
 
 - route: string; url-route for search results
 - filterbyproject: string; project iri to limit search results by project
-- projectfilter: boolean; selection of all projects to filter by one of them
+- projectfilter: boolean; selection of all projects to filter by
 - advanced: boolean; additional menu with advanced / extended search
 - expert: boolean;  additional menu with expert search / gravsearch "editor"
 
@@ -55,7 +55,7 @@ We suggest to define a route for the search-results in the app.routing
 
 Generic search filter tool to limit search results to ontology and resource class and / or properties.
 
-If you want to use this search, you have to add the following css style to you main app stylesheet to style the date picker properly.
+If you want to use this search, you have to add the following css style to your main app stylesheet to style the date picker properly.
 
 ```css
 .mat-datepicker-content {

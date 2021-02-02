@@ -1,6 +1,6 @@
 # Expert search (Component)
 
-The expert search is a textarea field in which Gravsearch queries can be written. Complex search can be made this way but you must know the [Gravsearch language](https://docs.knora.org/paradox/03-apis/api-v2/query-language.html).
+The expert search is a textarea field in which Gravsearch queries can be written. Complex searches can be made this way but you must know the [Gravsearch language](https://docs.knora.org/paradox/03-apis/api-v2/query-language.html).
 
 ## Parameters
 
@@ -15,7 +15,7 @@ toggleExpertSearchForm | boolean | Trigger toggle for extended search form.
 Extended search panel
 
 ```html
-<!-- param gravsearch is where the gravsearch query is cached or sent to Knora -->
+<!-- param gravsearch is where the gravsearch query is cached or sent to DSP-API -->
 
 <dsp-expert-search (gravsearch)="setGravsearch($event)"></dsp-expert-search>
 ```

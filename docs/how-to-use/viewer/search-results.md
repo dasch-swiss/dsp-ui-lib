@@ -1,6 +1,6 @@
 # Search results (Component)
 
-The search-results gets the search mode and parameters from routes or inputs, and returns the corresponding resources that are displayed in a list or a grid. The results can be filtered by project.
+The search-results component gets the search mode and parameters from routes or inputs, and returns the corresponding resources that are displayed in a list or a grid. The results can be filtered by project.
 
 ## List of parameters
 

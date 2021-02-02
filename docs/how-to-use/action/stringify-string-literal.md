@@ -2,7 +2,7 @@
 
 This pipe stringifies an array of StringLiterals. With the parameter `all`, the pipe concats all values and appends the corresponding language in brackets.
 
-Otherwise the pipe displays the value corresponding to the default language which comes from the user profile (if a user is logged-in) or from the browser. With the predefined language the pipe checks, if a value exists in the array, otherwise it shows the first value.
+Otherwise the pipe displays the value corresponding to the default language which comes from the user profile (if a user is logged-in) or from the browser. With the predefined language the pipe checks if a value exists in the array, otherwise it shows the first value.
 
 ## Example - StringifyStringLiteral Pipe
 

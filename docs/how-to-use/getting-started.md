@@ -12,7 +12,6 @@ npm install @dasch-swiss/dsp-ui
 
 This library has the following peer dependencies, which you also have to meet:
 
-<!-- TODO: the following package will be renamed to @dasch-swiss/dsp-js and the list of dependencies incl. version will be added to an external matrix file -->
 - [@dasch-swiss/dsp-js](https://www.npmjs.com/package/@dasch-swiss/dsp-js)
 - [jdnconvertiblecalendar](https://www.npmjs.com/package/jdnconvertiblecalendar)
 - [jdnconvertiblecalendardateadapter](https://www.npmjs.com/package/jdnconvertiblecalendardateadapter)
@@ -146,8 +145,7 @@ Alternatively, you can just reference the file directly. This would look somethi
 ```
 
 ## Usage
-<!-- TODO: add the modules to app.modules and use them as usual  -->
-<!-- app.modules -->
+
 Add the desired modules from DSP-UI to the `app.module.ts`.
 Always import `DspCoreModule`.
 
