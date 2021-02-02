@@ -1,0 +1,58 @@
+site_name: DSP-UI documentation
+
+repo_url: https://github.com/dasch-swiss/dsp-ui-lib
+repo_name: dasch-swiss/dsp-ui-lib
+edit_uri: blob/main/docs/
+copyright: "&copy; 2017 - 2021 <a href='https://dasch.swiss' target='_blank'>Data and Service Center for the Humanities (DaSCH)</a>"
+
+nav:
+  - Introduction: index.md
+  - User Guide:
+      - Getting Started: how-to-use/getting-started.md
+      - Core module:
+        - Introduction Core: how-to-use/core/index.md
+      - Viewer module:
+        - Introduction Viewer: how-to-use/viewer/index.md
+        - Search-results: how-to-use/viewer/search-results.md
+      - Search module:
+        - Introduction Search: how-to-use/search/index.md
+        - Search-panel: how-to-use/search/search-panel.md
+        - Fulltext search: how-to-use/search/fulltext-search.md
+        - Extended search: how-to-use/search/extended-search.md
+        - Expert search: how-to-use/search/expert-search.md
+      - Action module:
+        - Introduction Action: how-to-use/action/index.md
+        - AdminImage: how-to-use/action/admin-image.md
+        - ExistingName: how-to-use/action/existing-name.md
+        - Key: how-to-use/action/key.md
+        - Message: how-to-use/action/message.md
+        - Progress indicator: how-to-use/action/progress-indicator.md
+        - SortButton: how-to-use/action/sort-button.md
+        - StringifyStringLiteral: how-to-use/action/stringify-string-literal.md
+        - Truncate: how-to-use/action/truncate.md
+  - Contribution:
+    - How to contribute: how-to-contribute/index.md
+    - Design Documentation: how-to-contribute/design-documentation.md
+    - Docs Documentation: how-to-contribute/docs-documentation.md
+    - Release Notes: how-to-contribute/release-notes.md
+
+plugins:
+    - include-markdown
+    - search
+    - git-revision-date
+
+theme:
+  name: material
+  logo: 'assets/icons/dasch-icon-white.svg'
+  favicon: 'assets/icons/dasch-favicon.ico'
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    primary: 'deep purple'
+    accent: 'deep purple'
+  features:
+    - navigation.tabs
+    - navigation.sections
+
+extra_css:
+  - 'assets/style/theme.css'

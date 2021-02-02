@@ -8,9 +8,36 @@ include vars.mk
 
 .PHONY: clean
 
-# Clones the knora-api git repository
+#################################
+# Documentation targets
+#################################
+
+.PHONY: docs-publish
+docs-publish: ## build and publish docs to github Pages
+	mkdocs gh-deploy
+
+.PHONY: docs-build
+docs-build: ## build docs into the local 'site' folder
+	mkdocs build
+
+.PHONY: docs-serve
+docs-serve: ## serve docs for local viewing
+	mkdocs serve
+
+.PHONY: docs-install-requirements
+docs-install-requirements: ## install requirements
+	pip3 install -r docs/requirements.txt
+
+.PHONY: docs-clean
+docs-clean: ## cleans the project directory
+	@rm -rf site/
+
+#################################
+# Knora stack (DSP-API) targets
+#################################
+
 .PHONY: clone-knora-stack
-clone-knora-stack:
+clone-knora-stack: # Clones the knora-api git repository
 	@rm -rf $(CURRENT_DIR)/.tmp/knora-stack
 	@git clone --branch $(API_VERSION) --single-branch --depth 1 https://github.com/dasch-swiss/dsp-api.git $(CURRENT_DIR)/.tmp/knora-stack
 
