@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { KnoraApiConnection, UserCache, UserResponse } from '@dasch-swiss/dsp-js';
-import { AsyncSubject } from 'rxjs';
+import { AsyncSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../core/core.module';
 
 @Injectable({
@@ -21,8 +22,10 @@ export class UserService {
      *
      * @param userIri the Iri identifying the user.
      */
-    getUser(userIri: string): AsyncSubject<UserResponse> {
-        return this._userCache.getUser(userIri);
+    getUser(userIri: string): Observable<UserResponse> {
+        return this._userCache.getUser(userIri).pipe(
+            map(user => user)
+        );
     }
 
 }
