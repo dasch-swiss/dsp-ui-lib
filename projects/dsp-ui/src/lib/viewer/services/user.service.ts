@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { KnoraApiConnection, UserCache, UserResponse } from '@dasch-swiss/dsp-js';
-import { AsyncSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DspApiConnectionToken } from '../../core/core.module';
 
