@@ -7,14 +7,12 @@ import {
     MockUsers,
     ProjectsEndpointAdmin,
     ReadResource,
-    ResourcesEndpointV2,
-    UserResponse,
+    ResourcesEndpointV2
 } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken, DspViewerModule, UserService } from '@dasch-swiss/dsp-ui';
-import { of } from 'rxjs/internal/observable/of';
-import { map } from 'rxjs/internal/operators/map';
 import { ViewerPlaygroundComponent } from './viewer-playground.component';
-import { AsyncSubject } from 'rxjs';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 describe('ViewerPlaygroundComponent', () => {
     let component: ViewerPlaygroundComponent;
@@ -89,11 +87,7 @@ describe('ViewerPlaygroundComponent', () => {
             () => {
                 const user = MockUsers.mockUser();
 
-                const subj: AsyncSubject<UserResponse> = new AsyncSubject();
-                subj.next(user.body);
-                subj.complete();
-
-                return subj;
+                return of(user.body);
             }
         );
 

@@ -36,11 +36,10 @@ import {
     UpdateIntValue,
     UpdateResource,
     UpdateValue,
-    UserResponse,
     ValuesEndpointV2,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
-import { AsyncSubject, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AjaxError } from 'rxjs/ajax';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { UserService } from '../../services/user.service';
@@ -418,11 +417,7 @@ describe('DisplayEditComponent', () => {
         () => {
             const user = MockUsers.mockUser();
 
-            const subj: AsyncSubject<UserResponse> = new AsyncSubject();
-            subj.next(user.body);
-            subj.complete();
-
-            return subj;
+            return of(user.body);
         }
     );
 
