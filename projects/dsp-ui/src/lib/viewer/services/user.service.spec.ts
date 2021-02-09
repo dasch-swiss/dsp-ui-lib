@@ -1,8 +1,8 @@
 import { async, TestBed } from '@angular/core/testing';
-import { MockUsers, UserResponse } from '@dasch-swiss/dsp-js';
-import { AsyncSubject } from 'rxjs';
+import { MockUsers } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../core/core.module';
 import { UserService } from './user.service';
+import { of } from 'rxjs';
 
 describe('UserService', () => {
     let service: UserService;
@@ -31,11 +31,7 @@ describe('UserService', () => {
             () => {
                 const user = MockUsers.mockUser();
 
-                const subj: AsyncSubject<UserResponse> = new AsyncSubject();
-                subj.next(user.body);
-                subj.complete();
-
-                return subj;
+                return of(user.body);
             }
         );
 
