@@ -7,6 +7,8 @@
 
 * **dependency:** update dsp-js to v2.0.0 and dsp-api to v13.2.0 ([#276](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/276)) ([d03aef7](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/d03aef73f255135d098771692cd3372a9160db4b))
 
+* **dependency:** update dsp-js to v2.0.1 and dsp-api to v13.3.1 ([#278](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/278)) ([c27d5f7](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/c27d5f7f925b1cf204f6e9c1df5cd01e77573a1b))
+
 ### [1.2.1](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.0...v1.2.1) (2021-02-02)
 
 
