@@ -20,10 +20,10 @@
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^9.0.0",
-    "@angular/core": "^9.0.0",
-    "@angular/material": "^9.0.0",
-    "@angular/cdk": "^9.0.0",
+    "@angular/common": "~10.2.4",
+    "@angular/core": "~10.2.4",
+    "@angular/material": "^10.2.7",
+    "@angular/cdk": "^10.2.7",
     "@dasch-swiss/dsp-js": "^2.0.1",
     "jdnconvertiblecalendar": "^0.0.6",
     "jdnconvertiblecalendardateadapter": "^0.0.15",
