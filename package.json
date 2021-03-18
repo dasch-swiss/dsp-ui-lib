@@ -46,7 +46,7 @@
     "@angular/platform-browser-dynamic": "~10.2.4",
     "@angular/router": "~10.2.4",
     "@ckeditor/ckeditor5-angular": "^1.2.3",
-    "@dasch-swiss/dsp-js": "^2.0.1",
+    "@dasch-swiss/dsp-js": "^2.2.0",
     "ckeditor5-custom-build": "github:dasch-swiss/ckeditor_custom_build",
     "jdnconvertiblecalendar": "^0.0.6",
     "jdnconvertiblecalendardateadapter": "^0.0.15",
