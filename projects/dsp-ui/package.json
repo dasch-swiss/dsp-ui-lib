@@ -16,6 +16,9 @@
   ],
   "author": "Data and Service Center for the Humanities DaSCH, University of Basel",
   "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
     "@angular/common": "^9.0.0",
     "@angular/core": "^9.0.0",
