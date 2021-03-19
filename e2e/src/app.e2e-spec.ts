@@ -1,5 +1,7 @@
 import { ProtractorHarnessEnvironment } from '@angular/cdk/testing/protractor';
 import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
+// import { SelectOntologyHarness } from '../../projects/dsp-ui/src/lib/search/advanced-search/select-ontology/select-ontology.harness'; // TODO: import from lib path
+import { SelectOntologyHarness } from '@dasch-swiss/dsp-ui';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { browser, by, element, logging, WebElement } from 'protractor';
 import { AppPage } from './app.po';
@@ -92,18 +94,16 @@ describe('Test App', () => {
 
             expect(await submitButton.isDisabled()).toBe(true);
 
-            const selectOntos = await page.getAdvancedSearchOntologySelection(loader, timeout);
+            const selectOntoHarness: SelectOntologyHarness = await loader.getHarness(SelectOntologyHarness);
 
-            await selectOntos.open();
-
-            const ontoOptions = await selectOntos.getOptions();
+            const ontoOptions = await selectOntoHarness.getOntologyOptions();
 
             expect(ontoOptions.length).toEqual(11);
 
-            expect(await ontoOptions[0].getText()).toEqual('The anything ontology');
+            expect(ontoOptions[0]).toEqual('The anything ontology');
 
             // anything onto
-            await selectOntos.clickOptions({ text: 'The anything ontology'});
+            await selectOntoHarness.chooseOntology('The anything ontology');
 
             // check for the async response from Knora: anything and knora-api ontology
             await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,

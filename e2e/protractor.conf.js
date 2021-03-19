@@ -2,6 +2,12 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
+const tsConfig = require('../tsconfig.json'); // https://github.com/nrwl/nx/issues/263#issuecomment-485889032
+
+// define the global window object because jsonld needs it
+global['window'] = {
+    addEventListener: () => {}
+};
 const {SpecReporter, StacktraceOption} = require('jasmine-spec-reporter');
 
 /**
@@ -30,6 +36,11 @@ exports.config = {
     onPrepare() {
         require('ts-node').register({
             project: require('path').join(__dirname, './tsconfig.json')
+        });
+        require('tsconfig-paths').register({
+            project: require('path').join(__dirname, './tsconfig.json'),
+            baseUrl: './',
+            paths: tsConfig.compilerOptions.paths
         });
         jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: StacktraceOption.RAW}}));
     }
