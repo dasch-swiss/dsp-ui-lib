@@ -38,12 +38,12 @@
         <mat-error *ngIf="startDateControl.hasError('required')">
             <span class="custom-error-message">Start date is <strong>required</strong></span>
         </mat-error>
-        <mat-error *ngIf="startDateControl.hasError('sameCalendarRequired')">
-            <span class="custom-error-message">In a period, start and end date must use the same
+        <mat-error *ngIf="startDateControl.hasError('sameCalendarRequired') && (startDateControl.value !== null || endDateControl.value !== null)">
+            <span class="custom-error-message">In a period, start and end dates are <strong>required</strong> and must use the same
                 <strong>calendar</strong></span>
         </mat-error>
-        <mat-error *ngIf="startDateControl.hasError('periodStartEnd')">
-            <span class="custom-error-message">In a period, start must be <strong>before end</strong></span>
+        <mat-error *ngIf="startDateControl.hasError('periodStartEnd') && startDateControl.value !== null && endDateControl.value !== null">
+            <span class="custom-error-message">In a period, start must be <strong>before</strong> end</span>
         </mat-error>
     </div>
 

@@ -12,7 +12,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    ApiResponseError, Constants,
+    ApiResponseError,
+    Constants,
     DeleteValue,
     DeleteValueResponse,
     MockResource,
@@ -35,11 +36,10 @@ import {
     UpdateIntValue,
     UpdateResource,
     UpdateValue,
-    UserResponse,
     ValuesEndpointV2,
     WriteValueResponse
 } from '@dasch-swiss/dsp-js';
-import { AsyncSubject, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AjaxError } from 'rxjs/ajax';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { UserService } from '../../services/user.service';
@@ -303,13 +303,13 @@ class TestHostDisplayValueComponent implements OnInit {
         standoffLinkVal.linkedResourceIri = 'testIri';
 
         const propDefinition = this.readResource.entityInfo.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue'];
-        propDefinition.id = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+        propDefinition.id = Constants.HasStandoffLinkToValue;
 
         const guiDefinition = this.readResource.entityInfo.classes['http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'].propertiesList.filter(
             propDefForGui => propDefForGui.propertyIndex === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue'
         );
 
-        guiDefinition[0].propertyIndex = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+        guiDefinition[0].propertyIndex = Constants.HasStandoffLinkToValue;
 
         const propInfo: PropertyInfoValues = {
             values: [standoffLinkVal],
@@ -417,11 +417,7 @@ describe('DisplayEditComponent', () => {
         () => {
             const user = MockUsers.mockUser();
 
-            const subj: AsyncSubject<UserResponse> = new AsyncSubject();
-            subj.next(user.body);
-            subj.complete();
-
-            return subj;
+            return of(user.body);
         }
     );
 
@@ -706,7 +702,7 @@ describe('DisplayEditComponent', () => {
     it('should choose the apt component for a link value (standoff link) in the template', () => {
 
       testHostComponent.assignValue('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue');
-      testHostComponent.readValue.property = Constants.KnoraApiV2 + Constants.HashDelimiter + 'hasStandoffLinkToValue';
+      testHostComponent.readValue.property = Constants.HasStandoffLinkToValue;
       testHostComponent.readValue.attachedToUser = 'http://www.knora.org/ontology/knora-admin#SystemUser'; // sstandoff links are managed by the system
       testHostFixture.detectChanges();
 
@@ -714,7 +710,7 @@ describe('DisplayEditComponent', () => {
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.displayValue instanceof ReadLinkValue).toBe(true);
       expect(testHostComponent.displayEditValueComponent.displayValueComponent.mode).toEqual('read');
       expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).parentResource instanceof ReadResource).toBe(true);
-      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual('http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue');
+      expect((testHostComponent.displayEditValueComponent.displayValueComponent as unknown as TestLinkValueComponent).propIri).toEqual(Constants.HasStandoffLinkToValue);
 
       const userServiceSpy = TestBed.inject(UserService);
 

@@ -1,25 +1,53 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { Constants } from '@dasch-swiss/dsp-js';
+import { Constants, CreateStillImageFileValue } from '@dasch-swiss/dsp-js';
+import { of } from 'rxjs';
 import { UploadFileService } from '../../services/upload-file.service';
 import { UploadFileComponent } from './upload-file.component';
 
-class MockUploadFileService {
-    envUrl = 'envUrl';
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+    <dsp-upload-file #upload [representation]="representation" [parentForm]="form"></dsp-upload-file>`
+})
+class TestHostComponent implements OnInit {
+
+    @ViewChild('upload') uploadFileComp: UploadFileComponent;
+
+    representation = Constants.StillImageFileValue;
+
+    form: FormGroup;
+
+    constructor(private _fb: FormBuilder) {
+    }
+
+    ngOnInit() {
+        this.form = this._fb.group({});
+    }
+
 }
 
+
 describe('UploadFileComponent', () => {
-    const mockFile = new File(['1'], 'testfile');
+    const mockFile = new File(['1'], 'testfile', { type: 'image/jpeg' });
+
     const fb = new FormBuilder();
-    let component: UploadFileComponent;
-    let fixture: ComponentFixture<UploadFileComponent>;
+
+    let testHostComponent: TestHostComponent;
+    let testHostFixture: ComponentFixture<TestHostComponent>;
 
     beforeEach(async(() => {
+
+        const uploadServiceSpy = jasmine.createSpyObj('UploadFileService', ['upload']);
+
         TestBed.configureTestingModule({
-            declarations: [UploadFileComponent],
+            declarations: [UploadFileComponent, TestHostComponent],
             imports: [
                 MatInputModule,
                 MatSnackBarModule,
@@ -27,59 +55,68 @@ describe('UploadFileComponent', () => {
                 MatIconModule
             ],
             providers: [
-                { provide: UploadFileService, useClass: MockUploadFileService }
+                { provide: UploadFileService, useValue: uploadServiceSpy }
             ]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(UploadFileComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+        testHostFixture = TestBed.createComponent(TestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        testHostFixture.detectChanges();
     });
 
     it('should create', () => {
-        expect(component).toBeTruthy();
+        expect(testHostComponent).toBeTruthy();
+        expect(testHostComponent.uploadFileComp).toBeTruthy();
     });
 
     it('should display resource type', () => {
-        expect(component.representation).toBeUndefined();
+        expect(testHostComponent.uploadFileComp.representation).toBeDefined();
     });
 
-    it('should be created with no fille', () => {
-        expect(component.file).toBeFalsy();
+    it('should be created without a file', () => {
+        expect(testHostComponent.uploadFileComp.file).toBeFalsy();
     });
 
-    it('should delete attachement', () => {
-        component.file = mockFile;
-        component.fileControl.setValue(mockFile);
-        component.thumbnaillUrl = 'test';
-        component.deleteAttachment();
-        expect(component.file).toBeNull();
-        expect(component.fileControl.value).toBeNull();
-        expect(component.thumbnaillUrl).toBeNull();
+    it('should delete attachment', () => {
+        testHostComponent.uploadFileComp.file = mockFile;
+        testHostComponent.uploadFileComp.fileControl.setValue(mockFile);
+        testHostComponent.uploadFileComp.thumbnailUrl = 'test';
+        testHostComponent.uploadFileComp.deleteAttachment();
+        expect(testHostComponent.uploadFileComp.file).toBeNull();
+        expect(testHostComponent.uploadFileComp.fileControl.value).toBeNull();
+        expect(testHostComponent.uploadFileComp.thumbnailUrl).toBeNull();
     });
 
     describe('form', () => {
-        it('should create form group and file control', () => {
-            expect(component.form).toBeDefined();
-            expect(component.fileControl).toBeTruthy();
-        });
+        it('should create form group and file control and add it to the parent form', async(() => {
+
+            testHostFixture.whenStable().then(() => {
+
+                expect(testHostComponent.uploadFileComp.form).toBeDefined();
+                expect(testHostComponent.uploadFileComp.fileControl).toBeTruthy();
+
+                // check that the form control has been added to the parent form
+                expect(testHostComponent.form.contains('file')).toBe(true);
+
+            });
+        }));
 
         it('should reset the form', () => {
-            component.form = fb.group({ test: '' });
-            component.resetForm();
-            expect(component.form.get('test').value).toBeNull();
+            testHostComponent.uploadFileComp.form = fb.group({ test: '' });
+            testHostComponent.uploadFileComp.resetForm();
+            expect(testHostComponent.uploadFileComp.form.get('test').value).toBeNull();
         });
     });
 
     describe('isFileTypeSupported', () => {
         it('should return true for the supported image files', () => {
             const fileTypes = ['image/jpeg', 'image/jp2', 'image/tiff', 'image/tiff-fx', 'image/png'];
-            component.representation = Constants.StillImageFileValue;
+
             for (const type of fileTypes) {
-                expect(component['_isFileTypeSupported'](type)).toBeTruthy();
+                expect(testHostComponent.uploadFileComp['_isFileTypeSupported'](type)).toBeTruthy();
             }
         });
 
@@ -87,7 +124,7 @@ describe('UploadFileComponent', () => {
             // TODO: add real unsupported filetypes?
             const fileTypes = ['image/a', 'image/b', 'image/c', 'image/d', 'image/e'];
             for (const type of fileTypes) {
-                expect(component['_isFileTypeSupported'](type)).toBeFalsy();
+                expect(testHostComponent.uploadFileComp['_isFileTypeSupported'](type)).toBeFalsy();
             }
         });
     });
@@ -96,13 +133,58 @@ describe('UploadFileComponent', () => {
         it('should return false for one file array', () => {
             const filesArray: File[] = [];
             filesArray.push(mockFile);
-            expect(component['_isMoreThanOneFile'](filesArray)).toBeFalsy();
+            expect(testHostComponent.uploadFileComp['_isMoreThanOneFile'](filesArray)).toBeFalsy();
         });
 
         it('should return false for more than one file', () => {
             const filesArray: File[] = [];
             filesArray.push(mockFile, mockFile, mockFile);
-            expect(component['_isMoreThanOneFile'](filesArray)).toBeTruthy();
+            expect(testHostComponent.uploadFileComp['_isMoreThanOneFile'](filesArray)).toBeTruthy();
         });
+    });
+
+    describe('addFile', () => {
+
+        it('should make a request to Sipi when a file is added', () => {
+
+            expect(testHostComponent.uploadFileComp.form.valid).toBe(false);
+
+            const uploadService = TestBed.inject(UploadFileService) as jasmine.SpyObj<UploadFileService>;
+
+            uploadService.upload.and.returnValue(of({
+                uploadedFiles: [
+                    {
+                        fileType: 'image',
+                        temporaryUrl: 'http://localhost:1024/tmp/8oDdefPSkaz-EG187srxBFZ.jp2',
+                        originalFilename: 'beaver.jpg',
+                        internalFilename: '8oDdefPSkaz-EG187srxBFZ.jp2'
+                    }
+                ]
+            }));
+
+            // https://stackoverflow.com/questions/57080760/fake-file-drop-event-for-unit-testing
+            const drop = {
+                preventDefault: () => {},
+                stopPropagation: () => {},
+                target: { files: [mockFile] }
+            };
+
+            testHostComponent.uploadFileComp.addFile(drop);
+
+            expect(testHostComponent.uploadFileComp.form.valid).toBe(true);
+
+            const createFileVal = testHostComponent.uploadFileComp.getNewValue();
+
+            expect(createFileVal instanceof CreateStillImageFileValue).toBe(true);
+            expect((createFileVal as CreateStillImageFileValue).filename).toEqual('8oDdefPSkaz-EG187srxBFZ.jp2');
+
+            const expectedFormData = new FormData();
+            expectedFormData.append(mockFile.name, mockFile);
+
+            expect(uploadService.upload).toHaveBeenCalledTimes(1);
+            expect(uploadService.upload).toHaveBeenCalledWith(expectedFormData);
+
+        });
+
     });
 });

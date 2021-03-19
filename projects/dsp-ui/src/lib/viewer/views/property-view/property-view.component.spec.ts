@@ -5,6 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import {
     ApiResponseError,
+    Constants,
     IHasPropertyWithPropertyDefinition,
     MockResource,
     ReadLinkValue,
@@ -321,7 +322,7 @@ describe('PropertyViewComponent', () => {
         it('should determine that adding a standoff link value is not allowed', () => {
 
             const standoffLinkVal = testHostComponent.propArray.filter(
-                propVal => propVal.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+                propVal => propVal.propDef.id === Constants.HasStandoffLinkToValue
             );
 
             expect(testHostComponent.propertyViewComponent.addValueIsAllowed(standoffLinkVal[0])).toBeFalsy();

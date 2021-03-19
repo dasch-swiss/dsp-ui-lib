@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import {
+    Constants,
     DeleteValue,
     MockResource,
     PropertyDefinition,
@@ -263,10 +264,10 @@ describe('ResourceViewComponent', () => {
 
                             const linkVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue);
 
-                            linkVal[0].property = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+                            linkVal[0].property = Constants.HasStandoffLinkToValue;
                             linkVal[0].linkedResourceIri = 'testId';
 
-                            res.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = linkVal;
+                            res.properties[Constants.HasStandoffLinkToValue] = linkVal;
 
                             return new ReadResourceSequence([res]);
                         }
@@ -286,7 +287,7 @@ describe('ResourceViewComponent', () => {
         );
 
         const propArrStandoffLinkValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
-            propInfoValueArray => propInfoValueArray.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+            propInfoValueArray => propInfoValueArray.propDef.id === Constants.HasStandoffLinkToValue
         );
 
         expect(propArrayXmlValues[0].values.length).toEqual(1);
@@ -408,7 +409,7 @@ describe('ResourceViewComponent', () => {
         );
 
         const existingStandoffLinkVal = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
-            propInfo => propInfo.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+            propInfo => propInfo.propDef.id === Constants.HasStandoffLinkToValue
         );
 
         // add value
@@ -417,7 +418,7 @@ describe('ResourceViewComponent', () => {
         const standoffLinkVal = new ReadLinkValue();
 
         standoffLinkVal.linkedResourceIri = 'testId';
-        standoffLinkVal.property = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+        standoffLinkVal.property = Constants.HasStandoffLinkToValue;
 
         // add corresponding link val
         existingStandoffLinkVal[0].values.push(standoffLinkVal);
@@ -507,9 +508,9 @@ describe('ResourceViewComponent', () => {
                             const linkVal = res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThingValue', ReadLinkValue);
 
                             linkVal[0].linkedResourceIri = 'testId';
-                            linkVal[0].property = 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue';
+                            linkVal[0].property = Constants.HasStandoffLinkToValue;
 
-                            res.properties['http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'] = linkVal;
+                            res.properties[Constants.HasStandoffLinkToValue] = linkVal;
 
                             return new ReadResourceSequence([res]);
                         }
@@ -530,7 +531,7 @@ describe('ResourceViewComponent', () => {
         );
 
         const propArrStandoffLinkValues = testHostComponent.resourceViewComponent.resPropInfoVals.filter(
-            propInfoValueArray => propInfoValueArray.propDef.id === 'http://api.knora.org/ontology/knora-api/v2#hasStandoffLinkToValue'
+            propInfoValueArray => propInfoValueArray.propDef.id === Constants.HasStandoffLinkToValue
         );
 
         propArrayXmlValues[0].values.push(newReadXmlValue);

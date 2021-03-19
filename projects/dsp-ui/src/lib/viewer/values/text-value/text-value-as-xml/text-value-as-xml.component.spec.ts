@@ -15,7 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
 import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CreateTextValueAsXml, MockResource, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
+import { Constants, CreateTextValueAsXml, MockResource, ReadTextValueAsXml, UpdateTextValueAsXml } from '@dasch-swiss/dsp-js';
 import { TextValueAsXMLComponent } from './text-value-as-xml.component';
 
 /**
@@ -361,7 +361,7 @@ describe('TextValueAsXMLComponent', () => {
             const newXml = new ReadTextValueAsXml();
 
             newXml.xml = '<?xml version="1.0" encoding="UTF-8"?><text><p>my updated text</p></text>';
-            newXml.mapping = 'http://rdfh.ch/standoff/mappings/StandardMapping';
+            newXml.mapping = Constants.StandardMapping;
 
             newXml.id = 'updatedId';
 
@@ -514,7 +514,7 @@ describe('TextValueAsXMLComponent', () => {
             expect(newValue instanceof CreateTextValueAsXml).toBeTruthy();
 
             expect((newValue as CreateTextValueAsXml).xml).toEqual('<?xml version="1.0" encoding="UTF-8"?><text><p>created text<p></p></text>');
-            expect((newValue as CreateTextValueAsXml).mapping).toEqual('http://rdfh.ch/standoff/mappings/StandardMapping');
+            expect((newValue as CreateTextValueAsXml).mapping).toEqual(Constants.StandardMapping);
         });
 
         it('should reset form after cancellation', () => {

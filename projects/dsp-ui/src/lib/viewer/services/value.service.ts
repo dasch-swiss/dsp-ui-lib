@@ -125,7 +125,7 @@ export class ValueService {
      * @param textValue the text value to be checked.
      */
     isTextEditable(textValue: ReadTextValueAsXml): boolean {
-        return textValue.mapping === 'http://rdfh.ch/standoff/mappings/StandardMapping';
+        return textValue.mapping === Constants.StandardMapping;
     }
 
     /**

@@ -33,6 +33,7 @@ class TestIntervalInputComponent implements ControlValueAccessor, MatFormFieldCo
     @Input() required: boolean;
     @Input() shouldLabelFloat: boolean;
     @Input() errorStateMatcher: ErrorStateMatcher;
+    @Input() valueRequiredValidator = true;
 
     errorState = false;
     focused = false;
@@ -113,12 +114,37 @@ class TestHostCreateValueComponent implements OnInit {
     }
 }
 
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+    <dsp-interval-value #inputVal [mode]="mode" [valueRequiredValidator]="false"></dsp-interval-value>`
+})
+class TestHostCreateValueNoValueRequiredComponent implements OnInit {
+
+    @ViewChild('inputVal') inputValueComponent: IntervalValueComponent;
+
+    mode: 'read' | 'update' | 'create' | 'search';
+
+    ngOnInit() {
+
+        this.mode = 'create';
+    }
+}
+
 
 describe('IntervalValueComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [IntervalValueComponent, TestHostDisplayValueComponent, TestIntervalInputComponent, TestHostCreateValueComponent],
+            declarations: [
+                IntervalValueComponent,
+                TestHostDisplayValueComponent,
+                TestIntervalInputComponent,
+                TestHostCreateValueComponent,
+                TestHostCreateValueNoValueRequiredComponent
+            ],
             imports: [
                 ReactiveFormsModule,
                 MatInputModule,
@@ -453,6 +479,30 @@ describe('IntervalValueComponent', () => {
 
             expect(commentInputNativeElement.value).toEqual('');
 
+        });
+
+    });
+
+    describe('create an interval value no value required', () => {
+
+        let testHostComponent: TestHostCreateValueNoValueRequiredComponent;
+        let testHostFixture: ComponentFixture<TestHostCreateValueNoValueRequiredComponent>;
+
+        beforeEach(() => {
+            testHostFixture = TestBed.createComponent(TestHostCreateValueNoValueRequiredComponent);
+            testHostComponent = testHostFixture.componentInstance;
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent).toBeTruthy();
+        });
+
+        it('should not create an empty value', () => {
+            expect(testHostComponent.inputValueComponent.getNewValue()).toBe(false);
+            expect(testHostComponent.inputValueComponent.form.valid).toBe(true);
+        });
+
+        it('should propagate valueRequiredValidator to child component', () => {
+            expect(testHostComponent.inputValueComponent.valueRequiredValidator).toBe(false);
         });
 
     });

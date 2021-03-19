@@ -26,7 +26,7 @@ const resolvedPromise = Promise.resolve(null);
 })
 export class TextValueAsXMLComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
 
-    readonly standardMapping = 'http://rdfh.ch/standoff/mappings/StandardMapping'; // TODO: define this somewhere else
+    readonly standardMapping = Constants.StandardMapping; // TODO: define this somewhere else
 
     @Input() displayValue?: ReadTextValueAsXml;
 

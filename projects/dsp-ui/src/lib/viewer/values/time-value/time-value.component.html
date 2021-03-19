@@ -6,7 +6,7 @@
 <ng-template #showForm>
   <span [formGroup]="form" class="parent-component-wrapper">
       <mat-form-field class="large-field child-value-component" floatLabel="never">
-        <dsp-time-input #timeInput [formControlName]="'value'" class="value" [errorStateMatcher]="matcher"></dsp-time-input>
+        <dsp-time-input #timeInput [formControlName]="'value'" class="value" [errorStateMatcher]="matcher" [valueRequiredValidator]="valueRequiredValidator"></dsp-time-input>
           <mat-error *ngIf="valueFormControl.hasError('valueNotChanged') &&
                 (valueFormControl.touched || valueFormControl.dirty)">
             <span class="custom-error-message">New value must be different than the current value.</span>

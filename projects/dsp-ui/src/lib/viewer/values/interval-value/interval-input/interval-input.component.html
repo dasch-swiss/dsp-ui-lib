@@ -11,4 +11,10 @@
       End is <strong>required</strong>.
     </mat-error>
   </mat-form-field>
+
+  <div class="date-form-error">
+    <mat-error *ngIf="((startIntervalControl.hasError('startEndSameTypeRequired') || endIntervalControl.hasError('startEndSameTypeRequired')))">
+        <span class="custom-error-message">An interval must have a <strong>start</strong> and <strong>end</strong></span>
+    </mat-error>
+  </div>
 </div>

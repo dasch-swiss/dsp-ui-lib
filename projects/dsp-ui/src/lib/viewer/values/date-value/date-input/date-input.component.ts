@@ -1,6 +1,6 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, Optional, Self } from '@angular/core';
+import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
 import {
     AbstractControl,
     ControlValueAccessor,
@@ -93,7 +93,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
     styleUrls: ['./date-input.component.scss'],
     providers: [{ provide: MatFormFieldControl, useExisting: DateInputComponent }]
 })
-export class DateInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<KnoraDate | KnoraPeriod>, DoCheck, CanUpdateErrorState, OnDestroy {
+export class DateInputComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<KnoraDate | KnoraPeriod>, DoCheck, CanUpdateErrorState, OnDestroy, OnInit {
 
     static nextId = 0;
 
@@ -109,6 +109,8 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
     startDateControl: FormControl;
     endDateControl: FormControl;
     isPeriodControl: FormControl;
+
+    @Input() valueRequiredValidator = true;
 
     onChange = (_: any) => {
     };
@@ -267,22 +269,13 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
 
         this.endDateControl = new FormControl(null);
         this.isPeriodControl = new FormControl(null);
-        this.startDateControl
-            = new FormControl(
-                null,
-                [
-                    Validators.required,
-                    sameCalendarValidator(this.isPeriodControl, this.endDateControl),
-                    periodStartEndValidator(this.isPeriodControl, this.endDateControl)
-                ]
-            );
+        this.startDateControl = new FormControl(null);
 
         this.form = fb.group({
             dateStart: this.startDateControl,
             dateEnd: this.endDateControl,
             isPeriod: this.isPeriodControl
         });
-
 
         _fm.monitor(_elRef.nativeElement, true).subscribe(origin => {
             this.focused = !!origin;
@@ -292,6 +285,23 @@ export class DateInputComponent extends _MatInputMixinBase implements ControlVal
         if (this.ngControl != null) {
             this.ngControl.valueAccessor = this;
         }
+    }
+
+    ngOnInit() {
+        if (this.valueRequiredValidator) {
+            this.startDateControl.setValidators([
+                Validators.required,
+                sameCalendarValidator(this.isPeriodControl, this.endDateControl),
+                periodStartEndValidator(this.isPeriodControl, this.endDateControl)
+            ]);
+        } else {
+            this.startDateControl.setValidators([
+                sameCalendarValidator(this.isPeriodControl, this.endDateControl),
+                periodStartEndValidator(this.isPeriodControl, this.endDateControl)
+            ]);
+        }
+
+        this.startDateControl.updateValueAndValidity();
     }
 
     ngDoCheck() {
