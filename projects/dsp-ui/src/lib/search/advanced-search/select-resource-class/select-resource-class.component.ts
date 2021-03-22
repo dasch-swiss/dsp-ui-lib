@@ -27,7 +27,7 @@ export class SelectResourceClassComponent implements OnInit, OnChanges, OnDestro
 
     @Input() resourceClassDefinitions: ResourceClassDefinition[];
 
-    @Output() resourceClassSelected = new EventEmitter<string>();
+    @Output() resourceClassSelected = new EventEmitter<string | null>();
 
     get selectedResourceClassIri(): string | false {
         if (this._selectedResourceClassIri !== undefined && this._selectedResourceClassIri !== null) {

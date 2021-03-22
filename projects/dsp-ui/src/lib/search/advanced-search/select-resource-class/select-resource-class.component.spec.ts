@@ -147,15 +147,19 @@ describe('SelectResourceClassComponent', () => {
 
         await select.open();
 
-        const options = await select.getOptions({ text: 'no selection' });
+        const options = await select.getOptions({ text: 'Blue thing' });
 
         expect(options.length).toEqual(1);
 
         await options[0].click();
 
-        expect(testHostComponent.selectedResClassIri).toBe(null);
+        const options2 = await select.getOptions({ text: 'no selection' });
 
-        expect(testHostComponent.selectResourceClass.selectedResourceClassIri).toBe(false);
+        expect(options2.length).toEqual(1);
+
+        await options2[0].click();
+
+        expect(testHostComponent.selectedResClassIri).toBeNull();
 
     });
 
