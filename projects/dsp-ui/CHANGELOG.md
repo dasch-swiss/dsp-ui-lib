@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.3](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.2...v1.2.3) (2021-03-22)
+
+
+### Maintenance
+
+* **package.json:** improve description in package.json ([#283](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/283)) ([7c8e738](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/7c8e7380b9807496ec55b6a5ab6ba2b00b4ffd4c))
+
 ### [1.2.2](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.1...v1.2.2) (2021-02-10)
 
 
