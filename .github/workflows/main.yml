@@ -78,7 +78,6 @@ jobs:
 
   check-pr-title:
     name: Check PR title
-    if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
       - uses: deepakputhraya/action-pr-title@v1.0.1
