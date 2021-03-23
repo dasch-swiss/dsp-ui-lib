@@ -82,6 +82,15 @@ jobs:
     # Automate releases with Conventional Commit Messages as Pull Requests are merged into "main" branch
     if: github.ref == 'refs/heads/main'
     steps:
+      - uses: deepakputhraya/action-pr-title@v1.0.1
+        with:
+          regex: '([a-z])+\/([a-z])+' # Regex the title should match.
+          allowed_prefixes: 'feature,fix,JIRA' # title should start with the given prefix
+          disallowed_prefixes: 'feat/,hotfix' # title should not start with the given prefix
+          prefix_case_sensitive: false # title prefix are case insensitive
+          min_length: 5 # Min length of the title
+          max_length: 20 # Max length of the title
+          github_token: ${{ secrets.GH_TOKEN }} # Default: ${{ github.token }}
       - uses: GoogleCloudPlatform/release-please-action@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
