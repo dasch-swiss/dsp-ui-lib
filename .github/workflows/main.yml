@@ -76,11 +76,10 @@ jobs:
       - uses: actions/checkout@v2
       - run: docker build .
 
-  release-please:
-    name: Prepare next release
+  check-pr-title:
+    name: Check PR title
+    if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
-    # Automate releases with Conventional Commit Messages as Pull Requests are merged into "main" branch
-    if: github.ref == 'refs/heads/main'
     steps:
       - uses: deepakputhraya/action-pr-title@v1.0.1
         with:
@@ -91,6 +90,13 @@ jobs:
           min_length: 5 # Min length of the title
           max_length: 20 # Max length of the title
           github_token: ${{ secrets.GH_TOKEN }} # Default: ${{ github.token }}
+
+  release-please:
+    name: Prepare next release
+    runs-on: ubuntu-latest
+    # Automate releases with Conventional Commit Messages as Pull Requests are merged into "main" branch
+    if: github.ref == 'refs/heads/main'
+    steps:
       - uses: GoogleCloudPlatform/release-please-action@v2
         with:
           token: ${{ secrets.GH_TOKEN }}
