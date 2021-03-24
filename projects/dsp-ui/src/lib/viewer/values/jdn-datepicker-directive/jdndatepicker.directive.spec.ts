@@ -41,6 +41,10 @@ describe('JDNDatepickerDirective', () => {
     setNextCalSpy = testBehaviourSubject.next.and.stub();
     setCompleteSpy = testBehaviourSubject.complete.and.stub();
 
+    // overrides the injection token defined in JDNDatepickerDirective's metadat
+    TestBed.overrideProvider(ACTIVE_CALENDAR, { useValue: testBehaviourSubject });
+    TestBed.overrideProvider(DateAdapter, { useValue: {} });
+
     TestBed.configureTestingModule({
       declarations: [
         JDNDatepickerDirective,
@@ -59,10 +63,6 @@ describe('JDNDatepickerDirective', () => {
       ],
     })
       .compileComponents();
-
-    // overrides the injection token defined in JDNDatepickerDirective's metadata
-    TestBed.overrideProvider(ACTIVE_CALENDAR, { useValue: testBehaviourSubject });
-    TestBed.overrideProvider(DateAdapter, { useValue: {} });
 
     testBehaviourSubjSpy = TestBed.inject(ACTIVE_CALENDAR);
   }));
