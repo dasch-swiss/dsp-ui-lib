@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ReadComponent} from './read.component';
 import {DspApiConnectionToken} from '@dasch-swiss/dsp-ui';
