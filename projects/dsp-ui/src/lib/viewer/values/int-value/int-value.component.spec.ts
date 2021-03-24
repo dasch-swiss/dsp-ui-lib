@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IntValueComponent } from './int-value.component';
 import { ReadIntValue, MockResource, UpdateValue, UpdateIntValue, CreateIntValue } from '@dasch-swiss/dsp-js';
@@ -82,7 +82,7 @@ class TestHostCreateValueNoValueRequiredComponent implements OnInit {
 
 describe('IntValueComponent', () => {
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 IntValueComponent,
@@ -338,7 +338,7 @@ describe('IntValueComponent', () => {
         let testHostComponent: TestHostCreateValueNoValueRequiredComponent;
         let testHostFixture: ComponentFixture<TestHostCreateValueNoValueRequiredComponent>;
 
-        beforeEach(async () => {
+        beforeEach(() => {
             testHostFixture = TestBed.createComponent(TestHostCreateValueNoValueRequiredComponent);
             testHostComponent = testHostFixture.componentInstance;
             testHostFixture.detectChanges();

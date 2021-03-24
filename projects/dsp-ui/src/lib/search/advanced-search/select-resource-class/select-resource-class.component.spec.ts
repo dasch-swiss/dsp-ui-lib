@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectResourceClassComponent } from './select-resource-class.component';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
@@ -52,7 +52,7 @@ describe('SelectResourceClassComponent', () => {
 
     let loader: HarnessLoader;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 BrowserAnimationsModule,

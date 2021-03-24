@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -96,7 +96,7 @@ describe('ListViewComponent', () => {
 
     let searchParamsServiceSpy: jasmine.SpyObj<AdvancedSearchParamsService>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         const searchSpyObj = {
             v2: {

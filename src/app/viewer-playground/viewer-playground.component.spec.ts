@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
@@ -18,7 +18,7 @@ describe('ViewerPlaygroundComponent', () => {
     let component: ViewerPlaygroundComponent;
     let fixture: ComponentFixture<ViewerPlaygroundComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         const apiSpyObj = {
             admin: {

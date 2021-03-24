@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdvancedSearchPlaygroundComponent } from './advanced-search-playground.component';
 import { Component } from '@angular/core';
@@ -26,7 +26,7 @@ describe('AdvancedSearchPlaygroundComponent', () => {
         }
     };
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [AdvancedSearchPlaygroundComponent, TestHostComponent],
             providers: [

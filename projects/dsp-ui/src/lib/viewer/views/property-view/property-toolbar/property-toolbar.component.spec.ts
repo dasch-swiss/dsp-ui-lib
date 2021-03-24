@@ -1,6 +1,6 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -62,7 +62,7 @@ describe('PropertyToolbarComponent', () => {
     let testHostComponent: TestPropertyParentComponent;
     let testHostFixture: ComponentFixture<TestPropertyParentComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         const adminSpyObj = {
             admin: {

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 import {TextValueAsHtmlComponent} from './text-value-as-html.component';
 import {ReadTextValueAsHtml} from '@dasch-swiss/dsp-js';
 import {OnInit, ViewChild, Component, DebugElement} from '@angular/core';
@@ -30,7 +30,7 @@ class TestHostDisplayValueComponent implements OnInit {
 
 describe('TextValueAsHtmlComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         TestHostDisplayValueComponent,

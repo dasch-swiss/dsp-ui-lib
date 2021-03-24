@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchIntValueComponent } from './search-int-value.component';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
@@ -37,7 +37,7 @@ describe('SearchIntValueComponent', () => {
 
     let loader: HarnessLoader;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 BrowserAnimationsModule,

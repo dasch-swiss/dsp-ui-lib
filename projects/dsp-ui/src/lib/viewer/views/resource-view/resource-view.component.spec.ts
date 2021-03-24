@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
@@ -104,7 +104,7 @@ describe('ResourceViewComponent', () => {
     let resourceComponentDe;
     let voeService: ValueOperationEventService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         const spyObj = {
             v2: {

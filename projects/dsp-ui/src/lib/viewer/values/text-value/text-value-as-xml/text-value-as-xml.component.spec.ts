@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
     Component,
@@ -137,7 +137,7 @@ export class TestTextValueHtmlLinkDirective {
 
 describe('TextValueAsXMLComponent', () => {
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 TextValueAsXMLComponent,

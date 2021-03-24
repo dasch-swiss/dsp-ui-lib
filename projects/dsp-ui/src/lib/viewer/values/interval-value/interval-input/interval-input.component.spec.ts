@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Interval, IntervalInputComponent } from './interval-input.component';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -76,7 +76,7 @@ describe('InvertalInputComponent', () => {
     let endInputDebugElement: DebugElement;
     let endInputNativeElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
             declarations: [IntervalInputComponent, TestHostComponent]
@@ -167,7 +167,7 @@ describe('InvertalInputComponent', () => {
     let testHostComponent: NoValueRequiredTestHostComponent;
     let testHostFixture: ComponentFixture<NoValueRequiredTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
             declarations: [IntervalInputComponent, NoValueRequiredTestHostComponent]

@@ -1,5 +1,5 @@
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
@@ -71,7 +71,7 @@ class TestHostCreateValueComponent implements OnInit {
 
 describe('ListValueComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const valuesSpyObj = {
       v2: {
         values: jasmine.createSpyObj('values', ['updateValue', 'getValue', 'setValue']),

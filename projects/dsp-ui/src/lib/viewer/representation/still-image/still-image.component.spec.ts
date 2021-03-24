@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Region, StillImageComponent, StillImageRepresentation } from './still-image.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -88,7 +88,7 @@ describe('StillImageComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [StillImageComponent, TestHostComponent],
             imports: [

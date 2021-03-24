@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -42,7 +42,7 @@ describe('UploadFileComponent', () => {
     let testHostComponent: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         const uploadServiceSpy = jasmine.createSpyObj('UploadFileService', ['upload']);
 
@@ -91,7 +91,7 @@ describe('UploadFileComponent', () => {
     });
 
     describe('form', () => {
-        it('should create form group and file control and add it to the parent form', async(() => {
+        it('should create form group and file control and add it to the parent form', waitForAsync(() => {
 
             testHostFixture.whenStable().then(() => {
 

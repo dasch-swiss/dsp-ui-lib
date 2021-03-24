@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -25,7 +25,7 @@ describe('SearchPlaygroundComponent', () => {
     let component: SearchPlaygroundComponent;
     let fixture: ComponentFixture<SearchPlaygroundComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [SearchPlaygroundComponent, TestSearchPanelComponent],
             imports: [

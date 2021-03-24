@@ -1,5 +1,5 @@
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
@@ -109,7 +109,7 @@ class TestHostCreateValueNoValueRequiredComponent implements OnInit {
 
 describe('LinkValueComponent', () => {
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         const valuesSpyObj = {
             v2: {
                 search: jasmine.createSpyObj('search', ['doSearchByLabel']),

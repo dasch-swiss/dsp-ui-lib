@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DateInputComponent } from './date-input.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -80,7 +80,7 @@ describe('DateInputComponent', () => {
     let testHostFixture: ComponentFixture<TestHostComponent>;
     let loader: HarnessLoader;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 ReactiveFormsModule,
@@ -307,7 +307,7 @@ describe('NoValueRequiredTestHostComponent', () => {
     let testHostComponent: NoValueRequiredTestHostComponent;
     let testHostFixture: ComponentFixture<NoValueRequiredTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 ReactiveFormsModule,

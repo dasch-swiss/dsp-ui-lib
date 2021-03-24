@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { waitForAsync, TestBed } from '@angular/core/testing';
 import { StringLiteral } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { Session, SessionService } from '../../../core/session.service';
@@ -9,7 +9,7 @@ describe('StringifyStringLiteralPipe', () => {
     let labels: StringLiteral[];
     let service: SessionService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         // empty spy object to use in the providers for the SessionService injection
         const dspConnSpy = { };

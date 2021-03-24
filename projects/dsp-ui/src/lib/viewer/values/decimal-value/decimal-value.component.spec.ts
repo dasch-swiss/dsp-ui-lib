@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DecimalValueComponent } from './decimal-value.component';
 import { ReadDecimalValue, MockResource, UpdateValue, UpdateDecimalValue, CreateDecimalValue } from '@dasch-swiss/dsp-js';
@@ -60,7 +60,7 @@ class TestHostCreateValueComponent implements OnInit {
 
 describe('DecimalValueComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         DecimalValueComponent,

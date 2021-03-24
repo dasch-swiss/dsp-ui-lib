@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockResource, ReadIntValue } from '@dasch-swiss/dsp-js';
 import { ConfirmationMessageComponent } from './confirmation-message.component';
@@ -28,7 +28,7 @@ describe('ConfirmationMessageComponent', () => {
     let testHostComponent: ConfirmationMessageTestHostComponent;
     let testHostFixture: ComponentFixture<ConfirmationMessageTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 ConfirmationMessageTestHostComponent,

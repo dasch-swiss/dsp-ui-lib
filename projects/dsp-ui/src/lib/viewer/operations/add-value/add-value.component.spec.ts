@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
@@ -110,7 +110,7 @@ describe('AddValueComponent', () => {
     let testHostComponent: DspAddValueTestComponent;
     let testHostFixture: ComponentFixture<DspAddValueTestComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         const valuesSpyObj = {
             v2: {

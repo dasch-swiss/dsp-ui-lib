@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UploadPlaygroundComponent } from './upload-playground.component';
 import { Component, Input } from '@angular/core';
@@ -18,7 +18,7 @@ describe('UploadPlaygroundComponent', () => {
     let component: UploadPlaygroundComponent;
     let fixture: ComponentFixture<UploadPlaygroundComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [UploadPlaygroundComponent, TestFileUploadComponent]
         })

@@ -20,7 +20,7 @@ describe('ReadComponent', () => {
     let component: ReadComponent;
     let fixture: ComponentFixture<ReadComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         const authSpyObj = {
             v2: {
                 auth: jasmine.createSpyObj('auth', ['logout'])

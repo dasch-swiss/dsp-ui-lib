@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchDisplayListComponent } from './search-display-list.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -46,7 +46,7 @@ describe('SearchDisplayListComponent', () => {
 
     let loader: HarnessLoader;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 BrowserAnimationsModule,
