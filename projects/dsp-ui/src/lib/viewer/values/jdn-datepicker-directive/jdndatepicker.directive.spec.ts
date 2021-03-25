@@ -1,6 +1,6 @@
 import { JDNDatepickerDirective } from './jdndatepicker.directive';
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ACTIVE_CALENDAR, JDNConvertibleCalendarDateAdapter } from "jdnconvertiblecalendardateadapter";
 import { DateAdapter } from "@angular/material/core";
@@ -34,12 +34,16 @@ describe('JDNDatepickerDirective', () => {
 
   let testBehaviourSubjSpy;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     testBehaviourSubject = jasmine.createSpyObj('ACTIVE_CALENDAR', ['next', 'complete']);
 
     setNextCalSpy = testBehaviourSubject.next.and.stub();
     setCompleteSpy = testBehaviourSubject.complete.and.stub();
+
+    // overrides the injection token defined in JDNDatepickerDirective's metadat
+    TestBed.overrideProvider(ACTIVE_CALENDAR, { useValue: testBehaviourSubject });
+    TestBed.overrideProvider(DateAdapter, { useValue: {} });
 
     TestBed.configureTestingModule({
       declarations: [
@@ -59,10 +63,6 @@ describe('JDNDatepickerDirective', () => {
       ],
     })
       .compileComponents();
-
-    // overrides the injection token defined in JDNDatepickerDirective's metadata
-    TestBed.overrideProvider(ACTIVE_CALENDAR, { useValue: testBehaviourSubject });
-    TestBed.overrideProvider(DateAdapter, { useValue: {} });
 
     testBehaviourSubjSpy = TestBed.inject(ACTIVE_CALENDAR);
   }));

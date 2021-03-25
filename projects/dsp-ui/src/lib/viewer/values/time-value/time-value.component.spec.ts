@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimeValueComponent } from './time-value.component';
 import { Component, DebugElement, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CreateTimeValue, MockResource, ReadTimeValue, UpdateTimeValue, KnoraDate } from '@dasch-swiss/dsp-js';
@@ -132,7 +132,7 @@ class TestHostCreateValueNoValueRequiredComponent implements OnInit {
 }
 
 describe('TimeValueComponent', () => {
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 TimeValueComponent,

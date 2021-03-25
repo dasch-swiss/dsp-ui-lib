@@ -10,13 +10,13 @@
             <mat-card-title class="res-class-value">{{ res.label }}</mat-card-title>
         </mat-card-header>
         <mat-card-content class="grid-card-content" *ngFor="let prop of res.properties | keyvalue">
-            <div *ngFor="let val of prop.value | keyvalue">
+            <div *ngFor="let val of prop.value">
                 <span class="res-prop-label">
-                    {{ res.entityInfo.properties[val.value.property].label }}
+                    {{ res.entityInfo.properties[val.property].label }}
                 </span>
 
                 <div class="res-prop-value">
-                    {{ val.value.strval | dspTruncate: 256:"..." }}
+                    {{ val.strval | dspTruncate: 256:"..." }}
                 </div>
             </div>
         </mat-card-content>

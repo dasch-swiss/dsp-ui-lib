@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectPropertyComponent } from './select-property.component';
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
@@ -80,7 +80,7 @@ describe('SelectPropertyComponent', () => {
 
     let loader: HarnessLoader;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 BrowserAnimationsModule,
@@ -120,7 +120,7 @@ describe('SelectPropertyComponent', () => {
         expect(testHostComponent.selectProperty.properties.length).toEqual(22);
     });
 
-    it('should add a new control to the parent form', async(() => {
+    it('should add a new control to the parent form', waitForAsync(() => {
 
         // the control is added to the form as an async operation
         // https://angular.io/guide/testing#async-test-with-async
@@ -244,7 +244,7 @@ describe('SelectPropertyComponent', () => {
         expect(testHostComponent.selectProperty.propertySelected).toBeUndefined();
     });
 
-    it('should remove the control from the parent form and unsubscribe from value changes when destroyed', async(() => {
+    it('should remove the control from the parent form and unsubscribe from value changes when destroyed', waitForAsync(() => {
 
         expect(testHostComponent.selectProperty.propertyChangesSubscription.closed).toBe(false);
 

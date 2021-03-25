@@ -2,7 +2,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -337,7 +337,7 @@ describe('DisplayEditComponent', () => {
   let testHostComponent: TestHostDisplayValueComponent;
   let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const valuesSpyObj = {
         v2: {
@@ -848,7 +848,7 @@ describe('DisplayEditComponent', () => {
 
         testHostFixture.detectChanges();
 
-        const expectedUpdateResource = new UpdateResource();
+        const expectedUpdateResource = new UpdateResource<UpdateValue>();
 
         expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
         expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
@@ -1034,7 +1034,7 @@ describe('DisplayEditComponent', () => {
 
       testHostFixture.detectChanges();
 
-      const expectedUpdateResource = new UpdateResource();
+      const expectedUpdateResource = new UpdateResource<UpdateValue>();
 
       expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
       expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
@@ -1122,7 +1122,7 @@ describe('DisplayEditComponent', () => {
 
         await okButton.click();
 
-        const expectedUpdateResource = new UpdateResource();
+        const expectedUpdateResource = new UpdateResource<DeleteValue>();
 
         expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
         expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
@@ -1165,7 +1165,7 @@ describe('DisplayEditComponent', () => {
 
         testHostComponent.displayEditValueComponent.deleteValue('my deletion comment');
 
-        const expectedUpdateResource = new UpdateResource();
+        const expectedUpdateResource = new UpdateResource<DeleteValue>();
 
         expectedUpdateResource.id = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
         expectedUpdateResource.type = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';

@@ -1,5 +1,5 @@
 import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { ResourceGridComponent } from './resource-grid.component';
@@ -47,7 +47,7 @@ describe('ResourceGridComponent', () => {
     let testHostComponent: TestParentComponent;
     let testHostFixture: ComponentFixture<TestParentComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 MockPipe,

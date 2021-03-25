@@ -1,5 +1,5 @@
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -41,7 +41,7 @@ describe('ExpertSearchComponent', () => {
     let searchParamsServiceSpy: jasmine.SpyObj<AdvancedSearchParamsService>;
     let advancedSearchParams: AdvancedSearchParams;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         const dspConfSpy = new KnoraApiConfig('http', 'localhost', 3333, undefined, undefined, true);
 

@@ -1,7 +1,7 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonHarness } from '@angular/material/button/testing';
@@ -76,7 +76,7 @@ describe('StringLiteralInputComponent', () => {
     let sliMenuNativeElement;
     let langButton;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         // empty spy object to use in the providers for the SessionService injection
         const dspConnSpy = { };

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -52,7 +52,7 @@ describe('LoginFormComponent', () => {
 
     let sessionService: SessionService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         const dspConnSpy = {
             admin: {
                 usersEndpoint: jasmine.createSpyObj('usersEndpoint', ['getUser'])

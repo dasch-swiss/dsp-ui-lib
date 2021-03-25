@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ColorPickerComponent } from './color-picker.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -45,7 +45,7 @@ describe('ColorPickerComponent', () => {
     let colorInputDebugElement: DebugElement;
     let colorInputNativeElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [ColorPickerModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule],
             declarations: [ColorPickerComponent, TestHostComponent]

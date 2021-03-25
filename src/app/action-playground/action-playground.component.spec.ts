@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MatListModule } from '@angular/material/list';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -12,7 +12,7 @@ describe('ActionPlaygroundComponent', () => {
     let component: ActionPlaygroundComponent;
     let fixture: ComponentFixture<ActionPlaygroundComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         const dspConnSpy = {
             v2: {
                 auth: jasmine.createSpyObj('auth', ['login'])

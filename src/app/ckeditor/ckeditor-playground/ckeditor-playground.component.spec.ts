@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CkeditorPlaygroundComponent } from './ckeditor-playground.component';
 import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
@@ -27,7 +27,7 @@ describe('CkeditorPlaygroundComponent', () => {
     let component: CkeditorPlaygroundComponent;
     let fixture: ComponentFixture<CkeditorPlaygroundComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         const dspSpyObj = {
             v2: {
                 auth: jasmine.createSpyObj('auth', ['login']),

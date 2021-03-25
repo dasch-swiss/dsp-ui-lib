@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { waitForAsync, TestBed } from '@angular/core/testing';
 import { InputTestComponent } from './input-test.component';
 
 /**
@@ -91,7 +91,7 @@ class TestHostComponent5 implements OnInit {
 
 describe('InputTestComponent', () => {
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 InputTestComponent,

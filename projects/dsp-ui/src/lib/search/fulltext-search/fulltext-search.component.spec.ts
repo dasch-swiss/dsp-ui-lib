@@ -1,6 +1,6 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -58,7 +58,7 @@ describe('FulltextSearchComponent', () => {
     let dspConnSpy;
     let prevSearchArray: PrevSearchItem[];
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         dspConnSpy = {
             admin: {

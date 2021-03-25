@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UriValueComponent } from './uri-value.component';
 import { ReadUriValue, MockResource, UpdateValue, UpdateUriValue, CreateUriValue } from '@dasch-swiss/dsp-js';
@@ -61,7 +61,7 @@ class TestHostCreateValueComponent implements OnInit {
 }
 
 describe('UriValueComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         UriValueComponent,

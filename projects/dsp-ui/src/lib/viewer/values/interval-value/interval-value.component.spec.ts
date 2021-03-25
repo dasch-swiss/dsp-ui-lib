@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IntervalValueComponent } from './interval-value.component';
 import { Component, DebugElement, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
@@ -136,7 +136,7 @@ class TestHostCreateValueNoValueRequiredComponent implements OnInit {
 
 describe('IntervalValueComponent', () => {
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 IntervalValueComponent,

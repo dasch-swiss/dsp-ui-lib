@@ -1,5 +1,5 @@
 import { Component, DebugElement, ElementRef, OnInit } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { GndDirective } from './gnd.directive';
 
@@ -58,7 +58,7 @@ class MockElementRef implements ElementRef {
 
 describe('GndDirective', () => {
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [TestGnd1Component, TestGnd2Component, TestGnd3Component, TestGnd4Component, TestGnd5Component, GndDirective],
             providers: [

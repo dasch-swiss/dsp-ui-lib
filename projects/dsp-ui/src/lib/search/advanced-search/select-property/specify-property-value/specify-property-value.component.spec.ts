@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SpecifyPropertyValueComponent } from './specify-property-value.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -218,7 +218,7 @@ describe('SpecifyPropertyValueComponent', () => {
 
     let loader: HarnessLoader;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 BrowserAnimationsModule,
@@ -261,7 +261,7 @@ describe('SpecifyPropertyValueComponent', () => {
         expect(testHostComponent.specifyProperty.property.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
     });
 
-    it('should add a new control to the parent form', async(() => {
+    it('should add a new control to the parent form', waitForAsync(() => {
 
         // the control is added to the form as an async operation
         // https://angular.io/guide/testing#async-test-with-async

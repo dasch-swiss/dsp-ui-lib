@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { waitForAsync, TestBed } from '@angular/core/testing';
 import {
     ApiResponseData,
     AuthenticationEndpointV2,
@@ -13,7 +13,7 @@ import { Session, SessionService } from './session.service';
 describe('SessionService', () => {
     let service: SessionService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         const dspConnSpy = {
             admin: {

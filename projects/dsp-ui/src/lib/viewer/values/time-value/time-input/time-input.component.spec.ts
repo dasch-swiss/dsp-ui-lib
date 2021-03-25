@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimeInputComponent, DateTime } from './time-input.component';
 import { Component, OnInit, ViewChild, DebugElement } from '@angular/core';
@@ -81,7 +81,7 @@ describe('TimeInputComponent', () => {
     let timeInputDebugElement: DebugElement;
     let timeInputNativeElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 ReactiveFormsModule,
@@ -184,7 +184,7 @@ describe('TimeInputComponent no value required', () => {
     let testHostComponent: NoValueRequiredTestHostComponent;
     let testHostFixture: ComponentFixture<NoValueRequiredTestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 ReactiveFormsModule,

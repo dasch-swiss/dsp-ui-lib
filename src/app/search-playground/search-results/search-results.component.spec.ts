@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs/internal/observable/of';
 import { SearchResultsComponent } from './search-results.component';
@@ -12,7 +12,7 @@ describe('SearchResultsComponent', () => {
     const project = 'http://rdfh.ch/projects/0001'; // project iri
     const q = 'thing'; // query terms
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [SearchResultsComponent],
             providers: [

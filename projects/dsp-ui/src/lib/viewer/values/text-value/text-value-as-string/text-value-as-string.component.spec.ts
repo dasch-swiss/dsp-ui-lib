@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TextValueAsStringComponent } from './text-value-as-string.component';
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
@@ -89,7 +89,7 @@ class TestHostCreateValueComponent implements OnInit {
 
 describe('TextValueAsStringComponent', () => {
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 TestHostDisplayValueComponent,

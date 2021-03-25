@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { waitForAsync, TestBed } from '@angular/core/testing';
 import { MockUsers } from '@dasch-swiss/dsp-js';
 import { DspApiConnectionToken } from '../../core/core.module';
 import { UserService } from './user.service';
@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 describe('UserService', () => {
     let service: UserService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             providers: [
                 {

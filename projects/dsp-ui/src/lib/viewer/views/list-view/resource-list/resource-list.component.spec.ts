@@ -1,5 +1,5 @@
 import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLineModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -49,7 +49,7 @@ describe('ResourceListComponent', () => {
     let testHostComponent: TestParentComponent;
     let testHostFixture: ComponentFixture<TestParentComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
                 MockPipe,

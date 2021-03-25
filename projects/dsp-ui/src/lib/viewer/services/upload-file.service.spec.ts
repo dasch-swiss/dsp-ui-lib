@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { async, TestBed } from '@angular/core/testing';
+import { waitForAsync, TestBed } from '@angular/core/testing';
 import { AppInitService } from '../../core/app-init.service';
 import { Session, SessionService } from '../../core/session.service';
 import { UploadedFileResponse, UploadFileService } from './upload-file.service';
