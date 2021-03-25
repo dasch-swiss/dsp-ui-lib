@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.4](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.3...v1.2.4) (2021-03-25)
+
+
+### Maintenance
+
+* **update angular:** update to Angular 11 (DSP-1472)  ([#286](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/286)) ([cdc038c](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/cdc038c3d61323f481ebb67c2e3bda6f011a2b23))
+
 ### [1.2.3](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.2...v1.2.3) (2021-03-22)
 
 
