@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.2.5](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.4...v1.2.5) (2021-05-03)
+
+
+### Bug Fixes
+
+* **viewer:** set correct rgba value (DSP-1588) ([#288](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/288)) ([01daed4](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/01daed442037b2092cf206f5b3444291725591ef))
+
+
+### Maintenance
+
+* **viewer:** export value operation events (DSP-1590) ([#291](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/291)) ([a17b8e6](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/a17b8e6a2e7e9eed414cd38dc3ee19725cdd2ec1))
+
 ### [1.2.4](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.3...v1.2.4) (2021-03-25)
 
 
