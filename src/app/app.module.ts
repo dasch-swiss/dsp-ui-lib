@@ -32,6 +32,7 @@ import { SearchResultsComponent } from './search-playground/search-results/searc
 import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
 import { UploadPlaygroundComponent } from './upload-playground/upload-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
     declarations: [
@@ -62,7 +63,8 @@ import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground
         MatJDNConvertibleCalendarDateAdapterModule,
         MatListModule,
         MatSlideToggleModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatIconModule
     ],
     providers: [
         {

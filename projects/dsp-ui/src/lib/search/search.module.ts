@@ -84,7 +84,9 @@ import { DspActionModule } from '../action';
         SearchPanelComponent,
         FulltextSearchComponent,
         ExpertSearchComponent,
-        AdvancedSearchComponent
+        AdvancedSearchComponent,
+        SelectResourceClassComponent,
+        SelectPropertyComponent
     ]
 })
 export class DspSearchModule {
