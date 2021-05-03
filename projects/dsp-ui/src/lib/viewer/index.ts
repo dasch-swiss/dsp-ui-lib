@@ -33,6 +33,7 @@ export * from './representation/upload-file/upload-file.component';
 export * from './services/upload-file.service';
 export * from './services/user.service';
 export * from './services/value.service';
+export * from './services/value-operation-event.service';
 // directives
 export * from './directives/text-value-html-link.directive';
 export * from './directives/drag-drop.directive';
