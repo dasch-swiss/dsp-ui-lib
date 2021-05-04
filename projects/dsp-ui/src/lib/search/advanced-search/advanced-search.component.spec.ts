@@ -44,46 +44,19 @@ class TestSelectOntologyComponent implements OnInit {
 }
 
 /**
- * Test component to simulate select ontology component.
+ * Test component to simulate select resource class and property component.
  */
 @Component({
-    selector: 'dsp-select-resource-class',
+    selector: 'dsp-resource-and-property-selection',
     template: ``
 })
-class TestSelectResourceClassComponent implements OnInit {
+class TestSelectResourceClassAndPropertyComponent {
 
     @Input() formGroup: FormGroup;
 
-    @Input() resourceClassDefinitions: ResourceClassDefinition[];
+    @Input() activeOntology: string;
 
-    @Output() resourceClassSelected = new EventEmitter<string>();
-
-    ngOnInit() {
-
-    }
-
-}
-
-/**
- * Test component to simulate select ontology component.
- */
-@Component({
-    selector: 'dsp-select-property',
-    template: ``
-})
-class TestSelectPropertyComponent implements OnInit {
-
-    @Input() formGroup: FormGroup;
-
-    @Input() properties: ResourcePropertyDefinition[];
-
-    @Input() index: number;
-
-    @Input() activeResourceClass: ResourceClassDefinition;
-
-    ngOnInit() {
-
-    }
+    @Input() resClassRestriction?: string;
 
 }
 
@@ -123,8 +96,7 @@ describe('AdvancedSearchComponent', () => {
                 AdvancedSearchComponent,
                 TestHostComponent,
                 TestSelectOntologyComponent,
-                TestSelectResourceClassComponent,
-                TestSelectPropertyComponent
+                TestSelectResourceClassAndPropertyComponent
             ],
             imports: [
                 ReactiveFormsModule,
@@ -196,7 +168,22 @@ describe('AdvancedSearchComponent', () => {
 
         });
 
-        it('should disable add property button on init', async () => {
+        it('should set the active ontology when an ontology is selected',  () => {
+
+            const hostCompDe = testHostFixture.debugElement;
+            const selectOntoComp = hostCompDe.query(By.directive(TestSelectOntologyComponent));
+
+            (selectOntoComp.componentInstance as TestSelectOntologyComponent).ontologySelected.emit('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+            testHostFixture.detectChanges();
+
+            expect(testHostComponent.advancedSearch.activeOntology).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+            expect(testHostComponent.advancedSearch.resourceAndPropertySelection.activeOntology).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+        });
+
+        /*it('should disable add property button on init', async () => {
 
             const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
 
@@ -209,7 +196,7 @@ describe('AdvancedSearchComponent', () => {
 
             expect(await rmPropButton.isDisabled()).toBe(true);
 
-        });
+        });*/
 
         it('should react when an ontology is selected', async () => {
 
@@ -238,19 +225,19 @@ describe('AdvancedSearchComponent', () => {
             testHostFixture.detectChanges();
 
             expect(testHostComponent.advancedSearch.activeOntology).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
-            expect(testHostComponent.advancedSearch.activeResourceClass).toEqual(undefined);
+            /*expect(testHostComponent.advancedSearch.activeResourceClass).toEqual(undefined);
             expect(testHostComponent.advancedSearch.resourceClasses.length).toEqual(8);
-            expect(Object.keys(testHostComponent.advancedSearch.properties).length).toEqual(28);
+            expect(Object.keys(testHostComponent.advancedSearch.properties).length).toEqual(28);*/
 
-            const selectResClassComp = hostCompDe.query(By.directive(TestSelectResourceClassComponent));
-            expect((selectResClassComp.componentInstance as TestSelectResourceClassComponent).resourceClassDefinitions.length).toEqual(8);
+            // const selectResClassComp = hostCompDe.query(By.directive(TestSelectResourceClassComponent));
+            // expect((selectResClassComp.componentInstance as TestSelectResourceClassComponent).resourceClassDefinitions.length).toEqual(8);
 
-            expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledTimes(1);
-            expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledWith('http://0.0.0.0:3333/ontology/0001/anything/v2');
+            // expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledTimes(1);
+            // expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledWith('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
         });
 
-        it('should display a property selection when the add property button has been clicked', async () => {
+        /*it('should display a property selection when the add property button has been clicked', async () => {
 
             // simulate state after anything onto selection
             testHostComponent.advancedSearch.activeOntology = 'http://0.0.0.0:3333/ontology/0001/anything/v2';
@@ -401,7 +388,7 @@ describe('AdvancedSearchComponent', () => {
             expect((selectPropComp.componentInstance as TestSelectPropertyComponent).index).toEqual(0);
             expect(Object.keys((selectPropComp.componentInstance as TestSelectPropertyComponent).properties).length).toEqual(25);
 
-        });
+        });*/
     });
 
 });
