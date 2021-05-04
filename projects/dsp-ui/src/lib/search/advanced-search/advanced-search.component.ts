@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    AfterViewChecked,
+    Component,
+    EventEmitter,
+    Inject,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiResponseError, Constants, KnoraApiConnection, OntologiesMetadata } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
@@ -14,7 +24,7 @@ import { PropertyWithValue } from './select-property/specify-property-value/oper
     templateUrl: './advanced-search.component.html',
     styleUrls: ['./advanced-search.component.scss']
 })
-export class AdvancedSearchComponent implements OnInit, OnDestroy {
+export class AdvancedSearchComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     /**
      * Filter ontologies by specified project IRI
@@ -59,12 +69,15 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         // parent form is empty, it gets passed to the child components
         this.form = this._fb.group({});
 
+        // initialize ontologies to be used for the ontologies selection in the search form
+        this.initializeOntologies();
+    }
+
+    ngAfterViewChecked() {
         // if form status changes, re-run validation
         this.formChangesSubscription = this.form.statusChanges.subscribe((data) => {
             this.formValid = this._validateForm();
         });
-        // initialize ontologies to be used for the ontologies selection in the search form
-        this.initializeOntologies();
     }
 
     ngOnDestroy() {
@@ -117,14 +130,16 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      */
     private _validateForm(): boolean {
 
-        if (this.resourceAndPropertySelection === undefined) {
+        if (this.resourceAndPropertySelection === undefined
+            || this.resourceAndPropertySelection.resourceClassComponent === undefined
+            || this.resourceAndPropertySelection.propertyComponents === undefined) {
             return false;
         }
 
         // check that either a resource class is selected or at least one property is specified
         return this.form.valid &&
             (this.resourceAndPropertySelection.propertyComponents.length > 0
-                || (this.resourceAndPropertySelection.resourceClassComponent !== undefined && this.resourceAndPropertySelection.resourceClassComponent.selectedResourceClassIri !== false)
+                || this.resourceAndPropertySelection.resourceClassComponent.selectedResourceClassIri !== false
             );
     }
 
