@@ -186,44 +186,7 @@ describe('AdvancedSearchComponent', () => {
 
         });
 
-        /*it('should display a property selection when the add property button has been clicked', async () => {
-
-            // simulate state after anything onto selection
-            testHostComponent.advancedSearch.activeOntology = 'http://0.0.0.0:3333/ontology/0001/anything/v2';
-
-            const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
-
-            // get resource class defs
-            testHostComponent.advancedSearch.resourceClasses = anythingOnto.getClassDefinitionsByType(ResourceClassDefinition);
-
-            const resProps = anythingOnto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
-
-            testHostComponent.advancedSearch.properties = resProps;
-
-            testHostFixture.detectChanges();
-
-            expect(testHostComponent.advancedSearch.activeProperties.length).toEqual(0);
-
-            const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
-
-            expect(await addPropButton.isDisabled()).toBe(false);
-
-            await addPropButton.click();
-
-            expect(testHostComponent.advancedSearch.activeProperties.length).toEqual(1);
-
-            const hostCompDe = testHostFixture.debugElement;
-            const selectPropComp = hostCompDe.query(By.directive(TestSelectPropertyComponent));
-
-            expect((selectPropComp.componentInstance as TestSelectPropertyComponent).activeResourceClass).toEqual(undefined);
-            expect((selectPropComp.componentInstance as TestSelectPropertyComponent).index).toEqual(0);
-            expect((selectPropComp.componentInstance as TestSelectPropertyComponent).properties).toEqual(resProps);
-
-            const rmPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.remove-property-button'}));
-
-            expect(await rmPropButton.isDisabled()).toBe(false );
-        });
-
+        /*
         it('should add to and remove from active properties array when property buttons are clicked', async () => {
 
             // simulate state after anything onto selection

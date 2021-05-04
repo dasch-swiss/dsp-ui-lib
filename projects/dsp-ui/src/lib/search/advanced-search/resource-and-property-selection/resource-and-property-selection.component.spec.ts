@@ -228,4 +228,39 @@ describe('ResourceAndPropertySelectionComponent', () => {
 
     });
 
+    it('should display a property selection when the add property button has been clicked', async () => {
+
+        const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+        // get resource class defs
+        testHostComponent.resourceClassAndPropertySelection.resourceClasses = anythingOnto.getClassDefinitionsByType(ResourceClassDefinition);
+
+        const resProps = anythingOnto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        testHostComponent.resourceClassAndPropertySelection.properties = resProps;
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.resourceClassAndPropertySelection.activeProperties.length).toEqual(0);
+
+        const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
+
+        expect(await addPropButton.isDisabled()).toBe(false);
+
+        await addPropButton.click();
+
+        expect(testHostComponent.resourceClassAndPropertySelection.activeProperties.length).toEqual(1);
+
+        const hostCompDe = testHostFixture.debugElement;
+        const selectPropComp = hostCompDe.query(By.directive(TestSelectPropertyComponent));
+
+        expect((selectPropComp.componentInstance as TestSelectPropertyComponent).activeResourceClass).toEqual(undefined);
+        expect((selectPropComp.componentInstance as TestSelectPropertyComponent).index).toEqual(0);
+        expect((selectPropComp.componentInstance as TestSelectPropertyComponent).properties).toEqual(resProps);
+
+        const rmPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.remove-property-button'}));
+
+        expect(await rmPropButton.isDisabled()).toBe(false );
+    });
+
 });
