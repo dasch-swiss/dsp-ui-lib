@@ -57,7 +57,8 @@ class TestSelectPropertyComponent {
  */
 @Component({
     template: `
-        <dsp-resource-and-property-selection #resClassAndProp [formGroup]="form" [activeOntology]="'http://0.0.0.0:3333/ontology/0001/anything/v2'"></dsp-resource-and-property-selection>`
+        <dsp-resource-and-property-selection #resClassAndProp [formGroup]="form"
+                                             [activeOntology]="'http://0.0.0.0:3333/ontology/0001/anything/v2'"></dsp-resource-and-property-selection>`
 })
 class TestHostComponent implements OnInit {
 
@@ -211,4 +212,20 @@ describe('ResourceAndPropertySelectionComponent', () => {
         expect(Object.keys((selectPropComp.componentInstance as TestSelectPropertyComponent).properties).length).toEqual(25);
 
     });
+
+    it('should disable add property button on init', async () => {
+
+        const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
+
+        expect(await addPropButton.isDisabled()).toBe(false);
+    });
+
+    it('should disable remove property button on init', async () => {
+
+        const rmPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.remove-property-button'}));
+
+        expect(await rmPropButton.isDisabled()).toBe(true);
+
+    });
+
 });

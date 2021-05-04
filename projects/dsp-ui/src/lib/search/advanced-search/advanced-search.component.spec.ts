@@ -1,23 +1,13 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-    ClassDefinition,
-    MockOntology,
-    OntologiesEndpointV2,
-    OntologiesMetadata,
-    OntologyMetadata, PropertyDefinition,
-    ReadOntology,
-    ResourceClassDefinition, ResourcePropertyDefinition
-} from '@dasch-swiss/dsp-js';
-import { OntologyCache } from '@dasch-swiss/dsp-js/src/cache/ontology-cache/OntologyCache';
+import { OntologiesEndpointV2, OntologiesMetadata, OntologyMetadata } from '@dasch-swiss/dsp-js';
 import { of } from 'rxjs';
 import { DspApiConnectionToken } from '../../core/core.module';
 import { AdvancedSearchComponent } from './advanced-search.component';
@@ -182,21 +172,6 @@ describe('AdvancedSearchComponent', () => {
             expect(testHostComponent.advancedSearch.resourceAndPropertySelection.activeOntology).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
         });
-
-        /*it('should disable add property button on init', async () => {
-
-            const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
-
-            expect(await addPropButton.isDisabled()).toBe(true);
-        });
-
-        it('should disable remove property button on init', async () => {
-
-            const rmPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.remove-property-button'}));
-
-            expect(await rmPropButton.isDisabled()).toBe(true);
-
-        });*/
 
         it('should react when an ontology is selected', async () => {
 
