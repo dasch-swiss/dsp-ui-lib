@@ -86,10 +86,7 @@ import { ResourceAndPropertySelectionComponent } from './advanced-search/resourc
         SearchPanelComponent,
         FulltextSearchComponent,
         ExpertSearchComponent,
-        AdvancedSearchComponent,
-        SelectResourceClassComponent,
-        SelectPropertyComponent,
-        ResourceAndPropertySelectionComponent
+        AdvancedSearchComponent
     ]
 })
 export class DspSearchModule {
