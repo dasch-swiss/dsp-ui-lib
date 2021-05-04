@@ -263,4 +263,40 @@ describe('ResourceAndPropertySelectionComponent', () => {
         expect(await rmPropButton.isDisabled()).toBe(false );
     });
 
+    it('should add to and remove from active properties array when property buttons are clicked', async () => {
+
+        const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+        // get resource class defs
+        testHostComponent.resourceClassAndPropertySelection.resourceClasses = anythingOnto.getClassDefinitionsByType(ResourceClassDefinition);
+
+        const resProps = anythingOnto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        testHostComponent.resourceClassAndPropertySelection.properties = resProps;
+
+        testHostFixture.detectChanges();
+
+        const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
+
+        const rmPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.remove-property-button'}));
+
+        expect(testHostComponent.resourceClassAndPropertySelection.activeProperties.length).toEqual(0);
+
+        await addPropButton.click();
+
+        expect(testHostComponent.resourceClassAndPropertySelection.activeProperties.length).toEqual(1);
+
+        await addPropButton.click();
+
+        expect(testHostComponent.resourceClassAndPropertySelection.activeProperties.length).toEqual(2);
+
+        await rmPropButton.click();
+
+        expect(testHostComponent.resourceClassAndPropertySelection.activeProperties.length).toEqual(1);
+
+        await rmPropButton.click();
+
+        expect(testHostComponent.resourceClassAndPropertySelection.activeProperties.length).toEqual(0);
+    });
+
 });

@@ -187,45 +187,6 @@ describe('AdvancedSearchComponent', () => {
         });
 
         /*
-        it('should add to and remove from active properties array when property buttons are clicked', async () => {
-
-            // simulate state after anything onto selection
-            testHostComponent.advancedSearch.activeOntology = 'http://0.0.0.0:3333/ontology/0001/anything/v2';
-
-            const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
-
-            // get resource class defs
-            testHostComponent.advancedSearch.resourceClasses = anythingOnto.getClassDefinitionsByType(ResourceClassDefinition);
-
-            const resProps = anythingOnto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
-
-            testHostComponent.advancedSearch.properties = resProps;
-
-            testHostFixture.detectChanges();
-
-            const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
-
-            const rmPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.remove-property-button'}));
-
-            expect(testHostComponent.advancedSearch.activeProperties.length).toEqual(0);
-
-            await addPropButton.click();
-
-            expect(testHostComponent.advancedSearch.activeProperties.length).toEqual(1);
-
-            await addPropButton.click();
-
-            expect(testHostComponent.advancedSearch.activeProperties.length).toEqual(2);
-
-            await rmPropButton.click();
-
-            expect(testHostComponent.advancedSearch.activeProperties.length).toEqual(1);
-
-            await rmPropButton.click();
-
-            expect(testHostComponent.advancedSearch.activeProperties.length).toEqual(0);
-        });
-
         it('should add at max four property selections', async () => {
 
             // simulate state after anything onto selection
