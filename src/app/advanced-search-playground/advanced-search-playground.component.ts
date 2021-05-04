@@ -36,7 +36,7 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
 
     properties: ResourcePropertyDefinition[];
 
-    resClassRestriction = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
+    resClassRestriction? = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
 
     activeOnto = this.resClassRestriction.split('#')[0];
 
@@ -81,9 +81,15 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
         this._dspApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
             (onto: Map<string, ReadOntology>) => {
 
-                this.resourceClasses = onto.get(ontologyIri).getClassDefinitionsByType(ResourceClassDefinition).filter(
-                    (resClassDef: ResourceClassDefinition) => resClassDef.id === this.resClassRestriction
-                );
+                const resClasses = onto.get(ontologyIri).getClassDefinitionsByType(ResourceClassDefinition);
+
+                if (this.resClassRestriction !== undefined) {
+                    this.resourceClasses = resClasses.filter(
+                        (resClassDef: ResourceClassDefinition) => resClassDef.id === this.resClassRestriction
+                    );
+                } else {
+                    this.resourceClasses = resClasses;
+                }
 
                 this.properties = onto.get(ontologyIri).getPropertyDefinitionsByType(ResourcePropertyDefinition);
             },
