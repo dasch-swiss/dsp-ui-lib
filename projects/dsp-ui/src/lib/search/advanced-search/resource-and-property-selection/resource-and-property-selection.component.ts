@@ -76,8 +76,6 @@ export class ResourceAndPropertySelectionComponent implements OnInit, OnChanges 
         // reset specified properties
         this.activeProperties = [];
 
-        this.activeOntology = ontologyIri;
-
         this._dspApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
             (onto: Map<string, ReadOntology>) => {
 

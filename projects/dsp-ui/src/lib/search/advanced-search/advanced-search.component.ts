@@ -1,34 +1,13 @@
-import {
-    Component,
-    EventEmitter,
-    Inject,
-    Input,
-    OnDestroy,
-    OnInit,
-    Output,
-    QueryList,
-    ViewChild,
-    ViewChildren
-} from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import {
-    ApiResponseError,
-    Constants,
-    KnoraApiConnection,
-    OntologiesMetadata,
-    ReadOntology,
-    ResourceClassAndPropertyDefinitions,
-    ResourceClassDefinition,
-    ResourcePropertyDefinition
-} from '@dasch-swiss/dsp-js';
+import { ApiResponseError, Constants, KnoraApiConnection, OntologiesMetadata } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../core/core.module';
 import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
-import { SelectPropertyComponent } from './select-property/select-property.component';
+import { ResourceAndPropertySelectionComponent } from './resource-and-property-selection/resource-and-property-selection.component';
 import { PropertyWithValue } from './select-property/specify-property-value/operator';
-import { SelectResourceClassComponent } from './select-resource-class/select-resource-class.component';
 
 @Component({
     selector: 'dsp-advanced-search',
@@ -61,23 +40,12 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
     activeOntology: string;
 
-    activeResourceClass: ResourceClassDefinition;
-
-    resourceClasses: ResourceClassDefinition[];
-
-    activeProperties: boolean[] = [];
-
-    properties: ResourcePropertyDefinition[];
-
     formChangesSubscription: Subscription;
 
     errorMessage: ApiResponseError;
 
     // reference to the component that controls the resource class selection
-    @ViewChild('resourceClass') resourceClassComponent: SelectResourceClassComponent;
-
-    // reference to the component controlling the property selection
-    @ViewChildren('property') propertyComponents: QueryList<SelectPropertyComponent>;
+    @ViewChild('resAndPropSel') resourceAndPropertySelection: ResourceAndPropertySelectionComponent;
 
     constructor(
         @Inject(FormBuilder) private _fb: FormBuilder,
@@ -103,24 +71,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
         if (this.formChangesSubscription !== undefined) {
             this.formChangesSubscription.unsubscribe();
         }
-    }
-
-    /**
-     * @ignore
-     * Add a property to the search form.
-     * @returns void
-     */
-    addProperty(): void {
-        this.activeProperties.push(true);
-    }
-
-    /**
-     * @ignore
-     * Remove the last property from the search form.
-     * @returns void
-     */
-    removeProperty(): void {
-        this.activeProperties.splice(-1, 1);
     }
 
     /**
@@ -155,66 +105,10 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
                     this.errorMessage = error;
                 });
         }
-
-
     }
 
-    /**
-     * Initialises resources classes and properties,
-     * when an ontology is selected
-     *
-     * @param ontologyIri the Iri of the selected ontology.
-     */
-    getResourceClassesAndPropertiesForOntology(ontologyIri: string) {
-
-        // reset active resource class definition
-        this.activeResourceClass = undefined;
-
-        // reset specified properties
-        this.activeProperties = [];
-
+    setActiveOntology(ontologyIri: string) {
         this.activeOntology = ontologyIri;
-
-        this._dspApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
-            (onto: Map<string, ReadOntology>) => {
-
-                this.resourceClasses = onto.get(ontologyIri).getClassDefinitionsByType(ResourceClassDefinition);
-
-                this.properties = onto.get(ontologyIri).getPropertyDefinitionsByType(ResourcePropertyDefinition);
-            },
-            error => {
-                this._notification.openSnackBar(error);
-            }
-        );
-    }
-
-    /**
-     * @ignore
-     * Once a resource class has been selected, gets its properties.
-     * The properties will be made available to the user for selection.
-     *
-     * @param resourceClassIri the IRI of the selected resource class, if any.
-     */
-    getPropertiesForResourceClass(resourceClassIri: string | null) {
-
-        // reset specified properties
-        this.activeProperties = [];
-
-        // if the client undoes the selection of a resource class, use the active ontology as a fallback
-        if (resourceClassIri === null) {
-            this.getResourceClassesAndPropertiesForOntology(this.activeOntology);
-        } else {
-
-            this._dspApiConnection.v2.ontologyCache.getResourceClassDefinition(resourceClassIri).subscribe(
-                (onto: ResourceClassAndPropertyDefinitions) => {
-
-                    this.activeResourceClass = onto.classes[resourceClassIri];
-
-                    this.properties = onto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
-
-                }
-            );
-        }
     }
 
     /**
@@ -223,20 +117,15 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
      */
     private _validateForm(): boolean {
 
+        if (this.resourceAndPropertySelection === undefined) {
+            return false;
+        }
+
         // check that either a resource class is selected or at least one property is specified
         return this.form.valid &&
-            (this.propertyComponents.length > 0 || (this.resourceClassComponent !== undefined && this.resourceClassComponent.selectedResourceClassIri !== false));
-
-    }
-
-    /**
-     * @ignore
-     * Resets the form (selected resource class and specified properties) preserving the active ontology.
-     */
-    resetForm() {
-        if (this.activeOntology !== undefined) {
-            this.getResourceClassesAndPropertiesForOntology(this.activeOntology);
-        }
+            (this.resourceAndPropertySelection.propertyComponents.length > 0
+                || (this.resourceAndPropertySelection.resourceClassComponent !== undefined && this.resourceAndPropertySelection.resourceClassComponent.selectedResourceClassIri !== false)
+            );
     }
 
     submit() {
@@ -245,7 +134,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
             return; // check that form is valid
         }
 
-        const resClassOption = this.resourceClassComponent.selectedResourceClassIri;
+        const resClassOption = this.resourceAndPropertySelection.resourceClassComponent.selectedResourceClassIri;
 
         let resClass;
 
@@ -253,7 +142,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
             resClass = resClassOption;
         }
 
-        const properties: PropertyWithValue[] = this.propertyComponents.map(
+        const properties: PropertyWithValue[] = this.resourceAndPropertySelection.propertyComponents.map(
             (propComp) => {
                 return propComp.getPropertySelectedWithValue();
             }
