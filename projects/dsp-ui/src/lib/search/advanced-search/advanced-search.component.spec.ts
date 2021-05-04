@@ -200,23 +200,6 @@ describe('AdvancedSearchComponent', () => {
 
         it('should react when an ontology is selected', async () => {
 
-            const dspConnSpy = TestBed.inject(DspApiConnectionToken);
-
-            (dspConnSpy.v2.ontologyCache as jasmine.SpyObj<OntologyCache>).getOntology.and.callFake(
-                (ontoIri: string) => {
-
-                    const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
-                    const knoraApiOnto = MockOntology.mockReadOntology('http://api.knora.org/ontology/knora-api/v2');
-
-                    const ontoMap: Map<string, ReadOntology> = new Map();
-
-                    ontoMap.set('http://api.knora.org/ontology/knora-api/v2', knoraApiOnto);
-                    ontoMap.set('http://0.0.0.0:3333/ontology/0001/anything/v2', anythingOnto);
-
-                    return of(ontoMap);
-                }
-            );
-
             const hostCompDe = testHostFixture.debugElement;
             const selectOntoComp = hostCompDe.query(By.directive(TestSelectOntologyComponent));
 
@@ -225,15 +208,6 @@ describe('AdvancedSearchComponent', () => {
             testHostFixture.detectChanges();
 
             expect(testHostComponent.advancedSearch.activeOntology).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
-            /*expect(testHostComponent.advancedSearch.activeResourceClass).toEqual(undefined);
-            expect(testHostComponent.advancedSearch.resourceClasses.length).toEqual(8);
-            expect(Object.keys(testHostComponent.advancedSearch.properties).length).toEqual(28);*/
-
-            // const selectResClassComp = hostCompDe.query(By.directive(TestSelectResourceClassComponent));
-            // expect((selectResClassComp.componentInstance as TestSelectResourceClassComponent).resourceClassDefinitions.length).toEqual(8);
-
-            // expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledTimes(1);
-            // expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledWith('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
         });
 
