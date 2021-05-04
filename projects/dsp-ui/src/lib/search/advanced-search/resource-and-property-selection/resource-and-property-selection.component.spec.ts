@@ -260,7 +260,7 @@ describe('ResourceAndPropertySelectionComponent', () => {
 
         const rmPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.remove-property-button'}));
 
-        expect(await rmPropButton.isDisabled()).toBe(false );
+        expect(await rmPropButton.isDisabled()).toBe(false);
     });
 
     it('should add to and remove from active properties array when property buttons are clicked', async () => {
@@ -297,6 +297,31 @@ describe('ResourceAndPropertySelectionComponent', () => {
         await rmPropButton.click();
 
         expect(testHostComponent.resourceClassAndPropertySelection.activeProperties.length).toEqual(0);
+    });
+
+
+    it('should add at max four property selections', async () => {
+
+        // simulate state after anything onto selection
+        testHostComponent.resourceClassAndPropertySelection.activeOntology = 'http://0.0.0.0:3333/ontology/0001/anything/v2';
+
+        const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+        // get resource class defs
+        testHostComponent.resourceClassAndPropertySelection.resourceClasses = anythingOnto.getClassDefinitionsByType(ResourceClassDefinition);
+
+        const resProps = anythingOnto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        testHostComponent.resourceClassAndPropertySelection.properties = resProps;
+
+        testHostComponent.resourceClassAndPropertySelection.activeProperties = [true, true, true, true];
+
+        testHostFixture.detectChanges();
+
+        const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
+
+        expect(await addPropButton.isDisabled()).toEqual(true);
+
     });
 
 });
