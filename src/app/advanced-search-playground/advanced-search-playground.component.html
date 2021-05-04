@@ -1,39 +1,6 @@
-<form [formGroup]="form" (ngSubmit)="submit()" class="dsp-form-content">
-    <div class="select-resource-class">
-        <dsp-select-resource-class *ngIf="resourceClasses?.length > 0"
-                                   #resourceClass
-                                   [formGroup]="form"
-                                   [resourceClassDefinitions]="resourceClasses"
-                                   (resourceClassSelected)="getPropertiesForResourceClass($event)">
-        </dsp-select-resource-class>
-    </div>
+<dsp-resource-and-property-selection-component #resAndPropSel [formGroup]="form" [activeOntology]="activeOntology" [resClassRestriction]="'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'"></dsp-resource-and-property-selection-component>
+<button (click)="submit()" [disabled]="!form.valid">Submit</button>
+<button class="reset" mat-button type="button" (click)="resourceAndPropertySelection.resetForm()" [disabled]="this.activeOntology === undefined">
+    Reset
+</button>
 
-    <div class="select-property" *ngIf="properties !== undefined">
-        <div *ngFor="let prop of activeProperties; let i = index">
-
-            <dsp-select-property #property [activeResourceClass]="activeResourceClass" [formGroup]="form" [index]="i"
-                                 [properties]="properties"></dsp-select-property>
-
-        </div>
-    </div>
-
-    <div class="select-property buttons">
-        <button mat-mini-fab class="property-button add-property-button" color="primary" type="button"
-                (click)="addProperty()" [disabled]="activeOntology === undefined || activeProperties.length >= 4">
-            <mat-icon aria-label="add a property">add</mat-icon>
-        </button>
-
-        <button mat-mini-fab class="property-button remove-property-button" color="primary" type="button"
-                (click)="removeProperty()" [disabled]="activeProperties.length == 0">
-            <mat-icon aria-label="remove property">remove</mat-icon>
-        </button>
-    </div>
-
-    <div class="dsp-form-action">
-
-        <button class="advanced-search-button" mat-raised-button color="primary" type="submit">
-            Search
-        </button>
-    </div>
-
-</form>

@@ -33,6 +33,7 @@ import { StillImagePlaygroundComponent } from './still-image/still-image-playgro
 import { UploadPlaygroundComponent } from './upload-playground/upload-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
 import { MatIconModule } from '@angular/material/icon';
+import { ResourceAndPropertySelectionComponent } from './resource-and-property-selection-component/resource-and-property-selection.component';
 
 @NgModule({
     declarations: [
@@ -46,7 +47,8 @@ import { MatIconModule } from '@angular/material/icon';
         SearchResultsComponent,
         StillImagePlaygroundComponent,
         UploadPlaygroundComponent,
-        ViewerPlaygroundComponent
+        ViewerPlaygroundComponent,
+        ResourceAndPropertySelectionComponent
     ],
     imports: [
         AppRoutingModule,
