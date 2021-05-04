@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResourceAndPropertySelectionComponent } from './resource-and-property-selection.component';
 
-describe('ResourceAndPropertySelectionComponentComponent', () => {
+describe('ResourceAndPropertySelectionComponent', () => {
   let component: ResourceAndPropertySelectionComponent;
   let fixture: ComponentFixture<ResourceAndPropertySelectionComponent>;
 

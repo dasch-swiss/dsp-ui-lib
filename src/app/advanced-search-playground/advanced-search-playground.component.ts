@@ -3,7 +3,7 @@ import { AdvancedSearchParamsService, DspApiConnectionToken } from '@dasch-swiss
 import { ApiResponseData, ApiResponseError, KnoraApiConnection, LogoutResponse } from '@dasch-swiss/dsp-js';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PropertyWithValue } from '../../../projects/dsp-ui/src/lib/search';
-import { ResourceAndPropertySelectionComponent } from '../resource-and-property-selection-component/resource-and-property-selection.component';
+import { ResourceAndPropertySelectionComponent } from '@dasch-swiss/dsp-ui/lib/search/advanced-search/resource-and-property-selection/resource-and-property-selection.component';
 
 @Component({
     selector: 'app-advanced-search-playground',

@@ -32,8 +32,6 @@ import { SearchResultsComponent } from './search-playground/search-results/searc
 import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
 import { UploadPlaygroundComponent } from './upload-playground/upload-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
-import { MatIconModule } from '@angular/material/icon';
-import { ResourceAndPropertySelectionComponent } from './resource-and-property-selection-component/resource-and-property-selection.component';
 
 @NgModule({
     declarations: [
@@ -47,8 +45,7 @@ import { ResourceAndPropertySelectionComponent } from './resource-and-property-s
         SearchResultsComponent,
         StillImagePlaygroundComponent,
         UploadPlaygroundComponent,
-        ViewerPlaygroundComponent,
-        ResourceAndPropertySelectionComponent
+        ViewerPlaygroundComponent
     ],
     imports: [
         AppRoutingModule,
@@ -65,8 +62,7 @@ import { ResourceAndPropertySelectionComponent } from './resource-and-property-s
         MatJDNConvertibleCalendarDateAdapterModule,
         MatListModule,
         MatSlideToggleModule,
-        ReactiveFormsModule,
-        MatIconModule
+        ReactiveFormsModule
     ],
     providers: [
         {

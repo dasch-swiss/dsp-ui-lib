@@ -16,14 +16,15 @@ import {
     ResourceClassDefinition,
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken } from '@dasch-swiss/dsp-ui';
-import { SelectResourceClassComponent } from '../../../projects/dsp-ui/src/lib/search/advanced-search/select-resource-class/select-resource-class.component';
-import { SelectPropertyComponent } from '../../../projects/dsp-ui/src/lib/search/advanced-search/select-property/select-property.component';
+import { SelectResourceClassComponent } from '../select-resource-class/select-resource-class.component';
+import { SelectPropertyComponent } from '../select-property/select-property.component';
+import { DspApiConnectionToken } from '../../../core/core.module';
+
 
 @Component({
-    selector: 'dsp-resource-and-property-selection-component',
-    templateUrl: './resource-and-property-selection.component.html',
-    styleUrls: ['./resource-and-property-selection.component.scss']
+  selector: 'dsp-resource-and-property-selection',
+  templateUrl: './resource-and-property-selection.component.html',
+  styleUrls: ['./resource-and-property-selection.component.scss']
 })
 export class ResourceAndPropertySelectionComponent implements OnInit, OnChanges {
 
