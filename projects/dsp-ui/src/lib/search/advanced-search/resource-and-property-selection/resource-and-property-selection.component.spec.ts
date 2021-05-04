@@ -10,6 +10,8 @@ import { MockOntology, ReadOntology, ResourceClassDefinition, ResourcePropertyDe
 import { of } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
+import { MatButtonHarness } from '@angular/material/button/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 
 /**
  * Test host component to simulate select resource class component.
@@ -35,7 +37,7 @@ class TestSelectResourceClassComponent {
     selector: '<dsp-select-property></dsp-select-property>',
     template: ``
 })
-class TestSelectPropertyClassComponent {
+class TestSelectPropertyComponent {
 
     // parent FormGroup
     @Input() formGroup: FormGroup;
@@ -45,6 +47,8 @@ class TestSelectPropertyClassComponent {
 
     // properties that can be selected from
     @Input() properties: ResourcePropertyDefinition[];
+
+    @Input() activeResourceClass: ResourceClassDefinition;
 
 }
 
@@ -95,7 +99,7 @@ describe('ResourceAndPropertySelectionComponent', () => {
                 ResourceAndPropertySelectionComponent,
                 TestHostComponent,
                 TestSelectResourceClassComponent,
-                TestSelectPropertyClassComponent
+                TestSelectPropertyComponent
             ],
             providers: [
                 {
@@ -128,6 +132,9 @@ describe('ResourceAndPropertySelectionComponent', () => {
 
         testHostFixture = TestBed.createComponent(TestHostComponent);
         testHostComponent = testHostFixture.componentInstance;
+
+        loader = TestbedHarnessEnvironment.loader(testHostFixture);
+
         testHostFixture.detectChanges();
     });
 
@@ -153,6 +160,55 @@ describe('ResourceAndPropertySelectionComponent', () => {
         expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledTimes(1);
         expect(dspConnSpy.v2.ontologyCache.getOntology).toHaveBeenCalledWith('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
+    });
+
+    it('should react when a resource class is selected', async () => {
+
+        const dspConnSpy = TestBed.inject(DspApiConnectionToken);
+
+        (dspConnSpy.v2.ontologyCache as jasmine.SpyObj<OntologyCache>).getResourceClassDefinition.and.callFake(
+            (resClassIri: string) => {
+                return of(MockOntology.mockIResourceClassAndPropertyDefinitions('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing'));
+            }
+        );
+
+        const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+        // get resource class defs
+        testHostComponent.resourceClassAndPropertySelection.resourceClasses = anythingOnto.getClassDefinitionsByType(ResourceClassDefinition);
+
+        const resProps = anythingOnto.getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        testHostComponent.resourceClassAndPropertySelection.properties = resProps;
+
+        testHostFixture.detectChanges();
+
+        const hostCompDe = testHostFixture.debugElement;
+        const selectResClassComp = hostCompDe.query(By.directive(TestSelectResourceClassComponent));
+
+        (selectResClassComp.componentInstance as TestSelectResourceClassComponent).resourceClassSelected.emit('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.resourceClassAndPropertySelection.activeResourceClass)
+            .toEqual(MockOntology.mockIResourceClassAndPropertyDefinitions('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing').classes['http://0.0.0.0:3333/ontology/0001/anything/v2#Thing']);
+        expect(Object.keys(testHostComponent.resourceClassAndPropertySelection.properties).length).toEqual(25);
+
+        expect(dspConnSpy.v2.ontologyCache.getResourceClassDefinition).toHaveBeenCalledTimes(1);
+        expect(dspConnSpy.v2.ontologyCache.getResourceClassDefinition).toHaveBeenCalledWith('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+
+        const addPropButton = await loader.getHarness(MatButtonHarness.with({selector: '.add-property-button'}));
+
+        await addPropButton.click();
+
+        const selectPropComp = hostCompDe.query(By.directive(TestSelectPropertyComponent));
+
+        expect((selectPropComp.componentInstance as TestSelectPropertyComponent).activeResourceClass)
+            .toEqual(MockOntology.mockIResourceClassAndPropertyDefinitions('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing')
+                .classes['http://0.0.0.0:3333/ontology/0001/anything/v2#Thing']);
+
+        expect((selectPropComp.componentInstance as TestSelectPropertyComponent).index).toEqual(0);
+        expect(Object.keys((selectPropComp.componentInstance as TestSelectPropertyComponent).properties).length).toEqual(25);
 
     });
 });
