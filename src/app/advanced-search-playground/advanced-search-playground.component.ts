@@ -36,6 +36,10 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
 
     properties: ResourcePropertyDefinition[];
 
+    resClassRestriction = 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing';
+
+    activeOnto = this.resClassRestriction.split('#')[0];
+
     // reference to the component that controls the resource class selection
     @ViewChild('resourceClass') resourceClassComponent: SelectResourceClassComponent;
 
@@ -61,7 +65,7 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
                 console.error(error);
             });
 
-        this.getResourceClassesAndPropertiesForOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
+        this.getResourceClassesAndPropertiesForOntology(this.activeOnto);
     }
 
     getResourceClassesAndPropertiesForOntology(ontologyIri: string) {
@@ -77,7 +81,9 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
         this._dspApiConnection.v2.ontologyCache.getOntology(ontologyIri).subscribe(
             (onto: Map<string, ReadOntology>) => {
 
-                this.resourceClasses = onto.get(ontologyIri).getClassDefinitionsByType(ResourceClassDefinition);
+                this.resourceClasses = onto.get(ontologyIri).getClassDefinitionsByType(ResourceClassDefinition).filter(
+                    (resClassDef: ResourceClassDefinition) => resClassDef.id === this.resClassRestriction
+                );
 
                 this.properties = onto.get(ontologyIri).getPropertyDefinitionsByType(ResourcePropertyDefinition);
             },
