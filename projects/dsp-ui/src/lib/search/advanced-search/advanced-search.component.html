@@ -9,7 +9,7 @@
     </dsp-resource-and-property-selection>
 
     <div class="dsp-form-action">
-        <button class="reset" mat-button type="button" (click)="resourceAndPropertySelection.resetForm()" [disabled]="this.activeOntology === undefined">
+        <button class="reset" mat-button type="button" (click)="resourceAndPropertySelection?.resetForm()" [disabled]="this.activeOntology === undefined">
             Reset
         </button>
         <span class="fill-remaining-space"></span>
