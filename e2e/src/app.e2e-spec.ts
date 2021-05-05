@@ -125,6 +125,8 @@ describe('Test App', () => {
 
             expect(await submitButton2.isDisabled()).toBe(false, 'expected submit button to be enabled');
 
+            // browser.sleep(200000);
+
         });
 
         it('should select an integer property', async () => {
@@ -152,7 +154,9 @@ describe('Test App', () => {
 
             await addPropButton.click();
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            const submitButton2 = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton2.isDisabled()).toBe(true);
 
             const selectProps = await page.getAdvancedSearchPropertySelection(loader);
 
@@ -160,19 +164,25 @@ describe('Test App', () => {
 
             await selectProps.clickOptions({text: 'Integer'});
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            const submitButton3 = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton3.isDisabled()).toBe(true);
 
             const selectCompOps = await page.getAdvancedSearchComparisonOperatorSelection(loader);
 
             await selectCompOps.clickOptions({ text: 'is equal to'});
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            const submitButton4 = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton4.isDisabled()).toBe(true);
 
             const input = await loader.getHarness(MatInputHarness);
 
             await input.setValue('1');
 
-            expect(await submitButton.isDisabled()).toBe(false);
+            const submitButton5 = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton5.isDisabled()).toBe(false);
 
             // browser.sleep(200000);
         });
@@ -196,13 +206,17 @@ describe('Test App', () => {
             await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,
                 'Wait for resource class options to be visible.');
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            const submitButton2 = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton2.isDisabled()).toBe(true);
 
             const addPropButton = await page.getAdvancedSearchPropertyAddButton(loader);
 
             await addPropButton.click();
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            const submitButton3 = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton3.isDisabled()).toBe(true);
 
             const selectProps = await page.getAdvancedSearchPropertySelection(loader);
 
@@ -210,13 +224,17 @@ describe('Test App', () => {
 
             await selectProps.clickOptions({text: 'Another thing'});
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            const submitButton4 = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton4.isDisabled()).toBe(true);
 
             const selectCompOps = await page.getAdvancedSearchComparisonOperatorSelection(loader);
 
             await selectCompOps.clickOptions({ text: 'is equal to'});
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            const submitButton5 = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton5.isDisabled()).toBe(true);
 
             const input = await loader.getHarness(MatInputHarness);
 
@@ -236,7 +254,9 @@ describe('Test App', () => {
 
             await options[0].click();
 
-            expect(await submitButton.isDisabled()).toBe(false);
+            const submitButton6 = await page.getAdvancedSearchSubmitButton(loader);
+
+            expect(await submitButton6.isDisabled()).toBe(false);
 
             // browser.sleep(200000);
         });
