@@ -58,7 +58,7 @@ class TestSelectPropertyComponent {
 @Component({
     template: `
         <dsp-resource-and-property-selection #resClassAndProp [formGroup]="form"
-                                             [activeOntology]="'http://0.0.0.0:3333/ontology/0001/anything/v2'"></dsp-resource-and-property-selection>`
+                                             [activeOntology]="'http://0.0.0.0:3333/ontology/0001/anything/v2'" [resourceClassRestriction]="restrictByResourceClass"></dsp-resource-and-property-selection>`
 })
 class TestHostComponent implements OnInit {
 
@@ -67,6 +67,8 @@ class TestHostComponent implements OnInit {
     form: FormGroup;
 
     activeOntology = 'http://0.0.0.0:3333/ontology/0001/anything/v2';
+
+    restrictByResourceClass?: string;
 
     constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }

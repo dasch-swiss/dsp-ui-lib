@@ -76,8 +76,7 @@ describe('AdvancedSearchComponent', () => {
 
         const dspConnSpy = {
             v2: {
-                onto: jasmine.createSpyObj('onto', ['getOntologiesMetadata']),
-                ontologyCache: jasmine.createSpyObj('ontologyCache', ['getOntology', 'getResourceClassDefinition'])
+                onto: jasmine.createSpyObj('onto', ['getOntologiesMetadata'])
             }
         };
 
@@ -170,19 +169,6 @@ describe('AdvancedSearchComponent', () => {
             expect(testHostComponent.advancedSearch.activeOntology).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
             expect(testHostComponent.advancedSearch.resourceAndPropertySelection.activeOntology).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
-
-        });
-
-        it('should react when an ontology is selected', async () => {
-
-            const hostCompDe = testHostFixture.debugElement;
-            const selectOntoComp = hostCompDe.query(By.directive(TestSelectOntologyComponent));
-
-            (selectOntoComp.componentInstance as TestSelectOntologyComponent).ontologySelected.emit('http://0.0.0.0:3333/ontology/0001/anything/v2');
-
-            testHostFixture.detectChanges();
-
-            expect(testHostComponent.advancedSearch.activeOntology).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
         });
 

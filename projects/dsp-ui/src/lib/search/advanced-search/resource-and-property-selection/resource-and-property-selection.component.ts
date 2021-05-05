@@ -32,7 +32,7 @@ export class ResourceAndPropertySelectionComponent implements OnInit, OnChanges 
 
     @Input() activeOntology: string;
 
-    @Input() resClassRestriction?: string;
+    @Input() resourceClassRestriction?: string;
 
     form: FormGroup;
 
@@ -64,7 +64,6 @@ export class ResourceAndPropertySelectionComponent implements OnInit, OnChanges 
     }
 
     ngOnChanges(changes: SimpleChanges) {
-
         this.getResourceClassesAndPropertiesForOntology(this.activeOntology);
     }
 
@@ -81,9 +80,9 @@ export class ResourceAndPropertySelectionComponent implements OnInit, OnChanges 
 
                 const resClasses = onto.get(ontologyIri).getClassDefinitionsByType(ResourceClassDefinition);
 
-                if (this.resClassRestriction !== undefined) {
+                if (this.resourceClassRestriction !== undefined) {
                     this.resourceClasses = resClasses.filter(
-                        (resClassDef: ResourceClassDefinition) => resClassDef.id === this.resClassRestriction
+                        (resClassDef: ResourceClassDefinition) => resClassDef.id === this.resourceClassRestriction
                     );
                 } else {
                     this.resourceClasses = resClasses;
