@@ -121,9 +121,9 @@ describe('Test App', () => {
 
             await resClasses.clickOptions({ text: 'Thing'});
 
-            expect(await submitButton.isDisabled()).toBe(false);
+            const submitButton2 = await page.getAdvancedSearchSubmitButton(loader);
 
-            // browser.sleep(200000);
+            expect(await submitButton2.isDisabled()).toBe(false, 'expected submit button to be enabled');
 
         });
 
