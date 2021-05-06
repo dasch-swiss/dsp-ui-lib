@@ -111,9 +111,12 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
                 break;
 
             case Constants.BooleanValue:
-            case Constants.Resource:
             case Constants.UriValue:
                 this.comparisonOperators = [new Equals(), new NotEquals(), new Exists()];
+                break;
+
+            case Constants.Resource:
+                this.comparisonOperators = [new Equals(), new NotEquals(), new Exists(), new Match()];
                 break;
 
             case Constants.IntValue:
