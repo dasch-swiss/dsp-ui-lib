@@ -79,7 +79,7 @@ describe('Test App', () => {
 
     });
 
-    fdescribe('Playground Advanced Search Page', () => {
+    describe('Playground Advanced Search Page', () => {
 
         it('should select an ontology and a resource class', async () => {
             await page.navigateTo('advanced-search');
