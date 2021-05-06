@@ -88,9 +88,7 @@ describe('Test App', () => {
 
             const loader = ProtractorHarnessEnvironment.loader();
 
-            const submitButton = await page.getAdvancedSearchSubmitButton(loader);
-
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const selectOntos = await page.getAdvancedSearchOntologySelection(loader, timeout);
 
@@ -121,7 +119,7 @@ describe('Test App', () => {
 
             await resClasses.clickOptions({ text: 'Thing'});
 
-            expect(await submitButton.isDisabled()).toBe(false);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(false);
 
             // browser.sleep(200000);
 
@@ -134,9 +132,7 @@ describe('Test App', () => {
 
             const loader = ProtractorHarnessEnvironment.loader();
 
-            const submitButton = await page.getAdvancedSearchSubmitButton(loader);
-
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const selectOntos = await page.getAdvancedSearchOntologySelection(loader, timeout);
 
@@ -146,13 +142,13 @@ describe('Test App', () => {
             await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,
                 'Wait for resource class options to be visible.');
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const addPropButton = await page.getAdvancedSearchPropertyAddButton(loader);
 
             await addPropButton.click();
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const selectProps = await page.getAdvancedSearchPropertySelection(loader);
 
@@ -160,19 +156,19 @@ describe('Test App', () => {
 
             await selectProps.clickOptions({text: 'Integer'});
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const selectCompOps = await page.getAdvancedSearchComparisonOperatorSelection(loader);
 
             await selectCompOps.clickOptions({ text: 'is equal to'});
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const input = await loader.getHarness(MatInputHarness);
 
             await input.setValue('1');
 
-            expect(await submitButton.isDisabled()).toBe(false);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(false);
 
             // browser.sleep(200000);
         });
@@ -184,9 +180,7 @@ describe('Test App', () => {
 
             const loader = ProtractorHarnessEnvironment.loader();
 
-            const submitButton = await page.getAdvancedSearchSubmitButton(loader);
-
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const selectOntos = await page.getAdvancedSearchOntologySelection(loader, timeout);
 
@@ -196,13 +190,13 @@ describe('Test App', () => {
             await browser.wait(EC.presenceOf(element(by.css('.select-resource-class'))), timeout,
                 'Wait for resource class options to be visible.');
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const addPropButton = await page.getAdvancedSearchPropertyAddButton(loader);
 
             await addPropButton.click();
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const selectProps = await page.getAdvancedSearchPropertySelection(loader);
 
@@ -210,13 +204,13 @@ describe('Test App', () => {
 
             await selectProps.clickOptions({text: 'Another thing'});
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const selectCompOps = await page.getAdvancedSearchComparisonOperatorSelection(loader);
 
             await selectCompOps.clickOptions({ text: 'is equal to'});
 
-            expect(await submitButton.isDisabled()).toBe(true);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(true);
 
             const input = await loader.getHarness(MatInputHarness);
 
@@ -236,7 +230,7 @@ describe('Test App', () => {
 
             await options[0].click();
 
-            expect(await submitButton.isDisabled()).toBe(false);
+            expect(await (await page.getAdvancedSearchSubmitButton(loader)).isDisabled()).toBe(false);
 
             // browser.sleep(200000);
         });
