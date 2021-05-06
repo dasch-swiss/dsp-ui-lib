@@ -44,13 +44,21 @@ export class SearchResourceComponent implements OnInit, PropertyValue {
 
     getValue(): Value {
 
+        const resClassOption = this.resourceAndPropertySelection.resourceClassComponent.selectedResourceClassIri;
+
+        let resClass;
+
+        if (resClassOption !== false) {
+            resClass = resClassOption;
+        }
+
         const properties: PropertyWithValue[] = this.resourceAndPropertySelection.propertyComponents.map(
             (propComp) => {
                 return propComp.getPropertySelectedWithValue();
             }
         );
 
-        return new LinkedResource(properties);
+        return new LinkedResource(properties, resClass);
     }
 
 }
