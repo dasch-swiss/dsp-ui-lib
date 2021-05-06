@@ -36,6 +36,7 @@ import { SearchTextValueComponent } from './advanced-search/select-property/spec
 import { SearchUriValueComponent } from './advanced-search/select-property/specify-property-value/search-uri-value/search-uri-value.component';
 import { DspActionModule } from '../action';
 import { ResourceAndPropertySelectionComponent } from './advanced-search/resource-and-property-selection/resource-and-property-selection.component';
+import { SearchResourceComponent } from './advanced-search/select-property/specify-property-value/search-resource/search-resource.component';
 
 
 
@@ -58,7 +59,8 @@ import { ResourceAndPropertySelectionComponent } from './advanced-search/resourc
         SearchDisplayListComponent,
         SearchTextValueComponent,
         SearchUriValueComponent,
-        ResourceAndPropertySelectionComponent
+        ResourceAndPropertySelectionComponent,
+        SearchResourceComponent
     ],
     imports: [
         CommonModule,
