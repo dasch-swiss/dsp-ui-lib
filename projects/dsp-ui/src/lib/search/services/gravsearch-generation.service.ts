@@ -36,6 +36,8 @@ export class GravsearchGenerationService {
      */
     createGravsearchQuery(properties: PropertyWithValue[], mainResourceClassOption?: string, offset: number = 0): string {
 
+        console.log(mainResourceClassOption, properties);
+
         // class restriction for the resource searched for
         let mainResourceClass = '';
 
@@ -62,6 +64,10 @@ export class GravsearchGenerationService {
                     propValue = `?propVal${index}`;
                 } else {
                     // it is a linking property and the comparison operator is not Exists, use its IRI
+
+                    // TODO: check if the target is an IRI or a resource with props
+                    console.log(propWithVal.valueLiteral.comparisonOperator);
+
                     propValue = propWithVal.valueLiteral.value.toSparql();
                 }
 

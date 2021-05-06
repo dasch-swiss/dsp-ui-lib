@@ -228,7 +228,7 @@ export class LinkedResource implements Value {
     }
 
     public toSparql(): string {
-        return '';
+        throw Error('invalid call of toSparql');
     }
 
 }
