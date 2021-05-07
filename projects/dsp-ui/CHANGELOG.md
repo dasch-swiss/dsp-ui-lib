@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.5...v1.3.0) (2021-05-07)
+
+
+### Enhancements
+
+* **advanced search:** try to reuse resource and property selection (DSP-1587) ([#290](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/290)) ([523af24](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/523af24459e284e55bd13e463237339bfb02ea43))
+* **list-view:** Create boolean flag to enable/disable the view switcher ([#294](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/294)) ([2053020](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/2053020cb32cd9db54bc7a40d9b02736050ece6d))
+
 ### [1.2.5](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.4...v1.2.5) (2021-05-03)
 
 
