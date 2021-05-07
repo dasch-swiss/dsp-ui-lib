@@ -33,6 +33,8 @@ export class ListViewComponent implements OnChanges {
 
     @Input() view?: 'list' | 'grid' = 'list';    // TODO: will be expanded with 'table' as soon as resource-table component is done
 
+    @Input() displayViewSwitch?: boolean = true;
+
     /**
      * Click on an item will emit the resource iri
      *
