@@ -5,7 +5,7 @@
 import { Injectable } from '@angular/core';
 import { Constants } from '@dasch-swiss/dsp-js';
 import { AdvancedSearchParams, AdvancedSearchParamsService } from './advanced-search-params.service';
-import { PropertyWithValue } from '../advanced-search/select-property/specify-property-value/operator';
+import { LinkedResource, PropertyWithValue } from '../advanced-search/select-property/specify-property-value/operator';
 import { ComparisonOperatorConstants } from '../advanced-search/select-property/specify-property-value/operator-constants';
 
 @Injectable({
@@ -31,89 +31,97 @@ export class GravsearchGenerationService {
     constructor(private _searchParamsService: AdvancedSearchParamsService) {
     }
 
-    private handleProps = (propWithVal: PropertyWithValue, index: number): [string, string] => {
+    private makeHandlePropsMethod(resourceVar: string): (propWithVal: PropertyWithValue, index: number) => [string, string] {
 
-        // represents the object of a statement
-        let propValue;
-        if (!propWithVal.property.isLinkProperty || propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Exists') {
-            // it is not a linking property, create a variable for the value (to be used by a subsequent FILTER)
-            // OR the comparison operator Exists is used in which case we do not need to specify the object any further
-            propValue = `?propVal${index}`;
-        } else {
-            // it is a linking property and the comparison operator is not Exists, use its IRI
+        const handleProps = (propWithVal: PropertyWithValue, index: number): [string, string] => {
 
-            if (propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Match') {
-                propValue = propWithVal.valueLiteral.value.toSparql();
+            // represents the object of a statement
+            let propValue;
+            if (!propWithVal.property.isLinkProperty || propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Exists') {
+                // it is not a linking property, create a variable for the value (to be used by a subsequent FILTER)
+                // OR the comparison operator Exists is used in which case we do not need to specify the object any further
+                propValue = `?propVal${index}`;
             } else {
-                propValue = '?linkedRes';
+                // it is a linking property and the comparison operator is not Exists, use its IRI
 
+                if (propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Match') {
+                    propValue = propWithVal.valueLiteral.value.toSparql();
+                } else {
+                    propValue = '?linkedRes';
+                    /*console.log((propWithVal.valueLiteral.value as LinkedResource).properties.map(this.makeHandlePropsMethod('?linkedRes')).map((statementAndRestriction) =>
+                        `${statementAndRestriction[0]}
+${statementAndRestriction[1]}
+`));*/
 
+                }
             }
-        }
 
-        // generate statement
-        let statement = `?mainRes <${propWithVal.property.id}> ${propValue} .`;
+            // generate statement
+            let statement = `${resourceVar} <${propWithVal.property.id}> ${propValue} .`;
 
-        // check if it is a linking property that has to be wrapped in a FILTER NOT EXISTS (comparison operator NOT_EQUALS) to negate it
-        if (propWithVal.property.isLinkProperty && propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
-            // do not include statement in results, because the query checks for the absence of this statement
-            statement = `FILTER NOT EXISTS {
+            // check if it is a linking property that has to be wrapped in a FILTER NOT EXISTS (comparison operator NOT_EQUALS) to negate it
+            if (propWithVal.property.isLinkProperty && propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
+                // do not include statement in results, because the query checks for the absence of this statement
+                statement = `FILTER NOT EXISTS {
 ${statement}
 
 
 }`;
-        } else {
-            // TODO: check if statement should be returned returned in results (Boolean flag from checkbox)
-            this.returnStatements.push(statement);
-            statement = `
+            } else {
+                // TODO: check if statement should be returned returned in results (Boolean flag from checkbox)
+                this.returnStatements.push(statement);
+                statement = `
 ${statement}
 
 
 `;
-        }
+            }
 
-        // generate restricting expression (e.g., a FILTER) if comparison operator is not Exists
-        let restriction = '';
-        // only create a FILTER if the comparison operator is not EXISTS and it is not a linking property
-        if (!propWithVal.property.isLinkProperty && propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Exists') {
-            // generate variable for value literal
-            const propValueLiteral = `${propValue}Literal`;
+            // generate restricting expression (e.g., a FILTER) if comparison operator is not Exists
+            let restriction = '';
+            // only create a FILTER if the comparison operator is not EXISTS and it is not a linking property
+            if (!propWithVal.property.isLinkProperty && propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Exists') {
+                // generate variable for value literal
+                const propValueLiteral = `${propValue}Literal`;
 
-            if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Like') {
-                // generate statement to value literal
-                restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
-                // use regex function for LIKE
-                restriction += `FILTER regex(${propValueLiteral}, ${propWithVal.valueLiteral.value.toSparql()}, "i")`;
-            } else if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Match') {
-                // use Gravsearch function for MATCH
-                restriction += `FILTER <${ComparisonOperatorConstants.MatchFunction}>(${propValue}, ${propWithVal.valueLiteral.value.toSparql()})`;
-            } else if (propWithVal.property.objectType === Constants.DateValue) {
-                // handle date property
-                restriction = `FILTER(knora-api:toSimpleDate(${propValue}) ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
-            } else if (propWithVal.property.objectType === Constants.ListValue) {
-                // handle list node
-                restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propWithVal.valueLiteral.value.toSparql()}` + '\n';
-                // check for comparison operator "not equals"
-                if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
-                    restriction = `FILTER NOT EXISTS {
+                if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Like') {
+                    // generate statement to value literal
+                    restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
+                    // use regex function for LIKE
+                    restriction += `FILTER regex(${propValueLiteral}, ${propWithVal.valueLiteral.value.toSparql()}, "i")`;
+                } else if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Match') {
+                    // use Gravsearch function for MATCH
+                    restriction += `FILTER <${ComparisonOperatorConstants.MatchFunction}>(${propValue}, ${propWithVal.valueLiteral.value.toSparql()})`;
+                } else if (propWithVal.property.objectType === Constants.DateValue) {
+                    // handle date property
+                    restriction = `FILTER(knora-api:toSimpleDate(${propValue}) ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
+                } else if (propWithVal.property.objectType === Constants.ListValue) {
+                    // handle list node
+                    restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propWithVal.valueLiteral.value.toSparql()}` + '\n';
+                    // check for comparison operator "not equals"
+                    if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
+                        restriction = `FILTER NOT EXISTS {
                                 ${restriction}
                             }`;
+                    }
+                } else {
+                    // generate statement to value literal
+                    restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
+                    // generate filter expression
+                    restriction += `FILTER(${propValueLiteral} ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
                 }
-            } else {
-                // generate statement to value literal
-                restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
-                // generate filter expression
-                restriction += `FILTER(${propValueLiteral} ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
             }
-        }
 
-        // check if current value is a sort criterion
-        if (propWithVal.isSortCriterion) {
-            this.orderByCriteria.push(propValue);
-        }
+            // check if current value is a sort criterion
+            if (propWithVal.isSortCriterion) {
+                this.orderByCriteria.push(propValue);
+            }
 
-        return [statement, restriction];
+            return [statement, restriction];
 
+        };
+
+        return handleProps;
     }
 
     /**
@@ -141,7 +149,7 @@ ${statement}
         }
 
         // loop over given properties and create statements and filters from them
-        const props: string[] = properties.map(this.handleProps).map((statementAndRestriction) =>
+        const props: string[] = properties.map(this.makeHandlePropsMethod('?mainRes')).map((statementAndRestriction) =>
             `${statementAndRestriction[0]}
 ${statementAndRestriction[1]}
 `
