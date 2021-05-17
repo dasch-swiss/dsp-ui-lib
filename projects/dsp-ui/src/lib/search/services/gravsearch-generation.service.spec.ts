@@ -1007,7 +1007,7 @@ OFFSET 0
 
         const hasOtherThingProp = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing'];
 
-        const linkedResValue = new ComparisonOperatorAndValue(new Equals(), new ValueLiteral('2.1', 'http://www.w3.org/2001/XMLSchema#decimal'));
+        const linkedResValue = new ComparisonOperatorAndValue(new GreaterThan(), new ValueLiteral('0.5', 'http://www.w3.org/2001/XMLSchema#decimal'));
 
         const hasDecimal = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal'];
 
@@ -1030,7 +1030,7 @@ CONSTRUCT {
 ?mainRes knora-api:isMainResource true .
 
 ?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes .
-?linkedRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVal0 .
+?linkedRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes0 .
 
 
 
@@ -1043,15 +1043,15 @@ CONSTRUCT {
 
 
 ?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes .
-?linkedRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVal0 .
+?linkedRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes0 .
 
 
 
 
 
 
-?propVal0 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVal0Literal
-FILTER(?propVal0Literal = "2.1"^^<http://www.w3.org/2001/XMLSchema#decimal>)
+?propVallinkedRes0 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes0Literal
+FILTER(?propVallinkedRes0Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
 
 
 }

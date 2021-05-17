@@ -41,7 +41,11 @@ export class GravsearchGenerationService {
             if (!propWithVal.property.isLinkProperty || propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Exists') {
                 // it is not a linking property, create a variable for the value (to be used by a subsequent FILTER)
                 // OR the comparison operator Exists is used in which case we do not need to specify the object any further
-                propValue = `?propVal${index}`;
+                if (topLevel) {
+                    propValue = `?propVal${index}`;
+                } else {
+                    propValue = `?propVal${resourceVar}${index}`;
+                }
             } else {
                 // it is a linking property and the comparison operator is not Exists, use its IRI
 
@@ -49,12 +53,12 @@ export class GravsearchGenerationService {
                     propValue = propWithVal.valueLiteral.value.toSparql();
                 } else {
                     propValue = '?linkedRes';
-                    linkedResStatementsAndRestrictions = (propWithVal.valueLiteral.value as LinkedResource).properties.map(this.makeHandlePropsMethod('?linkedRes', false));
+                    linkedResStatementsAndRestrictions = (propWithVal.valueLiteral.value as LinkedResource).properties.map(this.makeHandlePropsMethod('linkedRes', false));
                 }
             }
 
             // generate statement
-            let statement = `${resourceVar} <${propWithVal.property.id}> ${propValue} .`;
+            let statement = `?${resourceVar} <${propWithVal.property.id}> ${propValue} .`;
 
             if (linkedResStatementsAndRestrictions.length > 0) {
                 statement +=  linkedResStatementsAndRestrictions[0][0];
@@ -156,7 +160,7 @@ ${statement}
         }
 
         // loop over given properties and create statements and filters from them
-        const props: string[] = properties.map(this.makeHandlePropsMethod('?mainRes')).map((statementAndRestriction) =>
+        const props: string[] = properties.map(this.makeHandlePropsMethod('mainRes')).map((statementAndRestriction) =>
             `${statementAndRestriction[0]}
 ${statementAndRestriction[1]}
 `
