@@ -22,7 +22,101 @@ export class GravsearchGenerationService {
         [Constants.ListValue]: Constants.ListValueAsListNode
     };
 
-    constructor(private _searchParamsService: AdvancedSearchParamsService) { }
+    // criteria for the order by statement
+    private orderByCriteria = [];
+
+    // statements to be returned in query results
+    private returnStatements = [];
+
+    constructor(private _searchParamsService: AdvancedSearchParamsService) {
+    }
+
+    private handleProps = (propWithVal: PropertyWithValue, index: number) => {
+
+        // represents the object of a statement
+        let propValue;
+        if (!propWithVal.property.isLinkProperty || propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Exists') {
+            // it is not a linking property, create a variable for the value (to be used by a subsequent FILTER)
+            // OR the comparison operator Exists is used in which case we do not need to specify the object any further
+            propValue = `?propVal${index}`;
+        } else {
+            // it is a linking property and the comparison operator is not Exists, use its IRI
+
+            if (propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Match') {
+                propValue = propWithVal.valueLiteral.value.toSparql();
+            } else {
+                propValue = 'linkedRes';
+
+
+            }
+        }
+
+        // generate statement
+        let statement = `?mainRes <${propWithVal.property.id}> ${propValue} .`;
+
+        // check if it is a linking property that has to be wrapped in a FILTER NOT EXISTS (comparison operator NOT_EQUALS) to negate it
+        if (propWithVal.property.isLinkProperty && propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
+            // do not include statement in results, because the query checks for the absence of this statement
+            statement = `FILTER NOT EXISTS {
+${statement}
+
+
+}`;
+        } else {
+            // TODO: check if statement should be returned returned in results (Boolean flag from checkbox)
+            this.returnStatements.push(statement);
+            statement = `
+${statement}
+
+
+`;
+        }
+
+        // generate restricting expression (e.g., a FILTER) if comparison operator is not Exists
+        let restriction = '';
+        // only create a FILTER if the comparison operator is not EXISTS and it is not a linking property
+        if (!propWithVal.property.isLinkProperty && propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Exists') {
+            // generate variable for value literal
+            const propValueLiteral = `${propValue}Literal`;
+
+            if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Like') {
+                // generate statement to value literal
+                restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
+                // use regex function for LIKE
+                restriction += `FILTER regex(${propValueLiteral}, ${propWithVal.valueLiteral.value.toSparql()}, "i")`;
+            } else if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Match') {
+                // use Gravsearch function for MATCH
+                restriction += `FILTER <${ComparisonOperatorConstants.MatchFunction}>(${propValue}, ${propWithVal.valueLiteral.value.toSparql()})`;
+            } else if (propWithVal.property.objectType === Constants.DateValue) {
+                // handle date property
+                restriction = `FILTER(knora-api:toSimpleDate(${propValue}) ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
+            } else if (propWithVal.property.objectType === Constants.ListValue) {
+                // handle list node
+                restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propWithVal.valueLiteral.value.toSparql()}` + '\n';
+                // check for comparison operator "not equals"
+                if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
+                    restriction = `FILTER NOT EXISTS {
+                                ${restriction}
+                            }`;
+                }
+            } else {
+                // generate statement to value literal
+                restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
+                // generate filter expression
+                restriction += `FILTER(${propValueLiteral} ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
+            }
+        }
+
+        // check if current value is a sort criterion
+        if (propWithVal.isSortCriterion) {
+            this.orderByCriteria.push(propValue);
+        }
+
+        return `${statement}
+${restriction}
+`;
+
+    }
 
     /**
      *
@@ -36,7 +130,9 @@ export class GravsearchGenerationService {
      */
     createGravsearchQuery(properties: PropertyWithValue[], mainResourceClassOption?: string, offset: number = 0): string {
 
-        console.log(mainResourceClassOption, properties);
+        // reinit for each Gravsearch query since this service is a singleton
+        this.orderByCriteria = [];
+        this.returnStatements = [];
 
         // class restriction for the resource searched for
         let mainResourceClass = '';
@@ -46,103 +142,14 @@ export class GravsearchGenerationService {
             mainResourceClass = `?mainRes a <${mainResourceClassOption}> .`;
         }
 
-        // criteria for the order by statement
-        const orderByCriteria = [];
-
-        // statements to be returned in query results
-        const returnStatements = [];
-
         // loop over given properties and create statements and filters from them
-        const props: string[] = properties.map(
-            (propWithVal: PropertyWithValue, index: number) => {
-
-                // represents the object of a statement
-                let propValue;
-                if (!propWithVal.property.isLinkProperty || propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Exists') {
-                    // it is not a linking property, create a variable for the value (to be used by a subsequent FILTER)
-                    // OR the comparison operator Exists is used in which case we do not need to specify the object any further
-                    propValue = `?propVal${index}`;
-                } else {
-                    // it is a linking property and the comparison operator is not Exists, use its IRI
-
-                    // TODO: check if the target is an IRI or a resource with props
-                    console.log(propWithVal.valueLiteral.comparisonOperator);
-
-                    propValue = propWithVal.valueLiteral.value.toSparql();
-                }
-
-                // generate statement
-                let statement = `?mainRes <${propWithVal.property.id}> ${propValue} .`;
-
-                // check if it is a linking property that has to be wrapped in a FILTER NOT EXISTS (comparison operator NOT_EQUALS) to negate it
-                if (propWithVal.property.isLinkProperty && propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
-                    // do not include statement in results, because the query checks for the absence of this statement
-                    statement = `FILTER NOT EXISTS {
-${statement}
-
-
-}`;
-                } else {
-                    // TODO: check if statement should be returned returned in results (Boolean flag from checkbox)
-                    returnStatements.push(statement);
-                    statement = `
-${statement}
-
-
-`;
-                }
-
-                // generate restricting expression (e.g., a FILTER) if comparison operator is not Exists
-                let restriction = '';
-                // only create a FILTER if the comparison operator is not EXISTS and it is not a linking property
-                if (!propWithVal.property.isLinkProperty && propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Exists') {
-                    // generate variable for value literal
-                    const propValueLiteral = `${propValue}Literal`;
-
-                    if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Like') {
-                        // generate statement to value literal
-                        restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
-                        // use regex function for LIKE
-                        restriction += `FILTER regex(${propValueLiteral}, ${propWithVal.valueLiteral.value.toSparql()}, "i")`;
-                    } else if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Match') {
-                        // use Gravsearch function for MATCH
-                        restriction += `FILTER <${ComparisonOperatorConstants.MatchFunction}>(${propValue}, ${propWithVal.valueLiteral.value.toSparql()})`;
-                    } else if (propWithVal.property.objectType === Constants.DateValue) {
-                        // handle date property
-                        restriction = `FILTER(knora-api:toSimpleDate(${propValue}) ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
-                    } else if (propWithVal.property.objectType === Constants.ListValue) {
-                        // handle list node
-                        restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propWithVal.valueLiteral.value.toSparql()}` + '\n';
-                        // check for comparison operator "not equals"
-                        if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
-                            restriction = `FILTER NOT EXISTS {
-                                ${restriction}
-                            }`;
-                        }
-                    } else {
-                        // generate statement to value literal
-                        restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
-                        // generate filter expression
-                        restriction += `FILTER(${propValueLiteral} ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
-                    }
-                }
-
-                // check if current value is a sort criterion
-                if (propWithVal.isSortCriterion) {
-                    orderByCriteria.push(propValue);
-                }
-
-                return `${statement}
-${restriction}
-`;
-
-            });
+        const props: string[] = properties.map(this.handleProps);
 
         let orderByStatement = '';
 
-        if (orderByCriteria.length > 0) {
+        if (this.orderByCriteria.length > 0) {
             orderByStatement = `
-ORDER BY ${orderByCriteria.join(' ')}
+ORDER BY ${this.orderByCriteria.join(' ')}
 `;
         }
 
@@ -153,7 +160,7 @@ CONSTRUCT {
 
 ?mainRes knora-api:isMainResource true .
 
-${returnStatements.join('\n')}
+${this.returnStatements.join('\n')}
 
 } WHERE {
 
