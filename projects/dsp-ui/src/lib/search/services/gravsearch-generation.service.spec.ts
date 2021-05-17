@@ -1021,7 +1021,7 @@ OFFSET 0
 
         const gravsearch = gravSearchGenerationServ.createGravsearchQuery([mainResPropWithVal], 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing', 0);
 
-        console.log(gravsearch)
+        console.log(gravsearch);
 
         const expectedGravsearch = `
 PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
@@ -1029,7 +1029,7 @@ CONSTRUCT {
 
 ?mainRes knora-api:isMainResource true .
 
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> linkedRes .
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes .
 
 } WHERE {
 
@@ -1038,7 +1038,7 @@ CONSTRUCT {
 ?mainRes a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
 
 
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> linkedRes .
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes .
 
 
 

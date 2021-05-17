@@ -31,7 +31,7 @@ export class GravsearchGenerationService {
     constructor(private _searchParamsService: AdvancedSearchParamsService) {
     }
 
-    private handleProps = (propWithVal: PropertyWithValue, index: number) => {
+    private handleProps = (propWithVal: PropertyWithValue, index: number): [string, string] => {
 
         // represents the object of a statement
         let propValue;
@@ -45,7 +45,7 @@ export class GravsearchGenerationService {
             if (propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Match') {
                 propValue = propWithVal.valueLiteral.value.toSparql();
             } else {
-                propValue = 'linkedRes';
+                propValue = '?linkedRes';
 
 
             }
@@ -112,9 +112,7 @@ ${statement}
             this.orderByCriteria.push(propValue);
         }
 
-        return `${statement}
-${restriction}
-`;
+        return [statement, restriction];
 
     }
 
@@ -143,7 +141,11 @@ ${restriction}
         }
 
         // loop over given properties and create statements and filters from them
-        const props: string[] = properties.map(this.handleProps);
+        const props: string[] = properties.map(this.handleProps).map((statementAndRestriction) =>
+            `${statementAndRestriction[0]}
+${statementAndRestriction[1]}
+`
+        );
 
         let orderByStatement = '';
 
