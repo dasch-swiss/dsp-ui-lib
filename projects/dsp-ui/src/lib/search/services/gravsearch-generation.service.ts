@@ -31,10 +31,11 @@ export class GravsearchGenerationService {
     constructor(private _searchParamsService: AdvancedSearchParamsService) {
     }
 
-    private makeHandlePropsMethod(resourceVar: string): (propWithVal: PropertyWithValue, index: number) => [string, string] {
+    private makeHandlePropsMethod(resourceVar: string, topLevel = true): (propWithVal: PropertyWithValue, index: number) => [string, string] {
 
         const handleProps = (propWithVal: PropertyWithValue, index: number): [string, string] => {
 
+            let linkedResStatementsAndRestrictions = [];
             // represents the object of a statement
             let propValue;
             if (!propWithVal.property.isLinkProperty || propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Exists') {
@@ -48,16 +49,16 @@ export class GravsearchGenerationService {
                     propValue = propWithVal.valueLiteral.value.toSparql();
                 } else {
                     propValue = '?linkedRes';
-                    /*console.log((propWithVal.valueLiteral.value as LinkedResource).properties.map(this.makeHandlePropsMethod('?linkedRes')).map((statementAndRestriction) =>
-                        `${statementAndRestriction[0]}
-${statementAndRestriction[1]}
-`));*/
-
+                    linkedResStatementsAndRestrictions = (propWithVal.valueLiteral.value as LinkedResource).properties.map(this.makeHandlePropsMethod('?linkedRes', false));
                 }
             }
 
             // generate statement
             let statement = `${resourceVar} <${propWithVal.property.id}> ${propValue} .`;
+
+            if (linkedResStatementsAndRestrictions.length > 0) {
+                statement +=  linkedResStatementsAndRestrictions[0][0];
+            }
 
             // check if it is a linking property that has to be wrapped in a FILTER NOT EXISTS (comparison operator NOT_EQUALS) to negate it
             if (propWithVal.property.isLinkProperty && propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
@@ -69,7 +70,9 @@ ${statement}
 }`;
             } else {
                 // TODO: check if statement should be returned returned in results (Boolean flag from checkbox)
-                this.returnStatements.push(statement);
+                if (topLevel) {
+                    this.returnStatements.push(statement);
+                }
                 statement = `
 ${statement}
 
@@ -110,6 +113,10 @@ ${statement}
                     // generate filter expression
                     restriction += `FILTER(${propValueLiteral} ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
                 }
+            }
+
+            if (linkedResStatementsAndRestrictions.length > 0) {
+                restriction +=  linkedResStatementsAndRestrictions[0][1];
             }
 
             // check if current value is a sort criterion
