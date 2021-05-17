@@ -1,6 +1,6 @@
 <!-- header / toolbar to select view and pagination -->
 <div class="list-view-header">
-    <span class="switch-list">
+    <span *ngIf="displayViewSwitch" class="switch-list">
         <span class="switch-list-label">Display as&nbsp;</span>
         <button mat-button (click)="toggleView('list')" [class.active]="view === 'list'">
             <mat-icon>view_list</mat-icon> List
