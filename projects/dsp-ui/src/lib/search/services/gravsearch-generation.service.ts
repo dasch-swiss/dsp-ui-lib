@@ -59,17 +59,16 @@ export class GravsearchGenerationService {
                     propValue = `?propVal${resourceVar}${index}`;
                 }
             } else {
-                // it is a linking property and the comparison operator is not Exists, use its IRI
-
-                // TODO: perform instance check of value (is LinkedResource?)
-                if (propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Match') {
+                // it is a linking property and the comparison operator is not Exists,
+                if (!(propWithVal.valueLiteral.value instanceof LinkedResource)) {
+                    // use its IRI
                     propValue = propWithVal.valueLiteral.value.toSparql();
                 } else {
+                    // specify the resource's properties
                     const linkedResVarName = `linkedRes${index}`;
 
                     propValue = `?${linkedResVarName}`;
-                    // TODO: do not use type assertion without previous instance check
-                    linkedResStatementsAndRestrictions = (propWithVal.valueLiteral.value as LinkedResource).properties.map(this.makeHandlePropsMethod(linkedResVarName, false));
+                    linkedResStatementsAndRestrictions = propWithVal.valueLiteral.value.properties.map(this.makeHandlePropsMethod(linkedResVarName, false));
                 }
             }
 
