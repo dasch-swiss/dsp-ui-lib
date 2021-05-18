@@ -47,7 +47,7 @@ export class GravsearchGenerationService {
          */
         const handleProps = (propWithVal: PropertyWithValue, index: number): [string, string] => {
 
-            let linkedResStatementsAndRestrictions = [];
+            let linkedResStatementsAndRestrictions: [string, string][] = [];
             // represents the object of a statement
             let propValue;
             if (!propWithVal.property.isLinkProperty || propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Exists') {
@@ -69,6 +69,7 @@ export class GravsearchGenerationService {
 
                     propValue = `?${linkedResVarName}`;
                     linkedResStatementsAndRestrictions = propWithVal.valueLiteral.value.properties.map(this.makeHandlePropsMethod(linkedResVarName, false));
+
                 }
             }
 
@@ -76,8 +77,10 @@ export class GravsearchGenerationService {
             let statement = `?${resourceVar} <${propWithVal.property.id}> ${propValue} .`;
 
             if (linkedResStatementsAndRestrictions.length > 0) {
-                // get statement from two-tuple
-                statement +=  linkedResStatementsAndRestrictions[0][0];
+                // get statements from two-tuple
+                statement +=  linkedResStatementsAndRestrictions
+                    .map(statAndRestr => statAndRestr[0])
+                    .reduce((acc: string, stat: string) => acc + stat);
             }
 
             // check if it is a linking property that has to be wrapped in a FILTER NOT EXISTS (comparison operator NOT_EQUALS) to negate it
@@ -137,7 +140,9 @@ ${statement}
 
             if (linkedResStatementsAndRestrictions.length > 0) {
                 // get restriction from two-tuple
-                restriction +=  linkedResStatementsAndRestrictions[0][1];
+                restriction +=  linkedResStatementsAndRestrictions
+                    .map(statAndRestr => statAndRestr[1])
+                    .reduce((acc: string, restr: string) => acc + '\n' + restr);
             }
 
             // check if current value is a sort criterion

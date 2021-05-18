@@ -1001,7 +1001,7 @@ OFFSET 0
 
     });
 
-    it('search for a specified linked resource', () => {
+    it('search for a specified linked resource specified by one prop', () => {
 
         const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
 
@@ -1050,6 +1050,84 @@ CONSTRUCT {
 
 ?propVallinkedRes00 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes00Literal
 FILTER(?propVallinkedRes00Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
+
+
+}
+
+OFFSET 0
+`;
+
+        expect(gravsearch).toEqual(expectedGravsearch);
+
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
+
+    });
+
+    it('search for a specified linked resource specified by two props', () => {
+
+        const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+        const hasOtherThingProp = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing'];
+
+        const linkedResDecValue = new ComparisonOperatorAndValue(new GreaterThan(), new ValueLiteral('0.5', 'http://www.w3.org/2001/XMLSchema#decimal'));
+
+        const hasDecimal = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal'];
+
+        const linkedResourceWithDecVal = new PropertyWithValue(hasDecimal as ResourcePropertyDefinition, linkedResDecValue, false);
+
+        const linkedResIntValue = new ComparisonOperatorAndValue(new Equals(), new ValueLiteral('1', 'http://www.w3.org/2001/XMLSchema#integer'));
+
+        const hasInt = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger'];
+
+        const linkedResourceWithIntVal = new PropertyWithValue(hasInt as ResourcePropertyDefinition, linkedResIntValue, false);
+
+        const linkedResource = new LinkedResource([linkedResourceWithDecVal, linkedResourceWithIntVal], 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+
+        const mainResValue = new ComparisonOperatorAndValue(new Match(), linkedResource);
+
+        const mainResPropWithVal = new PropertyWithValue(hasOtherThingProp as ResourcePropertyDefinition, mainResValue, false);
+
+        const gravsearch = gravSearchGenerationServ.createGravsearchQuery([mainResPropWithVal], 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing', 0);
+
+        const expectedGravsearch = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+CONSTRUCT {
+
+?mainRes knora-api:isMainResource true .
+
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes0 .
+?linkedRes0 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes00 .
+
+
+
+?linkedRes0 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger> ?propVallinkedRes01 .
+
+
+
+
+} WHERE {
+
+?mainRes a knora-api:Resource .
+
+?mainRes a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
+
+
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes0 .
+?linkedRes0 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes00 .
+
+
+
+?linkedRes0 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger> ?propVallinkedRes01 .
+
+
+
+
+
+
+?propVallinkedRes00 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes00Literal
+FILTER(?propVallinkedRes00Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
+?propVallinkedRes01 <http://api.knora.org/ontology/knora-api/v2#intValueAsInt> ?propVallinkedRes01Literal
+FILTER(?propVallinkedRes01Literal = "1"^^<http://www.w3.org/2001/XMLSchema#integer>)
 
 
 }
