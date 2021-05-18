@@ -34,6 +34,8 @@ export class ResourceAndPropertySelectionComponent implements OnInit, OnChanges 
 
     @Input() resourceClassRestriction?: string;
 
+    @Input() topLevel;
+
     form: FormGroup;
 
     activeResourceClass: ResourceClassDefinition;

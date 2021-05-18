@@ -22,6 +22,8 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
     // index of the given property (unique)
     @Input() index: number;
 
+    @Input() topLevel: boolean;
+
     // properties that can be selected from
     private _properties: ResourcePropertyDefinition[];
 
