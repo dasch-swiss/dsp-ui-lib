@@ -31,8 +31,20 @@ export class GravsearchGenerationService {
     constructor(private _searchParamsService: AdvancedSearchParamsService) {
     }
 
+    /**
+     * Factory method returning a property handling method.
+     *
+     * @param resourceVar Name of the variable identifying the resource.
+     * @param topLevel Flag indicating if the top level is affected (main resource).
+     */
     private makeHandlePropsMethod(resourceVar: string, topLevel = true): (propWithVal: PropertyWithValue, index: number) => [string, string] {
 
+        /**
+         * Converts a [PropertyWithValue] into a tuple of statements and restrictions.
+         *
+         * @param propWithVal property with value to be converted.
+         * @param index index identifying the current prop.
+         */
         const handleProps = (propWithVal: PropertyWithValue, index: number): [string, string] => {
 
             let linkedResStatementsAndRestrictions = [];
@@ -49,11 +61,15 @@ export class GravsearchGenerationService {
             } else {
                 // it is a linking property and the comparison operator is not Exists, use its IRI
 
+                // TODO: perform instance check of value (is LinkedResource?)
                 if (propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Match') {
                     propValue = propWithVal.valueLiteral.value.toSparql();
                 } else {
-                    propValue = '?linkedRes';
-                    linkedResStatementsAndRestrictions = (propWithVal.valueLiteral.value as LinkedResource).properties.map(this.makeHandlePropsMethod('linkedRes', false));
+                    const linkedResVarName = `linkedRes${index}`;
+
+                    propValue = `?${linkedResVarName}`;
+                    // TODO: do not use type assertion without previous instance check
+                    linkedResStatementsAndRestrictions = (propWithVal.valueLiteral.value as LinkedResource).properties.map(this.makeHandlePropsMethod(linkedResVarName, false));
                 }
             }
 
