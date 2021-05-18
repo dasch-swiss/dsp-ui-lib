@@ -48,6 +48,8 @@ class TestSelectResourceClassAndPropertyComponent {
 
     @Input() resClassRestriction?: string;
 
+    @Input() topLevel: boolean;
+
 }
 
 /**

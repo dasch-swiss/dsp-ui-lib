@@ -64,6 +64,8 @@ class TestSpecifyPropertyValueComponent implements OnInit {
 
     @Input() property: ResourcePropertyDefinition;
 
+    @Input() topLevel: boolean;
+
     getComparisonOperatorAndValueLiteralForProperty(): ComparisonOperatorAndValue {
         return new ComparisonOperatorAndValue(new Equals(), new ValueLiteral('1', 'http://www.w3.org/2001/XMLSchema#integer'));
     }
