@@ -76,6 +76,7 @@ export class GravsearchGenerationService {
             let statement = `?${resourceVar} <${propWithVal.property.id}> ${propValue} .`;
 
             if (linkedResStatementsAndRestrictions.length > 0) {
+                // get statement from two-tuple
                 statement +=  linkedResStatementsAndRestrictions[0][0];
             }
 
@@ -135,6 +136,7 @@ ${statement}
             }
 
             if (linkedResStatementsAndRestrictions.length > 0) {
+                // get restriction from two-tuple
                 restriction +=  linkedResStatementsAndRestrictions[0][1];
             }
 
