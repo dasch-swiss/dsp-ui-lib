@@ -224,7 +224,7 @@ export class LinkedResource implements Value {
      * @param properties the properties of the linked resource.
      * @param resourceClass the class of the linked resource, if any.
      */
-    constructor(public properties: PropertyWithValue[], resourceClass?: string) {
+    constructor(public properties: PropertyWithValue[], public resourceClass?: string) {
     }
 
     public toSparql(): string {
