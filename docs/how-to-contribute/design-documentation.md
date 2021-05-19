@@ -208,18 +208,19 @@ The advanced search consists of the following components:
 
 - `AdvancedSearchComponent`: Main form: Reset and submit buttons, buttons to add and remove properties.
   - `SelectOntologyComponent`: Select an ontology from a list.
-  - `SelectResourceClassComponent`: Select a resource class from a list.
-  - `SelectPropertyComponent`: Select a property from a list.
-    - `SpecifyPropertyValueComponent`: Specify a comparison operator and a value for a chosen property.
-      - `SearchBooleanValueComponent`: Specify a Boolean value.
-      - `SearchDateValueComponent`: Specify a date value.
-      - `SearchDecimalValueComponent`: Specify a decimal value.
-      - `SearchIntegerValueComponent`: Specify an integer value.
-      - `SearchLinkValueComponent`: Specify the target of a link property.
-      - `SearchListValueComponent`: Specify a list value.
-        - `SearchDisplayListComponent`: Displays the children of a list node recursively.
-      - `TextValueComponent`: Specify a text value.
-      - `UriValueComponent`: Specify a URI value.
+  - `ResourceAndPropertySelectionComponent`: Parent component that contains `SelectResourceClassComponent` and `SelectPropertyComponent` for recursive reuse.
+    - `SelectResourceClassComponent`: Select a resource class from a list.
+    - `SelectPropertyComponent`: Select a property from a list.
+        - `SpecifyPropertyValueComponent`: Specify a comparison operator and a value for a chosen property.
+          - `SearchBooleanValueComponent`: Specify a Boolean value.
+          - `SearchDateValueComponent`: Specify a date value.
+          - `SearchDecimalValueComponent`: Specify a decimal value.
+          - `SearchIntegerValueComponent`: Specify an integer value.
+          - `SearchLinkValueComponent`: Specify the target of a link property.
+          - `SearchListValueComponent`: Specify a list value.
+            - `SearchDisplayListComponent`: Displays the children of a list node recursively.
+          - `TextValueComponent`: Specify a text value.
+          - `UriValueComponent`: Specify a URI value.
 
 #### Component Interaction
 
