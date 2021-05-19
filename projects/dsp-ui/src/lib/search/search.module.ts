@@ -22,7 +22,7 @@ import { ExpertSearchComponent } from './expert-search/expert-search.component';
 import { FulltextSearchComponent } from './fulltext-search/fulltext-search.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 import { SelectOntologyComponent } from './advanced-search/select-ontology/select-ontology.component';
-import { SelectResourceClassComponent } from './advanced-search/select-resource-class/select-resource-class.component';
+import { SelectResourceClassComponent } from './advanced-search/resource-and-property-selection/select-resource-class/select-resource-class.component';
 import { SelectPropertyComponent } from './advanced-search/select-property/select-property.component';
 import { SpecifyPropertyValueComponent } from './advanced-search/select-property/specify-property-value/specify-property-value.component';
 import { SearchIntValueComponent } from './advanced-search/select-property/specify-property-value/search-int-value/search-int-value.component';
