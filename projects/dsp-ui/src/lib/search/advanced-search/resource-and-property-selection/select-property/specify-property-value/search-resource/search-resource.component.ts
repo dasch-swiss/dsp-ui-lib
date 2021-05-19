@@ -39,6 +39,7 @@ export class SearchResourceComponent implements OnInit, PropertyValue {
             this.formGroup.addControl('propValue', this.form);
         });
 
+        // get ontology from restriction
         this.ontology = this.restrictResourceClass.split('#')[0];
     }
 

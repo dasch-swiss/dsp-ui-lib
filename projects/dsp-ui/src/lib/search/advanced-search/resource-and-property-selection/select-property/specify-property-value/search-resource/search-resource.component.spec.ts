@@ -106,6 +106,10 @@ describe('SearchLinkValueComponent', () => {
         expect(testHostComponent.searchResource).toBeTruthy();
     });
 
+    it('should correctly determine the ontology from the resource class constraint', () => {
+        expect(testHostComponent.searchResource.restrictResourceClass).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+    });
+
     it('should return a specified resource', () => {
 
         const linkedRes = testHostComponent.searchResource.getValue();

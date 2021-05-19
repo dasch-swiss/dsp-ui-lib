@@ -299,12 +299,6 @@ describe('SpecifyPropertyValueComponent', () => {
 
     });
 
-    /*
-     const resProps = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getPropertyDefinitionsByType(ResourcePropertyDefinition);
-
-        this.propertyDef = resProps.filter(propDef => propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger')[0];
-    * */
-
     it('should add a new control to the parent form', waitForAsync(() => {
 
         // the control is added to the form as an async operation
