@@ -1027,8 +1027,8 @@ CONSTRUCT {
 
 ?mainRes knora-api:isMainResource true .
 
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes0 .
-?linkedRes0 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes00 .
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes00 .
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes000 .
 
 
 
@@ -1040,16 +1040,16 @@ CONSTRUCT {
 ?mainRes a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
 
 
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes0 .
-?linkedRes0 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes00 .
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes00 .
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes000 .
 
 
 
 
 
 
-?propVallinkedRes00 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes00Literal
-FILTER(?propVallinkedRes00Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
+?propVallinkedRes000 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes000Literal
+FILTER(?propVallinkedRes000Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
 
 
 }
@@ -1095,12 +1095,12 @@ CONSTRUCT {
 
 ?mainRes knora-api:isMainResource true .
 
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes0 .
-?linkedRes0 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes00 .
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes00 .
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes000 .
 
 
 
-?linkedRes0 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger> ?propVallinkedRes01 .
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger> ?propVallinkedRes001 .
 
 
 
@@ -1112,22 +1112,22 @@ CONSTRUCT {
 ?mainRes a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
 
 
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes0 .
-?linkedRes0 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes00 .
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes00 .
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes000 .
 
 
 
-?linkedRes0 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger> ?propVallinkedRes01 .
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger> ?propVallinkedRes001 .
 
 
 
 
 
 
-?propVallinkedRes00 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes00Literal
-FILTER(?propVallinkedRes00Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
-?propVallinkedRes01 <http://api.knora.org/ontology/knora-api/v2#intValueAsInt> ?propVallinkedRes01Literal
-FILTER(?propVallinkedRes01Literal = "1"^^<http://www.w3.org/2001/XMLSchema#integer>)
+?propVallinkedRes000 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes000Literal
+FILTER(?propVallinkedRes000Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
+?propVallinkedRes001 <http://api.knora.org/ontology/knora-api/v2#intValueAsInt> ?propVallinkedRes001Literal
+FILTER(?propVallinkedRes001Literal = "1"^^<http://www.w3.org/2001/XMLSchema#integer>)
 
 
 }

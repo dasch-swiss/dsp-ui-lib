@@ -36,8 +36,9 @@ export class GravsearchGenerationService {
      *
      * @param resourceVar Name of the variable identifying the resource.
      * @param topLevel Flag indicating if the top level is affected (main resource).
+     * @param callCounter Inidcates the number of recursive calls of this method.
      */
-    private makeHandlePropsMethod(resourceVar: string, topLevel = true): (propWithVal: PropertyWithValue, index: number) => [string, string] {
+    private makeHandlePropsMethod(resourceVar: string, topLevel = true, callCounter = 0): (propWithVal: PropertyWithValue, index: number) => [string, string] {
 
         /**
          * Converts a [PropertyWithValue] into a tuple of statements and restrictions.
@@ -65,10 +66,10 @@ export class GravsearchGenerationService {
                     propValue = propWithVal.valueLiteral.value.toSparql();
                 } else {
                     // specify the resource's properties
-                    const linkedResVarName = `linkedRes${index}`;
+                    const linkedResVarName = `linkedRes${callCounter}${index}`;
 
                     propValue = `?${linkedResVarName}`;
-                    linkedResStatementsAndRestrictions = propWithVal.valueLiteral.value.properties.map(this.makeHandlePropsMethod(linkedResVarName, false));
+                    linkedResStatementsAndRestrictions = propWithVal.valueLiteral.value.properties.map(this.makeHandlePropsMethod(linkedResVarName, false, callCounter + 1));
 
                 }
             }
