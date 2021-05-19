@@ -2,7 +2,7 @@ import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Cardinality, IHasProperty, ResourceClassDefinition, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
-import { SortingService } from '../../../action/services/sorting.service';
+import { SortingService } from '../../../../action/services/sorting.service';
 import { ComparisonOperatorAndValue, PropertyWithValue } from './specify-property-value/operator';
 import { SpecifyPropertyValueComponent } from './specify-property-value/specify-property-value.component';
 

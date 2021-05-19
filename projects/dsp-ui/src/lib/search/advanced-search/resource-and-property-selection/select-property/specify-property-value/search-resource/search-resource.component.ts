@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LinkedResource, PropertyValue, PropertyWithValue, Value } from '../operator';
-import { ResourceAndPropertySelectionComponent } from '../../../resource-and-property-selection/resource-and-property-selection.component';
+import { ResourceAndPropertySelectionComponent } from '../../../resource-and-property-selection.component';
 import { Constants } from '@dasch-swiss/dsp-js';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror

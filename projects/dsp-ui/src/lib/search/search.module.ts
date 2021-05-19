@@ -23,20 +23,20 @@ import { FulltextSearchComponent } from './fulltext-search/fulltext-search.compo
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 import { SelectOntologyComponent } from './advanced-search/select-ontology/select-ontology.component';
 import { SelectResourceClassComponent } from './advanced-search/resource-and-property-selection/select-resource-class/select-resource-class.component';
-import { SelectPropertyComponent } from './advanced-search/select-property/select-property.component';
-import { SpecifyPropertyValueComponent } from './advanced-search/select-property/specify-property-value/specify-property-value.component';
-import { SearchIntValueComponent } from './advanced-search/select-property/specify-property-value/search-int-value/search-int-value.component';
-import { SearchBooleanValueComponent } from './advanced-search/select-property/specify-property-value/search-boolean-value/search-boolean-value.component';
-import { SearchDateValueComponent } from './advanced-search/select-property/specify-property-value/search-date-value/search-date-value.component';
-import { SearchDecimalValueComponent } from './advanced-search/select-property/specify-property-value/search-decimal-value/search-decimal-value.component';
-import { SearchLinkValueComponent } from './advanced-search/select-property/specify-property-value/search-link-value/search-link-value.component';
-import { SearchListValueComponent } from './advanced-search/select-property/specify-property-value/search-list-value/search-list-value.component';
-import { SearchDisplayListComponent } from './advanced-search/select-property/specify-property-value/search-list-value/search-display-list/search-display-list.component';
-import { SearchTextValueComponent } from './advanced-search/select-property/specify-property-value/search-text-value/search-text-value.component';
-import { SearchUriValueComponent } from './advanced-search/select-property/specify-property-value/search-uri-value/search-uri-value.component';
+import { SelectPropertyComponent } from './advanced-search/resource-and-property-selection/select-property/select-property.component';
+import { SpecifyPropertyValueComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/specify-property-value.component';
+import { SearchIntValueComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/search-int-value/search-int-value.component';
+import { SearchBooleanValueComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/search-boolean-value/search-boolean-value.component';
+import { SearchDateValueComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/search-date-value/search-date-value.component';
+import { SearchDecimalValueComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/search-decimal-value/search-decimal-value.component';
+import { SearchLinkValueComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/search-link-value/search-link-value.component';
+import { SearchListValueComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/search-list-value/search-list-value.component';
+import { SearchDisplayListComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/search-list-value/search-display-list/search-display-list.component';
+import { SearchTextValueComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/search-text-value/search-text-value.component';
+import { SearchUriValueComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/search-uri-value/search-uri-value.component';
 import { DspActionModule } from '../action';
 import { ResourceAndPropertySelectionComponent } from './advanced-search/resource-and-property-selection/resource-and-property-selection.component';
-import { SearchResourceComponent } from './advanced-search/select-property/specify-property-value/search-resource/search-resource.component';
+import { SearchResourceComponent } from './advanced-search/resource-and-property-selection/select-property/specify-property-value/search-resource/search-resource.component';
 
 
 

@@ -7,7 +7,7 @@ import {
     Equals, GreaterThan, GreaterThanEquals, IRI, LessThan, LessThanEquals, Like, LinkedResource, Match, NotEquals,
     PropertyWithValue,
     ValueLiteral
-} from '../advanced-search/select-property/specify-property-value/operator';
+} from '../advanced-search/resource-and-property-selection/select-property/specify-property-value/operator';
 
 
 describe('GravsearchGenerationService', () => {

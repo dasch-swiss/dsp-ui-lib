@@ -5,8 +5,8 @@
 import { Injectable } from '@angular/core';
 import { Constants } from '@dasch-swiss/dsp-js';
 import { AdvancedSearchParams, AdvancedSearchParamsService } from './advanced-search-params.service';
-import { LinkedResource, PropertyWithValue } from '../advanced-search/select-property/specify-property-value/operator';
-import { ComparisonOperatorConstants } from '../advanced-search/select-property/specify-property-value/operator-constants';
+import { LinkedResource, PropertyWithValue } from '../advanced-search/resource-and-property-selection/select-property/specify-property-value/operator';
+import { ComparisonOperatorConstants } from '../advanced-search/resource-and-property-selection/select-property/specify-property-value/operator-constants';
 
 @Injectable({
     providedIn: 'root'
