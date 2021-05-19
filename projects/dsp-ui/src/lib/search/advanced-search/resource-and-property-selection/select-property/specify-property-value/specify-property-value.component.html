@@ -16,10 +16,10 @@
 
     <span *ngSwitchCase="Constants.Resource">
         <span *ngIf="comparisonOperatorSelected.getClassName() == 'Match'; else elseBlock">
-            <dsp-search-resource #propertyValue [formGroup]="form" [restrictResourceClass]="property.objectType"></dsp-search-resource>
+            <dsp-search-resource #propertyValue [formGroup]="form" [restrictResourceClass]="objectClassConstraint"></dsp-search-resource>
         </span>
         <ng-template #elseBlock>
-            <dsp-search-link-value #propertyValue [formGroup]="form" [restrictResourceClass]="property.objectType"></dsp-search-link-value>
+            <dsp-search-link-value #propertyValue [formGroup]="form" [restrictResourceClass]="objectClassConstraint"></dsp-search-link-value>
         </ng-template>
     </span>
 

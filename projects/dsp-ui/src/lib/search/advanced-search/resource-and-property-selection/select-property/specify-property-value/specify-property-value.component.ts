@@ -34,6 +34,8 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
 
     @ViewChild('propertyValue', { static: false }) propertyValueComponent: PropertyValue;
 
+    objectClassConstraint: string;
+
     // setter method for the property chosen by the user
     @Input()
     set property(prop: ResourcePropertyDefinition) {
@@ -80,6 +82,9 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
         // comparison operator selection
         this.comparisonOperatorSelected = undefined; // reset to initial state
         this.resetComparisonOperators(); // reset comparison operators for given property (overwriting any previous selection)
+
+        // use knora-api:Resource as a fallback
+        this.objectClassConstraint = (this.property.isLinkProperty && this.property.objectType !== undefined) ? this.property.objectType : Constants.Resource;
 
         resolvedPromise.then(() => {
 

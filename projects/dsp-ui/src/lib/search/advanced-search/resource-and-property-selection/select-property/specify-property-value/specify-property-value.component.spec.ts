@@ -264,6 +264,47 @@ describe('SpecifyPropertyValueComponent', () => {
         expect(testHostComponent.specifyProperty.topLevel).toBeTrue();
     });
 
+    it('should initialise the Inputs correctly for a linking prop with object class constraint', () => {
+
+        const resProps = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        testHostComponent.propertyDef = resProps.filter(propDef => propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing')[0];
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.specifyProperty.formGroup).toBeDefined();
+        expect(testHostComponent.specifyProperty.property).toBeDefined();
+        expect(testHostComponent.specifyProperty.property.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing');
+        expect(testHostComponent.specifyProperty.topLevel).toBeTrue();
+
+        expect(testHostComponent.specifyProperty.objectClassConstraint).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+
+    });
+
+    it('should initialise the Inputs correctly for a linking prop without object class constraint', () => {
+
+        const resProps = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        testHostComponent.propertyDef = resProps.filter(propDef => propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing')[0];
+        testHostComponent.propertyDef.objectType = undefined;
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.specifyProperty.formGroup).toBeDefined();
+        expect(testHostComponent.specifyProperty.property).toBeDefined();
+        expect(testHostComponent.specifyProperty.property.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing');
+        expect(testHostComponent.specifyProperty.topLevel).toBeTrue();
+
+        expect(testHostComponent.specifyProperty.objectClassConstraint).toEqual('http://api.knora.org/ontology/knora-api/v2#Resource');
+
+    });
+
+    /*
+     const resProps = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        this.propertyDef = resProps.filter(propDef => propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger')[0];
+    * */
+
     it('should add a new control to the parent form', waitForAsync(() => {
 
         // the control is added to the form as an async operation
