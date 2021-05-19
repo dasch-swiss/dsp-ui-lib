@@ -50,32 +50,32 @@ export class GravsearchGenerationService {
 
             let linkedResStatementsAndRestrictions: [string, string][] = [];
             // represents the object of a statement
-            let propValue;
+            let object;
             if (!propWithVal.property.isLinkProperty || propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Exists') {
                 // it is not a linking property, create a variable for the value (to be used by a subsequent FILTER)
                 // OR the comparison operator Exists is used in which case we do not need to specify the object any further
                 if (topLevel) {
-                    propValue = `?propVal${index}`;
+                    object = `?propVal${index}`;
                 } else {
-                    propValue = `?propVal${resourceVar}${index}`;
+                    object = `?propVal${resourceVar}${index}`;
                 }
             } else {
                 // it is a linking property and the comparison operator is not Exists,
                 if (!(propWithVal.valueLiteral.value instanceof LinkedResource)) {
                     // use its IRI
-                    propValue = propWithVal.valueLiteral.value.toSparql();
+                    object = propWithVal.valueLiteral.value.toSparql();
                 } else {
                     // specify the resource's properties
                     const linkedResVarName = `linkedRes${callCounter}${index}`;
 
-                    propValue = `?${linkedResVarName}`;
+                    object = `?${linkedResVarName}`;
                     linkedResStatementsAndRestrictions = propWithVal.valueLiteral.value.properties.map(this.makeHandlePropsMethod(linkedResVarName, false, callCounter + 1));
 
                 }
             }
 
             // generate statement
-            let statement = `?${resourceVar} <${propWithVal.property.id}> ${propValue} .`;
+            let statement = `?${resourceVar} <${propWithVal.property.id}> ${object} .`;
 
             if (linkedResStatementsAndRestrictions.length > 0) {
                 // get statements from two-tuple
@@ -109,22 +109,22 @@ ${statement}
             // only create a FILTER if the comparison operator is not EXISTS and it is not a linking property
             if (!propWithVal.property.isLinkProperty && propWithVal.valueLiteral.comparisonOperator.getClassName() !== 'Exists') {
                 // generate variable for value literal
-                const propValueLiteral = `${propValue}Literal`;
+                const propValueLiteral = `${object}Literal`;
 
                 if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Like') {
                     // generate statement to value literal
-                    restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
+                    restriction = `${object} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
                     // use regex function for LIKE
                     restriction += `FILTER regex(${propValueLiteral}, ${propWithVal.valueLiteral.value.toSparql()}, "i")`;
                 } else if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'Match') {
                     // use Gravsearch function for MATCH
-                    restriction += `FILTER <${ComparisonOperatorConstants.MatchFunction}>(${propValue}, ${propWithVal.valueLiteral.value.toSparql()})`;
+                    restriction += `FILTER <${ComparisonOperatorConstants.MatchFunction}>(${object}, ${propWithVal.valueLiteral.value.toSparql()})`;
                 } else if (propWithVal.property.objectType === Constants.DateValue) {
                     // handle date property
-                    restriction = `FILTER(knora-api:toSimpleDate(${propValue}) ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
+                    restriction = `FILTER(knora-api:toSimpleDate(${object}) ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
                 } else if (propWithVal.property.objectType === Constants.ListValue) {
                     // handle list node
-                    restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propWithVal.valueLiteral.value.toSparql()}` + '\n';
+                    restriction = `${object} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propWithVal.valueLiteral.value.toSparql()}` + '\n';
                     // check for comparison operator "not equals"
                     if (propWithVal.valueLiteral.comparisonOperator.getClassName() === 'NotEquals') {
                         restriction = `FILTER NOT EXISTS {
@@ -133,10 +133,15 @@ ${statement}
                     }
                 } else {
                     // generate statement to value literal
-                    restriction = `${propValue} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
+                    restriction = `${object} <${this.complexTypeToProp[propWithVal.property.objectType]}> ${propValueLiteral}` + '\n';
                     // generate filter expression
                     restriction += `FILTER(${propValueLiteral} ${propWithVal.valueLiteral.comparisonOperator.type} ${propWithVal.valueLiteral.value.toSparql()})`;
                 }
+            }
+
+            // Check for class restriction on linked resource, if any
+            if ((propWithVal.valueLiteral.value instanceof LinkedResource) && propWithVal.valueLiteral.value.resourceClass !== undefined) {
+                restriction += `\n${object} a <${propWithVal.valueLiteral.value.resourceClass}> .\n`;
             }
 
             if (linkedResStatementsAndRestrictions.length > 0) {
@@ -148,7 +153,7 @@ ${statement}
 
             // check if current value is a sort criterion
             if (propWithVal.isSortCriterion) {
-                this.orderByCriteria.push(propValue);
+                this.orderByCriteria.push(object);
             }
 
             return [statement, restriction];

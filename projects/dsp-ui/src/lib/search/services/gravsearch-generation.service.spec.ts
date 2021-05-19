@@ -1048,6 +1048,8 @@ CONSTRUCT {
 
 
 
+
+?linkedRes00 a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
 ?propVallinkedRes000 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes000Literal
 FILTER(?propVallinkedRes000Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
 
@@ -1124,6 +1126,8 @@ CONSTRUCT {
 
 
 
+
+?linkedRes00 a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
 ?propVallinkedRes000 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes000Literal
 FILTER(?propVallinkedRes000Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
 ?propVallinkedRes001 <http://api.knora.org/ontology/knora-api/v2#intValueAsInt> ?propVallinkedRes001Literal
