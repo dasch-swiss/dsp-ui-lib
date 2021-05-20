@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 /*
- * Represents the parameters of an extended search.
+ * Represents the parameters of an advanced search.
  */
 export class AdvancedSearchParams {
 
@@ -34,16 +34,16 @@ export class AdvancedSearchParamsService {
     }
 
     /**
-     * Updates the parameters of an extended search.
+     * Updates the parameters of an advanced search.
      *
-     * @param searchParams new extended search params.
+     * @param searchParams new advanced search params.
      */
     changeSearchParamsMsg(searchParams: AdvancedSearchParams): void {
         this._currentSearchParams.next(searchParams);
     }
 
     /**
-     * Gets the search params of an extended search.
+     * Gets the search params of an advanced search.
      *
      */
     getSearchParams(): AdvancedSearchParams {

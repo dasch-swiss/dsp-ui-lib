@@ -141,7 +141,7 @@ export class ListViewComponent implements OnChanges {
                 );
             }
 
-            // perform extended search
+            // perform advanced search
             const gravsearch = this._advancedSearchParamsService.getSearchParams().generateGravsearch(this.pageEvent.pageIndex);
 
             if (typeof gravsearch === 'string') {

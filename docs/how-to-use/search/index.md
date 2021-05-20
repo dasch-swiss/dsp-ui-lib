@@ -1,6 +1,6 @@
 # DSP-UI SEARCH module
 
-DspSearchModule allows to make simple searches or extended searches in DSP-API. In extended search, resource class and its properties related to one specific ontology are selected to create your query. It is also possible to write Gravsearch queries to target specific data with the expert search form.
+DspSearchModule allows to make simple searches or advanced searches in DSP-API. In advanced search, resource class and its properties related to one specific ontology are selected to create your query. It is also possible to write Gravsearch queries to target specific data with the expert search form.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ DspSearchModule is part of @dasch-swiss/dsp-ui, follow [the installation guide](
 
 ## Components
 
-This module contains various components to search. The main component is the dsp-search-panel, which contains the dsp-fulltext-search, dsp-extended-search and dsp-expert-search. All of them can be used standalone or in combination in dsp-search-panel.
+This module contains various components to search. The main component is the dsp-search-panel, which contains the dsp-fulltext-search, dsp-advanced-search and dsp-expert-search. All of them can be used standalone or in combination in dsp-search-panel.
 
 ### [Search panel](/developers/dsp-ui/documentation/search/search-panel)
 
@@ -23,7 +23,7 @@ Fully customizable panel. You can set the following parameters in dsp-search-pan
 - route: string; url-route for search results
 - filterbyproject: string; project iri to limit search results by project
 - projectfilter: boolean; selection of all projects to filter by
-- advanced: boolean; additional menu with advanced / extended search
+- advanced: boolean; additional menu with advanced search
 - expert: boolean;  additional menu with expert search / gravsearch "editor"
 
 If everything is set to false or undefined the search-panel is a simple full-text search. [Read more](modules/search/search-panel)

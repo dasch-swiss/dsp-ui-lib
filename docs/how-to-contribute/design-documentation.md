@@ -184,7 +184,7 @@ This is a fully-customizable panel that allows you to assemble the search compon
 - route: string; url-route for search results
 - filterbyproject: string; project iri to limit search results to a specific project
 - projectfilter: boolean; provides a drop-down menu of all available projects allowing the user to choose which project to search in
-- advanced: boolean; additional menu with advanced / extended search
+- advanced: boolean; additional menu with advanced search
 - expert: boolean;  additional menu with expert search / Gravsearch "editor"
 
 If everything is set to false or undefined, the search-panel will be a simple full-text search.

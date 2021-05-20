@@ -1,6 +1,6 @@
 # Search panel (Component)
 
-The search-panel contains the list of projects to filter and dsp-fulltext-search and links to dsp-extended-search and dsp-expert-search.
+The search-panel contains the list of projects to filter and dsp-fulltext-search and links to dsp-advanced-search and dsp-expert-search.
 
 ## Parameters
 

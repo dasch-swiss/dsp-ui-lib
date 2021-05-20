@@ -20,7 +20,7 @@ describe('SearchParamsService', () => {
         expect(searchParams.generateGravsearch(0)).toBeFalsy();
     });
 
-    it('should set the parameters of an extended search', () => {
+    it('should set the parameters of an advanced search', () => {
         const testMethod1 = (offset: number) => {
             return 'test1';
         };

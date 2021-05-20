@@ -47,7 +47,7 @@ export class SearchResultsComponent {
 ### HTML file
 
 ```html
-<!-- example of an extended search where we pass a gravsearch query as search parameter -->
+<!-- example of an advanced search where we pass a gravsearch query as search parameter -->
 <dsp-search-results [searchMode]="'extended'" [searchQuery]="gravsearch"></dsp-search-results>
 ```
 
