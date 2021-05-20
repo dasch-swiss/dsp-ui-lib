@@ -69,6 +69,7 @@ export class GravsearchGenerationService {
                     const linkedResVarName = `linkedRes${callCounter}${index}`;
 
                     object = `?${linkedResVarName}`;
+                    // recursively call this method to handle the linked resource's properties
                     linkedResStatementsAndRestrictions = propWithVal.valueLiteral.value.properties.map(this.makeHandlePropsMethod(linkedResVarName, false, callCounter + 1));
 
                 }
