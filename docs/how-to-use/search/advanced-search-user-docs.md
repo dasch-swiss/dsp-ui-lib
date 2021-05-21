@@ -18,16 +18,15 @@ otherwise the query is not considered valid and cannot be submitted.
 Depending on the value type of the chosen property,
 one or more of the following comparison operators can be selected:
 
-- `is equal to`: value equality (same number, exact same string, overlap of date periods)
-- `is not equal to`: value inequality (not same number, not exact same string, no overlap of date periods)
-- `is greater than`:
-- `is greater than or equal to`
-- `is less than`
-- `is less than or equal to`
-- `exists`
-- `is like`
-- `matches`
-
+- `is equal to`: value equality: same number, exact same string, overlap of date periods, same target resource.
+- `is not equal to`: value inequality: not same number, not exact same string, no overlap of date periods, not same target resource.
+- `is greater than`: value comparison: number is greater than search value, date period begins after search value.
+- `is greater than or equal to` value equality / value comparison: number is equal or greater than search value, overlap of date periods or date period begins after search value.
+- `is less than`: value comparison: number is less than search value, date period ends before search value.
+- `is less than or equal to`: value equality / value comparison: number is equal or less than search value, overlap of date periods or date period ends before search value.
+- `exists`: a value for the given property exists.
+- `is like`: search value is contained in a text using the SPARQL [REGEX](https://www.w3.org/TR/sparql11-query/#func-regex) function (support of regular expressions).
+- `matches`: text property: search value matches the text ([Lucene Query Parser Syntax](https://docs-api.dasch.swiss/08-lucene/lucene-query-parser-syntax/)), linking property: matches the specified linked resource.
 
 ## Search Examples
 
