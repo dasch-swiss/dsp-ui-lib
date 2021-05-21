@@ -30,8 +30,13 @@ one or more of the following comparison operators can be selected:
 
 ## Search Examples
 
-###
+### Regular Expressions (is like)
+
+The `is like` operator lets the user search for texts that are *like* the search value, supporting regular expressions.
 
 
+![Advanced search panel with a search example](../../assets/images/advanced-search-regex.png)
 
-###
+### Lucence Parser Syntax
+
+### Specifying a Linked Resource
