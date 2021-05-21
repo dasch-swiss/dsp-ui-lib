@@ -39,6 +39,15 @@ For general information about regular expressions see this [interactive tutorial
 
 ![Advanced search panel with a search example](../../assets/images/advanced-search-regex.png)
 
-### Lucence Parser Syntax
+### Lucene Parser Syntax
+
+Used with a text property the `matches` operator lets the user search for texts that *match* the search value,
+supporting [Lucene Query Parser Syntax](https://docs-api.dasch.swiss/08-lucene/lucene-query-parser-syntax/).
+In this example, all persons are found whose names contain "Ja" and "ob" with a character in between (represented by the wildcard "?").
+This search finds "Jacob" as well as "Jakob".
+
+**Note the difference between regular expressions and Lucene parser syntax!**
+
+![Advanced search panel with a search example](../../assets/images/advanced-search-match.png)
 
 ### Specifying a Linked Resource
