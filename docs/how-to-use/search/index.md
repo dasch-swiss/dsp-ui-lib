@@ -51,7 +51,7 @@ We suggest to define a route for the search-results in the app.routing
         ]
 ```
 
-### [Extended / advanced search](/developers/dsp-ui/documentation/search/extended-search)
+### [Advanced search](/developers/dsp-ui/documentation/search/advanced-search)
 
 Generic search filter tool to limit search results to ontology and resource class and / or properties.
 

@@ -12,13 +12,13 @@ export class ComparisonOperatorConstants {
      static GreaterThanComparisonLabel = 'is greater than';
 
      static GreaterThanEqualsComparisonOperator = '>=';
-     static GreaterThanEqualsComparisonLabel = 'is greater than equals to';
+     static GreaterThanEqualsComparisonLabel = 'is greater than or equal to';
 
      static LessThanComparisonOperator = '<';
      static LessThanComparisonLabel = 'is less than';
 
      static LessThanEqualsComparisonOperator = '<=';
-     static LessThanQualsComparisonLabel = 'is less than equals to';
+     static LessThanQualsComparisonLabel = 'is less than or equal to';
 
      static ExistsComparisonOperator = 'E';
      static ExistsComparisonLabel = 'exists';
