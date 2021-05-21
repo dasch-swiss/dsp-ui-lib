@@ -33,7 +33,9 @@ one or more of the following comparison operators can be selected:
 ### Regular Expressions (is like)
 
 The `is like` operator lets the user search for texts that are *like* the search value, supporting regular expressions.
+In this example, all books are found whose title contain "Narrenschiff" followed by a space and some other characters like "(lat.)" or "(dt.)".
 
+For general information about regular expressions see this [interactive tutorial](https://regexone.com).
 
 ![Advanced search panel with a search example](../../assets/images/advanced-search-regex.png)
 
