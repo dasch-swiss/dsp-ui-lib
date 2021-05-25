@@ -10,7 +10,7 @@ A query consists of the following elements:
 - selection of a resource class belonging to the selected ontology (optional)
 - specification of properties, comparison operators, and values (optional).
 
-Although selection of a resource or a property ore both are optional, either a resource class has to be selected or at least one property has to be specified,
+Although selection of a resource or a property or both are optional, either a resource class has to be selected or at least one property has to be specified,
 otherwise the query is not considered valid and cannot be submitted.
 
 ## Comparison Operators
@@ -21,11 +21,11 @@ one or more of the following comparison operators can be selected:
 - `is equal to`: value equality: same number, exact same string, overlap of date periods, same target resource.
 - `is not equal to`: value inequality: not same number, not exact same string, no overlap of date periods, not same target resource.
 - `is greater than`: value comparison: number is greater than search value, date period begins after search value.
-- `is greater than or equal to` value equality / value comparison: number is equal or greater than search value, overlap of date periods or date period begins after search value.
+- `is greater than or equal to` value equality / value comparison: number is equal to or greater than search value, overlap of date periods or date period begins after search value.
 - `is less than`: value comparison: number is less than search value, date period ends before search value.
-- `is less than or equal to`: value equality / value comparison: number is equal or less than search value, overlap of date periods or date period ends before search value.
+- `is less than or equal to`: value equality / value comparison: number is equal to or less than search value, overlap of date periods or date period ends before search value.
 - `exists`: a value for the given property exists.
-- `is like`: search value is contained in a text using the SPARQL [REGEX](https://www.w3.org/TR/sparql11-query/#func-regex) function (support of regular expressions).
+- `is like`: search value is contained in a text using the SPARQL [REGEX](https://www.w3.org/TR/sparql11-query/#func-regex) function (supports regular expressions).
 - `matches`: 
    - text property: search value matches the text ([Lucene Query Parser Syntax](https://docs-api.dasch.swiss/08-lucene/lucene-query-parser-syntax/)). 
    - linking property: matches the specified linked resource.
@@ -34,7 +34,7 @@ one or more of the following comparison operators can be selected:
 
 ### Regular Expressions (is like)
 
-The `is like` operator lets the user search for texts that are *like* the search value, supporting regular expressions.
+The `is like` operator lets the user search for texts that are *like* the search value via the support of regular expressions
 In this example, all books are found whose title contains "Narrenschiff" followed by a space and some other characters like "(lat.)" or "(dt.)".
 
 For general information about regular expressions see this [interactive tutorial](https://regexone.com).

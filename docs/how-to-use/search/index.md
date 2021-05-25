@@ -14,7 +14,10 @@ DspSearchModule is part of @dasch-swiss/dsp-ui, follow [the installation guide](
 
 ## Components
 
-This module contains various components to search. The main component is the dsp-search-panel, which contains the dsp-fulltext-search, dsp-advanced-search and dsp-expert-search. All of them can be used standalone or in combination in dsp-search-panel.
+This module contains various components to search.
+The main component is the dsp-search-panel, which contains the dsp-fulltext-search,
+dsp-advanced-search and dsp-expert-search.
+All of them can be used individually or in combination in dsp-search-panel.
 
 ### [Search panel](/developers/dsp-ui/documentation/search/search-panel)
 
