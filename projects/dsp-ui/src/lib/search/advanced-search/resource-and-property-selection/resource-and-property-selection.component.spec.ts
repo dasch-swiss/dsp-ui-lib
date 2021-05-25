@@ -50,6 +50,8 @@ class TestSelectPropertyComponent {
 
     @Input() activeResourceClass: ResourceClassDefinition;
 
+    @Input() topLevel: boolean;
+
 }
 
 /**

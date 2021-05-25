@@ -214,6 +214,26 @@ export class IRI implements Value {
 }
 
 /**
+ * Represents a linked resource.
+ */
+export class LinkedResource implements Value {
+
+    /**
+     * Constructs a [LinkedResource].
+     *
+     * @param properties the properties of the linked resource.
+     * @param resourceClass the class of the linked resource, if any.
+     */
+    constructor(public properties: PropertyWithValue[], public resourceClass?: string) {
+    }
+
+    public toSparql(): string {
+        throw Error('invalid call of toSparql');
+    }
+
+}
+
+/**
  * An abstract interface that represents a value.
  * This interface has to be implemented for all value types (value component classes).
  */

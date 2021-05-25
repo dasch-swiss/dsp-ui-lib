@@ -7,7 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarDate, CalendarPeriod, GregorianCalendarDate } from 'jdnconvertiblecalendar';
-import { DspViewerModule } from '../../../../../viewer/viewer.module';
+import { DspViewerModule } from '../../../../../../viewer/viewer.module';
 import { ValueLiteral } from '../operator';
 import { SearchDateValueComponent } from './search-date-value.component';
 

@@ -8,8 +8,8 @@ import {
     ListNodeV2,
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
-import { NotificationService } from '../../../../../action/services/notification.service';
-import { DspApiConnectionToken } from '../../../../../core/core.module';
+import { NotificationService } from '../../../../../../action/services/notification.service';
+import { DspApiConnectionToken } from '../../../../../../core/core.module';
 import { IRI, PropertyValue, Value } from '../operator';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror

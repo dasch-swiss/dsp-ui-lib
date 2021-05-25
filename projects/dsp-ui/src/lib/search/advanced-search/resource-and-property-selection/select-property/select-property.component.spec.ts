@@ -26,7 +26,7 @@ import { ComparisonOperatorAndValue, Equals, ValueLiteral } from './specify-prop
  */
 @Component({
     template: `
-        <dsp-select-property #selectProp [formGroup]="form" [index]="0" [activeResourceClass]="activeResourceClass" [properties]="propertyDefs"></dsp-select-property>`
+        <dsp-select-property #selectProp [formGroup]="form" [index]="0" [activeResourceClass]="activeResourceClass" [properties]="propertyDefs" [topLevel]="topLevel"></dsp-select-property>`
 })
 class TestHostComponent implements OnInit {
 
@@ -38,6 +38,8 @@ class TestHostComponent implements OnInit {
 
     activeResourceClass: ResourceClassDefinition;
 
+    topLevel: boolean;
+
     constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
 
@@ -47,6 +49,8 @@ class TestHostComponent implements OnInit {
         const resProps = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getPropertyDefinitionsByType(ResourcePropertyDefinition);
 
         this.propertyDefs = resProps;
+
+        this.topLevel = true;
     }
 
 }
@@ -64,12 +68,13 @@ class TestSpecifyPropertyValueComponent implements OnInit {
 
     @Input() property: ResourcePropertyDefinition;
 
+    @Input() topLevel: boolean;
+
     getComparisonOperatorAndValueLiteralForProperty(): ComparisonOperatorAndValue {
         return new ComparisonOperatorAndValue(new Equals(), new ValueLiteral('1', 'http://www.w3.org/2001/XMLSchema#integer'));
     }
 
     ngOnInit() {
-
     }
 
 }
@@ -174,7 +179,7 @@ describe('SelectPropertyComponent', () => {
 
     });
 
-    it('should show the sort checkbox when a property with cardinality 1 is selected', async () => {
+    it('should show the sort checkbox when a property with cardinality 1 is selected for the top level resource', async () => {
 
         const select = await loader.getHarness(MatSelectHarness);
         await select.open();
@@ -198,6 +203,35 @@ describe('SelectPropertyComponent', () => {
         const checkbox = await loader.getAllHarnesses(MatCheckboxHarness);
 
         expect(checkbox.length).toEqual(1);
+
+    });
+
+    it('should not show the sort checkbox when a property with cardinality 1 is selected for a linked resource', async () => {
+
+        testHostComponent.topLevel = false;
+
+        const select = await loader.getHarness(MatSelectHarness);
+        await select.open();
+
+        const options = await select.getOptions();
+        expect(await options[4].getText()).toEqual('Date');
+
+        await options[4].click();
+
+        const resClass = new ResourceClassDefinition();
+        resClass.propertiesList = [{
+            propertyIndex: 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate',
+            cardinality: Cardinality._1,
+            isInherited: true
+        }];
+
+        testHostComponent.activeResourceClass = resClass;
+
+        testHostFixture.detectChanges();
+
+        const checkbox = await loader.getAllHarnesses(MatCheckboxHarness);
+
+        expect(checkbox.length).toEqual(0);
 
     });
 

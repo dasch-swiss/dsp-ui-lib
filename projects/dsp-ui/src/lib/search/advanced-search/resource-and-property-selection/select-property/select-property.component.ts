@@ -2,7 +2,7 @@ import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Cardinality, IHasProperty, ResourceClassDefinition, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import { Subscription } from 'rxjs';
-import { SortingService } from '../../../action/services/sorting.service';
+import { SortingService } from '../../../../action/services/sorting.service';
 import { ComparisonOperatorAndValue, PropertyWithValue } from './specify-property-value/operator';
 import { SpecifyPropertyValueComponent } from './specify-property-value/specify-property-value.component';
 
@@ -21,6 +21,8 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
 
     // index of the given property (unique)
     @Input() index: number;
+
+    @Input() topLevel: boolean;
 
     // properties that can be selected from
     private _properties: ResourcePropertyDefinition[];
@@ -107,12 +109,13 @@ export class SelectPropertyComponent implements OnInit, OnDestroy {
      */
     sortCriterion(): boolean {
 
-        // TODO: this method is called from teh template. It is called on each change detection cycle.
+        // TODO: this method is called from the template. It is called on each change detection cycle.
         // TODO: this is acceptable because this method has no side-effects
         // TODO: find a better way: evaluate once and store the result in a class member
 
         // check if a resource class is selected and if the property's cardinality is 1 for the selected resource class
-        if (this._activeResourceClass !== undefined && this.propertySelected !== undefined && !this.propertySelected.isLinkProperty) {
+        // sort criterion is only available for main resource on top level
+        if (this.topLevel && this._activeResourceClass !== undefined && this.propertySelected !== undefined && !this.propertySelected.isLinkProperty) {
 
             const cardinalities: IHasProperty[] = this._activeResourceClass.propertiesList.filter(
                 (card: IHasProperty) => {

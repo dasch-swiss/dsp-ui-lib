@@ -17,7 +17,7 @@ import { DspApiConnectionToken } from '../../core/core.module';
 import { SearchParams } from '../../viewer/views/list-view/list-view.component';
 import { GravsearchGenerationService } from '../services/gravsearch-generation.service';
 import { ResourceAndPropertySelectionComponent } from './resource-and-property-selection/resource-and-property-selection.component';
-import { PropertyWithValue } from './select-property/specify-property-value/operator';
+import { PropertyWithValue } from './resource-and-property-selection/select-property/specify-property-value/operator';
 
 @Component({
     selector: 'dsp-advanced-search',
