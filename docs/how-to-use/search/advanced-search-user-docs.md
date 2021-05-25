@@ -41,7 +41,7 @@ For general information about regular expressions see this [interactive tutorial
 
 ### Lucene Parser Syntax
 
-Used with a text property the `matches` operator lets the user search for texts that *match* the search value,
+Used with a text property, the `matches` operator lets the user search for texts that *match* the search value,
 supporting [Lucene Query Parser Syntax](https://docs-api.dasch.swiss/08-lucene/lucene-query-parser-syntax/).
 In this example, all persons are found whose names contain "Ja" and "ob" with a character in between (represented by the wildcard "?").
 This search finds "Jacob" as well as "Jakob".
@@ -51,3 +51,13 @@ This search finds "Jacob" as well as "Jakob".
 ![Advanced search panel with a search example](../../assets/images/advanced-search-match.png)
 
 ### Specifying a Linked Resource
+
+Used with a linking property, the `matches` operator lets the user search for a linked resource that matches the specified properties. 
+In this example, the user writes a query looking for all letters that have an author that:
+1. was born after January 1st 1650
+2. whose family name is "Bernoulli"
+
+This is different from the "is equal to" operator that lets the user specify a certain person (selected from a list).
+
+![Advanced search panel with a search example](../../assets/images/advanced-search-linked-resource.png)
+
