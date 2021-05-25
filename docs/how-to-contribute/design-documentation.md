@@ -208,18 +208,20 @@ The advanced search consists of the following components:
 
 - `AdvancedSearchComponent`: Main form: Reset and submit buttons, buttons to add and remove properties.
   - `SelectOntologyComponent`: Select an ontology from a list.
-  - `SelectResourceClassComponent`: Select a resource class from a list.
-  - `SelectPropertyComponent`: Select a property from a list.
-    - `SpecifyPropertyValueComponent`: Specify a comparison operator and a value for a chosen property.
-      - `SearchBooleanValueComponent`: Specify a Boolean value.
-      - `SearchDateValueComponent`: Specify a date value.
-      - `SearchDecimalValueComponent`: Specify a decimal value.
-      - `SearchIntegerValueComponent`: Specify an integer value.
-      - `SearchLinkValueComponent`: Specify the target of a link property.
-      - `SearchListValueComponent`: Specify a list value.
-        - `SearchDisplayListComponent`: Displays the children of a list node recursively.
-      - `TextValueComponent`: Specify a text value.
-      - `UriValueComponent`: Specify a URI value.
+  - `ResourceAndPropertySelectionComponent`: Parent component that contains `SelectResourceClassComponent` and `SelectPropertyComponent` for recursive reuse.
+    - `SelectResourceClassComponent`: Select a resource class from a list.
+    - `SelectPropertyComponent`: Select a property from a list.
+        - `SpecifyPropertyValueComponent`: Specify a comparison operator and a value for a chosen property.
+          - `SearchBooleanValueComponent`: Specify a Boolean value.
+          - `SearchDateValueComponent`: Specify a date value.
+          - `SearchDecimalValueComponent`: Specify a decimal value.
+          - `SearchIntegerValueComponent`: Specify an integer value.
+          - `SearchLinkValueComponent`: Specify the target of a link property.
+          - `SearchResourceComponent`: Specify the class and/or properties of a linked resource (uses `ResourceAndPropertySelectionComponent`, see below).
+          - `SearchListValueComponent`: Specify a list value.
+            - `SearchDisplayListComponent`: Displays the children of a list node recursively.
+          - `TextValueComponent`: Specify a text value.
+          - `UriValueComponent`: Specify a URI value.
 
 #### Component Interaction
 
@@ -234,6 +236,18 @@ The properties of the chosen resource class are then displayed in `SelectPropert
 When a property is chosen, a comparison operator can be specified.
 Once a comparison operator is specified other than "EXISTS", a value can be specified using `SpecifyPropertyValueComponent`.
 Depending on the value type of the property, `SpecifyPropertyValueComponent` chooses the apt component to let the user enter a value.
+
+##### Recursive Use of ResourceAndPropertySelectionComponent
+
+`ResourceAndPropertySelectionComponent` is used in the main form and in `SearchResourceComponent`'s template (if the user chooses the operator `Match` for a linking property)
+to allow for searching linked resources by specifying their class and/or properties.
+
+Only one level of recursion is allowed, i.e. linking properties on the linked resource **cannot** use the `Match` operator.
+
+Sort criteria can only be chosen on the level of the main resource. 
+The boolean `@Input` `toplevel` distinguishes the top level from the level below.
+
+
 
 #### Form Validation
 

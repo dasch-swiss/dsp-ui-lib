@@ -16,8 +16,8 @@ import {
     ResourceClassDefinition,
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
-import { SelectResourceClassComponent } from '../select-resource-class/select-resource-class.component';
-import { SelectPropertyComponent } from '../select-property/select-property.component';
+import { SelectResourceClassComponent } from './select-resource-class/select-resource-class.component';
+import { SelectPropertyComponent } from './select-property/select-property.component';
 import { DspApiConnectionToken } from '../../../core/core.module';
 
 
@@ -33,6 +33,8 @@ export class ResourceAndPropertySelectionComponent implements OnInit, OnChanges 
     @Input() activeOntology: string;
 
     @Input() resourceClassRestriction?: string;
+
+    @Input() topLevel;
 
     form: FormGroup;
 

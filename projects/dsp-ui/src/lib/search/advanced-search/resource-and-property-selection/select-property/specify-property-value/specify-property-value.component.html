@@ -13,8 +13,16 @@
     <dsp-search-decimal-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.DecimalValue"></dsp-search-decimal-value>
     <dsp-search-boolean-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.BooleanValue"></dsp-search-boolean-value>
     <dsp-search-date-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.DateValue"></dsp-search-date-value>
-    <dsp-search-link-value #propertyValue [formGroup]="form" [restrictResourceClass]="property.objectType"
-                *ngSwitchCase="Constants.Resource"></dsp-search-link-value>
+
+    <span *ngSwitchCase="Constants.Resource">
+        <span *ngIf="comparisonOperatorSelected.getClassName() == 'Match'; else elseBlock">
+            <dsp-search-resource #propertyValue [formGroup]="form" [restrictResourceClass]="objectClassConstraint"></dsp-search-resource>
+        </span>
+        <ng-template #elseBlock>
+            <dsp-search-link-value #propertyValue [formGroup]="form" [restrictResourceClass]="objectClassConstraint"></dsp-search-link-value>
+        </ng-template>
+    </span>
+
     <dsp-search-text-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.TextValue"></dsp-search-text-value>
     <dsp-search-list-value #propertyValue [formGroup]="form" [property]="property" *ngSwitchCase="Constants.ListValue"></dsp-search-list-value>
     <dsp-search-uri-value #propertyValue [formGroup]="form" *ngSwitchCase="Constants.UriValue"></dsp-search-uri-value>

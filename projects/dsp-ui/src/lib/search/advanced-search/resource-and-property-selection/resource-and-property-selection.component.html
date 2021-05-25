@@ -13,7 +13,7 @@
         <div *ngFor="let prop of activeProperties; let i = index">
 
             <dsp-select-property #property [activeResourceClass]="activeResourceClass" [formGroup]="form" [index]="i"
-                                 [properties]="properties"></dsp-select-property>
+                                 [properties]="properties" [topLevel]="topLevel"></dsp-select-property>
 
         </div>
     </div>

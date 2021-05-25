@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Constants, KnoraApiConnection, ReadResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken } from '../../../../../core/core.module';
+import { DspApiConnectionToken } from '../../../../../../core/core.module';
 import { IRI, PropertyValue, Value } from '../operator';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror

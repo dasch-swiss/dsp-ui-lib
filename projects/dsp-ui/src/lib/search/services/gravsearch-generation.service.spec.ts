@@ -4,10 +4,10 @@ import { TestBed } from '@angular/core/testing';
 import { MockOntology, ResourcePropertyDefinition } from '@dasch-swiss/dsp-js';
 import {
     ComparisonOperatorAndValue,
-    Equals, GreaterThan, GreaterThanEquals, IRI, LessThan, LessThanEquals, Like, Match, NotEquals,
+    Equals, GreaterThan, GreaterThanEquals, IRI, LessThan, LessThanEquals, Like, LinkedResource, Match, NotEquals,
     PropertyWithValue,
     ValueLiteral
-} from '../advanced-search/select-property/specify-property-value/operator';
+} from '../advanced-search/resource-and-property-selection/select-property/specify-property-value/operator';
 
 
 describe('GravsearchGenerationService', () => {
@@ -718,50 +718,6 @@ OFFSET 0
 
     });
 
-    it('should create a Gravsearch query string with a linking property matching a resource', () => {
-
-        const prop = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing'] as ResourcePropertyDefinition;
-
-
-        const value = new ComparisonOperatorAndValue(new Equals(), new IRI('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ'));
-
-        const propWithVal = new PropertyWithValue(prop, value, false);
-
-        const gravsearch = gravSearchGenerationServ.createGravsearchQuery([propWithVal], undefined, 0);
-
-        const expectedGravsearch = `
-PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
-CONSTRUCT {
-
-?mainRes knora-api:isMainResource true .
-
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> <http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ> .
-
-} WHERE {
-
-?mainRes a knora-api:Resource .
-
-
-
-
-?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> <http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ> .
-
-
-
-
-
-
-}
-
-OFFSET 0
-`;
-
-        expect(gravsearch).toEqual(expectedGravsearch);
-
-        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
-
-    });
-
     it('should create a Gravsearch query string with a linking property not matching a specific resource', () => {
 
         const prop = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing'] as ResourcePropertyDefinition;
@@ -991,6 +947,194 @@ FILTER(?propVal1Literal > "0.1"^^<http://www.w3.org/2001/XMLSchema#decimal>)
 }
 
 ORDER BY ?propVal0 ?propVal1
+
+OFFSET 0
+`;
+
+        expect(gravsearch).toEqual(expectedGravsearch);
+
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
+
+    });
+
+    it('should create a Gravsearch query string with a linking property matching a resource', () => {
+
+        const prop = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing'] as ResourcePropertyDefinition;
+
+
+        const value = new ComparisonOperatorAndValue(new Equals(), new IRI('http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ'));
+
+        const propWithVal = new PropertyWithValue(prop, value, false);
+
+        const gravsearch = gravSearchGenerationServ.createGravsearchQuery([propWithVal], undefined, 0);
+
+        const expectedGravsearch = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+CONSTRUCT {
+
+?mainRes knora-api:isMainResource true .
+
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> <http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ> .
+
+} WHERE {
+
+?mainRes a knora-api:Resource .
+
+
+
+
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> <http://rdfh.ch/0001/0C-0L1kORryKzJAJxxRyRQ> .
+
+
+
+
+
+
+}
+
+OFFSET 0
+`;
+
+        expect(gravsearch).toEqual(expectedGravsearch);
+
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
+
+    });
+
+    it('search for a specified linked resource specified by one prop', () => {
+
+        const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+        const hasOtherThingProp = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing'];
+
+        const linkedResValue = new ComparisonOperatorAndValue(new GreaterThan(), new ValueLiteral('0.5', 'http://www.w3.org/2001/XMLSchema#decimal'));
+
+        const hasDecimal = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal'];
+
+        const linkedResourceWithVal = new PropertyWithValue(hasDecimal as ResourcePropertyDefinition, linkedResValue, false);
+
+        const linkedResource = new LinkedResource([linkedResourceWithVal], 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+
+        const mainResValue = new ComparisonOperatorAndValue(new Match(), linkedResource);
+
+        const mainResPropWithVal = new PropertyWithValue(hasOtherThingProp as ResourcePropertyDefinition, mainResValue, false);
+
+        const gravsearch = gravSearchGenerationServ.createGravsearchQuery([mainResPropWithVal], 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing', 0);
+
+        const expectedGravsearch = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+CONSTRUCT {
+
+?mainRes knora-api:isMainResource true .
+
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes00 .
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes000 .
+
+
+
+
+} WHERE {
+
+?mainRes a knora-api:Resource .
+
+?mainRes a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
+
+
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes00 .
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes000 .
+
+
+
+
+
+
+
+?linkedRes00 a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
+?propVallinkedRes000 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes000Literal
+FILTER(?propVallinkedRes000Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
+
+
+}
+
+OFFSET 0
+`;
+
+        expect(gravsearch).toEqual(expectedGravsearch);
+
+        expect(searchParamsServiceSpy.changeSearchParamsMsg).toHaveBeenCalledTimes(1);
+
+    });
+
+    it('search for a specified linked resource specified by two props', () => {
+
+        const anythingOnto = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2');
+
+        const hasOtherThingProp = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing'];
+
+        const linkedResDecValue = new ComparisonOperatorAndValue(new GreaterThan(), new ValueLiteral('0.5', 'http://www.w3.org/2001/XMLSchema#decimal'));
+
+        const hasDecimal = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal'];
+
+        const linkedResourceWithDecVal = new PropertyWithValue(hasDecimal as ResourcePropertyDefinition, linkedResDecValue, false);
+
+        const linkedResIntValue = new ComparisonOperatorAndValue(new Equals(), new ValueLiteral('1', 'http://www.w3.org/2001/XMLSchema#integer'));
+
+        const hasInt = anythingOnto.properties['http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger'];
+
+        const linkedResourceWithIntVal = new PropertyWithValue(hasInt as ResourcePropertyDefinition, linkedResIntValue, false);
+
+        const linkedResource = new LinkedResource([linkedResourceWithDecVal, linkedResourceWithIntVal], 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+
+        const mainResValue = new ComparisonOperatorAndValue(new Match(), linkedResource);
+
+        const mainResPropWithVal = new PropertyWithValue(hasOtherThingProp as ResourcePropertyDefinition, mainResValue, false);
+
+        const gravsearch = gravSearchGenerationServ.createGravsearchQuery([mainResPropWithVal], 'http://0.0.0.0:3333/ontology/0001/anything/v2#Thing', 0);
+
+        const expectedGravsearch = `
+PREFIX knora-api: <http://api.knora.org/ontology/knora-api/v2#>
+CONSTRUCT {
+
+?mainRes knora-api:isMainResource true .
+
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes00 .
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes000 .
+
+
+
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger> ?propVallinkedRes001 .
+
+
+
+
+} WHERE {
+
+?mainRes a knora-api:Resource .
+
+?mainRes a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
+
+
+?mainRes <http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing> ?linkedRes00 .
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasDecimal> ?propVallinkedRes000 .
+
+
+
+?linkedRes00 <http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger> ?propVallinkedRes001 .
+
+
+
+
+
+
+
+?linkedRes00 a <http://0.0.0.0:3333/ontology/0001/anything/v2#Thing> .
+?propVallinkedRes000 <http://api.knora.org/ontology/knora-api/v2#decimalValueAsDecimal> ?propVallinkedRes000Literal
+FILTER(?propVallinkedRes000Literal > "0.5"^^<http://www.w3.org/2001/XMLSchema#decimal>)
+?propVallinkedRes001 <http://api.knora.org/ontology/knora-api/v2#intValueAsInt> ?propVallinkedRes001Literal
+FILTER(?propVallinkedRes001Literal = "1"^^<http://www.w3.org/2001/XMLSchema#integer>)
+
+
+}
 
 OFFSET 0
 `;

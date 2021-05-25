@@ -17,7 +17,7 @@ import { IRI, Value, ValueLiteral } from './operator';
  */
 @Component({
     template: `
-        <dsp-specify-property-value #specifyProp [formGroup]="form" [property]="propertyDef"></dsp-specify-property-value>`
+        <dsp-specify-property-value #specifyProp [formGroup]="form" [property]="propertyDef" [topLevel]="topLevel"></dsp-specify-property-value>`
 })
 class TestHostComponent implements OnInit {
 
@@ -26,6 +26,8 @@ class TestHostComponent implements OnInit {
     form: FormGroup;
 
     propertyDef: ResourcePropertyDefinition;
+
+    topLevel = true;
 
     constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
     }
@@ -259,6 +261,42 @@ describe('SpecifyPropertyValueComponent', () => {
         expect(testHostComponent.specifyProperty.formGroup).toBeDefined();
         expect(testHostComponent.specifyProperty.property).toBeDefined();
         expect(testHostComponent.specifyProperty.property.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasInteger');
+        expect(testHostComponent.specifyProperty.topLevel).toBeTrue();
+    });
+
+    it('should initialise the Inputs correctly for a linking prop with object class constraint', () => {
+
+        const resProps = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        testHostComponent.propertyDef = resProps.filter(propDef => propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing')[0];
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.specifyProperty.formGroup).toBeDefined();
+        expect(testHostComponent.specifyProperty.property).toBeDefined();
+        expect(testHostComponent.specifyProperty.property.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing');
+        expect(testHostComponent.specifyProperty.topLevel).toBeTrue();
+
+        expect(testHostComponent.specifyProperty.objectClassConstraint).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#Thing');
+
+    });
+
+    it('should initialise the Inputs correctly for a linking prop without object class constraint', () => {
+
+        const resProps = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        testHostComponent.propertyDef = resProps.filter(propDef => propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing')[0];
+        testHostComponent.propertyDef.objectType = undefined;
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.specifyProperty.formGroup).toBeDefined();
+        expect(testHostComponent.specifyProperty.property).toBeDefined();
+        expect(testHostComponent.specifyProperty.property.id).toEqual('http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing');
+        expect(testHostComponent.specifyProperty.topLevel).toBeTrue();
+
+        expect(testHostComponent.specifyProperty.objectClassConstraint).toEqual('http://api.knora.org/ontology/knora-api/v2#Resource');
+
     });
 
     it('should add a new control to the parent form', waitForAsync(() => {
@@ -277,6 +315,32 @@ describe('SpecifyPropertyValueComponent', () => {
         expect(testHostComponent.specifyProperty.comparisonOperators.length).toEqual(7);
     });
 
+    it('should set the correct comparison operators for a linking property type (on top level)', () => {
+
+        const resProps = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        testHostComponent.propertyDef = resProps.filter(propDef => propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing')[0];
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.specifyProperty.comparisonOperators.length).toEqual(4);
+        expect(testHostComponent.topLevel).toBeTrue();
+    });
+
+    it('should set the correct comparison operators for a linking property type (not on top level)', () => {
+
+        const resProps = MockOntology.mockReadOntology('http://0.0.0.0:3333/ontology/0001/anything/v2').getPropertyDefinitionsByType(ResourcePropertyDefinition);
+
+        testHostComponent.propertyDef = resProps.filter(propDef => propDef.id === 'http://0.0.0.0:3333/ontology/0001/anything/v2#hasOtherThing')[0];
+
+        testHostComponent.topLevel = false;
+
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent.specifyProperty.comparisonOperators.length).toEqual(3);
+        expect(testHostComponent.topLevel).toBeFalse();
+    });
+
     it('should init the MatSelect and MatOptions correctly', async () => {
 
         const select = await loader.getHarness(MatSelectHarness);
@@ -293,7 +357,7 @@ describe('SpecifyPropertyValueComponent', () => {
 
     });
 
-    it('should set the fom to valid when an comparison operator has been chosen', async () => {
+    it('should set the form to valid when an comparison operator has been chosen', async () => {
 
         expect(testHostComponent.specifyProperty.form.valid).toBe(false);
 

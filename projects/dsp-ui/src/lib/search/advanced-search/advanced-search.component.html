@@ -5,7 +5,7 @@
                              (ontologySelected)="setActiveOntology($event)"></dsp-select-ontology>
     </div>
 
-    <dsp-resource-and-property-selection *ngIf="activeOntology !== undefined" #resAndPropSel [formGroup]="form" [activeOntology]="activeOntology">
+    <dsp-resource-and-property-selection *ngIf="activeOntology !== undefined" #resAndPropSel [formGroup]="form" [activeOntology]="activeOntology" [topLevel]="true">
     </dsp-resource-and-property-selection>
 
     <div class="dsp-form-action">

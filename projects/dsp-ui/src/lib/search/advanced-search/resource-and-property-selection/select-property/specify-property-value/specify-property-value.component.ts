@@ -30,14 +30,16 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
     // parent FormGroup
     @Input() formGroup: FormGroup;
 
+    @Input() topLevel: boolean;
+
     @ViewChild('propertyValue', { static: false }) propertyValueComponent: PropertyValue;
+
+    objectClassConstraint: string;
 
     // setter method for the property chosen by the user
     @Input()
     set property(prop: ResourcePropertyDefinition) {
-        this.comparisonOperatorSelected = undefined; // reset to initial state
         this._property = prop;
-        this.resetComparisonOperators(); // reset comparison operators for given property (overwriting any previous selection)
     }
 
     // getter method for this._property
@@ -77,6 +79,13 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
             this.comparisonOperatorSelected = data.comparisonOperator;
         });
 
+        // comparison operator selection
+        this.comparisonOperatorSelected = undefined; // reset to initial state
+        this.resetComparisonOperators(); // reset comparison operators for given property (overwriting any previous selection)
+
+        // use knora-api:Resource as a fallback
+        this.objectClassConstraint = (this.property.isLinkProperty && this.property.objectType !== undefined) ? this.property.objectType : Constants.Resource;
+
         resolvedPromise.then(() => {
 
             // remove from the parent form group (clean reset)
@@ -111,9 +120,12 @@ export class SpecifyPropertyValueComponent implements OnChanges, OnDestroy {
                 break;
 
             case Constants.BooleanValue:
-            case Constants.Resource:
             case Constants.UriValue:
                 this.comparisonOperators = [new Equals(), new NotEquals(), new Exists()];
+                break;
+
+            case Constants.Resource: // TODO: Match is only available on top level
+                this.comparisonOperators = this.topLevel ? [new Equals(), new NotEquals(), new Exists(), new Match()] : [new Equals(), new NotEquals(), new Exists()];
                 break;
 
             case Constants.IntValue:
