@@ -39,7 +39,7 @@ For general information about regular expressions see this [interactive tutorial
 
 ![Advanced search panel with a search example](../../assets/images/advanced-search-regex.png)
 
-### Lucene Parser Syntax
+### Lucene Parser Syntax (matches)
 
 Used with a text property, the `matches` operator lets the user search for texts that *match* the search value,
 supporting [Lucene Query Parser Syntax](https://docs-api.dasch.swiss/08-lucene/lucene-query-parser-syntax/).
@@ -50,7 +50,7 @@ This search finds "Jacob" as well as "Jakob".
 
 ![Advanced search panel with a search example](../../assets/images/advanced-search-match.png)
 
-### Specifying a Linked Resource
+### Specifying a Linked Resource (matches)
 
 Used with a linking property, the `matches` operator lets the user search for a linked resource that matches the specified properties. 
 In this example, the user writes a query looking for all letters that have an author that:
