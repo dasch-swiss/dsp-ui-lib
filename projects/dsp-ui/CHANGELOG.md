@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.3.0...v1.4.0) (2021-05-25)
+
+
+### Enhancements
+
+* **advanced search:** specify linked resource (DSP-1587) ([#293](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/293)) ([42e3311](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/42e33118306b8eca5f3bf56313efc784221542a2))
+
+
+### Documentation
+
+* **advanced search:** update naming to advanced search (DSP-1651) ([#295](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/295)) ([7f8c7e6](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/7f8c7e6dc80c68b496384252d9d0486165d5d050))
+
 ## [1.3.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.2.5...v1.3.0) (2021-05-07)
 
 
