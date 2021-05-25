@@ -3,7 +3,7 @@
 ## Introduction
 
 The `AdvancedSearchComponent` allows for the creation of complex queries using a graphical widget.
-The widget's contents are then turned into a string representing a Gravsearch (SPAQRL) query to be sent to DSP-API.
+The widget's contents are then turned into a string representing a Gravsearch (SPARQL) query to be sent to DSP-API.
 
 A query consists of the following elements:
 - ontology (data model) selection
@@ -24,7 +24,7 @@ one or more of the following comparison operators can be selected:
 - `is greater than or equal to` value equality / value comparison: number is equal to or greater than search value, overlap of date periods or date period begins after search value.
 - `is less than`: value comparison: number is less than search value, date period ends before search value.
 - `is less than or equal to`: value equality / value comparison: number is equal to or less than search value, overlap of date periods or date period ends before search value.
-- `exists`: a value for the given property exists.
+- `exists`: value for the given property exists.
 - `is like`: search value is contained in a text using the SPARQL [REGEX](https://www.w3.org/TR/sparql11-query/#func-regex) function (supports regular expressions).
 - `matches`: 
    - text property: search value matches the text ([Lucene Query Parser Syntax](https://docs-api.dasch.swiss/08-lucene/lucene-query-parser-syntax/)). 
