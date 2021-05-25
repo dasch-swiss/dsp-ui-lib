@@ -34,7 +34,7 @@ The library consists of four Angular modules that are briefly described below.
 ### ➡ [DspSearchModule](https://dasch-swiss.github.io/dsp-ui-lib/how-to-use/search/)
 
 *Search panel for all kind of search queries*
-> DspSearchModule allows to make full text or extended searches in DSP-API. Filter by resource class and its properties related to an ontology.
+> DspSearchModule allows to make full text or advanced searches in DSP-API. Filter by resource class and its properties related to an ontology.
 
 ### ➡ [DspActionModule](https://dasch-swiss.github.io/dsp-ui-lib/how-to-use/action/)
 

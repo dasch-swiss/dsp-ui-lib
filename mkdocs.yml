@@ -18,7 +18,7 @@ nav:
         - Introduction Search: how-to-use/search/index.md
         - Search-panel: how-to-use/search/search-panel.md
         - Fulltext search: how-to-use/search/fulltext-search.md
-        - Extended search: how-to-use/search/extended-search.md
+        - Advanced search: how-to-use/search/advanced-search.md
         - Expert search: how-to-use/search/expert-search.md
       - Action module:
         - Introduction Action: how-to-use/action/index.md

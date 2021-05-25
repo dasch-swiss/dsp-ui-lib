@@ -212,17 +212,17 @@ describe('ListViewComponent', () => {
 
     });
 
-    it('should do extended search', () => {
+    it('should do advanced search', () => {
 
         const searchSpy = TestBed.inject(DspApiConnectionToken);
 
-        // do extended search count query
+        // do advanced search count query
         expect(searchSpy.v2.search.doExtendedSearchCountQuery).toHaveBeenCalledWith('fake query');
 
         // generate gravesearch query
         expect(searchParamsServiceSpy.getSearchParams).toHaveBeenCalled();
 
-        // do extended search
+        // do advanced search
         expect(searchSpy.v2.search.doExtendedSearch).toHaveBeenCalledWith('fake query OFFSET 0');
         expect(testHostComponent.listViewGravsearch.resources.resources.length).toBe(5);
 
