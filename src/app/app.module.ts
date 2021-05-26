@@ -32,6 +32,7 @@ import { SearchResultsComponent } from './search-playground/search-results/searc
 import { StillImagePlaygroundComponent } from './still-image/still-image-playground.component';
 import { UploadPlaygroundComponent } from './upload-playground/upload-playground.component';
 import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground.component';
+import { DateInputTextComponent } from './date-input-text/date-input-text.component';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { ViewerPlaygroundComponent } from './viewer-playground/viewer-playground
         SearchResultsComponent,
         StillImagePlaygroundComponent,
         UploadPlaygroundComponent,
-        ViewerPlaygroundComponent
+        ViewerPlaygroundComponent,
+        DateInputTextComponent
     ],
     imports: [
         AppRoutingModule,
