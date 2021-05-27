@@ -5,7 +5,15 @@ import {
     ErrorStateMatcher,
     mixinErrorState
 } from '@angular/material/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
+import {
+    ControlValueAccessor,
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    FormGroupDirective,
+    NgControl,
+    NgForm, Validators
+} from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { JDNConvertibleCalendar } from 'jdnconvertiblecalendar';
 import { Subject } from 'rxjs';
@@ -34,6 +42,10 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     form: FormGroup;
     stateChanges = new Subject<void>();
+
+    year: FormControl;
+    month: FormControl;
+    day: FormControl;
 
     readonly focused = false;
 
@@ -102,8 +114,23 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
                 _defaultErrorStateMatcher: ErrorStateMatcher) {
         super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-        // TODO: implement correctly
-        this.form = fb.group({});
+        this.year = new FormControl(null, [Validators.required, Validators.min(1)]);
+        this.month = new FormControl(null);
+        this.day = new FormControl(null);
+
+        /*this.year.valueChanges.subscribe(
+            data => {
+                // TODO: enable month selection if year is valid,
+                // otherwise disable
+                console.log(data);
+            }
+        );*/
+
+        this.form = fb.group({
+            year: this.year,
+            month: this.month,
+            day: this.day
+        });
     }
 
     onChange = (_: any) => {
@@ -120,6 +147,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     }
 
     ngOnInit(): void {
+
     }
 
     ngDoCheck() {
@@ -153,5 +181,5 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     setDescribedByIds(ids: string[]): void {
     }
-    
+
 }
