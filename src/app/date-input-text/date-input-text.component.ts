@@ -15,7 +15,13 @@ import {
     NgForm, Validators
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
-import { JDNConvertibleCalendar } from 'jdnconvertiblecalendar';
+import {
+    CalendarDate,
+    CalendarPeriod,
+    GregorianCalendarDate, IslamicCalendarDate,
+    JDNConvertibleCalendar,
+    JulianCalendarDate
+} from 'jdnconvertiblecalendar';
 import { Subject } from 'rxjs';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -47,9 +53,16 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     month: FormControl;
     day: FormControl;
 
+    months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+    days = [];
+
     readonly focused = false;
 
     readonly controlType = 'dsp-date-input-text';
+
+    // TODO: react to changes of the calendar (conversion?)
+    @Input() calendar = 'Gregorian';
 
     @Input()
     get value(): JDNConvertibleCalendar {
@@ -114,17 +127,43 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
                 _defaultErrorStateMatcher: ErrorStateMatcher) {
         super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
-        this.year = new FormControl(null, [Validators.required, Validators.min(1)]);
-        this.month = new FormControl(null);
-        this.day = new FormControl(null);
+        this.year = new FormControl({ value: null, disabled: false }, [Validators.required, Validators.min(1)]);
+        this.month = new FormControl({ value: null, disabled: true });
+        this.day = new FormControl({ value: null, disabled: true });
 
-        /*this.year.valueChanges.subscribe(
+        this.year.valueChanges.subscribe(
             data => {
-                // TODO: enable month selection if year is valid,
-                // otherwise disable
-                console.log(data);
+                if (this.year.valid) {
+                    this.month.enable();
+                } else {
+                    this.month.disable();
+                }
+
+                if (this.year.valid && this.month.value) {
+                    this.day.enable();
+                } else {
+                    this.day.disable();
+                }
             }
-        );*/
+        );
+
+        this.month.valueChanges.subscribe(
+            data => {
+                if (this.year.valid) {
+                    const days = this._calculateDaysInMonth(this.calendar, this.year.value, this.month.value);
+                    this.days = [];
+                    for (let i = 1; i <= days; i++) {
+                        this.days.push(i);
+                    }
+                }
+
+                if (this.month.value) {
+                    this.day.enable();
+                } else {
+                    this.day.disable();
+                }
+            }
+        );
 
         this.form = fb.group({
             year: this.year,
@@ -140,10 +179,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     }
 
     get empty() {
-        const userInput = this.form.value;
-        // TODO: implement correctly
-        return !userInput;
-
+        return !this.year && !this.month && !this.day;
     }
 
     ngOnInit(): void {
@@ -180,6 +216,23 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     }
 
     setDescribedByIds(ids: string[]): void {
+    }
+
+    private _calculateDaysInMonth(calendar: string, year: number, month: number): number {
+        const date = new CalendarDate(year, month, 1);
+        if (calendar === 'Gregorian') {
+            const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));
+            return calDate.daysInMonth(date);
+        } else if (calendar === 'Julian') {
+            const calDate = new JulianCalendarDate(new CalendarPeriod(date, date));
+            return calDate.daysInMonth(date);
+        } else if (calendar === 'Islamic') {
+            const calDate = new IslamicCalendarDate(new CalendarPeriod(date, date));
+            return calDate.daysInMonth(date);
+        } else {
+            throw Error('Unknown calendar ' + calendar);
+        }
+
     }
 
 }
