@@ -62,18 +62,34 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     readonly controlType = 'dsp-date-input-text';
 
-    // TODO: react to changes of the calendar (conversion?)
-    @Input() calendar = 'Gregorian';
+    calendar = 'Gregorian';
 
     @Input()
     get value(): JDNConvertibleCalendar {
-        // TODO: get from form
-        return undefined;
+
+        // TODO: handle precision
+        const date = new CalendarDate(this.year.value, this.month.value, this.day.value);
+
+        if (this.calendar === 'Gregorian') {
+            return new GregorianCalendarDate(new CalendarPeriod(date, date));
+        } else if (this.calendar === 'Julian') {
+            return new JulianCalendarDate(new CalendarPeriod(date, date));
+        } else if (this.calendar === 'Islamic') {
+            return new IslamicCalendarDate(new CalendarPeriod(date, date));
+        } else {
+            throw Error('Unknown calendar ' + this.calendar);
+        }
+
     }
 
     set value(date: JDNConvertibleCalendar) {
-        console.log(date);
-        // TODO: write to form
+        this.calendar = date.calendarName;
+
+        // TODO: handle precision
+        this.year.setValue(date.toCalendarPeriod().periodStart.year);
+        this.month.setValue(date.toCalendarPeriod().periodStart.month)
+        this.day.setValue(date.toCalendarPeriod().periodStart.day);
+
         this.stateChanges.next();
     }
 
