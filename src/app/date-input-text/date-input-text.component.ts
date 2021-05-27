@@ -149,7 +149,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
         this.month.valueChanges.subscribe(
             data => {
-                if (this.year.valid) {
+                if (this.year.valid && this.month.value) {
                     const days = this._calculateDaysInMonth(this.calendar, this.year.value, this.month.value);
                     this.days = [];
                     for (let i = 1; i <= days; i++) {
@@ -160,6 +160,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
                 if (this.month.value) {
                     this.day.enable();
                 } else {
+                    this.day.setValue(null);
                     this.day.disable();
                 }
             }
