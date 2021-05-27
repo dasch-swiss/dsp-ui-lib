@@ -1,10 +1,11 @@
 <div [formGroup]="form">
     <mat-form-field>
-        <input matInput placeholder="year" type="number" [formControlName]="'year'" min="1" (input)="_handleInput()">
+        <mat-label>Year</mat-label>
+        <input matInput placeholder="Year" type="number" [formControlName]="'year'" min="1" (input)="_handleInput()">
     </mat-form-field>
     <mat-form-field>
         <mat-label>Month</mat-label>
-        <mat-select [formControlName]="'month'">
+        <mat-select [formControlName]="'month'" (input)="_handleInput()">
             <mat-option [value]="null">no selection</mat-option>
             <mat-option *ngFor="let month of months" [value]="month">
                 {{month}}
@@ -13,7 +14,7 @@
     </mat-form-field>
     <mat-form-field>
         <mat-label>Day</mat-label>
-        <mat-select [formControlName]="'day'">
+        <mat-select [formControlName]="'day'" (input)="_handleInput()">
             <mat-option [value]="null">no selection</mat-option>
             <mat-option *ngFor="let day of days" [value]="day">
                 {{day}}

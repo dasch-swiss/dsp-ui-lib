@@ -40,7 +40,8 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
 @Component({
     selector: 'dsp-date-input-text',
     templateUrl: './date-input-text.component.html',
-    styleUrls: ['./date-input-text.component.scss']
+    styleUrls: ['./date-input-text.component.scss'],
+    providers: [{ provide: MatFormFieldControl, useExisting: DateInputTextComponent }]
 })
 export class DateInputTextComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<JDNConvertibleCalendar>, DoCheck, CanUpdateErrorState, OnInit, OnDestroy, OnInit {
 
@@ -71,7 +72,9 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     }
 
     set value(date: JDNConvertibleCalendar) {
+        console.log(date);
         // TODO: write to form
+        this.stateChanges.next();
     }
 
     @Input()
@@ -126,6 +129,12 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
                 @Optional() _parentFormGroup: FormGroupDirective,
                 _defaultErrorStateMatcher: ErrorStateMatcher) {
         super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
+
+        if (this.ngControl != null) {
+            // Setting the value accessor directly (instead of using
+            // the providers) to avoid running into a circular import.
+            this.ngControl.valueAccessor = this;
+        }
 
         this.year = new FormControl({ value: null, disabled: false }, [Validators.required, Validators.min(1)]);
         this.month = new FormControl({ value: null, disabled: true });
