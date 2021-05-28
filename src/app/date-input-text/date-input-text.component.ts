@@ -25,6 +25,7 @@ import {
 import { Subject } from 'rxjs';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { KnoraDate, KnoraPeriod } from '@dasch-swiss/dsp-js';
 
 class MatInputBase {
     constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
@@ -43,7 +44,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
     styleUrls: ['./date-input-text.component.scss'],
     providers: [{ provide: MatFormFieldControl, useExisting: DateInputTextComponent }]
 })
-export class DateInputTextComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<JDNConvertibleCalendar>, DoCheck, CanUpdateErrorState, OnInit, OnDestroy, OnInit {
+export class DateInputTextComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<KnoraDate | KnoraPeriod>, DoCheck, CanUpdateErrorState, OnInit, OnDestroy, OnInit {
 
     static nextId = 0;
 
@@ -65,30 +66,37 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     calendar = 'Gregorian';
 
     @Input()
-    get value(): JDNConvertibleCalendar {
+    get value(): KnoraDate | KnoraPeriod {
 
         // TODO: handle precision
-        const date = new CalendarDate(this.year.value, this.month.value, this.day.value);
-
-        if (this.calendar === 'Gregorian') {
-            return new GregorianCalendarDate(new CalendarPeriod(date, date));
-        } else if (this.calendar === 'Julian') {
-            return new JulianCalendarDate(new CalendarPeriod(date, date));
-        } else if (this.calendar === 'Islamic') {
-            return new IslamicCalendarDate(new CalendarPeriod(date, date));
-        } else {
-            throw Error('Unknown calendar ' + this.calendar);
-        }
-
+        return new KnoraDate(this.calendar, this.year.value, this.month.value, this.day.value);
     }
 
-    set value(date: JDNConvertibleCalendar) {
-        this.calendar = date.calendarName;
+    set value(date: KnoraDate | KnoraPeriod | null) {
 
-        // TODO: handle precision
-        this.year.setValue(date.toCalendarPeriod().periodStart.year);
-        this.month.setValue(date.toCalendarPeriod().periodStart.month)
-        this.day.setValue(date.toCalendarPeriod().periodStart.day);
+        if (date instanceof KnoraDate) {
+            this.calendar = date.calendar;
+
+            // TODO: handle precision
+            this.year.setValue(date.year);
+            this.month.setValue(date.month);
+            this.day.setValue(date.day);
+
+        } else if (date instanceof KnoraPeriod) {
+            this.calendar = date.start.calendar;
+
+            // TODO: handle precision
+            this.year.setValue(date.start.year);
+            this.month.setValue(date.start.month);
+            this.day.setValue(date.start.day);
+        } else {
+            // null
+            this.calendar = 'Gregorian';
+
+            this.year.setValue(null);
+            this.month.setValue(null);
+            this.day.setValue(null);
+        }
 
         this.stateChanges.next();
     }
@@ -222,7 +230,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.stateChanges.complete();
     }
 
-    writeValue(date: JDNConvertibleCalendar | null): void {
+    writeValue(date: KnoraDate | KnoraPeriod | null): void {
         this.value = date;
     }
 
