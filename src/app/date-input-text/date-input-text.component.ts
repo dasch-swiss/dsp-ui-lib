@@ -63,13 +63,14 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     readonly controlType = 'dsp-date-input-text';
 
+    // TODO: make calendar editable
     calendar = 'Gregorian';
 
     @Input()
     get value(): KnoraDate | KnoraPeriod {
 
-        // TODO: handle precision
-        return new KnoraDate(this.calendar, this.year.value, this.month.value, this.day.value);
+        // TODO: handle precision, era, and period
+        return new KnoraDate(this.calendar, 'CE', this.year.value, this.month.value, this.day.value);
     }
 
     set value(date: KnoraDate | KnoraPeriod | null) {
@@ -77,7 +78,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         if (date instanceof KnoraDate) {
             this.calendar = date.calendar;
 
-            // TODO: handle precision
+            // TODO: handle precision, era, and period
             this.year.setValue(date.year);
             this.month.setValue(date.month);
             this.day.setValue(date.day);
@@ -85,7 +86,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         } else if (date instanceof KnoraPeriod) {
             this.calendar = date.start.calendar;
 
-            // TODO: handle precision
+            // TODO: handle precision, era, and period
             this.year.setValue(date.start.year);
             this.month.setValue(date.start.month);
             this.day.setValue(date.start.day);
