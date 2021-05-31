@@ -51,6 +51,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     form: FormGroup;
     stateChanges = new Subject<void>();
 
+    era: FormControl;
     year: FormControl;
     month: FormControl;
     day: FormControl;
@@ -79,6 +80,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             this.calendar = date.calendar;
 
             // TODO: handle precision, era, and period
+            this.era.setValue(date.era);
             this.year.setValue(date.year);
             this.month.setValue(date.month);
             this.day.setValue(date.day);
@@ -87,6 +89,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             this.calendar = date.start.calendar;
 
             // TODO: handle precision, era, and period
+            this.era.setValue(date.start.era);
             this.year.setValue(date.start.year);
             this.month.setValue(date.start.month);
             this.day.setValue(date.start.day);
@@ -94,6 +97,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             // null
             this.calendar = 'Gregorian';
 
+            this.era.setValue('CE');
             this.year.setValue(null);
             this.month.setValue(null);
             this.day.setValue(null);
@@ -161,6 +165,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             this.ngControl.valueAccessor = this;
         }
 
+        this.era = new FormControl(true);
         this.year = new FormControl({ value: null, disabled: false }, [Validators.required, Validators.min(1)]);
         this.month = new FormControl({ value: null, disabled: true });
         this.day = new FormControl({ value: null, disabled: true });
@@ -200,7 +205,10 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             }
         );
 
+        // TODO: recalculate days of month when era changes (reuse existing logic)
+
         this.form = fb.group({
+            era: this.era,
             year: this.year,
             month: this.month,
             day: this.day
