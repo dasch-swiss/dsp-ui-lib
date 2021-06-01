@@ -203,16 +203,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         // recalculate days when month changes
         this.month.valueChanges.subscribe(
             data => {
-                if (this.year.valid && this.month.value) {
-                    this._setDays();
-                }
-
-                if (this.month.value) {
-                    this.day.enable();
-                } else {
-                    this.day.setValue(null);
-                    this.day.disable();
-                }
+               this._monthChanged(this.year, this.month, this.day);
             }
         );
 
@@ -243,6 +234,26 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         if (year.valid && month.value) {
             day.enable();
         } else {
+            day.disable();
+        }
+    }
+
+    /**
+     * Reacts to changes of the month and sets the day controls accordingly.
+     *
+     * @param year year control.
+     * @param month month control.
+     * @param day day control.
+     */
+    private _monthChanged(year: FormControl, month: FormControl, day: FormControl) {
+        if (year.valid && month.value) {
+            this._setDays();
+        }
+
+        if (month.value) {
+            day.enable();
+        } else {
+            day.setValue(null);
             day.disable();
         }
     }
@@ -318,8 +329,6 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             // convert historical date to astronomical date
             year = (year * -1) + 1;
         }
-
-        console.log('setting days', this.calendar.value, year);
 
         const days = this._calculateDaysInMonth(this.calendar.value, year, this.month.value);
         this.days = [];
