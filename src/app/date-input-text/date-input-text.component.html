@@ -36,4 +36,8 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
+
+    <mat-checkbox class="period-checkbox" [formControlName]="'isPeriod'" (change)="_handleInput()">
+        is time period
+    </mat-checkbox>
 </div>
