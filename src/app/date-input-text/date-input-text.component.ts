@@ -217,47 +217,6 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         });
     }
 
-    /**
-     * Reacts to changes of the year and sets month and day controls accordingly.
-     *
-     * @param year year control.
-     * @param month month control.
-     * @param day day control.
-     */
-    private _yearChanged(year: FormControl, month: FormControl, day: FormControl) {
-        if (year.valid) {
-            month.enable();
-        } else {
-            month.disable();
-        }
-
-        if (year.valid && month.value) {
-            day.enable();
-        } else {
-            day.disable();
-        }
-    }
-
-    /**
-     * Reacts to changes of the month and sets the day controls accordingly.
-     *
-     * @param year year control.
-     * @param month month control.
-     * @param day day control.
-     */
-    private _monthChanged(year: FormControl, month: FormControl, day: FormControl) {
-        if (year.valid && month.value) {
-            this._setDays();
-        }
-
-        if (month.value) {
-            day.enable();
-        } else {
-            day.setValue(null);
-            day.disable();
-        }
-    }
-
     onChange = (_: any) => {
     }
 
@@ -304,6 +263,54 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     setDescribedByIds(ids: string[]): void {
     }
 
+    /**
+     * Reacts to changes of the year and sets month and day controls accordingly.
+     *
+     * @param year year control.
+     * @param month month control.
+     * @param day day control.
+     */
+    private _yearChanged(year: FormControl, month: FormControl, day: FormControl) {
+        if (year.valid) {
+            month.enable();
+        } else {
+            month.disable();
+        }
+
+        if (year.valid && month.value) {
+            day.enable();
+        } else {
+            day.disable();
+        }
+    }
+
+    /**
+     * Reacts to changes of the month and sets the day controls accordingly.
+     *
+     * @param year year control.
+     * @param month month control.
+     * @param day day control.
+     */
+    private _monthChanged(year: FormControl, month: FormControl, day: FormControl) {
+        if (year.valid && month.value) {
+            this._setDays();
+        }
+
+        if (month.value) {
+            day.enable();
+        } else {
+            day.setValue(null);
+            day.disable();
+        }
+    }
+
+    /**
+     * Calculates the number of days in a month for a given date.
+     *
+     * @param calendar the date's calendar.
+     * @param year the date's year.
+     * @param month the date's month.
+     */
     private _calculateDaysInMonth(calendar: string, year: number, month: number): number {
         const date = new CalendarDate(year, month, 1);
         if (calendar === 'Gregorian') {
