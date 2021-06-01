@@ -71,7 +71,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     get value(): KnoraDate | KnoraPeriod {
 
         // TODO: handle precision, era, and period
-        return new KnoraDate(this.calendar, 'CE', this.year.value, this.month.value, this.day.value);
+        return new KnoraDate(this.calendar, this.era.value, this.year.value, this.month.value, this.day.value);
     }
 
     set value(date: KnoraDate | KnoraPeriod | null) {
@@ -189,11 +189,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.month.valueChanges.subscribe(
             data => {
                 if (this.year.valid && this.month.value) {
-                    const days = this._calculateDaysInMonth(this.calendar, this.year.value, this.month.value);
-                    this.days = [];
-                    for (let i = 1; i <= days; i++) {
-                        this.days.push(i);
-                    }
+                    this._setDays();
                 }
 
                 if (this.month.value) {
@@ -205,7 +201,14 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             }
         );
 
-        // TODO: recalculate days of month when era changes (reuse existing logic)
+        // recalculate days of month when era changes
+        this.era.valueChanges.subscribe(
+            data => {
+                if (this.year.valid && this.month.value) {
+                    this._setDays();
+                }
+            }
+        );
 
         this.form = fb.group({
             era: this.era,
@@ -276,6 +279,15 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             throw Error('Unknown calendar ' + calendar);
         }
 
+    }
+
+    private _setDays() {
+        console.log('setting days');
+        const days = this._calculateDaysInMonth(this.calendar, this.year.value, this.month.value);
+        this.days = [];
+        for (let i = 1; i <= days; i++) {
+            this.days.push(i);
+        }
     }
 
 }
