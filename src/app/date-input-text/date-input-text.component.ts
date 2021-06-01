@@ -171,37 +171,6 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.month = new FormControl({ value: null, disabled: true });
         this.day = new FormControl({ value: null, disabled: true });
 
-        this.year.valueChanges.subscribe(
-            data => {
-                if (this.year.valid) {
-                    this.month.enable();
-                } else {
-                    this.month.disable();
-                }
-
-                if (this.year.valid && this.month.value) {
-                    this.day.enable();
-                } else {
-                    this.day.disable();
-                }
-            }
-        );
-
-        this.month.valueChanges.subscribe(
-            data => {
-                if (this.year.valid && this.month.value) {
-                    this._setDays();
-                }
-
-                if (this.month.value) {
-                    this.day.enable();
-                } else {
-                    this.day.setValue(null);
-                    this.day.disable();
-                }
-            }
-        );
-
         // recalculate days of month when era changes
         this.era.valueChanges.subscribe(
             data => {
@@ -220,6 +189,34 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             }
         );
 
+        // single date, start date
+
+        // enable/disable month selection depending on year
+        // enable/disable day selection depending on
+        this.year.valueChanges.subscribe(
+            data => {
+                this._yearChanged(this.year, this.month, this.day);
+            }
+        );
+
+        // enable/disable day selection depending on month
+        // recalculate days when month changes
+        this.month.valueChanges.subscribe(
+            data => {
+                if (this.year.valid && this.month.value) {
+                    this._setDays();
+                }
+
+                if (this.month.value) {
+                    this.day.enable();
+                } else {
+                    this.day.setValue(null);
+                    this.day.disable();
+                }
+            }
+        );
+
+        // init form
         this.form = fb.group({
             calendar: this.calendar,
             era: this.era,
@@ -227,6 +224,27 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             month: this.month,
             day: this.day
         });
+    }
+
+    /**
+     * Reacts to changes of the year and sets month and day controls accordingly.
+     *
+     * @param year year control.
+     * @param month month control.
+     * @param day day control.
+     */
+    private _yearChanged(year: FormControl, month: FormControl, day: FormControl) {
+        if (year.valid) {
+            month.enable();
+        } else {
+            month.disable();
+        }
+
+        if (year.valid && month.value) {
+            day.enable();
+        } else {
+            day.disable();
+        }
     }
 
     onChange = (_: any) => {
