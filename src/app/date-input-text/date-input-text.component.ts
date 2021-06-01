@@ -293,8 +293,17 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     }
 
     private _setDays() {
-        console.log('setting days', this.calendar.value);
-        const days = this._calculateDaysInMonth(this.calendar.value, this.year.value, this.month.value);
+
+        // check for era
+        let year = this.year.value;
+        if (this.era.value === 'BCE') {
+            // convert historical date to astronomical date
+            year = (year * -1) + 1;
+        }
+
+        console.log('setting days', this.calendar.value, year);
+
+        const days = this._calculateDaysInMonth(this.calendar.value, year, this.month.value);
         this.days = [];
         for (let i = 1; i <= days; i++) {
             this.days.push(i);
