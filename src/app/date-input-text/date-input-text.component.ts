@@ -53,9 +53,9 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     calendar: FormControl;
     era: FormControl;
-    year: FormControl;
-    month: FormControl;
-    day: FormControl;
+    startYear: FormControl;
+    startMonth: FormControl;
+    startDay: FormControl;
 
     months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -71,7 +71,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     get value(): KnoraDate | KnoraPeriod {
 
         // TODO: handle precision, era, and period
-        return new KnoraDate(this.calendar.value, this.era.value, this.year.value, this.month.value, this.day.value);
+        return new KnoraDate(this.calendar.value, this.era.value, this.startYear.value, this.startMonth.value, this.startDay.value);
     }
 
     set value(date: KnoraDate | KnoraPeriod | null) {
@@ -81,26 +81,26 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             // TODO: handle precision, era, and period
             this.calendar.setValue(date.calendar);
             this.era.setValue(date.era);
-            this.year.setValue(date.year);
-            this.month.setValue(date.month);
-            this.day.setValue(date.day);
+            this.startYear.setValue(date.year);
+            this.startMonth.setValue(date.month);
+            this.startDay.setValue(date.day);
 
         } else if (date instanceof KnoraPeriod) {
 
             // TODO: handle precision, era, and period
             this.calendar.setValue(date.start.calendar);
             this.era.setValue(date.start.era);
-            this.year.setValue(date.start.year);
-            this.month.setValue(date.start.month);
-            this.day.setValue(date.start.day);
+            this.startYear.setValue(date.start.year);
+            this.startMonth.setValue(date.start.month);
+            this.startDay.setValue(date.start.day);
         } else {
             // null
 
             this.calendar.setValue('Gregorian');
             this.era.setValue('CE');
-            this.year.setValue(null);
-            this.month.setValue(null);
-            this.day.setValue(null);
+            this.startYear.setValue(null);
+            this.startMonth.setValue(null);
+            this.startDay.setValue(null);
         }
 
         this.stateChanges.next();
@@ -167,14 +167,14 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
         this.calendar = new FormControl(null);
         this.era = new FormControl(true);
-        this.year = new FormControl({ value: null, disabled: false }, [Validators.required, Validators.min(1)]);
-        this.month = new FormControl({ value: null, disabled: true });
-        this.day = new FormControl({ value: null, disabled: true });
+        this.startYear = new FormControl({ value: null, disabled: false }, [Validators.required, Validators.min(1)]);
+        this.startMonth = new FormControl({ value: null, disabled: true });
+        this.startDay = new FormControl({ value: null, disabled: true });
 
         // recalculate days of month when era changes
         this.era.valueChanges.subscribe(
             data => {
-                if (this.year.valid && this.month.value) {
+                if (this.startYear.valid && this.startMonth.value) {
                     this._setDays();
                 }
             }
@@ -183,7 +183,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         // recalculate days of month when calendar changes
         this.calendar.valueChanges.subscribe(
             data => {
-                if (this.year.valid && this.month.value) {
+                if (this.startYear.valid && this.startMonth.value) {
                     this._setDays();
                 }
             }
@@ -193,17 +193,17 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
         // enable/disable month selection depending on year
         // enable/disable day selection depending on
-        this.year.valueChanges.subscribe(
+        this.startYear.valueChanges.subscribe(
             data => {
-                this._yearChanged(this.year, this.month, this.day);
+                this._yearChanged(this.startYear, this.startMonth, this.startDay);
             }
         );
 
         // enable/disable day selection depending on month
         // recalculate days when month changes
-        this.month.valueChanges.subscribe(
+        this.startMonth.valueChanges.subscribe(
             data => {
-               this._monthChanged(this.year, this.month, this.day);
+               this._monthChanged(this.startYear, this.startMonth, this.startDay);
             }
         );
 
@@ -211,9 +211,9 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.form = fb.group({
             calendar: this.calendar,
             era: this.era,
-            year: this.year,
-            month: this.month,
-            day: this.day
+            startYear: this.startYear,
+            startMonth: this.startMonth,
+            startDay: this.startDay
         });
     }
 
@@ -224,7 +224,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     }
 
     get empty() {
-        return !this.year && !this.month && !this.day;
+        return !this.startYear && !this.startMonth && !this.startDay;
     }
 
     ngOnInit(): void {
@@ -331,13 +331,13 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     private _setDays() {
 
         // check for era
-        let year = this.year.value;
+        let year = this.startYear.value;
         if (this.era.value === 'BCE') {
             // convert historical date to astronomical date
             year = (year * -1) + 1;
         }
 
-        const days = this._calculateDaysInMonth(this.calendar.value, year, this.month.value);
+        const days = this._calculateDaysInMonth(this.calendar.value, year, this.startMonth.value);
         this.days = [];
         for (let i = 1; i <= days; i++) {
             this.days.push(i);
