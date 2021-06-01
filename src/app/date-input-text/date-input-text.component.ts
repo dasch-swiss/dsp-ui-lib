@@ -76,10 +76,20 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     calendars = JDNConvertibleCalendar.supportedCalendars;
 
     @Input()
-    get value(): KnoraDate | KnoraPeriod {
+    get value(): KnoraDate | KnoraPeriod | null {
 
-        // TODO: handle precision, era, and period
-        return new KnoraDate(this.calendarControl.value, this.startEraControl.value, this.startYearControl.value, this.startMonthControl.value, this.startDayControl.value);
+        if (!this.form.valid) {
+            return null;
+        }
+        
+        if (!this.isPeriodControl.value) {
+            return new KnoraDate(this.calendarControl.value, this.startEraControl.value, this.startYearControl.value, this.startMonthControl.value, this.startDayControl.value);
+        } else {
+            return new KnoraPeriod(
+                new KnoraDate(this.calendarControl.value, this.startEraControl.value, this.startYearControl.value, this.startMonthControl.value, this.startDayControl.value),
+                new KnoraDate(this.calendarControl.value, this.endEraControl.value, this.endYearControl.value, this.endMonthControl.value, this.endDayControl.value)
+            );
+        }
     }
 
     set value(date: KnoraDate | KnoraPeriod | null) {
@@ -88,27 +98,35 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
         if (date instanceof KnoraDate) {
 
-            // TODO: handle precision, era, and period
             this.calendarControl.setValue(date.calendar);
             this.startEraControl.setValue(date.era);
             this.startYearControl.setValue(date.year);
             this.startMonthControl.setValue(date.month);
             this.startDayControl.setValue(date.day);
 
+            // default value
             this.endEraControl.setValue('CE');
 
         } else if (date instanceof KnoraPeriod) {
 
-            // TODO: handle precision, era, and period
+            this.isPeriodControl.setValue(true);
+
             this.calendarControl.setValue(date.start.calendar);
+
             this.startEraControl.setValue(date.start.era);
             this.startYearControl.setValue(date.start.year);
             this.startMonthControl.setValue(date.start.month);
             this.startDayControl.setValue(date.start.day);
 
             this.endEraControl.setValue('CE');
+            this.endYearControl.setValue(date.end.year);
+            this.endMonthControl.setValue(date.end.month);
+            this.endDayControl.setValue(date.end.day);
+
         } else {
             // null
+
+            this.isPeriodControl.setValue(false);
 
             this.calendarControl.setValue('Gregorian');
             this.startEraControl.setValue('CE');
@@ -116,6 +134,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             this.startMonthControl.setValue(null);
             this.startDayControl.setValue(null);
 
+            // default value
             this.endEraControl.setValue('CE');
         }
 
