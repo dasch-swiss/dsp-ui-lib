@@ -1,5 +1,14 @@
 <div [formGroup]="form">
 
+    <mat-form-field>
+        <mat-label>Calendar</mat-label>
+        <mat-select [formControlName]="'calendar'" (selectionChange)="_handleInput()">
+            <mat-option *ngFor="let cal of calendars" [value]="cal">
+                {{cal}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
     <mat-radio-group [formControlName]="'era'" aria-label="Select an option" (change)="_handleInput()">
         <mat-radio-button value="BCE">Before Common Era</mat-radio-button>
         <mat-radio-button value="CE">Common Era</mat-radio-button>

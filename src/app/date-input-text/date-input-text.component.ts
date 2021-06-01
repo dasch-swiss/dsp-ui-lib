@@ -51,6 +51,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     form: FormGroup;
     stateChanges = new Subject<void>();
 
+    calendar: FormControl;
     era: FormControl;
     year: FormControl;
     month: FormControl;
@@ -64,39 +65,38 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     readonly controlType = 'dsp-date-input-text';
 
-    // TODO: make calendar editable
-    calendar = 'Gregorian';
+    calendars = JDNConvertibleCalendar.supportedCalendars;
 
     @Input()
     get value(): KnoraDate | KnoraPeriod {
 
         // TODO: handle precision, era, and period
-        return new KnoraDate(this.calendar, this.era.value, this.year.value, this.month.value, this.day.value);
+        return new KnoraDate(this.calendar.value, this.era.value, this.year.value, this.month.value, this.day.value);
     }
 
     set value(date: KnoraDate | KnoraPeriod | null) {
 
         if (date instanceof KnoraDate) {
-            this.calendar = date.calendar;
 
             // TODO: handle precision, era, and period
+            this.calendar.setValue(date.calendar);
             this.era.setValue(date.era);
             this.year.setValue(date.year);
             this.month.setValue(date.month);
             this.day.setValue(date.day);
 
         } else if (date instanceof KnoraPeriod) {
-            this.calendar = date.start.calendar;
 
             // TODO: handle precision, era, and period
+            this.calendar.setValue(date.start.calendar);
             this.era.setValue(date.start.era);
             this.year.setValue(date.start.year);
             this.month.setValue(date.start.month);
             this.day.setValue(date.start.day);
         } else {
             // null
-            this.calendar = 'Gregorian';
 
+            this.calendar.setValue('Gregorian');
             this.era.setValue('CE');
             this.year.setValue(null);
             this.month.setValue(null);
@@ -165,6 +165,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             this.ngControl.valueAccessor = this;
         }
 
+        this.calendar = new FormControl(null);
         this.era = new FormControl(true);
         this.year = new FormControl({ value: null, disabled: false }, [Validators.required, Validators.min(1)]);
         this.month = new FormControl({ value: null, disabled: true });
@@ -210,7 +211,17 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             }
         );
 
+        // recalculate days of month when calendar changes
+        this.calendar.valueChanges.subscribe(
+            data => {
+                if (this.year.valid && this.month.value) {
+                    this._setDays();
+                }
+            }
+        );
+
         this.form = fb.group({
+            calendar: this.calendar,
             era: this.era,
             year: this.year,
             month: this.month,
@@ -282,8 +293,8 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     }
 
     private _setDays() {
-        console.log('setting days');
-        const days = this._calculateDaysInMonth(this.calendar, this.year.value, this.month.value);
+        console.log('setting days', this.calendar.value);
+        const days = this._calculateDaysInMonth(this.calendar.value, this.year.value, this.month.value);
         this.days = [];
         for (let i = 1; i <= days; i++) {
             this.days.push(i);
