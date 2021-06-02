@@ -28,7 +28,49 @@ import {
 import { Subject } from 'rxjs';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { KnoraDate, KnoraPeriod } from '@dasch-swiss/dsp-js';
+import { KnoraDate, KnoraPeriod, Precision } from '@dasch-swiss/dsp-js';
+
+function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCalendar {
+
+    let calPeriod: CalendarPeriod;
+    if (date.precision === Precision.dayPrecision) {
+
+        calPeriod = new CalendarPeriod(
+            new CalendarDate(date.year, date.month, date.day),
+            new CalendarDate(date.year, date.month, date.day)
+        );
+
+    } else if (date.precision === Precision.monthPrecision) {
+
+        calPeriod = new CalendarPeriod(
+            new CalendarDate(date.year, date.month, 1),
+            new CalendarDate(date.year, date.month, DateInputTextComponent._calculateDaysInMonth(date.calendar, date.year, date.month))
+        );
+
+    } else if (date.precision === Precision.yearPrecision) {
+
+        calPeriod = new CalendarPeriod(
+            new CalendarDate(date.year, 1, 1),
+            new CalendarDate(date.year, 12, DateInputTextComponent._calculateDaysInMonth(date.calendar, date.year, date.month))
+        );
+
+    } else {
+        throw Error('Invalid precision');
+    }
+
+    console.log(calPeriod)
+
+    if (date.calendar === 'Gregorian') {
+        return new GregorianCalendarDate(calPeriod);
+    } else if (date.calendar === 'Julian') {
+        return new JulianCalendarDate(calPeriod);
+    } else if (date.calendar === 'Islamic') {
+        return new IslamicCalendarDate(calPeriod);
+    } else {
+        throw Error('Invalid calendar');
+    }
+
+}
 
 /** If a period is defined, start date must be before end date */
 export function periodStartEndValidator(): ValidatorFn {
@@ -38,9 +80,23 @@ export function periodStartEndValidator(): ValidatorFn {
             // period: check if start is before end
 
             // determine start date
+            const startDate = DateInputTextComponent._createKnoraDate(control, true);
+            const endDate = DateInputTextComponent._createKnoraDate(control, false);
 
+            if (startDate.calendar === null || startDate.era === null || startDate.year === null) {
+                return null;
+            }
 
-            // console.log('is period');
+            if (endDate.calendar === null || endDate.era === null || endDate.year === null) {
+                return null;
+            }
+
+            console.log(startDate, endDate);
+
+            const jdnStartDate = createJDNCalendarDateFromKnoraDate(startDate);
+            const jdnEndDate = createJDNCalendarDateFromKnoraDate(endDate);
+
+            console.log(jdnStartDate, jdnEndDate);
 
             // return { period: { value: 'invalid period'} };
 
@@ -65,7 +121,7 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
     selector: 'dsp-date-input-text',
     templateUrl: './date-input-text.component.html',
     styleUrls: ['./date-input-text.component.scss'],
-    providers: [{ provide: MatFormFieldControl, useExisting: DateInputTextComponent }]
+    providers: [{provide: MatFormFieldControl, useExisting: DateInputTextComponent}]
 })
 export class DateInputTextComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<KnoraDate | KnoraPeriod>, DoCheck, CanUpdateErrorState, OnInit, OnDestroy, OnInit {
 
@@ -227,14 +283,17 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.calendarControl = new FormControl(null);
 
         this.startEraControl = new FormControl(null);
-        this.startYearControl = new FormControl({ value: null, disabled: false }, [Validators.required, Validators.min(1)]);
-        this.startMonthControl = new FormControl({ value: null, disabled: true });
-        this.startDayControl = new FormControl({ value: null, disabled: true });
+        this.startYearControl = new FormControl({
+            value: null,
+            disabled: false
+        }, [Validators.required, Validators.min(1)]);
+        this.startMonthControl = new FormControl({value: null, disabled: true});
+        this.startDayControl = new FormControl({value: null, disabled: true});
 
         this.endEraControl = new FormControl(null);
-        this.endYearControl = new FormControl({ value: null, disabled: false });
-        this.endMonthControl = new FormControl({ value: null, disabled: true });
-        this.endDayControl = new FormControl({ value: null, disabled: true });
+        this.endYearControl = new FormControl({value: null, disabled: false});
+        this.endMonthControl = new FormControl({value: null, disabled: true});
+        this.endDayControl = new FormControl({value: null, disabled: true});
 
         // TODO: disable era for Islamic calendar dates?
         // recalculate days of month when calendar changes
@@ -276,7 +335,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         // recalculate days when month changes
         this.startMonthControl.valueChanges.subscribe(
             data => {
-               this._monthChanged(this.calendarControl, this.startEraControl, this.startYearControl, this.startMonthControl, this.startDayControl, this.daysStart);
+                this._monthChanged(this.calendarControl, this.startEraControl, this.startYearControl, this.startMonthControl, this.startDayControl, this.daysStart);
             }
         );
 
@@ -292,10 +351,18 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
                     this.endYearControl.clearValidators();
                     this.endYearControl.setValidators([Validators.required, Validators.min(1)]);
                     this.endYearControl.updateValueAndValidity();
+
+                    // check that start is before end
+                    // this.form.clearValidators();
+                    // this.form.setValidators(periodStartEndValidator());
+                    // this.form.updateValueAndValidity();
                 } else {
                     // single date
                     this.endYearControl.clearValidators();
                     this.endYearControl.updateValueAndValidity();
+
+                    // this.form.clearValidators();
+                    // this.form.updateValueAndValidity();
                 }
             }
         );
@@ -338,8 +405,6 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             endDay: this.endDayControl
         });
 
-        // check that start is before end
-        this.form.setValidators(periodStartEndValidator());
     }
 
     onChange = (_: any) => {
@@ -490,7 +555,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
      * @param form reference to form.
      * @param start creates KnoraDate from form's start date if true, otherwise from end date.
      */
-    static _createKnoraDate( form: FormGroup, start: boolean): KnoraDate {
+    static _createKnoraDate(form: FormGroup, start: boolean): KnoraDate {
 
         if (start) {
             return new KnoraDate(
