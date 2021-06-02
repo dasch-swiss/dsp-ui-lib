@@ -449,7 +449,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             yearAstro = (yearAstro * -1) + 1;
         }
 
-        const days = this._calculateDaysInMonth(this.calendarControl.value, year, month);
+        const days = this._calculateDaysInMonth(this.calendarControl.value, yearAstro, month);
 
         // empty array
         daysArr.splice(0, daysArr.length);
