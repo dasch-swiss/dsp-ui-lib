@@ -81,7 +81,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         if (!this.form.valid) {
             return null;
         }
-        
+
         if (!this.isPeriodControl.value) {
             return new KnoraDate(this.calendarControl.value, this.startEraControl.value, this.startYearControl.value, this.startMonthControl.value, this.startDayControl.value);
         } else {
@@ -200,7 +200,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             this.ngControl.valueAccessor = this;
         }
 
-        this.isPeriodControl = new FormControl(false);
+        this.isPeriodControl = new FormControl(false); // TODO: if period, check if start is before end
         this.calendarControl = new FormControl(null);
 
         this.startEraControl = new FormControl(null);
@@ -209,7 +209,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.startDayControl = new FormControl({ value: null, disabled: true });
 
         this.endEraControl = new FormControl(null);
-        this.endYearControl = new FormControl({ value: null, disabled: false }); // TODO: set validators in value setter
+        this.endYearControl = new FormControl({ value: null, disabled: false });
         this.endMonthControl = new FormControl({ value: null, disabled: true });
         this.endDayControl = new FormControl({ value: null, disabled: true });
 
@@ -228,6 +228,10 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             }
         );
 
+        //
+        // single date, start date
+        //
+
         // recalculate days of month when era changes
         this.startEraControl.valueChanges.subscribe(
             data => {
@@ -236,16 +240,6 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
                 }
             }
         );
-
-        this.endEraControl.valueChanges.subscribe(
-            data => {
-                if (this.endYearControl.valid && this.endMonthControl.value) {
-                    this._setDays(this.calendarControl.value, this.endEraControl.value, this.endYearControl.value, this.endMonthControl.value, this.daysEnd);
-                }
-            }
-        );
-
-        // single date, start date
 
         // enable/disable month selection depending on year
         // enable/disable day selection depending on
@@ -263,7 +257,33 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             }
         );
 
+        //
         // period, end date
+        //
+
+        // set/remove validators for end year
+        this.isPeriodControl.valueChanges.subscribe(
+            data => {
+                if (this.isPeriodControl.value) {
+                    // period
+                    this.endYearControl.clearValidators();
+                    this.endYearControl.setValidators([Validators.required, Validators.min(1)]);
+                    this.endYearControl.updateValueAndValidity();
+                } else {
+                    // single date
+                    this.endYearControl.clearValidators();
+                    this.endYearControl.updateValueAndValidity();
+                }
+            }
+        );
+
+        this.endEraControl.valueChanges.subscribe(
+            data => {
+                if (this.endYearControl.valid && this.endMonthControl.value) {
+                    this._setDays(this.calendarControl.value, this.endEraControl.value, this.endYearControl.value, this.endMonthControl.value, this.daysEnd);
+                }
+            }
+        );
 
         // enable/disable month selection depending on year
         // enable/disable day selection depending on
