@@ -12,13 +12,16 @@ import {
     FormGroup,
     FormGroupDirective,
     NgControl,
-    NgForm, Validators
+    NgForm,
+    ValidatorFn,
+    Validators
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import {
     CalendarDate,
     CalendarPeriod,
-    GregorianCalendarDate, IslamicCalendarDate,
+    GregorianCalendarDate,
+    IslamicCalendarDate,
     JDNConvertibleCalendar,
     JulianCalendarDate
 } from 'jdnconvertiblecalendar';
@@ -26,6 +29,26 @@ import { Subject } from 'rxjs';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { KnoraDate, KnoraPeriod } from '@dasch-swiss/dsp-js';
+
+/** If a period is defined, start date must be before end date */
+export function periodStartEndValidator(): ValidatorFn {
+    return (control: FormGroup): { [key: string]: any } | null => {
+
+        if (control.controls.isPeriod.value) {
+            // period: check if start is before end
+
+            // determine start date
+
+
+            // console.log('is period');
+
+            // return { period: { value: 'invalid period'} };
+
+        }
+
+        return null;
+    };
+}
 
 class MatInputBase {
     constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
@@ -83,11 +106,11 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         }
 
         if (!this.isPeriodControl.value) {
-            return new KnoraDate(this.calendarControl.value, this.startEraControl.value, this.startYearControl.value, this.startMonthControl.value, this.startDayControl.value);
+            return DateInputTextComponent._createKnoraDate(this.form, true);
         } else {
             return new KnoraPeriod(
-                new KnoraDate(this.calendarControl.value, this.startEraControl.value, this.startYearControl.value, this.startMonthControl.value, this.startDayControl.value),
-                new KnoraDate(this.calendarControl.value, this.endEraControl.value, this.endYearControl.value, this.endMonthControl.value, this.endDayControl.value)
+                DateInputTextComponent._createKnoraDate(this.form, true),
+                DateInputTextComponent._createKnoraDate(this.form, false)
             );
         }
     }
@@ -314,6 +337,9 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             endMonth: this.endMonthControl,
             endDay: this.endDayControl
         });
+
+        // check that start is before end
+        this.form.setValidators(periodStartEndValidator());
     }
 
     onChange = (_: any) => {
@@ -413,7 +439,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
      * @param year the date's year.
      * @param month the date's month.
      */
-    private _calculateDaysInMonth(calendar: string, year: number, month: number): number {
+    static _calculateDaysInMonth(calendar: string, year: number, month: number): number {
         const date = new CalendarDate(year, month, 1);
         if (calendar === 'Gregorian') {
             const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));
@@ -449,13 +475,41 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             yearAstro = (yearAstro * -1) + 1;
         }
 
-        const days = this._calculateDaysInMonth(this.calendarControl.value, yearAstro, month);
+        const days = DateInputTextComponent._calculateDaysInMonth(this.calendarControl.value, yearAstro, month);
 
         // empty array
         daysArr.splice(0, daysArr.length);
         for (let i = 1; i <= days; i++) {
             daysArr.push(i);
         }
+    }
+
+    /**
+     * Creates KnoraDate from form values.
+     *
+     * @param form reference to form.
+     * @param start creates KnoraDate from form's start date if true, otherwise from end date.
+     */
+    static _createKnoraDate( form: FormGroup, start: boolean): KnoraDate {
+
+        if (start) {
+            return new KnoraDate(
+                form.controls.calendar.value,
+                form.controls.startEra.value, // TODO: handle Islamic calendar
+                form.controls.startYear.value,
+                form.controls.startMonth.value ? form.controls.startMonth.value : undefined,
+                form.controls.startDay.value ? form.controls.startDay.value : undefined
+            );
+        } else {
+            return new KnoraDate(
+                form.controls.calendar.value,
+                form.controls.endEra.value, // TODO: handle Islamic calendar
+                form.controls.endYear.value,
+                form.controls.endMonth.value ? form.controls.endMonth.value : undefined,
+                form.controls.endDay.value ? form.controls.endDay.value : undefined
+            );
+        }
+
     }
 
 }
