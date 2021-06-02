@@ -2,7 +2,7 @@
 
     <mat-form-field>
         <mat-label>Calendar</mat-label>
-        <mat-select [formControlName]="'calendar'" (selectionChange)="_handleInput()">
+        <mat-select [formControlName]="'calendar'">
             <mat-option *ngFor="let cal of calendars" [value]="cal">
                 {{cal}}
             </mat-option>
@@ -10,7 +10,7 @@
     </mat-form-field>
 
     <mat-form-field>
-        <dsp-date-edit [formControlName]="'startDate'"></dsp-date-edit>
+        <dsp-date-edit [formControlName]="'startDate'" [calendar]="calendarControl.value"></dsp-date-edit>
     </mat-form-field>
 
     <mat-checkbox class="period-checkbox" [formControlName]="'isPeriod'" (change)="_handleInput()">
@@ -19,7 +19,7 @@
 
     <span *ngIf="isPeriodControl.value">
         <mat-form-field>
-        <dsp-date-edit [formControlName]="'endDate'"></dsp-date-edit>
+        <dsp-date-edit [formControlName]="'endDate'" [calendar]="calendarControl.value"></dsp-date-edit>
     </mat-form-field>
     </span>
 

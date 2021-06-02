@@ -248,21 +248,6 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.startDate = new FormControl(null, Validators.required);
         this.endDate = new FormControl(null);
 
-        // set calendar in value
-        this.calendarControl.valueChanges.subscribe(
-            cal => {
-                // update calendars in start end end date
-                if (this.startDate.value !== null) {
-                    this.startDate.value.calendar = cal;
-                }
-
-                if (this.endDate.value !== null) {
-                    this.endDate.value.calendar = cal;
-                }
-
-            }
-        );
-
         this.isPeriodControl.valueChanges.subscribe(
             isPeriod => {
                 this.endDate.clearValidators();
@@ -277,14 +262,16 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
         // TODO: find better way to detect changes
         this.startDate.valueChanges.subscribe(
-            data =>
-                this._handleInput()
+            data => {
+                this._handleInput();
+            }
         );
 
         // TODO: find better way to detect changes
         this.endDate.valueChanges.subscribe(
-            data =>
-                this._handleInput()
+            data => {
+                this._handleInput();
+            }
         );
 
         // init form

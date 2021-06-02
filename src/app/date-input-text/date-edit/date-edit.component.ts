@@ -1,4 +1,15 @@
-import { Component, DoCheck, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
+import {
+    Component,
+    DoCheck,
+    ElementRef,
+    HostBinding,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Optional,
+    Self, SimpleChanges
+} from '@angular/core';
 import {
     CanUpdateErrorState,
     CanUpdateErrorStateCtor,
@@ -44,9 +55,11 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
     styleUrls: ['./date-edit.component.scss'],
     providers: [{provide: MatFormFieldControl, useExisting: DateEditComponent}]
 })
-export class DateEditComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<KnoraDate | KnoraPeriod>, DoCheck, CanUpdateErrorState, OnInit, OnDestroy, OnInit {
+export class DateEditComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<KnoraDate | KnoraPeriod>, DoCheck, CanUpdateErrorState, OnDestroy, OnChanges {
 
     static nextId = 0;
+
+    @Input() calendar: string;
 
     form: FormGroup;
     stateChanges = new Subject<void>();
@@ -59,8 +72,6 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
     months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
     days = [];
-
-    calendar: string;
 
     readonly focused = false;
 
@@ -85,8 +96,6 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         // TODO: disable era for Islamic calendar dates?
 
         if (date instanceof KnoraDate) {
-
-            this.calendar = date.calendar;
             this.eraControl.setValue(date.era);
             this.yearControl.setValue(date.year);
             this.monthControl.setValue(date.month ? date.month : null);
@@ -94,7 +103,6 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
 
         } else {
             // null
-            this.calendar = 'Gregorian';
             this.eraControl.setValue('CE');
             this.yearControl.setValue(null);
             this.monthControl.setValue(null);
@@ -242,7 +250,12 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
 
     }
 
-    ngOnInit(): void {
+    ngOnChanges(changes: SimpleChanges) {
+
+        if (!changes['calendar'].firstChange) {
+            this._handleInput();
+        }
+
     }
 
     ngDoCheck() {
