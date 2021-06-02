@@ -30,7 +30,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { KnoraDate, KnoraPeriod, Precision } from '@dasch-swiss/dsp-js';
 
-function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCalendar {
+/*function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCalendar {
 
     let calPeriod: CalendarPeriod;
     if (date.precision === Precision.dayPrecision) {
@@ -72,7 +72,10 @@ function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCale
 
 }
 
+ */
+
 /** If a period is defined, start date must be before end date */
+/*
 export function periodStartEndValidator(): ValidatorFn {
     return (control: FormGroup): { [key: string]: any } | null => {
 
@@ -105,6 +108,7 @@ export function periodStartEndValidator(): ValidatorFn {
         return null;
     };
 }
+*/
 
 class MatInputBase {
     constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
@@ -132,21 +136,8 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     isPeriodControl: FormControl;
     calendarControl: FormControl;
-
-    startEraControl: FormControl;
-    startYearControl: FormControl;
-    startMonthControl: FormControl;
-    startDayControl: FormControl;
-
-    endEraControl: FormControl;
-    endYearControl: FormControl;
-    endMonthControl: FormControl;
-    endDayControl: FormControl;
-
-    months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
-    daysStart = [];
-    daysEnd = [];
+    startDate: FormControl;
+    endDate: FormControl;
 
     readonly focused = false;
 
@@ -162,12 +153,9 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         }
 
         if (!this.isPeriodControl.value) {
-            return DateInputTextComponent._createKnoraDate(this.form, true);
+            return this.startDate.value;
         } else {
-            return new KnoraPeriod(
-                DateInputTextComponent._createKnoraDate(this.form, true),
-                DateInputTextComponent._createKnoraDate(this.form, false)
-            );
+            return new KnoraPeriod(this.startDate.value, this.endDate.value);
         }
     }
 
@@ -176,45 +164,20 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         // TODO: disable era for Islamic calendar dates?
 
         if (date instanceof KnoraDate) {
-
             this.calendarControl.setValue(date.calendar);
-            this.startEraControl.setValue(date.era);
-            this.startYearControl.setValue(date.year);
-            this.startMonthControl.setValue(date.month);
-            this.startDayControl.setValue(date.day);
-
-            // default value
-            this.endEraControl.setValue('CE');
-
+            this.isPeriodControl.setValue(false);
+            this.startDate.setValue(date);
         } else if (date instanceof KnoraPeriod) {
-
-            this.isPeriodControl.setValue(true);
-
             this.calendarControl.setValue(date.start.calendar);
-
-            this.startEraControl.setValue(date.start.era);
-            this.startYearControl.setValue(date.start.year);
-            this.startMonthControl.setValue(date.start.month);
-            this.startDayControl.setValue(date.start.day);
-
-            this.endEraControl.setValue('CE');
-            this.endYearControl.setValue(date.end.year);
-            this.endMonthControl.setValue(date.end.month);
-            this.endDayControl.setValue(date.end.day);
-
+            this.isPeriodControl.setValue(true);
+            this.startDate.setValue(date.start);
+            this.endDate.setValue(date.end);
         } else {
             // null
-
-            this.isPeriodControl.setValue(false);
-
             this.calendarControl.setValue('Gregorian');
-            this.startEraControl.setValue('CE');
-            this.startYearControl.setValue(null);
-            this.startMonthControl.setValue(null);
-            this.startDayControl.setValue(null);
-
-            // default value
-            this.endEraControl.setValue('CE');
+            this.isPeriodControl.setValue(false);
+            this.startDate.setValue(null);
+            this.endDate.setValue(null);
         }
 
         this.stateChanges.next();
@@ -282,127 +245,54 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.isPeriodControl = new FormControl(false); // TODO: if period, check if start is before end
         this.calendarControl = new FormControl(null);
 
-        this.startEraControl = new FormControl(null);
-        this.startYearControl = new FormControl({
-            value: null,
-            disabled: false
-        }, [Validators.required, Validators.min(1)]);
-        this.startMonthControl = new FormControl({value: null, disabled: true});
-        this.startDayControl = new FormControl({value: null, disabled: true});
+        this.startDate = new FormControl(null, Validators.required);
+        this.endDate = new FormControl(null);
 
-        this.endEraControl = new FormControl(null);
-        this.endYearControl = new FormControl({value: null, disabled: false});
-        this.endMonthControl = new FormControl({value: null, disabled: true});
-        this.endDayControl = new FormControl({value: null, disabled: true});
-
-        // TODO: disable era for Islamic calendar dates?
-        // recalculate days of month when calendar changes
+        // set calendar in value
         this.calendarControl.valueChanges.subscribe(
-            data => {
-                if (this.startYearControl.valid && this.startMonthControl.value) {
-                    this._setDays(this.calendarControl.value, this.startEraControl.value, this.startYearControl.value, this.startMonthControl.value, this.daysStart);
+            cal => {
+                // update calendars in start end end date
+                if (this.startDate.value !== null) {
+                    this.startDate.value.calendar = cal;
                 }
 
-                if (this.isPeriodControl.value && this.endYearControl.valid && this.endMonthControl.value) {
-                    this._setDays(this.calendarControl.value, this.endEraControl.value, this.endYearControl.value, this.endMonthControl.value, this.daysEnd);
+                if (this.endDate.value !== null) {
+                    this.endDate.value.calendar = cal;
                 }
 
             }
         );
 
-        //
-        // single date, start date
-        //
-
-        // recalculate days of month when era changes
-        this.startEraControl.valueChanges.subscribe(
-            data => {
-                if (this.startYearControl.valid && this.startMonthControl.value) {
-                    this._setDays(this.calendarControl.value, this.startEraControl.value, this.startYearControl.value, this.startMonthControl.value, this.daysStart);
-                }
-            }
-        );
-
-        // enable/disable month selection depending on year
-        // enable/disable day selection depending on
-        this.startYearControl.valueChanges.subscribe(
-            data => {
-                this._yearChanged(this.startYearControl, this.startMonthControl, this.startDayControl);
-            }
-        );
-
-        // enable/disable day selection depending on month
-        // recalculate days when month changes
-        this.startMonthControl.valueChanges.subscribe(
-            data => {
-                this._monthChanged(this.calendarControl, this.startEraControl, this.startYearControl, this.startMonthControl, this.startDayControl, this.daysStart);
-            }
-        );
-
-        //
-        // period, end date
-        //
-
-        // set/remove validators for end year
         this.isPeriodControl.valueChanges.subscribe(
-            data => {
-                if (this.isPeriodControl.value) {
-                    // period
-                    this.endYearControl.clearValidators();
-                    this.endYearControl.setValidators([Validators.required, Validators.min(1)]);
-                    this.endYearControl.updateValueAndValidity();
+            isPeriod => {
+                this.endDate.clearValidators();
 
-                    // check that start is before end
-                    // this.form.clearValidators();
-                    // this.form.setValidators(periodStartEndValidator());
-                    // this.form.updateValueAndValidity();
-                } else {
-                    // single date
-                    this.endYearControl.clearValidators();
-                    this.endYearControl.updateValueAndValidity();
-
-                    // this.form.clearValidators();
-                    // this.form.updateValueAndValidity();
+                if (isPeriod) {
+                    this.endDate.setValidators(Validators.required);
                 }
+
+                this.endDate.updateValueAndValidity();
             }
         );
 
-        this.endEraControl.valueChanges.subscribe(
-            data => {
-                if (this.endYearControl.valid && this.endMonthControl.value) {
-                    this._setDays(this.calendarControl.value, this.endEraControl.value, this.endYearControl.value, this.endMonthControl.value, this.daysEnd);
-                }
-            }
+        // TODO: find better way to detect changes
+        this.startDate.valueChanges.subscribe(
+            data =>
+                this._handleInput()
         );
 
-        // enable/disable month selection depending on year
-        // enable/disable day selection depending on
-        this.endYearControl.valueChanges.subscribe(
-            data => {
-                this._yearChanged(this.endYearControl, this.endMonthControl, this.endDayControl);
-            }
-        );
-
-        // enable/disable day selection depending on month
-        // recalculate days when month changes
-        this.endMonthControl.valueChanges.subscribe(
-            data => {
-                this._monthChanged(this.calendarControl, this.endEraControl, this.endYearControl, this.endMonthControl, this.endDayControl, this.daysEnd);
-            }
+        // TODO: find better way to detect changes
+        this.endDate.valueChanges.subscribe(
+            data =>
+                this._handleInput()
         );
 
         // init form
         this.form = fb.group({
             isPeriod: this.isPeriodControl,
             calendar: this.calendarControl,
-            startEra: this.startEraControl,
-            startYear: this.startYearControl,
-            startMonth: this.startMonthControl,
-            endEra: this.endEraControl,
-            startDay: this.startDayControl,
-            endYear: this.endYearControl,
-            endMonth: this.endMonthControl,
-            endDay: this.endDayControl
+            startDate: this.startDate,
+            endDate: this.endDate
         });
 
     }
@@ -414,7 +304,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     }
 
     get empty() {
-        return !this.startYearControl && !this.startMonthControl && !this.startDayControl;
+        return !this.startDate && !this.endDate;
     }
 
     ngOnInit(): void {
@@ -451,130 +341,6 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     }
 
     setDescribedByIds(ids: string[]): void {
-    }
-
-    /**
-     * Reacts to changes of the year and sets month and day controls accordingly.
-     *
-     * @param year year control.
-     * @param month month control.
-     * @param day day control.
-     */
-    private _yearChanged(year: FormControl, month: FormControl, day: FormControl) {
-        if (year.valid) {
-            month.enable();
-        } else {
-            month.disable();
-        }
-
-        if (year.valid && month.value) {
-            day.enable();
-        } else {
-            day.disable();
-        }
-    }
-
-    /**
-     * Reacts to changes of the month and sets the day controls accordingly.
-     *
-     * @param calendar calendar control.
-     * @param era era control.
-     * @param year year control.
-     * @param month month control.
-     * @param day day control.
-     * @param daysArr array representing available days of a given month.
-     */
-    private _monthChanged(calendar: FormControl, era: FormControl, year: FormControl, month: FormControl, day: FormControl, daysArr: number[]) {
-        if (year.valid && month.value) {
-            this._setDays(calendar.value, era.value, year.value, month.value, daysArr);
-        }
-
-        if (month.value) {
-            day.enable();
-        } else {
-            day.setValue(null);
-            day.disable();
-        }
-    }
-
-    /**
-     * Calculates the number of days in a month for a given date.
-     *
-     * @param calendar the date's calendar.
-     * @param year the date's year.
-     * @param month the date's month.
-     */
-    static _calculateDaysInMonth(calendar: string, year: number, month: number): number {
-        const date = new CalendarDate(year, month, 1);
-        if (calendar === 'Gregorian') {
-            const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));
-            return calDate.daysInMonth(date);
-        } else if (calendar === 'Julian') {
-            const calDate = new JulianCalendarDate(new CalendarPeriod(date, date));
-            return calDate.daysInMonth(date);
-        } else if (calendar === 'Islamic') {
-            const calDate = new IslamicCalendarDate(new CalendarPeriod(date, date));
-            return calDate.daysInMonth(date);
-        } else {
-            throw Error('Unknown calendar ' + calendar);
-        }
-
-    }
-
-    /**
-     *
-     * Sets available days for a given year and month.
-     *
-     * @param calendar calendar of the given date.
-     * @param era era of the given date.
-     * @param year year of the given date.
-     * @param month month of the given date.
-     * @param daysArr array representing available days of a given month.
-     */
-    private _setDays(calendar: string, era: string, year: number, month: number, daysArr: number[]) {
-
-        // TODO: exclude Islamic calendar date?
-        let yearAstro: number = year;
-        if (era === 'BCE') {
-            // convert historical date to astronomical date
-            yearAstro = (yearAstro * -1) + 1;
-        }
-
-        const days = DateInputTextComponent._calculateDaysInMonth(this.calendarControl.value, yearAstro, month);
-
-        // empty array
-        daysArr.splice(0, daysArr.length);
-        for (let i = 1; i <= days; i++) {
-            daysArr.push(i);
-        }
-    }
-
-    /**
-     * Creates KnoraDate from form values.
-     *
-     * @param form reference to form.
-     * @param start creates KnoraDate from form's start date if true, otherwise from end date.
-     */
-    static _createKnoraDate(form: FormGroup, start: boolean): KnoraDate {
-
-        if (start) {
-            return new KnoraDate(
-                form.controls.calendar.value,
-                form.controls.startEra.value, // TODO: handle Islamic calendar
-                form.controls.startYear.value,
-                form.controls.startMonth.value ? form.controls.startMonth.value : undefined,
-                form.controls.startDay.value ? form.controls.startDay.value : undefined
-            );
-        } else {
-            return new KnoraDate(
-                form.controls.calendar.value,
-                form.controls.endEra.value, // TODO: handle Islamic calendar
-                form.controls.endYear.value,
-                form.controls.endMonth.value ? form.controls.endMonth.value : undefined,
-                form.controls.endDay.value ? form.controls.endDay.value : undefined
-            );
-        }
-
     }
 
 }
