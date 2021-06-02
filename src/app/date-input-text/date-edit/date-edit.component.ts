@@ -156,8 +156,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
     }
 
     get empty() {
-        // TODO: implement this
-        return false;
+        return !this.yearControl && !this.monthControl && !this.dayControl;
     }
 
     constructor(fb: FormBuilder,
