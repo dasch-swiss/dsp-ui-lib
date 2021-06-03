@@ -38,7 +38,6 @@ import { KnoraDate, KnoraPeriod, Precision } from '@dasch-swiss/dsp-js';
  * @param month the date's month.
  */
 function calculateDaysInMonth(calendar: string, year: number, month: number): number {
-    console.log(calendar, year, month);
     const date = new CalendarDate(year, month, 1);
     if (calendar === 'Gregorian') {
         const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));

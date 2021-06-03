@@ -23,4 +23,16 @@
     </mat-form-field>
     </span>
 
+    <div class="date-form-error">
+        <mat-error *ngIf="startDate.hasError('required')">
+            <span class="custom-error-message">Start date is <strong>required</strong></span>
+        </mat-error>
+        <mat-error *ngIf="endDate.hasError('required')">
+            <span class="custom-error-message">End date is <strong>required</strong></span>
+        </mat-error>
+        <mat-error *ngIf="startDate.hasError('periodStartEnd')">
+            <span class="custom-error-message">End date must be after start date.</span>
+        </mat-error>
+    </div>
+
 </div>
