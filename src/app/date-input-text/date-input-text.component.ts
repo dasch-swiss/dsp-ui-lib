@@ -13,7 +13,6 @@ import {
     FormGroupDirective,
     NgControl,
     NgForm,
-    ValidatorFn,
     Validators
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -155,6 +154,9 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         if (!this.isPeriodControl.value) {
             return this.startDate.value;
         } else {
+            if (this.startDate.value.calendar !== this.endDate.value.calendar) {
+                return null;
+            }
             return new KnoraPeriod(this.startDate.value, this.endDate.value);
         }
     }
@@ -164,10 +166,12 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         // TODO: disable era for Islamic calendar dates?
 
         if (date instanceof KnoraDate) {
+            // single date
             this.calendarControl.setValue(date.calendar);
             this.isPeriodControl.setValue(false);
             this.startDate.setValue(date);
         } else if (date instanceof KnoraPeriod) {
+            // period
             this.calendarControl.setValue(date.start.calendar);
             this.isPeriodControl.setValue(true);
             this.startDate.setValue(date.start);
@@ -253,7 +257,8 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
                 this.endDate.clearValidators();
 
                 if (isPeriod) {
-                    this.endDate.setValidators(Validators.required);
+                    // end date is required in case of a period
+                    this.endDate.setValidators([Validators.required]);
                 }
 
                 this.endDate.updateValueAndValidity();
@@ -263,6 +268,9 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         // TODO: find better way to detect changes
         this.startDate.valueChanges.subscribe(
             data => {
+                // form's validity has not been updated yet,
+                // trigger update
+                this.form.updateValueAndValidity();
                 this._handleInput();
             }
         );
@@ -270,6 +278,9 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         // TODO: find better way to detect changes
         this.endDate.valueChanges.subscribe(
             data => {
+                // form's validity has not been updated yet,
+                // trigger update
+                this.form.updateValueAndValidity();
                 this._handleInput();
             }
         );
