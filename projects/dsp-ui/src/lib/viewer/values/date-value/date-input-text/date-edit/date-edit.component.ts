@@ -252,6 +252,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
 
     ngOnChanges(changes: SimpleChanges) {
 
+        // TODO: make this async
         if (!changes['calendar'].firstChange) {
             this._handleInput();
         }
@@ -299,13 +300,13 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
      */
     private _calculateDaysInMonth(calendar: string, year: number, month: number): number {
         const date = new CalendarDate(year, month, 1);
-        if (calendar === 'Gregorian') {
+        if (calendar === 'GREGORIAN') {
             const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));
             return calDate.daysInMonth(date);
-        } else if (calendar === 'Julian') {
+        } else if (calendar === 'JULIAN') {
             const calDate = new JulianCalendarDate(new CalendarPeriod(date, date));
             return calDate.daysInMonth(date);
-        } else if (calendar === 'Islamic') {
+        } else if (calendar === 'ISLAMIC') {
             const calDate = new IslamicCalendarDate(new CalendarPeriod(date, date));
             return calDate.daysInMonth(date);
         } else {

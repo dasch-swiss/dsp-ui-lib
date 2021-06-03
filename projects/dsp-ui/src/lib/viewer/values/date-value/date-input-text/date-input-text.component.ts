@@ -161,7 +161,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     readonly controlType = 'dsp-date-input-text';
 
-    calendars = JDNConvertibleCalendar.supportedCalendars;
+    calendars = JDNConvertibleCalendar.supportedCalendars.map(cal => cal.toUpperCase());
 
     @Input()
     get value(): KnoraDate | KnoraPeriod | null {
@@ -176,6 +176,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             if (this.startDate.value.calendar !== this.endDate.value.calendar) {
                 return null;
             }
+
             return new KnoraPeriod(this.startDate.value, this.endDate.value);
         }
     }
@@ -197,7 +198,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             this.endDate.setValue(date.end);
         } else {
             // null
-            this.calendarControl.setValue('Gregorian');
+            this.calendarControl.setValue('GREGORIAN');
             this.isPeriodControl.setValue(false);
             this.startDate.setValue(null);
             this.endDate.setValue(null);

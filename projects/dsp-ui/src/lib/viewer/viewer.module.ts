@@ -56,6 +56,9 @@ import { ResourceListComponent } from './views/list-view/resource-list/resource-
 import { PropertyToolbarComponent } from './views/property-view/property-toolbar/property-toolbar.component';
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
+import { DateInputTextComponent } from './values/date-value/date-input-text/date-input-text.component';
+import { DateEditComponent } from './values/date-value/date-input-text/date-edit/date-edit.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
     declarations: [
@@ -91,7 +94,9 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         TimeInputComponent,
         TimeValueComponent,
         UploadFileComponent,
-        UriValueComponent
+        UriValueComponent,
+        DateInputTextComponent,
+        DateEditComponent
     ],
     imports: [
         CKEditorModule,
@@ -118,6 +123,7 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
         MatSnackBarModule,
         MatToolbarModule,
         MatTooltipModule,
+        MatRadioModule,
         ReactiveFormsModule
     ],
     exports: [
