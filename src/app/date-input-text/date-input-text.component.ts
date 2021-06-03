@@ -6,13 +6,14 @@ import {
     mixinErrorState
 } from '@angular/material/core';
 import {
+    AbstractControl,
     ControlValueAccessor,
     FormBuilder,
     FormControl,
     FormGroup,
     FormGroupDirective,
     NgControl,
-    NgForm,
+    NgForm, ValidatorFn,
     Validators
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -29,35 +30,72 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { KnoraDate, KnoraPeriod, Precision } from '@dasch-swiss/dsp-js';
 
-/*function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCalendar {
+/**
+ * Calculates the number of days in a month for a given date.
+ *
+ * @param calendar the date's calendar.
+ * @param year the date's year.
+ * @param month the date's month.
+ */
+function calculateDaysInMonth(calendar: string, year: number, month: number): number {
+    console.log(calendar, year, month);
+    const date = new CalendarDate(year, month, 1);
+    if (calendar === 'Gregorian') {
+        const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));
+        return calDate.daysInMonth(date);
+    } else if (calendar === 'Julian') {
+        const calDate = new JulianCalendarDate(new CalendarPeriod(date, date));
+        return calDate.daysInMonth(date);
+    } else if (calendar === 'Islamic') {
+        const calDate = new IslamicCalendarDate(new CalendarPeriod(date, date));
+        return calDate.daysInMonth(date);
+    } else {
+        throw Error('Unknown calendar ' + calendar);
+    }
+
+}
+
+/**
+ * Given a Knora calendar date, creates a JDN calendar date
+ * taking into account precision.
+ *
+ * @param date the Knora calendar date.
+ */
+function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCalendar {
 
     let calPeriod: CalendarPeriod;
+
+    // TODO: exclude Islamic calendar date?
+    let yearAstro: number = date.year;
+    if (date.era === 'BCE') {
+        // convert historical date to astronomical date
+        yearAstro = (yearAstro * -1) + 1;
+    }
+
     if (date.precision === Precision.dayPrecision) {
 
         calPeriod = new CalendarPeriod(
-            new CalendarDate(date.year, date.month, date.day),
-            new CalendarDate(date.year, date.month, date.day)
+            new CalendarDate(yearAstro, date.month, date.day),
+            new CalendarDate(yearAstro, date.month, date.day)
         );
 
     } else if (date.precision === Precision.monthPrecision) {
 
         calPeriod = new CalendarPeriod(
-            new CalendarDate(date.year, date.month, 1),
-            new CalendarDate(date.year, date.month, DateInputTextComponent._calculateDaysInMonth(date.calendar, date.year, date.month))
+            new CalendarDate(yearAstro, date.month, 1),
+            new CalendarDate(yearAstro, date.month, calculateDaysInMonth(date.calendar, date.year, date.month))
         );
 
     } else if (date.precision === Precision.yearPrecision) {
 
         calPeriod = new CalendarPeriod(
-            new CalendarDate(date.year, 1, 1),
-            new CalendarDate(date.year, 12, DateInputTextComponent._calculateDaysInMonth(date.calendar, date.year, date.month))
+            new CalendarDate(yearAstro, 1, 1),
+            new CalendarDate(yearAstro, 12, calculateDaysInMonth(date.calendar, date.year, 12))
         );
 
     } else {
         throw Error('Invalid precision');
     }
-
-    console.log(calPeriod)
 
     if (date.calendar === 'Gregorian') {
         return new GregorianCalendarDate(calPeriod);
@@ -71,43 +109,25 @@ import { KnoraDate, KnoraPeriod, Precision } from '@dasch-swiss/dsp-js';
 
 }
 
- */
-
 /** If a period is defined, start date must be before end date */
-/*
-export function periodStartEndValidator(): ValidatorFn {
-    return (control: FormGroup): { [key: string]: any } | null => {
+export function periodStartEndValidator(isPeriod: FormControl, endDate: FormControl): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
 
-        if (control.controls.isPeriod.value) {
+        if (isPeriod.value && control.value !== null && endDate.value !== null) {
             // period: check if start is before end
 
-            // determine start date
-            const startDate = DateInputTextComponent._createKnoraDate(control, true);
-            const endDate = DateInputTextComponent._createKnoraDate(control, false);
+            const jdnStartDate = createJDNCalendarDateFromKnoraDate(control.value);
+            const jdnEndDate = createJDNCalendarDateFromKnoraDate(endDate.value);
 
-            if (startDate.calendar === null || startDate.era === null || startDate.year === null) {
-                return null;
-            }
+            const invalid = jdnStartDate.toJDNPeriod().periodEnd >= jdnEndDate.toJDNPeriod().periodStart;
 
-            if (endDate.calendar === null || endDate.era === null || endDate.year === null) {
-                return null;
-            }
-
-            console.log(startDate, endDate);
-
-            const jdnStartDate = createJDNCalendarDateFromKnoraDate(startDate);
-            const jdnEndDate = createJDNCalendarDateFromKnoraDate(endDate);
-
-            console.log(jdnStartDate, jdnEndDate);
-
-            // return { period: { value: 'invalid period'} };
+            return invalid ? { 'periodStartEnd': { value: control.value } } : null;
 
         }
 
         return null;
     };
 }
-*/
 
 class MatInputBase {
     constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
@@ -249,8 +269,8 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.isPeriodControl = new FormControl(false); // TODO: if period, check if start is before end
         this.calendarControl = new FormControl(null);
 
-        this.startDate = new FormControl(null, Validators.required);
         this.endDate = new FormControl(null);
+        this.startDate = new FormControl(null, [Validators.required, periodStartEndValidator(this.isPeriodControl, this.endDate)]);
 
         this.isPeriodControl.valueChanges.subscribe(
             isPeriod => {
@@ -278,6 +298,8 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         // TODO: find better way to detect changes
         this.endDate.valueChanges.subscribe(
             data => {
+                // trigger period check validator set on start date control
+                this.startDate.updateValueAndValidity();
                 // form's validity has not been updated yet,
                 // trigger update
                 this.form.updateValueAndValidity();
