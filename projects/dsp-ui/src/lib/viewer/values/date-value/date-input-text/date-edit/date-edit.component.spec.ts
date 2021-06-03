@@ -31,7 +31,7 @@ class TestHostComponent implements OnInit {
 
     form: FormGroup;
 
-    calendar = 'GREGORIAN';
+    calendar = 'JULIAN';
 
     constructor(private _fb: FormBuilder) {
     }
@@ -74,9 +74,9 @@ describe('DateEditComponent', () => {
         expect(testHostComponent).toBeTruthy();
     });
 
-    it('should initialize a date correctly', async () => {
+    it('should initialize a date with day precision correctly', async () => {
 
-        expect(testHostComponent.dateEditComponent.calendar).toEqual('GREGORIAN');
+        expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
 
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
@@ -90,6 +90,28 @@ describe('DateEditComponent', () => {
 
         const dayInput = await loader.getHarness(MatSelectHarness.with({selector: '.day'}));
         expect(await dayInput.getValueText()).toEqual('19');
+
+    });
+
+    it('should initialize a date with month precision correctly', async () => {
+
+        testHostComponent.form.controls.date.setValue(new KnoraDate('JULIAN', 'CE', 2018, 5));
+
+        expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
+
+        expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
+        expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
+        expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(null);
+
+        const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
+        expect(await yearInput.getValue()).toEqual('2018');
+
+        const monthInput = await loader.getHarness(MatSelectHarness.with({selector: '.month'}));
+        expect(await monthInput.getValueText()).toEqual('5');
+
+        const dayInput = await loader.getHarness(MatSelectHarness.with({selector: '.day'}));
+
+        expect(await dayInput.getValueText()).toEqual('');
 
     });
 
