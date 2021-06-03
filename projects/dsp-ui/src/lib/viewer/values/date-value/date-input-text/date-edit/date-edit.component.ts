@@ -38,6 +38,9 @@ import {
     JulianCalendarDate
 } from 'jdnconvertiblecalendar';
 
+// https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
+const resolvedPromise = Promise.resolve(null);
+
 class MatInputBase {
     constructor(public _defaultErrorStateMatcher: ErrorStateMatcher,
                 public _parentForm: NgForm,
@@ -252,10 +255,12 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
 
     ngOnChanges(changes: SimpleChanges) {
 
-        // TODO: make this async
-        if (!changes['calendar'].firstChange) {
-            this._handleInput();
-        }
+        // async to prevent changed after checked error
+        resolvedPromise.then(
+            () => {
+                this._handleInput();
+            }
+        );
 
     }
 
