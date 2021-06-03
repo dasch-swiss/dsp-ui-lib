@@ -203,7 +203,6 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         this.eraControl.valueChanges.subscribe(
             data => {
                 if (this.yearControl.valid && this.monthControl.value) {
-                    this.dayControl.setValue(null);
                     this._setDays(this.calendar, this.eraControl.value, this.yearControl.value, this.monthControl.value);
                 }
             }
@@ -232,7 +231,6 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         this.monthControl.valueChanges.subscribe(
             data => {
                 if (this.yearControl.valid && this.monthControl.value) {
-                    this.dayControl.setValue(null);
                     this._setDays(this.calendar, this.eraControl.value, this.yearControl.value, this.monthControl.value);
                 }
 
@@ -354,6 +352,11 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         this.days = [];
         for (let i = 1; i <= days; i++) {
             this.days.push(i);
+        }
+
+        // check if selected day is still valid, otherwise set to latest possible day
+        if (this.dayControl.value !== null && this.dayControl.value > this.days.length) {
+            this.dayControl.setValue(this.days.length);
         }
     }
 

@@ -39,13 +39,13 @@ import { KnoraDate, KnoraPeriod, Precision } from '@dasch-swiss/dsp-js';
  */
 function calculateDaysInMonth(calendar: string, year: number, month: number): number {
     const date = new CalendarDate(year, month, 1);
-    if (calendar === 'Gregorian') {
+    if (calendar === 'GREGORIAN') {
         const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));
         return calDate.daysInMonth(date);
-    } else if (calendar === 'Julian') {
+    } else if (calendar === 'JULIAN') {
         const calDate = new JulianCalendarDate(new CalendarPeriod(date, date));
         return calDate.daysInMonth(date);
-    } else if (calendar === 'Islamic') {
+    } else if (calendar === 'ISLAMIC') {
         const calDate = new IslamicCalendarDate(new CalendarPeriod(date, date));
         return calDate.daysInMonth(date);
     } else {
@@ -96,11 +96,11 @@ function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCale
         throw Error('Invalid precision');
     }
 
-    if (date.calendar === 'Gregorian') {
+    if (date.calendar === 'GREGORIAN') {
         return new GregorianCalendarDate(calPeriod);
-    } else if (date.calendar === 'Julian') {
+    } else if (date.calendar === 'JULIAN') {
         return new JulianCalendarDate(calPeriod);
-    } else if (date.calendar === 'Islamic') {
+    } else if (date.calendar === 'ISLAMIC') {
         return new IslamicCalendarDate(calPeriod);
     } else {
         throw Error('Invalid calendar');
