@@ -61,59 +61,6 @@ describe('ValueService', () => {
 
     });
 
-    describe('isDateEditable', () => {
-
-        it('should determine if a given date or period is editable', () => {
-
-            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13))).toBe(true);
-
-            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'AD', 2018, 5, 13))).toBe(true);
-
-            // before common era
-            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 13))).toBe(false);
-
-            // before common era
-            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'BC', 2018, 5, 13))).toBe(false);
-
-            // month precision
-            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'CE', 2018, 5))).toBe(false);
-
-            // year precision
-            expect(service.isDateEditable(new KnoraDate('GREGORIAN', 'CE', 2018))).toBe(false);
-
-            expect(service.isDateEditable(new KnoraPeriod(
-                new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
-                new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
-            ))).toBe(true);
-
-            // period starts with year precision
-            expect(service.isDateEditable(new KnoraPeriod(
-                new KnoraDate('GREGORIAN', 'CE', 2018),
-                new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
-            ))).toBe(false);
-
-            // period ends with year precision
-            expect(service.isDateEditable(new KnoraPeriod(
-                new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
-                new KnoraDate('GREGORIAN', 'CE', 2019)
-            ))).toBe(false);
-
-            // period starts with BCE date
-            expect(service.isDateEditable(new KnoraPeriod(
-                new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 13),
-                new KnoraDate('GREGORIAN', 'CE', 2019, 5, 13)
-            ))).toBe(false);
-
-            // period ends with BCE date
-            expect(service.isDateEditable(new KnoraPeriod(
-                new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13),
-                new KnoraDate('GREGORIAN', 'BCE', 2019, 5, 13)
-            ))).toBe(false);
-
-        });
-
-    });
-
     describe('isReadOnly', () => {
 
         it('should not mark a ReadIntValue as ReadOnly', () => {
@@ -186,26 +133,6 @@ describe('ValueService', () => {
             expect(service.isReadOnly(valueClass, readStandoffLinkValue, resPropDef)).toBeTruthy();
         });
 
-        it('should mark ReadDateValue with unsupported era as ReadOnly', done => {
-
-            MockResource.getTestThing().subscribe(res => {
-                const date: ReadDateValue =
-                    res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
-
-                date.date = new KnoraDate('GREGORIAN', 'BCE', 2019, 5, 13);
-
-                const resPropDef = new ResourcePropertyDefinition();
-                resPropDef.isEditable = true;
-
-                const valueClass = service.getValueTypeOrClass(date);
-                expect(service.isReadOnly(valueClass, date, resPropDef)).toBeTruthy();
-
-                done();
-
-            });
-
-        });
-
         it('should not mark ReadDateValue with supported era as ReadOnly', done => {
 
             MockResource.getTestThing().subscribe(res => {
@@ -219,26 +146,6 @@ describe('ValueService', () => {
 
                 const valueClass = service.getValueTypeOrClass(date);
                 expect(service.isReadOnly(valueClass, date, resPropDef)).toBeFalsy();
-
-                done();
-
-            });
-
-        });
-
-        it('should mark ReadDateValue with unsupported precision as ReadOnly', done => {
-
-            MockResource.getTestThing().subscribe(res => {
-                const date: ReadDateValue =
-                    res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
-
-                date.date = new KnoraDate('GREGORIAN', 'CE', 2019, 5);
-
-                const resPropDef = new ResourcePropertyDefinition();
-                resPropDef.isEditable = true;
-
-                const valueClass = service.getValueTypeOrClass(date);
-                expect(service.isReadOnly(valueClass, date, resPropDef)).toBeTruthy();
 
                 done();
 

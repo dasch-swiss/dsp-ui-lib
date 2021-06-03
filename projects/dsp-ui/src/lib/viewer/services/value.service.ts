@@ -77,48 +77,7 @@ export class ValueService {
                 (objectType === this._readTextValueAsXml && valueType === this.constants.TextValue) ||
                 objectType === valueType;
     }
-
-    /**
-     * Given a date, checks if its precision is supported by the datepicker.
-     *
-     * @param date date to be checked.
-     */
-    private checkPrecision(date: KnoraDate): boolean {
-        return date.precision === Precision.dayPrecision;
-    }
-
-    /**
-     * Given a date, checks if its era is supported by the datepicker.
-     *
-     * @param date date to be checked.
-     */
-    private checkEra(date: KnoraDate): boolean {
-        return date.era === 'CE' || date.era === 'AD';
-    }
-
-    /**
-     * Determines if a date or period can be edited using this component.
-     *
-     * @param date the date or period to be edited.
-     */
-    isDateEditable(date: KnoraDate | KnoraPeriod): boolean {
-
-        // only day precision is supported by the MatDatepicker
-        let precisionSupported: boolean;
-        // only common era is supported by the MatDatepicker
-        let eraSupported: boolean;
-
-        if (date instanceof KnoraDate) {
-            precisionSupported = this.checkPrecision(date);
-            eraSupported = this.checkEra(date);
-        } else {
-            precisionSupported = this.checkPrecision(date.start) && this.checkPrecision(date.end);
-            eraSupported = this.checkEra(date.start) && this.checkEra(date.end);
-        }
-
-        return precisionSupported && eraSupported;
-    }
-
+    
     /**
      * Determines if a text can be edited using the text editor.
      *
@@ -148,13 +107,8 @@ export class ValueService {
             = valueTypeOrClass === this._readTextValueAsXml
             && (value instanceof ReadTextValueAsXml && !this.isTextEditable(value));
 
-        // MatDatepicker only supports day precision and CE
-        const dateNotEditable
-            = valueTypeOrClass === this.constants.DateValue && (value instanceof ReadDateValue && !this.isDateEditable(value.date));
-
         return valueTypeOrClass === this._readTextValueAsHtml ||
             valueTypeOrClass === this.constants.GeomValue ||
-            xmlValueNonStandardMapping ||
-            dateNotEditable;
+            xmlValueNonStandardMapping;
     }
 }

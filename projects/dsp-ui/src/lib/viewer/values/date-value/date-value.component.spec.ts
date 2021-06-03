@@ -16,7 +16,7 @@ import { DateValueComponent } from './date-value.component';
 
 
 @Component({
-  selector: `dsp-date-input`,
+  selector: `dsp-date-input-text`,
   template: ``,
   providers: [
     {
@@ -194,39 +194,6 @@ describe('DateValueComponent', () => {
 
       expect(valueReadModeNativeElement.innerText).toEqual('13.05.2018');
 
-      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
-
-    });
-
-    it('should display an existing value with an era not supported by MatDatepicker', done => {
-
-      MockResource.getTestThing().subscribe(res => {
-          const inputVal: ReadDateValue =
-              res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
-
-          inputVal.date = new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14);
-
-          testHostComponent.displayInputVal = inputVal;
-
-          testHostFixture.detectChanges();
-
-          expect(testHostComponent.inputValueComponent.displayValue.date).toEqual(new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14));
-
-          expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
-
-          expect(testHostComponent.inputValueComponent.mode).toEqual('read');
-
-          expect(valueReadModeNativeElement.innerText).toEqual('14.05.2018');
-
-          expect(testHostComponent.inputValueComponent.dateEditable).toBe(false);
-
-          const message: DebugElement = valueComponentDe.query(By.css('.not-editable'));
-
-          expect(message.nativeElement.innerText).toEqual('Date cannot be edited: precision and/or era not supported by datepicker.');
-
-          done();
-      });
-
     });
 
     it('should make an existing value editable', () => {
@@ -254,8 +221,6 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
-
       const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
       expect(updatedValue instanceof UpdateDateValue).toBeTruthy();
@@ -267,39 +232,6 @@ describe('DateValueComponent', () => {
       expect((updatedValue as UpdateDateValue).endMonth).toEqual(5);
       expect((updatedValue as UpdateDateValue).startDay).toEqual(13);
       expect((updatedValue as UpdateDateValue).endDay).toEqual(13);
-
-    });
-
-    it('should not make a value editable with an era not supported by MatDatePicker', done => {
-
-      MockResource.getTestThing().subscribe(res => {
-          const inputVal: ReadDateValue =
-              res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
-
-          inputVal.date = new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14);
-
-          testHostComponent.displayInputVal = inputVal;
-
-          testHostComponent.mode = 'update';
-
-          testHostFixture.detectChanges();
-
-          expect(testHostComponent.inputValueComponent.displayValue.date).toEqual(new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14));
-
-          expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
-          expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-          expect(valueReadModeNativeElement.innerText).toEqual('14.05.2018');
-
-          expect(testHostComponent.inputValueComponent.dateEditable).toBe(false);
-
-          const message: DebugElement = valueComponentDe.query(By.css('.not-editable'));
-
-          expect(message.nativeElement.innerText).toEqual('Date cannot be edited: precision and/or era not supported by datepicker.');
-
-          done();
-      });
 
     });
 
@@ -581,8 +513,6 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
-
       const newValue = testHostComponent.inputValueComponent.getNewValue();
 
       expect(newValue instanceof CreateDateValue).toBeTruthy();
@@ -620,8 +550,6 @@ describe('DateValueComponent', () => {
       testHostComponent.inputValueComponent.resetFormControl();
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
-      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
 
       expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(null);
 

@@ -45,8 +45,6 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     matcher = new ValueErrorStateMatcher();
 
-    dateEditable = true;
-
     constructor(@Inject(FormBuilder) private _fb: FormBuilder,
                 private _valueService: ValueService) {
         super();
@@ -103,10 +101,6 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
         this.resetFormControl();
 
-        if (this.displayValue !== undefined) {
-            this.dateEditable = this._valueService.isDateEditable(this.valueFormControl.value);
-        }
-
         resolvedPromise.then(() => {
             // add form to the parent form group
             this.addToParentFormGroup(this.formName, this.form);
@@ -116,10 +110,6 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     ngOnChanges(changes: SimpleChanges): void {
         this.resetFormControl();
-
-        if (this.displayValue !== undefined && this.valueFormControl !== undefined) {
-            this.dateEditable = this._valueService.isDateEditable(this.valueFormControl.value);
-        }
     }
 
     // unsubscribe when the object is destroyed to prevent memory leaks

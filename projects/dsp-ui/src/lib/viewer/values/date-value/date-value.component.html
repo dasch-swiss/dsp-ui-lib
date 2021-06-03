@@ -1,4 +1,4 @@
-<span *ngIf="mode === 'read' || !dateEditable; else showForm" class="read-mode-view">
+<span *ngIf="mode === 'read'; else showForm" class="read-mode-view">
 
     <!-- Date period -->
     <span *ngIf="valueFormControl.value?.end; else date">
@@ -19,10 +19,6 @@
             {{valueFormControl.value | knoraDate:ontologyDateFormat:displayOptions}}
         </span>
     </ng-template>
-
-    <span *ngIf="!dateEditable" class="not-editable">
-        Date cannot be edited: precision and/or era not supported by datepicker.
-    </span>
 
     <!-- Comment -->
     <span class="rm-comment" *ngIf="shouldShowComment">{{commentFormControl.value}}</span>
