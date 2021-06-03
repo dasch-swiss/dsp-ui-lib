@@ -58,11 +58,13 @@ const _MatInputMixinBase: CanUpdateErrorStateCtor & typeof MatInputBase =
     styleUrls: ['./date-edit.component.scss'],
     providers: [{provide: MatFormFieldControl, useExisting: DateEditComponent}]
 })
-export class DateEditComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<KnoraDate | KnoraPeriod>, DoCheck, CanUpdateErrorState, OnDestroy, OnChanges {
+export class DateEditComponent extends _MatInputMixinBase implements ControlValueAccessor, MatFormFieldControl<KnoraDate | KnoraPeriod>, DoCheck, CanUpdateErrorState, OnDestroy, OnInit, OnChanges {
 
     static nextId = 0;
 
     @Input() calendar: string;
+
+    @Input() valueRequiredValidator = true;
 
     form: FormGroup;
     stateChanges = new Subject<void>();
@@ -191,7 +193,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         this.yearControl = new FormControl({
             value: null,
             disabled: false
-        }, [Validators.required, Validators.min(1)]);
+        });
 
         this.monthControl = new FormControl({value: null, disabled: true});
 
@@ -251,6 +253,13 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
             day: this.dayControl
         });
 
+    }
+
+    ngOnInit() {
+        if (this.valueRequiredValidator) {
+            this.yearControl.setValidators([Validators.required, Validators.min(1)]);
+            this.yearControl.updateValueAndValidity();
+        }
     }
 
     ngOnChanges(changes: SimpleChanges) {
