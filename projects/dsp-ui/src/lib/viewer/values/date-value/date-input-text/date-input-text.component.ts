@@ -149,6 +149,8 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     static nextId = 0;
 
+    @Input() valueRequiredValidator = true;
+
     form: FormGroup;
     stateChanges = new Subject<void>();
 
@@ -270,13 +272,13 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.calendarControl = new FormControl(null);
 
         this.endDate = new FormControl(null);
-        this.startDate = new FormControl(null, [Validators.required, periodStartEndValidator(this.isPeriodControl, this.endDate)]);
+        this.startDate = new FormControl(null);
 
         this.isPeriodControl.valueChanges.subscribe(
             isPeriod => {
                 this.endDate.clearValidators();
 
-                if (isPeriod) {
+                if (isPeriod && this.valueRequiredValidator) {
                     // end date is required in case of a period
                     this.endDate.setValidators([Validators.required]);
                 }
@@ -328,7 +330,12 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     }
 
     ngOnInit(): void {
-
+        if (this.valueRequiredValidator) {
+            this.startDate.setValidators([Validators.required, periodStartEndValidator(this.isPeriodControl, this.endDate)]);
+        } else {
+            this.startDate.setValidators([periodStartEndValidator(this.isPeriodControl, this.endDate)]);
+        }
+        this.startDate.updateValueAndValidity();
     }
 
     ngDoCheck() {

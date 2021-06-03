@@ -30,7 +30,7 @@
 
         <mat-form-field class="large-field child-value-component" floatLabel="never">
 
-            <dsp-date-input-text #dateInput [formControlName]="'value'" class="value"></dsp-date-input-text>
+            <dsp-date-input-text #dateInput [formControlName]="'value'" [valueRequiredValidator]="valueRequiredValidator" class="value"></dsp-date-input-text>
 
             <mat-error *ngIf="valueFormControl.hasError('valueNotChanged')">
                 <span class="custom-error-message">New value must be different than the current value.</span>
