@@ -92,16 +92,17 @@ describe('DateEditComponent', () => {
         expect(value.month).toEqual(5);
         expect(value.day).toEqual(19);
 
-
-
         const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
         expect(await yearInput.getValue()).toEqual('2018');
+        expect(await yearInput.isDisabled()).toBeFalse();
 
         const monthInput = await loader.getHarness(MatSelectHarness.with({selector: '.month'}));
         expect(await monthInput.getValueText()).toEqual('5');
+        expect(await monthInput.isDisabled()).toBeFalse();
 
         const dayInput = await loader.getHarness(MatSelectHarness.with({selector: '.day'}));
         expect(await dayInput.getValueText()).toEqual('19');
+        expect(await dayInput.isDisabled()).toBeFalse();
 
     });
 
@@ -118,15 +119,25 @@ describe('DateEditComponent', () => {
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(null);
 
+        const value = testHostComponent.dateEditComponent.value;
+
+        expect(value.calendar).toEqual('JULIAN');
+        expect(value.year).toEqual(2018);
+        expect(value.month).toEqual(5);
+        expect(value.day).toBeUndefined();
+
+
         const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
         expect(await yearInput.getValue()).toEqual('2018');
+        expect(await yearInput.isDisabled()).toBeFalse();
 
         const monthInput = await loader.getHarness(MatSelectHarness.with({selector: '.month'}));
         expect(await monthInput.getValueText()).toEqual('5');
+        expect(await monthInput.isDisabled()).toBeFalse();
 
         const dayInput = await loader.getHarness(MatSelectHarness.with({selector: '.day'}));
-
         expect(await dayInput.getValueText()).toEqual('');
+        expect(await dayInput.isDisabled()).toBeFalse();
 
     });
 
@@ -143,15 +154,24 @@ describe('DateEditComponent', () => {
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(null);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(null);
 
+        const value = testHostComponent.dateEditComponent.value;
+
+        expect(value.calendar).toEqual('JULIAN');
+        expect(value.year).toEqual(2018);
+        expect(value.month).toBeUndefined();
+        expect(value.day).toBeUndefined();
+
         const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
         expect(await yearInput.getValue()).toEqual('2018');
+        expect(await yearInput.isDisabled()).toBeFalse();
 
         const monthInput = await loader.getHarness(MatSelectHarness.with({selector: '.month'}));
         expect(await monthInput.getValueText()).toEqual('');
+        expect(await monthInput.isDisabled()).toBeFalse();
 
         const dayInput = await loader.getHarness(MatSelectHarness.with({selector: '.day'}));
-
         expect(await dayInput.getValueText()).toEqual('');
+        expect(await dayInput.isDisabled()).toBeTrue();
 
     });
 
@@ -165,6 +185,13 @@ describe('DateEditComponent', () => {
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(19);
+
+        const value = testHostComponent.dateEditComponent.value;
+
+        expect(value.calendar).toEqual('JULIAN');
+        expect(value.year).toEqual(2018);
+        expect(value.month).toEqual(5);
+        expect(value.day).toEqual(19);
 
         const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
         expect(await yearInput.getValue()).toEqual('2018');
@@ -182,10 +209,9 @@ describe('DateEditComponent', () => {
 
         await testHostFixture.whenStable();
 
-        const value = testHostComponent.dateEditComponent.value;
+        const newValue = testHostComponent.dateEditComponent.value;
 
-        expect(value.calendar).toEqual('GREGORIAN');
-
+        expect(newValue.calendar).toEqual('GREGORIAN');
 
     });
 
