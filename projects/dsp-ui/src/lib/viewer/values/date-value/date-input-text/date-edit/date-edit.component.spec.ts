@@ -13,7 +13,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
-import { MatRadioButtonHarness, MatRadioGroupHarness } from '@angular/material/radio/testing';
+import { MatRadioGroupHarness } from '@angular/material/radio/testing';
 
 /**
  * Test host component to simulate parent component.
@@ -41,6 +41,37 @@ class TestHostComponent implements OnInit {
 
         this.form = this._fb.group({
             date: [new KnoraDate('JULIAN', 'CE', 2018, 5, 19)]
+        });
+
+    }
+}
+
+/**
+ * Test host component to simulate parent component.
+ */
+@Component({
+    template: `
+        <div [formGroup]="form">
+            <mat-form-field>
+                <dsp-date-edit #dateEdit [formControlName]="'date'" [calendar]="calendar" [valueRequiredValidator]="false"></dsp-date-edit>
+            </mat-form-field>
+        </div>`
+})
+class TestHostComponentNoValueRequiredComponent implements OnInit {
+
+    @ViewChild('dateEdit') dateEditComponent: DateEditComponent;
+
+    form: FormGroup;
+
+    calendar = 'JULIAN';
+
+    constructor(private _fb: FormBuilder) {
+    }
+
+    ngOnInit(): void {
+
+        this.form = this._fb.group({
+            date: [null]
         });
 
     }
@@ -85,6 +116,7 @@ describe('DateEditComponent', () => {
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(19);
+        expect(testHostComponent.dateEditComponent.form.valid).toBeTrue();
 
         const value = testHostComponent.dateEditComponent.value;
 
@@ -122,6 +154,7 @@ describe('DateEditComponent', () => {
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(null);
+        expect(testHostComponent.dateEditComponent.form.valid).toBeTrue();
 
         const value = testHostComponent.dateEditComponent.value;
 
@@ -159,6 +192,7 @@ describe('DateEditComponent', () => {
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(null);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(null);
+        expect(testHostComponent.dateEditComponent.form.valid).toBeTrue();
 
         const value = testHostComponent.dateEditComponent.value;
 
@@ -324,6 +358,49 @@ describe('DateEditComponent', () => {
         testHostComponent.dateEditComponent.yearControl.setValue(null);
 
         expect(testHostComponent.dateEditComponent.form.valid).toBeFalse();
+
+    });
+
+});
+
+describe('DateEditComponent (no validator required)', () => {
+    let testHostComponent: TestHostComponentNoValueRequiredComponent;
+    let testHostFixture: ComponentFixture<TestHostComponentNoValueRequiredComponent>;
+    let loader: HarnessLoader;
+
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                ReactiveFormsModule,
+                MatFormFieldModule,
+                MatInputModule,
+                MatRadioModule,
+                BrowserAnimationsModule,
+                MatSelectModule
+            ],
+            declarations: [DateEditComponent, TestHostComponentNoValueRequiredComponent]
+        })
+            .compileComponents();
+    }));
+
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(TestHostComponentNoValueRequiredComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        loader = TestbedHarnessEnvironment.loader(testHostFixture);
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should be valid for an empty form (null)', async () => {
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.form.valid).toBeTrue();
+
+        expect(testHostComponent.form.controls.date.value).toEqual(null);
+
 
     });
 

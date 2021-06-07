@@ -85,7 +85,11 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
 
     @Input()
     get value(): KnoraDate | null {
-        if (!this.form.valid) {
+
+        if (!this.form.valid
+            || this.calendar === undefined
+            || this.eraControl.value === null
+            || this.yearControl.value === null) { // in case valueRequiredValidator is set to false, return null for an empty year
             return null;
         }
 
