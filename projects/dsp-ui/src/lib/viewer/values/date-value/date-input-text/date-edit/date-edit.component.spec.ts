@@ -76,11 +76,23 @@ describe('DateEditComponent', () => {
 
     it('should initialize a date with day precision correctly', async () => {
 
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
         expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
 
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(19);
+
+        const value = testHostComponent.dateEditComponent.value;
+
+        expect(value.calendar).toEqual('JULIAN');
+        expect(value.year).toEqual(2018);
+        expect(value.month).toEqual(5);
+        expect(value.day).toEqual(19);
+
+
 
         const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
         expect(await yearInput.getValue()).toEqual('2018');
@@ -94,6 +106,9 @@ describe('DateEditComponent', () => {
     });
 
     it('should initialize a date with month precision correctly', async () => {
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
 
         testHostComponent.form.controls.date.setValue(new KnoraDate('JULIAN', 'CE', 2018, 5));
 
@@ -112,6 +127,65 @@ describe('DateEditComponent', () => {
         const dayInput = await loader.getHarness(MatSelectHarness.with({selector: '.day'}));
 
         expect(await dayInput.getValueText()).toEqual('');
+
+    });
+
+    it('should initialize a date with year precision correctly', async () => {
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        testHostComponent.form.controls.date.setValue(new KnoraDate('JULIAN', 'CE', 2018));
+
+        expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
+
+        expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
+        expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(null);
+        expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(null);
+
+        const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
+        expect(await yearInput.getValue()).toEqual('2018');
+
+        const monthInput = await loader.getHarness(MatSelectHarness.with({selector: '.month'}));
+        expect(await monthInput.getValueText()).toEqual('');
+
+        const dayInput = await loader.getHarness(MatSelectHarness.with({selector: '.day'}));
+
+        expect(await dayInput.getValueText()).toEqual('');
+
+    });
+
+    it('should react to changing the calendar', async () => {
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
+
+        expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
+        expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
+        expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(19);
+
+        const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
+        expect(await yearInput.getValue()).toEqual('2018');
+
+        const monthInput = await loader.getHarness(MatSelectHarness.with({selector: '.month'}));
+        expect(await monthInput.getValueText()).toEqual('5');
+
+        const dayInput = await loader.getHarness(MatSelectHarness.with({selector: '.day'}));
+        expect(await dayInput.getValueText()).toEqual('19');
+
+        // change calendar @Input
+        testHostComponent.calendar = 'GREGORIAN';
+
+        testHostFixture.detectChanges();
+
+        await testHostFixture.whenStable();
+
+        const value = testHostComponent.dateEditComponent.value;
+
+        expect(value.calendar).toEqual('GREGORIAN');
+
 
     });
 
