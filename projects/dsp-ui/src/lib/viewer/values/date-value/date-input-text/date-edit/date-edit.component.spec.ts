@@ -314,6 +314,16 @@ describe('DateEditComponent', () => {
 
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(28);
 
+    });
+
+    it('should consider a date without a year invalid', async () => {
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        testHostComponent.dateEditComponent.yearControl.setValue(null);
+
+        expect(testHostComponent.dateEditComponent.form.valid).toBeFalse();
 
     });
 
