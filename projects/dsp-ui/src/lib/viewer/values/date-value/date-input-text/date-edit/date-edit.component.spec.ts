@@ -13,6 +13,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
+import { MatRadioButtonHarness, MatRadioGroupHarness } from '@angular/material/radio/testing';
 
 /**
  * Test host component to simulate parent component.
@@ -80,7 +81,7 @@ describe('DateEditComponent', () => {
         await testHostFixture.whenStable();
 
         expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
-
+        expect(testHostComponent.dateEditComponent.eraControl.value).toEqual('CE');
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(19);
@@ -91,6 +92,9 @@ describe('DateEditComponent', () => {
         expect(value.year).toEqual(2018);
         expect(value.month).toEqual(5);
         expect(value.day).toEqual(19);
+
+        const eraRadioGroup = await loader.getHarness(MatRadioGroupHarness.with({selector: '.era'}));
+        expect(await (await eraRadioGroup.getCheckedRadioButton()).getValue()).toEqual('CE');
 
         const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
         expect(await yearInput.getValue()).toEqual('2018');
@@ -114,7 +118,7 @@ describe('DateEditComponent', () => {
         testHostComponent.form.controls.date.setValue(new KnoraDate('JULIAN', 'CE', 2018, 5));
 
         expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
-
+        expect(testHostComponent.dateEditComponent.eraControl.value).toEqual('CE');
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(null);
@@ -126,6 +130,8 @@ describe('DateEditComponent', () => {
         expect(value.month).toEqual(5);
         expect(value.day).toBeUndefined();
 
+        const eraRadioGroup = await loader.getHarness(MatRadioGroupHarness.with({selector: '.era'}));
+        expect(await (await eraRadioGroup.getCheckedRadioButton()).getValue()).toEqual('CE');
 
         const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
         expect(await yearInput.getValue()).toEqual('2018');
@@ -149,7 +155,7 @@ describe('DateEditComponent', () => {
         testHostComponent.form.controls.date.setValue(new KnoraDate('JULIAN', 'CE', 2018));
 
         expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
-
+        expect(testHostComponent.dateEditComponent.eraControl.value).toEqual('CE');
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(null);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(null);
@@ -160,6 +166,9 @@ describe('DateEditComponent', () => {
         expect(value.year).toEqual(2018);
         expect(value.month).toBeUndefined();
         expect(value.day).toBeUndefined();
+
+        const eraRadioGroup = await loader.getHarness(MatRadioGroupHarness.with({selector: '.era'}));
+        expect(await (await eraRadioGroup.getCheckedRadioButton()).getValue()).toEqual('CE');
 
         const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
         expect(await yearInput.getValue()).toEqual('2018');
@@ -181,7 +190,7 @@ describe('DateEditComponent', () => {
         await testHostFixture.whenStable();
 
         expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
-
+        expect(testHostComponent.dateEditComponent.eraControl.value).toEqual('CE');
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(19);
@@ -192,6 +201,9 @@ describe('DateEditComponent', () => {
         expect(value.year).toEqual(2018);
         expect(value.month).toEqual(5);
         expect(value.day).toEqual(19);
+
+        const eraRadioGroup = await loader.getHarness(MatRadioGroupHarness.with({selector: '.era'}));
+        expect(await (await eraRadioGroup.getCheckedRadioButton()).getValue()).toEqual('CE');
 
         const yearInput = await loader.getHarness(MatInputHarness.with({selector: '.year'}));
         expect(await yearInput.getValue()).toEqual('2018');
@@ -244,7 +256,7 @@ describe('DateEditComponent', () => {
         await testHostFixture.whenStable();
 
         expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
-
+        expect(testHostComponent.dateEditComponent.eraControl.value).toEqual('CE');
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(19);
@@ -293,7 +305,7 @@ describe('DateEditComponent', () => {
         await testHostFixture.whenStable();
 
         expect(testHostComponent.dateEditComponent.calendar).toEqual('GREGORIAN');
-
+        expect(testHostComponent.dateEditComponent.eraControl.value).toEqual('CE');
         expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2021);
         expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(3);
         expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(31);
