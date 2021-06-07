@@ -258,5 +258,29 @@ describe('DateEditComponent', () => {
 
     });
 
+    it('should change day selection to the latest possible day of the month when changing month selection', async () => {
+
+        testHostComponent.calendar = 'GREGORIAN';
+
+        testHostFixture.detectChanges();
+
+        testHostComponent.form.controls.date.setValue(new KnoraDate('GREGORIAN', 'CE', 2021, 3, 31));
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.calendar).toEqual('GREGORIAN');
+
+        expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2021);
+        expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(3);
+        expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(31);
+
+        testHostComponent.dateEditComponent.monthControl.setValue(2);
+
+        expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(28);
+
+
+    });
+
 });
 
