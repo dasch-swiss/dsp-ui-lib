@@ -265,6 +265,8 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         // async to prevent changed after checked error
         resolvedPromise.then(
             () => {
+                // reinit days on calendar change
+                this._setDays(this.calendar, this.eraControl.value, this.yearControl.value, this.monthControl.value);
                 this._handleInput();
             }
         );

@@ -212,6 +212,29 @@ describe('DateEditComponent', () => {
         const newValue = testHostComponent.dateEditComponent.value;
 
         expect(newValue.calendar).toEqual('GREGORIAN');
+        expect(value.year).toEqual(2018);
+        expect(value.month).toEqual(5);
+        expect(value.day).toEqual(19);
+
+    });
+
+    it('should reinit the days when changing the calendar', async () => {
+
+        testHostComponent.form.controls.date.setValue(new KnoraDate('JULIAN', 'CE', 2021, 3, 31));
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(31);
+
+        // change to Islamic calendar
+        testHostComponent.calendar = 'ISLAMIC';
+
+        testHostFixture.detectChanges();
+
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(30);
 
     });
 
