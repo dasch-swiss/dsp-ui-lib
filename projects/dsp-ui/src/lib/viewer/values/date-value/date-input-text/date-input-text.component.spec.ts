@@ -184,6 +184,8 @@ describe('DateInputTextComponent', () => {
 
         expect((dateEditComponentDe.componentInstance as TestDateEditComponent).calendar).toEqual('JULIAN');
 
+        expect((dateEditComponentDe.componentInstance as TestDateEditComponent).value).toEqual(new KnoraDate('JULIAN', 'CE', 2018, 5, 19));
+
         expect(testHostComponent.dateInputTextComponent.form.valid).toBe(true);
 
         const calendarSelection = await  loader.getHarness(MatSelectHarness.with({selector: '.calendar-selection'}));
