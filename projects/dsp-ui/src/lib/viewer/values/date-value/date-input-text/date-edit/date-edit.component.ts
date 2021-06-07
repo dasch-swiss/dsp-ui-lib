@@ -37,6 +37,7 @@ import {
     IslamicCalendarDate,
     JulianCalendarDate
 } from 'jdnconvertiblecalendar';
+import { ValueService } from '../../../../services/value.service';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -178,7 +179,8 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
                 private _elRef: ElementRef<HTMLElement>,
                 @Optional() _parentForm: NgForm,
                 @Optional() _parentFormGroup: FormGroupDirective,
-                _defaultErrorStateMatcher: ErrorStateMatcher) {
+                _defaultErrorStateMatcher: ErrorStateMatcher,
+                private _valueService: ValueService) {
 
         super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
@@ -306,30 +308,6 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
     }
 
     /**
-     * Calculates the number of days in a month for a given date.
-     *
-     * @param calendar the date's calendar.
-     * @param year the date's year.
-     * @param month the date's month.
-     */
-    private _calculateDaysInMonth(calendar: string, year: number, month: number): number {
-        const date = new CalendarDate(year, month, 1);
-        if (calendar === 'GREGORIAN') {
-            const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));
-            return calDate.daysInMonth(date);
-        } else if (calendar === 'JULIAN') {
-            const calDate = new JulianCalendarDate(new CalendarPeriod(date, date));
-            return calDate.daysInMonth(date);
-        } else if (calendar === 'ISLAMIC') {
-            const calDate = new IslamicCalendarDate(new CalendarPeriod(date, date));
-            return calDate.daysInMonth(date);
-        } else {
-            throw Error('Unknown calendar ' + calendar);
-        }
-
-    }
-
-    /**
      *
      * Sets available days for a given year and month.
      *
@@ -348,7 +326,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
             yearAstro = (yearAstro * -1) + 1;
         }
 
-        const days = this._calculateDaysInMonth(calendar, yearAstro, month);
+        const days = this._valueService.calculateDaysInMonth(calendar, yearAstro, month);
 
         // empty array
         this.days = [];

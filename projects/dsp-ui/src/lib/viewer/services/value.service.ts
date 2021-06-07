@@ -7,6 +7,13 @@ import {
     ReadValue,
     ResourcePropertyDefinition
 } from '@dasch-swiss/dsp-js';
+import {
+    CalendarDate,
+    CalendarPeriod,
+    GregorianCalendarDate,
+    IslamicCalendarDate,
+    JulianCalendarDate
+} from 'jdnconvertiblecalendar';
 
 @Injectable({
     providedIn: 'root'
@@ -77,7 +84,7 @@ export class ValueService {
                 (objectType === this._readTextValueAsXml && valueType === this.constants.TextValue) ||
                 objectType === valueType;
     }
-    
+
     /**
      * Determines if a text can be edited using the text editor.
      *
@@ -110,5 +117,29 @@ export class ValueService {
         return valueTypeOrClass === this._readTextValueAsHtml ||
             valueTypeOrClass === this.constants.GeomValue ||
             xmlValueNonStandardMapping;
+    }
+
+    /**
+     * Calculates the number of days in a month for a given year.
+     *
+     * @param calendar the date's calendar.
+     * @param year the date's year.
+     * @param month the date's month.
+     */
+     calculateDaysInMonth(calendar: string, year: number, month: number): number {
+        const date = new CalendarDate(year, month, 1);
+        if (calendar === 'GREGORIAN') {
+            const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));
+            return calDate.daysInMonth(date);
+        } else if (calendar === 'JULIAN') {
+            const calDate = new JulianCalendarDate(new CalendarPeriod(date, date));
+            return calDate.daysInMonth(date);
+        } else if (calendar === 'ISLAMIC') {
+            const calDate = new IslamicCalendarDate(new CalendarPeriod(date, date));
+            return calDate.daysInMonth(date);
+        } else {
+            throw Error('Unknown calendar ' + calendar);
+        }
+
     }
 }

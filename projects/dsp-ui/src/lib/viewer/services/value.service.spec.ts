@@ -220,4 +220,26 @@ describe('ValueService', () => {
         });
 
     });
+
+    describe('calculateDaysInMonth', () => {
+
+        it('should calculate the number of days in February in a leap year', () => {
+
+            expect(service.calculateDaysInMonth('GREGORIAN', 2020, 2)).toEqual(29);
+
+        });
+
+        it('should calculate the number of days in February in a non leap year', () => {
+
+            expect(service.calculateDaysInMonth('GREGORIAN', 2021, 2)).toEqual(28);
+
+        });
+
+        it('should calculate the number of days in March', () => {
+
+            expect(service.calculateDaysInMonth('GREGORIAN', 2021, 3)).toEqual(31);
+
+        });
+
+    });
 });

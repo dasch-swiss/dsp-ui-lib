@@ -29,30 +29,7 @@ import { Subject } from 'rxjs';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { KnoraDate, KnoraPeriod, Precision } from '@dasch-swiss/dsp-js';
-
-/**
- * Calculates the number of days in a month for a given date.
- *
- * @param calendar the date's calendar.
- * @param year the date's year.
- * @param month the date's month.
- */
-function calculateDaysInMonth(calendar: string, year: number, month: number): number {
-    const date = new CalendarDate(year, month, 1);
-    if (calendar === 'GREGORIAN') {
-        const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));
-        return calDate.daysInMonth(date);
-    } else if (calendar === 'JULIAN') {
-        const calDate = new JulianCalendarDate(new CalendarPeriod(date, date));
-        return calDate.daysInMonth(date);
-    } else if (calendar === 'ISLAMIC') {
-        const calDate = new IslamicCalendarDate(new CalendarPeriod(date, date));
-        return calDate.daysInMonth(date);
-    } else {
-        throw Error('Unknown calendar ' + calendar);
-    }
-
-}
+import { ValueService } from '../../../services/value.service';
 
 /**
  * Given a Knora calendar date, creates a JDN calendar date
@@ -82,14 +59,14 @@ function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCale
 
         calPeriod = new CalendarPeriod(
             new CalendarDate(yearAstro, date.month, 1),
-            new CalendarDate(yearAstro, date.month, calculateDaysInMonth(date.calendar, date.year, date.month))
+            new CalendarDate(yearAstro, date.month, this._valueService.calculateDaysInMonth(date.calendar, date.year, date.month))
         );
 
     } else if (date.precision === Precision.yearPrecision) {
 
         calPeriod = new CalendarPeriod(
             new CalendarDate(yearAstro, 1, 1),
-            new CalendarDate(yearAstro, 12, calculateDaysInMonth(date.calendar, date.year, 12))
+            new CalendarDate(yearAstro, 12, this._valueService.calculateDaysInMonth(date.calendar, date.year, 12))
         );
 
     } else {
@@ -259,7 +236,8 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
                 private _elRef: ElementRef<HTMLElement>,
                 @Optional() _parentForm: NgForm,
                 @Optional() _parentFormGroup: FormGroupDirective,
-                _defaultErrorStateMatcher: ErrorStateMatcher) {
+                _defaultErrorStateMatcher: ErrorStateMatcher,
+                public valueService: ValueService) {
         super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
         if (this.ngControl != null) {
