@@ -215,5 +215,48 @@ describe('DateEditComponent', () => {
 
     });
 
+    it('should reinit the day selection when month changes', async () => {
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.calendar).toEqual('JULIAN');
+
+        expect(testHostComponent.dateEditComponent.yearControl.value).toEqual(2018);
+        expect(testHostComponent.dateEditComponent.monthControl.value).toEqual(5);
+        expect(testHostComponent.dateEditComponent.dayControl.value).toEqual(19);
+
+        const dayInput = await loader.getHarness(MatSelectHarness.with({selector: '.day'}));
+
+        await dayInput.clickOptions();
+        expect((await dayInput.getOptions()).length).toEqual(32); // 31 + null
+
+        const monthInput = await loader.getHarness(MatSelectHarness.with({selector: '.month'}));
+
+        await monthInput.clickOptions();
+
+        // choose February
+        const opts = await monthInput.getOptions();
+        expect(await opts[2].getText()).toEqual('2');
+        await opts[2].click();
+
+        await testHostFixture.whenStable();
+
+        // last day of February 2019 is 28
+        await dayInput.clickOptions();
+        const opts2 = await dayInput.getOptions();
+        expect(opts2.length).toEqual(29); // 28 + null
+        expect(await opts2[28].getText()).toEqual('28');
+
+        await opts2[28].click();
+
+        const value = testHostComponent.dateEditComponent.value;
+        expect(value.calendar).toEqual('JULIAN');
+        expect(value.year).toEqual(2018);
+        expect(value.month).toEqual(2);
+        expect(value.day).toEqual(28);
+
+    });
+
 });
 
