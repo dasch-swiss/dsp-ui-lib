@@ -323,12 +323,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
      */
     private _setDays(calendar: string, era: string, year: number, month: number) {
 
-        // TODO: exclude Islamic calendar date?
-        let yearAstro: number = year;
-        if (era === 'BCE') {
-            // convert historical date to astronomical date
-            yearAstro = (yearAstro * -1) + 1;
-        }
+        const yearAstro = this._valueService.convertHistoricalYearToAstronomicalYear(year, era, calendar);
 
         const days = this._valueService.calculateDaysInMonth(calendar, yearAstro, month);
 

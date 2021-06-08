@@ -31,7 +31,8 @@ export class ValueService {
 
     constants = Constants;
 
-    constructor() { }
+    constructor() {
+    }
 
     /**
      * Given a value, determines the type or class representing it.
@@ -83,9 +84,9 @@ export class ValueService {
      */
     compareObjectTypeWithValueType(objectType: string, valueType: string): boolean {
         return (objectType === this._readTextValueAsString && valueType === this.constants.TextValue) ||
-                (objectType === this._readTextValueAsHtml && valueType === this.constants.TextValue) ||
-                (objectType === this._readTextValueAsXml && valueType === this.constants.TextValue) ||
-                objectType === valueType;
+            (objectType === this._readTextValueAsHtml && valueType === this.constants.TextValue) ||
+            (objectType === this._readTextValueAsXml && valueType === this.constants.TextValue) ||
+            objectType === valueType;
     }
 
     /**
@@ -129,7 +130,7 @@ export class ValueService {
      * @param year the date's year.
      * @param month the date's month.
      */
-     calculateDaysInMonth(calendar: string, year: number, month: number): number {
+    calculateDaysInMonth(calendar: string, year: number, month: number): number {
         const date = new CalendarDate(year, month, 1);
         if (calendar === 'GREGORIAN') {
             const calDate = new GregorianCalendarDate(new CalendarPeriod(date, date));
@@ -147,6 +148,23 @@ export class ValueService {
     }
 
     /**
+     * Given a historical date (year), returns the astronomical year.
+     *
+     * @param year year of the given date.
+     * @param era era of the given date.
+     * @param calendar calendar of the given date.
+     */
+    convertHistoricalYearToAstronomicalYear(year: number, era: string, calendar: string) {
+
+        let yearAstro = year;
+        if (era === 'BCE') {
+            // convert historical date to astronomical date
+            yearAstro = (yearAstro * -1) + 1;
+        }
+        return yearAstro;
+    }
+
+    /**
      * Given a Knora calendar date, creates a JDN calendar date
      * taking into account precision.
      *
@@ -156,12 +174,7 @@ export class ValueService {
 
         let calPeriod: CalendarPeriod;
 
-        // TODO: exclude Islamic calendar date?
-        let yearAstro: number = date.year;
-        if (date.era === 'BCE') {
-            // convert historical date to astronomical date
-            yearAstro = (yearAstro * -1) + 1;
-        }
+        const yearAstro =  this.convertHistoricalYearToAstronomicalYear(date.year, date.era, date.calendar);
 
         if (date.precision === Precision.dayPrecision) {
 

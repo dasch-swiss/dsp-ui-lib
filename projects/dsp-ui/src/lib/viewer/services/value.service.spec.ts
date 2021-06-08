@@ -300,7 +300,33 @@ describe('ValueService', () => {
 
         });
 
+    });
 
+    describe('convertHistoricalYearToAstronomicalYear', () => {
+
+        it('should convert the year 1 BCE to its astronomical representation', () => {
+
+            expect(service.convertHistoricalYearToAstronomicalYear(1, 'BCE', 'JULIAN')).toEqual(0);
+
+        });
+
+        it('should convert the year 2 BCE to its astronomical representation', () => {
+
+            expect(service.convertHistoricalYearToAstronomicalYear(2, 'BCE', 'JULIAN')).toEqual(-1);
+
+        });
+
+        it('should convert the year 1 CE to its astronomical representation', () => {
+
+            expect(service.convertHistoricalYearToAstronomicalYear(1, 'CE', 'JULIAN')).toEqual(1);
+
+        });
+
+        it('should convert the year 1 in the Islamic to its astronomical representation', () => {
+
+            expect(service.convertHistoricalYearToAstronomicalYear(1, 'noEra', 'ISLAMIC')).toEqual(1);
+
+        });
 
     });
 });

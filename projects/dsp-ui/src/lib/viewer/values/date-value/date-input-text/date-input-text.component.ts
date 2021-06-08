@@ -102,8 +102,6 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     set value(date: KnoraDate | KnoraPeriod | null) {
 
-        // TODO: disable era for Islamic calendar dates?
-
         if (date instanceof KnoraDate) {
             // single date
             this.calendarControl.setValue(date.calendar);
