@@ -242,4 +242,65 @@ describe('ValueService', () => {
         });
 
     });
+
+    describe('createJDNCalendarDateFromKnoraDate', () => {
+
+        it('should create a JDN calendar date from a Knora date with day precision in the Gregorian calendar', () => {
+
+            const calDateJDN = service.createJDNCalendarDateFromKnoraDate(new KnoraDate('GREGORIAN', 'CE', 2021, 3, 15));
+
+            const period = calDateJDN.toJDNPeriod();
+
+            expect(period.periodStart).toEqual(2459289);
+            expect(period.periodEnd).toEqual(2459289);
+
+        });
+
+        it('should create a JDN calendar date from a Knora date BCE with day precision in the Gregorian calendar', () => {
+
+            const calDateJDN = service.createJDNCalendarDateFromKnoraDate(new KnoraDate('GREGORIAN', 'BCE', 1, 1, 1));
+
+            const period = calDateJDN.toJDNPeriod();
+
+            expect(period.periodStart).toEqual(1721060);
+            expect(period.periodEnd).toEqual(1721060);
+
+        });
+
+        it('should create a JDN calendar date from a Knora date with day precision in the Julian calendar', () => {
+
+            const calDateJDN = service.createJDNCalendarDateFromKnoraDate(new KnoraDate('JULIAN', 'CE', 2021, 3, 15));
+
+            const period = calDateJDN.toJDNPeriod();
+
+            expect(period.periodStart).toEqual(2459302);
+            expect(period.periodEnd).toEqual(2459302);
+
+        });
+
+        it('should create a JDN calendar date from a Knora date with month precision in the Gregorian calendar', () => {
+
+            const calDateJDN = service.createJDNCalendarDateFromKnoraDate(new KnoraDate('GREGORIAN', 'CE', 2021, 3));
+
+            const period = calDateJDN.toJDNPeriod();
+
+            expect(period.periodStart).toEqual(2459275);
+            expect(period.periodEnd).toEqual(2459305);
+
+        });
+
+        it('should create a JDN calendar date from a Knora date with year precision in the Gregorian calendar', () => {
+
+            const calDateJDN = service.createJDNCalendarDateFromKnoraDate(new KnoraDate('GREGORIAN', 'CE', 2021));
+
+            const period = calDateJDN.toJDNPeriod();
+
+            expect(period.periodStart).toEqual(2459216);
+            expect(period.periodEnd).toEqual(2459580);
+
+        });
+
+
+
+    });
 });

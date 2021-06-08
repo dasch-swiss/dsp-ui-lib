@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-    Constants, KnoraDate, KnoraPeriod, Precision, ReadDateValue,
+    Constants,
+    KnoraDate,
+    Precision,
     ReadTextValueAsHtml,
     ReadTextValueAsString,
     ReadTextValueAsXml,
@@ -12,6 +14,7 @@ import {
     CalendarPeriod,
     GregorianCalendarDate,
     IslamicCalendarDate,
+    JDNConvertibleCalendar,
     JulianCalendarDate
 } from 'jdnconvertiblecalendar';
 
@@ -139,6 +142,60 @@ export class ValueService {
             return calDate.daysInMonth(date);
         } else {
             throw Error('Unknown calendar ' + calendar);
+        }
+
+    }
+
+    /**
+     * Given a Knora calendar date, creates a JDN calendar date
+     * taking into account precision.
+     *
+     * @param date the Knora calendar date.
+     */
+    createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCalendar {
+
+        let calPeriod: CalendarPeriod;
+
+        // TODO: exclude Islamic calendar date?
+        let yearAstro: number = date.year;
+        if (date.era === 'BCE') {
+            // convert historical date to astronomical date
+            yearAstro = (yearAstro * -1) + 1;
+        }
+
+        if (date.precision === Precision.dayPrecision) {
+
+            calPeriod = new CalendarPeriod(
+                new CalendarDate(yearAstro, date.month, date.day),
+                new CalendarDate(yearAstro, date.month, date.day)
+            );
+
+        } else if (date.precision === Precision.monthPrecision) {
+
+            calPeriod = new CalendarPeriod(
+                new CalendarDate(yearAstro, date.month, 1),
+                new CalendarDate(yearAstro, date.month, this.calculateDaysInMonth(date.calendar, date.year, date.month))
+            );
+
+        } else if (date.precision === Precision.yearPrecision) {
+
+            calPeriod = new CalendarPeriod(
+                new CalendarDate(yearAstro, 1, 1),
+                new CalendarDate(yearAstro, 12, this.calculateDaysInMonth(date.calendar, date.year, 12))
+            );
+
+        } else {
+            throw Error('Invalid precision');
+        }
+
+        if (date.calendar === 'GREGORIAN') {
+            return new GregorianCalendarDate(calPeriod);
+        } else if (date.calendar === 'JULIAN') {
+            return new JulianCalendarDate(calPeriod);
+        } else if (date.calendar === 'ISLAMIC') {
+            return new IslamicCalendarDate(calPeriod);
+        } else {
+            throw Error('Invalid calendar');
         }
 
     }

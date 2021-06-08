@@ -13,77 +13,17 @@ import {
     FormGroup,
     FormGroupDirective,
     NgControl,
-    NgForm, ValidatorFn,
+    NgForm,
+    ValidatorFn,
     Validators
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
-import {
-    CalendarDate,
-    CalendarPeriod,
-    GregorianCalendarDate,
-    IslamicCalendarDate,
-    JDNConvertibleCalendar,
-    JulianCalendarDate
-} from 'jdnconvertiblecalendar';
+import { JDNConvertibleCalendar } from 'jdnconvertiblecalendar';
 import { Subject } from 'rxjs';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { KnoraDate, KnoraPeriod, Precision } from '@dasch-swiss/dsp-js';
+import { KnoraDate, KnoraPeriod } from '@dasch-swiss/dsp-js';
 import { ValueService } from '../../../services/value.service';
-
-/**
- * Given a Knora calendar date, creates a JDN calendar date
- * taking into account precision.
- *
- * @param date the Knora calendar date.
- */
-function createJDNCalendarDateFromKnoraDate(date: KnoraDate, valueService: ValueService): JDNConvertibleCalendar {
-
-    let calPeriod: CalendarPeriod;
-
-    // TODO: exclude Islamic calendar date?
-    let yearAstro: number = date.year;
-    if (date.era === 'BCE') {
-        // convert historical date to astronomical date
-        yearAstro = (yearAstro * -1) + 1;
-    }
-
-    if (date.precision === Precision.dayPrecision) {
-
-        calPeriod = new CalendarPeriod(
-            new CalendarDate(yearAstro, date.month, date.day),
-            new CalendarDate(yearAstro, date.month, date.day)
-        );
-
-    } else if (date.precision === Precision.monthPrecision) {
-
-        calPeriod = new CalendarPeriod(
-            new CalendarDate(yearAstro, date.month, 1),
-            new CalendarDate(yearAstro, date.month, valueService.calculateDaysInMonth(date.calendar, date.year, date.month))
-        );
-
-    } else if (date.precision === Precision.yearPrecision) {
-
-        calPeriod = new CalendarPeriod(
-            new CalendarDate(yearAstro, 1, 1),
-            new CalendarDate(yearAstro, 12, valueService.calculateDaysInMonth(date.calendar, date.year, 12))
-        );
-
-    } else {
-        throw Error('Invalid precision');
-    }
-
-    if (date.calendar === 'GREGORIAN') {
-        return new GregorianCalendarDate(calPeriod);
-    } else if (date.calendar === 'JULIAN') {
-        return new JulianCalendarDate(calPeriod);
-    } else if (date.calendar === 'ISLAMIC') {
-        return new IslamicCalendarDate(calPeriod);
-    } else {
-        throw Error('Invalid calendar');
-    }
-
-}
 
 /** If a period is defined, start date must be before end date */
 export function periodStartEndValidator(isPeriod: FormControl, endDate: FormControl, valueService: ValueService): ValidatorFn {
@@ -92,8 +32,8 @@ export function periodStartEndValidator(isPeriod: FormControl, endDate: FormCont
         if (isPeriod.value && control.value !== null && endDate.value !== null) {
             // period: check if start is before end
 
-            const jdnStartDate = createJDNCalendarDateFromKnoraDate(control.value, valueService);
-            const jdnEndDate = createJDNCalendarDateFromKnoraDate(endDate.value, valueService);
+            const jdnStartDate = valueService.createJDNCalendarDateFromKnoraDate(control.value);
+            const jdnEndDate = valueService.createJDNCalendarDateFromKnoraDate(endDate.value);
 
             const invalid = jdnStartDate.toJDNPeriod().periodEnd >= jdnEndDate.toJDNPeriod().periodStart;
 
