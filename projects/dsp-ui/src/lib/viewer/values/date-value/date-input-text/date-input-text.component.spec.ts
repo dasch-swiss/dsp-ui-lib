@@ -23,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { By } from '@angular/platform-browser';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
+import { CalendarDate, CalendarPeriod, JulianCalendarDate } from 'jdnconvertiblecalendar';
 
 /**
  * Test host component to simulate parent component.
@@ -243,6 +244,28 @@ describe('DateInputTextComponent', () => {
             .toEqual(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2018, 5, 19), new KnoraDate('JULIAN', 'CE', 2019, 5, 19)));
 
 
+    });
+
+    it('should propagate changes made by the user for a single date', async () => {
+
+        testHostComponent.dateInputTextComponent.startDate.setValue(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
+
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateInputTextComponent.form.valid).toBe(true);
+
+        expect(testHostComponent.form.controls.date.value).toEqual(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
+    });
+
+    it('should propagate changes made by the user for a period', async() => {
+
+        testHostComponent.dateInputTextComponent.startDate.setValue(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2019, 5, 19), new KnoraDate('JULIAN', 'CE', 2020, 5, 19)));
+
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateInputTextComponent.form.valid).toBe(true);
+
+        expect(testHostComponent.form.controls.date.value).toEqual(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2019, 5, 19), new KnoraDate('JULIAN', 'CE', 2020, 5, 19)));
     });
 
 });
