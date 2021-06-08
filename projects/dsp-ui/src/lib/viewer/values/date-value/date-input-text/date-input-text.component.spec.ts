@@ -287,23 +287,13 @@ describe('DateInputTextComponent', () => {
         expect(testHostComponent.form.controls.date.value).toEqual(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2019, 5, 19), new KnoraDate('JULIAN', 'CE', 2020, 5, 19)));
     });
 
-    it('should propagate changes made by the user for a period', async () => {
+    it('should return "null" for an invalid user input (start date greater than end date)', async () => {
 
         testHostComponent.dateInputTextComponent.isPeriodControl.setValue(true);
 
-        testHostFixture.detectChanges();
+        testHostComponent.dateInputTextComponent.startDate.setValue(new KnoraDate('JULIAN', 'CE', 2021, 5, 19));
 
-        const hostCompDe = testHostFixture.debugElement;
-
-        const startDateEditComponentDe = hostCompDe.query(By.css('.start-date'));
-
-        (startDateEditComponentDe.componentInstance as TestDateEditComponent).writeValue(new KnoraDate('JULIAN', 'CE', 2021, 5, 19));
-        (startDateEditComponentDe.componentInstance as TestDateEditComponent)._handleInput();
-
-        const endDateEditComponentDe = hostCompDe.query(By.css('.end-date'));
-
-        (endDateEditComponentDe.componentInstance as TestDateEditComponent).writeValue(new KnoraDate('JULIAN', 'CE', 2020, 5, 19));
-        (endDateEditComponentDe.componentInstance as TestDateEditComponent)._handleInput();
+        testHostComponent.dateInputTextComponent.endDate.setValue(new KnoraDate('JULIAN', 'CE', 2020, 5, 19));
 
         await testHostFixture.whenStable();
 
@@ -312,6 +302,32 @@ describe('DateInputTextComponent', () => {
         expect(testHostComponent.form.controls.date.value).toBeNull();
     });
 
+    it('should return "null" for an invalid user input (start date greater than end date) 2', async () => {
 
+        testHostComponent.dateInputTextComponent.isPeriodControl.setValue(true);
+
+        testHostComponent.dateInputTextComponent.startDate.setValue(new KnoraDate('JULIAN', 'CE', 2021, 5, 19));
+
+        testHostComponent.dateInputTextComponent.endDate.setValue(new KnoraDate('JULIAN', 'BCE', 2022, 5, 19));
+
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateInputTextComponent.form.valid).toBe(false);
+
+        expect(testHostComponent.form.controls.date.value).toBeNull();
+    });
+
+    it('should initialize the date with an empty value', () => {
+
+        testHostComponent.form.controls.date.setValue(null);
+
+        expect(testHostComponent.dateInputTextComponent.startDate.value).toBe(null);
+        expect(testHostComponent.dateInputTextComponent.isPeriodControl.value).toBe(false);
+        expect(testHostComponent.dateInputTextComponent.endDate.value).toBe(null);
+        expect(testHostComponent.dateInputTextComponent.calendarControl.value).toEqual('GREGORIAN');
+
+        expect(testHostComponent.dateInputTextComponent.form.valid).toBe(false);
+
+    });
 
 });
