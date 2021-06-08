@@ -27,7 +27,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { KnoraDate, KnoraPeriod } from '@dasch-swiss/dsp-js';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { ValueService } from '../../../../services/value.service';
@@ -75,6 +75,8 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
     readonly focused = false;
 
     readonly controlType = 'dsp-date-edit';
+
+    private _subscriptions: Subscription[] = [];
 
     @Input()
     get value(): KnoraDate | null {
@@ -208,7 +210,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         this.dayControl = new FormControl({value: null, disabled: true});
 
         // recalculate days of month when era changes
-        this.eraControl.valueChanges.subscribe(
+        const eraChangesSubscription = this.eraControl.valueChanges.subscribe(
             data => {
                 if (this.yearControl.valid && this.monthControl.value) {
                     this._setDays(this.calendar, this.eraControl.value, this.yearControl.value, this.monthControl.value);
@@ -216,9 +218,11 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
             }
         );
 
+        this._subscriptions.push(eraChangesSubscription);
+
         // enable/disable month selection depending on year
         // enable/disable day selection depending on
-        this.yearControl.valueChanges.subscribe(
+        const yearChangesSubscription = this.yearControl.valueChanges.subscribe(
             data => {
                 if (this.yearControl.valid) {
                     this.monthControl.enable();
@@ -234,9 +238,11 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
             }
         );
 
+        this._subscriptions.push(yearChangesSubscription);
+
         // enable/disable day selection depending on month
         // recalculate days when month changes
-        this.monthControl.valueChanges.subscribe(
+        const monthChangesSubscription = this.monthControl.valueChanges.subscribe(
             data => {
                 if (this.yearControl.valid && this.monthControl.value) {
                     this._setDays(this.calendar, this.eraControl.value, this.yearControl.value, this.monthControl.value);
@@ -250,6 +256,8 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
                 }
             }
         );
+
+        this._subscriptions.push(monthChangesSubscription);
 
         // init form
         this.form = fb.group({
@@ -298,6 +306,14 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
 
     ngOnDestroy() {
         this.stateChanges.complete();
+
+        this._subscriptions.forEach(
+            subs => {
+                if (subs instanceof Subscription && !subs.closed) {
+                    subs.unsubscribe();
+                }
+            }
+        );
     }
 
     writeValue(date: KnoraDate | null): void {

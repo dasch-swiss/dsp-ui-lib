@@ -19,7 +19,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { JDNConvertibleCalendar } from 'jdnconvertiblecalendar';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { KnoraDate, KnoraPeriod } from '@dasch-swiss/dsp-js';
@@ -81,6 +81,8 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
     readonly controlType = 'dsp-date-input-text';
 
     calendars = JDNConvertibleCalendar.supportedCalendars.map(cal => cal.toUpperCase());
+
+    private _subscriptions: Subscription[] = [];
 
     @Input()
     get value(): KnoraDate | KnoraPeriod | null {
@@ -190,7 +192,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
         this.endDate = new FormControl(null);
         this.startDate = new FormControl(null);
 
-        this.isPeriodControl.valueChanges.subscribe(
+        const eraChangesSubscription = this.isPeriodControl.valueChanges.subscribe(
             isPeriod => {
                 this.endDate.clearValidators();
 
@@ -203,8 +205,10 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             }
         );
 
+        this._subscriptions.push(eraChangesSubscription);
+
         // TODO: find better way to detect changes
-        this.startDate.valueChanges.subscribe(
+        const startValueSubscription = this.startDate.valueChanges.subscribe(
             data => {
                 // form's validity has not been updated yet,
                 // trigger update
@@ -213,8 +217,10 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
             }
         );
 
+        this._subscriptions.push(startValueSubscription);
+
         // TODO: find better way to detect changes
-        this.endDate.valueChanges.subscribe(
+        const endValueSubscription = this.endDate.valueChanges.subscribe(
             data => {
                 // trigger period check validator set on start date control
                 this.startDate.updateValueAndValidity();
@@ -224,6 +230,8 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
                 this._handleInput();
             }
         );
+
+        this._subscriptions.push(endValueSubscription);
 
         // init form
         this.form = fb.group({
@@ -262,6 +270,14 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     ngOnDestroy() {
         this.stateChanges.complete();
+
+        this._subscriptions.forEach(
+            subs => {
+                if (subs instanceof Subscription && !subs.closed) {
+                    subs.unsubscribe();
+                }
+            }
+        );
     }
 
     writeValue(date: KnoraDate | KnoraPeriod | null): void {
