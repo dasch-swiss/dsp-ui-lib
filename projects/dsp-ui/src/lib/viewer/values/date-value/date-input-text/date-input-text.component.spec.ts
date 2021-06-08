@@ -248,7 +248,12 @@ describe('DateInputTextComponent', () => {
 
     it('should propagate changes made by the user for a single date', async () => {
 
-        testHostComponent.dateInputTextComponent.startDate.setValue(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
+        const hostCompDe = testHostFixture.debugElement;
+
+        const startDateEditComponentDe = hostCompDe.query(By.css('.start-date'));
+
+        (startDateEditComponentDe.componentInstance as TestDateEditComponent).writeValue(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
+        (startDateEditComponentDe.componentInstance as TestDateEditComponent)._handleInput();
 
         await testHostFixture.whenStable();
 
@@ -259,11 +264,21 @@ describe('DateInputTextComponent', () => {
 
     it('should propagate changes made by the user for a period', async () => {
 
-        testHostComponent.dateInputTextComponent.startDate.setValue(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
-
-        testHostComponent.dateInputTextComponent.endDate.setValue(new KnoraDate('JULIAN', 'CE', 2020, 5, 19));
-
         testHostComponent.dateInputTextComponent.isPeriodControl.setValue(true);
+
+        testHostFixture.detectChanges();
+
+        const hostCompDe = testHostFixture.debugElement;
+
+        const startDateEditComponentDe = hostCompDe.query(By.css('.start-date'));
+
+        (startDateEditComponentDe.componentInstance as TestDateEditComponent).writeValue(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
+        (startDateEditComponentDe.componentInstance as TestDateEditComponent)._handleInput();
+
+        const endDateEditComponentDe = hostCompDe.query(By.css('.end-date'));
+
+        (endDateEditComponentDe.componentInstance as TestDateEditComponent).writeValue(new KnoraDate('JULIAN', 'CE', 2020, 5, 19));
+        (endDateEditComponentDe.componentInstance as TestDateEditComponent)._handleInput();
 
         await testHostFixture.whenStable();
 
@@ -271,5 +286,32 @@ describe('DateInputTextComponent', () => {
 
         expect(testHostComponent.form.controls.date.value).toEqual(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2019, 5, 19), new KnoraDate('JULIAN', 'CE', 2020, 5, 19)));
     });
+
+    it('should propagate changes made by the user for a period', async () => {
+
+        testHostComponent.dateInputTextComponent.isPeriodControl.setValue(true);
+
+        testHostFixture.detectChanges();
+
+        const hostCompDe = testHostFixture.debugElement;
+
+        const startDateEditComponentDe = hostCompDe.query(By.css('.start-date'));
+
+        (startDateEditComponentDe.componentInstance as TestDateEditComponent).writeValue(new KnoraDate('JULIAN', 'CE', 2021, 5, 19));
+        (startDateEditComponentDe.componentInstance as TestDateEditComponent)._handleInput();
+
+        const endDateEditComponentDe = hostCompDe.query(By.css('.end-date'));
+
+        (endDateEditComponentDe.componentInstance as TestDateEditComponent).writeValue(new KnoraDate('JULIAN', 'CE', 2020, 5, 19));
+        (endDateEditComponentDe.componentInstance as TestDateEditComponent)._handleInput();
+
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateInputTextComponent.form.valid).toBe(false);
+
+        expect(testHostComponent.form.controls.date.value).toBeNull();
+    });
+
+
 
 });
