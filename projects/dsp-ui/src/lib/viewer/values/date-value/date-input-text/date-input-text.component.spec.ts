@@ -23,7 +23,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { By } from '@angular/platform-browser';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
-import { CalendarDate, CalendarPeriod, JulianCalendarDate } from 'jdnconvertiblecalendar';
 
 /**
  * Test host component to simulate parent component.
@@ -156,7 +155,7 @@ describe('DateInputTextComponent', () => {
                 MatCheckboxModule,
                 BrowserAnimationsModule,
             ],
-            declarations: [DateInputTextComponent, TestDateEditComponent, TestHostComponent, NoValueRequiredTestHostComponent]
+            declarations: [DateInputTextComponent, TestDateEditComponent, TestHostComponent]
         })
             .compileComponents();
     }));
@@ -378,6 +377,46 @@ describe('DateInputTextComponent', () => {
 
         expect(testHostComponent.dateInputTextComponent.form.valid).toBe(false);
 
+    });
+
+});
+
+describe('DateInputTextComponent (no validator required)', () => {
+    let testHostComponent: NoValueRequiredTestHostComponent;
+    let testHostFixture: ComponentFixture<NoValueRequiredTestHostComponent>;
+    let loader: HarnessLoader;
+
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                ReactiveFormsModule,
+                MatFormFieldModule,
+                MatInputModule,
+                MatSelectModule,
+                MatOptionModule,
+                MatCheckboxModule,
+                BrowserAnimationsModule,
+            ],
+            declarations: [DateInputTextComponent, TestDateEditComponent, NoValueRequiredTestHostComponent]
+        })
+            .compileComponents();
+    }));
+
+    beforeEach(() => {
+        testHostFixture = TestBed.createComponent(NoValueRequiredTestHostComponent);
+        testHostComponent = testHostFixture.componentInstance;
+        loader = TestbedHarnessEnvironment.loader(testHostFixture);
+        testHostFixture.detectChanges();
+
+        expect(testHostComponent).toBeTruthy();
+    });
+
+    it('should receive the propagated valueRequiredValidator from the parent component', () => {
+        expect(testHostComponent.dateInputTextComponent.valueRequiredValidator).toBe(false);
+    });
+
+    it('should mark the form\'s validity correctly', () => {
+        expect(testHostComponent.dateInputTextComponent.form.valid).toBe(true);
     });
 
 });
