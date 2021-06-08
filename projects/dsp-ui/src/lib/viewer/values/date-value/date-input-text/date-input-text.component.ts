@@ -37,7 +37,7 @@ import { ValueService } from '../../../services/value.service';
  *
  * @param date the Knora calendar date.
  */
-function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCalendar {
+function createJDNCalendarDateFromKnoraDate(date: KnoraDate, valueService: ValueService): JDNConvertibleCalendar {
 
     let calPeriod: CalendarPeriod;
 
@@ -59,14 +59,14 @@ function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCale
 
         calPeriod = new CalendarPeriod(
             new CalendarDate(yearAstro, date.month, 1),
-            new CalendarDate(yearAstro, date.month, this._valueService.calculateDaysInMonth(date.calendar, date.year, date.month))
+            new CalendarDate(yearAstro, date.month, valueService.calculateDaysInMonth(date.calendar, date.year, date.month))
         );
 
     } else if (date.precision === Precision.yearPrecision) {
 
         calPeriod = new CalendarPeriod(
             new CalendarDate(yearAstro, 1, 1),
-            new CalendarDate(yearAstro, 12, this._valueService.calculateDaysInMonth(date.calendar, date.year, 12))
+            new CalendarDate(yearAstro, 12, valueService.calculateDaysInMonth(date.calendar, date.year, 12))
         );
 
     } else {
@@ -86,14 +86,14 @@ function createJDNCalendarDateFromKnoraDate(date: KnoraDate): JDNConvertibleCale
 }
 
 /** If a period is defined, start date must be before end date */
-export function periodStartEndValidator(isPeriod: FormControl, endDate: FormControl): ValidatorFn {
+export function periodStartEndValidator(isPeriod: FormControl, endDate: FormControl, valueService: ValueService): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
 
         if (isPeriod.value && control.value !== null && endDate.value !== null) {
             // period: check if start is before end
 
-            const jdnStartDate = createJDNCalendarDateFromKnoraDate(control.value);
-            const jdnEndDate = createJDNCalendarDateFromKnoraDate(endDate.value);
+            const jdnStartDate = createJDNCalendarDateFromKnoraDate(control.value, valueService);
+            const jdnEndDate = createJDNCalendarDateFromKnoraDate(endDate.value, valueService);
 
             const invalid = jdnStartDate.toJDNPeriod().periodEnd >= jdnEndDate.toJDNPeriod().periodStart;
 
@@ -237,7 +237,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
                 @Optional() _parentForm: NgForm,
                 @Optional() _parentFormGroup: FormGroupDirective,
                 _defaultErrorStateMatcher: ErrorStateMatcher,
-                public valueService: ValueService) {
+                private _valueService: ValueService) {
         super(_defaultErrorStateMatcher, _parentForm, _parentFormGroup, ngControl);
 
         if (this.ngControl != null) {
@@ -309,9 +309,9 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
     ngOnInit(): void {
         if (this.valueRequiredValidator) {
-            this.startDate.setValidators([Validators.required, periodStartEndValidator(this.isPeriodControl, this.endDate)]);
+            this.startDate.setValidators([Validators.required, periodStartEndValidator(this.isPeriodControl, this.endDate, this._valueService)]);
         } else {
-            this.startDate.setValidators([periodStartEndValidator(this.isPeriodControl, this.endDate)]);
+            this.startDate.setValidators([periodStartEndValidator(this.isPeriodControl, this.endDate, this._valueService)]);
         }
         this.startDate.updateValueAndValidity();
     }

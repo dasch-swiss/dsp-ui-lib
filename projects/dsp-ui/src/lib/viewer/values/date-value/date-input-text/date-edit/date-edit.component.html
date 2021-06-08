@@ -1,8 +1,11 @@
 <div [formGroup]="form">
-    <mat-radio-group class="era" [formControlName]="'era'" aria-label="Select an option" (change)="_handleInput()">
-        <mat-radio-button value="BCE">Before Common Era</mat-radio-button>
-        <mat-radio-button value="CE">Common Era</mat-radio-button>
-    </mat-radio-group>
+
+    <div class="era-radio">
+        <mat-radio-group class="era" [formControlName]="'era'" aria-label="Select an option" (change)="_handleInput()">
+            <mat-radio-button value="BCE">Before Common Era</mat-radio-button>
+            <mat-radio-button value="CE">Common Era</mat-radio-button>
+        </mat-radio-group>
+    </div>
 
     <mat-form-field>
         <mat-label>Year</mat-label>
