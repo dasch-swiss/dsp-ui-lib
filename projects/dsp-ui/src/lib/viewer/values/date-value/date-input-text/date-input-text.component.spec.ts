@@ -257,9 +257,13 @@ describe('DateInputTextComponent', () => {
         expect(testHostComponent.form.controls.date.value).toEqual(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
     });
 
-    it('should propagate changes made by the user for a period', async() => {
+    it('should propagate changes made by the user for a period', async () => {
 
-        testHostComponent.dateInputTextComponent.startDate.setValue(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2019, 5, 19), new KnoraDate('JULIAN', 'CE', 2020, 5, 19)));
+        testHostComponent.dateInputTextComponent.startDate.setValue(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
+
+        testHostComponent.dateInputTextComponent.endDate.setValue(new KnoraDate('JULIAN', 'CE', 2020, 5, 19));
+
+        testHostComponent.dateInputTextComponent.isPeriodControl.setValue(true);
 
         await testHostFixture.whenStable();
 
