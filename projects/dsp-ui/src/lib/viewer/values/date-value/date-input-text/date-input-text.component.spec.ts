@@ -192,12 +192,56 @@ describe('DateInputTextComponent', () => {
         expect(await calendarSelection.getValueText()).toEqual('JULIAN');
 
         const periodCheckbox = await loader.getHarness(MatCheckboxHarness.with({selector: '.period-checkbox'}));
-        expect(await periodCheckbox.getValue()).toEqual('on');
+        expect(await periodCheckbox.isChecked()).toEqual(false);
 
         expect(testHostComponent.dateInputTextComponent.value instanceof KnoraDate).toBe(true);
 
         expect(testHostComponent.dateInputTextComponent.value)
             .toEqual(new KnoraDate('JULIAN', 'CE', 2018, 5, 19));
+
+    });
+
+    it('should initialize a period correctly', async () => {
+
+        testHostComponent.form.controls.date.setValue(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2018, 5, 19), new KnoraDate('JULIAN', 'CE', 2019, 5, 19)));
+
+        expect(testHostComponent.dateInputTextComponent.calendarControl.value).toEqual('JULIAN');
+
+        expect(testHostComponent.dateInputTextComponent.startDate.value).toEqual(new KnoraDate('JULIAN', 'CE', 2018, 5, 19));
+
+        expect(testHostComponent.dateInputTextComponent.isPeriodControl.value).toBeTrue();
+
+        expect(testHostComponent.dateInputTextComponent.endDate.value).toEqual(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
+
+        testHostFixture.detectChanges();
+
+        const hostCompDe = testHostFixture.debugElement;
+
+        const startDateEditComponentDe = hostCompDe.query(By.css('.start-date'));
+
+        const endDateEditComponentDe = hostCompDe.query(By.css('.end-date'));
+
+        expect((startDateEditComponentDe.componentInstance as TestDateEditComponent).calendar).toEqual('JULIAN');
+
+        expect((startDateEditComponentDe.componentInstance as TestDateEditComponent).value).toEqual(new KnoraDate('JULIAN', 'CE', 2018, 5, 19));
+
+        expect((endDateEditComponentDe.componentInstance as TestDateEditComponent).calendar).toEqual('JULIAN');
+
+        expect((endDateEditComponentDe.componentInstance as TestDateEditComponent).value).toEqual(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
+
+        expect(testHostComponent.dateInputTextComponent.form.valid).toBe(true);
+
+        const calendarSelection = await  loader.getHarness(MatSelectHarness.with({selector: '.calendar-selection'}));
+        expect(await calendarSelection.getValueText()).toEqual('JULIAN');
+
+        const periodCheckbox = await loader.getHarness(MatCheckboxHarness.with({selector: '.period-checkbox'}));
+        expect(await periodCheckbox.isChecked()).toEqual(true);
+
+        expect(testHostComponent.dateInputTextComponent.value instanceof KnoraPeriod).toBe(true);
+
+        expect(testHostComponent.dateInputTextComponent.value)
+            .toEqual(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2018, 5, 19), new KnoraDate('JULIAN', 'CE', 2019, 5, 19)));
+
 
     });
 

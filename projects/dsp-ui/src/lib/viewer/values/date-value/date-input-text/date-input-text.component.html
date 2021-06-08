@@ -10,7 +10,7 @@
     </mat-form-field>
 
     <mat-form-field>
-        <dsp-date-edit [formControlName]="'startDate'" [calendar]="calendarControl.value" [valueRequiredValidator]="valueRequiredValidator"></dsp-date-edit>
+        <dsp-date-edit class="start-date" [formControlName]="'startDate'" [calendar]="calendarControl.value" [valueRequiredValidator]="valueRequiredValidator"></dsp-date-edit>
     </mat-form-field>
 
     <mat-checkbox class="period-checkbox" [formControlName]="'isPeriod'" (change)="_handleInput()">
@@ -19,7 +19,7 @@
 
     <span *ngIf="isPeriodControl.value">
         <mat-form-field>
-        <dsp-date-edit [formControlName]="'endDate'" [calendar]="calendarControl.value" [valueRequiredValidator]="valueRequiredValidator"></dsp-date-edit>
+        <dsp-date-edit class="end-date" [formControlName]="'endDate'" [calendar]="calendarControl.value" [valueRequiredValidator]="valueRequiredValidator"></dsp-date-edit>
     </mat-form-field>
     </span>
 
