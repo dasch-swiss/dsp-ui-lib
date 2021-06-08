@@ -88,14 +88,20 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
 
         if (!this.form.valid
             || this.calendar === undefined
-            || this.eraControl.value === null
             || this.yearControl.value === null) { // in case valueRequiredValidator is set to false, return null for an empty year
             return null;
         }
 
+        let era: string;
+        if (this.eraControl.enabled) {
+            era = this.eraControl.value;
+        } else {
+            era = 'noEra';
+        }
+
         return new KnoraDate(
             this.calendar,
-            this.eraControl.value, // TODO: handle Islamic calendar
+            era,
             this.yearControl.value,
             this.monthControl.value ? this.monthControl.value : undefined,
             this.dayControl.value ? this.dayControl.value : undefined
@@ -103,17 +109,32 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
     }
 
     set value(date: KnoraDate | null) {
-        // TODO: disable era for Islamic calendar dates?
 
         if (date instanceof KnoraDate) {
-            this.eraControl.setValue(date.era);
+
+            if (date.era !== 'noEra') {
+                this.eraControl.enable();
+                this.eraControl.setValue(date.era);
+            } else {
+                this.eraControl.setValue(null);
+                this.eraControl.disable();
+            }
+
             this.yearControl.setValue(date.year);
             this.monthControl.setValue(date.month ? date.month : null);
             this.dayControl.setValue(date.day ? date.day : null);
 
         } else {
             // null
-            this.eraControl.setValue('CE');
+
+            if (this.calendar !== 'ISLAMIC') {
+                this.eraControl.enable();
+                this.eraControl.setValue('CE');
+            } else {
+                this.eraControl.setValue(null);
+                this.eraControl.disable();
+            }
+
             this.yearControl.setValue(null);
             this.monthControl.setValue(null);
             this.dayControl.setValue(null);
@@ -194,7 +215,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
             this.ngControl.valueAccessor = this;
         }
 
-        this.eraControl = new FormControl(null, Validators.required);
+        this.eraControl = new FormControl(null);
 
         this.yearControl = new FormControl({
             value: null,
@@ -273,6 +294,16 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
             () => {
                 // reinit days on calendar change
                 this._setDays(this.calendar, this.eraControl.value, this.yearControl.value, this.monthControl.value);
+
+                // check if calendar supports era
+                if (this.calendar !== 'ISLAMIC') {
+                    this.eraControl.enable();
+                    this.eraControl.setValue('CE');
+                } else {
+                    this.eraControl.disable();
+                    this.eraControl.setValue(null);
+                }
+
                 this._handleInput();
             }
         );

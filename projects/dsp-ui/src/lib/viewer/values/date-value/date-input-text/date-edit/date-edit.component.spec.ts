@@ -218,6 +218,72 @@ describe('DateEditComponent', () => {
 
     });
 
+    it('should set CE era for an empty value in the Julian calendar', async () => {
+
+        testHostComponent.form.controls.date.setValue(null);
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.eraControl.value).toEqual('CE');
+        expect(testHostComponent.dateEditComponent.eraControl.enabled).toBeTrue();
+
+        expect(testHostComponent.dateEditComponent.value).toEqual(null);
+
+    });
+
+    it('should disable era for an empty value in the ISLAMIC calendar', async () => {
+
+        testHostComponent.form.controls.date.setValue(null);
+
+        testHostComponent.calendar = 'ISLAMIC';
+
+        testHostFixture.detectChanges();
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.eraControl.value).toBeNull();
+        expect(testHostComponent.dateEditComponent.eraControl.disabled).toBeTrue();
+
+        expect(testHostComponent.dateEditComponent.value).toEqual(null);
+
+    });
+
+    it('should disable era for an ISLAMIC calendar date', async () => {
+
+        testHostComponent.form.controls.date.setValue(new KnoraDate('ISLAMIC', 'noEra', 1441));
+
+        testHostComponent.calendar = 'ISLAMIC';
+
+        testHostFixture.detectChanges();
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.eraControl.value).toBeNull();
+        expect(testHostComponent.dateEditComponent.eraControl.disabled).toBeTrue();
+
+        expect(testHostComponent.dateEditComponent.value).toEqual(new KnoraDate('ISLAMIC', 'noEra', 1441));
+
+    });
+
+    it('should disable era when changing to the ISLAMIC calendar', async () => {
+
+        testHostComponent.calendar = 'ISLAMIC';
+
+        testHostFixture.detectChanges();
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.eraControl.value).toBeNull();
+        expect(testHostComponent.dateEditComponent.eraControl.disabled).toBeTrue();
+
+        expect(testHostComponent.dateEditComponent.value).toEqual(new KnoraDate('ISLAMIC', 'noEra', 2018, 5, 19));
+
+    });
+
     it('should react to changing the calendar', async () => {
 
         // init involves various "value changes" callbacks
