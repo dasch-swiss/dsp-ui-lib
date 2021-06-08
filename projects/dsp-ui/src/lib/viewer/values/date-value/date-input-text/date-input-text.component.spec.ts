@@ -246,6 +246,56 @@ describe('DateInputTextComponent', () => {
 
     });
 
+    it('should react correctly to changing the calendar for a single date', () => {
+
+        const hostCompDe = testHostFixture.debugElement;
+
+        const startDateEditComponentDe = hostCompDe.query(By.css('.start-date'));
+
+        expect((startDateEditComponentDe.componentInstance as TestDateEditComponent).calendar).toEqual('JULIAN');
+
+        testHostComponent.dateInputTextComponent.calendarControl.setValue('ISLAMIC');
+
+        testHostFixture.detectChanges();
+
+        expect((startDateEditComponentDe.componentInstance as TestDateEditComponent).calendar).toEqual('ISLAMIC');
+
+    });
+
+    it('should react correctly to changing the calendar for a period', () => {
+
+        testHostComponent.form.controls.date.setValue(new KnoraPeriod(new KnoraDate('JULIAN', 'CE', 2018, 5, 19), new KnoraDate('JULIAN', 'CE', 2019, 5, 19)));
+
+        expect(testHostComponent.dateInputTextComponent.calendarControl.value).toEqual('JULIAN');
+
+        expect(testHostComponent.dateInputTextComponent.startDate.value).toEqual(new KnoraDate('JULIAN', 'CE', 2018, 5, 19));
+
+        expect(testHostComponent.dateInputTextComponent.isPeriodControl.value).toBeTrue();
+
+        expect(testHostComponent.dateInputTextComponent.endDate.value).toEqual(new KnoraDate('JULIAN', 'CE', 2019, 5, 19));
+
+        testHostFixture.detectChanges();
+
+        const hostCompDe = testHostFixture.debugElement;
+
+        const startDateEditComponentDe = hostCompDe.query(By.css('.start-date'));
+
+        expect((startDateEditComponentDe.componentInstance as TestDateEditComponent).calendar).toEqual('JULIAN');
+
+        const endDateEditComponentDe = hostCompDe.query(By.css('.end-date'));
+
+        expect((endDateEditComponentDe.componentInstance as TestDateEditComponent).calendar).toEqual('JULIAN');
+
+        testHostComponent.dateInputTextComponent.calendarControl.setValue('ISLAMIC');
+
+        testHostFixture.detectChanges();
+
+        expect((startDateEditComponentDe.componentInstance as TestDateEditComponent).calendar).toEqual('ISLAMIC');
+
+        expect((endDateEditComponentDe.componentInstance as TestDateEditComponent).calendar).toEqual('ISLAMIC');
+
+    });
+
     it('should propagate changes made by the user for a single date', async () => {
 
         const hostCompDe = testHostFixture.debugElement;
