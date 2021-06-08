@@ -30,13 +30,6 @@ import { KnoraDate, KnoraPeriod } from '@dasch-swiss/dsp-js';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import {
-    CalendarDate,
-    CalendarPeriod,
-    GregorianCalendarDate,
-    IslamicCalendarDate,
-    JulianCalendarDate
-} from 'jdnconvertiblecalendar';
 import { ValueService } from '../../../../services/value.service';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
@@ -112,13 +105,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
 
         if (date instanceof KnoraDate) {
 
-            if (date.era !== 'noEra') {
-                this.eraControl.enable();
-                this.eraControl.setValue(date.era);
-            } else {
-                this.eraControl.setValue(null);
-                this.eraControl.disable();
-            }
+            this._initEra(this.calendar, date.era);
 
             this.yearControl.setValue(date.year);
             this.monthControl.setValue(date.month ? date.month : null);
@@ -127,13 +114,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         } else {
             // null
 
-            if (this.calendar !== 'ISLAMIC') {
-                this.eraControl.enable();
-                this.eraControl.setValue('CE');
-            } else {
-                this.eraControl.setValue(null);
-                this.eraControl.disable();
-            }
+            this._initEra(this.calendar, 'CE');
 
             this.yearControl.setValue(null);
             this.monthControl.setValue(null);
@@ -289,20 +270,19 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
 
     ngOnChanges(changes: SimpleChanges) {
 
+        const calendar = this.calendar;
+        const era = this.eraControl.value;
+        const year =  this.yearControl.value;
+        const month = this.monthControl.value;
+
         // async to prevent changed after checked error
         resolvedPromise.then(
             () => {
                 // reinit days on calendar change
-                this._setDays(this.calendar, this.eraControl.value, this.yearControl.value, this.monthControl.value);
+                this._setDays(calendar, era, year, month);
 
-                // check if calendar supports era
-                if (this.calendar !== 'ISLAMIC') {
-                    this.eraControl.enable();
-                    this.eraControl.setValue('CE');
-                } else {
-                    this.eraControl.disable();
-                    this.eraControl.setValue(null);
-                }
+                // enable / disable era, but preserve active era if possible
+                this._initEra(calendar, era);
 
                 this._handleInput();
             }
@@ -350,7 +330,6 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
      * @param era era of the given date.
      * @param year year of the given date.
      * @param month month of the given date.
-     * @param daysArr array representing available days of a given month.
      */
     private _setDays(calendar: string, era: string, year: number, month: number) {
 
@@ -368,6 +347,24 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         if (this.dayControl.value !== null && this.dayControl.value > this.days.length) {
             this.dayControl.setValue(this.days.length);
         }
+    }
+
+    /**
+     * Inits the era control depending on the chosen calendar.
+     *
+     * @param calendar active calendar.
+     * @param era era to set.
+     */
+    private _initEra(calendar: string, era: string) {
+
+        if (calendar !== 'ISLAMIC') {
+            this.eraControl.enable();
+            this.eraControl.setValue(era !== null ? era : 'CE');
+        } else {
+            this.eraControl.setValue(null);
+            this.eraControl.disable();
+        }
+
     }
 
 }

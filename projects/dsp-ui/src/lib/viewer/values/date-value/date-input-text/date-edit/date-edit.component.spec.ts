@@ -284,6 +284,29 @@ describe('DateEditComponent', () => {
 
     });
 
+    it('should enable era when changing from the Islamic calendar to the Gregorian calendar', async () => {
+
+        testHostComponent.calendar = 'ISLAMIC';
+
+        testHostFixture.detectChanges();
+
+        // init involves various "value changes" callbacks
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.eraControl.value).toBeNull();
+        expect(testHostComponent.dateEditComponent.eraControl.disabled).toBeTrue();
+
+        testHostComponent.calendar = 'GREGORIAN';
+
+        testHostFixture.detectChanges();
+
+        await testHostFixture.whenStable();
+
+        expect(testHostComponent.dateEditComponent.eraControl.value).toEqual('CE');
+        expect(testHostComponent.dateEditComponent.eraControl.enabled).toBeTrue();
+
+    });
+
     it('should react to changing the calendar', async () => {
 
         // init involves various "value changes" callbacks
@@ -324,6 +347,7 @@ describe('DateEditComponent', () => {
         const newValue = testHostComponent.dateEditComponent.value;
 
         expect(newValue.calendar).toEqual('GREGORIAN');
+        expect(newValue.era).toEqual('CE');
         expect(value.year).toEqual(2018);
         expect(value.month).toEqual(5);
         expect(value.day).toEqual(19);
