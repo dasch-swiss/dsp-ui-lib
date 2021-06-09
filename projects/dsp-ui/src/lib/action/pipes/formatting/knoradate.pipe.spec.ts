@@ -54,6 +54,22 @@ describe('KnoradatePipe', () => {
         expect(dateWithDisplayOptions).toEqual('04.07.1776 AD GREGORIAN');
     });
 
+    it ('should return a string with the desired display options for a date without era', () => {
+        const date = new KnoraDate('ISLAMIC', 'noEra', 1441, 7, 4);
+
+        let dateWithDisplayOptions = pipe.transform(date, 'dd.MM.YYYY', 'era');
+
+        expect(dateWithDisplayOptions).toEqual('04.07.1441');
+
+        dateWithDisplayOptions = pipe.transform(date, 'dd.MM.YYYY', 'calendar');
+
+        expect(dateWithDisplayOptions).toEqual('04.07.1441 ISLAMIC');
+
+        dateWithDisplayOptions = pipe.transform(date, 'dd.MM.YYYY', 'all');
+
+        expect(dateWithDisplayOptions).toEqual('04.07.1441 ISLAMIC');
+    });
+
     it ('should return a string with only the month and the year', () => {
         const date = new KnoraDate('GREGORIAN', 'AD', 1776, 7);
 
