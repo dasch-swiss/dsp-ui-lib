@@ -16,7 +16,7 @@ import { DateValueComponent } from './date-value.component';
 
 
 @Component({
-  selector: `dsp-date-input`,
+  selector: `dsp-date-input-text`,
   template: ``,
   providers: [
     {
@@ -194,39 +194,6 @@ describe('DateValueComponent', () => {
 
       expect(valueReadModeNativeElement.innerText).toEqual('13.05.2018');
 
-      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
-
-    });
-
-    it('should display an existing value with an era not supported by MatDatepicker', done => {
-
-      MockResource.getTestThing().subscribe(res => {
-          const inputVal: ReadDateValue =
-              res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
-
-          inputVal.date = new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14);
-
-          testHostComponent.displayInputVal = inputVal;
-
-          testHostFixture.detectChanges();
-
-          expect(testHostComponent.inputValueComponent.displayValue.date).toEqual(new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14));
-
-          expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
-
-          expect(testHostComponent.inputValueComponent.mode).toEqual('read');
-
-          expect(valueReadModeNativeElement.innerText).toEqual('14.05.2018');
-
-          expect(testHostComponent.inputValueComponent.dateEditable).toBe(false);
-
-          const message: DebugElement = valueComponentDe.query(By.css('.not-editable'));
-
-          expect(message.nativeElement.innerText).toEqual('Date cannot be edited: precision and/or era not supported by datepicker.');
-
-          done();
-      });
-
     });
 
     it('should make an existing value editable', () => {
@@ -254,8 +221,6 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
-
       const updatedValue = testHostComponent.inputValueComponent.getUpdatedValue();
 
       expect(updatedValue instanceof UpdateDateValue).toBeTruthy();
@@ -267,39 +232,6 @@ describe('DateValueComponent', () => {
       expect((updatedValue as UpdateDateValue).endMonth).toEqual(5);
       expect((updatedValue as UpdateDateValue).startDay).toEqual(13);
       expect((updatedValue as UpdateDateValue).endDay).toEqual(13);
-
-    });
-
-    it('should not make a value editable with an era not supported by MatDatePicker', done => {
-
-      MockResource.getTestThing().subscribe(res => {
-          const inputVal: ReadDateValue =
-              res.getValuesAs('http://0.0.0.0:3333/ontology/0001/anything/v2#hasDate', ReadDateValue)[0];
-
-          inputVal.date = new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14);
-
-          testHostComponent.displayInputVal = inputVal;
-
-          testHostComponent.mode = 'update';
-
-          testHostFixture.detectChanges();
-
-          expect(testHostComponent.inputValueComponent.displayValue.date).toEqual(new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 14));
-
-          expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
-          expect(testHostComponent.inputValueComponent.mode).toEqual('update');
-
-          expect(valueReadModeNativeElement.innerText).toEqual('14.05.2018');
-
-          expect(testHostComponent.inputValueComponent.dateEditable).toBe(false);
-
-          const message: DebugElement = valueComponentDe.query(By.css('.not-editable'));
-
-          expect(message.nativeElement.innerText).toEqual('Date cannot be edited: precision and/or era not supported by datepicker.');
-
-          done();
-      });
 
     });
 
@@ -520,6 +452,26 @@ describe('DateValueComponent', () => {
 
     });
 
+    it('should correctly populate an UpdateValue from a KnoraDate with an Islamic calendar date', () => {
+
+        const date = new KnoraDate('ISLAMIC', 'noEra', 1441);
+
+        const updateVal = new UpdateDateValue();
+
+        testHostComponent.inputValueComponent.populateValue(updateVal, date);
+
+        expect(updateVal.calendar).toEqual('ISLAMIC');
+        expect(updateVal.startEra).toBeUndefined();
+        expect(updateVal.startDay).toBeUndefined();
+        expect(updateVal.startMonth).toBeUndefined();
+        expect(updateVal.startYear).toEqual(1441);
+        expect(updateVal.endEra).toBeUndefined();
+        expect(updateVal.endDay).toBeUndefined();
+        expect(updateVal.endMonth).toBeUndefined();
+        expect(updateVal.endYear).toEqual(1441);
+
+      });
+
     it('should correctly populate an UpdateValue from a KnoraPeriod', () => {
 
       const dateStart = new KnoraDate('GREGORIAN', 'CE', 2018, 5, 13);
@@ -540,6 +492,48 @@ describe('DateValueComponent', () => {
       expect(updateVal.endYear).toEqual(2019);
 
     });
+
+    it('should correctly populate an UpdateValue from a KnoraPeriod with dates in different eras', () => {
+
+        const dateStart = new KnoraDate('GREGORIAN', 'BCE', 2018, 5, 13);
+        const dateEnd = new KnoraDate('GREGORIAN', 'CE', 2019, 6, 14);
+
+        const updateVal = new UpdateDateValue();
+
+        testHostComponent.inputValueComponent.populateValue(updateVal, new KnoraPeriod(dateStart, dateEnd));
+
+        expect(updateVal.calendar).toEqual('GREGORIAN');
+        expect(updateVal.startEra).toEqual('BCE');
+        expect(updateVal.startDay).toEqual(13);
+        expect(updateVal.startMonth).toEqual(5);
+        expect(updateVal.startYear).toEqual(2018);
+        expect(updateVal.endEra).toEqual('CE');
+        expect(updateVal.endDay).toEqual(14);
+        expect(updateVal.endMonth).toEqual(6);
+        expect(updateVal.endYear).toEqual(2019);
+
+    });
+
+    it('should correctly populate an UpdateValue from a KnoraPeriod with Islamic calendar dates', () => {
+
+        const dateStart = new KnoraDate('ISLAMIC', 'noEra', 1441);
+        const dateEnd = new KnoraDate('ISLAMIC', 'noEra', 1442);
+
+        const updateVal = new UpdateDateValue();
+
+        testHostComponent.inputValueComponent.populateValue(updateVal, new KnoraPeriod(dateStart, dateEnd));
+
+        expect(updateVal.calendar).toEqual('ISLAMIC');
+        expect(updateVal.startEra).toBeUndefined();
+        expect(updateVal.startDay).toBeUndefined();
+        expect(updateVal.startMonth).toBeUndefined();
+        expect(updateVal.startYear).toEqual(1441);
+        expect(updateVal.endEra).toBeUndefined();
+        expect(updateVal.endDay).toBeUndefined();
+        expect(updateVal.endMonth).toBeUndefined();
+        expect(updateVal.endYear).toEqual(1442);
+
+      });
 
   });
 
@@ -581,8 +575,6 @@ describe('DateValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
-      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
-
       const newValue = testHostComponent.inputValueComponent.getNewValue();
 
       expect(newValue instanceof CreateDateValue).toBeTruthy();
@@ -620,8 +612,6 @@ describe('DateValueComponent', () => {
       testHostComponent.inputValueComponent.resetFormControl();
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
-
-      expect(testHostComponent.inputValueComponent.dateEditable).toBe(true);
 
       expect(testHostComponent.inputValueComponent.dateInputComponent.value).toEqual(null);
 
