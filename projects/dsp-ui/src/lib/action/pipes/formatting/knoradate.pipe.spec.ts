@@ -17,7 +17,7 @@ describe('KnoradatePipe', () => {
         expect(convertedDate).toEqual('10.10.1993');
     });
 
-    it('should return the correct format depending on the format provided', () => {
+    it('should return the correct format for a date with day precision depending on the format provided', () => {
         const date = new KnoraDate('GREGORIAN', 'AD', 1776, 7, 4);
 
         let convertedDate = pipe.transform(date, 'dd.MM.YYYY');
