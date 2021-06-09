@@ -209,7 +209,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
         // TODO: find better way to detect changes
         const startValueSubscription = this.startDate.valueChanges.subscribe(
-            data => {
+            () => {
                 // form's validity has not been updated yet,
                 // trigger update
                 this.form.updateValueAndValidity();
@@ -221,7 +221,7 @@ export class DateInputTextComponent extends _MatInputMixinBase implements Contro
 
         // TODO: find better way to detect changes
         const endValueSubscription = this.endDate.valueChanges.subscribe(
-            data => {
+            () => {
                 // trigger period check validator set on start date control
                 this.startDate.updateValueAndValidity();
                 // form's validity has not been updated yet,

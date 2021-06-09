@@ -211,7 +211,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
 
         // recalculate days of month when era changes
         const eraChangesSubscription = this.eraControl.valueChanges.subscribe(
-            data => {
+            () => {
                 if (this.yearControl.valid && this.monthControl.value) {
                     this._setDays(this.calendar, this.eraControl.value, this.yearControl.value, this.monthControl.value);
                 }
@@ -223,7 +223,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         // enable/disable month selection depending on year
         // enable/disable day selection depending on
         const yearChangesSubscription = this.yearControl.valueChanges.subscribe(
-            data => {
+            () => {
                 if (this.yearControl.valid) {
                     this.monthControl.enable();
                 } else {
@@ -243,7 +243,7 @@ export class DateEditComponent extends _MatInputMixinBase implements ControlValu
         // enable/disable day selection depending on month
         // recalculate days when month changes
         const monthChangesSubscription = this.monthControl.valueChanges.subscribe(
-            data => {
+            () => {
                 if (this.yearControl.valid && this.monthControl.value) {
                     this._setDays(this.calendar, this.eraControl.value, this.yearControl.value, this.monthControl.value);
                 }
