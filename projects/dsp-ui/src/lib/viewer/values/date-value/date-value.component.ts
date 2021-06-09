@@ -45,8 +45,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     matcher = new ValueErrorStateMatcher();
 
-    constructor(@Inject(FormBuilder) private _fb: FormBuilder,
-                private _valueService: ValueService) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
         super();
     }
 
