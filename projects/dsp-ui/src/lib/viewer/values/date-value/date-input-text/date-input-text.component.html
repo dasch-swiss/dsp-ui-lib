@@ -21,20 +21,20 @@
     <div class="date-form-grid">
         <div class="date-form-field">
             <mat-form-field>
+                <mat-label *ngIf="isPeriodControl.value">Start</mat-label>
                 <dsp-date-edit class="start-date" [formControlName]="'startDate'" [calendar]="calendarControl.value" [valueRequiredValidator]="valueRequiredValidator"></dsp-date-edit>
             </mat-form-field>
         </div>
-    </div>
 
-    <span *ngIf="isPeriodControl.value">
-        <div class="date-form-grid">
+        <span *ngIf="isPeriodControl.value">
             <div class="date-form-field">
                 <mat-form-field>
+                    <mat-label>End</mat-label>
                     <dsp-date-edit class="end-date" [formControlName]="'endDate'" [calendar]="calendarControl.value" [valueRequiredValidator]="valueRequiredValidator"></dsp-date-edit>
                 </mat-form-field>
             </div>
-        </div>
-    </span>
+        </span>
+    </div>
 
     <div class="date-form-error">
         <mat-error *ngIf="startDate.hasError('required')">
