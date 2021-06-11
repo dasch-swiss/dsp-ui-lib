@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.4.0...v1.5.0) (2021-06-10)
+
+
+### Enhancements
+
+* **action:** only show era if supported by calendar (DSP-1725) ([#302](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/302)) ([74ceafb](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/74ceafb66814b7a871b52591df34c36015f12b72))
+* **date input:** create new component for date input (DSP-94) ([#298](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/298)) ([d23e844](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/d23e8449f36dda7c73b0532e98cf218fe620cba3))
+* **viewer:** improve style of date input (DSP-1724) ([#301](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/301)) ([4c3d1b3](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/4c3d1b30ebdca6bee83afd888e412d16f380187f))
+
 ## [1.4.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.3.0...v1.4.0) (2021-05-25)
 
 
