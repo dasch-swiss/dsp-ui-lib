@@ -21,6 +21,8 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
     @Input() displayValue?: ReadColorValue;
 
+    @Input() showHexCode = false;
+
     valueFormControl: FormControl;
     commentFormControl: FormControl;
     form: FormGroup;
@@ -71,6 +73,10 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
     ngOnChanges(changes: SimpleChanges): void {
         this.resetFormControl();
+
+        if (this.showHexCode && this.valueFormControl !== undefined) {
+            this.textColor = this.getTextColor(this.valueFormControl.value);
+        }
     }
 
     // unsubscribe when the object is destroyed to prevent memory leaks
