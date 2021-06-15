@@ -21,6 +21,8 @@ export class ColorValueComponent extends BaseValueComponent implements OnInit, O
 
     @Input() displayValue?: ReadColorValue;
 
+    @Input() showHexCode = false;
+
     valueFormControl: FormControl;
     commentFormControl: FormControl;
     form: FormGroup;

@@ -167,7 +167,7 @@ describe('ColorValueComponent', () => {
 
       expect(testHostComponent.colorValueComponent.mode).toEqual('read');
 
-      expect(valueReadModeNativeElement.innerText).toEqual('#ff3333');
+      expect(valueReadModeNativeElement.style.backgroundColor).not.toBeUndefined();
 
     });
 
@@ -301,7 +301,7 @@ describe('ColorValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueReadModeNativeElement.innerText).toEqual('#d8d8d8');
+      expect(valueReadModeNativeElement.style.backgroundColor).not.toBeUndefined();
 
       expect(testHostComponent.colorValueComponent.form.valid).toBeTruthy();
 
