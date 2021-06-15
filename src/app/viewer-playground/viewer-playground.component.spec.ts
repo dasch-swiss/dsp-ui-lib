@@ -13,6 +13,18 @@ import { DspApiConnectionToken, DspViewerModule, UserService } from '@dasch-swis
 import { ViewerPlaygroundComponent } from './viewer-playground.component';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Component, Input } from '@angular/core';
+
+@Component({
+    selector: `dsp-resource-view`,
+    template: ``
+})
+class TestResourveViewComponent {
+
+    @Input() iri: string;
+
+    @Input() showToolbar: boolean;
+}
 
 describe('ViewerPlaygroundComponent', () => {
     let component: ViewerPlaygroundComponent;
@@ -33,10 +45,10 @@ describe('ViewerPlaygroundComponent', () => {
 
         TestBed.configureTestingModule({
             declarations: [
-                ViewerPlaygroundComponent
+                ViewerPlaygroundComponent,
+                TestResourveViewComponent
             ],
             imports: [
-                DspViewerModule,
                 MatIconModule,
                 MatTooltipModule
             ],
