@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
@@ -25,7 +25,8 @@ export class GeonameService {
               }
           ),
           catchError(error => {
-              return throwError('Geoname service error: ' + error);
+              // an error occurred, just return the id
+              return of(id);
           })
       );
 

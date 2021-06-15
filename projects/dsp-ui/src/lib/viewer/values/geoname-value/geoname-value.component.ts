@@ -17,7 +17,6 @@ const resolvedPromise = Promise.resolve(null);
 })
 export class GeonameValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
     @Input() displayValue?: ReadGeonameValue;
-    @Input() label?: string;
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
@@ -63,7 +62,9 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
         this.resetFormControl();
 
-        this.$geonameLabel =  this._geonameService.resolveGeonameID(this.valueFormControl.value);
+        if (this.mode === 'read') {
+            this.$geonameLabel = this._geonameService.resolveGeonameID(this.valueFormControl.value);
+        }
 
         resolvedPromise.then(() => {
             // add form to the parent form group
@@ -77,7 +78,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
         // at the first call of ngOnChanges, form control elements are not initialized yet
         this.resetFormControl();
 
-        if (this.valueFormControl !== undefined) {
+        if (this.mode === 'read' && this.valueFormControl !== undefined) {
             this.$geonameLabel = this._geonameService.resolveGeonameID(this.valueFormControl.value);
         }
     }
