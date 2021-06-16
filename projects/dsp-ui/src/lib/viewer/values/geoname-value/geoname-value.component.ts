@@ -1,10 +1,11 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreateGeonameValue, ReadGeonameValue, UpdateGeonameValue } from '@dasch-swiss/dsp-js';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { CustomRegex } from '../custom-regex';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
+import { GeonameService } from '../../services/geoname.service';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -16,7 +17,6 @@ const resolvedPromise = Promise.resolve(null);
 })
 export class GeonameValueComponent extends BaseValueComponent implements OnInit, OnChanges, OnDestroy {
     @Input() displayValue?: ReadGeonameValue;
-    @Input() label?: string;
 
     valueFormControl: FormControl;
     commentFormControl: FormControl;
@@ -27,7 +27,9 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
     matcher = new ValueErrorStateMatcher();
     customValidators = [Validators.pattern(CustomRegex.GEONAME_REGEX)];
 
-    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
+    $geonameLabel: Observable<string>;
+
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder, private _geonameService: GeonameService) {
         super();
     }
 
@@ -60,6 +62,10 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
         this.resetFormControl();
 
+        if (this.mode === 'read') {
+            this.$geonameLabel = this._geonameService.resolveGeonameID(this.valueFormControl.value);
+        }
+
         resolvedPromise.then(() => {
             // add form to the parent form group
             this.addToParentFormGroup(this.formName, this.form);
@@ -71,6 +77,10 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
         // resets values and validators in form controls when input displayValue or mode changes
         // at the first call of ngOnChanges, form control elements are not initialized yet
         this.resetFormControl();
+
+        if (this.mode === 'read' && this.valueFormControl !== undefined) {
+            this.$geonameLabel = this._geonameService.resolveGeonameID(this.valueFormControl.value);
+        }
     }
 
     ngOnDestroy(): void {

@@ -7,6 +7,8 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateGeonameValue, MockResource, ReadGeonameValue, UpdateGeonameValue } from '@dasch-swiss/dsp-js';
 import { GeonameValueComponent } from './geoname-value.component';
+import { GeonameService } from '../../services/geoname.service';
+import { of } from 'rxjs';
 
 
 
@@ -15,7 +17,7 @@ import { GeonameValueComponent } from './geoname-value.component';
  */
 @Component({
   template: `
-    <dsp-geoname-value #inputVal [displayValue]="displayInputVal" [mode]="mode" [label]="label"></dsp-geoname-value>`
+    <dsp-geoname-value #inputVal [displayValue]="displayInputVal" [mode]="mode"></dsp-geoname-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -24,8 +26,6 @@ class TestHostDisplayValueComponent implements OnInit {
   displayInputVal: ReadGeonameValue;
 
   mode: 'read' | 'update' | 'create' | 'search';
-
-  label: string;
 
   ngOnInit() {
 
@@ -63,6 +63,9 @@ class TestHostCreateValueComponent implements OnInit {
 
 describe('GeonameValueComponent', () => {
   beforeEach(waitForAsync(() => {
+
+    const mockGeonameService = jasmine.createSpyObj('GeonameService', ['resolveGeonameID']);
+
     TestBed.configureTestingModule({
       declarations: [
         GeonameValueComponent,
@@ -75,6 +78,10 @@ describe('GeonameValueComponent', () => {
         BrowserAnimationsModule,
         MatIconModule
       ],
+      providers: [{
+          provide: GeonameService,
+          useValue: mockGeonameService
+        }]
     })
       .compileComponents();
   }));
@@ -89,6 +96,10 @@ describe('GeonameValueComponent', () => {
     let valueReadModeNativeElement;
 
     beforeEach(() => {
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
+
+      geonameServiceMock.resolveGeonameID.and.returnValue(of('Basel'));
+
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
       testHostComponent = testHostFixture.componentInstance;
       testHostFixture.detectChanges();
@@ -104,13 +115,15 @@ describe('GeonameValueComponent', () => {
 
     it('should display an existing value', () => {
 
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
+
       expect(testHostComponent.inputValueComponent.displayValue.geoname).toEqual('2661604');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('read');
 
-      expect(valueReadModeNativeElement.innerText).toEqual('2661604');
+      expect(valueReadModeNativeElement.innerText).toEqual('Basel');
 
       const anchorDebugElement = valueReadModeDebugElement.query(By.css('a'));
       expect(anchorDebugElement.nativeElement).toBeDefined();
@@ -118,29 +131,9 @@ describe('GeonameValueComponent', () => {
       expect(anchorDebugElement.attributes.href).toEqual('https://www.geonames.org/2661604');
       expect(anchorDebugElement.attributes.target).toEqual('_blank');
 
+      expect(geonameServiceMock.resolveGeonameID).toHaveBeenCalledOnceWith('2661604');
+
     });
-
-    it('should display an existing value with a label', () => {
-
-        testHostComponent.label = 'testlabel';
-
-        testHostFixture.detectChanges();
-
-        expect(testHostComponent.inputValueComponent.displayValue.geoname).toEqual('2661604');
-
-        expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
-
-        expect(testHostComponent.inputValueComponent.mode).toEqual('read');
-
-        expect(valueReadModeNativeElement.innerText).toEqual('testlabel');
-
-        const anchorDebugElement = valueReadModeDebugElement.query(By.css('a'));
-        expect(anchorDebugElement.nativeElement).toBeDefined();
-
-        expect(anchorDebugElement.attributes.href).toEqual('https://www.geonames.org/2661604');
-        expect(anchorDebugElement.attributes.target).toEqual('_blank');
-
-      });
 
     it('should make an existing value editable', () => {
 
@@ -233,6 +226,10 @@ describe('GeonameValueComponent', () => {
 
     it('should set a new display value', () => {
 
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
+
+      geonameServiceMock.resolveGeonameID.and.returnValue(of('Terra Linda High School'));
+
       const newStr = new ReadGeonameValue();
 
       newStr.geoname = '5401678';
@@ -242,9 +239,11 @@ describe('GeonameValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueReadModeNativeElement.innerText).toEqual('5401678');
+      expect(valueReadModeNativeElement.innerText).toEqual('Terra Linda High School');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
+
+      expect(geonameServiceMock.resolveGeonameID).toHaveBeenCalledWith('5401678');
 
     });
 
