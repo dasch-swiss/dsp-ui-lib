@@ -38,13 +38,19 @@ export class GeonameService {
     ) {
     }
 
+    /**
+     * Given a geoname id, resolves the identifier.
+     *
+     * @param id the geiname id to resolve.
+     */
     resolveGeonameID(id: string): Observable<DisplayPlace> {
 
         return this._http.get<object>('https://ws.geonames.net/getJSON?geonameId=' + id + '&username=' + this._appInitService.config['geonameToken'] + '&style=short').pipe(
             map(
-                (geo: { name: string, countryName: string, adminName1?: string, wikipediaURL?: string, lat: number, lng: number }) => {
+                (geo: { name: string, countryName: string, adminName1?: string, wikipediaURL?: string, lat: number, lng: number }) => { // assertions for TS compiler
 
                     if (!(('name' in geo) && ('countryName' in geo) && ('lat' in geo) && ('lng' in geo))) {
+                        // at least one of the expected properties is not present
                         throw 'required property missing in geonames response';
                     }
 
@@ -69,15 +75,21 @@ export class GeonameService {
         );
     }
 
+    /**
+     * Given a search string, searches for places matching the string.
+     *
+     * @param searchString place to search for.
+     */
     searchPlace(searchString: string): Observable<SearchPlace[]> {
 
         return this._http.get<object>('https://ws.geonames.net/searchJSON?userName=' + this._appInitService.config['geonameToken'] + '&lang=de&style=full&maxRows=12&name_startsWith=' + encodeURIComponent(searchString)).pipe(
             map(
                 (places: {
-                    geonames: { geonameId: string, name: string, countryName: string, adminName1?: string, fclName: string }[]
+                    geonames: { geonameId: string, name: string, countryName: string, adminName1?: string, fclName: string }[] // assertions for TS compiler
                 }) => {
 
                     if (!Array.isArray(places.geonames)) {
+                        // there is no top level array
                         throw 'search did not return an array of results';
                     }
 
@@ -85,6 +97,7 @@ export class GeonameService {
                         geo => {
 
                             if (!(('geonameId' in geo) && ('name' in geo) && ('countryName' in geo) && ('fclName' in geo))) {
+                                // at least one of the expected properties is not present
                                 throw 'required property missing in geonames response';
                             }
 

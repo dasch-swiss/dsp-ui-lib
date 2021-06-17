@@ -322,6 +322,46 @@ describe('GeonameService', () => {
 
             });
 
+            it('should return an error if the requests fails', done => {
+
+                service.searchPlace('Basel').subscribe(
+                    name => {
+                    },
+                    err => {
+                        done();
+                    }
+                );
+
+                const httpRequest = httpTestingController.expectOne('https://ws.geonames.net/searchJSON?userName=token&lang=de&style=full&maxRows=12&name_startsWith=Basel');
+
+                expect(httpRequest.request.method).toEqual('GET');
+
+                const mockErrorResponse = {status: 400, statusText: 'Bad Request'};
+
+                httpRequest.flush(mockErrorResponse);
+
+            });
+
+            it('should return an error if the requests response does not contain the expected information', done => {
+
+                service.searchPlace('Basel').subscribe(
+                    name => {
+                    },
+                    err => {
+                        done();
+                    }
+                );
+
+                const httpRequest = httpTestingController.expectOne('https://ws.geonames.net/searchJSON?userName=token&lang=de&style=full&maxRows=12&name_startsWith=Basel');
+
+                expect(httpRequest.request.method).toEqual('GET');
+
+                const expectedResponse = {place: 'Basel'};
+
+                httpRequest.flush(expectedResponse);
+
+            });
+
         });
 
     });
