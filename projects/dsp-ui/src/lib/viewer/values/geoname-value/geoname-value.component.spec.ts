@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateGeonameValue, MockResource, ReadGeonameValue, UpdateGeonameValue } from '@dasch-swiss/dsp-js';
 import { GeonameValueComponent } from './geoname-value.component';
-import { GeonameService } from '../../services/geoname.service';
+import { DisplayPlace, GeonameService } from '../../services/geoname.service';
 import { of } from 'rxjs';
 
 
@@ -98,7 +98,7 @@ describe('GeonameValueComponent', () => {
     beforeEach(() => {
       const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
 
-      geonameServiceMock.resolveGeonameID.and.returnValue(of('Basel'));
+      geonameServiceMock.resolveGeonameID.and.returnValue(of({ displayName: 'Basel'} as DisplayPlace));
 
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
       testHostComponent = testHostFixture.componentInstance;
@@ -228,7 +228,7 @@ describe('GeonameValueComponent', () => {
 
       const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
 
-      geonameServiceMock.resolveGeonameID.and.returnValue(of('Terra Linda High School'));
+      geonameServiceMock.resolveGeonameID.and.returnValue(of({displayName: 'Terra Linda High School'} as DisplayPlace));
 
       const newStr = new ReadGeonameValue();
 

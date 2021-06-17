@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { CustomRegex } from '../custom-regex';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
-import { GeonameService } from '../../services/geoname.service';
+import { DisplayPlace, GeonameService } from '../../services/geoname.service';
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -27,7 +27,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
     matcher = new ValueErrorStateMatcher();
     customValidators = [Validators.pattern(CustomRegex.GEONAME_REGEX)];
 
-    $geonameLabel: Observable<string>;
+    $geonameLabel: Observable<DisplayPlace>;
 
     constructor(@Inject(FormBuilder) private _fb: FormBuilder, private _geonameService: GeonameService) {
         super();
