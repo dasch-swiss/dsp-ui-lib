@@ -102,7 +102,7 @@ export class GeonameService {
                             }
 
                             return {
-                                id: geo.geonameId,
+                                id: geo.geonameId.toString(),
                                 displayName: geo.name + (geo.adminName1 !== undefined ? ', ' + geo.adminName1 : '') + ', ' + geo.countryName,
                                 name: geo.name,
                                 administrativeName: geo.adminName1,

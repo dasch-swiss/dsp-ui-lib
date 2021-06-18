@@ -78,11 +78,11 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
         this.valueFormControl.valueChanges.subscribe(
             (searchTerm: string) => {
 
-                console.log(searchTerm);
+                // console.log(searchTerm);
                 // TODO: move this to a method
                 if ((this.mode === 'create' || this.mode === 'update') && searchTerm !== null) {
                     if (typeof searchTerm === 'string' && searchTerm.length >= 3) {
-                        console.log('searching for ' + searchTerm);
+                        // console.log('searching for ' + searchTerm);
                         this._geonameService.searchPlace(searchTerm).subscribe(
                             places => this.places = places,
                             err => this.places = []
