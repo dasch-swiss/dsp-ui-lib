@@ -9,6 +9,7 @@ import { CreateGeonameValue, MockResource, ReadGeonameValue, UpdateGeonameValue 
 import { GeonameValueComponent } from './geoname-value.component';
 import { DisplayPlace, GeonameService } from '../../services/geoname.service';
 import { of } from 'rxjs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 
@@ -64,7 +65,7 @@ class TestHostCreateValueComponent implements OnInit {
 describe('GeonameValueComponent', () => {
   beforeEach(waitForAsync(() => {
 
-    const mockGeonameService = jasmine.createSpyObj('GeonameService', ['resolveGeonameID']);
+    const mockGeonameService = jasmine.createSpyObj('GeonameService', ['resolveGeonameID', 'searchPlace']);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -76,7 +77,8 @@ describe('GeonameValueComponent', () => {
         ReactiveFormsModule,
         MatInputModule,
         BrowserAnimationsModule,
-        MatIconModule
+        MatIconModule,
+        MatAutocompleteModule
       ],
       providers: [{
           provide: GeonameService,
