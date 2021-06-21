@@ -1,11 +1,17 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CreateGeonameValue, ReadGeonameValue, UpdateGeonameValue } from '@dasch-swiss/dsp-js';
 import { Observable, Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
-import { CustomRegex } from '../custom-regex';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
-import { GeonameService } from '../../services/geoname.service';
+import { DisplayPlace, GeonameService, SearchPlace } from '../../services/geoname.service';
+
+export function geonameIdValidator(control: AbstractControl) {
+    // null or empty checks are out of this validator's scope
+    // check for a valid geoname id object
+    const invalid = !(control.value === null || control.value === '' || (typeof control.value === 'object' && 'id' in control.value));
+    return invalid ? { invalidType: { value: control.value } } : null;
+}
 
 // https://stackoverflow.com/questions/45661010/dynamic-nested-reactive-form-expressionchangedafterithasbeencheckederror
 const resolvedPromise = Promise.resolve(null);
@@ -25,20 +31,39 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
     valueChangesSubscription: Subscription;
     matcher = new ValueErrorStateMatcher();
-    customValidators = [Validators.pattern(CustomRegex.GEONAME_REGEX)];
+    customValidators = [geonameIdValidator];
 
-    $geonameLabel: Observable<string>;
+    $geonameLabel: Observable<DisplayPlace>;
+
+    places: SearchPlace[];
 
     constructor(@Inject(FormBuilder) private _fb: FormBuilder, private _geonameService: GeonameService) {
         super();
     }
 
-    getInitValue(): string | null {
+    standardValueComparisonFunc(initValue: { id: string }, curValue: { id: string } | null): boolean {
+        return (curValue !== null && typeof curValue === 'object' && 'id' in curValue) && initValue.id === curValue.id;
+    }
+
+    getInitValue(): { id: string }  | null {
 
         if (this.displayValue !== undefined) {
-            return this.displayValue.geoname;
+            return {
+                id: this.displayValue.geoname
+            }; // TODO: try to set a display name to be shown when value is updated
         } else {
             return null;
+        }
+    }
+
+    /**
+     * Used to create a value which is displayed to the user after selection from autocomplete.
+     *
+     * @param place the user selected place.
+     */
+    displayPlaceInSearch(place: SearchPlace | null) {
+        if (place !== null) {
+            return place.displayName;
         }
     }
 
@@ -48,6 +73,26 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
         this.valueFormControl = new FormControl(null);
 
         this.commentFormControl = new FormControl(null);
+
+        // react to user typing places
+        this.valueFormControl.valueChanges.subscribe(
+            (searchTerm: string) => {
+
+                // console.log(searchTerm);
+                // TODO: move this to a method
+                if ((this.mode === 'create' || this.mode === 'update') && searchTerm !== null) {
+                    if (typeof searchTerm === 'string' && searchTerm.length >= 3) {
+                        // console.log('searching for ' + searchTerm);
+                        this._geonameService.searchPlace(searchTerm).subscribe(
+                            places => this.places = places,
+                            err => this.places = []
+                        );
+                    } else {
+                        this.places = [];
+                    }
+                }
+            }
+        );
 
         this.valueChangesSubscription = this.commentFormControl.valueChanges.subscribe(
             data => {
@@ -63,7 +108,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
         this.resetFormControl();
 
         if (this.mode === 'read') {
-            this.$geonameLabel = this._geonameService.resolveGeonameID(this.valueFormControl.value);
+            this.$geonameLabel = this._geonameService.resolveGeonameID(this.valueFormControl.value.id);
         }
 
         resolvedPromise.then(() => {
@@ -79,7 +124,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
         this.resetFormControl();
 
         if (this.mode === 'read' && this.valueFormControl !== undefined) {
-            this.$geonameLabel = this._geonameService.resolveGeonameID(this.valueFormControl.value);
+            this.$geonameLabel = this._geonameService.resolveGeonameID(this.valueFormControl.value.id);
         }
     }
 
@@ -100,7 +145,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
         const newGeonameValue = new CreateGeonameValue();
 
-        newGeonameValue.geoname = this.valueFormControl.value;
+        newGeonameValue.geoname = this.valueFormControl.value.id;
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             newGeonameValue.valueHasComment = this.commentFormControl.value;
@@ -120,7 +165,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
         updatedGeonameValue.id = this.displayValue.id;
 
-        updatedGeonameValue.geoname = this.valueFormControl.value;
+        updatedGeonameValue.geoname = this.valueFormControl.value.id;
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             updatedGeonameValue.valueHasComment = this.commentFormControl.value;
