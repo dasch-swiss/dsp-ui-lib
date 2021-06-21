@@ -45,10 +45,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     matcher = new ValueErrorStateMatcher();
 
-    dateEditable = true;
-
-    constructor(@Inject(FormBuilder) private _fb: FormBuilder,
-                private _valueService: ValueService) {
+    constructor(@Inject(FormBuilder) private _fb: FormBuilder) {
         super();
     }
 
@@ -103,10 +100,6 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
         this.resetFormControl();
 
-        if (this.displayValue !== undefined) {
-            this.dateEditable = this._valueService.isDateEditable(this.valueFormControl.value);
-        }
-
         resolvedPromise.then(() => {
             // add form to the parent form group
             this.addToParentFormGroup(this.formName, this.form);
@@ -116,10 +109,6 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
     ngOnChanges(changes: SimpleChanges): void {
         this.resetFormControl();
-
-        if (this.displayValue !== undefined && this.valueFormControl !== undefined) {
-            this.dateEditable = this._valueService.isDateEditable(this.valueFormControl.value);
-        }
     }
 
     // unsubscribe when the object is destroyed to prevent memory leaks
@@ -143,7 +132,7 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
         if (dateOrPeriod instanceof KnoraDate) {
 
             value.calendar = dateOrPeriod.calendar;
-            value.startEra = dateOrPeriod.era;
+            value.startEra = dateOrPeriod.era !== 'noEra' ? dateOrPeriod.era : undefined;
             value.startDay = dateOrPeriod.day;
             value.startMonth = dateOrPeriod.month;
             value.startYear = dateOrPeriod.year;
@@ -157,12 +146,12 @@ export class DateValueComponent extends BaseValueComponent implements OnInit, On
 
             value.calendar = dateOrPeriod.start.calendar;
 
-            value.startEra = dateOrPeriod.start.era;
+            value.startEra = dateOrPeriod.start.era !== 'noEra' ? dateOrPeriod.start.era : undefined;
             value.startDay = dateOrPeriod.start.day;
             value.startMonth = dateOrPeriod.start.month;
             value.startYear = dateOrPeriod.start.year;
 
-            value.endEra = dateOrPeriod.end.era;
+            value.endEra = dateOrPeriod.end.era !== 'noEra' ? dateOrPeriod.end.era : undefined;
             value.endDay = dateOrPeriod.end.day;
             value.endMonth = dateOrPeriod.end.month;
             value.endYear = dateOrPeriod.end.year;

@@ -70,7 +70,7 @@ class TestColorPickerComponent implements ControlValueAccessor, MatFormFieldCont
  */
 @Component({
   template: `
-    <dsp-color-value #colorVal [displayValue]="displayColorVal" [mode]="mode"></dsp-color-value>`
+      <dsp-color-value #colorVal [displayValue]="displayColorVal" [mode]="mode" [showHexCode]="showColorHex"></dsp-color-value>`
 })
 class TestHostDisplayValueComponent implements OnInit {
 
@@ -79,6 +79,8 @@ class TestHostDisplayValueComponent implements OnInit {
   displayColorVal: ReadColorValue;
 
   mode: 'read' | 'update' | 'create' | 'search';
+
+  showColorHex = false;
 
   ngOnInit() {
 
@@ -159,7 +161,7 @@ describe('ColorValueComponent', () => {
       valueReadModeNativeElement = valueReadModeDebugElement.nativeElement;
     });
 
-    it('should display an existing value', () => {
+    it('should display an existing value without a hex color code', () => {
 
       expect(testHostComponent.colorValueComponent.displayValue.color).toEqual('#ff3333');
 
@@ -167,7 +169,27 @@ describe('ColorValueComponent', () => {
 
       expect(testHostComponent.colorValueComponent.mode).toEqual('read');
 
-      expect(valueReadModeNativeElement.innerText).toEqual('#ff3333');
+      expect(valueReadModeNativeElement.style.backgroundColor).not.toBeUndefined();
+
+      expect(valueReadModeNativeElement.innerText).toEqual('');
+
+    });
+
+    it('should display an existing value with a hex color code', () => {
+
+       testHostComponent.showColorHex = true;
+
+       testHostFixture.detectChanges();
+
+       expect(testHostComponent.colorValueComponent.displayValue.color).toEqual('#ff3333');
+
+       expect(testHostComponent.colorValueComponent.form.valid).toBeTruthy();
+
+       expect(testHostComponent.colorValueComponent.mode).toEqual('read');
+
+       expect(valueReadModeNativeElement.style.backgroundColor).not.toBeUndefined();
+
+       expect(valueReadModeNativeElement.innerText).toEqual('#ff3333');
 
     });
 
@@ -301,11 +323,53 @@ describe('ColorValueComponent', () => {
 
       testHostFixture.detectChanges();
 
-      expect(valueReadModeNativeElement.innerText).toEqual('#d8d8d8');
+      expect(valueReadModeNativeElement.style.backgroundColor).not.toBeUndefined();
+
+      expect(valueReadModeNativeElement.innerText).toEqual('');
 
       expect(testHostComponent.colorValueComponent.form.valid).toBeTruthy();
 
     });
+
+    it('should set a new display value not showing the hex color code', () => {
+
+        const newColor = new ReadColorValue();
+
+        newColor.color = '#d8d8d8';
+        newColor.id = 'updatedId';
+
+        testHostComponent.displayColorVal = newColor;
+
+        testHostFixture.detectChanges();
+
+        expect(valueReadModeNativeElement.style.backgroundColor).not.toBeUndefined();
+
+        expect(valueReadModeNativeElement.innerText).toEqual('');
+
+        expect(testHostComponent.colorValueComponent.form.valid).toBeTruthy();
+
+    });
+
+    it('should set a new display value showing the hex color code', () => {
+
+        testHostComponent.showColorHex = true;
+
+        const newColor = new ReadColorValue();
+
+        newColor.color = '#d8d8d8';
+        newColor.id = 'updatedId';
+
+        testHostComponent.displayColorVal = newColor;
+
+        testHostFixture.detectChanges();
+
+        expect(valueReadModeNativeElement.style.backgroundColor).not.toBeUndefined();
+
+        expect(valueReadModeNativeElement.innerText).toEqual('#d8d8d8');
+
+        expect(testHostComponent.colorValueComponent.form.valid).toBeTruthy();
+
+      });
 
     it('should unsubscribe when destroyed', () => {
       expect(testHostComponent.colorValueComponent.valueChangesSubscription.closed).toBeFalsy();

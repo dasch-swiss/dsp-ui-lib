@@ -6,20 +6,18 @@ import { KnoraDate } from '@dasch-swiss/dsp-js';
 })
 export class KnoraDatePipe implements PipeTransform {
 
-    formattedString: string;
-
     transform(date: KnoraDate, format?: string, displayOptions?: 'era' | 'calendar' | 'all'): string {
         if (!(date instanceof KnoraDate)) {
             console.error('Non-KnoraDate provided. Expected a valid KnoraDate');
             return '';
         }
 
-        this.formattedString = this.getFormattedString(date, format);
+        const formattedString = this.getFormattedString(date, format);
 
         if (displayOptions) {
-            return this.addDisplayOptions(date, this.formattedString, displayOptions);
+            return this.addDisplayOptions(date, formattedString, displayOptions);
         } else {
-            return this.formattedString;
+            return formattedString;
         }
     }
 
@@ -36,11 +34,11 @@ export class KnoraDatePipe implements PipeTransform {
     addDisplayOptions(date: KnoraDate, value: string, options: string): string {
         switch (options) {
             case 'era':
-                return value + ' ' + date.era;
+                return value  + (date.era !== 'noEra' ? ' ' + date.era : '');
             case 'calendar':
                 return value + ' ' + date.calendar;
             case 'all':
-                return value + ' ' + date.era + ' ' + date.calendar;
+                return value  + (date.era !== 'noEra' ? ' ' + date.era : '') + ' ' + date.calendar;
         }
     }
 
