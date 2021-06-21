@@ -95,8 +95,6 @@ describe('GeonameValueComponent', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
-    let valueInputDebugElement: DebugElement;
-    let valueInputNativeElement;
     let valueReadModeDebugElement: DebugElement;
     let valueReadModeNativeElement;
 
@@ -193,26 +191,26 @@ describe('GeonameValueComponent', () => {
 
     });
 
-    it('should not return an invalid update value', () => {
+    it('should not return an invalid update value', async () => {
+
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
+
+      geonameServiceMock.searchPlace.and.returnValue(of([]));
 
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
 
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
-
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('2661604');
+      const autocomplete = await loader.getHarness(MatAutocompleteHarness);
 
-      valueInputNativeElement.value = '';
+      // empty field when switching to edit mode
+      expect(await autocomplete.getValue()).toEqual('');
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
+      await autocomplete.enterText('invalid');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -222,30 +220,49 @@ describe('GeonameValueComponent', () => {
 
     });
 
-    it('should restore the initially displayed value', () => {
+    it('should restore the initially displayed value', async () => {
+
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
+
+      geonameServiceMock.searchPlace.and.returnValue(of([{
+            id: '5401678',
+            displayName: 'Terra Linda High School, California, United States',
+            name: 'Terra Linda High School',
+            administrativeName: 'California',
+            country: 'United States',
+            locationType: 'spot, building, farm'
+      }]));
 
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
 
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
-
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('2661604');
+      const autocomplete = await loader.getHarness(MatAutocompleteHarness);
 
-      valueInputNativeElement.value = '5401678';
+      // empty field when switching to edit mode
+      expect(await autocomplete.getValue()).toEqual('');
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+      await autocomplete.enterText('Terra Lind');
 
-      testHostFixture.detectChanges();
+      const options = await autocomplete.getOptions();
+
+      expect(options.length).toEqual(1);
+
+      expect(await options[0].getText()).toEqual('Terra Linda High School, California, United States');
+
+      await options[0].click();
+
+      expect(await autocomplete.getValue()).toEqual('Terra Linda High School, California, United States');
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value.id).toEqual('5401678');
 
       testHostComponent.inputValueComponent.resetFormControl();
 
-      expect(valueInputNativeElement.value).toEqual('2661604');
+      expect(testHostComponent.inputValueComponent.valueFormControl.value.id).toEqual('2661604');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
