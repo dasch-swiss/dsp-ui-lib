@@ -307,6 +307,7 @@ describe('GeonameService', () => {
 
                         const placeBasel = places[0];
                         expect(placeBasel.displayName).toEqual('Basel, Basel-Stadt, Schweiz');
+                        expect(placeBasel.id).toEqual('2661604');
 
                         done();
                     }

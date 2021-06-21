@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { CreateGeonameValue, ReadGeonameValue, ReadResource, UpdateGeonameValue } from '@dasch-swiss/dsp-js';
+import { CreateGeonameValue, ReadGeonameValue, UpdateGeonameValue } from '@dasch-swiss/dsp-js';
 import { Observable, Subscription } from 'rxjs';
 import { BaseValueComponent } from '../base-value.component';
 import { ValueErrorStateMatcher } from '../value-error-state-matcher';
@@ -42,7 +42,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
     }
 
     standardValueComparisonFunc(initValue: { id: string }, curValue: { id: string } | null): boolean {
-        return (curValue !== null && typeof curValue === 'object' && 'id' in curValue) && initValue.id === curValue.id.toString();
+        return (curValue !== null && typeof curValue === 'object' && 'id' in curValue) && initValue.id === curValue.id;
     }
 
     getInitValue(): { id: string }  | null {
@@ -145,7 +145,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
         const newGeonameValue = new CreateGeonameValue();
 
-        newGeonameValue.geoname = this.valueFormControl.value.id.toString();
+        newGeonameValue.geoname = this.valueFormControl.value.id;
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             newGeonameValue.valueHasComment = this.commentFormControl.value;
@@ -165,7 +165,7 @@ export class GeonameValueComponent extends BaseValueComponent implements OnInit,
 
         updatedGeonameValue.id = this.displayValue.id;
 
-        updatedGeonameValue.geoname = this.valueFormControl.value.id.toString();
+        updatedGeonameValue.geoname = this.valueFormControl.value.id;
 
         if (this.commentFormControl.value !== null && this.commentFormControl.value !== '') {
             updatedGeonameValue.valueHasComment = this.commentFormControl.value;
