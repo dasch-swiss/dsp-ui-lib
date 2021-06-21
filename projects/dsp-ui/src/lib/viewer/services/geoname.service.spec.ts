@@ -313,7 +313,7 @@ describe('GeonameService', () => {
                     }
                 );
 
-                const httpRequest = httpTestingController.expectOne('https://ws.geonames.net/searchJSON?userName=token&lang=de&style=full&maxRows=12&name_startsWith=Basel');
+                const httpRequest = httpTestingController.expectOne('https://ws.geonames.net/searchJSON?userName=token&lang=en&style=full&maxRows=12&name_startsWith=Basel');
 
                 expect(httpRequest.request.method).toEqual('GET');
 
@@ -333,7 +333,7 @@ describe('GeonameService', () => {
                     }
                 );
 
-                const httpRequest = httpTestingController.expectOne('https://ws.geonames.net/searchJSON?userName=token&lang=de&style=full&maxRows=12&name_startsWith=Basel');
+                const httpRequest = httpTestingController.expectOne('https://ws.geonames.net/searchJSON?userName=token&lang=en&style=full&maxRows=12&name_startsWith=Basel');
 
                 expect(httpRequest.request.method).toEqual('GET');
 
@@ -353,7 +353,7 @@ describe('GeonameService', () => {
                     }
                 );
 
-                const httpRequest = httpTestingController.expectOne('https://ws.geonames.net/searchJSON?userName=token&lang=de&style=full&maxRows=12&name_startsWith=Basel');
+                const httpRequest = httpTestingController.expectOne('https://ws.geonames.net/searchJSON?userName=token&lang=en&style=full&maxRows=12&name_startsWith=Basel');
 
                 expect(httpRequest.request.method).toEqual('GET');
 

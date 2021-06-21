@@ -82,7 +82,7 @@ export class GeonameService {
      */
     searchPlace(searchString: string): Observable<SearchPlace[]> {
 
-        return this._http.get<object>('https://ws.geonames.net/searchJSON?userName=' + this._appInitService.config['geonameToken'] + '&lang=de&style=full&maxRows=12&name_startsWith=' + encodeURIComponent(searchString)).pipe(
+        return this._http.get<object>('https://ws.geonames.net/searchJSON?userName=' + this._appInitService.config['geonameToken'] + '&lang=en&style=full&maxRows=12&name_startsWith=' + encodeURIComponent(searchString)).pipe(
             map(
                 (places: {
                     geonames: { geonameId: string, name: string, countryName: string, adminName1?: string, fclName: string }[] // assertions for TS compiler
