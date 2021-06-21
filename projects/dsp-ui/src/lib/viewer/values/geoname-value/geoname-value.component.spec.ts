@@ -310,9 +310,12 @@ describe('GeonameValueComponent', () => {
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
+    let loader: HarnessLoader;
+
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
       testHostComponent = testHostFixture.componentInstance;
+      loader = TestbedHarnessEnvironment.loader(testHostFixture);
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
@@ -333,12 +336,35 @@ describe('GeonameValueComponent', () => {
       expect(commentInputNativeElement.value).toEqual('');
     });
 
-    it('should create a value', () => {
-      valueInputNativeElement.value = '5401678';
+    it('should create a value', async () => {
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
 
-      testHostFixture.detectChanges();
+      geonameServiceMock.searchPlace.and.returnValue(of([{
+            id: '5401678',
+            displayName: 'Terra Linda High School, California, United States',
+            name: 'Terra Linda High School',
+            administrativeName: 'California',
+            country: 'United States',
+            locationType: 'spot, building, farm'
+      }]));
+
+      const autocomplete = await loader.getHarness(MatAutocompleteHarness);
+
+        // empty field when switching to edit mode
+      expect(await autocomplete.getValue()).toEqual('');
+
+      await autocomplete.enterText('Terra Lind');
+
+      const options = await autocomplete.getOptions();
+
+      expect(options.length).toEqual(1);
+
+      expect(await options[0].getText()).toEqual('Terra Linda High School, California, United States');
+
+      await options[0].click();
+
+      expect(await autocomplete.getValue()).toEqual('Terra Linda High School, California, United States');
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('create');
 
@@ -351,16 +377,35 @@ describe('GeonameValueComponent', () => {
       expect((newValue as CreateGeonameValue).geoname).toEqual('5401678');
     });
 
-    it('should reset form after cancellation', () => {
-      valueInputNativeElement.value = '5401678';
+    it('should reset form after cancellation', async () => {
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
 
-      commentInputNativeElement.value = 'created comment';
+      geonameServiceMock.searchPlace.and.returnValue(of([{
+            id: '5401678',
+            displayName: 'Terra Linda High School, California, United States',
+            name: 'Terra Linda High School',
+            administrativeName: 'California',
+            country: 'United States',
+            locationType: 'spot, building, farm'
+      }]));
 
-      commentInputNativeElement.dispatchEvent(new Event('input'));
+      const autocomplete = await loader.getHarness(MatAutocompleteHarness);
 
-      testHostFixture.detectChanges();
+      // empty field when switching to edit mode
+      expect(await autocomplete.getValue()).toEqual('');
+
+      await autocomplete.enterText('Terra Lind');
+
+      const options = await autocomplete.getOptions();
+
+      expect(options.length).toEqual(1);
+
+      expect(await options[0].getText()).toEqual('Terra Linda High School, California, United States');
+
+      await options[0].click();
+
+      expect(await autocomplete.getValue()).toEqual('Terra Linda High School, California, United States');
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('create');
 
@@ -370,7 +415,7 @@ describe('GeonameValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('');
+      expect(await autocomplete.getValue()).toEqual('');
 
       expect(commentInputNativeElement.value).toEqual('');
 
