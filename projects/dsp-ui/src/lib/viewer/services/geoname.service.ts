@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map, share } from 'rxjs/operators';
+import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { AppInitService } from '../../core/app-init.service';
 
 export interface GIS {
@@ -67,7 +67,7 @@ export class GeonameService {
                     };
                 }
             ),
-            share(), // several subscribers may use the same source Observable (one HTTP request to geonames)
+            shareReplay({ refCount: false, bufferSize: 1 }), // several subscribers may use the same source Observable (one HTTP request to geonames)
             catchError(error => {
                 // an error occurred
                 return throwError(error);
@@ -114,7 +114,6 @@ export class GeonameService {
 
                 }
             ),
-            share(), // several subscribers may use the same source Observable (one HTTP request to geonames)
             catchError(error => {
                 // an error occurred
                 return throwError(error);
