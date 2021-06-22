@@ -7,8 +7,12 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateGeonameValue, MockResource, ReadGeonameValue, UpdateGeonameValue } from '@dasch-swiss/dsp-js';
 import { GeonameValueComponent } from './geoname-value.component';
-import { GeonameService } from '../../services/geoname.service';
+import { DisplayPlace, GeonameService } from '../../services/geoname.service';
 import { of } from 'rxjs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatAutocompleteHarness } from '@angular/material/autocomplete/testing';
 
 
 
@@ -64,7 +68,7 @@ class TestHostCreateValueComponent implements OnInit {
 describe('GeonameValueComponent', () => {
   beforeEach(waitForAsync(() => {
 
-    const mockGeonameService = jasmine.createSpyObj('GeonameService', ['resolveGeonameID']);
+    const mockGeonameService = jasmine.createSpyObj('GeonameService', ['resolveGeonameID', 'searchPlace']);
 
     TestBed.configureTestingModule({
       declarations: [
@@ -76,7 +80,8 @@ describe('GeonameValueComponent', () => {
         ReactiveFormsModule,
         MatInputModule,
         BrowserAnimationsModule,
-        MatIconModule
+        MatIconModule,
+        MatAutocompleteModule
       ],
       providers: [{
           provide: GeonameService,
@@ -90,18 +95,19 @@ describe('GeonameValueComponent', () => {
     let testHostComponent: TestHostDisplayValueComponent;
     let testHostFixture: ComponentFixture<TestHostDisplayValueComponent>;
     let valueComponentDe: DebugElement;
-    let valueInputDebugElement: DebugElement;
-    let valueInputNativeElement;
     let valueReadModeDebugElement: DebugElement;
     let valueReadModeNativeElement;
+
+    let loader: HarnessLoader;
 
     beforeEach(() => {
       const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
 
-      geonameServiceMock.resolveGeonameID.and.returnValue(of('Basel'));
+      geonameServiceMock.resolveGeonameID.and.returnValue(of({ displayName: 'Basel'} as DisplayPlace));
 
       testHostFixture = TestBed.createComponent(TestHostDisplayValueComponent);
       testHostComponent = testHostFixture.componentInstance;
+      loader = TestbedHarnessEnvironment.loader(testHostFixture);
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
@@ -135,26 +141,45 @@ describe('GeonameValueComponent', () => {
 
     });
 
-    it('should make an existing value editable', () => {
+    it('should make an existing value editable', async () => {
+
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
+
+      geonameServiceMock.searchPlace.and.returnValue(of([{
+          id: '5401678',
+          displayName: 'Terra Linda High School, California, United States',
+          name: 'Terra Linda High School',
+          administrativeName: 'California',
+          country: 'United States',
+          locationType: 'spot, building, farm'
+      }]));
 
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
 
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
+      const autocomplete = await loader.getHarness(MatAutocompleteHarness);
+
+      // empty field when switching to edit mode
+      expect(await autocomplete.getValue()).toEqual('');
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('2661604');
+      await autocomplete.enterText('Terra Lind');
 
-      valueInputNativeElement.value = '5401678';
+      expect(geonameServiceMock.searchPlace).toHaveBeenCalledWith('Terra Lind');
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+      const options = await autocomplete.getOptions();
 
-      testHostFixture.detectChanges();
+      expect(options.length).toEqual(1);
+
+      expect(await options[0].getText()).toEqual('Terra Linda High School, California, United States');
+
+      await options[0].click();
+
+      expect(await autocomplete.getValue()).toEqual('Terra Linda High School, California, United States');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeTruthy();
 
@@ -166,26 +191,26 @@ describe('GeonameValueComponent', () => {
 
     });
 
-    it('should not return an invalid update value', () => {
+    it('should not return an invalid update value', async () => {
+
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
+
+      geonameServiceMock.searchPlace.and.returnValue(of([]));
 
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
 
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
-
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('2661604');
+      const autocomplete = await loader.getHarness(MatAutocompleteHarness);
 
-      valueInputNativeElement.value = '';
+      // empty field when switching to edit mode
+      expect(await autocomplete.getValue()).toEqual('');
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
-
-      testHostFixture.detectChanges();
+      await autocomplete.enterText('invalid');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -195,30 +220,49 @@ describe('GeonameValueComponent', () => {
 
     });
 
-    it('should restore the initially displayed value', () => {
+    it('should restore the initially displayed value', async () => {
+
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
+
+      geonameServiceMock.searchPlace.and.returnValue(of([{
+            id: '5401678',
+            displayName: 'Terra Linda High School, California, United States',
+            name: 'Terra Linda High School',
+            administrativeName: 'California',
+            country: 'United States',
+            locationType: 'spot, building, farm'
+      }]));
 
       testHostComponent.mode = 'update';
 
       testHostFixture.detectChanges();
 
-      valueInputDebugElement = valueComponentDe.query(By.css('input.value'));
-      valueInputNativeElement = valueInputDebugElement.nativeElement;
-
       expect(testHostComponent.inputValueComponent.mode).toEqual('update');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('2661604');
+      const autocomplete = await loader.getHarness(MatAutocompleteHarness);
 
-      valueInputNativeElement.value = '5401678';
+      // empty field when switching to edit mode
+      expect(await autocomplete.getValue()).toEqual('');
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+      await autocomplete.enterText('Terra Lind');
 
-      testHostFixture.detectChanges();
+      const options = await autocomplete.getOptions();
+
+      expect(options.length).toEqual(1);
+
+      expect(await options[0].getText()).toEqual('Terra Linda High School, California, United States');
+
+      await options[0].click();
+
+      expect(await autocomplete.getValue()).toEqual('Terra Linda High School, California, United States');
+
+      expect(testHostComponent.inputValueComponent.valueFormControl.value.id).toEqual('5401678');
 
       testHostComponent.inputValueComponent.resetFormControl();
 
-      expect(valueInputNativeElement.value).toEqual('2661604');
+      expect(testHostComponent.inputValueComponent.valueFormControl.value.id).toEqual('2661604');
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
@@ -228,7 +272,7 @@ describe('GeonameValueComponent', () => {
 
       const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
 
-      geonameServiceMock.resolveGeonameID.and.returnValue(of('Terra Linda High School'));
+      geonameServiceMock.resolveGeonameID.and.returnValue(of({displayName: 'Terra Linda High School'} as DisplayPlace));
 
       const newStr = new ReadGeonameValue();
 
@@ -266,9 +310,12 @@ describe('GeonameValueComponent', () => {
     let commentInputDebugElement: DebugElement;
     let commentInputNativeElement;
 
+    let loader: HarnessLoader;
+
     beforeEach(() => {
       testHostFixture = TestBed.createComponent(TestHostCreateValueComponent);
       testHostComponent = testHostFixture.componentInstance;
+      loader = TestbedHarnessEnvironment.loader(testHostFixture);
       testHostFixture.detectChanges();
 
       expect(testHostComponent).toBeTruthy();
@@ -289,12 +336,35 @@ describe('GeonameValueComponent', () => {
       expect(commentInputNativeElement.value).toEqual('');
     });
 
-    it('should create a value', () => {
-      valueInputNativeElement.value = '5401678';
+    it('should create a value', async () => {
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
 
-      testHostFixture.detectChanges();
+      geonameServiceMock.searchPlace.and.returnValue(of([{
+            id: '5401678',
+            displayName: 'Terra Linda High School, California, United States',
+            name: 'Terra Linda High School',
+            administrativeName: 'California',
+            country: 'United States',
+            locationType: 'spot, building, farm'
+      }]));
+
+      const autocomplete = await loader.getHarness(MatAutocompleteHarness);
+
+        // empty field when switching to edit mode
+      expect(await autocomplete.getValue()).toEqual('');
+
+      await autocomplete.enterText('Terra Lind');
+
+      const options = await autocomplete.getOptions();
+
+      expect(options.length).toEqual(1);
+
+      expect(await options[0].getText()).toEqual('Terra Linda High School, California, United States');
+
+      await options[0].click();
+
+      expect(await autocomplete.getValue()).toEqual('Terra Linda High School, California, United States');
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('create');
 
@@ -307,16 +377,35 @@ describe('GeonameValueComponent', () => {
       expect((newValue as CreateGeonameValue).geoname).toEqual('5401678');
     });
 
-    it('should reset form after cancellation', () => {
-      valueInputNativeElement.value = '5401678';
+    it('should reset form after cancellation', async () => {
 
-      valueInputNativeElement.dispatchEvent(new Event('input'));
+      const geonameServiceMock = TestBed.inject(GeonameService) as jasmine.SpyObj<GeonameService>;
 
-      commentInputNativeElement.value = 'created comment';
+      geonameServiceMock.searchPlace.and.returnValue(of([{
+            id: '5401678',
+            displayName: 'Terra Linda High School, California, United States',
+            name: 'Terra Linda High School',
+            administrativeName: 'California',
+            country: 'United States',
+            locationType: 'spot, building, farm'
+      }]));
 
-      commentInputNativeElement.dispatchEvent(new Event('input'));
+      const autocomplete = await loader.getHarness(MatAutocompleteHarness);
 
-      testHostFixture.detectChanges();
+      // empty field when switching to edit mode
+      expect(await autocomplete.getValue()).toEqual('');
+
+      await autocomplete.enterText('Terra Lind');
+
+      const options = await autocomplete.getOptions();
+
+      expect(options.length).toEqual(1);
+
+      expect(await options[0].getText()).toEqual('Terra Linda High School, California, United States');
+
+      await options[0].click();
+
+      expect(await autocomplete.getValue()).toEqual('Terra Linda High School, California, United States');
 
       expect(testHostComponent.inputValueComponent.mode).toEqual('create');
 
@@ -326,7 +415,7 @@ describe('GeonameValueComponent', () => {
 
       expect(testHostComponent.inputValueComponent.form.valid).toBeFalsy();
 
-      expect(valueInputNativeElement.value).toEqual('');
+      expect(await autocomplete.getValue()).toEqual('');
 
       expect(commentInputNativeElement.value).toEqual('');
 
