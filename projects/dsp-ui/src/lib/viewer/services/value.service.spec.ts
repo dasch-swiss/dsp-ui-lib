@@ -262,8 +262,8 @@ describe('ValueService', () => {
 
             const period = calDateJDN.toJDNPeriod();
 
-            expect(period.periodStart).toEqual(1721060);
-            expect(period.periodEnd).toEqual(1721060);
+            expect(period.periodStart).toEqual(1721058);
+            expect(period.periodEnd).toEqual(1721058);
 
         });
 
