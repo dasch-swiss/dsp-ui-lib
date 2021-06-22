@@ -37,7 +37,9 @@ In your Angular project, create the file `config.dev.json` inside `src/config/`:
   "apiPort": 3333,
   "apiPath": "",
   "jsonWebToken": "",
-  "logErrors": true
+  "logErrors": true,
+  "sipiUrl": "http://0.0.0.0:1024/",
+  "geonameToken": "token"
 }
 ```
 
