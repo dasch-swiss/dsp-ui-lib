@@ -157,9 +157,9 @@ The value component's selector is chosen from `valueTypeOrClass`. Since all valu
 Value components may have additional specific inputs for configuration that can be handled in `DisplayEditComponent`'s template as well
 ,e.g., additional configuration of how do display a date.
 
-#### Integration of CKEditor
+### Integration of CKEditor
 
-### General Setup
+#### General Setup
 
 To edit XML, the viewer module relies on CKEditor. `TextValueAsXMLComponent` integrates the CKEditor library for Angular.
 In addition, a custom build of CKEditor is needed which is accessible on [GitHub](https://github.com/dasch-swiss/ckeditor_custom_build).
@@ -167,10 +167,15 @@ To make a new custom build, follow the [instructions](https://github.com/dasch-s
 
 Note that currently only the standard mapping is supported.
 
-### Handling Internal Links When Displaying Text
+#### Handling Internal Links When Displaying Text
 
 When a text created with CKEditor is shown in read-mode, click and hover events on internal links can be reacted to by applying the directive `TextValueHtmlLinkDirective` with the selector `dspHtmlLink`.
 Internal links have the class "salsah-link".
+
+### Integration of the MatDatepicker
+
+The `MatDatepicker` cannot be used as part of the CRUD UI components due to its limitations in terms of precision and era selection.
+As a replacement, `DateInputTextComponent` is being used allowing for year, month, and day precision and era selection.
 
 ## Search Module
 
