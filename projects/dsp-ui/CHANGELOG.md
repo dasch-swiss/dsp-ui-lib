@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.5.0...v1.6.0) (2021-06-23)
+
+
+### Enhancements
+
+* **viewer:** improve editing of geonames (DSP-1212) ([#307](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/307)) ([91bb637](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/91bb63710750cc1c664c7385d699df4947740f1d))
+* **viewer:** make hex code display optional for color value (DSP-1667) ([#303](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/303)) ([0b03781](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/0b03781940d6eb1214ca305085ec9fb36591e46b))
+* **viewer:** resolve geoname id and show name (DSP-1212) ([#305](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/305)) ([18ea19b](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/18ea19b900d5d376e1186536e589cd8048ebf63e))
+
+
+### Maintenance
+
+* **update:** update cal lib and date adapter (DSP-1758) ([#309](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/309)) ([020b080](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/020b08038471b4d5b302970a4900961b00e71042))
+
 ## [1.5.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.4.0...v1.5.0) (2021-06-10)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@dasch-swiss/dsp-ui",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Angular library to easily create a user interface for Knora/DSP-API",
   "repository": {
     "type": "git",
