@@ -157,9 +157,16 @@ Follow these steps to add a new component to the demo app:
 
 To make changes to the DSP-UI and have your changes reflected immediately upon saving, follow these steps:
 
-- run `npm run build-watchful-lib-dev` from the project root directory
-- open a new tab and run `npm run start` from the project root directory
-- now, anytime you make a change to DSP-UI and save, the library will be re-built and the webpage will refresh and you will see the changes
+- run `npm run build-watchful-lib-dev` from the project root directory.
+- open a new tab and run `npm run start` from the project root directory.
+- Or if you want to connect to the DSP-API on our test server run `ng serve --configuration=test-server` or
+  `npm run start-with-test-server`. Please consider which version of DSP-API is currently running on the
+  test server (see webapi: [https://api.test.dasch.swiss/version](https://api.test.dasch.swiss/version)).
+  Please note that this option is suitable when working on viewer or search module. In some cases
+  like `/read`, `/modify`, etc. it doesn't work because it has an automatic login for the root user,
+  which is locked on the test server.
+- now, anytime you make a change to DSP-UI and save, the library will be re-built and the webpage will
+  refresh and you will see the changes.
 
 ### Run the Application in Productive Mode
 
