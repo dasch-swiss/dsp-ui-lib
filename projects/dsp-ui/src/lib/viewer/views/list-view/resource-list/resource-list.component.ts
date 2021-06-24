@@ -24,10 +24,35 @@ export class ResourceListComponent {
      */
     @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
 
+    selectedResourcesCount = 0;
+    selectedResources: string[] = [];
+
     constructor() { }
 
-    viewResourse(checked: boolean, resId: string, resIndex: number) {
-      console.log(checked, resId, resIndex);
+    /**
+     * Maintain the list and count of selected resources
+     *
+     * @param {boolean} checked tells if checkbox is selected
+     * @param {string} resId resource id
+     */
+    viewResourse(checked: boolean, resId: string) {
+      if (checked) {
+        // add resource in to the selected resources list
+        this.selectedResources.push(resId);
+
+        // increase the count of selected resources
+        this.selectedResourcesCount += 1;
+      }
+      else {
+        // remove resource from the selected resources list
+        let index = this.selectedResources.findIndex(d => d === resId);
+        this.selectedResources.splice(index, 1);
+
+        // decrease the count of selected resources
+        this.selectedResourcesCount -= 1;
+      }
+      alert(this.selectedResourcesCount + " resources are selected.");
+      console.log(this.selectedResources);
     }
 
 }
