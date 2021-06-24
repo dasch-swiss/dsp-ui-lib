@@ -26,4 +26,8 @@ export class ResourceListComponent {
 
     constructor() { }
 
+    viewResourse(checked: boolean, resId: string, resIndex: number) {
+      console.log(checked, resId, resIndex);
+    }
+
 }

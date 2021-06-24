@@ -22,5 +22,6 @@
                 </div>
             </div>
         </div>
+        <mat-checkbox id="{{ i }}" (change)="viewResourse($event.checked, res.id, i)" class="res-checkbox"></mat-checkbox>
     </mat-list-item>
 </mat-list>
