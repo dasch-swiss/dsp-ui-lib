@@ -38,9 +38,9 @@ export class ListViewComponent implements OnChanges {
     /**
      * Click on an item will emit the resource iri
      *
-     * @param {EventEmitter<string>} resourceSelected
+     * @param {EventEmitter<object>} resourcesSelected
      */
-    @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
+    @Output() resourcesSelected: EventEmitter<object> = new EventEmitter<object>();
 
     resources: ReadResourceSequence;
 
@@ -78,15 +78,15 @@ export class ListViewComponent implements OnChanges {
         this.view = view;
     }
 
-    emitSelectedResource(id: string) {
+    emitSelectedResources(resInfo: object) {
         // get selected resource index from list to highlight it
-        for (let idx = 0; idx < this.resources.resources.length; idx++) {
+        /* for (let idx = 0; idx < this.resources.resources.length; idx++) {
             if (this.resources.resources[idx].id === id) {
                 this.selectedResourceIdx = idx;
                 break;
             }
-        }
-        this.resourceSelected.emit(id);
+        } */
+        this.resourcesSelected.emit(resInfo);
     }
 
     goToPage(page: PageEvent) {
@@ -117,7 +117,6 @@ export class ListViewComponent implements OnChanges {
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;
-                    this.emitSelectedResource(this.resources.resources[0].id);
                 },
                 (error: ApiResponseError) => {
                     this._notification.openSnackBar(error);
@@ -149,7 +148,6 @@ export class ListViewComponent implements OnChanges {
                     (response: ReadResourceSequence) => {
                         this.resources = response;
                         this.loading = false;
-                        this.emitSelectedResource(this.resources.resources[0].id);
                     },
                     (error: ApiResponseError) => {
                         this._notification.openSnackBar(error);

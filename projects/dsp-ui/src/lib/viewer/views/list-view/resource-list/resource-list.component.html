@@ -3,8 +3,7 @@
         class="link"
         [class.selected-resource]="selectedResourceIdx === i"
         [class.border-bottom]="!last"
-        *ngFor="let res of resources.resources; let i = index; let last = last"
-        (click)="resourceSelected.emit(res.id)">
+        *ngFor="let res of resources.resources; let i = index; let last = last">
         <mat-icon matListIcon>image_search</mat-icon>
         <p matLine class="res-class-label">
             {{ res.entityInfo.classes[res.type].label }}

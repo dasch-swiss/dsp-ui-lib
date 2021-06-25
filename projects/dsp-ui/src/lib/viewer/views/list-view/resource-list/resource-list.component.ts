@@ -22,10 +22,10 @@ export class ResourceListComponent {
      *
      * @param  {EventEmitter<string>} resourceSelected
      */
-    @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
+    @Output() resourcesSelected: EventEmitter<object> = new EventEmitter<object>();
 
     selectedResourcesCount = 0;
-    selectedResources: string[] = [];
+    selectedResourcesList: string[] = [];
 
     constructor() { }
 
@@ -38,21 +38,20 @@ export class ResourceListComponent {
     viewResourse(checked: boolean, resId: string) {
       if (checked) {
         // add resource in to the selected resources list
-        this.selectedResources.push(resId);
+        this.selectedResourcesList.push(resId);
 
         // increase the count of selected resources
         this.selectedResourcesCount += 1;
       }
       else {
         // remove resource from the selected resources list
-        let index = this.selectedResources.findIndex(d => d === resId);
-        this.selectedResources.splice(index, 1);
+        let index = this.selectedResourcesList.findIndex(d => d === resId);
+        this.selectedResourcesList.splice(index, 1);
 
         // decrease the count of selected resources
         this.selectedResourcesCount -= 1;
       }
-      alert(this.selectedResourcesCount + " resources are selected.");
-      console.log(this.selectedResources);
+      this.resourcesSelected.emit({resCount: this.selectedResourcesCount, resList: this.selectedResourcesList});
     }
 
 }

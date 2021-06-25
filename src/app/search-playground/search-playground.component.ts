@@ -59,8 +59,8 @@ export class SearchPlaygroundComponent implements OnInit {
         this.searchParams = search;
     }
 
-    openResource(id: string) {
-        console.log('open ', id);
+    openResource(resInfo: object) {
+        console.log('selected resources ', resInfo);
     }
 
     // playground helper method

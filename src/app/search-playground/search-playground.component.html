@@ -90,5 +90,5 @@ Select the component to play with:
 <br>
 
 <div class="search-results" *ngIf="searchParams">
-    <dsp-list-view [search]="searchParams" (resourceSelected)="openResource($event)"></dsp-list-view>
+    <dsp-list-view [search]="searchParams" (resourcesSelected)="openResource($event)"></dsp-list-view>
 </div>
