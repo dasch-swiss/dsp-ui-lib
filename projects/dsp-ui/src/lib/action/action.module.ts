@@ -87,7 +87,8 @@ import { SelectedResourcesComponent } from './components/selected-resources/sele
     StringifyStringLiteralPipe,
     StringLiteralInputComponent,
     SelectProjectComponent,
-    TruncatePipe
+    TruncatePipe,
+    SelectedResourcesComponent
   ]
 })
 
