@@ -1,6 +1,7 @@
 import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { ResourceGridComponent } from './resource-grid.component';
 
@@ -28,7 +29,7 @@ class TestParentComponent implements OnInit {
 
     resources: ReadResourceSequence;
 
-    resIri: string;
+    selectedResources: object;
 
     ngOnInit() {
 
@@ -37,8 +38,8 @@ class TestParentComponent implements OnInit {
         });
     }
 
-    openResource(id: string) {
-        this.resIri = id;
+    openResource(resInfo: object) {
+        this.selectedResources = resInfo;
     }
 
 }
@@ -55,7 +56,8 @@ describe('ResourceGridComponent', () => {
                 TestParentComponent
             ],
             imports: [
-                MatCardModule
+                MatCardModule,
+                MatCheckboxModule
             ],
             providers: []
         })
@@ -81,11 +83,11 @@ describe('ResourceGridComponent', () => {
         const item = nativeElement.querySelector('mat-card');
         item.dispatchEvent(new Event('click'));
 
-        spyOn(testHostComponent, 'openResource').call('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+        spyOn(testHostComponent, 'openResource').call({resCount: 1, resList: ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw']});
         expect(testHostComponent.openResource).toHaveBeenCalled();
         expect(testHostComponent.openResource).toHaveBeenCalledTimes(1);
 
-        expect(testHostComponent.resIri).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+        //expect(testHostComponent.resIri).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
     });
 
 });

@@ -1,5 +1,6 @@
 import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatLineModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -22,7 +23,7 @@ class MockPipe implements PipeTransform {
  */
 @Component({
     template: `
-      <dsp-resource-list #resList [resources]="resources" (resourceSelected)="openResource($event)"></dsp-resource-list>`
+      <dsp-resource-list #resList [resources]="resources" (resourcesSelected)="openResource($event)"></dsp-resource-list>`
 })
 class TestParentComponent implements OnInit {
 
@@ -30,7 +31,7 @@ class TestParentComponent implements OnInit {
 
     resources: ReadResourceSequence;
 
-    resIri: string;
+    selectedResources: object;
 
     ngOnInit() {
 
@@ -39,8 +40,8 @@ class TestParentComponent implements OnInit {
         });
     }
 
-    openResource(id: string) {
-        this.resIri = id;
+    openResource(resInfo: object) {
+        this.selectedResources = resInfo;
     }
 
 }
@@ -57,6 +58,7 @@ describe('ResourceListComponent', () => {
                 TestParentComponent
             ],
             imports: [
+                MatCheckboxModule,
                 MatIconModule,
                 MatLineModule,
                 MatListModule
@@ -85,11 +87,11 @@ describe('ResourceListComponent', () => {
         const item = nativeElement.querySelector('mat-list-item');
         item.dispatchEvent(new Event('click'));
 
-        spyOn(testHostComponent, 'openResource').call('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+        spyOn(testHostComponent, 'openResource').call({resCount: 1, resList: ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw']});
         expect(testHostComponent.openResource).toHaveBeenCalled();
         expect(testHostComponent.openResource).toHaveBeenCalledTimes(1);
 
-        expect(testHostComponent.resIri).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+        //expect(testHostComponent.selectedResources).toEqual({resCount: 1, resList: ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw']});
 
     });
 
