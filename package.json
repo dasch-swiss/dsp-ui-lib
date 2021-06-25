@@ -20,6 +20,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-with-test-server": "ng serve --configuration=test-server",
     "build": "ng build",
     "test": "ng t --watch=false --browsers=ChromeHeadless",
     "test-lib": "ng t --watch=false --browsers=ChromeHeadless --project @dasch-swiss/dsp-ui",

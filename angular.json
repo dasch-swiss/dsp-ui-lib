@@ -66,6 +66,32 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "test-server": {
+                "fileReplacements": [
+                    {
+                        "replace": "src/environments/environment.ts",
+                        "with": "src/environments/environment.test-server.ts"
+                    }
+                ],
+                "optimization": false,
+                "sourceMap": true,
+                "namedChunks": false,
+                "aot": true,
+                "extractLicenses": false,
+                "vendorChunk": false,
+                "buildOptimizer": false,
+                "budgets": [
+                    {
+                        "type": "initial",
+                        "maximumWarning": "8mb",
+                        "maximumError": "8mb"
+                    },
+                    {
+                        "type": "anyComponentStyle",
+                        "maximumWarning": "6kb"
+                    }
+                ]
             }
           }
         },
@@ -77,6 +103,9 @@
           "configurations": {
             "production": {
               "browserTarget": "dsp-ui-lib:build:production"
+            },
+            "test-server": {
+                "browserTarget": "dsp-ui-lib:build:test-server"
             }
           }
         },
@@ -128,7 +157,10 @@
           "configurations": {
             "production": {
               "devServerTarget": "dsp-ui-lib:serve:production"
-            }
+            },
+            "test-server": {
+              "devServerTarget": "dsp-ui-lib:serve:test-server"
+          }
           }
         }
       }
