@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
+import { FilteredResouces } from '../list-view.component';
 
 @Component({
     selector: 'dsp-resource-list',
@@ -20,9 +21,9 @@ export class ResourceListComponent {
     /**
      * Click on an item will emit the resource iri
      *
-     * @param  {EventEmitter<string>} resourceSelected
+     * @param  {EventEmitter<FilteredResouces>} resourcesSelected
      */
-    @Output() resourcesSelected: EventEmitter<object> = new EventEmitter<object>();
+    @Output() resourcesSelected: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
 
     selectedResourcesCount = 0;
     selectedResourcesList: string[] = [];
@@ -35,7 +36,7 @@ export class ResourceListComponent {
      * @param {boolean} checked tells if checkbox is selected
      * @param {string} resId resource id
      */
-    viewResourse(checked: boolean, resId: string) {
+    viewResource(checked: boolean, resId: string) {
       if (checked) {
         // add resource in to the selected resources list
         this.selectedResourcesList.push(resId);
@@ -51,7 +52,7 @@ export class ResourceListComponent {
         // decrease the count of selected resources
         this.selectedResourcesCount -= 1;
       }
-      this.resourcesSelected.emit({resCount: this.selectedResourcesCount, resList: this.selectedResourcesList});
+      this.resourcesSelected.emit({count: this.selectedResourcesCount, selectedIds: this.selectedResourcesList});
     }
 
 }

@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { ResourceGridComponent } from './resource-grid.component';
+import { FilteredResouces } from '../list-view.component';
 
 /**
  * Mocked truncate pipe from action module.
@@ -29,7 +30,7 @@ class TestParentComponent implements OnInit {
 
     resources: ReadResourceSequence;
 
-    selectedResources: object;
+    selectedResources: FilteredResouces;
 
     ngOnInit() {
 
@@ -38,7 +39,7 @@ class TestParentComponent implements OnInit {
         });
     }
 
-    openResource(resInfo: object) {
+    openResource(resInfo: FilteredResouces) {
         this.selectedResources = resInfo;
     }
 
@@ -83,7 +84,7 @@ describe('ResourceGridComponent', () => {
         const item = nativeElement.querySelector('mat-card');
         item.dispatchEvent(new Event('click'));
 
-        spyOn(testHostComponent, 'openResource').call({resCount: 1, resList: ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw']});
+        spyOn(testHostComponent, 'openResource').call({count: 1, selectedIds: ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw']});
         expect(testHostComponent.openResource).toHaveBeenCalled();
         expect(testHostComponent.openResource).toHaveBeenCalledTimes(1);
 

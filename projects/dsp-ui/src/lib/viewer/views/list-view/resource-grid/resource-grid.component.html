@@ -7,7 +7,7 @@
         <mat-card-header class="grid-card-header">
             <mat-card-subtitle class="res-class-label">{{ res.entityInfo.classes[res.type].label }}</mat-card-subtitle>
             <mat-card-title class="res-class-value">{{ res.label }}</mat-card-title>
-            <mat-checkbox id="{{ i }}" (change)="viewResourse($event.checked, res.id)" class="res-checkbox"></mat-checkbox>
+            <mat-checkbox id="{{ i }}" (change)="viewResource($event.checked, res.id)" class="res-checkbox"></mat-checkbox>
         </mat-card-header>
         <mat-card-content class="grid-card-content" *ngFor="let prop of res.properties | keyvalue">
             <div *ngFor="let val of prop.value">

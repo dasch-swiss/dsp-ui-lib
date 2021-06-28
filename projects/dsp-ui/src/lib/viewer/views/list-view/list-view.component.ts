@@ -22,6 +22,16 @@ export interface SearchParams {
     filter?: IFulltextSearchParams;
 }
 
+/* return the selected resources in below format
+ *
+ * count: total number of resources selected
+ * selectedIds: list of selected resource's ids
+ */
+export interface FilteredResouces {
+    count: number,
+    selectedIds: string[]
+}
+
 @Component({
     selector: 'dsp-list-view',
     templateUrl: './list-view.component.html',
@@ -38,9 +48,9 @@ export class ListViewComponent implements OnChanges {
     /**
      * Click on an item will emit the resource iri
      *
-     * @param {EventEmitter<object>} resourcesSelected
+     * @param {EventEmitter<FilteredResouces>} resourcesSelected
      */
-    @Output() resourcesSelected: EventEmitter<object> = new EventEmitter<object>();
+    @Output() resourcesSelected: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
 
     resources: ReadResourceSequence;
 
@@ -78,7 +88,7 @@ export class ListViewComponent implements OnChanges {
         this.view = view;
     }
 
-    emitSelectedResources(resInfo: object) {
+    emitSelectedResources(resInfo: FilteredResouces) {
         // get selected resource index from list to highlight it
         /* for (let idx = 0; idx < this.resources.resources.length; idx++) {
             if (this.resources.resources[idx].id === id) {
