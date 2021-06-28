@@ -16,8 +16,14 @@
   height: calc(100% - 32px);
 }
 
-.res-checkbox {
-  margin: 29px 10px 0;
+.res-class-header-text {
+  width: 90%;
+  float: left;
+}
+
+.res-class-header-actions {
+  width: 10%;
+  float: right;
 }
 
 .res-class-label,

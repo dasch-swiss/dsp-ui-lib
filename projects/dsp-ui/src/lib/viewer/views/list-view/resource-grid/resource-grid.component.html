@@ -5,9 +5,14 @@
         *ngFor="let res of resources.resources; let i = index;">
         <!-- TODO: add the representation preview here, mat-card-image can be used for images -->
         <mat-card-header class="grid-card-header">
+            <mat-card-title-group class="res-class-header-text">
             <mat-card-subtitle class="res-class-label">{{ res.entityInfo.classes[res.type].label }}</mat-card-subtitle>
             <mat-card-title class="res-class-value">{{ res.label }}</mat-card-title>
-            <mat-checkbox id="{{ i }}" (change)="viewResource($event.checked, res.id)" class="res-checkbox"></mat-checkbox>
+            </mat-card-title-group>
+            <div fxFlex></div>
+            <mat-card-title-group class="res-class-header-actions">
+                <mat-checkbox id="{{ i }}" (change)="viewResource($event.checked, res.id)" class="res-checkbox"></mat-checkbox>
+            </mat-card-title-group>
         </mat-card-header>
         <mat-card-content class="grid-card-content" *ngFor="let prop of res.properties | keyvalue">
             <div *ngFor="let val of prop.value">
