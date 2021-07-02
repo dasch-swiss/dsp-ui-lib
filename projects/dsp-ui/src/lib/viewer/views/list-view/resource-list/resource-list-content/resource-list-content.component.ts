@@ -34,8 +34,8 @@ export class ResourceListContentComponent {
    * @param checked boolean: checkbox value
    * @param resId number: resource index from list
    */
-  viewResource(checked: boolean, resId: number) {
-      this.checkboxUpdated.emit({ checked: checked, resIndex: resId.toString()});
+  viewResource(checked: boolean, resListIndex: number, resId: string) {
+      this.checkboxUpdated.emit({ checked: checked, resListIndex: resListIndex, resId: resId});
   }
 
 }

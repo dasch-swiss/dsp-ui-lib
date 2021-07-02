@@ -2,10 +2,9 @@
 <div class="resource-grid" *ngIf="withMultipleSelection === false">
     <div
         class="grid-card link"
-        [class.selected-resource]="selectedResourceIdx === i"
         *ngFor="let res of resources.resources; let i = index;"
-        (click)="singleResourceSelected.emit(res.id)">
-        <dsp-resource-grid-content [resource]="res"></dsp-resource-grid-content>
+        (click)="viewResource({ checked: true, resListIndex: i, resId: res.id})">
+        <dsp-resource-grid-content [resource]="res" [selectedResourceIdx]="selectedResourceIdx"></dsp-resource-grid-content>
     </div>
 </div>
 
@@ -13,12 +12,12 @@
 <div class="resource-grid" *ngIf="withMultipleSelection === true">
     <div
         class="grid-card link"
-        [class.selected-resource]="selectedResourceIdx === i"
         *ngFor="let res of resources.resources; let i = index;">
         <dsp-resource-grid-content
             [resource]="res"
             [withMultipleSelection]="withMultipleSelection"
             [resIndex]="i"
+            [selectedResourceIdx]="selectedResourceIdx"
             (checkboxUpdated)="viewResource($event)">
         </dsp-resource-grid-content>
     </div>

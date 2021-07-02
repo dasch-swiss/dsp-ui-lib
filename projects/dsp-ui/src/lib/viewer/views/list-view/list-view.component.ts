@@ -29,7 +29,9 @@ export interface SearchParams {
  */
 export interface FilteredResouces {
     count: number,
-    selectedIds: string[]
+    resListIndex: number[],
+    resIds: string[],
+    selectionType: "multiple" | "single"
 }
 
 /* return the checkbox value
@@ -39,7 +41,8 @@ export interface FilteredResouces {
  */
 export interface checkboxUpdate {
     checked: boolean,
-    resIndex: string
+    resListIndex: number,
+    resId: string
 }
 
 @Component({
@@ -76,7 +79,7 @@ export class ListViewComponent implements OnChanges {
 
     resources: ReadResourceSequence;
 
-    selectedResourceIdx = 0;
+    selectedResourceIdx: number[] = [];
 
     // MatPaginator Output
     pageEvent: PageEvent;
@@ -110,23 +113,15 @@ export class ListViewComponent implements OnChanges {
         this.view = view;
     }
 
-    // This funtion is called when 'withMultipleSelection' is false and
-    // single resources is selected to view
-    emitSingleSelectedResource(id: string) {
-        // get selected resource index from list to highlight it
-        for (let idx = 0; idx < this.resources.resources.length; idx++) {
-            if (this.resources.resources[idx].id === id) {
-                this.selectedResourceIdx = idx;
-                break;
-            }
+    // If 'withMultipleSelection' is true, multiple resources are selected for comparision
+    // If 'withMultipleSelection' is false, single resource is selected for viewing
+    emitSelectedResources(resInfo: FilteredResouces) {
+        this.selectedResourceIdx = resInfo.resListIndex;
+        if (resInfo.selectionType === "multiple") {
+            this.multipleResourcesSelected.emit(resInfo);
+        } else {
+            this.singleResourceSelected.emit(resInfo.resIds[0]);
         }
-        this.singleResourceSelected.emit(id);
-    }
-
-    // This funtion is called when 'withMultipleSelection' is true and
-    // multiple resources are selected for comparision
-    emitMultipleSelectedResources(resInfo: FilteredResouces) {
-        this.multipleResourcesSelected.emit(resInfo);
     }
 
     goToPage(page: PageEvent) {
@@ -158,7 +153,7 @@ export class ListViewComponent implements OnChanges {
                     this.resources = response;
                     this.loading = false;
                     if (!this.withMultipleSelection) {
-                        this.emitSingleSelectedResource(this.resources.resources[0].id);
+                        this.emitSelectedResources({count: 1, resListIndex: [0], resIds: [this.resources.resources[0].id], selectionType: "single"});
                     }
                 },
                 (error: ApiResponseError) => {
@@ -192,7 +187,7 @@ export class ListViewComponent implements OnChanges {
                         this.resources = response;
                         this.loading = false;
                         if (!this.withMultipleSelection) {
-                            this.emitSingleSelectedResource(this.resources.resources[0].id);
+                            this.emitSelectedResources({count: 1, resListIndex: [0], resIds: [this.resources.resources[0].id], selectionType: "single"});
                         }
                     },
                     (error: ApiResponseError) => {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { ReadResource } from '@dasch-swiss/dsp-js'
 import { checkboxUpdate } from '../../list-view.component';
 
@@ -22,6 +22,11 @@ export class ResourceGridContentComponent {
   @Input() resIndex?: number = 0;
 
   /**
+   * Selected resource index list to apply style
+   */
+   @Input() selectedResourceIdx: number[];
+
+  /**
    * When checkbox is clicked, event is returned with checkbox value and index
    */
   @Output() checkboxUpdated?: EventEmitter<checkboxUpdate> = new EventEmitter<checkboxUpdate>();
@@ -34,8 +39,8 @@ export class ResourceGridContentComponent {
    * @param checked boolean: checkbox value
    * @param resId number: resource index from list
    */
-  viewResource(checked: boolean, resId: number) {
-    this.checkboxUpdated.emit({ checked: checked, resIndex: resId.toString()});
+  viewResource(checked: boolean, resListIndex: number, resId: string) {
+    this.checkboxUpdated.emit({ checked: checked, resListIndex: resListIndex, resId: resId});
   }
 
 }

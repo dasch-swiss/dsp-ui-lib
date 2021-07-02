@@ -2,10 +2,10 @@
 <mat-list *ngIf="withMultipleSelection === false" class="resource-list">
     <div
         class="link"
-        [class.selected-resource]="selectedResourceIdx === i"
+        [class.selected-resource]="selectedResourceIdx.indexOf(i) > -1"
         [class.border-bottom]="!last"
         *ngFor="let res of resources.resources; let i = index; let last = last"
-        (click)="singleResourceSelected.emit(res.id)">
+        (click)="viewResource({ checked: true, resListIndex: i, resId: res.id}) ">
         <dsp-resource-list-content [resource]="res"></dsp-resource-list-content>
     </div>
 </mat-list>
@@ -14,7 +14,7 @@
 <mat-list *ngIf="withMultipleSelection === true" class="resource-list">
     <div
         class="link"
-        [class.selected-resource]="selectedResourceIdx === i"
+        [class.selected-resource]="selectedResourceIdx.indexOf(i) > -1"
         [class.border-bottom]="!last"
         *ngFor="let res of resources.resources; let i = index; let last = last">
         <dsp-resource-list-content

@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card [class.selected-resource]="selectedResourceIdx.indexOf(resIndex) > -1">
     <!-- TODO: add the representation preview here, mat-card-image can be used for images -->
     <mat-card-header class="grid-card-header">
         <mat-card-title-group class="res-class-header-text">
@@ -10,7 +10,7 @@
 
         <!-- if withMultipleSelection is true, we display checkbox -->
         <mat-card-title-group *ngIf="withMultipleSelection" class="res-class-header-actions">
-            <mat-checkbox id="{{ resIndex }}" (change)="viewResource($event.checked, resIndex)" class="res-checkbox"></mat-checkbox>
+            <mat-checkbox id="{{ resIndex }}" (change)="viewResource($event.checked, resIndex, resource.id)" class="res-checkbox"></mat-checkbox>
         </mat-card-title-group>
 
     </mat-card-header>

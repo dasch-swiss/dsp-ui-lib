@@ -16,7 +16,7 @@ export class ResourceGridComponent {
       */
     @Input() resources: ReadResourceSequence;
 
-    @Input() selectedResourceIdx: number;
+    @Input() selectedResourceIdx: number[];
 
     /**
       * Set to true if multiple resources can be selected for comparison
@@ -26,19 +26,12 @@ export class ResourceGridComponent {
     /**
       * Click on checkbox will emit the resource info
       *
-      * @param  {EventEmitter<FilteredResouces>} multipleResourcesSelected
+      * @param  {EventEmitter<FilteredResouces>} resourcesSelected
       */
-    @Output() multipleResourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
-
-    /**
-      * Click on an item will emit the resource iri
-      *
-      * @param  {EventEmitter<string>} singleResourceSelected
-      */
-    @Output() singleResourceSelected?: EventEmitter<string> = new EventEmitter<string>();
+    @Output() resourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
 
     selectedResourcesCount = 0;
-    selectedResourcesList: string[] = [];
+    selectedResourcesList = [];
 
     constructor() { }
 
@@ -48,22 +41,37 @@ export class ResourceGridComponent {
      * @param {checkboxUpdate} checkbox value and resource index
      */
      viewResource(status: checkboxUpdate) {
+
+      if (this.withMultipleSelection) {
         if (status.checked) {
           // add resource in to the selected resources list
-          this.selectedResourcesList.push(status.resIndex);
+          this.selectedResourcesList.push(status.resId);
 
           // increase the count of selected resources
           this.selectedResourcesCount += 1;
+
+          // add resource list index to apply selected class style
+          this.selectedResourceIdx.push(status.resListIndex);
         }
         else {
           // remove resource from the selected resources list
-          let index = this.selectedResourcesList.findIndex(d => d === status.resIndex);
+          let index = this.selectedResourcesList.findIndex(d => d === status.resId);
           this.selectedResourcesList.splice(index, 1);
 
           // decrease the count of selected resources
           this.selectedResourcesCount -= 1;
+
+          // remove resource list index from the selected index list
+          index = this.selectedResourceIdx.findIndex(d => d === status.resListIndex);
+          this.selectedResourceIdx.splice(index, 1);
         }
-        this.multipleResourcesSelected.emit({count: this.selectedResourcesCount, selectedIds: this.selectedResourcesList});
+        this.resourcesSelected.emit({count: this.selectedResourcesCount, resListIndex: this.selectedResourceIdx, resIds: this.selectedResourcesList, selectionType: "multiple"});
+      } else {
+
+        // add resource list index to apply selected class style
+        this.selectedResourceIdx = [status.resListIndex];
+        this.resourcesSelected.emit({count: 1, resListIndex: this.selectedResourceIdx, resIds: [status.resId], selectionType: "single"});
       }
+    }
 
 }
