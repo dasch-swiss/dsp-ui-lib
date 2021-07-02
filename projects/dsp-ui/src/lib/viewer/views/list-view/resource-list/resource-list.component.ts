@@ -19,11 +19,23 @@ export class ResourceListComponent {
     @Input() selectedResourceIdx: number;
 
     /**
+      * Set to true if multiple resources can be selected for comparison
+      */
+    @Input() withMultipleSelection?: boolean = false;
+
+    /**
+     * Click on checkbox will emit the resource info
+     *
+     * @param  {EventEmitter<FilteredResouces>} multipleResourcesSelected
+     */
+    @Output() multipleResourcesSelected: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
+
+    /**
      * Click on an item will emit the resource iri
      *
-     * @param  {EventEmitter<FilteredResouces>} resourcesSelected
+     * @param  {EventEmitter<string>} singleResourceSelected
      */
-    @Output() resourcesSelected: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
+    @Output() singleResourceSelected: EventEmitter<string> = new EventEmitter<string>();
 
     selectedResourcesCount = 0;
     selectedResourcesList: string[] = [];
@@ -52,7 +64,7 @@ export class ResourceListComponent {
         // decrease the count of selected resources
         this.selectedResourcesCount -= 1;
       }
-      this.resourcesSelected.emit({count: this.selectedResourcesCount, selectedIds: this.selectedResourcesList});
+      this.multipleResourcesSelected.emit({count: this.selectedResourcesCount, selectedIds: this.selectedResourcesList});
     }
 
 }

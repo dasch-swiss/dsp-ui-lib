@@ -1,4 +1,31 @@
-<mat-list class="resource-list">
+<mat-list *ngIf="withMultipleSelection === false" class="resource-list">
+    <mat-list-item
+        class="link"
+        [class.selected-resource]="selectedResourceIdx === i"
+        [class.border-bottom]="!last"
+        *ngFor="let res of resources.resources; let i = index; let last = last"
+        (click)="singleResourceSelected.emit(res.id)">
+        <mat-icon matListIcon>image_search</mat-icon>
+        <p matLine class="res-class-label">
+            {{ res.entityInfo.classes[res.type].label }}
+        </p>
+        <h3 matLine class="res-class-value">{{ res.label }}</h3>
+
+        <div matLine *ngFor="let prop of res.properties | keyvalue">
+            <div matLine *ngFor="let val of prop.value">
+                <span class="res-prop-label">
+                    {{ res.entityInfo.properties[val.property].label }}
+                </span>
+
+                <div class="res-prop-value">
+                    {{ val.strval | dspTruncate: 256:"..." }}
+                </div>
+            </div>
+        </div>
+    </mat-list-item>
+</mat-list>
+
+<mat-list *ngIf="withMultipleSelection === true" class="resource-list">
     <mat-list-item
         class="link"
         [class.selected-resource]="selectedResourceIdx === i"

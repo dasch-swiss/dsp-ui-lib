@@ -46,11 +46,23 @@ export class ListViewComponent implements OnChanges {
     @Input() displayViewSwitch?: boolean = true;
 
     /**
-     * Click on an item will emit the resource iri
+      * Set to true if multiple resources can be selected for comparison
+      */
+    @Input() withMultipleSelection?: boolean = false;
+
+    /**
+     * Click on checkbox will emit the resource info
      *
      * @param {EventEmitter<FilteredResouces>} resourcesSelected
      */
-    @Output() resourcesSelected: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
+    @Output() multipleResourcesSelected: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
+
+    /**
+     * Click on an item will emit the resource iri
+     *
+     * @param {EventEmitter<string>} resourceSelected
+     */
+    @Output() singleResourceSelected: EventEmitter<string> = new EventEmitter<string>();
 
     resources: ReadResourceSequence;
 
@@ -88,15 +100,23 @@ export class ListViewComponent implements OnChanges {
         this.view = view;
     }
 
-    emitSelectedResources(resInfo: FilteredResouces) {
+    // This funtion is called when 'withMultipleSelection' is false and
+    // single resources is selected to view
+    emitSingleSelectedResource(id: string) {
         // get selected resource index from list to highlight it
-        /* for (let idx = 0; idx < this.resources.resources.length; idx++) {
+        for (let idx = 0; idx < this.resources.resources.length; idx++) {
             if (this.resources.resources[idx].id === id) {
                 this.selectedResourceIdx = idx;
                 break;
             }
-        } */
-        this.resourcesSelected.emit(resInfo);
+        }
+        this.singleResourceSelected.emit(id);
+    }
+
+    // This funtion is called when 'withMultipleSelection' is true and
+    // multiple resources are selected for comparision
+    emitMultipleSelectedResources(resInfo: FilteredResouces) {
+        this.multipleResourcesSelected.emit(resInfo);
     }
 
     goToPage(page: PageEvent) {
@@ -127,6 +147,9 @@ export class ListViewComponent implements OnChanges {
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;
+                    if (this.withMultipleSelection == false) {
+                        this.emitSingleSelectedResource(this.resources.resources[0].id);
+                    }
                 },
                 (error: ApiResponseError) => {
                     this._notification.openSnackBar(error);
@@ -158,6 +181,9 @@ export class ListViewComponent implements OnChanges {
                     (response: ReadResourceSequence) => {
                         this.resources = response;
                         this.loading = false;
+                        if (this.withMultipleSelection == false) {
+                            this.emitSingleSelectedResource(this.resources.resources[0].id);
+                        }
                     },
                     (error: ApiResponseError) => {
                         this._notification.openSnackBar(error);

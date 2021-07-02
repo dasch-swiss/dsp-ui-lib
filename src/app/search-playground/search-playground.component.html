@@ -89,6 +89,12 @@ Select the component to play with:
 
 <br>
 
+<!-- for single resource selection
 <div class="search-results" *ngIf="searchParams">
-    <dsp-list-view [search]="searchParams" (resourcesSelected)="openResource($event)"></dsp-list-view>
+    <dsp-list-view [search]="searchParams" (singleResourceSelected)="openSingleResource($event)"></dsp-list-view>
+</div> -->
+
+<!-- for multiple resource selection -->
+<div class="search-results" *ngIf="searchParams">
+    <dsp-list-view [search]="searchParams" [withMultipleSelection]="true" (multipleResourcesSelected)="openMultipleResources($event)"></dsp-list-view>
 </div>

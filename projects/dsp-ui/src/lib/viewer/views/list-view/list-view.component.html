@@ -21,25 +21,46 @@
 <!-- container with search results -->
 <div class="list-view-container">
     <dsp-progress-indicator *ngIf="loading"></dsp-progress-indicator>
-
-    <div class="list-view" *ngIf="!loading && numberOfAllResults > 0 && resources">
+    <!-- When single resources is selected to view -->
+    <div class="list-view" *ngIf="!loading && numberOfAllResults > 0 && resources && withMultipleSelection === false">
         <div [ngSwitch]="view">
             <dsp-resource-list
                 *ngSwitchCase="'list'"
                 [resources]="resources"
                 [selectedResourceIdx]="selectedResourceIdx"
-                (resourcesSelected)="emitSelectedResources($event)">
+                (singleResourceSelected)="emitSingleSelectedResource($event)">
             </dsp-resource-list>
             <dsp-resource-grid
                 *ngSwitchCase="'grid'"
                 [resources]="resources"
                 [selectedResourceIdx]="selectedResourceIdx"
-                (resourcesSelected)="emitSelectedResources($event)">
+                (singleResourceSelected)="emitSingleSelectedResource($event)">
             </dsp-resource-grid>
             <!-- TODO: implement table view -->
             <!-- <kui-table-view *ngSwitchCase="'table'" [resources]="resources"></kui-table-view> -->
         </div>
+    </div>
 
+    <!-- When multiple resources are selected for comparision -->
+    <div class="list-view" *ngIf="!loading && numberOfAllResults > 0 && resources && withMultipleSelection">
+        <div [ngSwitch]="view">
+            <dsp-resource-list
+                *ngSwitchCase="'list'"
+                [withMultipleSelection]="true"
+                [resources]="resources"
+                [selectedResourceIdx]="selectedResourceIdx"
+                (multipleResourcesSelected)="emitMultipleSelectedResources($event)">
+            </dsp-resource-list>
+            <dsp-resource-grid
+                *ngSwitchCase="'grid'"
+                [withMultipleSelection]="true"
+                [resources]="resources"
+                [selectedResourceIdx]="selectedResourceIdx"
+                (multipleResourcesSelected)="emitMultipleSelectedResources($event)">
+            </dsp-resource-grid>
+            <!-- TODO: implement table view -->
+            <!-- <kui-table-view *ngSwitchCase="'table'" [resources]="resources"></kui-table-view> -->
+        </div>
     </div>
 
     <!-- In case of 0 result -->
