@@ -32,6 +32,16 @@ export interface FilteredResouces {
     selectedIds: string[]
 }
 
+/* return the checkbox value
+ *
+ * checked: checkbox value
+ * resIndex: resource index from the list
+ */
+export interface checkboxUpdate {
+    checked: boolean,
+    resIndex: string
+}
+
 @Component({
     selector: 'dsp-list-view',
     templateUrl: './list-view.component.html',

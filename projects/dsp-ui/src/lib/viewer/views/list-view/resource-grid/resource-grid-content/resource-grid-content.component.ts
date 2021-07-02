@@ -3,11 +3,11 @@ import { ReadResource } from '@dasch-swiss/dsp-js'
 import { checkboxUpdate } from '../../list-view.component';
 
 @Component({
-  selector: 'dsp-resource-list-content',
-  templateUrl: './resource-list-content.component.html',
-  styleUrls: ['./resource-list-content.component.css']
+  selector: 'dsp-resource-grid-content',
+  templateUrl: './resource-grid-content.component.html',
+  styleUrls: ['./resource-grid-content.component.css']
 })
-export class ResourceListContentComponent {
+export class ResourceGridContentComponent {
 
   @Input() resource: ReadResource;
 
@@ -35,7 +35,7 @@ export class ResourceListContentComponent {
    * @param resId number: resource index from list
    */
   viewResource(checked: boolean, resId: number) {
-      this.checkboxUpdated.emit({ checked: checked, resIndex: resId.toString()});
+    this.checkboxUpdated.emit({ checked: checked, resIndex: resId.toString()});
   }
 
 }

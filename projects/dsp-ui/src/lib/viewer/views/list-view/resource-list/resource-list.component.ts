@@ -1,16 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { FilteredResouces } from '../list-view.component';
+import { FilteredResouces, checkboxUpdate } from '../list-view.component';
 
-/* return the checkbox value
- *
- * checked: checkbox value
- * resIndex: resource index from the list
- */
-export interface checkboxUpdate {
-    checked: boolean,
-    resIndex: string
-}
+
 
 @Component({
     selector: 'dsp-resource-list',
@@ -57,8 +49,7 @@ export class ResourceListComponent {
     /**
      * Maintain the list and count of selected resources
      *
-     * @param {boolean} checked tells if checkbox is selected
-     * @param {string} resId resource id
+     * @param {checkboxUpdate} checkbox value and resource index
      */
     viewResource(status: checkboxUpdate) {
       if (status.checked) {

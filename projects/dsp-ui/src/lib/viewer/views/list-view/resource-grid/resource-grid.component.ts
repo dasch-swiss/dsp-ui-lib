@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { FilteredResouces } from '../list-view.component';
+import { FilteredResouces, checkboxUpdate } from '../list-view.component';
 
 @Component({
     selector: 'dsp-resource-grid',
@@ -45,20 +45,19 @@ export class ResourceGridComponent {
     /**
      * Maintain the list and count of selected resources
      *
-     * @param {boolean} checked tells if checkbox is selected
-     * @param {string} resId resource id
+     * @param {checkboxUpdate} checkbox value and resource index
      */
-     viewResource(checked: boolean, resId: string) {
-        if (checked) {
+     viewResource(status: checkboxUpdate) {
+        if (status.checked) {
           // add resource in to the selected resources list
-          this.selectedResourcesList.push(resId);
+          this.selectedResourcesList.push(status.resIndex);
 
           // increase the count of selected resources
           this.selectedResourcesCount += 1;
         }
         else {
           // remove resource from the selected resources list
-          let index = this.selectedResourcesList.findIndex(d => d === resId);
+          let index = this.selectedResourcesList.findIndex(d => d === status.resIndex);
           this.selectedResourcesList.splice(index, 1);
 
           // decrease the count of selected resources
