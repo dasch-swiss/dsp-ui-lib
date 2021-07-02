@@ -1,21 +1,20 @@
 <mat-list *ngIf="withMultipleSelection === false" class="resource-list">
-    <mat-list-item
+    <div
         class="link"
         [class.selected-resource]="selectedResourceIdx === i"
         [class.border-bottom]="!last"
         *ngFor="let res of resources.resources; let i = index; let last = last"
         (click)="singleResourceSelected.emit(res.id)">
         <dsp-resource-list-content [resource]="res"></dsp-resource-list-content>
-    </mat-list-item>
+    </div>
 </mat-list>
 
 <mat-list *ngIf="withMultipleSelection === true" class="resource-list">
-    <mat-list-item
+    <div
         class="link"
         [class.selected-resource]="selectedResourceIdx === i"
         [class.border-bottom]="!last"
         *ngFor="let res of resources.resources; let i = index; let last = last">
-        <dsp-resource-list-content [resource]="res"></dsp-resource-list-content>
-        <mat-checkbox id="{{ i }}" (change)="viewResource($event.checked, res.id)" class="res-checkbox"></mat-checkbox>
-    </mat-list-item>
+        <dsp-resource-list-content [resource]="res" [withMultipleSelection]="withMultipleSelection" [resIndex]="i" (checkboxUpdated)="viewResource($event)"></dsp-resource-list-content>
+    </div>
 </mat-list>

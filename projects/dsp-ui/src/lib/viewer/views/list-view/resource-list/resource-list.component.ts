@@ -2,6 +2,16 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { FilteredResouces } from '../list-view.component';
 
+/* return the checkbox value
+ *
+ * checked: checkbox value
+ * resIndex: resource index from the list
+ */
+export interface checkboxUpdate {
+    checked: boolean,
+    resIndex: string
+}
+
 @Component({
     selector: 'dsp-resource-list',
     templateUrl: './resource-list.component.html',
@@ -37,6 +47,8 @@ export class ResourceListComponent {
      */
     @Output() singleResourceSelected: EventEmitter<string> = new EventEmitter<string>();
 
+    @Output() checkboxUpdated?: EventEmitter<checkboxUpdate> = new EventEmitter<checkboxUpdate>();
+
     selectedResourcesCount = 0;
     selectedResourcesList: string[] = [];
 
@@ -48,17 +60,17 @@ export class ResourceListComponent {
      * @param {boolean} checked tells if checkbox is selected
      * @param {string} resId resource id
      */
-    viewResource(checked: boolean, resId: string) {
-      if (checked) {
+    viewResource(status: checkboxUpdate) {
+      if (status.checked) {
         // add resource in to the selected resources list
-        this.selectedResourcesList.push(resId);
+        this.selectedResourcesList.push(status.resIndex);
 
         // increase the count of selected resources
         this.selectedResourcesCount += 1;
       }
       else {
         // remove resource from the selected resources list
-        let index = this.selectedResourcesList.findIndex(d => d === resId);
+        let index = this.selectedResourcesList.findIndex(d => d === status.resIndex);
         this.selectedResourcesList.splice(index, 1);
 
         // decrease the count of selected resources
