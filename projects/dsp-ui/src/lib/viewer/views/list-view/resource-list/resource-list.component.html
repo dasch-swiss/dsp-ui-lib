@@ -5,23 +5,7 @@
         [class.border-bottom]="!last"
         *ngFor="let res of resources.resources; let i = index; let last = last"
         (click)="singleResourceSelected.emit(res.id)">
-        <mat-icon matListIcon>image_search</mat-icon>
-        <p matLine class="res-class-label">
-            {{ res.entityInfo.classes[res.type].label }}
-        </p>
-        <h3 matLine class="res-class-value">{{ res.label }}</h3>
-
-        <div matLine *ngFor="let prop of res.properties | keyvalue">
-            <div matLine *ngFor="let val of prop.value">
-                <span class="res-prop-label">
-                    {{ res.entityInfo.properties[val.property].label }}
-                </span>
-
-                <div class="res-prop-value">
-                    {{ val.strval | dspTruncate: 256:"..." }}
-                </div>
-            </div>
-        </div>
+        <dsp-resource-list-content [resource]="res"></dsp-resource-list-content>
     </mat-list-item>
 </mat-list>
 
@@ -31,23 +15,7 @@
         [class.selected-resource]="selectedResourceIdx === i"
         [class.border-bottom]="!last"
         *ngFor="let res of resources.resources; let i = index; let last = last">
-        <mat-icon matListIcon>image_search</mat-icon>
-        <p matLine class="res-class-label">
-            {{ res.entityInfo.classes[res.type].label }}
-        </p>
-        <h3 matLine class="res-class-value">{{ res.label }}</h3>
-
-        <div matLine *ngFor="let prop of res.properties | keyvalue">
-            <div matLine *ngFor="let val of prop.value">
-                <span class="res-prop-label">
-                    {{ res.entityInfo.properties[val.property].label }}
-                </span>
-
-                <div class="res-prop-value">
-                    {{ val.strval | dspTruncate: 256:"..." }}
-                </div>
-            </div>
-        </div>
+        <dsp-resource-list-content [resource]="res"></dsp-resource-list-content>
         <mat-checkbox id="{{ i }}" (change)="viewResource($event.checked, res.id)" class="res-checkbox"></mat-checkbox>
     </mat-list-item>
 </mat-list>
