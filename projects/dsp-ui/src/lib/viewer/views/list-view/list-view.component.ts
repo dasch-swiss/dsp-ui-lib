@@ -65,14 +65,14 @@ export class ListViewComponent implements OnChanges {
      *
      * @param {EventEmitter<FilteredResouces>} resourcesSelected
      */
-    @Output() multipleResourcesSelected: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
+    @Output() multipleResourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
 
     /**
      * Click on an item will emit the resource iri
      *
      * @param {EventEmitter<string>} resourceSelected
      */
-    @Output() singleResourceSelected: EventEmitter<string> = new EventEmitter<string>();
+    @Output() singleResourceSelected?: EventEmitter<string> = new EventEmitter<string>();
 
     resources: ReadResourceSequence;
 
@@ -157,7 +157,7 @@ export class ListViewComponent implements OnChanges {
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;
-                    if (this.withMultipleSelection == false) {
+                    if (!this.withMultipleSelection) {
                         this.emitSingleSelectedResource(this.resources.resources[0].id);
                     }
                 },
@@ -191,7 +191,7 @@ export class ListViewComponent implements OnChanges {
                     (response: ReadResourceSequence) => {
                         this.resources = response;
                         this.loading = false;
-                        if (this.withMultipleSelection == false) {
+                        if (!this.withMultipleSelection) {
                             this.emitSingleSelectedResource(this.resources.resources[0].id);
                         }
                     },

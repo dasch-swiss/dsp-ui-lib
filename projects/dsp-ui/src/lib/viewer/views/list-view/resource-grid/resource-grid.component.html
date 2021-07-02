@@ -1,3 +1,4 @@
+<!-- When withMultipleSelection is false and user can select only one resource at a time to view -->
 <div class="resource-grid" *ngIf="withMultipleSelection === false">
     <div
         class="grid-card link"
@@ -8,11 +9,17 @@
     </div>
 </div>
 
+<!-- When withMultipleSelection is true and user can select multiple resources for comparision -->
 <div class="resource-grid" *ngIf="withMultipleSelection === true">
     <div
         class="grid-card link"
         [class.selected-resource]="selectedResourceIdx === i"
         *ngFor="let res of resources.resources; let i = index;">
-        <dsp-resource-grid-content [resource]="res" [withMultipleSelection]="withMultipleSelection" [resIndex]="i" (checkboxUpdated)="viewResource($event)"></dsp-resource-grid-content>
+        <dsp-resource-grid-content
+            [resource]="res"
+            [withMultipleSelection]="withMultipleSelection"
+            [resIndex]="i"
+            (checkboxUpdated)="viewResource($event)">
+        </dsp-resource-grid-content>
     </div>
 </div>

@@ -28,14 +28,14 @@ export class ResourceGridComponent {
       *
       * @param  {EventEmitter<FilteredResouces>} multipleResourcesSelected
       */
-    @Output() multipleResourcesSelected: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
+    @Output() multipleResourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
 
     /**
       * Click on an item will emit the resource iri
       *
       * @param  {EventEmitter<string>} singleResourceSelected
       */
-    @Output() singleResourceSelected: EventEmitter<string> = new EventEmitter<string>();
+    @Output() singleResourceSelected?: EventEmitter<string> = new EventEmitter<string>();
 
     selectedResourcesCount = 0;
     selectedResourcesList: string[] = [];

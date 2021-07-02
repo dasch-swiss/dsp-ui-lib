@@ -1,3 +1,4 @@
+<!-- When withMultipleSelection is false and user can select only one resource at a time to view -->
 <mat-list *ngIf="withMultipleSelection === false" class="resource-list">
     <div
         class="link"
@@ -9,12 +10,18 @@
     </div>
 </mat-list>
 
+<!-- When withMultipleSelection is true and user can select multiple resources for comparision -->
 <mat-list *ngIf="withMultipleSelection === true" class="resource-list">
     <div
         class="link"
         [class.selected-resource]="selectedResourceIdx === i"
         [class.border-bottom]="!last"
         *ngFor="let res of resources.resources; let i = index; let last = last">
-        <dsp-resource-list-content [resource]="res" [withMultipleSelection]="withMultipleSelection" [resIndex]="i" (checkboxUpdated)="viewResource($event)"></dsp-resource-list-content>
+        <dsp-resource-list-content
+            [resource]="res"
+            [withMultipleSelection]="withMultipleSelection"
+            [resIndex]="i"
+            (checkboxUpdated)="viewResource($event)">
+        </dsp-resource-list-content>
     </div>
 </mat-list>
