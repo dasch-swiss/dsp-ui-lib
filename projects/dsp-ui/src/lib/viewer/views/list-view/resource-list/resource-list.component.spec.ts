@@ -24,13 +24,15 @@ class MockPipe implements PipeTransform {
  */
 @Component({
     template: `
-      <dsp-resource-list #resList [resources]="resources" (resourcesSelected)="openResource($event)"></dsp-resource-list>`
+      <dsp-resource-list #resList [resources]="resources" [selectedResourceIdx]="selectedResourceIdx" (resourcesSelected)="emitSelectedResources($event)"></dsp-resource-list>`
 })
 class TestParentComponent implements OnInit {
 
     @ViewChild('resList') resourceListComponent: ResourceListComponent;
 
     resources: ReadResourceSequence;
+
+    selectedResourceIdx = [0];
 
     selectedResources: FilteredResouces;
 
@@ -41,7 +43,7 @@ class TestParentComponent implements OnInit {
         });
     }
 
-    openResource(resInfo: FilteredResouces) {
+    emitSelectedResources(resInfo: FilteredResouces) {
         this.selectedResources = resInfo;
     }
 
@@ -85,12 +87,12 @@ describe('ResourceListComponent', () => {
     it('should open first resource', () => {
         // trigger the click
         const nativeElement = testHostFixture.nativeElement;
-        const item = nativeElement.querySelector('mat-list-item');
+        const item = nativeElement.querySelector('div.link');
         item.dispatchEvent(new Event('click'));
 
-        spyOn(testHostComponent, 'openResource').call({count: 1, selectedIds: ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw']});
-        expect(testHostComponent.openResource).toHaveBeenCalled();
-        expect(testHostComponent.openResource).toHaveBeenCalledTimes(1);
+        spyOn(testHostComponent, 'emitSelectedResources').call({count: 1, resListIndex: [0], resIds: ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw'], selectionType: "single"});
+        expect(testHostComponent.emitSelectedResources).toHaveBeenCalled();
+        expect(testHostComponent.emitSelectedResources).toHaveBeenCalledTimes(1);
 
         //expect(testHostComponent.selectedResources).toEqual({resCount: 1, resList: ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw']});
 
