@@ -71,9 +71,15 @@ export class ListViewComponent implements OnChanges {
     @Output() multipleResourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
 
     /**
+     * @deprecated
+     * Click on an item will emit the resource iri
+     */
+    @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
+
+    /**
      * Click on an item will emit the resource iri
      *
-     * @param {EventEmitter<string>} resourceSelected
+     * @param {EventEmitter<string>} singleResourceSelected
      */
     @Output() singleResourceSelected?: EventEmitter<string> = new EventEmitter<string>();
 
