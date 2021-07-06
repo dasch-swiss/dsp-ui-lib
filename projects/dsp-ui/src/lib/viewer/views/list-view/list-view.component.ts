@@ -42,7 +42,8 @@ export interface FilteredResouces {
 export interface checkboxUpdate {
     checked: boolean,
     resListIndex: number,
-    resId: string
+    resId: string,
+    isCheckbox: boolean
 }
 
 @Component({
@@ -123,6 +124,7 @@ export class ListViewComponent implements OnChanges {
     // If 'withMultipleSelection' is false, single resource is selected for viewing
     emitSelectedResources(resInfo: FilteredResouces) {
         this.selectedResourceIdx = resInfo.resListIndex;
+
         if (resInfo.selectionType === "multiple") {
             this.multipleResourcesSelected.emit(resInfo);
         } else {

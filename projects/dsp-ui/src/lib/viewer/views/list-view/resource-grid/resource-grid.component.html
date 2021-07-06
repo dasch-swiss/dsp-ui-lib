@@ -1,24 +1,39 @@
 <!-- When withMultipleSelection is false and user can select only one resource at a time to view -->
-<div class="resource-grid" *ngIf="withMultipleSelection === false">
+<div class="resource-grid">
     <div
         class="grid-card link"
-        *ngFor="let res of resources.resources; let i = index;"
-        (click)="viewResource({ checked: true, resListIndex: i, resId: res.id})">
-        <dsp-resource-grid-content [resource]="res" [selectedResourceIdx]="selectedResourceIdx"></dsp-resource-grid-content>
-    </div>
-</div>
+        *ngFor="let resource of resources.resources; let i = index;">
+        <mat-card [class.selected-resource]="selectedResourceIdx.indexOf(i) > -1">
+            <!-- TODO: add the representation preview here, mat-card-image can be used for images -->
+            <mat-card-header class="grid-card-header">
+                <mat-card-title-group class="res-class-header-text" (click)="viewResource({ checked: true, resListIndex: i, resId: resource.id, isCheckbox: false})">
+                    <mat-card-subtitle class="res-class-label">{{ resource.entityInfo.classes[resource.type].label }}</mat-card-subtitle>
+                    <mat-card-title class="res-class-value">{{ resource.label }}</mat-card-title>
+                </mat-card-title-group>
+                <div fxFlex></div>
+                <!-- if withMultipleSelection is true, we display checkbox -->
+                <mat-card-title-group *ngIf="withMultipleSelection" class="res-class-header-actions">
+                    <mat-checkbox #gridCkbox
+                        id="{{ i }}"
+                        (change)="viewResource({ checked: $event.checked, resListIndex: i, resId: resource.id, isCheckbox: true})"
+                        class="res-checkbox">
+                    </mat-checkbox>
+                </mat-card-title-group>
 
-<!-- When withMultipleSelection is true and user can select multiple resources for comparision -->
-<div class="resource-grid" *ngIf="withMultipleSelection === true">
-    <div
-        class="grid-card link"
-        *ngFor="let res of resources.resources; let i = index;">
-        <dsp-resource-grid-content
-            [resource]="res"
-            [withMultipleSelection]="withMultipleSelection"
-            [resIndex]="i"
-            [selectedResourceIdx]="selectedResourceIdx"
-            (checkboxUpdated)="viewResource($event)">
-        </dsp-resource-grid-content>
+            </mat-card-header>
+            <div (click)="viewResource({ checked: true, resListIndex: i, resId: resource.id, isCheckbox: false})">
+                <mat-card-content class="grid-card-content" *ngFor="let prop of resource.properties | keyvalue">
+                    <div *ngFor="let val of prop.value">
+                        <span class="res-prop-label">
+                            {{ resource.entityInfo.properties[val.property].label }}
+                        </span>
+
+                        <div class="res-prop-value">
+                            {{ val.strval | dspTruncate: 256:"..." }}
+                        </div>
+                    </div>
+                </mat-card-content>
+            </div>
+        </mat-card>
     </div>
 </div>

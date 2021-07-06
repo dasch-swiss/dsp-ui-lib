@@ -59,8 +59,6 @@ import { ResourceViewComponent } from './views/resource-view/resource-view.compo
 import { DateInputTextComponent } from './values/date-value/date-input-text/date-input-text.component';
 import { DateEditComponent } from './values/date-value/date-input-text/date-edit/date-edit.component';
 import { MatRadioModule } from '@angular/material/radio';
-import { ResourceListContentComponent } from './views/list-view/resource-list/resource-list-content/resource-list-content.component';
-import { ResourceGridContentComponent } from './views/list-view/resource-grid/resource-grid-content/resource-grid-content.component';
 
 @NgModule({
     declarations: [
@@ -98,9 +96,7 @@ import { ResourceGridContentComponent } from './views/list-view/resource-grid/re
         UploadFileComponent,
         UriValueComponent,
         DateInputTextComponent,
-        DateEditComponent,
-        ResourceListContentComponent,
-        ResourceGridContentComponent
+        DateEditComponent
     ],
     imports: [
         CKEditorModule,
