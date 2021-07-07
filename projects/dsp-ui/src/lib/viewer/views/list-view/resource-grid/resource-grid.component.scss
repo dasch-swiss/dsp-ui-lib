@@ -41,6 +41,11 @@
   line-height: 1.5;
 }
 
+.res-class-label,
+.res-class-value {
+  margin: 4px 0 !important; // to overwrite it with .mat-card-title margin
+}
+
 .res-prop-label {
   font-style: italic;
 }

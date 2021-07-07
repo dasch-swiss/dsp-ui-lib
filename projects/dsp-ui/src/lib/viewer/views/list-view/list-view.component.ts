@@ -72,7 +72,7 @@ export class ListViewComponent implements OnChanges {
     @Output() multipleResourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
 
     /**
-     * @deprecated
+     * @deprecated Use singleResourceSelected instead.
      * Click on an item will emit the resource iri
      */
     @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
@@ -129,6 +129,7 @@ export class ListViewComponent implements OnChanges {
             this.multipleResourcesSelected.emit(resInfo);
         } else {
             this.singleResourceSelected.emit(resInfo.resIds[0]);
+            this.resourceSelected.emit(resInfo.resIds[0]);
         }
     }
 
