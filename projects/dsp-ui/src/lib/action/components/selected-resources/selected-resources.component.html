@@ -1,1 +1,11 @@
-<p>selected-resources works!</p>
+<div class="selected-resources-page">
+    <h4>Number of resources selected: <span class="res-value">{{ resCount }}</span></h4>
+
+    <h4>Ids of the Selected resources are:</h4>
+    <mat-list>
+        <mat-list-item *ngFor="let id of resIds">
+          <mat-icon mat-list-icon>description</mat-icon>
+          <div mat-line class="res-value">{{ id }}</div>
+        </mat-list-item>
+    </mat-list>
+</div>

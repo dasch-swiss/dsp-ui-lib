@@ -134,6 +134,10 @@ export class ActionPlaygroundComponent implements OnInit {
     confirmationDialogResponse: string;
     showTimedMessage: boolean;
 
+    // selected resources action
+    selectedResCount = 4;
+    selectedRes = ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw', 'http://rdfh.ch/0010/H6gBWUuJSuuO-CilddsgfdQw', 'http://rdfh.ch/0004/H6gBWdvdSuuO-dgdsg', 'http://rdfh.ch/0009/H6ddgdfgfuJSuuO-gdfsg'];
+
     constructor(
         private _sortingService: SortingService,
         private _dialog: MatDialog
