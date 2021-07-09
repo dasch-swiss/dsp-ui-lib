@@ -1,11 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'dsp-selected-resources',
   templateUrl: './selected-resources.component.html',
   styleUrls: ['./selected-resources.component.scss']
 })
-export class SelectedResourcesComponent implements OnInit {
+export class SelectedResourcesComponent {
+
+  // actions which can be applied on selected resources
+  resourceAction: 'compare' | 'edit' | 'delete' | 'starred' | 'cancel';
 
   // total number of resources selected
   @Input() resCount: number;
@@ -13,9 +16,21 @@ export class SelectedResourcesComponent implements OnInit {
   // list of selected resources ids
   @Input() resIds: string[];
 
+  // return selected actions and other info if any
+  @Output() actionType: EventEmitter<string> = new EventEmitter<string>();
+
   constructor() { }
 
-  ngOnInit(): void {
+  // return compare action
+  compareResources() {
+    this.resourceAction = 'compare';
+    this.actionType.emit(this.resourceAction);
+  }
+
+  // cancel action
+  cancelSelection() {
+    this.resourceAction = 'cancel';
+    this.actionType.emit(this.resourceAction);
   }
 
 }

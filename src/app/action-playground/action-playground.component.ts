@@ -206,7 +206,13 @@ export class ActionPlaygroundComponent implements OnInit {
         setTimeout(() => { this.showTimedMessage = false; }, 2100);
     }
 
+    // selected-project
     getSelectedProject(selectedProject: ReadProject) {
         console.log(selectedProject);
+    }
+
+    // selected-reources - get action type
+    getActionType(action: string) {
+        console.log(action);
     }
 }

@@ -12,7 +12,7 @@ We will implement the login form here as soon its moved from the old knora-ui.
 
 <p>Selected resources Component</p>
 
-<dsp-selected-resources [resCount]="selectedResCount" [resIds]="selectedRes"></dsp-selected-resources>
+<dsp-selected-resources [resCount]="selectedResCount" [resIds]="selectedRes" (actionType)="getActionType($event)"></dsp-selected-resources>
 <hr>
 
 <p>Select project component</p>

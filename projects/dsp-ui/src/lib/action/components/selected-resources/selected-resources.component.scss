@@ -1,16 +1,15 @@
 
-.selected-resources-page {
+.selected-resources {
     margin-top: 10px;
 
     .mat-list-item {
         height: auto;
-        min-height: 40px;
-    
+
         .mat-icon {
           font-size: 20px;
           color: #673ab7;
         }
-    
+
         .mat-line {
           white-space: normal !important;
         }
@@ -27,4 +26,12 @@
 
 .res-value {
     color: #673ab7;
+}
+
+.action-buttons {
+  margin-top: 20px;
+
+  .res-action {
+    margin: 4px;
+  }
 }
