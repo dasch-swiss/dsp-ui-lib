@@ -1,25 +1,62 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { Component, ViewChild } from '@angular/core';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
 
 import { SelectedResourcesComponent } from './selected-resources.component';
 
-describe('SelectedResourcesComponent', () => {
-  let component: SelectedResourcesComponent;
-  let fixture: ComponentFixture<SelectedResourcesComponent>;
+/**
+ * Test host component to simulate parent component.
+ */
+ @Component({
+  selector: `dsp-selected-resources-host-component`,
+  template: `
+      <dsp-selected-resources #selectedResources [resCount]="selectedResCount" [resIds]="selectedRes" (actionType)="getActionType($event)">
+      </dsp-selected-resources>`
+})
+class TestHostSelectedResourcesComponent {
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ SelectedResourcesComponent ]
-    })
-    .compileComponents();
-  });
+  @ViewChild('selectedResources') selectedResources: SelectedResourcesComponent;
+
+  selectedResCount = 2;
+  selectedRes = ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw', 'http://rdfh.ch/0010/H6gBWUuJSuuO-CilddsgfdQw'];
+
+  getActionType(action: string) {
+    console.log(action);
+  }
+}
+
+fdescribe('SelectedResourcesComponent', () => {
+  let testHostComponent: TestHostSelectedResourcesComponent
+  let testHostFixture: ComponentFixture<TestHostSelectedResourcesComponent>;
+  let loader: HarnessLoader;
+
+  beforeEach(waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          SelectedResourcesComponent,
+          TestHostSelectedResourcesComponent
+        ],
+        imports: [
+          MatListModule,
+          MatButtonModule,
+          MatIconModule
+        ]
+      })
+      .compileComponents();
+  }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectedResourcesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    testHostFixture = TestBed.createComponent(TestHostSelectedResourcesComponent);
+    testHostComponent = testHostFixture.componentInstance;
+    loader = TestbedHarnessEnvironment.loader(testHostFixture);
+    testHostFixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(testHostComponent.selectedResources).toBeTruthy();
   });
 });
