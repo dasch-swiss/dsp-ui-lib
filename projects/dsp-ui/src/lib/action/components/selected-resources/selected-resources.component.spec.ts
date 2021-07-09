@@ -29,7 +29,7 @@ class TestHostSelectedResourcesComponent {
   }
 }
 
-fdescribe('SelectedResourcesComponent', () => {
+describe('SelectedResourcesComponent', () => {
   let testHostComponent: TestHostSelectedResourcesComponent
   let testHostFixture: ComponentFixture<TestHostSelectedResourcesComponent>;
   let loader: HarnessLoader;
