@@ -59,8 +59,16 @@ export class SearchPlaygroundComponent implements OnInit {
         this.searchParams = search;
     }
 
-    openResource(id: string) {
-        console.log('open ', id);
+    // This funtion is called when 'withMultipleSelection' is true and
+    // multiple resources are selected for comparision
+    openMultipleResources(resInfo: object) {
+        console.log('selected resources ', resInfo);
+    }
+
+    // This funtion is called when 'withMultipleSelection' is false and
+    // single resources is selected to view
+    openSingleResource(id: string) {
+        console.log('Open ', id);
     }
 
     // playground helper method

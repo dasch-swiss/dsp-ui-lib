@@ -22,6 +22,30 @@ export interface SearchParams {
     filter?: IFulltextSearchParams;
 }
 
+/* return the selected resources in below format
+ *
+ * count: total number of resources selected
+ * selectedIds: list of selected resource's ids
+ */
+export interface FilteredResouces {
+    count: number,
+    resListIndex: number[],
+    resIds: string[],
+    selectionType: "multiple" | "single"
+}
+
+/* return the checkbox value
+ *
+ * checked: checkbox value
+ * resIndex: resource index from the list
+ */
+export interface checkboxUpdate {
+    checked: boolean,
+    resListIndex: number,
+    resId: string,
+    isCheckbox: boolean
+}
+
 @Component({
     selector: 'dsp-list-view',
     templateUrl: './list-view.component.html',
@@ -36,15 +60,33 @@ export class ListViewComponent implements OnChanges {
     @Input() displayViewSwitch?: boolean = true;
 
     /**
-     * Click on an item will emit the resource iri
+      * Set to true if multiple resources can be selected for comparison
+      */
+    @Input() withMultipleSelection?: boolean = false;
+
+    /**
+     * Click on checkbox will emit the resource info
      *
-     * @param {EventEmitter<string>} resourceSelected
+     * @param {EventEmitter<FilteredResouces>} resourcesSelected
+     */
+    @Output() multipleResourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
+
+    /**
+     * @deprecated Use singleResourceSelected instead.
+     * Click on an item will emit the resource iri
      */
     @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
 
+    /**
+     * Click on an item will emit the resource iri
+     *
+     * @param {EventEmitter<string>} singleResourceSelected
+     */
+    @Output() singleResourceSelected?: EventEmitter<string> = new EventEmitter<string>();
+
     resources: ReadResourceSequence;
 
-    selectedResourceIdx = 0;
+    selectedResourceIdx: number[] = [];
 
     // MatPaginator Output
     pageEvent: PageEvent;
@@ -78,15 +120,17 @@ export class ListViewComponent implements OnChanges {
         this.view = view;
     }
 
-    emitSelectedResource(id: string) {
-        // get selected resource index from list to highlight it
-        for (let idx = 0; idx < this.resources.resources.length; idx++) {
-            if (this.resources.resources[idx].id === id) {
-                this.selectedResourceIdx = idx;
-                break;
-            }
+    // If 'withMultipleSelection' is true, multiple resources are selected for comparision
+    // If 'withMultipleSelection' is false, single resource is selected for viewing
+    emitSelectedResources(resInfo: FilteredResouces) {
+        this.selectedResourceIdx = resInfo.resListIndex;
+
+        if (resInfo.selectionType === "multiple") {
+            this.multipleResourcesSelected.emit(resInfo);
+        } else {
+            this.singleResourceSelected.emit(resInfo.resIds[0]);
+            this.resourceSelected.emit(resInfo.resIds[0]);
         }
-        this.resourceSelected.emit(id);
     }
 
     goToPage(page: PageEvent) {
@@ -117,7 +161,9 @@ export class ListViewComponent implements OnChanges {
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;
-                    this.emitSelectedResource(this.resources.resources[0].id);
+                    if (!this.withMultipleSelection) {
+                        this.emitSelectedResources({count: 1, resListIndex: [0], resIds: [this.resources.resources[0].id], selectionType: "single"});
+                    }
                 },
                 (error: ApiResponseError) => {
                     this._notification.openSnackBar(error);
@@ -149,7 +195,9 @@ export class ListViewComponent implements OnChanges {
                     (response: ReadResourceSequence) => {
                         this.resources = response;
                         this.loading = false;
-                        this.emitSelectedResource(this.resources.resources[0].id);
+                        if (!this.withMultipleSelection) {
+                            this.emitSelectedResources({count: 1, resListIndex: [0], resIds: [this.resources.resources[0].id], selectionType: "single"});
+                        }
                     },
                     (error: ApiResponseError) => {
                         this._notification.openSnackBar(error);

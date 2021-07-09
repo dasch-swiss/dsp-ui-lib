@@ -16,9 +16,22 @@
   }
 }
 
+.res-checkbox {
+  margin: 0 15px;
+}
+
+.res-prop-value {
+  text-align: justify;
+}
+
 .res-class-label,
 .res-prop-label {
   color: rgba(0, 0, 0, 0.54);
+}
+
+.res-class-label,
+.res-class-value {
+  margin: 4px 0;
 }
 
 .res-class-label {
@@ -34,4 +47,3 @@
 .res-prop-label {
   font-style: italic;
 }
-
