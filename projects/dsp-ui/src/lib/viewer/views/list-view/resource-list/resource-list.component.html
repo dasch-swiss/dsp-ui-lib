@@ -1,26 +1,36 @@
+<!-- When withMultipleSelection is false and user can select only one resource at a time to view -->
 <mat-list class="resource-list">
-    <mat-list-item
+    <div
         class="link"
-        [class.selected-resource]="selectedResourceIdx === i"
+        [class.selected-resource]="selectedResourceIdx.indexOf(i) > -1"
         [class.border-bottom]="!last"
-        *ngFor="let res of resources.resources; let i = index; let last = last"
-        (click)="resourceSelected.emit(res.id)">
-        <mat-icon matListIcon>image_search</mat-icon>
-        <p matLine class="res-class-label">
-            {{ res.entityInfo.classes[res.type].label }}
-        </p>
-        <h3 matLine class="res-class-value">{{ res.label }}</h3>
+        *ngFor="let resource of resources.resources; let i = index; let last = last">
+        <mat-list-item>
+            <mat-icon matListIcon>image_search</mat-icon>
+            <div matLine (click)="viewResource({ checked: true, resListIndex: i, resId: resource.id, isCheckbox: false})">
+                <p matLine class="res-class-label">
+                    {{ resource.entityInfo.classes[resource.type].label }}
+                </p>
+                <h3 matLine class="res-class-value">{{ resource.label }}</h3>
+                <div matLine *ngFor="let prop of resource.properties | keyvalue">
+                    <div matLine *ngFor="let val of prop.value">
+                        <span class="res-prop-label">
+                            {{ resource.entityInfo.properties[val.property].label }}
+                        </span>
 
-        <div matLine *ngFor="let prop of res.properties | keyvalue">
-            <div matLine *ngFor="let val of prop.value">
-                <span class="res-prop-label">
-                    {{ res.entityInfo.properties[val.property].label }}
-                </span>
-
-                <div class="res-prop-value">
-                    {{ val.strval | dspTruncate: 256:"..." }}
+                        <div class="res-prop-value">
+                            {{ val.strval | dspTruncate: 256:"..." }}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </mat-list-item>
+            <!-- if withMultipleSelection is true, we display checkbox -->
+            <mat-checkbox #ckbox
+                *ngIf="withMultipleSelection"
+                id="{{ i }}"
+                (change)="viewResource({ checked: $event.checked, resListIndex: i, resId: resource.id, isCheckbox: true})"
+                class="res-checkbox">
+            </mat-checkbox>
+        </mat-list-item>
+    </div>
 </mat-list>

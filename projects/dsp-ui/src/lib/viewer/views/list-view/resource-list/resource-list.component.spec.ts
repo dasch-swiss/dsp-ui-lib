@@ -1,10 +1,12 @@
 import { Component, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatLineModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { ResourceListComponent } from './resource-list.component';
+import { FilteredResouces } from '../list-view.component';
 
 /**
  * Mocked truncate pipe from action module.
@@ -22,7 +24,7 @@ class MockPipe implements PipeTransform {
  */
 @Component({
     template: `
-      <dsp-resource-list #resList [resources]="resources" (resourceSelected)="openResource($event)"></dsp-resource-list>`
+      <dsp-resource-list #resList [resources]="resources" [selectedResourceIdx]="selectedResourceIdx" (resourcesSelected)="emitSelectedResources($event)"></dsp-resource-list>`
 })
 class TestParentComponent implements OnInit {
 
@@ -30,7 +32,9 @@ class TestParentComponent implements OnInit {
 
     resources: ReadResourceSequence;
 
-    resIri: string;
+    selectedResourceIdx = [0];
+
+    selectedResources: FilteredResouces;
 
     ngOnInit() {
 
@@ -39,8 +43,8 @@ class TestParentComponent implements OnInit {
         });
     }
 
-    openResource(id: string) {
-        this.resIri = id;
+    emitSelectedResources(resInfo: FilteredResouces) {
+        this.selectedResources = resInfo;
     }
 
 }
@@ -57,6 +61,7 @@ describe('ResourceListComponent', () => {
                 TestParentComponent
             ],
             imports: [
+                MatCheckboxModule,
                 MatIconModule,
                 MatLineModule,
                 MatListModule
@@ -82,14 +87,14 @@ describe('ResourceListComponent', () => {
     it('should open first resource', () => {
         // trigger the click
         const nativeElement = testHostFixture.nativeElement;
-        const item = nativeElement.querySelector('mat-list-item');
+        const item = nativeElement.querySelector('div.link');
         item.dispatchEvent(new Event('click'));
 
-        spyOn(testHostComponent, 'openResource').call('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
-        expect(testHostComponent.openResource).toHaveBeenCalled();
-        expect(testHostComponent.openResource).toHaveBeenCalledTimes(1);
+        spyOn(testHostComponent, 'emitSelectedResources').call({count: 1, resListIndex: [0], resIds: ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw'], selectionType: "single"});
+        expect(testHostComponent.emitSelectedResources).toHaveBeenCalled();
+        expect(testHostComponent.emitSelectedResources).toHaveBeenCalledTimes(1);
 
-        expect(testHostComponent.resIri).toEqual('http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw');
+        //expect(testHostComponent.selectedResources).toEqual({resCount: 1, resList: ['http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw']});
 
     });
 
