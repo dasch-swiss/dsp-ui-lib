@@ -154,7 +154,8 @@ import { MultipleResourcesViewComponent } from './views/multiple-resources-view/
         TextValueHtmlLinkDirective,
         TimeValueComponent,
         UploadFileComponent,
-        UriValueComponent
+        UriValueComponent,
+        MultipleResourcesViewComponent
     ]
 })
 export class DspViewerModule {

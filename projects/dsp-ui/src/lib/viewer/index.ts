@@ -26,6 +26,7 @@ export * from './views/property-view/property-view.component';
 export * from './views/list-view/list-view.component';
 export * from './views/list-view/resource-list/resource-list.component';
 export * from './views/list-view/resource-grid/resource-grid.component';
+export * from './views/multiple-resources-view/multiple-resources-view.component';
 // media representations
 export * from './representation/still-image/still-image.component';
 export * from './representation/upload-file/upload-file.component';

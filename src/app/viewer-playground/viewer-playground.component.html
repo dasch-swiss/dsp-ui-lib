@@ -1,21 +1,35 @@
-<p>The <strong>DspViewerModule</strong> contains different component to display a resource.
-    The example here shows the usage of <span>dsp-resource-view</span> which combines smaller
-    components like one of the representation viewer or the value components. All of them can
-    also be used individually.</p>
-<ul>
-    <li *ngFor="let res of resources; let i = index"
-        class="link"
-        [class.active]="resourceIri === res"
-        (click)="resourceIri = res">
-        Example {{i}}: {{res}}
-    </li>
-</ul>
+<div class="single-resource-view">
+    <p>Single resource viewer</p>
 
-<dsp-resource-view
-    [iri]="resourceIri"
-    [showToolbar]="true"
-    (referredProjectClicked)="refProjectClicked($event)"
-    (referredProjectHovered)="refProjectHovered($event)"
-    (referredResourceClicked)="refResourceClicked($event)"
-    (referredResourceHovered)="refResourceHovered($event)">
-</dsp-resource-view>
+    <p>The <strong>DspViewerModule</strong> contains different component to display a resource.
+        The example here shows the usage of <span>dsp-resource-view</span> which combines smaller
+        components like one of the representation viewer or the value components. All of them can
+        also be used individually.</p>
+    <ul>
+        <li *ngFor="let res of resources; let i = index"
+            class="link"
+            [class.active]="resourceIri === res"
+            (click)="resourceIri = res">
+            Example {{i}}: {{res}}
+        </li>
+    </ul>
+
+    <dsp-resource-view
+        [iri]="resourceIri"
+        [showToolbar]="true"
+        (referredProjectClicked)="refProjectClicked($event)"
+        (referredProjectHovered)="refProjectHovered($event)"
+        (referredResourceClicked)="refResourceClicked($event)"
+        (referredResourceHovered)="refResourceHovered($event)">
+    </dsp-resource-view>
+</div>
+
+<br><br>
+
+<hr>
+
+<div class="multiple-resources-viewer">
+    <p>multiple resources viewer</p>
+
+    <dsp-multiple-resources-view></dsp-multiple-resources-view>
+</div>
