@@ -30,6 +30,7 @@ import { KnoraDatePipe } from './pipes/formatting/knoradate.pipe';
 import { StringifyStringLiteralPipe } from './pipes/string-transformation/stringify-string-literal.pipe';
 import { TruncatePipe } from './pipes/string-transformation/truncate.pipe';
 import { SelectProjectComponent } from './components/select-project/select-project.component';
+import { SelectedResourcesComponent } from './components/selected-resources/selected-resources.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { SelectProjectComponent } from './components/select-project/select-proje
     StringifyStringLiteralPipe,
     StringLiteralInputComponent,
     SelectProjectComponent,
-    TruncatePipe
+    TruncatePipe,
+    SelectedResourcesComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -85,7 +87,8 @@ import { SelectProjectComponent } from './components/select-project/select-proje
     StringifyStringLiteralPipe,
     StringLiteralInputComponent,
     SelectProjectComponent,
-    TruncatePipe
+    TruncatePipe,
+    SelectedResourcesComponent
   ]
 })
 
