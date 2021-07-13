@@ -11,6 +11,7 @@ import {
     ApiResponseError,
     Constants,
     DeleteValue,
+    IHasProperty,
     IHasPropertyWithPropertyDefinition,
     KnoraApiConnection,
     PropertyDefinition,
@@ -38,7 +39,7 @@ import { ValueService } from '../../services/value.service';
 
 // object of property information from ontology class, properties and property values
 export interface PropertyInfoValues {
-    guiDef: IHasPropertyWithPropertyDefinition;
+    guiDef: IHasPropertyWithPropertyDefinition | IHasProperty;
     propDef: PropertyDefinition;
     values: ReadValue[];
 }
