@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  * This pipe analyses a string and converts any url into a href tags
  */
 @Pipe({
-    name: 'linkify'
+    name: 'dspLinkify'
 })
 export class LinkifyPipe implements PipeTransform {
 
