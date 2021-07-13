@@ -1,12 +1,22 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TextValueAsStringComponent } from './text-value-as-string.component';
-import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
-import { CreateTextValueAsString, MockResource, ReadTextValueAsString, UpdateTextValueAsString } from '@dasch-swiss/dsp-js';
+import { Component, DebugElement, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreateTextValueAsString, MockResource, ReadTextValueAsString, UpdateTextValueAsString } from '@dasch-swiss/dsp-js';
+import { TextValueAsStringComponent } from './text-value-as-string.component';
+
+/**
+ * Mocked linkify pipe from action module.
+ */
+@Pipe({ name: 'dspLinkify' })
+class MockPipe implements PipeTransform {
+    transform(value: string): string {
+        //Do stuff here, if you want
+        return value;
+    }
+}
 
 /**
  * Test host component to simulate parent component.
@@ -92,6 +102,7 @@ describe('TextValueAsStringComponent', () => {
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [
+                MockPipe,
                 TestHostDisplayValueComponent,
                 TestHostDisplayValueCommentComponent,
                 TextValueAsStringComponent,
