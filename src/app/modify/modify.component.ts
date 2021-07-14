@@ -25,6 +25,7 @@ export class ModifyComponent implements OnInit {
         this._dspApiConnection.v2.auth.login('username', 'root', 'test').subscribe(
             (response: ApiResponseData<LoginResponse>) => {
                 this.resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+                // this.resourceIri = 'http://rdfh.ch/0803/21abac2162'; // example from incunabula to play around with linkify
                 this.loading = false;
             },
             (error: ApiResponseError) => {
