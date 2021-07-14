@@ -1,20 +1,19 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 /**
- * This pipe analyses a string and converts any url into a href tags
+ * This pipe analyses a string and converts any url into a href tag
+ *
  */
 @Pipe({
     name: 'dspLinkify'
 })
 export class LinkifyPipe implements PipeTransform {
 
-    // constructor(private _domSanitizer: DomSanitizer) { }
-
     transform(value: string): string {
         let stylizedText: string = '';
         if (value && value.length > 0) {
             for (let str of value.split(' ')) {
-                // if string/url ends with a full stop '.' or column ':' the pipe will not recognize the url
+                // if string/url ends with a full stop '.' or colon ':' or coma ',' or semicolon ';' the pipe will not recognize the url
                 const lastChar = str.substring(str.length - 1);
                 const endsWithFullStop = (lastChar === '.' || lastChar === ':' || lastChar === ',' || lastChar === ';');
                 let end = ' ';
