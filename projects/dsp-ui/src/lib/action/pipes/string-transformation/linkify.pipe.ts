@@ -13,7 +13,7 @@ export class LinkifyPipe implements PipeTransform {
         let stylizedText: string = '';
         if (value && value.length > 0) {
             for (let str of value.split(' ')) {
-                // if string/url ends with a full stop '.' or colon ':' or coma ',' or semicolon ';' the pipe will not recognize the url
+                // if string/url ends with a full stop '.' or colon ':' or comma ',' or semicolon ';' the pipe will not recognize the url
                 const lastChar = str.substring(str.length - 1);
                 const endsWithFullStop = (lastChar === '.' || lastChar === ':' || lastChar === ',' || lastChar === ';');
                 let end = ' ';
