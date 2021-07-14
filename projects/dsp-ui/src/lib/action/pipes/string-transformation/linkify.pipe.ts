@@ -16,7 +16,7 @@ export class LinkifyPipe implements PipeTransform {
             for (let str of value.split(' ')) {
                 // if string/url ends with a full stop '.' or column ':' the pipe will not recognize the url
                 const lastChar = str.substring(str.length - 1);
-                const endsWithFullStop = (lastChar === '.' || lastChar === ':');
+                const endsWithFullStop = (lastChar === '.' || lastChar === ':' || lastChar === ',' || lastChar === ';');
                 let end = ' ';
                 if (endsWithFullStop) {
                     str = str.slice(0, -1);
