@@ -1,5 +1,5 @@
 <div class="single-resource-view">
-    <p>Single resource viewer</p>
+    <h3>Single resource viewer</h3>
 
     <p>The <strong>DspViewerModule</strong> contains different component to display a resource.
         The example here shows the usage of <span>dsp-resource-view</span> which combines smaller
@@ -29,7 +29,19 @@
 <hr>
 
 <div class="multiple-resources-viewer">
-    <p>Multiple resources viewer</p>
+    <h3>Multiple resources viewer</h3>
+
+    <p>The example here shows the usage of <strong>dsp-multiple-resources-view</strong> which
+        splits the view vertically and horizontally depending on the number of resources
+        selected and displays its details.
+    </p>
+
+    <p>Resources displayed:</p>
+    <ul>
+        <li *ngFor="let res of resourceIds; let i = index" style="background-color: aliceblue;">
+            {{res}}
+        </li>
+    </ul>
 
     <dsp-multiple-resources-view [noOfResources]=noOfResources [resourceIds]="resourceIds"></dsp-multiple-resources-view>
 </div>
