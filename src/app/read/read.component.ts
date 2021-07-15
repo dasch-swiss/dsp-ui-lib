@@ -25,6 +25,7 @@ export class ReadComponent implements OnInit {
         this._dspApiConnection.v2.auth.logout().subscribe(
             (response: ApiResponseData<LogoutResponse>) => {
                 this.resourceIri = 'http://rdfh.ch/0001/H6gBWUuJSuuO-CilHV8kQw';
+                // this.resourceIri = 'http://rdfh.ch/0803/21abac2162'; // example from incunabula to play around with linkify
                 this.loading = false;
             },
             (error: ApiResponseError) => {
