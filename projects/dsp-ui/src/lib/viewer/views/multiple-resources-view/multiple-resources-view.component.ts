@@ -7,9 +7,13 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class MultipleResourcesViewComponent implements OnInit {
 
+  // no of resources selected
   @Input() noOfResources: number;
+
+  // list of resources
   @Input() resourceIds: string[];
 
+  // if number of selected resources > 3, divide them in 2 rows
   topRow = [];
   bottomRow = [];
 
