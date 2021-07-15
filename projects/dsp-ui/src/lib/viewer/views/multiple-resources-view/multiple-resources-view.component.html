@@ -1,1 +1,18 @@
-<p>multiple-resources-view works!</p>
+<div class="content">
+    <as-split direction="vertical">
+        <as-split-area>
+            <as-split direction="horizontal">
+                <as-split-area *ngFor="let res of topRow">
+                    <p> {{ res }} </p>
+                </as-split-area>
+            </as-split>
+        </as-split-area>
+        <as-split-area *ngIf="noOfResources > 3">
+            <as-split direction="horizontal">
+                <as-split-area *ngFor="let res of bottomRow">
+                    <p> {{ res }} </p>
+                </as-split-area>
+            </as-split>
+        </as-split-area>
+    </as-split>
+</div>

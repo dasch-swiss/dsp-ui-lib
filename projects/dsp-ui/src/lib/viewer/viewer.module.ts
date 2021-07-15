@@ -60,6 +60,7 @@ import { DateInputTextComponent } from './values/date-value/date-input-text/date
 import { DateEditComponent } from './values/date-value/date-input-text/date-edit/date-edit.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MultipleResourcesViewComponent } from './views/multiple-resources-view/multiple-resources-view.component';
+import { AngularSplitModule } from 'angular-split';
 
 @NgModule({
     declarations: [
@@ -101,6 +102,7 @@ import { MultipleResourcesViewComponent } from './views/multiple-resources-view/
         MultipleResourcesViewComponent
     ],
     imports: [
+        AngularSplitModule.forRoot(),
         CKEditorModule,
         ClipboardModule,
         ColorPickerModule,

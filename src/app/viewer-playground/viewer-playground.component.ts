@@ -17,6 +17,7 @@ export class ViewerPlaygroundComponent implements OnInit {
         'http://rdfh.ch/0001/a-thing-with-text-valuesLanguage'
     ];
     resourceIri: string = this.resources[0];
+    noOfResources = this.resources.length;
 
 
     constructor(
