@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.7.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.6.0...v1.7.0) (2021-07-16)
+
+
+### Enhancements
+
+* **action:** intermediate page for selected resources in comparison viewer (DSP-1765) ([#313](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/313)) ([fa4950e](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/fa4950ee446d10cd426503966602772a979c9e96))
+* **viewer:** add checkbox for every resource in list and grid view (DSP-1711) ([#311](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/311)) ([1e0381a](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/1e0381ac489504a0486ca34be736d1ee49012e14))
+* **viewer:** recognise URLs in text value and convert into link (DSP-1595) ([#315](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/315)) ([f08b50d](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/f08b50d81abae4735b30c74806bfb6869fb8eceb))
+* **viewer:** split pane to compare multiple resource (DSP-1785) ([#316](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/316)) ([b24274e](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/b24274ef119f7ae97c307ce6fcdee00653bd2695))
+
 ## [1.6.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.5.0...v1.6.0) (2021-06-23)
 
 
