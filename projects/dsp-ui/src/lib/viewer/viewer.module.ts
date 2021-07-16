@@ -15,11 +15,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { AngularSplitModule } from 'angular-split';
 import { MatJDNConvertibleCalendarDateAdapterModule } from 'jdnconvertiblecalendardateadapter';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { DspActionModule } from '../action/action.module';
@@ -33,6 +35,8 @@ import { BooleanValueComponent } from './values/boolean-value/boolean-value.comp
 import { ColorPickerComponent } from './values/color-value/color-picker/color-picker.component';
 import { ColorValueComponent } from './values/color-value/color-value.component';
 import { CalendarHeaderComponent } from './values/date-value/calendar-header/calendar-header.component';
+import { DateEditComponent } from './values/date-value/date-input-text/date-edit/date-edit.component';
+import { DateInputTextComponent } from './values/date-value/date-input-text/date-input-text.component';
 import { DateInputComponent } from './values/date-value/date-input/date-input.component';
 import { DateValueComponent } from './values/date-value/date-value.component';
 import { DecimalValueComponent } from './values/decimal-value/decimal-value.component';
@@ -53,12 +57,10 @@ import { UriValueComponent } from './values/uri-value/uri-value.component';
 import { ListViewComponent } from './views/list-view/list-view.component';
 import { ResourceGridComponent } from './views/list-view/resource-grid/resource-grid.component';
 import { ResourceListComponent } from './views/list-view/resource-list/resource-list.component';
+import { MultipleResourcesViewComponent } from './views/multiple-resources-view/multiple-resources-view.component';
 import { PropertyToolbarComponent } from './views/property-view/property-toolbar/property-toolbar.component';
 import { PropertyViewComponent } from './views/property-view/property-view.component';
 import { ResourceViewComponent } from './views/resource-view/resource-view.component';
-import { DateInputTextComponent } from './values/date-value/date-input-text/date-input-text.component';
-import { DateEditComponent } from './values/date-value/date-input-text/date-edit/date-edit.component';
-import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
     declarations: [
@@ -96,9 +98,11 @@ import { MatRadioModule } from '@angular/material/radio';
         UploadFileComponent,
         UriValueComponent,
         DateInputTextComponent,
-        DateEditComponent
+        DateEditComponent,
+        MultipleResourcesViewComponent
     ],
     imports: [
+        AngularSplitModule.forRoot(),
         CKEditorModule,
         ClipboardModule,
         ColorPickerModule,
@@ -152,7 +156,8 @@ import { MatRadioModule } from '@angular/material/radio';
         TextValueHtmlLinkDirective,
         TimeValueComponent,
         UploadFileComponent,
-        UriValueComponent
+        UriValueComponent,
+        MultipleResourcesViewComponent
     ]
 })
 export class DspViewerModule {
