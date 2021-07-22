@@ -161,9 +161,7 @@ export class ListViewComponent implements OnChanges {
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;
-                    if (!this.withMultipleSelection) {
-                        this.emitSelectedResources({count: 1, resListIndex: [0], resIds: [this.resources.resources[0].id], selectionType: "single"});
-                    }
+                    this.emitSelectedResources({count: 1, resListIndex: [0], resIds: [this.resources.resources[0].id], selectionType: "single"});
                 },
                 (error: ApiResponseError) => {
                     this._notification.openSnackBar(error);
@@ -195,9 +193,7 @@ export class ListViewComponent implements OnChanges {
                     (response: ReadResourceSequence) => {
                         this.resources = response;
                         this.loading = false;
-                        if (!this.withMultipleSelection) {
-                            this.emitSelectedResources({count: 1, resListIndex: [0], resIds: [this.resources.resources[0].id], selectionType: "single"});
-                        }
+                        this.emitSelectedResources({count: 1, resListIndex: [0], resIds: [this.resources.resources[0].id], selectionType: "single"});
                     },
                     (error: ApiResponseError) => {
                         this._notification.openSnackBar(error);
