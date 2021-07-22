@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.7.1](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.0...v1.7.1) (2021-07-22)
+
+
+### Bug Fixes
+
+* **viewer:** emit selected resource always (DSP-1809) ([#317](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/317)) ([c881cb6](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/c881cb6bfebbd945eaeed9865e6e3815e6301b6e))
+
 ## [1.7.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.6.0...v1.7.0) (2021-07-16)
 
 
