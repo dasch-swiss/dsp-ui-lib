@@ -1,7 +1,6 @@
 <!-- When withMultipleSelection is false and user can select only one resource at a time to view -->
 <mat-list class="resource-list">
-    <div
-        class="link"
+    <div class="link"
         [class.selected-resource]="selectedResourceIdx.indexOf(i) > -1"
         [class.border-bottom]="!last"
         *ngFor="let resource of resources.resources; let i = index; let last = last">

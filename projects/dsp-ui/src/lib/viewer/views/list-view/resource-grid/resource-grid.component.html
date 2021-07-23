@@ -1,7 +1,6 @@
 <!-- When withMultipleSelection is false and user can select only one resource at a time to view -->
 <div class="resource-grid">
-    <div
-        class="grid-card link"
+    <div class="grid-card link"
         *ngFor="let resource of resources.resources; let i = index;">
         <mat-card [class.selected-resource]="selectedResourceIdx.indexOf(i) > -1">
             <!-- TODO: add the representation preview here, mat-card-image can be used for images -->

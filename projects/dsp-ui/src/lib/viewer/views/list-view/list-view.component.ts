@@ -39,7 +39,7 @@ export interface FilteredResouces {
  * checked: checkbox value
  * resIndex: resource index from the list
  */
-export interface checkboxUpdate {
+export interface CheckboxUpdate {
     checked: boolean,
     resListIndex: number,
     resId: string,
@@ -60,8 +60,8 @@ export class ListViewComponent implements OnChanges {
     @Input() displayViewSwitch?: boolean = true;
 
     /**
-      * Set to true if multiple resources can be selected for comparison
-      */
+     * Set to true if multiple resources can be selected for comparison
+     */
     @Input() withMultipleSelection?: boolean = false;
 
     /**
@@ -72,21 +72,24 @@ export class ListViewComponent implements OnChanges {
     @Output() multipleResourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
 
     /**
-     * @deprecated Use singleResourceSelected instead.
-     * Click on an item will emit the resource iri
-     */
-    @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
-
-    /**
      * Click on an item will emit the resource iri
      *
      * @param {EventEmitter<string>} singleResourceSelected
      */
     @Output() singleResourceSelected?: EventEmitter<string> = new EventEmitter<string>();
 
+    /**
+     * @deprecated Use singleResourceSelected instead.
+     * Click on an item will emit the resource iri
+     */
+    @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
+
+
     resources: ReadResourceSequence;
 
     selectedResourceIdx: number[] = [];
+
+    resetCheckBoxes = false;
 
     // MatPaginator Output
     pageEvent: PageEvent;
@@ -99,8 +102,8 @@ export class ListViewComponent implements OnChanges {
 
     constructor(
         @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
-        private _notification: NotificationService,
         private _advancedSearchParamsService: AdvancedSearchParamsService,
+        private _notification: NotificationService
     ) { }
 
     ngOnChanges(): void {
