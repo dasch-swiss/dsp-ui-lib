@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ViewChildren } from '@angular/c
 import { MatCheckbox } from '@angular/material/checkbox';
 import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { CheckboxUpdate, FilteredResouces } from '../list-view.component';
+import { ListViewService } from '../list-view.service';
 
 @Component({
     selector: 'dsp-resource-list',
@@ -41,69 +42,17 @@ export class ResourceListComponent {
      */
     @Output() resourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
 
-    // for keeping track of multiple selection
-    selectedResourcesCount = 0;
-    selectedResourcesList = [];
-    selectedResourceIdxMultiple = [];
+    constructor(
+        private _listView: ListViewService
+    ) { }
 
-    constructor() { }
+    selectResource(status: CheckboxUpdate) {
+        const selection = this._listView.viewResource(status, this.withMultipleSelection, this.selectedResourceIdx, this.resChecks);
 
-    /**
-     * Maintain the list and count of selected resources
-     *
-     * @param {CheckboxUpdate} checkbox value and resource index
-     */
-    viewResource(status: CheckboxUpdate) {
+        this.selectedResourceIdx = selection.resListIndex;
 
-        // when multiple selection and checkbox is used to select more
-        // than one resources
-        if (this.withMultipleSelection && status.isCheckbox) {
+        this.resourcesSelected.emit(selection);
 
-            if (status.checked) {
-                if (this.selectedResourceIdx.indexOf(status.resListIndex) <= 0) {
-                    // add resource in to the selected resources list
-                    this.selectedResourcesList.push(status.resId);
-
-                    // increase the count of selected resources
-                    this.selectedResourcesCount += 1;
-
-                    // add resource list index to apply selected class style
-                    this.selectedResourceIdxMultiple.push(status.resListIndex);
-                }
-            } else {
-                // remove resource from the selected resources list
-                let index = this.selectedResourcesList.findIndex(d => d === status.resId);
-                this.selectedResourcesList.splice(index, 1);
-
-                // decrease the count of selected resources
-                this.selectedResourcesCount -= 1;
-
-                // remove resource list index from the selected index list
-                index = this.selectedResourceIdxMultiple.findIndex(d => d === status.resListIndex);
-                this.selectedResourceIdxMultiple.splice(index, 1);
-            }
-            this.selectedResourceIdx = this.selectedResourceIdxMultiple;
-            this.resourcesSelected.emit({ count: this.selectedResourcesCount, resListIndex: this.selectedResourceIdx, resIds: this.selectedResourcesList, selectionType: "multiple" });
-
-        } else {
-            // else condition when single resource is clicked for viewing
-
-            // unselect checkboxes if any
-            this.resChecks.forEach(function (ckb) {
-                if (ckb.checked) {
-                    ckb.checked = false;
-                }
-            });
-
-            // reset all the variables for multiple selection
-            this.selectedResourceIdxMultiple = [];
-            this.selectedResourcesCount = 0;
-            this.selectedResourcesList = [];
-
-            // add resource list index to apply selected class style
-            this.selectedResourceIdx = [status.resListIndex];
-            this.resourcesSelected.emit({ count: 1, resListIndex: this.selectedResourceIdx, resIds: [status.resId], selectionType: "single" });
-        }
     }
 
 }
