@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.7.2](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.1...v1.7.2) (2021-07-26)
+
+
+### Maintenance
+
+* **resource:** clean up code and refactoring (DSP-1816) ([#319](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/319)) ([3b6b32c](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/3b6b32c083e0585c461680aa15eb03ad02fa4007))
+
 ### [1.7.1](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.0...v1.7.1) (2021-07-22)
 
 
