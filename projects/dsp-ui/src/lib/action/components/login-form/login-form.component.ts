@@ -1,9 +1,8 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiResponseData, ApiResponseError, KnoraApiConnection, LoginResponse, LogoutResponse } from '@dasch-swiss/dsp-js';
-import { DspApiConnectionToken } from '../../../core/core.module';
+import { LoginResponse, LogoutResponse } from '@dasch-swiss/dsp-js';
 import { Session, SessionService } from '../../../core/session.service';
-import { NotificationService } from '../../services/notification.service';
 
 @Component({
     selector: 'dsp-login-form',
@@ -100,15 +99,13 @@ export class LoginFormComponent implements OnInit {
 
 
     constructor(
-        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
-        private _notification: NotificationService,
-        private _sessionService: SessionService,
+        private _session: SessionService,
         private _fb: FormBuilder
     ) { }
 
     ngOnInit() {
         // if session is valid (a user is logged-in) show a message, otherwise build the form
-        this._sessionService.isSessionValid().subscribe(
+        this._session.isSessionValid().subscribe(
             result => {
                 // returns a result if session is still valid
                 if (result) {
@@ -138,30 +135,27 @@ export class LoginFormComponent implements OnInit {
         this.loading = true;
         this.isError = false;
 
-        // Grab values from form
+
+        // grab values from form
         const identifier = this.form.get('username').value;
         const password = this.form.get('password').value;
 
+        // set identifier type
         const identifierType: 'iri' | 'email' | 'username' = (identifier.indexOf('@') > -1 ? 'email' : 'username');
 
-        this._dspApiConnection.v2.auth.login(identifierType, identifier, password).subscribe(
-            (response: ApiResponseData<LoginResponse>) => {
-                this._sessionService.setSession(response.body.token, identifier, identifierType).subscribe(
+        this._session.login(identifierType, identifier, password).subscribe(
+            (response: LoginResponse) => {
+
+                this._session.setSession(response.token, identifier, identifierType).subscribe(
                     () => {
-                        this.session = this._sessionService.getSession();
+                        this.session = this._session.getSession();
                         this.loginSuccess.emit(true);
                         this.loading = false;
                     }
                 );
             },
-            (error: ApiResponseError) => {
+            (error: HttpErrorResponse) => {
                 // error handling
-                this.loginFailed = (error.status === 401 || error.status === 404);
-                this.loginErrorServer = (error.status === 0 || error.status >= 500 && error.status < 600);
-
-                if (this.loginErrorServer) {
-                    this._notification.openSnackBar(error);
-                }
 
                 this.loginSuccess.emit(false);
                 this.isError = true;
@@ -169,6 +163,7 @@ export class LoginFormComponent implements OnInit {
                 this.loading = false;
             }
         );
+
     }
 
     /**
@@ -180,17 +175,15 @@ export class LoginFormComponent implements OnInit {
     logout() {
         this.loading = true;
 
-        this._dspApiConnection.v2.auth.logout().subscribe(
-            (response: ApiResponseData<LogoutResponse>) => {
+        this._session.logout().subscribe(
+            (response: LogoutResponse) => {
                 this.logoutSuccess.emit(true);
-                this._sessionService.destroySession();
                 this.loading = false;
                 this.buildLoginForm();
                 this.session = undefined;
                 this.form.get('password').setValue('');
             },
-            (error: ApiResponseError) => {
-                this._notification.openSnackBar(error);
+            (error: HttpErrorResponse) => {
                 this.logoutSuccess.emit(false);
                 this.loading = false;
             }

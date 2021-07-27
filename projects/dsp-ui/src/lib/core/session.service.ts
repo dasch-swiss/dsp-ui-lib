@@ -1,15 +1,20 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import {
     ApiResponseData,
     ApiResponseError,
     Constants,
     CredentialsResponse,
+    KnoraApiConfig,
     KnoraApiConnection,
+    LoginResponse,
+    LogoutResponse,
     UserResponse
 } from '@dasch-swiss/dsp-js';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { DspApiConnectionToken } from './core.module';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { NotificationService } from '../action';
+import { DspApiConfigToken, DspApiConnectionToken } from './core.module';
 
 /**
  * information about the current user
@@ -44,6 +49,10 @@ export interface Session {
 })
 export class SessionService {
 
+
+    // api authentication url
+    authUrl: string;
+
     /**
      * max session time in milliseconds
      * default value (24h): 86400000
@@ -53,8 +62,48 @@ export class SessionService {
 
 
     constructor(
-        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection
-    ) { }
+        @Inject(DspApiConnectionToken) private _dspApiConnection: KnoraApiConnection,
+        @Inject(DspApiConfigToken) private _dspApiConfig: KnoraApiConfig,
+        private _notification: NotificationService,
+        private _http: HttpClient
+    ) {
+        this.authUrl = this._dspApiConfig.apiUrl + '/v2/authentication';
+    }
+
+    login(type: "email" | "username", id: string, password: string): Observable<LoginResponse | HttpErrorResponse> {
+
+        const credentials: any = {
+            password
+        };
+
+        credentials[type] = id;
+
+        return this._http.post<LoginResponse>(this.authUrl, credentials, { 'withCredentials': true }).pipe(
+            map((response: LoginResponse) => {
+
+                return response;
+            }),
+            catchError((error: HttpErrorResponse) => {
+                if (error.status === 0 || error.status >= 500 && error.status < 600) {
+                    this._notification.openSnackBar('The server is currently unavailable (overloaded or down). Try to login again in a few minutes.');
+                }
+                return throwError(error);
+            })
+        );
+    }
+
+    logout() {
+        return this._http.delete<LogoutResponse>(this.authUrl, { 'withCredentials': true }).pipe(
+            map((response: LogoutResponse) => {
+                this.destroySession();
+                return response;
+            }),
+            catchError((error: HttpErrorResponse) => {
+                this._notification.openSnackBar('Something went wrong during the logout process.');
+                return throwError(error);
+            })
+        );
+    }
 
     /**
      * get session information from localstorage
