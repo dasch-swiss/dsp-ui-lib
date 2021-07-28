@@ -43,7 +43,6 @@ describe('UploadFileService', () => {
                     id: 12345,
                     user: {
                         name: 'username',
-                        jwt: 'myToken',
                         lang: 'en',
                         sysAdmin: false,
                         projectAdmin: []

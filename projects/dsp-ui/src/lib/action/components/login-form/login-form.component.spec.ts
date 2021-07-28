@@ -171,8 +171,6 @@ describe('LoginFormComponent', () => {
 
             expect(session.user.name).toEqual('root');
 
-            expect(session.user.jwt).toEqual('myToken');
-
             expect(testHostComponent.loggedIn).toBeTruthy();
 
         });
@@ -201,7 +199,6 @@ describe('LoginFormComponent', () => {
                 id: 12345,
                 user: {
                     name: 'username',
-                    jwt: 'myToken',
                     lang: 'en',
                     sysAdmin: false,
                     projectAdmin: []

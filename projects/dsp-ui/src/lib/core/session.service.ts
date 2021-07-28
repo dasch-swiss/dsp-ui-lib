@@ -18,7 +18,8 @@ interface CurrentUser {
     // username
     name: string;
 
-    // json web token
+    // DEPRECATED: json web token
+    // will be removed in next release
     jwt?: string;
 
     // default language for ui
@@ -64,21 +65,18 @@ export class SessionService {
     }
 
     /**
-     * set session by using the json web token (jwt) and the user object;
+     * set session by using the user object;
      * it will be used in the login process
      *
-     * @param jwt Json Web Token
      * @param identifier  email address or username
      * @param identifierType 'email' or 'username'
      */
-    setSession(jwt: string, identifier: string, identifierType: 'email' | 'username'): Observable<void> {
-
-        this._dspApiConnection.v2.jsonWebToken = (jwt ? jwt : '');
+    setSession(identifier: string, identifierType: 'email' | 'username'): Observable<void> {
 
         // get user information
         return this._dspApiConnection.admin.usersEndpoint.getUser(identifierType, identifier).pipe(
             map((response: ApiResponseData<UserResponse> | ApiResponseError) => {
-                this._storeSessionInLocalStorage(response, jwt);
+                this._storeSessionInLocalStorage(response);
                 // return type is void
                 return;
             })
@@ -98,8 +96,6 @@ export class SessionService {
 
         if (session) {
 
-            this._dspApiConnection.v2.jsonWebToken = session.user.jwt;
-
             // check if the session is still valid:
             if (session.id + this.MAX_SESSION_TIME <= tsNow) {
                 // the internal (dsp-ui) session has expired
@@ -118,8 +114,7 @@ export class SessionService {
                 return of(true);
             }
         } else {
-            // no session found; update knora api connection with empty jwt
-            this._dspApiConnection.v2.jsonWebToken = '';
+            // no session found
             return of(false);
         }
     }
@@ -143,9 +138,8 @@ export class SessionService {
     /**
      * Store session in local storage
      * @param response response from getUser method call
-     * @param jwt JSON web token string
      */
-    private _storeSessionInLocalStorage(response: any, jwt: string) {
+    private _storeSessionInLocalStorage(response: any) {
         let session: Session;
 
         if (response instanceof ApiResponseData) {
@@ -166,12 +160,10 @@ export class SessionService {
             }
 
             // store session information in browser's localstorage
-            // TODO: jwt will be removed, when we have a better cookie solution (DSP-261)
             session = {
                 id: this._setTimestamp(),
                 user: {
                     name: response.body.user.username,
-                    jwt: jwt,
                     lang: response.body.user.lang,
                     sysAdmin: sysAdmin,
                     projectAdmin: projectAdmin
