@@ -63,7 +63,9 @@ jobs:
       - name: Run knora stack
         run: make knora-stack
       - name: Run e2e tests
-        run: npm run e2e
+        run:
+          npm run webdriver-update
+          npm run e2e
         env:
           TZ: Europe/Zurich
           CI: true

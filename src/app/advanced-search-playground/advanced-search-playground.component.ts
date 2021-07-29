@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { KnoraApiConnection } from '@dasch-swiss/dsp-js';
 import { AdvancedSearchParamsService, DspApiConnectionToken, SearchParams } from '@dasch-swiss/dsp-ui';
-import { ApiResponseData, ApiResponseError, KnoraApiConnection, LogoutResponse } from '@dasch-swiss/dsp-js';
 
 @Component({
     selector: 'app-advanced-search-playground',
@@ -17,14 +17,7 @@ export class AdvancedSearchPlaygroundComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loading = true;
-        this._dspApiConnection.v2.auth.logout().subscribe(
-            (response: ApiResponseData<LogoutResponse>) => {
-                this.loading = false;
-            },
-            (error: ApiResponseError) => {
-                console.error(error);
-            });
+
     }
 
     submitQuery(gravsearch: SearchParams) {
