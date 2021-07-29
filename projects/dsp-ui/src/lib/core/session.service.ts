@@ -167,6 +167,8 @@ export class SessionService {
 
             // store session information in browser's localstorage
             // TODO: jwt will be removed, when we have a better cookie solution (DSP-261)
+            // --> no it can't be removed because the token is needed in sipi upload:
+            // https://docs.dasch.swiss/DSP-API/03-apis/api-v2/editing-values/#upload-files-to-sipi
             session = {
                 id: this._setTimestamp(),
                 user: {
