@@ -146,7 +146,7 @@ export class LoginFormComponent implements OnInit {
 
         this._dspApiConnection.v2.auth.login(identifierType, identifier, password).subscribe(
             (response: ApiResponseData<LoginResponse>) => {
-                this._sessionService.setSession(identifier, identifierType).subscribe(
+                this._sessionService.setSession(response.body.token, identifier, identifierType).subscribe(
                     () => {
                         this.session = this._sessionService.getSession();
                         this.loginSuccess.emit(true);

@@ -83,6 +83,7 @@ describe('StringifyStringLiteralPipe', () => {
             id: 12345,
             user: {
                 name: 'username',
+                jwt: 'myToken',
                 lang: 'en',
                 sysAdmin: false,
                 projectAdmin: []
@@ -105,6 +106,7 @@ describe('StringifyStringLiteralPipe', () => {
             id: 12345,
             user: {
                 name: 'username',
+                jwt: 'myToken',
                 lang: 'de',
                 sysAdmin: false,
                 projectAdmin: []

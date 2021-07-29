@@ -77,7 +77,7 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession('root', 'username').subscribe( () => {
+            service.setSession(undefined, 'root', 'username').subscribe( () => {
                 const ls: Session = JSON.parse(localStorage.getItem('session'));
 
                 expect(dspSpy.v2.jsonWebToken).toEqual('');
@@ -108,10 +108,13 @@ describe('SessionService', () => {
                 }
             );
 
-            service.setSession('root', 'username').subscribe( () => {
+            service.setSession('mytoken', 'root', 'username').subscribe( () => {
                 const ls: Session = JSON.parse(localStorage.getItem('session'));
 
+                expect(dspSpy.v2.jsonWebToken).toEqual('mytoken');
+
                 expect(ls.user.name).toEqual('root');
+                expect(ls.user.jwt).toEqual('mytoken');
                 expect(ls.user.lang).toEqual('de');
                 expect(ls.user.sysAdmin).toEqual(false);
                 expect(ls.user.projectAdmin.length).toEqual(0);
@@ -135,6 +138,7 @@ describe('SessionService', () => {
                 id: 12345,
                 user: {
                     name: 'username',
+                    jwt: 'myToken',
                     lang: 'en',
                     sysAdmin: false,
                     projectAdmin: []
@@ -148,6 +152,7 @@ describe('SessionService', () => {
             expect(ls.id).toEqual(12345);
             expect(ls.user.name).toEqual('username');
             expect(ls.user.lang).toEqual('en');
+            expect(ls.user.jwt).toEqual('myToken');
             expect(ls.user.sysAdmin).toEqual(false);
             expect(ls.user.projectAdmin.length).toEqual(0);
 
@@ -164,6 +169,7 @@ describe('SessionService', () => {
                 id: 12345,
                 user: {
                     name: 'username',
+                    jwt: 'myToken',
                     lang: 'en',
                     sysAdmin: false,
                     projectAdmin: []
@@ -205,6 +211,7 @@ describe('SessionService', () => {
                 id: (Date.now() / 1000) - service.MAX_SESSION_TIME + 1, // still valid
                 user: {
                     name: 'username',
+                    jwt: 'myToken',
                     lang: 'en',
                     sysAdmin: false,
                     projectAdmin: []
@@ -243,6 +250,7 @@ describe('SessionService', () => {
                 id: (Date.now() / 1000) - service.MAX_SESSION_TIME, // expired
                 user: {
                     name: 'username',
+                    jwt: 'myToken',
                     lang: 'en',
                     sysAdmin: false,
                     projectAdmin: []
