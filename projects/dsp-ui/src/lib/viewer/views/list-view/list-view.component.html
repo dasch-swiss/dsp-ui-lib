@@ -11,7 +11,7 @@
         <!-- TODO: add button to show as table, if possible (filter by same resource class) -->
     </span>
     <span class="fill-remaining-space"></span>
-    <span class="page-navigation">
+    <span class="page-navigation" *ngIf="!loading && (numberOfAllResults > 0 && resources?.resources.length)">
         <mat-paginator [length]="numberOfAllResults" [pageSize]="25" [hidePageSize]="true"
             [pageIndex]="pageEvent.pageIndex" [disabled]="loading" (page)="goToPage($event)">
         </mat-paginator>
@@ -23,7 +23,7 @@
     <dsp-progress-indicator *ngIf="loading"></dsp-progress-indicator>
 
     <!-- When multiple resources are selected for comparision -->
-    <div class="list-view" *ngIf="!loading && numberOfAllResults > 0 && resources">
+    <div class="list-view" *ngIf="!loading && (numberOfAllResults > 0 && resources)">
         <div [ngSwitch]="view">
             <dsp-resource-list
                 *ngSwitchCase="'list'"
@@ -45,10 +45,11 @@
     </div>
 
     <!-- In case of 0 result -->
-    <div class="list-view no-results" *ngIf="!loading && numberOfAllResults === 0">
+    <div class="list-view no-results" *ngIf="!loading && (numberOfAllResults >= 0 && !resources?.resources.length)">
         <p>Your search <span *ngIf="search.mode === 'fulltext'">- <strong> {{search.query}}</strong> -</span> did not match any documents.</p>
         <p>Suggestions:</p>
         <ul>
+            <li *ngIf="numberOfAllResults > 0">Make sure that you are logged in and you have all the needed permissions.</li>
             <li>Make sure that all words are spelled correctly.</li>
             <li>Try different keywords.</li>
             <li>Try more general keywords.</li>

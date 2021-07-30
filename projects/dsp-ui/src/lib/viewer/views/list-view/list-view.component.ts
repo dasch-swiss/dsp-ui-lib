@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ApiResponseError, CountQueryResponse, IFulltextSearchParams, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
+import { ApiResponseError, CountQueryResponse, IFulltextSearchParams, KnoraApiConnection, ReadResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { NotificationService } from '../../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
@@ -31,7 +31,7 @@ export interface FilteredResouces {
     count: number,
     resListIndex: number[],
     resIds: string[],
-    selectionType: "multiple" | "single"
+    selectionType: 'multiple' | 'single'
 }
 
 /* return the checkbox value
@@ -84,7 +84,6 @@ export class ListViewComponent implements OnChanges {
      */
     @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
 
-
     resources: ReadResourceSequence;
 
     selectedResourceIdx: number[] = [];
@@ -128,7 +127,7 @@ export class ListViewComponent implements OnChanges {
     emitSelectedResources(resInfo: FilteredResouces) {
         this.selectedResourceIdx = resInfo.resListIndex;
 
-        if (resInfo.selectionType === "multiple") {
+        if (resInfo.selectionType === 'multiple') {
             this.multipleResourcesSelected.emit(resInfo);
         } else {
             this.singleResourceSelected.emit(resInfo.resIds[0]);
@@ -150,11 +149,18 @@ export class ListViewComponent implements OnChanges {
             if (this.pageEvent.pageIndex === 0) {
                 // perform count query
                 this._dspApiConnection.v2.search.doFulltextSearchCountQuery(this.search.query, this.pageEvent.pageIndex, this.search.filter).subscribe(
-                    (response: CountQueryResponse) => {
-                        this.numberOfAllResults = response.numberOfResults;
+                    (count: CountQueryResponse) => {
+                        this.numberOfAllResults = count.numberOfResults;
+
+                        if (this.numberOfAllResults === 0) {
+                            this.resources = undefined;
+                            this._emitSelectedResource(undefined);
+                            this.loading = false;
+                        }
                     },
-                    (error: ApiResponseError) => {
-                        this._notification.openSnackBar(error);
+                    (countError: ApiResponseError) => {
+                        this._notification.openSnackBar(countError);
+                        this._emitSelectedResource(undefined);
                     }
                 );
             }
@@ -164,26 +170,33 @@ export class ListViewComponent implements OnChanges {
                 (response: ReadResourceSequence) => {
                     this.resources = response;
                     this.loading = false;
-                    this.emitSelectedResources({ count: 1, resListIndex: [0], resIds: [this.resources.resources[0].id], selectionType: "single" });
+                    this._emitSelectedResource(this.resources.resources);
                 },
                 (error: ApiResponseError) => {
                     this._notification.openSnackBar(error);
+                    this.resources = undefined;
                     this.loading = false;
                 }
             );
 
         } else if (this.search.mode === 'gravsearch') {
 
-
             // search mode: gravsearch
             if (this.pageEvent.pageIndex === 0) {
                 // perform count query
                 this._dspApiConnection.v2.search.doExtendedSearchCountQuery(this.search.query).subscribe(
-                    (response: CountQueryResponse) => {
-                        this.numberOfAllResults = response.numberOfResults;
+                    (count: CountQueryResponse) => {
+                        this.numberOfAllResults = count.numberOfResults;
+
+                        if (this.numberOfAllResults === 0) {
+                            this.resources = undefined;
+                            this._emitSelectedResource(undefined);
+                            this.loading = false;
+                        }
                     },
-                    (error: ApiResponseError) => {
-                        this._notification.openSnackBar(error);
+                    (countError: ApiResponseError) => {
+                        this._notification.openSnackBar(countError);
+                        this._emitSelectedResource(undefined);
                     }
                 );
             }
@@ -196,19 +209,30 @@ export class ListViewComponent implements OnChanges {
                     (response: ReadResourceSequence) => {
                         this.resources = response;
                         this.loading = false;
-                        this.emitSelectedResources({ count: 1, resListIndex: [0], resIds: [this.resources.resources[0].id], selectionType: "single" });
+                        this._emitSelectedResource(this.resources.resources);
                     },
                     (error: ApiResponseError) => {
                         this._notification.openSnackBar(error);
+                        this.resources = undefined;
                         this.loading = false;
                     }
                 );
             } else {
                 console.error('The gravsearch query is not set correctly');
+                this.resources = undefined;
+                this.loading = false;
             }
 
         }
 
+    }
+
+    private _emitSelectedResource(resources: ReadResource[]) {
+        if (resources && resources.length > 0) {
+            this.emitSelectedResources({ count: 1, resListIndex: [0], resIds: [resources[0].id], selectionType: 'single' });
+        } else {
+            this.emitSelectedResources({ count: 0, resListIndex: [], resIds: [], selectionType: 'single'});
+        }
     }
 
 }
