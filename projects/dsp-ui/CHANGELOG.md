@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.7.3](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.2...v1.7.3) (2021-07-30)
+
+
+### Bug Fixes
+
+* **viewer:** fix several issues in list-view (DSP-1575) ([#324](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/324)) ([9a76b0a](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/9a76b0aaafb89d765db128cc1e16a628a1a46b90))
+
+
+### Maintenance
+
+* **deps:** bump dsp-js to latest version (DSP-1825) ([#322](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/322)) ([4e8be74](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/4e8be740d99a42cb70e04735af3a24cf8e6b8b84))
+
 ### [1.7.2](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.1...v1.7.2) (2021-07-26)
 
 
