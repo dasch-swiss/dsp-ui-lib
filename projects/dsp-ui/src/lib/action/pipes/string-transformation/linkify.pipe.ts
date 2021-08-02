@@ -19,7 +19,7 @@ export class LinkifyPipe implements PipeTransform {
                 let end = ' ';
                 if (endsWithFullStop) {
                     str = str.slice(0, -1);
-                    end = '.'
+                    end = lastChar;
                 }
                 if (this._recognizeUrl(str)) {
                     const url = this._setProtocol(str);
@@ -28,7 +28,7 @@ export class LinkifyPipe implements PipeTransform {
                     stylizedText += str + end;
                 }
             }
-            return stylizedText.trim();
+            return stylizedText;
         } else {
             return value;
         }
