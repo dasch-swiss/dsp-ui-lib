@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.7.4](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.3...v1.7.4) (2021-08-03)
+
+
+### Bug Fixes
+
+* **action:** bug fix in linkify pipe (DSP-1837) ([#325](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/325)) ([13fb692](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/13fb692d2a9a263cd7ecb6e6e2f0d25c5b39451f))
+
 ### [1.7.3](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.2...v1.7.3) (2021-07-30)
 
 
