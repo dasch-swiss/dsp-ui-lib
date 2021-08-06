@@ -7,13 +7,14 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
+      "@ckeditor/ckeditor5-angular": "ckeditor5Angular",
       "@dasch-swiss/dsp-js": "@dasch-swiss/dsp-js",
-      "ngx-color-picker": "ngxColorPicker",
+      "angular-split": "angular-split",
+      "ckeditor5-custom-build": "Editor",
       "jdnconvertiblecalendar": "jdnconvertiblecalendar",
       "jdnconvertiblecalendardateadapter": "jdnconvertiblecalendardateadapter",
-      "ts-md5": "tsMd5",
-      "@ckeditor/ckeditor5-angular": "ckeditor5Angular",
-      "ckeditor5-custom-build": "Editor"
+      "ngx-color-picker": "ngxColorPicker",
+      "ts-md5": "tsMd5"
     }
   }
 }
