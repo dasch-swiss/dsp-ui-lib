@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChildren } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { CheckboxUpdate, FilteredResouces } from '../list-view.component';
+import { CheckboxUpdate, FilteredResources } from '../list-view.component';
 import { ListViewService } from '../list-view.service';
 
 @Component({
@@ -38,16 +38,16 @@ export class ResourceGridComponent {
     /**
       * Click on checkbox will emit the resource info
       *
-      * @param  {EventEmitter<FilteredResouces>} resourcesSelected
+      * @param  {EventEmitter<FilteredResources>} resourcesSelected
       */
-    @Output() resourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
+    @Output() resourcesSelected?: EventEmitter<FilteredResources> = new EventEmitter<FilteredResources>();
 
     constructor(
         private _listView: ListViewService
     ) { }
 
     selectResource(status: CheckboxUpdate) {
-        const selection = this._listView.viewResource(status, this.withMultipleSelection, this.selectedResourceIdx, this.resChecks);
+        const selection: FilteredResources = this._listView.viewResource(status, this.withMultipleSelection, this.selectedResourceIdx, this.resChecks);
 
         this.selectedResourceIdx = selection.resListIndex;
 

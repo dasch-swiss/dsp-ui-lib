@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, Output, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChildren } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { ReadResourceSequence } from '@dasch-swiss/dsp-js';
-import { CheckboxUpdate, FilteredResouces } from '../list-view.component';
+import { CheckboxUpdate, FilteredResources } from '../list-view.component';
 import { ListViewService } from '../list-view.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { ListViewService } from '../list-view.service';
     templateUrl: './resource-list.component.html',
     styleUrls: ['./resource-list.component.scss']
 })
-export class ResourceListComponent {
+export class ResourceListComponent implements OnInit {
 
     /**
      * List of all resource checkboxes. This list is used to
@@ -38,16 +38,21 @@ export class ResourceListComponent {
     /**
      * Click on checkbox will emit the resource info
      *
-     * @param  {EventEmitter<FilteredResouces>} resourcesSelected
+     * @param  {EventEmitter<FilteredResources>} resourcesSelected
      */
-    @Output() resourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
+    @Output() resourcesSelected?: EventEmitter<FilteredResources> = new EventEmitter<FilteredResources>();
 
     constructor(
         private _listView: ListViewService
     ) { }
 
+    ngOnInit() {
+        // select the first item in the list
+        this.selectResource({ checked: true, resIndex: 0, resId: this.resources.resources[0].id, resLabel: this.resources.resources[0].label, isCheckbox: false })
+    }
+
     selectResource(status: CheckboxUpdate) {
-        const selection = this._listView.viewResource(status, this.withMultipleSelection, this.selectedResourceIdx, this.resChecks);
+        const selection: FilteredResources = this._listView.viewResource(status, this.withMultipleSelection, this.selectedResourceIdx, this.resChecks);
 
         this.selectedResourceIdx = selection.resListIndex;
 

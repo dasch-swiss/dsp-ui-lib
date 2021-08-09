@@ -1,34 +1,56 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
+import { ShortResInfo } from '../list-view/list-view.component';
 
 @Component({
-  selector: 'dsp-multiple-resources-view',
-  templateUrl: './multiple-resources-view.component.html',
-  styleUrls: ['./multiple-resources-view.component.scss']
+    selector: 'dsp-multiple-resources-view',
+    templateUrl: './multiple-resources-view.component.html',
+    styleUrls: ['./multiple-resources-view.component.scss']
 })
-export class MultipleResourcesViewComponent implements OnInit {
+export class MultipleResourcesViewComponent implements OnChanges {
 
-  // no of resources selected
-  @Input() noOfResources: number;
+    /**
+     * number of resources
+     */
+    @Input() noOfResources?: number;
 
-  // list of resources
-  @Input() resourceIds: string[];
+    /**
+     * resource ids
+     */
+    @Input() resourceIds?: string[];
 
-  // if number of selected resources > 3, divide them in 2 rows
-  topRow = [];
-  bottomRow = [];
+    /**
+     * list of resources with id and label
+     */
+    @Input() resources?: ShortResInfo[];
 
-  constructor() { }
+    // if number of selected resources > 3, divide them into 2 rows
+    topRow = [];
+    bottomRow = [];
 
-  ngOnInit(): void {
-    // if number of resources are more than 3, divide it into 2 rows
-    // otherwise display then in 1 row only
-    if (this.noOfResources < 4) {
-      this.topRow = this.resourceIds;
+    constructor() { }
+
+    ngOnChanges(): void {
+
+        if (this.resources && this.resources.length) {
+            this.resourceIds = [];
+            this.resources.forEach(res => {
+                this.resourceIds.push(res.id);
+            });
+        }
+
+        if (!this.noOfResources) {
+            this.noOfResources = ((this.resourceIds && this.resourceIds.length) ? this.resourceIds.length : this.resources.length);
+        }
+
+        // if number of resources are more than 3, divide it into 2 rows
+        // otherwise display then in 1 row only
+        if (this.noOfResources < 4) {
+            this.topRow = this.resourceIds;
+        }
+        else {
+            this.topRow = this.resourceIds.slice(0, this.noOfResources / 2);
+            this.bottomRow = this.resourceIds.slice(this.noOfResources / 2);
+        }
     }
-    else {
-      this.topRow = this.resourceIds.slice(0, this.noOfResources / 2);
-      this.bottomRow = this.resourceIds.slice(this.noOfResources / 2)
-    }
-  }
 
 }
