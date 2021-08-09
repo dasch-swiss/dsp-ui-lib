@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionService } from '@dasch-swiss/dsp-ui';
+import { SessionService,  ShortResInfo } from '@dasch-swiss/dsp-ui';
 import { ReadLinkValue, ReadProject } from '@dasch-swiss/dsp-js';
 
 @Component({
@@ -18,14 +18,28 @@ export class ViewerPlaygroundComponent implements OnInit {
     ];
     resourceIri: string = this.resources[0];
 
-    resourceIds = [
-        'http://rdfh.ch/0803/18a671b8a601',
-        'http://rdfh.ch/0803/7e4cfc5417',
-        'http://rdfh.ch/0803/6ad3e2c47501',
-        'http://rdfh.ch/0803/009e225a5f01',
-        'http://rdfh.ch/0803/00ed33070f02'
+    resourcesWithLabel: ShortResInfo[] = [
+        {
+            id: 'http://rdfh.ch/0803/18a671b8a601',
+            label: 'e2V'
+        },
+        {
+            id: 'http://rdfh.ch/0803/7e4cfc5417',
+            label: 'g3r'
+        },
+        {
+            id: 'http://rdfh.ch/0803/6ad3e2c47501',
+            label: '30v'
+        },
+        {
+            id: 'http://rdfh.ch/0803/009e225a5f01',
+            label: 'm3v'
+        },
+        {
+            id: 'http://rdfh.ch/0803/00ed33070f02',
+            label: 'C5r'
+        }
     ];
-    noOfResources = this.resourceIds.length;
 
 
     constructor(
