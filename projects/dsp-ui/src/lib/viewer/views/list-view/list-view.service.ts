@@ -16,16 +16,6 @@ export class ListViewService {
 
     viewResource(status: CheckboxUpdate, withMultipleSelection: boolean, selectedResourceIdx: number [], resChecks: MatCheckbox[]): FilteredResources {
 
-        // console.log('status', status);
-        // console.log('withMultipleSelection', withMultipleSelection);
-        // console.log('selectedResourceIdx', selectedResourceIdx);
-        // console.log('-------------------------------------');
-        // console.log('selectedResourcesCount', this.selectedResourcesCount);
-        // console.log('selectedResourcesList', this.selectedResourcesList);
-        // console.log('selectedResourceIdxMultiple', this.selectedResourceIdxMultiple);
-        // console.log('-------------------------------------');
-        // console.log('-------------------------------------');
-
         if (selectedResourceIdx.length === 1 && this.selectedResourcesCount === 0) {
             // reset the selected resources count and list
             // this.selectedResourcesCount = 0;
