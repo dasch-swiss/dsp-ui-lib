@@ -6,7 +6,7 @@
         *ngFor="let resource of resources.resources; let i = index; let last = last">
         <mat-list-item>
             <mat-icon matListIcon>image_search</mat-icon>
-            <div matLine (click)="selectResource({ checked: true, resListIndex: i, resId: resource.id, isCheckbox: false})">
+            <div matLine (click)="selectResource({ checked: true, resIndex: i, resId: resource.id, resLabel: resource.label, isCheckbox: false })">
                 <p matLine class="res-class-label">
                     {{ resource.entityInfo.classes[resource.type].label }}
                 </p>
@@ -27,7 +27,7 @@
             <mat-checkbox #ckbox
                 *ngIf="withMultipleSelection"
                 id="{{ i }}"
-                (change)="selectResource({ checked: $event.checked, resListIndex: i, resId: resource.id, isCheckbox: true})"
+                (change)="selectResource({ checked: $event.checked, resIndex: i, resId: resource.id, resLabel: resource.label, isCheckbox: true })"
                 class="res-checkbox">
             </mat-checkbox>
         </mat-list-item>

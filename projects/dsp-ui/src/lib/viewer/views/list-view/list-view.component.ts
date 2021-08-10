@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ApiResponseError, CountQueryResponse, IFulltextSearchParams, KnoraApiConnection, ReadResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
+import { ApiResponseError, CountQueryResponse, IFulltextSearchParams, KnoraApiConnection, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { NotificationService } from '../../../action/services/notification.service';
 import { DspApiConnectionToken } from '../../../core/core.module';
 import { AdvancedSearchParamsService } from '../../../search/services/advanced-search-params.service';
@@ -22,16 +22,21 @@ export interface SearchParams {
     filter?: IFulltextSearchParams;
 }
 
+export interface ShortResInfo {
+    id: string;
+    label: string;
+}
+
 /* return the selected resources in below format
  *
  * count: total number of resources selected
  * selectedIds: list of selected resource's ids
  */
-export interface FilteredResouces {
-    count: number,
-    resListIndex: number[],
-    resIds: string[],
-    selectionType: 'multiple' | 'single'
+export interface FilteredResources {
+    count: number;
+    resListIndex: number[];
+    resInfo: ShortResInfo[];
+    selectionType: 'multiple' | 'single';
 }
 
 /* return the checkbox value
@@ -40,10 +45,11 @@ export interface FilteredResouces {
  * resIndex: resource index from the list
  */
 export interface CheckboxUpdate {
-    checked: boolean,
-    resListIndex: number,
-    resId: string,
-    isCheckbox: boolean
+    checked: boolean;
+    resIndex: number;
+    resId: string;
+    resLabel: string;
+    isCheckbox: boolean;
 }
 
 @Component({
@@ -65,13 +71,22 @@ export class ListViewComponent implements OnChanges {
     @Input() withMultipleSelection?: boolean = false;
 
     /**
-     * Click on checkbox will emit the resource info
-     *
-     * @param {EventEmitter<FilteredResouces>} resourcesSelected
+     * Emits the selected resources 1-n
      */
-    @Output() multipleResourcesSelected?: EventEmitter<FilteredResouces> = new EventEmitter<FilteredResouces>();
+    @Output() selectedResources: EventEmitter<FilteredResources> = new EventEmitter<FilteredResources>();
 
     /**
+     * @deprecated Use selectedResources instead
+     *
+     * Click on checkbox will emit the resource info
+     *
+     * @param {EventEmitter<FilteredResources>} resourcesSelected
+     */
+    @Output() multipleResourcesSelected?: EventEmitter<FilteredResources> = new EventEmitter<FilteredResources>();
+
+    /**
+     * @deprecated Use selectedResources instead
+     *
      * Click on an item will emit the resource iri
      *
      * @param {EventEmitter<string>} singleResourceSelected
@@ -79,7 +94,7 @@ export class ListViewComponent implements OnChanges {
     @Output() singleResourceSelected?: EventEmitter<string> = new EventEmitter<string>();
 
     /**
-     * @deprecated Use singleResourceSelected instead.
+     * @deprecated Use selectedResources instead.
      * Click on an item will emit the resource iri
      */
     @Output() resourceSelected: EventEmitter<string> = new EventEmitter<string>();
@@ -122,17 +137,21 @@ export class ListViewComponent implements OnChanges {
         this.view = view;
     }
 
-    // If 'withMultipleSelection' is true, multiple resources are selected for comparision
-    // If 'withMultipleSelection' is false, single resource is selected for viewing
-    emitSelectedResources(resInfo: FilteredResouces) {
-        this.selectedResourceIdx = resInfo.resListIndex;
+    // the child component send the selected resources to the parent of this component directly;
+    // but when this component is intialized, it should select the first item in the list and
+    // emit this selected resource to the parent.
+    emitSelectedResources(res?: FilteredResources) {
 
-        if (resInfo.selectionType === 'multiple') {
-            this.multipleResourcesSelected.emit(resInfo);
-        } else {
-            this.singleResourceSelected.emit(resInfo.resIds[0]);
-            this.resourceSelected.emit(resInfo.resIds[0]);
+        if (!res || res.count === 0) {
+            // no resource is selected: In case of an error or no search results
+            this.selectedResources.emit({ count: 0, resListIndex: [], resInfo: [], selectionType: 'single' });
+        } else if (res.count > 0) {
+            this.selectedResourceIdx = res.resListIndex;
+            this.selectedResources.emit(res);
+            this.resourceSelected.emit(res.resInfo[0].id);
         }
+
+
     }
 
     goToPage(page: PageEvent) {
@@ -140,6 +159,11 @@ export class ListViewComponent implements OnChanges {
         this._doSearch();
     }
 
+
+    /**
+     * do the search and send the resources to the child components
+     * like resource-list, resource-grid or resource-table
+     */
     private _doSearch() {
 
         this.loading = true;
@@ -153,14 +177,13 @@ export class ListViewComponent implements OnChanges {
                         this.numberOfAllResults = count.numberOfResults;
 
                         if (this.numberOfAllResults === 0) {
+                            this.emitSelectedResources();
                             this.resources = undefined;
-                            this._emitSelectedResource(undefined);
                             this.loading = false;
                         }
                     },
                     (countError: ApiResponseError) => {
                         this._notification.openSnackBar(countError);
-                        this._emitSelectedResource(undefined);
                     }
                 );
             }
@@ -168,9 +191,13 @@ export class ListViewComponent implements OnChanges {
             // perform full text search
             this._dspApiConnection.v2.search.doFulltextSearch(this.search.query, this.pageEvent.pageIndex, this.search.filter).subscribe(
                 (response: ReadResourceSequence) => {
+                    // if the response does not contain any resources even the search count is greater than 0,
+                    // it means that the user does not have the permissions to see anything: emit an empty result
+                    if (response.resources.length === 0) {
+                        this.emitSelectedResources();
+                    }
                     this.resources = response;
                     this.loading = false;
-                    this._emitSelectedResource(this.resources.resources);
                 },
                 (error: ApiResponseError) => {
                     this._notification.openSnackBar(error);
@@ -189,14 +216,13 @@ export class ListViewComponent implements OnChanges {
                         this.numberOfAllResults = count.numberOfResults;
 
                         if (this.numberOfAllResults === 0) {
+                            this.emitSelectedResources();
                             this.resources = undefined;
-                            this._emitSelectedResource(undefined);
                             this.loading = false;
                         }
                     },
                     (countError: ApiResponseError) => {
                         this._notification.openSnackBar(countError);
-                        this._emitSelectedResource(undefined);
                     }
                 );
             }
@@ -207,9 +233,13 @@ export class ListViewComponent implements OnChanges {
             if (typeof gravsearch === 'string') {
                 this._dspApiConnection.v2.search.doExtendedSearch(gravsearch).subscribe(
                     (response: ReadResourceSequence) => {
+                        // if the response does not contain any resources even the search count is greater than 0,
+                        // it means that the user does not have the permissions to see anything: emit an empty result
+                        if (response.resources.length === 0) {
+                            this.emitSelectedResources();
+                        }
                         this.resources = response;
                         this.loading = false;
-                        this._emitSelectedResource(this.resources.resources);
                     },
                     (error: ApiResponseError) => {
                         this._notification.openSnackBar(error);
@@ -227,12 +257,16 @@ export class ListViewComponent implements OnChanges {
 
     }
 
-    private _emitSelectedResource(resources: ReadResource[]) {
-        if (resources && resources.length > 0) {
-            this.emitSelectedResources({ count: 1, resListIndex: [0], resIds: [resources[0].id], selectionType: 'single' });
-        } else {
-            this.emitSelectedResources({ count: 0, resListIndex: [], resIds: [], selectionType: 'single'});
-        }
-    }
+    // private _prepareResourceToEmit(resources: ReadResource[]) {
+    //     if (resources && resources.length > 0) {
+    //         const resInfo: ShortResInfo = {
+    //             id: resources[0].id,
+    //             label: resources[0].label
+    //         };
+    //         this.emitSelectedResources({ count: 1, resListIndex: [0], resInfo: [resInfo], selectionType: 'single' });
+    //     } else {
+    //         this.emitSelectedResources({ count: 0, resListIndex: [], resInfo: [], selectionType: 'single'});
+    //     }
+    // }
 
 }

@@ -38,10 +38,10 @@
 
     <p>Resources displayed:</p>
     <ul>
-        <li *ngFor="let res of resourceIds; let i = index" style="background-color: aliceblue;">
-            {{res}}
+        <li *ngFor="let res of resourcesWithLabel; let i = index" style="background-color: aliceblue;">
+            {{res.label}} ({{res.id}})
         </li>
     </ul>
 
-    <dsp-multiple-resources-view [noOfResources]="noOfResources" [resourceIds]="resourceIds"></dsp-multiple-resources-view>
+    <dsp-multiple-resources-view [resources]="resourcesWithLabel"></dsp-multiple-resources-view>
 </div>

@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MockResource, ReadResourceSequence } from '@dasch-swiss/dsp-js';
 import { ResourceGridComponent } from './resource-grid.component';
-import { FilteredResouces } from '../list-view.component';
+import { FilteredResources } from '../list-view.component';
 
 /**
  * Mocked truncate pipe from action module.
@@ -32,7 +32,7 @@ class TestParentComponent implements OnInit {
 
     selectedResourceIdx = [0];
 
-    selectedResources: FilteredResouces;
+    selectedResources: FilteredResources;
 
     ngOnInit() {
 
@@ -41,7 +41,7 @@ class TestParentComponent implements OnInit {
         });
     }
 
-    emitSelectedResources(resInfo: FilteredResouces) {
+    emitSelectedResources(resInfo: FilteredResources) {
         this.selectedResources = resInfo;
     }
 
