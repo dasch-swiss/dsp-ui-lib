@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.7.5](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.4...v1.7.5) (2021-08-10)
+
+
+### Maintenance
+
+* **viewer:** return label and id in multiple resource selection (DSP-1842 / DSP-1820) ([#327](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/327)) ([016e22a](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/016e22ac558a98d019cccd266a7512a4045b0d04))
+
 ### [1.7.4](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.3...v1.7.4) (2021-08-03)
 
 
