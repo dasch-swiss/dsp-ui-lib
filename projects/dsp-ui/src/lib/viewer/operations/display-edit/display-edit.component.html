@@ -49,7 +49,7 @@
                 <button mat-button
                         class="delete"
                         title="delete"
-                        *ngIf="!readOnlyValue && canModify && !editModeActive"
+                        *ngIf="!readOnlyValue && canModify && !editModeActive && canDelete"
                         (click)="openDialog()">
                     <mat-icon>delete</mat-icon>
                 </button>
