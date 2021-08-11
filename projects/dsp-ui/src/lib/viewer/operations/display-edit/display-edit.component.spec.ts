@@ -256,6 +256,7 @@ class TestDateValueComponent {
       <dsp-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
                         [displayValue]="readValue"
                         [propArray]="propArray"
+                        [canDelete]="true"
                         (referredResourceClicked)="internalLinkClicked($event)"
                         (referredResourceHovered)="internalLinkHovered($event)"
       ></dsp-display-edit>`
