@@ -28,7 +28,7 @@
             <div class="button-container">
                 <button mat-button
                         class="edit"
-                        title="edit"
+                        [matTooltip]="'edit'"
                         *ngIf="!readOnlyValue && canModify && !editModeActive"
                         (click)="activateEditMode()">
                     <mat-icon>edit</mat-icon>
@@ -46,13 +46,15 @@
                         (click)="toggleComment()">
                     <mat-icon>comment</mat-icon>
                 </button>
-                <button mat-button
+                <span [matTooltip]="(canDelete ? 'delete' : 'This value cannot be deleted because at least one value is required')">
+                    <button mat-button
                         class="delete"
-                        title="delete"
-                        *ngIf="!readOnlyValue && canModify && !editModeActive && canDelete"
+                        *ngIf="!readOnlyValue && canModify && !editModeActive"
+                        [disabled]="!canDelete"
                         (click)="openDialog()">
-                    <mat-icon>delete</mat-icon>
-                </button>
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </span>
             </div>
         </div>
     </div>

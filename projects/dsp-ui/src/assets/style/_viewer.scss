@@ -82,6 +82,14 @@
 
     .button-container {
 
+      button.mat-button-disabled {
+
+        .mat-icon {
+          color: #aaaaaa;
+        }
+
+      }
+
       button {
         cursor: pointer;
         border: none;
