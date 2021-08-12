@@ -256,6 +256,7 @@ class TestDateValueComponent {
       <dsp-display-edit *ngIf="readValue" #displayEditVal [parentResource]="readResource"
                         [displayValue]="readValue"
                         [propArray]="propArray"
+                        [canDelete]="deleteIsAllowed"
                         (referredResourceClicked)="internalLinkClicked($event)"
                         (referredResourceHovered)="internalLinkHovered($event)"
       ></dsp-display-edit>`
@@ -270,6 +271,8 @@ class TestHostDisplayValueComponent implements OnInit {
 
   mode: 'read' | 'update' | 'create' | 'search';
 
+  deleteIsAllowed: boolean;
+
   linkValClicked: ReadLinkValue | string = 'init'; // "init" is set because there is a test that checks that this does not emit for standoff links
                                                    // (and if it emits undefined because of a bug, we cannot check)
   linkValHovered: ReadLinkValue | string = 'init'; // see comment above
@@ -280,6 +283,8 @@ class TestHostDisplayValueComponent implements OnInit {
       this.readResource = res;
 
       this.mode = 'read';
+
+      this.deleteIsAllowed = true;
     });
   }
 
@@ -1182,6 +1187,15 @@ describe('DisplayEditComponent', () => {
             expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledWith(expectedUpdateResource);
             expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledTimes(1);
         });
+    });
+
+    it('should disable the delete button', async () => {
+        testHostComponent.displayEditValueComponent.canDelete = false;
+
+        testHostFixture.detectChanges();
+
+        const deleteButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.delete'}));
+        expect(deleteButton.isDisabled).toBeTruthy;
     });
   });
 });

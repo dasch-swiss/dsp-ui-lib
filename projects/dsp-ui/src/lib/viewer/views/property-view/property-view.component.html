@@ -25,6 +25,7 @@
                             [parentResource]="parentResource"
                             [displayValue]="val"
                             [propArray]="propArray"
+                            [canDelete]="deleteValueIsAllowed(prop)"
                             (referredResourceClicked)="referredResourceClicked.emit($event)"
                             (referredResourceHovered)="referredResourceHovered.emit($event)">
                         </dsp-display-edit>

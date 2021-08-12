@@ -131,4 +131,16 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
         // user has write permissions
         return isAllowed && this.propID !== prop.propDef.id && this.addButtonIsVisible;
     }
+
+    /**
+     * Given a resource property, check if its cardinality allows a value to be deleted
+     *
+     * @param prop the resource property
+     */
+    deleteValueIsAllowed(prop: PropertyInfoValues): boolean {
+        const isAllowed = CardinalityUtil.deleteValueForPropertyAllowed(
+            prop.propDef.id, prop.values.length, this.parentResource.entityInfo.classes[this.parentResource.type]);
+
+        return isAllowed;
+    }
 }
