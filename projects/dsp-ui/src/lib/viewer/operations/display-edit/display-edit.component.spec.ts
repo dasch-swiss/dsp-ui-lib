@@ -1188,5 +1188,14 @@ describe('DisplayEditComponent', () => {
             expect(valuesSpy.v2.values.deleteValue).toHaveBeenCalledTimes(1);
         });
     });
+
+    it('should disable the delete button', async () => {
+        testHostComponent.displayEditValueComponent.canDelete = false;
+
+        testHostFixture.detectChanges();
+
+        const deleteButton = await rootLoader.getHarness(MatButtonHarness.with({selector: '.delete'}));
+        expect(deleteButton.isDisabled).toBeTruthy;
+    });
   });
 });
