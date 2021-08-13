@@ -145,6 +145,7 @@ describe('ProgressIndicatorComponent', () => {
         expect(testHostComponent.progressIndicatorComponent.status).toEqual(undefined);
 
         testHostFixture.detectChanges();
+        testHostFixture.detectChanges();
 
         const hostCompDe = testHostFixture.debugElement;
 
@@ -152,13 +153,15 @@ describe('ProgressIndicatorComponent', () => {
 
         const divProgressElement = progressEl.query(By.css('.dsp-progress-indicator'));
 
-        const lineEl = divProgressElement.query(By.css('.line'));
+        const svgEl = divProgressElement.nativeElement.getElementsByTagName('svg');
+        expect(svgEl).not.toBe(null);
 
-        const bounceEl = lineEl.query(By.css('div'));
+        // const gEl = divProgressElement.nativeElement.getElementsByTagName('g');
+        const gEl = progressEl.query(By.css('g'));
+        // const gEl = svgEl.getElementsByTagName('g');
 
-        // expect the default progress indicator
-        expect(bounceEl.styles.backgroundColor).toEqual('red');
-        expect(bounceEl.attributes.class).toEqual('bounce1');
+        // // expect the default progress indicator in red
+        expect(gEl.attributes.stroke).toEqual('red');
 
     });
 });
