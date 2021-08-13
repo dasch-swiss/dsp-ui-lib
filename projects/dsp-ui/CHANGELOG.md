@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.5...v1.8.0) (2021-08-13)
+
+
+### Enhancements
+
+* **action:** new progress indicator (just for fun) ([#331](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/331)) ([d7a1b63](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/d7a1b635f1fa94b80efb316d6126146e1e388526))
+* **display-edit:** disable delete depending on cardinality (DSP-1814) ([#329](https://www.github.com/dasch-swiss/dsp-ui-lib/issues/329)) ([933bb13](https://www.github.com/dasch-swiss/dsp-ui-lib/commit/933bb130e575e29d346f96f3ce655c92e3b81832))
+
 ### [1.7.5](https://www.github.com/dasch-swiss/dsp-ui-lib/compare/v1.7.4...v1.7.5) (2021-08-10)
 
 
